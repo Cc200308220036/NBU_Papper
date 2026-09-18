@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "decision_case.schema.json",
+  "type": "object",
+  "required": ["schema_version", "decision_case_id", "base_scenario_id", "step_index", "placed_items", "available_items", "instruction_text", "candidate_set_id"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "decision_case_id": {"type": "string"},
+    "base_scenario_id": {"type": "string"},
+    "step_index": {"type": "integer", "minimum": 0},
+    "placed_items": {"type": "array", "items": {"$ref": "#/$defs/placed_item"}},
+    "available_items": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/item"}},
+    "instruction_text": {"type": "string"},
+    "candidate_set_id": {"type": "string"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "dimensions": {
+      "type": "object", "required": ["length", "width", "height"], "additionalProperties": false,
+      "properties": {"length": {"type": "integer", "minimum": 1}, "width": {"type": "integer", "minimum": 1}, "height": {"type": "integer", "minimum": 1}}
+    },
+    "item": {
+      "type": "object",
+      "required": ["item_id", "geometry_id", "dimensions_mm", "mass_kg", "weight_class", "material", "fragile", "stackable", "top_load_limit_kg_synthetic", "product_category"],
+      "additionalProperties": false,
+      "properties": {
+        "item_id": {"type": "string"}, "geometry_id": {"type": "string"}, "dimensions_mm": {"$ref": "#/$defs/dimensions"},
+        "mass_kg": {"type": "number", "exclusiveMinimum": 0}, "weight_class": {"enum": ["light", "medium", "heavy"]},
+        "material": {"type": "string"}, "fragile": {"type": "boolean"}, "stackable": {"type": "boolean"},
+        "top_load_limit_kg_synthetic": {"type": "number", "minimum": 0}, "product_category": {"type": "string"}
+      }
+    },
+    "placed_item": {
+      "type": "object",
+      "required": ["item_id", "geometry_id", "dimensions_mm", "mass_kg", "weight_class", "material", "fragile", "stackable", "top_load_limit_kg_synthetic", "product_category", "pose", "oriented_size_mm", "supported_load_kg", "support_fractions"],
+      "additionalProperties": false,
+      "properties": {
+        "item_id": {"type": "string"}, "geometry_id": {"type": "string"}, "dimensions_mm": {"$ref": "#/$defs/dimensions"},
+        "mass_kg": {"type": "number", "exclusiveMinimum": 0}, "weight_class": {"enum": ["light", "medium", "heavy"]},
+        "material": {"type": "string"}, "fragile": {"type": "boolean"}, "stackable": {"type": "boolean"},
+        "top_load_limit_kg_synthetic": {"type": "number", "minimum": 0}, "product_category": {"type": "string"},
+        "pose": {
+          "type": "object", "required": ["x_mm", "y_mm", "z_base_mm", "yaw_deg"], "additionalProperties": false,
+          "properties": {"x_mm": {"type": "number"}, "y_mm": {"type": "number"}, "z_base_mm": {"type": "number", "minimum": 0}, "yaw_deg": {"enum": [0, 90]}}
+        },
+        "oriented_size_mm": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number", "exclusiveMinimum": 0}},
+        "supported_load_kg": {"type": "number", "minimum": 0},
+        "support_fractions": {
+          "type": "array", "items": {
+            "type": "object", "required": ["item_id", "fraction"], "additionalProperties": false,
+            "properties": {"item_id": {"type": "string"}, "fraction": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}}
+          }
+        }
+      }
+    }
+  }
+}

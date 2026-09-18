@@ -1,0 +1,676 @@
+{
+  "schema_version": "pallet_vlm_request_v1",
+  "request_id": "DC_00089",
+  "state_hash": "d09e56b06e3d4061958ce1a3a1acf9fae491f6a6228f27592fe011a548ef5971",
+  "instruction_text": "重物应尽量靠近托盘底面中心。",
+  "container": {
+    "container_id": "P1210-H085",
+    "length_mm": 1200,
+    "width_mm": 1000,
+    "max_height_mm": 850,
+    "max_payload_kg": 1000.0,
+    "coordinate_frame": "container_bottom_center"
+  },
+  "placed_items": [
+    {
+      "item_id": "item_01",
+      "geometry_id": "G_560x230x240",
+      "dimensions_mm": {
+        "length": 560,
+        "width": 230,
+        "height": 240
+      },
+      "mass_kg": 7.37,
+      "weight_class": "medium",
+      "material": "Cardboard",
+      "fragile": false,
+      "stackable": true,
+      "top_load_limit_kg_synthetic": 38.64,
+      "product_category": "general",
+      "pose": {
+        "x_mm": 320.0,
+        "y_mm": 385.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        560.0,
+        230.0,
+        240.0
+      ],
+      "supported_load_kg": 0.0,
+      "support_fractions": []
+    },
+    {
+      "item_id": "item_02",
+      "geometry_id": "G_590x200x200",
+      "dimensions_mm": {
+        "length": 590,
+        "width": 200,
+        "height": 200
+      },
+      "mass_kg": 8.25,
+      "weight_class": "heavy",
+      "material": "Cardboard",
+      "fragile": true,
+      "stackable": true,
+      "top_load_limit_kg_synthetic": 14.75,
+      "product_category": "general",
+      "pose": {
+        "x_mm": 305.0,
+        "y_mm": 170.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590.0,
+        200.0,
+        200.0
+      ],
+      "supported_load_kg": 0.0,
+      "support_fractions": []
+    }
+  ],
+  "available_items": [
+    {
+      "item_id": "item_03",
+      "geometry_id": "G_590x200x200",
+      "dimensions_mm": {
+        "length": 590,
+        "width": 200,
+        "height": 200
+      },
+      "mass_kg": 8.25,
+      "weight_class": "heavy",
+      "material": "Cardboard",
+      "fragile": true,
+      "stackable": true,
+      "top_load_limit_kg_synthetic": 14.75,
+      "product_category": "general"
+    }
+  ],
+  "candidates": [
+    {
+      "display_label": "C01",
+      "candidate_id": "cand_e432aff9a74b",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": -285.0,
+        "y_mm": 370.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590,
+        200,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 323.28
+      },
+      "geometry_score_components": {
+        "compactness": 0.64144,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.586082
+      }
+    },
+    {
+      "display_label": "C02",
+      "candidate_id": "cand_228d26ea4e45",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": -285.0,
+        "y_mm": 400.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590,
+        200,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 333.096
+      },
+      "geometry_score_components": {
+        "compactness": 0.64144,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.573514
+      }
+    },
+    {
+      "display_label": "C03",
+      "candidate_id": "cand_33b71928187f",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": 305.0,
+        "y_mm": 170.0,
+        "z_base_mm": 200.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590,
+        200,
+        200
+      ],
+      "support": {
+        "support_item_ids": [
+          "item_02"
+        ],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": 6.5
+      },
+      "resulting_geometry": {
+        "max_height_mm": 400.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 389.549
+      },
+      "geometry_score_components": {
+        "compactness": 0.769728,
+        "height": 0.529412,
+        "stability": 1.0,
+        "balance": 0.501234
+      }
+    },
+    {
+      "display_label": "C04",
+      "candidate_id": "cand_95eb6c809345",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": -255.0,
+        "y_mm": -30.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590,
+        200,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 203.594
+      },
+      "geometry_score_components": {
+        "compactness": 0.449229,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.739325
+      }
+    },
+    {
+      "display_label": "C05",
+      "candidate_id": "cand_55dcf83f9ef7",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": 305.0,
+        "y_mm": -400.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590,
+        200,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 312.125
+      },
+      "geometry_score_components": {
+        "compactness": 0.551638,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.600365
+      }
+    },
+    {
+      "display_label": "C06",
+      "candidate_id": "cand_b53e7f0385d8",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": -255.0,
+        "y_mm": 370.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590,
+        200,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 326.818
+      },
+      "geometry_score_components": {
+        "compactness": 0.658173,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.581553
+      }
+    },
+    {
+      "display_label": "C07",
+      "candidate_id": "cand_3ac6e07a876c",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": -90.0,
+        "y_mm": 205.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 90
+      },
+      "oriented_size_mm": [
+        200,
+        590,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 302.835
+      },
+      "geometry_score_components": {
+        "compactness": 0.698276,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.612259
+      }
+    },
+    {
+      "display_label": "C08",
+      "candidate_id": "cand_b19c626a9cc1",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": -305.0,
+        "y_mm": -30.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590,
+        200,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 194.26
+      },
+      "geometry_score_components": {
+        "compactness": 0.430511,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.751275
+      }
+    },
+    {
+      "display_label": "C09",
+      "candidate_id": "cand_be7c5e9280c7",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": -285.0,
+        "y_mm": 170.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590,
+        200,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 258.944
+      },
+      "geometry_score_components": {
+        "compactness": 0.64144,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.668456
+      }
+    },
+    {
+      "display_label": "C10",
+      "candidate_id": "cand_1cb4a90c62ca",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": 305.0,
+        "y_mm": -30.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590,
+        200,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 351.919
+      },
+      "geometry_score_components": {
+        "compactness": 0.875617,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.549414
+      }
+    },
+    {
+      "display_label": "C11",
+      "candidate_id": "cand_a3f426770bd9",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": -255.0,
+        "y_mm": 400.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590,
+        200,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 336.53
+      },
+      "geometry_score_components": {
+        "compactness": 0.658173,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.569117
+      }
+    },
+    {
+      "display_label": "C12",
+      "candidate_id": "cand_223bf0595141",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": -90.0,
+        "y_mm": -25.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 90
+      },
+      "oriented_size_mm": [
+        200,
+        590,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 241.917
+      },
+      "geometry_score_components": {
+        "compactness": 0.502418,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.690258
+      }
+    },
+    {
+      "display_label": "C13",
+      "candidate_id": "cand_8f683ab770cb",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": -305.0,
+        "y_mm": 400.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590,
+        200,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 330.967
+      },
+      "geometry_score_components": {
+        "compactness": 0.630749,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.57624
+      }
+    },
+    {
+      "display_label": "C14",
+      "candidate_id": "cand_2ec141673b11",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": -285.0,
+        "y_mm": -30.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590,
+        200,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 197.866
+      },
+      "geometry_score_components": {
+        "compactness": 0.437808,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.746659
+      }
+    },
+    {
+      "display_label": "C15",
+      "candidate_id": "cand_c87ebba7c996",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": -305.0,
+        "y_mm": 370.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590,
+        200,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 321.086
+      },
+      "geometry_score_components": {
+        "compactness": 0.630749,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.588891
+      }
+    },
+    {
+      "display_label": "C16",
+      "candidate_id": "cand_71ba93ed7a95",
+      "pick_item_id": "item_03",
+      "pose": {
+        "x_mm": -305.0,
+        "y_mm": 170.0,
+        "z_base_mm": 0.0,
+        "yaw_deg": 0
+      },
+      "oriented_size_mm": [
+        590,
+        200,
+        200
+      ],
+      "support": {
+        "support_item_ids": [],
+        "support_ratio": 1.0,
+        "com_margin_mm": 100.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "resulting_geometry": {
+        "max_height_mm": 240.0,
+        "volume_utilization": 0.07658,
+        "center_of_mass_offset_mm": 256.2
+      },
+      "geometry_score_components": {
+        "compactness": 0.630749,
+        "height": 0.717647,
+        "stability": 1.0,
+        "balance": 0.671969
+      }
+    }
+  ],
+  "visual_inputs": {
+    "workspace_image": "../rendered/DC_00089/workspace.png",
+    "candidate_montage": "../rendered/DC_00089/candidates_montage.png"
+  }
+}

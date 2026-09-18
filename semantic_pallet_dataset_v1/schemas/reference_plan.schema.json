@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reference_plan.schema.json",
+  "type": "object",
+  "required": ["schema_version", "plan_id", "scenario_id", "planner", "is_globally_optimal", "placements"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "plan_id": {"type": "string"},
+    "scenario_id": {"type": "string"},
+    "planner": {"type": "string"},
+    "is_globally_optimal": {"const": false},
+    "placements": {"type": "array", "minItems": 1, "items": {"type": "object"}}
+  },
+  "additionalProperties": false
+}

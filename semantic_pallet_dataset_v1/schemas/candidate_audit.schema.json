@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "candidate_audit.schema.json",
+  "type": "object",
+  "required": ["rejection_histogram", "pareto_candidate_fingerprints", "pareto_recall_at_k", "geometry_oracle_fingerprint", "geometry_oracle_score", "epsilon_optimal_recall_at_k"],
+  "properties": {
+    "rejection_histogram": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "pareto_candidate_fingerprints": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "pareto_recall_at_k": {"type": "number", "minimum": 0, "maximum": 1},
+    "geometry_oracle_fingerprint": {"type": "string"},
+    "geometry_oracle_score": {"type": "number"},
+    "epsilon_optimal_recall_at_k": {"type": "boolean"}
+  },
+  "additionalProperties": false
+}

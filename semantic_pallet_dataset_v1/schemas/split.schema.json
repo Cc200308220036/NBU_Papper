@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "split.schema.json",
+  "type": "object",
+  "required": ["schema_version", "split", "scenario_ids", "decision_case_ids"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "split": {"type": "string"},
+    "scenario_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "decision_case_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+  },
+  "additionalProperties": false
+}

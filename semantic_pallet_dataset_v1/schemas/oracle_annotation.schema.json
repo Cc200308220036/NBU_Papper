@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "oracle_annotation.schema.json",
+  "type": "object",
+  "required": ["schema_version", "decision_case_id", "candidate_set_id", "ground_truth_rule", "geometry_reference", "candidate_evaluations", "oracle_candidate_id", "semantic_utility_range", "semantic_decision_required"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "decision_case_id": {"type": "string"},
+    "candidate_set_id": {"type": "string"},
+    "ground_truth_rule": {"type": "object"},
+    "geometry_reference": {"type": "object"},
+    "candidate_evaluations": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["candidate_id", "geometry_score", "semantic_score_components", "soft_utility", "hard_violations"],
+        "properties": {
+          "candidate_id": {"type": "string"},
+          "geometry_score": {"type": "number"},
+          "semantic_score_components": {"type": "object"},
+          "soft_utility": {"type": "number"},
+          "hard_violations": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "oracle_candidate_id": {"type": "string"},
+    "semantic_utility_range": {"type": "number", "minimum": 0},
+    "semantic_decision_required": {"type": "boolean"},
+    "paired_canonical_scenario_id": {"type": "string"}
+  },
+  "additionalProperties": false
+}

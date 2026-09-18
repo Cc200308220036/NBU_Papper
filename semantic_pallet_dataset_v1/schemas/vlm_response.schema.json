@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vlm_response.schema.json",
+  "type": "object",
+  "required": ["schema_version", "request_id", "state_hash", "candidate_id"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "pallet_vlm_response_v1"},
+    "request_id": {"type": "string"},
+    "state_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "candidate_id": {"type": "string", "minLength": 1},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "reason": {"type": "string"}
+  }
+}

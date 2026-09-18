@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "checks": {
+    "基础Schema与划分校验": true,
+    "独立几何复核": true,
+    "VLM白名单输入无隐藏标签": true,
+    "全部视觉输入可读取": true,
+    "完整在线可视化episode": true,
+    "两次重建校验和一致": true,
+    "buffer3能力边界已声明": true
+  },
+  "counts": {
+    "vlm_requests": 360,
+    "rendered_cases": 360,
+    "rendered_png_files": 720,
+    "checked_candidates": 5124,
+    "multilayer_candidates": 1963,
+    "semantic_decision_cases": 244,
+    "visual_audit_samples": 30,
+    "buffer3_scenarios": 20,
+    "buffer3_decision_cases": 0
+  },
+  "candidate_quality": {
+    "mean_returned_candidates": 14.233333,
+    "mean_pareto_recall_at_k": 0.900387,
+    "minimum_pareto_recall_at_k": 0.25,
+    "epsilon_optimal_coverage": 1.0
+  },
+  "reproducibility": {
+    "checksum_manifest_sha256": "58dbaebb20618d537034d676bc12dcfe7fdf3afa581820a07ce0b3125cb25361",
+    "comparison": "两次--force构建后cmp退出码为0"
+  },
+  "known_scope": {
+    "buffer1": "已通过固定候选和动态episode接口验收",
+    "buffer3": "仅场景Schema已生成；动态选箱候选留待阶段1"
+  },
+  "visual_review": {
+    "automatic": "PASS",
+    "contact_sheet": "views/visual_audit_contact_sheet.png",
+    "note": "已生成30例分层抽查清单；课题负责人可在冻结正式V1.0前追加签字复核。"
+  }
+}

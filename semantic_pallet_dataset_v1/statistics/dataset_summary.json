@@ -1,0 +1,64 @@
+{
+  "dataset_version": "0.1.0",
+  "base_scenario_count": 100,
+  "visible_scenario_file_count": 140,
+  "decision_case_count": 360,
+  "split_base_counts": {
+    "train": 50,
+    "validation": 10,
+    "test_id": 20,
+    "test_geometry_ood": 10,
+    "test_semantic_ood": 10
+  },
+  "split_semantic_decision_counts": {
+    "train": 103,
+    "validation": 18,
+    "test_id": 40,
+    "test_geometry_ood": 25,
+    "test_semantic_ood": 18,
+    "test_language_ood": 40
+  },
+  "item_count": 1513,
+  "unique_geometry_count": 232,
+  "unique_article_count": 405,
+  "weight_class_thresholds_kg": {
+    "light_max": 5.5,
+    "medium_max": 7.75
+  },
+  "attribute_counts": {
+    "fragile": 297,
+    "stackable": 1199,
+    "electronics": 242,
+    "fragile_and_electronics": 31
+  },
+  "bias_audit": {
+    "phi_large_volume_fragile": -0.015956,
+    "phi_heavy_electronics": -0.089292,
+    "geometries_with_multiple_attribute_combinations": 80
+  },
+  "candidate_rejection_histogram": {
+    "com_outside_support": 24,
+    "insufficient_support": 20453,
+    "non_stackable_support": 883,
+    "out_of_bounds": 83383,
+    "overlap": 47617,
+    "overload": 133
+  },
+  "selection_rejections": {
+    "test_geometry_ood:no_window": 2147,
+    "test_geometry_ood:packing_failed_or_flat": 66,
+    "test_id:no_window": 5,
+    "test_id:packing_failed_or_flat": 120,
+    "test_semantic_ood:no_window": 74,
+    "test_semantic_ood:packing_failed_or_flat": 60,
+    "train:no_window": 6,
+    "train:packing_failed_or_flat": 175,
+    "validation:no_window": 2,
+    "validation:packing_failed_or_flat": 59
+  },
+  "notes": [
+    "test_id与test_language_ood是同一TEST_ID_LANGUAGE划分组中的配对评测视图",
+    "top_load_limit_kg_synthetic是合成属性，不是真实工业抗压测量值",
+    "MVD-v0.1用于接口和功能实验，不承担最终统计结论"
+  ]
+}

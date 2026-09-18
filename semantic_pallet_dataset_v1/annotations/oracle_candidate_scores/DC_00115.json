@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.0",
+  "decision_case_id": "DC_00115",
+  "candidate_set_id": "CSET_00115",
+  "ground_truth_rule": {
+    "rule_type": "category_separate",
+    "target_attribute": "product_category=electronics",
+    "priority": 1,
+    "hard_or_soft": "hard",
+    "thresholds": {
+      "separate_from": "weight_class=heavy",
+      "contact_tolerance_mm": 0
+    },
+    "canonical": "电子产品箱不得与重物箱直接接触或形成上下支撑关系。",
+    "paraphrases": [
+      "必须将电子货箱和重箱隔开，不能相互贴靠或叠放。",
+      "电子产品不可直接邻接重物，也不能与重物上下承托。"
+    ]
+  },
+  "geometry_reference": {
+    "rejection_histogram": {
+      "insufficient_support": 34,
+      "out_of_bounds": 161,
+      "overlap": 52
+    },
+    "pareto_candidate_fingerprints": [
+      "0c86ee78dbd3561d2de6f94a",
+      "20694cd98a5243674baa0853",
+      "33ae03fe83ed339fc0149820",
+      "3d6fbe434a0ee2385b2fa608",
+      "69f053830dfa1ea887b58cb2",
+      "98bfe466ad64e63bcbc79b84",
+      "daf93c3c0dfae1343118cd87",
+      "fb4a2ad4ac6212c9c960b9e9"
+    ],
+    "pareto_recall_at_k": 1.0,
+    "geometry_oracle_fingerprint": "98bfe466ad64e63bcbc79b84",
+    "geometry_oracle_score": 0.78077295,
+    "epsilon_optimal_recall_at_k": true
+  },
+  "candidate_evaluations": [
+    {
+      "candidate_id": "cand_98bfe466ad64",
+      "geometry_score": 0.78077295,
+      "semantic_score_components": {
+        "category_separate": 0.0
+      },
+      "soft_utility": 0.0,
+      "hard_violations": [
+        "electronics_heavy_contact:1"
+      ]
+    },
+    {
+      "candidate_id": "cand_4bc68eb07772",
+      "geometry_score": 0.61982725,
+      "semantic_score_components": {
+        "category_separate": 0.0
+      },
+      "soft_utility": 0.0,
+      "hard_violations": [
+        "electronics_heavy_contact:1"
+      ]
+    },
+    {
+      "candidate_id": "cand_33ae03fe83ed",
+      "geometry_score": 0.77971965,
+      "semantic_score_components": {
+        "category_separate": 1.0
+      },
+      "soft_utility": 1.0,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_69f053830dfa",
+      "geometry_score": 0.7695295,
+      "semantic_score_components": {
+        "category_separate": 0.0
+      },
+      "soft_utility": 0.0,
+      "hard_violations": [
+        "electronics_heavy_contact:1"
+      ]
+    },
+    {
+      "candidate_id": "cand_0c86ee78dbd3",
+      "geometry_score": 0.7685837,
+      "semantic_score_components": {
+        "category_separate": 1.0
+      },
+      "soft_utility": 1.0,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_daf93c3c0dfa",
+      "geometry_score": 0.76360145,
+      "semantic_score_components": {
+        "category_separate": 0.0
+      },
+      "soft_utility": 0.0,
+      "hard_violations": [
+        "electronics_heavy_contact:1"
+      ]
+    },
+    {
+      "candidate_id": "cand_3d6fbe434a0e",
+      "geometry_score": 0.7625525,
+      "semantic_score_components": {
+        "category_separate": 1.0
+      },
+      "soft_utility": 1.0,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_fb4a2ad4ac62",
+      "geometry_score": 0.73719445,
+      "semantic_score_components": {
+        "category_separate": 0.0
+      },
+      "soft_utility": 0.0,
+      "hard_violations": [
+        "electronics_heavy_contact:1"
+      ]
+    },
+    {
+      "candidate_id": "cand_20694cd98a52",
+      "geometry_score": 0.7364399,
+      "semantic_score_components": {
+        "category_separate": 1.0
+      },
+      "soft_utility": 1.0,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_9fc2cfaef5a7",
+      "geometry_score": 0.735175,
+      "semantic_score_components": {
+        "category_separate": 0.0
+      },
+      "soft_utility": 0.0,
+      "hard_violations": [
+        "electronics_heavy_contact:1"
+      ]
+    },
+    {
+      "candidate_id": "cand_4320f015dd48",
+      "geometry_score": 0.7344527,
+      "semantic_score_components": {
+        "category_separate": 1.0
+      },
+      "soft_utility": 1.0,
+      "hard_violations": []
+    }
+  ],
+  "oracle_candidate_id": "cand_33ae03fe83ed",
+  "semantic_utility_range": 1.0,
+  "semantic_decision_required": true
+}

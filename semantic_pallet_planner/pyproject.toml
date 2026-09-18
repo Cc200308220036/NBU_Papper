@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "semantic-pallet-planner"
+version = "0.1.0"
+description = "Deterministic semantic palletizing research platform, stages 1A and 1B"
+requires-python = ">=3.11"
+dependencies = ["numpy", "matplotlib", "Pillow", "jsonschema", "PyYAML"]
+[project.scripts]
+pallet-planner = "semantic_pallet_planner.cli:main"
+[tool.setuptools.packages.find]
+where = ["src"]
+[tool.setuptools.package-data]
+semantic_pallet_planner = ["schemas/*.json"]
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "scenario_id": "SCN_0119",
+  "ground_truth_rules": [
+    {
+      "rule_type": "category_separate",
+      "target_attribute": "product_category=electronics",
+      "priority": 1,
+      "hard_or_soft": "hard",
+      "thresholds": {
+        "separate_from": "weight_class=heavy",
+        "contact_tolerance_mm": 0
+      },
+      "canonical": "电子产品箱不得与重物箱直接接触或形成上下支撑关系。",
+      "paraphrases": [
+        "必须将电子货箱和重箱隔开，不能相互贴靠或叠放。",
+        "电子产品不可直接邻接重物，也不能与重物上下承托。"
+      ]
+    }
+  ],
+  "paired_canonical_scenario_id": "SCN_0079",
+  "split": "test_language_ood",
+  "split_group_id": "TEST_ID_LANGUAGE"
+}

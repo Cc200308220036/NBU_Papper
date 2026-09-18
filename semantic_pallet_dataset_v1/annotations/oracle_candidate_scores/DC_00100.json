@@ -1,0 +1,215 @@
+{
+  "schema_version": "1.0",
+  "decision_case_id": "DC_00100",
+  "candidate_set_id": "CSET_00100",
+  "ground_truth_rule": {
+    "rule_type": "category_separate",
+    "target_attribute": "product_category=electronics",
+    "priority": 1,
+    "hard_or_soft": "hard",
+    "thresholds": {
+      "separate_from": "weight_class=heavy",
+      "contact_tolerance_mm": 0
+    },
+    "canonical": "电子产品箱不得与重物箱直接接触或形成上下支撑关系。",
+    "paraphrases": [
+      "必须将电子货箱和重箱隔开，不能相互贴靠或叠放。",
+      "电子产品不可直接邻接重物，也不能与重物上下承托。"
+    ]
+  },
+  "geometry_reference": {
+    "rejection_histogram": {
+      "insufficient_support": 51,
+      "out_of_bounds": 92,
+      "overlap": 24
+    },
+    "pareto_candidate_fingerprints": [
+      "02c73aba88343fee062692f0",
+      "1cd5a2f46688366cb4ed753d",
+      "2e863f553b6490f2d32fbdf8",
+      "38f802991f3650ac8887ddc9",
+      "4e42aec0d0df0de723118db8",
+      "7a7bfdddc151e0ef3d836b54",
+      "9bd5247647895f78924b3d56",
+      "9e20028693fb4ad5b4dac172",
+      "a6ba1ef8c43225d6a6d5cab9"
+    ],
+    "pareto_recall_at_k": 0.777778,
+    "geometry_oracle_fingerprint": "38f802991f3650ac8887ddc9",
+    "geometry_oracle_score": 0.763599,
+    "epsilon_optimal_recall_at_k": true
+  },
+  "candidate_evaluations": [
+    {
+      "candidate_id": "cand_38f802991f36",
+      "geometry_score": 0.763599,
+      "semantic_score_components": {
+        "category_separate": 0.0
+      },
+      "soft_utility": 0.0,
+      "hard_violations": [
+        "electronics_heavy_contact:3"
+      ]
+    },
+    {
+      "candidate_id": "cand_be900a4c4ea3",
+      "geometry_score": 0.7567821,
+      "semantic_score_components": {
+        "category_separate": 0.666667
+      },
+      "soft_utility": 0.666667,
+      "hard_violations": [
+        "electronics_heavy_contact:1"
+      ]
+    },
+    {
+      "candidate_id": "cand_d188b4187234",
+      "geometry_score": 0.6794311,
+      "semantic_score_components": {
+        "category_separate": 0.333333
+      },
+      "soft_utility": 0.333333,
+      "hard_violations": [
+        "electronics_heavy_contact:2"
+      ]
+    },
+    {
+      "candidate_id": "cand_4e5cf8093731",
+      "geometry_score": 0.66178835,
+      "semantic_score_components": {
+        "category_separate": 0.333333
+      },
+      "soft_utility": 0.333333,
+      "hard_violations": [
+        "electronics_heavy_contact:2"
+      ]
+    },
+    {
+      "candidate_id": "cand_9bd524764789",
+      "geometry_score": 0.7603767,
+      "semantic_score_components": {
+        "category_separate": 1.0
+      },
+      "soft_utility": 1.0,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_365e459e7c2a",
+      "geometry_score": 0.7591947,
+      "semantic_score_components": {
+        "category_separate": 0.666667
+      },
+      "soft_utility": 0.666667,
+      "hard_violations": [
+        "electronics_heavy_contact:1"
+      ]
+    },
+    {
+      "candidate_id": "cand_02c73aba8834",
+      "geometry_score": 0.73025575,
+      "semantic_score_components": {
+        "category_separate": 0.0
+      },
+      "soft_utility": 0.0,
+      "hard_violations": [
+        "electronics_heavy_contact:3"
+      ]
+    },
+    {
+      "candidate_id": "cand_7a7bfdddc151",
+      "geometry_score": 0.7299044,
+      "semantic_score_components": {
+        "category_separate": 0.666667
+      },
+      "soft_utility": 0.666667,
+      "hard_violations": [
+        "electronics_heavy_contact:1"
+      ]
+    },
+    {
+      "candidate_id": "cand_4e42aec0d0df",
+      "geometry_score": 0.72798155,
+      "semantic_score_components": {
+        "category_separate": 1.0
+      },
+      "soft_utility": 1.0,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_906c5bc61042",
+      "geometry_score": 0.7277915,
+      "semantic_score_components": {
+        "category_separate": 0.666667
+      },
+      "soft_utility": 0.666667,
+      "hard_violations": [
+        "electronics_heavy_contact:1"
+      ]
+    },
+    {
+      "candidate_id": "cand_87f118794188",
+      "geometry_score": 0.72718095,
+      "semantic_score_components": {
+        "category_separate": 1.0
+      },
+      "soft_utility": 1.0,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_a6ba1ef8c432",
+      "geometry_score": 0.72621755,
+      "semantic_score_components": {
+        "category_separate": 0.666667
+      },
+      "soft_utility": 0.666667,
+      "hard_violations": [
+        "electronics_heavy_contact:1"
+      ]
+    },
+    {
+      "candidate_id": "cand_9e20028693fb",
+      "geometry_score": 0.7240156,
+      "semantic_score_components": {
+        "category_separate": 1.0
+      },
+      "soft_utility": 1.0,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_9b678873f54f",
+      "geometry_score": 0.7238612,
+      "semantic_score_components": {
+        "category_separate": 0.666667
+      },
+      "soft_utility": 0.666667,
+      "hard_violations": [
+        "electronics_heavy_contact:1"
+      ]
+    },
+    {
+      "candidate_id": "cand_65aa53ee8b88",
+      "geometry_score": 0.7236701,
+      "semantic_score_components": {
+        "category_separate": 0.666667
+      },
+      "soft_utility": 0.666667,
+      "hard_violations": [
+        "electronics_heavy_contact:1"
+      ]
+    },
+    {
+      "candidate_id": "cand_b6bb4f565a3d",
+      "geometry_score": 0.723167,
+      "semantic_score_components": {
+        "category_separate": 0.666667
+      },
+      "soft_utility": 0.666667,
+      "hard_violations": [
+        "electronics_heavy_contact:1"
+      ]
+    }
+  ],
+  "oracle_candidate_id": "cand_9bd524764789",
+  "semantic_utility_range": 1.0,
+  "semantic_decision_required": true
+}

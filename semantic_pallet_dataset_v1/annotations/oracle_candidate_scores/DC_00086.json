@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "decision_case_id": "DC_00086",
+  "candidate_set_id": "CSET_00086",
+  "ground_truth_rule": {
+    "rule_type": "heavy_low",
+    "target_attribute": "weight_class=heavy",
+    "priority": 1,
+    "hard_or_soft": "soft",
+    "thresholds": {},
+    "canonical": "重物应尽量放在较低层。",
+    "paraphrases": [
+      "优先把较重的箱子安排在底部附近。",
+      "请避免将重箱码放得过高。"
+    ]
+  },
+  "geometry_reference": {
+    "rejection_histogram": {
+      "insufficient_support": 75,
+      "out_of_bounds": 307,
+      "overlap": 104,
+      "overload": 2
+    },
+    "pareto_candidate_fingerprints": [
+      "442213849af17ba0ed8bfcf8",
+      "83c887f697109500b18d04df",
+      "a876f83b1cc0f665d992f056",
+      "e179db5c4472cab34709359e"
+    ],
+    "pareto_recall_at_k": 1.0,
+    "geometry_oracle_fingerprint": "e179db5c4472cab34709359e",
+    "geometry_oracle_score": 0.74532775,
+    "epsilon_optimal_recall_at_k": true
+  },
+  "candidate_evaluations": [
+    {
+      "candidate_id": "cand_e179db5c4472",
+      "geometry_score": 0.74532775,
+      "semantic_score_components": {
+        "heavy_low": 0.95045
+      },
+      "soft_utility": 0.95045,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_442213849af1",
+      "geometry_score": 0.72162865,
+      "semantic_score_components": {
+        "heavy_low": 1.0
+      },
+      "soft_utility": 1.0,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_83c887f69710",
+      "geometry_score": 0.7212189,
+      "semantic_score_components": {
+        "heavy_low": 1.0
+      },
+      "soft_utility": 1.0,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_b5375769effb",
+      "geometry_score": 0.7177394,
+      "semantic_score_components": {
+        "heavy_low": 1.0
+      },
+      "soft_utility": 1.0,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_a876f83b1cc0",
+      "geometry_score": 0.71773235,
+      "semantic_score_components": {
+        "heavy_low": 1.0
+      },
+      "soft_utility": 1.0,
+      "hard_violations": []
+    }
+  ],
+  "oracle_candidate_id": "cand_442213849af1",
+  "semantic_utility_range": 0.04955,
+  "semantic_decision_required": false
+}

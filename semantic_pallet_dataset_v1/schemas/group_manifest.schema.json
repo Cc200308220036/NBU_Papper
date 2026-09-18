@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "group_manifest.schema.json",
+  "type": "object",
+  "required": ["schema_version", "groups"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["scenario_id", "base_physical_id", "scenario_family_id", "pair_group_id", "variant_id", "split_group_id"],
+        "properties": {
+          "scenario_id": {"type": "string"},
+          "base_physical_id": {"type": "string"},
+          "scenario_family_id": {"type": "string"},
+          "pair_group_id": {"type": "string"},
+          "variant_id": {"enum": ["canonical_instruction", "language_ood", "buffer3"]},
+          "split_group_id": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,21 @@
+dataset: semantic_pallet_dataset_v1
+seed: 20260912
+top_k: 16
+topk_mode: diverse_v1
+fallback_policy: geometry_greedy
+output_root: semantic_pallet_planner/outputs
+max_steps: null
+render: false
+vlm:
+  provider: deepseek
+  model: deepseek-v4-pro
+  api_key_env: DEEPSEEK_API_KEY
+  base_url: https://api.deepseek.com/chat/completions
+  temperature: 0.0
+  max_output_tokens: 512
+  timeout_s: 60
+  max_format_repairs: 1
+  cache_mode: read_write
+  thinking: disabled
+  input_cost_per_million: null
+  output_cost_per_million: null

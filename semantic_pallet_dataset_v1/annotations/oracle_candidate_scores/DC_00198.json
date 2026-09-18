@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "decision_case_id": "DC_00198",
+  "candidate_set_id": "CSET_00198",
+  "ground_truth_rule": {
+    "rule_type": "fragile_protect",
+    "target_attribute": "fragile=true",
+    "priority": 1,
+    "hard_or_soft": "soft",
+    "thresholds": {},
+    "canonical": "易碎箱应尽量不承载其他箱体，并优先放在较高层。",
+    "paraphrases": [
+      "保护易碎品，尽量别在它们上面压货。",
+      "易碎货物宜放高一些并减少顶部载荷。"
+    ]
+  },
+  "geometry_reference": {
+    "rejection_histogram": {
+      "insufficient_support": 84,
+      "out_of_bounds": 959,
+      "overlap": 456,
+      "overload": 2
+    },
+    "pareto_candidate_fingerprints": [
+      "8f3a25501afaccc239b1cf3d",
+      "f39377028efbefca4c2e67a9"
+    ],
+    "pareto_recall_at_k": 1.0,
+    "geometry_oracle_fingerprint": "f39377028efbefca4c2e67a9",
+    "geometry_oracle_score": 0.6245097,
+    "epsilon_optimal_recall_at_k": true
+  },
+  "candidate_evaluations": [
+    {
+      "candidate_id": "cand_f39377028efb",
+      "geometry_score": 0.6245097,
+      "semantic_score_components": {
+        "fragile_protect": 0.542939
+      },
+      "soft_utility": 0.542939,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_830a35d47f35",
+      "geometry_score": 0.56401845,
+      "semantic_score_components": {
+        "fragile_protect": 0.542939
+      },
+      "soft_utility": 0.542939,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_8f3a25501afa",
+      "geometry_score": 0.5441994,
+      "semantic_score_components": {
+        "fragile_protect": 0.626058
+      },
+      "soft_utility": 0.626058,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_1b484f67ffe5",
+      "geometry_score": 0.54380235,
+      "semantic_score_components": {
+        "fragile_protect": 0.626058
+      },
+      "soft_utility": 0.626058,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_0d4dbca5c0cb",
+      "geometry_score": 0.50027705,
+      "semantic_score_components": {
+        "fragile_protect": 0.626058
+      },
+      "soft_utility": 0.626058,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_8b75604bd5a8",
+      "geometry_score": 0.4999514,
+      "semantic_score_components": {
+        "fragile_protect": 0.626058
+      },
+      "soft_utility": 0.626058,
+      "hard_violations": []
+    },
+    {
+      "candidate_id": "cand_c4088b2d2012",
+      "geometry_score": 0.4755574,
+      "semantic_score_components": {
+        "fragile_protect": 0.626058
+      },
+      "soft_utility": 0.626058,
+      "hard_violations": []
+    }
+  ],
+  "oracle_candidate_id": "cand_8f3a25501afa",
+  "semantic_utility_range": 0.083119,
+  "semantic_decision_required": true
+}

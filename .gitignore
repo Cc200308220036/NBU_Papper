@@ -1,0 +1,101 @@
+# ========================================
+# Python 缓存、测试缓存和构建产物
+# ========================================
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ========================================
+# 虚拟环境和本机工具目录
+# ========================================
+.venv/
+venv/
+env/
+ENV/
+.conda/
+.cache/
+.agents/
+.codex/
+.vscode/
+.idea/
+
+# ========================================
+# 本地密钥与环境变量
+# 示例文件保留，真实密钥文件禁止提交
+# ========================================
+.env
+.env.*
+!.env.example
+!**/.env.example
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# ========================================
+# 系统和编辑器临时文件
+# ========================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# ========================================
+# 不纳入本仓库的第三方项目与压缩包
+# ========================================
+/GOPT-main/
+/GOPT-main.zip
+/ReMe-main/
+/ReMe-main.zip
+
+# ========================================
+# 外部原始数据
+# 正式整理后的数据集 semantic_pallet_dataset_v1/ 仍会提交
+# ========================================
+/raw/
+
+# ========================================
+# 可重新生成的实验产物和日志
+# ========================================
+/semantic_pallet_planner/outputs/
+*.log
+*.tmp
+
+# ========================================
+# 数据集中的可重新生成的大型可视化与演示运行产物
+# 保留 tasks、candidates、annotations、splits、streams、schemas、
+# configs、catalog、provenance、statistics 和 views/vlm_inputs
+# ========================================
+/semantic_pallet_dataset_v1/views/rendered/
+/semantic_pallet_dataset_v1/views/visual_audit_contact_sheet.png
+/semantic_pallet_dataset_v1/runs/
+
+# ========================================
+# 模型权重、检查点和常见大型二进制产物
+# ========================================
+*.ckpt
+*.pth
+*.pt
+*.onnx
+*.safetensors
+*.h5
+*.hdf5
+*.joblib
+*.pkl
+*.pickle
+
+# 临时：root 拥有的残缺 .git 目录重命名后的残留，需 sudo 删除后移除此行
+/.git.broken/
+

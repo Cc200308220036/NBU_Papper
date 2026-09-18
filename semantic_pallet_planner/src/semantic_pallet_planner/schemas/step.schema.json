@@ -1,0 +1,137 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "pallet_step_v1"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "track": {
+      "enum": [
+        "fixed",
+        "episode"
+      ]
+    },
+    "method": {
+      "type": "string"
+    },
+    "scenario_id": {
+      "type": "string"
+    },
+    "split": {
+      "type": "string"
+    },
+    "step_index": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "state_hash": {
+      "type": "string"
+    },
+    "candidate_set_id": {
+      "type": "string"
+    },
+    "privileged_input": {
+      "type": "boolean"
+    },
+    "future_visible": {
+      "type": "boolean"
+    },
+    "request": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "candidate_set": {
+      "type": "object"
+    },
+    "selector_response": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "submitted_response": {},
+    "before": {
+      "type": "object"
+    },
+    "after": {
+      "type": "object"
+    },
+    "fallback": {
+      "type": "boolean"
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "committed": {
+      "type": "boolean"
+    },
+    "termination_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "candidate_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "audit": {
+      "type": "object"
+    },
+    "timing": {
+      "type": "object"
+    },
+    "metrics": {
+      "type": "object"
+    },
+    "metrics_before": {
+      "type": "object"
+    },
+    "model_trace": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "track",
+    "method",
+    "scenario_id",
+    "split",
+    "step_index",
+    "request_id",
+    "state_hash",
+    "candidate_set_id",
+    "privileged_input",
+    "future_visible",
+    "request",
+    "candidate_set",
+    "selector_response",
+    "submitted_response",
+    "before",
+    "after",
+    "fallback",
+    "error",
+    "committed",
+    "termination_reason",
+    "candidate_id",
+    "audit",
+    "timing",
+    "metrics",
+    "metrics_before"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

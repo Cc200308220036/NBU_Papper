@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "pallet_manifest_v1"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "config_sha256": {
+      "type": "string"
+    },
+    "source_checksums": {
+      "type": "object"
+    },
+    "dataset_checksums": {
+      "type": "object"
+    },
+    "environment": {
+      "type": "object"
+    },
+    "created_utc": {
+      "type": "string"
+    },
+    "core_result_sha256": {
+      "type": "string"
+    },
+    "result_file_checksums": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "config_sha256",
+    "source_checksums",
+    "dataset_checksums",
+    "environment",
+    "created_utc",
+    "core_result_sha256",
+    "result_file_checksums"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

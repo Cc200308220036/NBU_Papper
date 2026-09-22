@@ -1,6 +1,6 @@
 # DeepSeek Flash 阶段 1C 验证集实验产物解析
 
-> 对应本地实验：`semantic_pallet_planner/outputs/EXP_1C_DEEPSEEK_FLASH_VALIDATION`。本文基于该目录的实际文件、源代码和用户提供的 DeepSeek 控制台截图编写。`outputs/` 已被 Git 忽略，上传 GitHub 时实验原始产物不会随本文上传；文中的代表案例图片已复制到 `docs/assets/deepseek_flash_validation/`。
+> 对应本地实验：`semantic_pallet_planner/outputs/EXP_1C_DEEPSEEK_FLASH_VALIDATION`。本文基于该目录的实际文件、源代码和用户提供的 DeepSeek 控制台截图编写。当前 Git 规则允许提交这轮验证实验的原始产物，其他历史 `outputs/` 仍被忽略；文中的代表案例图片已复制到 `docs/assets/deepseek_flash_validation/`。
 
 ## 1. 先看结论
 
@@ -292,7 +292,7 @@ validation 中五类规则各有 6 个固定案例。下表是按该案例所属
 
 建议按下面顺序继续，避免用 test 集反复调参：
 
-1. **保留本轮 validation 作为基线。** 保存配置、提示词版本、映射版本、逐案例表和 DeepSeek 控制台费用截图。不要覆盖 `EXP_1C_DEEPSEEK_FLASH_VALIDATION`。正式发布时，`outputs/` 被 Git 忽略，需要另行归档实验原始产物或提供可验证的下载位置。
+1. **保留本轮 validation 作为基线。** 保存配置、提示词版本、映射版本、逐案例表和 DeepSeek 控制台费用截图。不要覆盖 `EXP_1C_DEEPSEEK_FLASH_VALIDATION`。该验证目录现可纳入 Git；其他被忽略的历史产物如需发布，仍需单独归档或提供可验证的下载位置。
 2. **完成至少 20 个案例的人工错误审计。** 优先覆盖 `DC_00157`、`DC_00166`、`DC_00177`、`DC_00178`，再按五类规则、成功/失败、文本/视觉成对抽样。记录“指令、选项、模型理由、真正造成 regret 的几何/语义事实、是否含错误解释”。本轮没有修复和回退案例，抽查记录应如实标明该类别缺席，而不是虚构样本。
 3. **对照规则修订公开候选特征与提示词。** 对 `fragile_protect` 显式解释“上层箱可能压到下方易碎箱”；对 `heavy_center` 区分“当前重物的位置”和“整体质心”；对 `category_separate` 说明相邻/接触关系。新增特征只能由当前公开物理状态计算，不得引入隐藏 Oracle 或结构化规则答案。
 4. **修正视觉元数据并做位置稳健性检查。** 工作区图使用真实 `step_index`；使用预先冻结的第二映射种子，在 validation 上看真实候选选择是否随 C 编号变化。修改映射/提示词后应升版本并开新实验目录。

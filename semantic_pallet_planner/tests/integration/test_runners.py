@@ -3,7 +3,7 @@ import json
 import pytest
 from semantic_pallet_planner.logging.artifacts import Experiment
 from semantic_pallet_planner.runners.core import FixedCaseRunner,EpisodeRunner
-from semantic_pallet_planner.evaluation.replay import validate_experiment
+from semantic_pallet_planner.evaluation.replay import validate_experiment, _same_metric
 from semantic_pallet_planner.evaluation.metrics import describe
 from semantic_pallet_planner.selectors.baselines import register
 
@@ -56,6 +56,12 @@ def test_summary_statistics():
     d=describe([1,2,3],123)
     assert d['n']==3 and d['mean']==2 and d['median']==2 and d['std']==1
     assert d['ci95'][0]<=2<=d['ci95'][1]
+
+
+def test_replay_metric_tolerates_only_float_roundoff():
+    assert _same_metric(50.71371518014038, 50.713715180140376)
+    assert not _same_metric(50.71371518, 50.71371528)
+    assert not _same_metric(True, 1)
 
 
 def test_internal_error_is_logged_and_not_silently_successful(cfg,repo):

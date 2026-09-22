@@ -1,5 +1,6 @@
 """根据请求和响应重新计算数值证据，并校验不可变源数据。"""
 import json
+import math
 from pathlib import Path
 from collections import defaultdict
 from ..logging.artifacts import file_hash,digest,core_event,dump,dataset_checksums
@@ -12,6 +13,15 @@ from ..planner.generator import ExtremePointGenerator
 from .geometry_oracle import check_candidate
 from .state import apply_candidate,state_metrics
 from .metrics import evaluate_fixed
+
+
+def _same_metric(recorded, recomputed):
+    """允许 JSON 浮点往返造成的末位误差，其他指标仍要求精确一致。"""
+    if isinstance(recorded, bool) or isinstance(recomputed, bool):
+        return recorded is recomputed
+    if isinstance(recorded, (int, float)) and isinstance(recomputed, (int, float)):
+        return math.isclose(recorded, recomputed, rel_tol=0.0, abs_tol=1e-9)
+    return recorded == recomputed
 
 
 def validate_experiment(directory,regenerate=False):
@@ -68,7 +78,7 @@ def validate_experiment(directory,regenerate=False):
                 metrics,_=evaluate_fixed(req,c,repo.get_oracle(event['request_id']))
             else:metrics=state_metrics(before['container'],after)
             for k,v in metrics.items():
-                if event['metrics'].get(k)!=v:failures.append(f'metric {checked}:{k}')
+                if not _same_metric(event['metrics'].get(k),v):failures.append(f'metric {checked}:{k}')
     if digest(events)!=manifest['core_result_sha256']:failures.append('core result hash')
     for key,group in observed.items():
         out=root/'episodes'/key[0]/key[1]

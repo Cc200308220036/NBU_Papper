@@ -3,12 +3,26 @@ from ..evaluation.policy_v2 import evaluate, optimal_set
 from .instruction_parser_v2 import parse_instruction
 
 
-def execute_policy(request, policy):
+def execute_policy(request, policy, *, allow_business_violation=False):
     evaluations = [evaluate(request, c, policy, request['container']) for c in request['candidates']]
     best = optimal_set(evaluations)
-    if not best['equivalent_indices']:
+    indices = best['equivalent_indices']
+    if not indices and allow_business_violation and evaluations:
+        # Diagnostic continuation only: every physical candidate violates the
+        # parsed public policy. Prefer the smallest incremental harm, then the
+        # fewest remaining violations and the published soft priorities.
+        def rank(i):
+            value = evaluations[i]
+            return (value['new_business_violation_count'] +
+                    value['worsened_existing_violation_count'],
+                    value['post_business_violation_count'],
+                    *[-(q if q is not None else 0.) for q in value['soft_quality']],
+                    -request['candidates'][i]['geometry_score'],
+                    request['candidates'][i]['display_label'])
+        indices = [min(range(len(evaluations)), key=rank)]
+    if not indices:
         return None
-    return min((request['candidates'][i] for i in best['equivalent_indices']),
+    return min((request['candidates'][i] for i in indices),
                key=lambda c: (-c['geometry_score'], c['display_label']))['display_label']
 
 

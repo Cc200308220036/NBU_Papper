@@ -1,5 +1,8 @@
 # Semantic Pallet Planner — 阶段1A / 1B
 
+> 文档导航更新（2026-10-19）：O3 在线框架与业务违规观察实验已完成本轮工程验证，见 [当前进度](../docs/00_总览与指导/semantic_pallet_planner代码数据与评测现状速览.md) 和 [O3运行手册](../docs/04_运行与复核手册/O3业务违规率完整订单实验运行说明.md)。以下 1A/1B 与 1C 章节保留各版本原始入口，“本阶段不运行 VLM”仅描述早期 1A/1B 范围。
+
+
 基于数据集真值的确定性三维码垛实验平台。采用极值点和支撑层候选生成器，在合法候选中比较几何、规则与Oracle选择器；支持固定决策评测、在线episode、独立复核、日志回放、Top-K实验和3D GIF。
 
 本阶段不运行VLM、ReMe、Gazebo、MoveIt或机械臂，不包含完整GOPT训练。
@@ -96,7 +99,7 @@ tests/                  unit、integration、golden
 outputs/                实验产物（不提交版本控制）
 ```
 
-完整阶段说明、输入输出、数据流、参数语义和本次实际结果见[阶段1A-1B开发说明](../docs/阶段1A-1B开发说明.md)。
+完整阶段说明、输入输出、数据流、参数语义和本次实际结果见[阶段1A-1B开发说明](../docs/03_阶段产出分析/1A-1B/阶段1A-1B开发说明.md)。
 
 ## 阶段1C：GLM固定候选实验
 
@@ -138,7 +141,7 @@ python -m semantic_pallet_planner.cli validate --experiment semantic_pallet_plan
 python -m semantic_pallet_planner.cli replay --experiment semantic_pallet_planner/outputs/MY_1C_FINAL
 ```
 
-`--fake-vlm`只验证工程链路，不得作为论文模型结果。正式验收要求GLM自身合法响应率至少98%，不将Geometry-Greedy fallback计入该比例。详细设计和验收口径见[阶段1C实验方案](../docs/阶段1C实验方案.md)。
+`--fake-vlm`只验证工程链路，不得作为论文模型结果。正式验收要求GLM自身合法响应率至少98%，不将Geometry-Greedy fallback计入该比例。详细设计和验收口径见[阶段1C实验方案](../docs/02_阶段实施方案/1C/阶段1C实验方案.md)。
 
 ### 切换DeepSeek
 

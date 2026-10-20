@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "dataset_version": "0.1.0",
+  "dataset_release_date": "2026-09-11",
+  "dataset_seed": 20260911,
+  "container": {
+    "container_id": "P1210-H085",
+    "length_mm": 1200,
+    "width_mm": 1000,
+    "max_height_mm": 850,
+    "max_payload_kg": 1000.0,
+    "coordinate_frame": "container_bottom_center"
+  },
+  "scenario_counts": {
+    "train": 50,
+    "validation": 10,
+    "test_id": 20,
+    "test_geometry_ood": 10,
+    "test_semantic_ood": 10
+  },
+  "items_per_scenario": {"min": 8, "max": 20},
+  "target_volume_ratio": {"min": 0.35, "max": 0.80},
+  "support_ratio_min": 0.70,
+  "geometry_ood": {
+    "definition": "height_mm >= threshold",
+    "height_threshold_mm": 340,
+    "minimum_ood_items": 3
+  },
+  "semantic_ood": {
+    "definition": "fragile=true and product_category=electronics",
+    "minimum_ood_items": 2
+  },
+  "candidate_generator": {
+    "name": "extreme_point_ems_style",
+    "version": "0.1.0",
+    "top_k": 16,
+    "yaw_degrees": [0, 90],
+    "geometry_score_weights": {
+      "compactness": 0.35,
+      "height": 0.25,
+      "stability": 0.25,
+      "balance": 0.15
+    },
+    "epsilon": 0.05,
+    "pose_tolerance_mm": 1
+  },
+  "decision_cases_per_scenario": 3,
+  "buffer_size": 1,
+  "buffer3_pair_count": 20,
+  "streams": {
+    "stationary_count": 4,
+    "policy_shift_count": 4,
+    "episodes_per_stream": 10,
+    "policy_shift_episode": 6,
+    "random_seed_repeats": 3
+  }
+}

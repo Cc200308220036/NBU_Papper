@@ -1,0 +1,2130 @@
+{
+  "task": {
+    "episode_id": "O3_SCN_0057_P0",
+    "scenario_id": "SCN_0057",
+    "source_order_key": "00109714",
+    "source_split": "validation",
+    "policy_id": "P0",
+    "instruction_text": "易碎箱累计承载不得超过1 kg；类别[electronics]与重箱禁止直接面接触；在满足硬约束后；第一优先级：重箱尽量放低；第二优先级：重箱尽量靠中心。",
+    "truth_policy": {
+      "schema_version": "pallet_policy_v2_pilot",
+      "hard_constraints": [
+        {
+          "type": "fragile_load_limit",
+          "selector": {
+            "fragile": true
+          },
+          "threshold_kg": 1.0
+        },
+        {
+          "type": "forbidden_contact",
+          "left": {
+            "product_category": "electronics"
+          },
+          "right": {
+            "weight_class": "heavy"
+          }
+        }
+      ],
+      "soft_priorities": [
+        {
+          "priority": 1,
+          "metric": "heavy_low"
+        },
+        {
+          "priority": 2,
+          "metric": "heavy_center"
+        }
+      ]
+    },
+    "attribute_source": "synthetic"
+  },
+  "intervention_arrival_number": 2,
+  "interpretation": "Public Parser simulated continuation, not real Flash; single action override",
+  "baseline_reproduced": {
+    "placed_items": 7,
+    "planned_items": 8,
+    "completed": false,
+    "final_business_violation_count": 0,
+    "final_violation_ids": [],
+    "physical_violations": 0
+  },
+  "result": {
+    "placed_items": 8,
+    "planned_items": 8,
+    "completed": true,
+    "final_business_violation_count": 0,
+    "final_violation_ids": [],
+    "physical_violations": 0,
+    "events": [
+      {
+        "step_index": 1,
+        "step_number": 2,
+        "status": "select",
+        "forced_action": true,
+        "pose": {
+          "x_mm": 285.0,
+          "y_mm": 300.0,
+          "z_base_mm": 0.0,
+          "yaw_deg": 0
+        },
+        "current_item_id": "item_02",
+        "new_violations": 0,
+        "worsened_violations": 0,
+        "before_placed": [
+          {
+            "dimensions_mm": {
+              "height": 265,
+              "length": 585,
+              "width": 395
+            },
+            "fragile": false,
+            "geometry_id": "G_585x395x265",
+            "item_id": "item_01",
+            "mass_kg": 7.208,
+            "material": "Cardboard",
+            "oriented_size_mm": [
+              585,
+              395,
+              265
+            ],
+            "pose": {
+              "x_mm": -307.5,
+              "y_mm": 302.5,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "product_category": "general",
+            "stackable": false,
+            "support_fractions": [],
+            "supported_load_kg": 0.0,
+            "top_load_limit_kg_synthetic": 22.96,
+            "weight_class": "medium"
+          }
+        ],
+        "after_placed": [
+          {
+            "dimensions_mm": {
+              "height": 265,
+              "length": 585,
+              "width": 395
+            },
+            "fragile": false,
+            "geometry_id": "G_585x395x265",
+            "item_id": "item_01",
+            "mass_kg": 7.208,
+            "material": "Cardboard",
+            "oriented_size_mm": [
+              585,
+              395,
+              265
+            ],
+            "pose": {
+              "x_mm": -307.5,
+              "y_mm": 302.5,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "product_category": "general",
+            "stackable": false,
+            "support_fractions": [],
+            "supported_load_kg": 0.0,
+            "top_load_limit_kg_synthetic": 22.96,
+            "weight_class": "medium"
+          },
+          {
+            "item_id": "item_02",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 285.0,
+              "y_mm": 300.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              290
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": []
+          }
+        ]
+      },
+      {
+        "step_index": 2,
+        "step_number": 3,
+        "status": "select",
+        "forced_action": false,
+        "pose": {
+          "x_mm": 185.0,
+          "y_mm": -200.0,
+          "z_base_mm": 0.0,
+          "yaw_deg": 90
+        },
+        "current_item_id": "item_03",
+        "new_violations": 0,
+        "worsened_violations": 0,
+        "before_placed": [
+          {
+            "dimensions_mm": {
+              "height": 265,
+              "length": 585,
+              "width": 395
+            },
+            "fragile": false,
+            "geometry_id": "G_585x395x265",
+            "item_id": "item_01",
+            "mass_kg": 7.208,
+            "material": "Cardboard",
+            "oriented_size_mm": [
+              585,
+              395,
+              265
+            ],
+            "pose": {
+              "x_mm": -307.5,
+              "y_mm": 302.5,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "product_category": "general",
+            "stackable": false,
+            "support_fractions": [],
+            "supported_load_kg": 0.0,
+            "top_load_limit_kg_synthetic": 22.96,
+            "weight_class": "medium"
+          },
+          {
+            "item_id": "item_02",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 285.0,
+              "y_mm": 300.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              290
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": []
+          }
+        ],
+        "after_placed": [
+          {
+            "dimensions_mm": {
+              "height": 265,
+              "length": 585,
+              "width": 395
+            },
+            "fragile": false,
+            "geometry_id": "G_585x395x265",
+            "item_id": "item_01",
+            "mass_kg": 7.208,
+            "material": "Cardboard",
+            "oriented_size_mm": [
+              585,
+              395,
+              265
+            ],
+            "pose": {
+              "x_mm": -307.5,
+              "y_mm": 302.5,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "product_category": "general",
+            "stackable": false,
+            "support_fractions": [],
+            "supported_load_kg": 0.0,
+            "top_load_limit_kg_synthetic": 22.96,
+            "weight_class": "medium"
+          },
+          {
+            "item_id": "item_02",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 285.0,
+              "y_mm": 300.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              290
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_03",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 185.0,
+              "y_mm": -200.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": []
+          }
+        ]
+      },
+      {
+        "step_index": 3,
+        "step_number": 4,
+        "status": "select",
+        "forced_action": false,
+        "pose": {
+          "x_mm": -215.0,
+          "y_mm": -195.0,
+          "z_base_mm": 0.0,
+          "yaw_deg": 90
+        },
+        "current_item_id": "item_04",
+        "new_violations": 0,
+        "worsened_violations": 0,
+        "before_placed": [
+          {
+            "dimensions_mm": {
+              "height": 265,
+              "length": 585,
+              "width": 395
+            },
+            "fragile": false,
+            "geometry_id": "G_585x395x265",
+            "item_id": "item_01",
+            "mass_kg": 7.208,
+            "material": "Cardboard",
+            "oriented_size_mm": [
+              585,
+              395,
+              265
+            ],
+            "pose": {
+              "x_mm": -307.5,
+              "y_mm": 302.5,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "product_category": "general",
+            "stackable": false,
+            "support_fractions": [],
+            "supported_load_kg": 0.0,
+            "top_load_limit_kg_synthetic": 22.96,
+            "weight_class": "medium"
+          },
+          {
+            "item_id": "item_02",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 285.0,
+              "y_mm": 300.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              290
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_03",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 185.0,
+              "y_mm": -200.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": []
+          }
+        ],
+        "after_placed": [
+          {
+            "dimensions_mm": {
+              "height": 265,
+              "length": 585,
+              "width": 395
+            },
+            "fragile": false,
+            "geometry_id": "G_585x395x265",
+            "item_id": "item_01",
+            "mass_kg": 7.208,
+            "material": "Cardboard",
+            "oriented_size_mm": [
+              585,
+              395,
+              265
+            ],
+            "pose": {
+              "x_mm": -307.5,
+              "y_mm": 302.5,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "product_category": "general",
+            "stackable": false,
+            "support_fractions": [],
+            "supported_load_kg": 0.0,
+            "top_load_limit_kg_synthetic": 22.96,
+            "weight_class": "medium"
+          },
+          {
+            "item_id": "item_02",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 285.0,
+              "y_mm": 300.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              290
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_03",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 185.0,
+              "y_mm": -200.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_04",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -215.0,
+              "y_mm": -195.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": []
+          }
+        ]
+      },
+      {
+        "step_index": 4,
+        "step_number": 5,
+        "status": "select",
+        "forced_action": false,
+        "pose": {
+          "x_mm": -125.0,
+          "y_mm": -90.0,
+          "z_base_mm": 290.0,
+          "yaw_deg": 0
+        },
+        "current_item_id": "item_05",
+        "new_violations": 0,
+        "worsened_violations": 0,
+        "before_placed": [
+          {
+            "dimensions_mm": {
+              "height": 265,
+              "length": 585,
+              "width": 395
+            },
+            "fragile": false,
+            "geometry_id": "G_585x395x265",
+            "item_id": "item_01",
+            "mass_kg": 7.208,
+            "material": "Cardboard",
+            "oriented_size_mm": [
+              585,
+              395,
+              265
+            ],
+            "pose": {
+              "x_mm": -307.5,
+              "y_mm": 302.5,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "product_category": "general",
+            "stackable": false,
+            "support_fractions": [],
+            "supported_load_kg": 0.0,
+            "top_load_limit_kg_synthetic": 22.96,
+            "weight_class": "medium"
+          },
+          {
+            "item_id": "item_02",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 285.0,
+              "y_mm": 300.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              290
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_03",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 185.0,
+              "y_mm": -200.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_04",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -215.0,
+              "y_mm": -195.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": []
+          }
+        ],
+        "after_placed": [
+          {
+            "dimensions_mm": {
+              "height": 265,
+              "length": 585,
+              "width": 395
+            },
+            "fragile": false,
+            "geometry_id": "G_585x395x265",
+            "item_id": "item_01",
+            "mass_kg": 7.208,
+            "material": "Cardboard",
+            "oriented_size_mm": [
+              585,
+              395,
+              265
+            ],
+            "pose": {
+              "x_mm": -307.5,
+              "y_mm": 302.5,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "product_category": "general",
+            "stackable": false,
+            "support_fractions": [],
+            "supported_load_kg": 0.0,
+            "top_load_limit_kg_synthetic": 22.96,
+            "weight_class": "medium"
+          },
+          {
+            "item_id": "item_02",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 285.0,
+              "y_mm": 300.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              290
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_03",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 185.0,
+              "y_mm": -200.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 2.302758620689655,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_04",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -215.0,
+              "y_mm": -195.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 5.117241379310345,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_05",
+            "geometry_id": "G_580x380x160",
+            "dimensions_mm": {
+              "length": 580,
+              "width": 380,
+              "height": 160
+            },
+            "mass_kg": 7.42,
+            "weight_class": "medium",
+            "material": "Wood",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 68.76,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -125.0,
+              "y_mm": -90.0,
+              "z_base_mm": 290.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              580,
+              380,
+              160
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": [
+              {
+                "item_id": "item_03",
+                "fraction": 0.3103448275862069
+              },
+              {
+                "item_id": "item_04",
+                "fraction": 0.6896551724137931
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_index": 5,
+        "step_number": 6,
+        "status": "select",
+        "forced_action": false,
+        "pose": {
+          "x_mm": 280.0,
+          "y_mm": 290.0,
+          "z_base_mm": 290.0,
+          "yaw_deg": 0
+        },
+        "current_item_id": "item_06",
+        "new_violations": 0,
+        "worsened_violations": 0,
+        "before_placed": [
+          {
+            "dimensions_mm": {
+              "height": 265,
+              "length": 585,
+              "width": 395
+            },
+            "fragile": false,
+            "geometry_id": "G_585x395x265",
+            "item_id": "item_01",
+            "mass_kg": 7.208,
+            "material": "Cardboard",
+            "oriented_size_mm": [
+              585,
+              395,
+              265
+            ],
+            "pose": {
+              "x_mm": -307.5,
+              "y_mm": 302.5,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "product_category": "general",
+            "stackable": false,
+            "support_fractions": [],
+            "supported_load_kg": 0.0,
+            "top_load_limit_kg_synthetic": 22.96,
+            "weight_class": "medium"
+          },
+          {
+            "item_id": "item_02",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 285.0,
+              "y_mm": 300.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              290
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_03",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 185.0,
+              "y_mm": -200.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 2.302758620689655,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_04",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -215.0,
+              "y_mm": -195.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 5.117241379310345,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_05",
+            "geometry_id": "G_580x380x160",
+            "dimensions_mm": {
+              "length": 580,
+              "width": 380,
+              "height": 160
+            },
+            "mass_kg": 7.42,
+            "weight_class": "medium",
+            "material": "Wood",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 68.76,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -125.0,
+              "y_mm": -90.0,
+              "z_base_mm": 290.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              580,
+              380,
+              160
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": [
+              {
+                "item_id": "item_03",
+                "fraction": 0.3103448275862069
+              },
+              {
+                "item_id": "item_04",
+                "fraction": 0.6896551724137931
+              }
+            ]
+          }
+        ],
+        "after_placed": [
+          {
+            "dimensions_mm": {
+              "height": 265,
+              "length": 585,
+              "width": 395
+            },
+            "fragile": false,
+            "geometry_id": "G_585x395x265",
+            "item_id": "item_01",
+            "mass_kg": 7.208,
+            "material": "Cardboard",
+            "oriented_size_mm": [
+              585,
+              395,
+              265
+            ],
+            "pose": {
+              "x_mm": -307.5,
+              "y_mm": 302.5,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "product_category": "general",
+            "stackable": false,
+            "support_fractions": [],
+            "supported_load_kg": 0.0,
+            "top_load_limit_kg_synthetic": 22.96,
+            "weight_class": "medium"
+          },
+          {
+            "item_id": "item_02",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 285.0,
+              "y_mm": 300.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              290
+            ],
+            "supported_load_kg": 6.36,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_03",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 185.0,
+              "y_mm": -200.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 2.302758620689655,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_04",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -215.0,
+              "y_mm": -195.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 5.117241379310345,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_05",
+            "geometry_id": "G_580x380x160",
+            "dimensions_mm": {
+              "length": 580,
+              "width": 380,
+              "height": 160
+            },
+            "mass_kg": 7.42,
+            "weight_class": "medium",
+            "material": "Wood",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 68.76,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -125.0,
+              "y_mm": -90.0,
+              "z_base_mm": 290.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              580,
+              380,
+              160
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": [
+              {
+                "item_id": "item_03",
+                "fraction": 0.3103448275862069
+              },
+              {
+                "item_id": "item_04",
+                "fraction": 0.6896551724137931
+              }
+            ]
+          },
+          {
+            "item_id": "item_06",
+            "geometry_id": "G_590x380x230",
+            "dimensions_mm": {
+              "length": 590,
+              "width": 380,
+              "height": 230
+            },
+            "mass_kg": 6.36,
+            "weight_class": "medium",
+            "material": "Wood",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 100.55,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 280.0,
+              "y_mm": 290.0,
+              "z_base_mm": 290.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              590,
+              380,
+              230
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": [
+              {
+                "item_id": "item_02",
+                "fraction": 1.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_index": 6,
+        "step_number": 7,
+        "status": "select",
+        "forced_action": false,
+        "pose": {
+          "x_mm": -115.0,
+          "y_mm": -100.0,
+          "z_base_mm": 450.0,
+          "yaw_deg": 0
+        },
+        "current_item_id": "item_07",
+        "new_violations": 0,
+        "worsened_violations": 0,
+        "before_placed": [
+          {
+            "dimensions_mm": {
+              "height": 265,
+              "length": 585,
+              "width": 395
+            },
+            "fragile": false,
+            "geometry_id": "G_585x395x265",
+            "item_id": "item_01",
+            "mass_kg": 7.208,
+            "material": "Cardboard",
+            "oriented_size_mm": [
+              585,
+              395,
+              265
+            ],
+            "pose": {
+              "x_mm": -307.5,
+              "y_mm": 302.5,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "product_category": "general",
+            "stackable": false,
+            "support_fractions": [],
+            "supported_load_kg": 0.0,
+            "top_load_limit_kg_synthetic": 22.96,
+            "weight_class": "medium"
+          },
+          {
+            "item_id": "item_02",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 285.0,
+              "y_mm": 300.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              290
+            ],
+            "supported_load_kg": 6.36,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_03",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 185.0,
+              "y_mm": -200.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 2.302758620689655,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_04",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -215.0,
+              "y_mm": -195.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 5.117241379310345,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_05",
+            "geometry_id": "G_580x380x160",
+            "dimensions_mm": {
+              "length": 580,
+              "width": 380,
+              "height": 160
+            },
+            "mass_kg": 7.42,
+            "weight_class": "medium",
+            "material": "Wood",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 68.76,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -125.0,
+              "y_mm": -90.0,
+              "z_base_mm": 290.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              580,
+              380,
+              160
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": [
+              {
+                "item_id": "item_03",
+                "fraction": 0.3103448275862069
+              },
+              {
+                "item_id": "item_04",
+                "fraction": 0.6896551724137931
+              }
+            ]
+          },
+          {
+            "item_id": "item_06",
+            "geometry_id": "G_590x380x230",
+            "dimensions_mm": {
+              "length": 590,
+              "width": 380,
+              "height": 230
+            },
+            "mass_kg": 6.36,
+            "weight_class": "medium",
+            "material": "Wood",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 100.55,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 280.0,
+              "y_mm": 290.0,
+              "z_base_mm": 290.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              590,
+              380,
+              230
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": [
+              {
+                "item_id": "item_02",
+                "fraction": 1.0
+              }
+            ]
+          }
+        ],
+        "after_placed": [
+          {
+            "dimensions_mm": {
+              "height": 265,
+              "length": 585,
+              "width": 395
+            },
+            "fragile": false,
+            "geometry_id": "G_585x395x265",
+            "item_id": "item_01",
+            "mass_kg": 7.208,
+            "material": "Cardboard",
+            "oriented_size_mm": [
+              585,
+              395,
+              265
+            ],
+            "pose": {
+              "x_mm": -307.5,
+              "y_mm": 302.5,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "product_category": "general",
+            "stackable": false,
+            "support_fractions": [],
+            "supported_load_kg": 0.0,
+            "top_load_limit_kg_synthetic": 22.96,
+            "weight_class": "medium"
+          },
+          {
+            "item_id": "item_02",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 285.0,
+              "y_mm": 300.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              290
+            ],
+            "supported_load_kg": 6.36,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_03",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 185.0,
+              "y_mm": -200.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 5.066068965517241,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_04",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -215.0,
+              "y_mm": -195.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 11.257931034482759,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_05",
+            "geometry_id": "G_580x380x160",
+            "dimensions_mm": {
+              "length": 580,
+              "width": 380,
+              "height": 160
+            },
+            "mass_kg": 7.42,
+            "weight_class": "medium",
+            "material": "Wood",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 68.76,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -125.0,
+              "y_mm": -90.0,
+              "z_base_mm": 290.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              580,
+              380,
+              160
+            ],
+            "supported_load_kg": 8.904,
+            "support_fractions": [
+              {
+                "item_id": "item_03",
+                "fraction": 0.3103448275862069
+              },
+              {
+                "item_id": "item_04",
+                "fraction": 0.6896551724137931
+              }
+            ]
+          },
+          {
+            "item_id": "item_06",
+            "geometry_id": "G_590x380x230",
+            "dimensions_mm": {
+              "length": 590,
+              "width": 380,
+              "height": 230
+            },
+            "mass_kg": 6.36,
+            "weight_class": "medium",
+            "material": "Wood",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 100.55,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 280.0,
+              "y_mm": 290.0,
+              "z_base_mm": 290.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              590,
+              380,
+              230
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": [
+              {
+                "item_id": "item_02",
+                "fraction": 1.0
+              }
+            ]
+          },
+          {
+            "item_id": "item_07",
+            "geometry_id": "G_600x400x220",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 220
+            },
+            "mass_kg": 8.904,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": false,
+            "top_load_limit_kg_synthetic": 174.24,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -115.0,
+              "y_mm": -100.0,
+              "z_base_mm": 450.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              220
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": [
+              {
+                "item_id": "item_05",
+                "fraction": 1.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_index": 7,
+        "step_number": 8,
+        "status": "select",
+        "forced_action": false,
+        "pose": {
+          "x_mm": 275.0,
+          "y_mm": 300.0,
+          "z_base_mm": 520.0,
+          "yaw_deg": 0
+        },
+        "current_item_id": "item_08",
+        "new_violations": 0,
+        "worsened_violations": 0,
+        "before_placed": [
+          {
+            "dimensions_mm": {
+              "height": 265,
+              "length": 585,
+              "width": 395
+            },
+            "fragile": false,
+            "geometry_id": "G_585x395x265",
+            "item_id": "item_01",
+            "mass_kg": 7.208,
+            "material": "Cardboard",
+            "oriented_size_mm": [
+              585,
+              395,
+              265
+            ],
+            "pose": {
+              "x_mm": -307.5,
+              "y_mm": 302.5,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "product_category": "general",
+            "stackable": false,
+            "support_fractions": [],
+            "supported_load_kg": 0.0,
+            "top_load_limit_kg_synthetic": 22.96,
+            "weight_class": "medium"
+          },
+          {
+            "item_id": "item_02",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 285.0,
+              "y_mm": 300.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              290
+            ],
+            "supported_load_kg": 6.36,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_03",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 185.0,
+              "y_mm": -200.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 5.066068965517241,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_04",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -215.0,
+              "y_mm": -195.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 11.257931034482759,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_05",
+            "geometry_id": "G_580x380x160",
+            "dimensions_mm": {
+              "length": 580,
+              "width": 380,
+              "height": 160
+            },
+            "mass_kg": 7.42,
+            "weight_class": "medium",
+            "material": "Wood",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 68.76,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -125.0,
+              "y_mm": -90.0,
+              "z_base_mm": 290.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              580,
+              380,
+              160
+            ],
+            "supported_load_kg": 8.904,
+            "support_fractions": [
+              {
+                "item_id": "item_03",
+                "fraction": 0.3103448275862069
+              },
+              {
+                "item_id": "item_04",
+                "fraction": 0.6896551724137931
+              }
+            ]
+          },
+          {
+            "item_id": "item_06",
+            "geometry_id": "G_590x380x230",
+            "dimensions_mm": {
+              "length": 590,
+              "width": 380,
+              "height": 230
+            },
+            "mass_kg": 6.36,
+            "weight_class": "medium",
+            "material": "Wood",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 100.55,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 280.0,
+              "y_mm": 290.0,
+              "z_base_mm": 290.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              590,
+              380,
+              230
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": [
+              {
+                "item_id": "item_02",
+                "fraction": 1.0
+              }
+            ]
+          },
+          {
+            "item_id": "item_07",
+            "geometry_id": "G_600x400x220",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 220
+            },
+            "mass_kg": 8.904,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": false,
+            "top_load_limit_kg_synthetic": 174.24,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -115.0,
+              "y_mm": -100.0,
+              "z_base_mm": 450.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              220
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": [
+              {
+                "item_id": "item_05",
+                "fraction": 1.0
+              }
+            ]
+          }
+        ],
+        "after_placed": [
+          {
+            "dimensions_mm": {
+              "height": 265,
+              "length": 585,
+              "width": 395
+            },
+            "fragile": false,
+            "geometry_id": "G_585x395x265",
+            "item_id": "item_01",
+            "mass_kg": 7.208,
+            "material": "Cardboard",
+            "oriented_size_mm": [
+              585,
+              395,
+              265
+            ],
+            "pose": {
+              "x_mm": -307.5,
+              "y_mm": 302.5,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "product_category": "general",
+            "stackable": false,
+            "support_fractions": [],
+            "supported_load_kg": 0.0,
+            "top_load_limit_kg_synthetic": 22.96,
+            "weight_class": "medium"
+          },
+          {
+            "item_id": "item_02",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 285.0,
+              "y_mm": 300.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              290
+            ],
+            "supported_load_kg": 15.264,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_03",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 185.0,
+              "y_mm": -200.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 5.066068965517241,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_04",
+            "geometry_id": "G_600x400x290",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 290
+            },
+            "mass_kg": 10.81,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 229.68,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -215.0,
+              "y_mm": -195.0,
+              "z_base_mm": 0.0,
+              "yaw_deg": 90
+            },
+            "oriented_size_mm": [
+              400,
+              600,
+              290
+            ],
+            "supported_load_kg": 11.257931034482759,
+            "support_fractions": []
+          },
+          {
+            "item_id": "item_05",
+            "geometry_id": "G_580x380x160",
+            "dimensions_mm": {
+              "length": 580,
+              "width": 380,
+              "height": 160
+            },
+            "mass_kg": 7.42,
+            "weight_class": "medium",
+            "material": "Wood",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 68.76,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -125.0,
+              "y_mm": -90.0,
+              "z_base_mm": 290.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              580,
+              380,
+              160
+            ],
+            "supported_load_kg": 8.904,
+            "support_fractions": [
+              {
+                "item_id": "item_03",
+                "fraction": 0.3103448275862069
+              },
+              {
+                "item_id": "item_04",
+                "fraction": 0.6896551724137931
+              }
+            ]
+          },
+          {
+            "item_id": "item_06",
+            "geometry_id": "G_590x380x230",
+            "dimensions_mm": {
+              "length": 590,
+              "width": 380,
+              "height": 230
+            },
+            "mass_kg": 6.36,
+            "weight_class": "medium",
+            "material": "Wood",
+            "fragile": false,
+            "stackable": true,
+            "top_load_limit_kg_synthetic": 100.55,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 280.0,
+              "y_mm": 290.0,
+              "z_base_mm": 290.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              590,
+              380,
+              230
+            ],
+            "supported_load_kg": 8.904,
+            "support_fractions": [
+              {
+                "item_id": "item_02",
+                "fraction": 1.0
+              }
+            ]
+          },
+          {
+            "item_id": "item_07",
+            "geometry_id": "G_600x400x220",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 220
+            },
+            "mass_kg": 8.904,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": false,
+            "top_load_limit_kg_synthetic": 174.24,
+            "product_category": "general",
+            "pose": {
+              "x_mm": -115.0,
+              "y_mm": -100.0,
+              "z_base_mm": 450.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              220
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": [
+              {
+                "item_id": "item_05",
+                "fraction": 1.0
+              }
+            ]
+          },
+          {
+            "item_id": "item_08",
+            "geometry_id": "G_600x400x220",
+            "dimensions_mm": {
+              "length": 600,
+              "width": 400,
+              "height": 220
+            },
+            "mass_kg": 8.904,
+            "weight_class": "heavy",
+            "material": "Plastic",
+            "fragile": false,
+            "stackable": false,
+            "top_load_limit_kg_synthetic": 174.24,
+            "product_category": "general",
+            "pose": {
+              "x_mm": 275.0,
+              "y_mm": 300.0,
+              "z_base_mm": 520.0,
+              "yaw_deg": 0
+            },
+            "oriented_size_mm": [
+              600,
+              400,
+              220
+            ],
+            "supported_load_kg": 0.0,
+            "support_fractions": [
+              {
+                "item_id": "item_06",
+                "fraction": 1.0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

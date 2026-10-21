@@ -1,0 +1,2719 @@
+{
+  "B": {
+    "root": "semantic_pallet_planner/outputs/EXP_OPT_O3_LAYOUT_FLASH_V2_SMOKE_20261020_01",
+    "acceptance": {
+      "status": "PASS",
+      "checks": {
+        "planned_episodes_recorded": true,
+        "full_replay": true,
+        "metrics_recomputed": true,
+        "protected_runs_unchanged": true,
+        "source_split_clean": true,
+        "schema_leakage_zero": true,
+        "physical_violations_zero": true,
+        "soft_budget_violations_zero": true,
+        "observe_screen_interventions_zero": true,
+        "api_accounting": true
+      },
+      "episodes": 72,
+      "remote_calls": 508,
+      "real_flash_status": "PASS",
+      "vlm_advantage": "NOT_CLAIMED",
+      "research_status": "EXPLORATORY_DEVELOPMENT_ONLY",
+      "api_incomplete": false,
+      "protected_run_files": {
+        "safe": 3409,
+        "observe_business": 4023,
+        "layout": 824,
+        "flash_v1_offline": 185,
+        "flash_v1_smoke": 2285,
+        "flash_v1_validation": 6583,
+        "stable_v2_baseline": 368
+      },
+      "version": "layout_flash_validation_v2",
+      "ranking_version": "layout_preserving_v2_fsum_max_anchor_1e-12",
+      "baseline_role": "reference_check",
+      "cross_runtime_status": "REFERENCE_MATCHED"
+    },
+    "recorded_replay": {
+      "status": "PASS",
+      "episodes": 72,
+      "steps": 1040,
+      "reference_steps_compared": 520,
+      "reference_kind": "stable_v2_baseline",
+      "failures": []
+    },
+    "fresh_read_only_replay": {
+      "status": "PASS",
+      "episodes": 72,
+      "steps": 1040,
+      "reference_steps_compared": 520,
+      "reference_kind": "stable_v2_baseline",
+      "failures": []
+    },
+    "api": {
+      "actual_attempts": 508,
+      "initial_attempts": 508,
+      "repair_attempts": 0,
+      "transport_retries": 0,
+      "failed_attempts": 0,
+      "max_api_attempts": 1200,
+      "budget_stops": 0,
+      "sequence_valid": true,
+      "input_tokens_reported": 5423945,
+      "output_tokens_reported": 107859,
+      "missing_usage_responses": 0,
+      "latency_s_percentiles": [
+        1.485829395998735,
+        2.0854944536462425,
+        3.0475118960021064
+      ],
+      "returned_models": [
+        "deepseek-flash"
+      ],
+      "estimated_cost": null,
+      "cost_basis": "not configured; no price assumption"
+    },
+    "execution_checks": {
+      "schema_leakage_failures": 0,
+      "soft_budget_violations": 0,
+      "screen_violations": 0,
+      "physical_violations": 0,
+      "checked_events": 1040,
+      "checked_soft_metrics": 1424
+    },
+    "summary": {
+      "safe/original/public_parser": {
+        "episodes": 6,
+        "completed": 2,
+        "clean_completed": 2,
+        "placed_steps": 71,
+        "violating_steps": 0,
+        "final_business_violation_instances": 0,
+        "mean_placed_item_ratio": 0.6960784313725491,
+        "mean_placed_volume_ratio": 0.6987698059975122,
+        "micro_violation_step_rate": 0.0
+      },
+      "safe/original/flash": {
+        "episodes": 6,
+        "completed": 2,
+        "clean_completed": 2,
+        "placed_steps": 71,
+        "violating_steps": 0,
+        "final_business_violation_instances": 0,
+        "mean_placed_item_ratio": 0.6960784313725491,
+        "mean_placed_volume_ratio": 0.6987698059975122,
+        "micro_violation_step_rate": 0.0
+      },
+      "safe/relaxed_geometry/public_parser": {
+        "episodes": 6,
+        "completed": 2,
+        "clean_completed": 2,
+        "placed_steps": 92,
+        "violating_steps": 0,
+        "final_business_violation_instances": 0,
+        "mean_placed_item_ratio": 0.9019607843137254,
+        "mean_placed_volume_ratio": 0.9100090019629737,
+        "micro_violation_step_rate": 0.0
+      },
+      "safe/relaxed_geometry/flash": {
+        "episodes": 6,
+        "completed": 2,
+        "clean_completed": 2,
+        "placed_steps": 92,
+        "violating_steps": 0,
+        "final_business_violation_instances": 0,
+        "mean_placed_item_ratio": 0.9019607843137254,
+        "mean_placed_volume_ratio": 0.9100090019629737,
+        "micro_violation_step_rate": 0.0
+      },
+      "safe/relaxed_wo_floor/public_parser": {
+        "episodes": 6,
+        "completed": 4,
+        "clean_completed": 4,
+        "placed_steps": 82,
+        "violating_steps": 0,
+        "final_business_violation_instances": 0,
+        "mean_placed_item_ratio": 0.8039215686274511,
+        "mean_placed_volume_ratio": 0.8054692925849084,
+        "micro_violation_step_rate": 0.0
+      },
+      "safe/relaxed_wo_floor/flash": {
+        "episodes": 6,
+        "completed": 4,
+        "clean_completed": 4,
+        "placed_steps": 82,
+        "violating_steps": 0,
+        "final_business_violation_instances": 0,
+        "mean_placed_item_ratio": 0.8039215686274511,
+        "mean_placed_volume_ratio": 0.8054692925849084,
+        "micro_violation_step_rate": 0.0
+      },
+      "observe_business/original/public_parser": {
+        "episodes": 6,
+        "completed": 3,
+        "clean_completed": 2,
+        "placed_steps": 76,
+        "violating_steps": 2,
+        "final_business_violation_instances": 2,
+        "mean_placed_item_ratio": 0.7450980392156863,
+        "mean_placed_volume_ratio": 0.7448232639824011,
+        "micro_violation_step_rate": 0.02631578947368421
+      },
+      "observe_business/original/flash": {
+        "episodes": 6,
+        "completed": 3,
+        "clean_completed": 2,
+        "placed_steps": 76,
+        "violating_steps": 2,
+        "final_business_violation_instances": 2,
+        "mean_placed_item_ratio": 0.7450980392156863,
+        "mean_placed_volume_ratio": 0.7448232639824011,
+        "micro_violation_step_rate": 0.02631578947368421
+      },
+      "observe_business/relaxed_geometry/public_parser": {
+        "episodes": 6,
+        "completed": 4,
+        "clean_completed": 2,
+        "placed_steps": 100,
+        "violating_steps": 8,
+        "final_business_violation_instances": 9,
+        "mean_placed_item_ratio": 0.9803921568627452,
+        "mean_placed_volume_ratio": 0.9768873970901115,
+        "micro_violation_step_rate": 0.08
+      },
+      "observe_business/relaxed_geometry/flash": {
+        "episodes": 6,
+        "completed": 4,
+        "clean_completed": 2,
+        "placed_steps": 100,
+        "violating_steps": 8,
+        "final_business_violation_instances": 9,
+        "mean_placed_item_ratio": 0.9803921568627452,
+        "mean_placed_volume_ratio": 0.9768873970901115,
+        "micro_violation_step_rate": 0.08
+      },
+      "observe_business/relaxed_wo_floor/public_parser": {
+        "episodes": 6,
+        "completed": 4,
+        "clean_completed": 4,
+        "placed_steps": 82,
+        "violating_steps": 0,
+        "final_business_violation_instances": 0,
+        "mean_placed_item_ratio": 0.8039215686274511,
+        "mean_placed_volume_ratio": 0.8054692925849084,
+        "micro_violation_step_rate": 0.0
+      },
+      "observe_business/relaxed_wo_floor/flash": {
+        "episodes": 6,
+        "completed": 4,
+        "clean_completed": 4,
+        "placed_steps": 82,
+        "violating_steps": 0,
+        "final_business_violation_instances": 0,
+        "mean_placed_item_ratio": 0.8039215686274511,
+        "mean_placed_volume_ratio": 0.8054692925849084,
+        "micro_violation_step_rate": 0.0
+      }
+    },
+    "comparisons": [
+      {
+        "mode": "observe_business",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.16666666666666666,
+        "exploratory_95_ci": [
+          0.0,
+          0.5
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 3,
+        "mean_difference": 0.2352941176470588,
+        "exploratory_95_ci": [
+          0.0,
+          0.5294117647058824
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 3,
+        "mean_difference": 1.1666666666666667,
+        "exploratory_95_ci": [
+          0.0,
+          2.5
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.3333333333333333,
+        "exploratory_95_ci": [
+          0.0,
+          1.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 3,
+        "mean_difference": -0.17647058823529413,
+        "exploratory_95_ci": [
+          -0.5294117647058824,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 3,
+        "mean_difference": -1.5,
+        "exploratory_95_ci": [
+          -2.5,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.16666666666666666,
+        "exploratory_95_ci": [
+          0.0,
+          0.5
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "clean_completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 3,
+        "mean_difference": 0.2352941176470588,
+        "exploratory_95_ci": [
+          0.0,
+          0.5294117647058824
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 3,
+        "mean_difference": 1.1666666666666667,
+        "exploratory_95_ci": [
+          0.0,
+          2.5
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "clean_completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.3333333333333333,
+        "exploratory_95_ci": [
+          0.0,
+          1.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 3,
+        "mean_difference": -0.17647058823529413,
+        "exploratory_95_ci": [
+          -0.5294117647058824,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 3,
+        "mean_difference": -1.5,
+        "exploratory_95_ci": [
+          -2.5,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 3,
+        "mean_difference": 0.20588235294117643,
+        "exploratory_95_ci": [
+          0.0,
+          0.411764705882353
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.3333333333333333,
+        "exploratory_95_ci": [
+          0.0,
+          1.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.3333333333333333,
+        "exploratory_95_ci": [
+          0.0,
+          1.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 3,
+        "mean_difference": -0.0980392156862745,
+        "exploratory_95_ci": [
+          -0.411764705882353,
+          0.11764705882352944
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "clean_completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 3,
+        "mean_difference": 0.20588235294117643,
+        "exploratory_95_ci": [
+          0.0,
+          0.411764705882353
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.3333333333333333,
+        "exploratory_95_ci": [
+          0.0,
+          1.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "clean_completed",
+        "source_order_clusters": 3,
+        "mean_difference": 0.3333333333333333,
+        "exploratory_95_ci": [
+          0.0,
+          1.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 3,
+        "mean_difference": -0.0980392156862745,
+        "exploratory_95_ci": [
+          -0.411764705882353,
+          0.11764705882352944
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 3,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      }
+    ],
+    "csv_agreement_rows": 508,
+    "csv_agreement_true": {
+      "ast_equal": 508,
+      "same_state_action_equal": 508,
+      "closed_loop_states_equal": 508
+    },
+    "independent_episode_pairs": 36,
+    "independent_paired_events": 520,
+    "independent_paired_AST": 508,
+    "independent_pair_mismatches": [],
+    "conditional_AST_count": 1,
+    "identical_branch_conditions": 1,
+    "full_AST_semantic_mismatches_after_identical_branch_reduction": [],
+    "delivery_files_verified": 2287,
+    "delivery_failures": [],
+    "conditional_metrics": {
+      "safe/original": {
+        "completed_with_final_violations": 0,
+        "completed_order_final_violation_rate": 0.0,
+        "any_violating_step_episodes": 0,
+        "all_attempt_violation_rate": 0.0,
+        "cohorts": {
+          "True": {
+            "episodes": 2,
+            "placed_items": 34,
+            "violating_steps": 0,
+            "final_instances": 0
+          },
+          "False": {
+            "episodes": 4,
+            "placed_items": 37,
+            "violating_steps": 0,
+            "final_instances": 0
+          }
+        },
+        "incomplete": [
+          {
+            "episode_id": "O3_SCN_0054_P0",
+            "planned_items": "17",
+            "placed_items": "12",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0054_P1",
+            "planned_items": "17",
+            "placed_items": "11",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P0",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P1",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          }
+        ]
+      },
+      "safe/relaxed_geometry": {
+        "completed_with_final_violations": 0,
+        "completed_order_final_violation_rate": 0.0,
+        "any_violating_step_episodes": 0,
+        "all_attempt_violation_rate": 0.0,
+        "cohorts": {
+          "True": {
+            "episodes": 2,
+            "placed_items": 34,
+            "violating_steps": 0,
+            "final_instances": 0
+          },
+          "False": {
+            "episodes": 4,
+            "placed_items": 58,
+            "violating_steps": 0,
+            "final_instances": 0
+          }
+        },
+        "incomplete": [
+          {
+            "episode_id": "O3_SCN_0054_P0",
+            "planned_items": "17",
+            "placed_items": "15",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0054_P1",
+            "planned_items": "17",
+            "placed_items": "15",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P0",
+            "planned_items": "17",
+            "placed_items": "14",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P1",
+            "planned_items": "17",
+            "placed_items": "14",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          }
+        ]
+      },
+      "safe/relaxed_wo_floor": {
+        "completed_with_final_violations": 0,
+        "completed_order_final_violation_rate": 0.0,
+        "any_violating_step_episodes": 0,
+        "all_attempt_violation_rate": 0.0,
+        "cohorts": {
+          "True": {
+            "episodes": 4,
+            "placed_items": 68,
+            "violating_steps": 0,
+            "final_instances": 0
+          },
+          "False": {
+            "episodes": 2,
+            "placed_items": 14,
+            "violating_steps": 0,
+            "final_instances": 0
+          }
+        },
+        "incomplete": [
+          {
+            "episode_id": "O3_SCN_0060_P0",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P1",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          }
+        ]
+      },
+      "observe_business/original": {
+        "completed_with_final_violations": 1,
+        "completed_order_final_violation_rate": 0.3333333333333333,
+        "any_violating_step_episodes": 1,
+        "all_attempt_violation_rate": 0.16666666666666666,
+        "cohorts": {
+          "True": {
+            "episodes": 3,
+            "placed_items": 51,
+            "violating_steps": 2,
+            "final_instances": 2
+          },
+          "False": {
+            "episodes": 3,
+            "placed_items": 25,
+            "violating_steps": 0,
+            "final_instances": 0
+          }
+        },
+        "incomplete": [
+          {
+            "episode_id": "O3_SCN_0054_P1",
+            "planned_items": "17",
+            "placed_items": "11",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P0",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P1",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          }
+        ]
+      },
+      "observe_business/relaxed_geometry": {
+        "completed_with_final_violations": 2,
+        "completed_order_final_violation_rate": 0.5,
+        "any_violating_step_episodes": 4,
+        "all_attempt_violation_rate": 0.6666666666666666,
+        "cohorts": {
+          "True": {
+            "episodes": 4,
+            "placed_items": 68,
+            "violating_steps": 4,
+            "final_instances": 4
+          },
+          "False": {
+            "episodes": 2,
+            "placed_items": 32,
+            "violating_steps": 4,
+            "final_instances": 5
+          }
+        },
+        "incomplete": [
+          {
+            "episode_id": "O3_SCN_0060_P0",
+            "planned_items": "17",
+            "placed_items": "16",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "3"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P1",
+            "planned_items": "17",
+            "placed_items": "16",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "2"
+          }
+        ]
+      },
+      "observe_business/relaxed_wo_floor": {
+        "completed_with_final_violations": 0,
+        "completed_order_final_violation_rate": 0.0,
+        "any_violating_step_episodes": 0,
+        "all_attempt_violation_rate": 0.0,
+        "cohorts": {
+          "True": {
+            "episodes": 4,
+            "placed_items": 68,
+            "violating_steps": 0,
+            "final_instances": 0
+          },
+          "False": {
+            "episodes": 2,
+            "placed_items": 14,
+            "violating_steps": 0,
+            "final_instances": 0
+          }
+        },
+        "incomplete": [
+          {
+            "episode_id": "O3_SCN_0060_P0",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P1",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          }
+        ]
+      }
+    },
+    "clean_gain_cases": [
+      {
+        "mode": "safe",
+        "variant": "relaxed_geometry",
+        "clean_gains_vs_original": [],
+        "clean_losses": []
+      },
+      {
+        "mode": "safe",
+        "variant": "relaxed_wo_floor",
+        "clean_gains_vs_original": [
+          "O3_SCN_0054_P0",
+          "O3_SCN_0054_P1"
+        ],
+        "clean_losses": []
+      },
+      {
+        "mode": "observe_business",
+        "variant": "relaxed_geometry",
+        "clean_gains_vs_original": [],
+        "clean_losses": []
+      },
+      {
+        "mode": "observe_business",
+        "variant": "relaxed_wo_floor",
+        "clean_gains_vs_original": [
+          "O3_SCN_0054_P0",
+          "O3_SCN_0054_P1"
+        ],
+        "clean_losses": []
+      }
+    ],
+    "ranking_version": "layout_preserving_v2_fsum_max_anchor_1e-12",
+    "baseline_root": "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/EXP_OPT_O3_LAYOUT_STABLE_V2_PY311_20261020_01",
+    "source_matches_baseline": true,
+    "same_completed_observe_cohort_between_relaxed_variants": true
+  },
+  "C": {
+    "root": "semantic_pallet_planner/outputs/EXP_OPT_O3_LAYOUT_FLASH_V2_VALIDATION_20261020_01",
+    "acceptance": {
+      "status": "PASS",
+      "checks": {
+        "planned_episodes_recorded": true,
+        "full_replay": true,
+        "metrics_recomputed": true,
+        "protected_runs_unchanged": true,
+        "source_split_clean": true,
+        "schema_leakage_zero": true,
+        "physical_violations_zero": true,
+        "soft_budget_violations_zero": true,
+        "observe_screen_interventions_zero": true,
+        "api_accounting": true
+      },
+      "episodes": 240,
+      "remote_calls": 1502,
+      "real_flash_status": "PASS",
+      "vlm_advantage": "NOT_CLAIMED",
+      "research_status": "EXPLORATORY_DEVELOPMENT_ONLY",
+      "api_incomplete": false,
+      "protected_run_files": {
+        "safe": 3409,
+        "observe_business": 4023,
+        "layout": 824,
+        "flash_v1_offline": 185,
+        "flash_v1_smoke": 2285,
+        "flash_v1_validation": 6583,
+        "stable_v2_baseline": 368
+      },
+      "version": "layout_flash_validation_v2",
+      "ranking_version": "layout_preserving_v2_fsum_max_anchor_1e-12",
+      "baseline_role": "reference_check",
+      "cross_runtime_status": "REFERENCE_MATCHED"
+    },
+    "recorded_replay": {
+      "status": "PASS",
+      "episodes": 240,
+      "steps": 3042,
+      "reference_steps_compared": 1521,
+      "reference_kind": "stable_v2_baseline",
+      "failures": []
+    },
+    "fresh_read_only_replay": {
+      "status": "PASS",
+      "episodes": 240,
+      "steps": 3042,
+      "reference_steps_compared": 1521,
+      "reference_kind": "stable_v2_baseline",
+      "failures": []
+    },
+    "api": {
+      "actual_attempts": 1502,
+      "initial_attempts": 1502,
+      "repair_attempts": 0,
+      "transport_retries": 0,
+      "failed_attempts": 0,
+      "max_api_attempts": 4000,
+      "budget_stops": 0,
+      "sequence_valid": true,
+      "input_tokens_reported": 15955658,
+      "output_tokens_reported": 324829,
+      "missing_usage_responses": 0,
+      "latency_s_percentiles": [
+        1.5654286344943102,
+        2.322316854182282,
+        4.602496999024879
+      ],
+      "returned_models": [
+        "deepseek-flash"
+      ],
+      "estimated_cost": null,
+      "cost_basis": "not configured; no price assumption"
+    },
+    "execution_checks": {
+      "schema_leakage_failures": 0,
+      "soft_budget_violations": 0,
+      "screen_violations": 0,
+      "physical_violations": 0,
+      "checked_events": 3042,
+      "checked_soft_metrics": 4148
+    },
+    "summary": {
+      "safe/original/public_parser": {
+        "episodes": 20,
+        "completed": 7,
+        "clean_completed": 7,
+        "placed_steps": 200,
+        "violating_steps": 0,
+        "final_business_violation_instances": 0,
+        "mean_placed_item_ratio": 0.7046787925696595,
+        "mean_placed_volume_ratio": 0.6989620821396987,
+        "micro_violation_step_rate": 0.0
+      },
+      "safe/original/flash": {
+        "episodes": 20,
+        "completed": 7,
+        "clean_completed": 7,
+        "placed_steps": 200,
+        "violating_steps": 0,
+        "final_business_violation_instances": 0,
+        "mean_placed_item_ratio": 0.7046787925696595,
+        "mean_placed_volume_ratio": 0.6989620821396987,
+        "micro_violation_step_rate": 0.0
+      },
+      "safe/relaxed_geometry/public_parser": {
+        "episodes": 20,
+        "completed": 8,
+        "clean_completed": 8,
+        "placed_steps": 250,
+        "violating_steps": 0,
+        "final_business_violation_instances": 0,
+        "mean_placed_item_ratio": 0.8839654282765739,
+        "mean_placed_volume_ratio": 0.8789143302502345,
+        "micro_violation_step_rate": 0.0
+      },
+      "safe/relaxed_geometry/flash": {
+        "episodes": 20,
+        "completed": 8,
+        "clean_completed": 8,
+        "placed_steps": 250,
+        "violating_steps": 0,
+        "final_business_violation_instances": 0,
+        "mean_placed_item_ratio": 0.8839654282765739,
+        "mean_placed_volume_ratio": 0.8789143302502345,
+        "micro_violation_step_rate": 0.0
+      },
+      "safe/relaxed_wo_floor/public_parser": {
+        "episodes": 20,
+        "completed": 12,
+        "clean_completed": 12,
+        "placed_steps": 241,
+        "violating_steps": 0,
+        "final_business_violation_instances": 0,
+        "mean_placed_item_ratio": 0.8642905056759546,
+        "mean_placed_volume_ratio": 0.8647398069884747,
+        "micro_violation_step_rate": 0.0
+      },
+      "safe/relaxed_wo_floor/flash": {
+        "episodes": 20,
+        "completed": 12,
+        "clean_completed": 12,
+        "placed_steps": 241,
+        "violating_steps": 0,
+        "final_business_violation_instances": 0,
+        "mean_placed_item_ratio": 0.8642905056759546,
+        "mean_placed_volume_ratio": 0.8647398069884747,
+        "micro_violation_step_rate": 0.0
+      },
+      "observe_business/original/public_parser": {
+        "episodes": 20,
+        "completed": 11,
+        "clean_completed": 7,
+        "placed_steps": 238,
+        "violating_steps": 26,
+        "final_business_violation_instances": 29,
+        "mean_placed_item_ratio": 0.8521039731682146,
+        "mean_placed_volume_ratio": 0.8431885709078013,
+        "micro_violation_step_rate": 0.1092436974789916
+      },
+      "observe_business/original/flash": {
+        "episodes": 20,
+        "completed": 11,
+        "clean_completed": 7,
+        "placed_steps": 238,
+        "violating_steps": 26,
+        "final_business_violation_instances": 29,
+        "mean_placed_item_ratio": 0.8521039731682146,
+        "mean_placed_volume_ratio": 0.8431885709078013,
+        "micro_violation_step_rate": 0.1092436974789916
+      },
+      "observe_business/relaxed_geometry/public_parser": {
+        "episodes": 20,
+        "completed": 18,
+        "clean_completed": 8,
+        "placed_steps": 282,
+        "violating_steps": 29,
+        "final_business_violation_instances": 30,
+        "mean_placed_item_ratio": 0.9941176470588236,
+        "mean_placed_volume_ratio": 0.9930662191270333,
+        "micro_violation_step_rate": 0.10283687943262411
+      },
+      "observe_business/relaxed_geometry/flash": {
+        "episodes": 20,
+        "completed": 18,
+        "clean_completed": 8,
+        "placed_steps": 282,
+        "violating_steps": 29,
+        "final_business_violation_instances": 30,
+        "mean_placed_item_ratio": 0.9941176470588236,
+        "mean_placed_volume_ratio": 0.9930662191270333,
+        "micro_violation_step_rate": 0.10283687943262411
+      },
+      "observe_business/relaxed_wo_floor/public_parser": {
+        "episodes": 20,
+        "completed": 18,
+        "clean_completed": 12,
+        "placed_steps": 264,
+        "violating_steps": 21,
+        "final_business_violation_instances": 17,
+        "mean_placed_item_ratio": 0.9411764705882352,
+        "mean_placed_volume_ratio": 0.9416407877754726,
+        "micro_violation_step_rate": 0.07954545454545454
+      },
+      "observe_business/relaxed_wo_floor/flash": {
+        "episodes": 20,
+        "completed": 18,
+        "clean_completed": 12,
+        "placed_steps": 264,
+        "violating_steps": 21,
+        "final_business_violation_instances": 17,
+        "mean_placed_item_ratio": 0.9411764705882352,
+        "mean_placed_volume_ratio": 0.9416407877754726,
+        "micro_violation_step_rate": 0.07954545454545454
+      }
+    },
+    "comparisons": [
+      {
+        "mode": "observe_business",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.35,
+        "exploratory_95_ci": [
+          0.1,
+          0.6
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.05,
+        "exploratory_95_ci": [
+          0.0,
+          0.15
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 10,
+        "mean_difference": 0.14201367389060887,
+        "exploratory_95_ci": [
+          0.04264705882352941,
+          0.25976122291021636
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 10,
+        "mean_difference": 0.05,
+        "exploratory_95_ci": [
+          -0.6,
+          0.75
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.2,
+        "exploratory_95_ci": [
+          0.0,
+          0.5
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 10,
+        "mean_difference": -0.052941176470588235,
+        "exploratory_95_ci": [
+          -0.15882352941176472,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 10,
+        "mean_difference": -0.65,
+        "exploratory_95_ci": [
+          -1.5,
+          0.1
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.35,
+        "exploratory_95_ci": [
+          0.1,
+          0.6
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "clean_completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.05,
+        "exploratory_95_ci": [
+          0.0,
+          0.15
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 10,
+        "mean_difference": 0.14201367389060887,
+        "exploratory_95_ci": [
+          0.04264705882352941,
+          0.25976122291021636
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 10,
+        "mean_difference": 0.05,
+        "exploratory_95_ci": [
+          -0.6,
+          0.75
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "clean_completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.2,
+        "exploratory_95_ci": [
+          0.0,
+          0.5
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 10,
+        "mean_difference": -0.052941176470588235,
+        "exploratory_95_ci": [
+          -0.15882352941176472,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "observe_business",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 10,
+        "mean_difference": -0.65,
+        "exploratory_95_ci": [
+          -1.5,
+          0.1
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "original/flash - original/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - relaxed_geometry/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_wo_floor/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.05,
+        "exploratory_95_ci": [
+          0.0,
+          0.15
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.05,
+        "exploratory_95_ci": [
+          0.0,
+          0.15
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 10,
+        "mean_difference": 0.17928663570691433,
+        "exploratory_95_ci": [
+          0.0550219298245614,
+          0.31955366357069137
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/public_parser - original/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.2,
+        "exploratory_95_ci": [
+          0.0,
+          0.5
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "clean_completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.2,
+        "exploratory_95_ci": [
+          0.0,
+          0.5
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 10,
+        "mean_difference": -0.019674922600619187,
+        "exploratory_95_ci": [
+          -0.1222910216718266,
+          0.05352941176470588
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/public_parser - relaxed_geometry/public_parser",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.05,
+        "exploratory_95_ci": [
+          0.0,
+          0.15
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "clean_completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.05,
+        "exploratory_95_ci": [
+          0.0,
+          0.15
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 10,
+        "mean_difference": 0.17928663570691433,
+        "exploratory_95_ci": [
+          0.0550219298245614,
+          0.31955366357069137
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_geometry/flash - original/flash",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.2,
+        "exploratory_95_ci": [
+          0.0,
+          0.5
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "clean_completed",
+        "source_order_clusters": 10,
+        "mean_difference": 0.2,
+        "exploratory_95_ci": [
+          0.0,
+          0.5
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "placed_item_ratio",
+        "source_order_clusters": 10,
+        "mean_difference": -0.019674922600619187,
+        "exploratory_95_ci": [
+          -0.1222910216718266,
+          0.05352941176470588
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      },
+      {
+        "mode": "safe",
+        "comparison": "relaxed_wo_floor/flash - relaxed_geometry/flash",
+        "metric": "final_business_violation_count",
+        "source_order_clusters": 10,
+        "mean_difference": 0.0,
+        "exploratory_95_ci": [
+          0.0,
+          0.0
+        ],
+        "multiplicity_adjusted": false,
+        "new_test": false
+      }
+    ],
+    "csv_agreement_rows": 1502,
+    "csv_agreement_true": {
+      "ast_equal": 1502,
+      "same_state_action_equal": 1502,
+      "closed_loop_states_equal": 1502
+    },
+    "independent_episode_pairs": 120,
+    "independent_paired_events": 1521,
+    "independent_paired_AST": 1502,
+    "independent_pair_mismatches": [],
+    "conditional_AST_count": 52,
+    "identical_branch_conditions": 52,
+    "full_AST_semantic_mismatches_after_identical_branch_reduction": [],
+    "delivery_files_verified": 6613,
+    "delivery_failures": [],
+    "conditional_metrics": {
+      "safe/original": {
+        "completed_with_final_violations": 0,
+        "completed_order_final_violation_rate": 0.0,
+        "any_violating_step_episodes": 0,
+        "all_attempt_violation_rate": 0.0,
+        "cohorts": {
+          "True": {
+            "episodes": 7,
+            "placed_items": 104,
+            "violating_steps": 0,
+            "final_instances": 0
+          },
+          "False": {
+            "episodes": 13,
+            "placed_items": 96,
+            "violating_steps": 0,
+            "final_instances": 0
+          }
+        },
+        "incomplete": [
+          {
+            "episode_id": "O3_SCN_0051_P0",
+            "planned_items": "10",
+            "placed_items": "8",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0051_P1",
+            "planned_items": "10",
+            "placed_items": "9",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0052_P0",
+            "planned_items": "8",
+            "placed_items": "2",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0052_P1",
+            "planned_items": "8",
+            "placed_items": "2",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0053_P0",
+            "planned_items": "19",
+            "placed_items": "8",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0053_P1",
+            "planned_items": "19",
+            "placed_items": "8",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0054_P0",
+            "planned_items": "17",
+            "placed_items": "12",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0054_P1",
+            "planned_items": "17",
+            "placed_items": "11",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0056_P0",
+            "planned_items": "15",
+            "placed_items": "7",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0056_P1",
+            "planned_items": "15",
+            "placed_items": "8",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0057_P0",
+            "planned_items": "8",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P0",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P1",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          }
+        ]
+      },
+      "safe/relaxed_geometry": {
+        "completed_with_final_violations": 0,
+        "completed_order_final_violation_rate": 0.0,
+        "any_violating_step_episodes": 0,
+        "all_attempt_violation_rate": 0.0,
+        "cohorts": {
+          "True": {
+            "episodes": 8,
+            "placed_items": 112,
+            "violating_steps": 0,
+            "final_instances": 0
+          },
+          "False": {
+            "episodes": 12,
+            "placed_items": 138,
+            "violating_steps": 0,
+            "final_instances": 0
+          }
+        },
+        "incomplete": [
+          {
+            "episode_id": "O3_SCN_0051_P0",
+            "planned_items": "10",
+            "placed_items": "8",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0051_P1",
+            "planned_items": "10",
+            "placed_items": "9",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0052_P0",
+            "planned_items": "8",
+            "placed_items": "7",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0052_P1",
+            "planned_items": "8",
+            "placed_items": "7",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0053_P0",
+            "planned_items": "19",
+            "placed_items": "16",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0053_P1",
+            "planned_items": "19",
+            "placed_items": "16",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0054_P0",
+            "planned_items": "17",
+            "placed_items": "15",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0054_P1",
+            "planned_items": "17",
+            "placed_items": "15",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0056_P0",
+            "planned_items": "15",
+            "placed_items": "8",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0056_P1",
+            "planned_items": "15",
+            "placed_items": "9",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P0",
+            "planned_items": "17",
+            "placed_items": "14",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P1",
+            "planned_items": "17",
+            "placed_items": "14",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          }
+        ]
+      },
+      "safe/relaxed_wo_floor": {
+        "completed_with_final_violations": 0,
+        "completed_order_final_violation_rate": 0.0,
+        "any_violating_step_episodes": 0,
+        "all_attempt_violation_rate": 0.0,
+        "cohorts": {
+          "True": {
+            "episodes": 12,
+            "placed_items": 166,
+            "violating_steps": 0,
+            "final_instances": 0
+          },
+          "False": {
+            "episodes": 8,
+            "placed_items": 75,
+            "violating_steps": 0,
+            "final_instances": 0
+          }
+        },
+        "incomplete": [
+          {
+            "episode_id": "O3_SCN_0052_P0",
+            "planned_items": "8",
+            "placed_items": "7",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0052_P1",
+            "planned_items": "8",
+            "placed_items": "7",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0053_P0",
+            "planned_items": "19",
+            "placed_items": "15",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0053_P1",
+            "planned_items": "19",
+            "placed_items": "15",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0056_P0",
+            "planned_items": "15",
+            "placed_items": "8",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0056_P1",
+            "planned_items": "15",
+            "placed_items": "9",
+            "termination_reason": "no_business_feasible_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P0",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P1",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          }
+        ]
+      },
+      "observe_business/original": {
+        "completed_with_final_violations": 4,
+        "completed_order_final_violation_rate": 0.36363636363636365,
+        "any_violating_step_episodes": 9,
+        "all_attempt_violation_rate": 0.45,
+        "cohorts": {
+          "True": {
+            "episodes": 11,
+            "placed_items": 156,
+            "violating_steps": 13,
+            "final_instances": 16
+          },
+          "False": {
+            "episodes": 9,
+            "placed_items": 82,
+            "violating_steps": 13,
+            "final_instances": 13
+          }
+        },
+        "incomplete": [
+          {
+            "episode_id": "O3_SCN_0052_P0",
+            "planned_items": "8",
+            "placed_items": "6",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "1"
+          },
+          {
+            "episode_id": "O3_SCN_0052_P1",
+            "planned_items": "8",
+            "placed_items": "6",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "1"
+          },
+          {
+            "episode_id": "O3_SCN_0053_P0",
+            "planned_items": "19",
+            "placed_items": "12",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "4"
+          },
+          {
+            "episode_id": "O3_SCN_0053_P1",
+            "planned_items": "19",
+            "placed_items": "12",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "3"
+          },
+          {
+            "episode_id": "O3_SCN_0054_P1",
+            "planned_items": "17",
+            "placed_items": "11",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0056_P1",
+            "planned_items": "15",
+            "placed_items": "14",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "4"
+          },
+          {
+            "episode_id": "O3_SCN_0057_P0",
+            "planned_items": "8",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P0",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P1",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          }
+        ]
+      },
+      "observe_business/relaxed_geometry": {
+        "completed_with_final_violations": 10,
+        "completed_order_final_violation_rate": 0.5555555555555556,
+        "any_violating_step_episodes": 12,
+        "all_attempt_violation_rate": 0.6,
+        "cohorts": {
+          "True": {
+            "episodes": 18,
+            "placed_items": 250,
+            "violating_steps": 25,
+            "final_instances": 25
+          },
+          "False": {
+            "episodes": 2,
+            "placed_items": 32,
+            "violating_steps": 4,
+            "final_instances": 5
+          }
+        },
+        "incomplete": [
+          {
+            "episode_id": "O3_SCN_0060_P0",
+            "planned_items": "17",
+            "placed_items": "16",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "3"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P1",
+            "planned_items": "17",
+            "placed_items": "16",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "2"
+          }
+        ]
+      },
+      "observe_business/relaxed_wo_floor": {
+        "completed_with_final_violations": 6,
+        "completed_order_final_violation_rate": 0.3333333333333333,
+        "any_violating_step_episodes": 6,
+        "all_attempt_violation_rate": 0.3,
+        "cohorts": {
+          "True": {
+            "episodes": 18,
+            "placed_items": 250,
+            "violating_steps": 21,
+            "final_instances": 17
+          },
+          "False": {
+            "episodes": 2,
+            "placed_items": 14,
+            "violating_steps": 0,
+            "final_instances": 0
+          }
+        },
+        "incomplete": [
+          {
+            "episode_id": "O3_SCN_0060_P0",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          },
+          {
+            "episode_id": "O3_SCN_0060_P1",
+            "planned_items": "17",
+            "placed_items": "7",
+            "termination_reason": "no_physical_candidate",
+            "final_business_violation_count": "0"
+          }
+        ]
+      }
+    },
+    "clean_gain_cases": [
+      {
+        "mode": "safe",
+        "variant": "relaxed_geometry",
+        "clean_gains_vs_original": [
+          "O3_SCN_0057_P0"
+        ],
+        "clean_losses": []
+      },
+      {
+        "mode": "safe",
+        "variant": "relaxed_wo_floor",
+        "clean_gains_vs_original": [
+          "O3_SCN_0051_P0",
+          "O3_SCN_0051_P1",
+          "O3_SCN_0054_P0",
+          "O3_SCN_0054_P1",
+          "O3_SCN_0057_P0"
+        ],
+        "clean_losses": []
+      },
+      {
+        "mode": "observe_business",
+        "variant": "relaxed_geometry",
+        "clean_gains_vs_original": [
+          "O3_SCN_0057_P0"
+        ],
+        "clean_losses": []
+      },
+      {
+        "mode": "observe_business",
+        "variant": "relaxed_wo_floor",
+        "clean_gains_vs_original": [
+          "O3_SCN_0051_P0",
+          "O3_SCN_0051_P1",
+          "O3_SCN_0054_P0",
+          "O3_SCN_0054_P1",
+          "O3_SCN_0057_P0"
+        ],
+        "clean_losses": []
+      }
+    ],
+    "ranking_version": "layout_preserving_v2_fsum_max_anchor_1e-12",
+    "baseline_root": "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/EXP_OPT_O3_LAYOUT_STABLE_V2_PY311_20261020_01",
+    "source_matches_baseline": true,
+    "same_completed_observe_cohort_between_relaxed_variants": true
+  }
+}

@@ -1,0 +1,53 @@
+digraph project {
+  graph [rankdir=TB, bgcolor="white", fontname="Noto Sans CJK SC", fontsize=21,
+    label="NBU_Papper｜当前在线三维码垛总体流程\n已实现主线：O3 数值稳定 V2", labelloc=t,
+    pad=.32, nodesep=.40, ranksep=.43, splines=polyline, outputorder=edgesfirst];
+  node [shape=box, style="rounded,filled", fillcolor="#F1F6F8", color="#C7D9E1",
+    fontname="Noto Sans CJK SC", fontsize=14, fontcolor="#19384A", margin=".20,.14", penwidth=1.2];
+  edge [color="#57788A", arrowsize=.75, fontname="Noto Sans CJK SC", fontsize=11, fontcolor="#57788A"];
+
+  data [label="订单与物料数据\n尺寸、质量、到货顺序＋合成属性"];
+  instruction [label="公开自然语言业务政策\nP0 / P1：限载、禁止接触、软目标顺序"];
+  state [label="① 当前真值状态\n托盘＋已放箱＋当前到货箱\nbuffer_size=1，不读取未来箱体", fillcolor="#E5F3F1", color="#007E82"];
+  gen [label="② 物理候选生成\n极值点 / 支撑层枚举 → 物理过滤\n多样性Top-K ≤ 16"];
+  has [shape=diamond, label="有物理候选？", margin=".08,.03", fillcolor="#FFFFFF"];
+  request [label="③ 公开请求\n当前事实＋候选Cxx＋公开指令\n隐藏答案与来源标签不进入选择器"];
+  parse [label="④ 政策解析（二选一）\nPublic Parser：人工规则解析程序\nFlash：语言模型解析并校验响应", fillcolor="#E8F1FA", color="#3673AC"];
+  ast [label="规则 AST\n业务硬约束＋软目标优先级\n模型不生成坐标、不计算选址分数"];
+  biz [label="⑤ 按执行模式处理业务可行集合\nsafe：无业务可行候选则停止\nobserve_business：无解时最小伤害继续", fillcolor="#FFF4E2", color="#CD9B43"];
+  select [label="⑥ 确定性选址（三选一）\n原策略：严格软目标排序\n预算＋几何：允许集合内选几何最优\n预算＋布局：相同预算内比较支撑 / 承载 / 高度\n一次episode固定一个变体", fillcolor="#E5F3F1", color="#007E82"];
+  verify [shape=diamond, label="⑦ 独立物理\n复核通过？", margin=".10,.04", fillcolor="#FFFFFF"];
+  commit [label="⑧ 提交候选位姿\n更新真实状态与已放箱体", fillcolor="#E5F3F1", color="#007E82"];
+  done [shape=diamond, label="全部箱体\n已放完？", margin=".10,.04", fillcolor="#FFFFFF"];
+  finish [label="整单完成", fillcolor="#E5F4EC", color="#69A786"];
+  stop [label="停止当前任务\n无物理候选 / 业务拒放 / 协议失败等\n保留停止原因与未完成分母", fillcolor="#FFF0E9", color="#BE7C63"];
+
+  subgraph clusterEvidence {
+    label="证据与评价层｜不向普通选择器提供隐藏答案"; labeljust=l;
+    color="#D2DFE6"; style="rounded"; fontname="Noto Sans CJK SC"; fontsize=14;
+    logs [label="逐步日志与版本证据\n请求、动作、前后状态、终止\n配置、源码快照、数据哈希"];
+    truth [label="隐藏真值政策\n仅评价或明确标记的特权参考", fillcolor="#F7F0F5", color="#B89BB0"];
+    eval [label="业务评价＋独立回放＋指标聚合\n任务完成 / 无违规完成 / 放置比例\n业务违规 / 物理违规 / 解析与动作一致性"];
+    result [label="验收报告与汇报产物\nJSON / CSV / Markdown / PPT / 3D网页", fillcolor="#E8F1FA", color="#3673AC"];
+    logs -> eval; truth -> eval [style=dashed,label="事后评价"]; eval -> result;
+  }
+  future [label="后续路线（尚未接入当前主线）\nO4：图像独有信息与视觉贡献\nO5：可改变决策的经验记忆接口\nO6：仿真、感知与机器人执行验证",
+    style="rounded,filled,dashed", fillcolor="#F6F7F8", color="#97A5AF", fontcolor="#637684"];
+
+  data -> state; state -> gen; gen -> has;
+  has -> request [label="是"]; has -> stop [label="否",color="#B76C52",fontcolor="#B76C52"];
+  instruction -> request [label="公开要求"];
+  request -> parse; parse -> ast;
+  parse -> stop [label="Flash协议失败等",style=dashed,color="#B76C52",fontcolor="#B76C52"];
+  ast -> biz; biz -> select [label="可继续"];
+  biz -> stop [label="safe无业务解",color="#B76C52",fontcolor="#B76C52"];
+  select -> verify; verify -> commit [label="是"];
+  verify -> stop [label="否",color="#B76C52",fontcolor="#B76C52"];
+  commit -> done; done -> finish [label="是"];
+  done -> state [label="否：取下一箱",color="#007E82",fontcolor="#007E82",constraint=false];
+  commit -> logs [style=dashed,label="逐步记录",constraint=false];
+  stop -> logs; finish -> logs;
+  result -> future [style=invis];
+  {rank=same; data; instruction;}
+  {rank=same; request; stop;}
+}

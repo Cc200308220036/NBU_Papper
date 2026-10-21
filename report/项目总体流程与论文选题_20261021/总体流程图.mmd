@@ -1,0 +1,27 @@
+flowchart TD
+    sourceData["订单尺寸、质量、到货顺序与合成属性"] --> currentState["当前真值状态：托盘、已放箱、当前箱"]
+    currentState --> physicalCandidates["枚举位置并过滤物理约束，返回Top-K最多16个"]
+    physicalCandidates --> hasCandidate{"有物理候选？"}
+    hasCandidate -->|"否"| stopTask["停止任务，保留原因与未完成结果"]
+    hasCandidate -->|"是"| publicRequest["公开请求：当前事实、候选Cxx、自然语言指令"]
+    instruction["公开业务政策P0或P1"] --> publicRequest
+    publicRequest --> parsePolicy["政策解析二选一：Public Parser或Flash"]
+    parsePolicy --> policyAst["规则AST：业务硬约束与软目标优先级"]
+    policyAst --> businessMode["业务可行性处理：安全模式拒放；观察模式允许最小伤害继续"]
+    businessMode -->|"安全模式无业务解"| stopTask
+    businessMode -->|"继续"| executor["确定性选址三选一：原策略、预算加几何、预算加布局"]
+    executor --> physicalCheck{"独立物理复核通过？"}
+    physicalCheck -->|"否"| stopTask
+    physicalCheck -->|"是"| commitAction["提交候选位姿并更新真实状态"]
+    commitAction --> completeTask{"全部箱体已放完？"}
+    completeTask -->|"否：下一箱"| currentState
+    completeTask -->|"是"| completeResult["任务完成"]
+    commitAction -.-> evidence["逐步日志、配置、源码和数据摘要"]
+    stopTask --> evidence
+    completeResult --> evidence
+    evidence --> evaluator["离线业务评价、指标聚合和回放验收"]
+    hiddenTruth["隐藏真值政策，仅供评价或特权参考"] -.-> evaluator
+    evaluator --> reports["完成率、无违规完成率、放置比例、违规与案例可视化"]
+    future["后续路线：O4视觉、O5经验记忆、O6执行验证；尚未接入当前主线"]
+    classDef futureStyle fill:#f6f6f6,stroke:#88969f,stroke-dasharray:5 4,color:#637684;
+    class future futureStyle;

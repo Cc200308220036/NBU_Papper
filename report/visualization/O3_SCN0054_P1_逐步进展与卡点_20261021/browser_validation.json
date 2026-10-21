@@ -1,0 +1,189 @@
+{
+  "initial": {
+    "state": {
+      "step": 0,
+      "mode": "safe",
+      "phase": "after",
+      "playing": false
+    },
+    "counts": [
+      0,
+      0,
+      0
+    ],
+    "statuses": [
+      "初始状态",
+      "初始状态",
+      "初始状态"
+    ],
+    "title": "三种策略，从同一空托盘出发"
+  },
+  "step5": {
+    "state": {
+      "step": 5,
+      "mode": "safe",
+      "phase": "after",
+      "playing": false
+    },
+    "counts": [
+      5,
+      5,
+      5
+    ],
+    "statuses": [
+      "进行中",
+      "进行中",
+      "进行中"
+    ],
+    "title": "布局策略先改变第5箱的位置"
+  },
+  "before_candidates": {
+    "state": {
+      "step": 5,
+      "mode": "safe",
+      "phase": "before",
+      "playing": false
+    },
+    "counts": [
+      4,
+      4,
+      4
+    ],
+    "statuses": [
+      "进行中",
+      "进行中",
+      "进行中"
+    ],
+    "title": "布局策略先改变第5箱的位置"
+  },
+  "step12": {
+    "state": {
+      "step": 12,
+      "mode": "safe",
+      "phase": "after",
+      "playing": false
+    },
+    "counts": [
+      11,
+      12,
+      12
+    ],
+    "statuses": [
+      "物理终止",
+      "进行中",
+      "进行中"
+    ],
+    "title": "1192个位姿，最终没有物理候选"
+  },
+  "step16_safe": {
+    "state": {
+      "step": 16,
+      "mode": "safe",
+      "phase": "after",
+      "playing": false
+    },
+    "counts": [
+      11,
+      15,
+      16
+    ],
+    "statuses": [
+      "已停于第12箱",
+      "业务拒放",
+      "进行中"
+    ],
+    "title": "几何方案有物理候选，却没有业务可行候选"
+  },
+  "step17_safe": {
+    "state": {
+      "step": 17,
+      "mode": "safe",
+      "phase": "after",
+      "playing": false
+    },
+    "counts": [
+      11,
+      15,
+      17
+    ],
+    "statuses": [
+      "已停于第12箱",
+      "已停于第16箱",
+      "完整完成"
+    ],
+    "title": "从11/17箱，推进到17/17箱且无违规"
+  },
+  "step17_observe": {
+    "state": {
+      "step": 17,
+      "mode": "observe_business",
+      "phase": "after",
+      "playing": false
+    },
+    "counts": [
+      11,
+      17,
+      17
+    ],
+    "statuses": [
+      "已停于第12箱",
+      "完整完成",
+      "完整完成"
+    ],
+    "title": "同样17箱，业务结果仍然不同"
+  },
+  "step16_observe": {
+    "state": {
+      "step": 16,
+      "mode": "observe_business",
+      "phase": "after",
+      "playing": false
+    },
+    "counts": [
+      11,
+      16,
+      16
+    ],
+    "statuses": [
+      "已停于第12箱",
+      "进行中",
+      "进行中"
+    ],
+    "title": "几何方案继续放，却引入禁止接触违规"
+  },
+  "camera_sync": [
+    2.2,
+    2.2,
+    2.2
+  ],
+  "playback_pause": {
+    "state": {
+      "step": 5,
+      "mode": "observe_business",
+      "phase": "after",
+      "playing": false
+    },
+    "counts": [
+      5,
+      5,
+      5
+    ],
+    "statuses": [
+      "进行中",
+      "进行中",
+      "进行中"
+    ],
+    "title": "布局策略先改变第5箱的位置"
+  },
+  "arrival_phase_checks": 72,
+  "png_export": "PASS",
+  "mobile": {
+    "scroll": 390,
+    "width": 390,
+    "columns": "366px"
+  },
+  "status": "PASS",
+  "runtime_exceptions": [],
+  "browser": "http://localhost:9323",
+  "source": "Real Chrome file:// WebGL / CDP validation; no external requests"
+}

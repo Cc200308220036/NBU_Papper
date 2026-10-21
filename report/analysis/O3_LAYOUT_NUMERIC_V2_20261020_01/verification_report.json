@@ -1,0 +1,221 @@
+{
+  "regression": {
+    "py311": {
+      "command": [
+        "/home/cyw/anaconda3/envs/pallet_vlm/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "semantic_pallet_planner/tests"
+      ],
+      "exit_code": 0,
+      "wall_time_s": 106.98113346099854,
+      "environment_overrides": {
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+        "MPLCONFIGDIR": "/tmp/layout-v2-tests-311",
+        "PYTHONPATH": "semantic_pallet_planner/src"
+      }
+    },
+    "py313": {
+      "command": [
+        "/home/cyw/anaconda3/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "semantic_pallet_planner/tests"
+      ],
+      "exit_code": 0,
+      "wall_time_s": 105.06296467781067,
+      "environment_overrides": {
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+        "MPLCONFIGDIR": "/tmp/layout-v2-tests-313",
+        "PYTHONPATH": "semantic_pallet_planner/src"
+      }
+    }
+  },
+  "offline_matrices": {
+    "py311": {
+      "command": [
+        "/home/cyw/anaconda3/envs/pallet_vlm/bin/python",
+        "-m",
+        "semantic_pallet_planner.runners.layout_flash_validation_v2",
+        "--output",
+        "semantic_pallet_planner/outputs/EXP_OPT_O3_LAYOUT_STABLE_V2_PY311_20261020_01",
+        "--split",
+        "validation",
+        "--limit-orders",
+        "10",
+        "--variants",
+        "original",
+        "relaxed_geometry",
+        "relaxed_wo_floor",
+        "--execution-modes",
+        "safe",
+        "observe_business",
+        "--offline-only"
+      ],
+      "exit_code": 0,
+      "wall_time_s": 130.1476650238037,
+      "environment_overrides": {
+        "MPLCONFIGDIR": "/tmp/layout-v2-mpl-311",
+        "PYTHONPATH": "semantic_pallet_planner/src"
+      }
+    },
+    "py313": {
+      "command": [
+        "/home/cyw/anaconda3/bin/python",
+        "-m",
+        "semantic_pallet_planner.runners.layout_flash_validation_v2",
+        "--output",
+        "semantic_pallet_planner/outputs/EXP_OPT_O3_LAYOUT_STABLE_V2_PY313_20261020_01",
+        "--baseline",
+        "semantic_pallet_planner/outputs/EXP_OPT_O3_LAYOUT_STABLE_V2_PY311_20261020_01",
+        "--split",
+        "validation",
+        "--limit-orders",
+        "10",
+        "--variants",
+        "original",
+        "relaxed_geometry",
+        "relaxed_wo_floor",
+        "--execution-modes",
+        "safe",
+        "observe_business",
+        "--offline-only"
+      ],
+      "exit_code": 0,
+      "wall_time_s": 126.66080164909363,
+      "environment_overrides": {
+        "MPLCONFIGDIR": "/tmp/layout-v2-mpl-313",
+        "PYTHONPATH": "semantic_pallet_planner/src"
+      }
+    }
+  },
+  "ranking_certificate": {
+    "status": "PASS",
+    "baseline_root": "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/EXP_OPT_O3_LAYOUT_STABLE_V2_PY311_20261020_01",
+    "peer_root": "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/EXP_OPT_O3_LAYOUT_STABLE_V2_PY313_20261020_01",
+    "baseline_manifest_sha256": "80faa3c55c2a6f1254e608abd37e351e16cf141c2fd6fe057082d5a9e793270a",
+    "peer_manifest_sha256": "ee742f49ac1950c31cd55de274c9e0703f366a17b0caa9ae5904297ef64ca863",
+    "python_versions": [
+      "3.11.16 (main, Aug 27 2026, 14:44:21) [GCC 14.3.0]",
+      "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 16:09:02) [GCC 11.2.0]"
+    ],
+    "python_minor_versions": [
+      "3.11",
+      "3.13"
+    ],
+    "matched_episodes": 120,
+    "compared_episodes": 120,
+    "compared_events": 1521,
+    "per_variant": {
+      "safe/original": 20,
+      "safe/relaxed_geometry": 20,
+      "safe/relaxed_wo_floor": 20,
+      "observe_business/original": 20,
+      "observe_business/relaxed_geometry": 20,
+      "observe_business/relaxed_wo_floor": 20
+    },
+    "discrete_action_and_state_hash_comparison": "EXACT",
+    "finite_float_abs_tolerance": 1e-09,
+    "excluded_cross_runtime_fields": [
+      "candidate_set_digest (each runtime independently verified)"
+    ],
+    "failures": [],
+    "real_api_calls": 0,
+    "ranking_version": "layout_preserving_v2_fsum_max_anchor_1e-12"
+  },
+  "package_source_sha256": {
+    "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cli.py": "59e6c8c2afc09d6ebb3a9e672d0f859b43e3d756aec1f7285bcc7cf80fdd69e6",
+    "config.py": "de8b2c29be198817c81efa8d0aefc902886e85910c36018388dc8386fdaa23e7",
+    "domain.py": "bf40738faef57f094959c618f1598c6252d35523a4d1f54910c6978fae94943d",
+    "environment.py": "d7e589cc35f047225ef1f66bde1fd25afc4c407dbf8f1f4b376bed3e7ddd5ba2",
+    "evaluation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evaluation/attribute_metrics_v2.py": "3e2f6c9fc3dd5db34fceedf471f3427632bb1b16e0686d8d313c6789b2738402",
+    "evaluation/geometry_oracle.py": "99ad6351ce4e5487a765943fe71c3776d1608ac025278c4fafed59d2848e890a",
+    "evaluation/layout_preservation.py": "5b8e52f265b57fc3206e74e309a0b535e1bca7d071f315e861e0feaa50707319",
+    "evaluation/metrics.py": "6cf94d9cea228acf501cd976f0c3c21cd39cb2ef29eb97693678ca3a87c95bdb",
+    "evaluation/policy_o1b.py": "32f32550155328741c2d6e2d32b9282da0974688cf8a55348904602c66729a44",
+    "evaluation/policy_v2.py": "82227cf0a21654be79273592b9b928caa62da6fa9bcbb3ae6c095ea2591c6a26",
+    "evaluation/replay.py": "2fe801215ab938dc8841d7d261e058cea53c99b4d4b40a139d4f53dbaa90bd40",
+    "evaluation/replay_values_v2.py": "b88d7501c9729ab64e2f2404f226ecec5b687d807242c3f983410514a8af79c1",
+    "evaluation/reporting.py": "6d2802db251666fd3744ca7fe102d28e93746cf371feb35db9218c1c247bd077",
+    "evaluation/semantic.py": "b439ce9ef38a762b4d9d443509fe9d4eabfde13a3283c7d74d305409dab1c23a",
+    "evaluation/stage1c.py": "9b93ac73b552955515fff44dd21f59c7d5542ad8a766bbeefc85de1a235c23c3",
+    "evaluation/state.py": "de31e22eac856e010e6b3f33a5bc6354dde5d48e662c6e9e01d8444356d0308b",
+    "logging/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logging/artifacts.py": "4a8a986ce48c561c5806d37eccad4867dbb6498a1f33f6533e7531c0e4d50607",
+    "planner/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "planner/constraints.py": "6f5dceda87e86a946ff6eab2d4fc81401bb12b5aff12fba1f36b20c98f63c3ad",
+    "planner/generator.py": "9472db943f2f74795b94b6ba4db48fd31d1214d5edd06971b6a9ff85a3b5240b",
+    "planner/scoring.py": "9025d9a5da7e971419e080309d9519941a47a52f5e078d777a3f12cf141ded21",
+    "protocol.py": "00443528146189e9d31bafd98a2883d5e05ce89865ffee4e68ab41296a76a3d0",
+    "repository.py": "f23b65150021bc033f6c2965b7c0e94a9354918717d62f3638ca215f2820dc20",
+    "runners/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "runners/acceptance.py": "1b35f5bb6ea21b52705820b0b85b903bc0dcb361cdcd74759d5ebe84e260df10",
+    "runners/attribute_o1b.py": "caa2fe93af0faec903d47d19dfd035cda4b8910120f959e1d97406c495c47dfe",
+    "runners/attribute_o1b_verify.py": "a7c0570a0411aa41fdc0eed6a50248f33883793b0c3426d44f8e68a8c6289d62",
+    "runners/attribute_o2b.py": "29419bdf3ed8277746f2ff2f9c0e81912789050bccca47f3594f44f85b12705d",
+    "runners/attribute_o3_online.py": "33cb64c85ef56070afe28511018c3bb91963d450d09629b9fc52601d2a031187",
+    "runners/attribute_pilot_v2.py": "8318cd7766e5428d8798be25c60e47be6dc3cbdd7c3776696d5e7606243d726e",
+    "runners/core.py": "ddf712d25421bcd3f58a52b925634ec24c6f2af687bb6adcb0d889671d7641c5",
+    "runners/layout_ablation.py": "2f420b53799e63090f89eeb66b255142cd7b18a1a8011e42b58b3383ab806c25",
+    "runners/layout_flash_validation.py": "1e54c3bac64dd3531bf78ec19f44932a74c8f4682e154e46ff584a86f09ed8a3",
+    "runners/layout_flash_validation_v2.py": "3ed76d94c3e2405d0b50ac46ca06be5a5219652f0d383c6258b3cf0f6a2bf77d",
+    "runners/o3_online_adapter.py": "a70b6d6244a764bdc69e7f5f2b81c6959e49d85feb576c8469605348aa935f6b",
+    "runners/pilot_micro_v2.py": "b95b804f05f6fdcef497c9b871b1a3f550777034d59c7f830fe17e1667286ef0",
+    "runners/protocol_o2a.py": "35e667230a22035999d48238b58da54feb6be7db8ae41f2f1280ceae59bdef0d",
+    "runners/protocol_o2a_critical.py": "1368c172ba55620af297f066b2fcaf98107524744c3c7e7e4c55efb836ddd88f",
+    "runners/protocol_o2a_verify.py": "e54b135f319cdf265ba61215039100bd82af8649a4c29204451ad1b43eb9d83c",
+    "runners/stage1c.py": "dd08e8f5527d647515d16d1fb4546d95f6c31cabec109d552eacf75953174dcf",
+    "runners/sweep.py": "82cd7ff9d7223ed87bb9a2079356704876a66ccda5cc58bdbca3068b39d8b352",
+    "schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "schemas/cache_record.schema.json": "b977ffef2795d9114f5817a0e528cfdd34d704e7e721de75d5364c0614e457e2",
+    "schemas/config.schema.json": "aedfdd9027fe2e741a9191096db4737c1ee1974f7bffd19084c34add03efaa99",
+    "schemas/manifest.schema.json": "6b1593e60b03c66f491ef21723426727aad5506a295ed0c9d653635c21d71f25",
+    "schemas/metric.schema.json": "5f0c990db2fdf118f48202bdba4d1abcd4992f89943b9cec12bb8f5103ebe53b",
+    "schemas/o1b_request.schema.json": "16079741232f5d73fc3d6cd6b9d3fa1ba81b5b7370d40d9017963e9aaa9b2489",
+    "schemas/o3_request.schema.json": "3f35fde99f88bab143b6bd60cd01bb0d3a3e639396d2b3d0a7959a341b41bd44",
+    "schemas/pilot_request_v2.schema.json": "0c92445a5e7b1e517b16b7e38a4e9710390159b1432deeafa830657e4f13d96e",
+    "schemas/policy_o1b.schema.json": "f948cca0d609f8d35a9c10be0234091170ec1c3ef4b53427ff0c7686118494fe",
+    "schemas/policy_v2.schema.json": "f936924a70917d721f5fe64c106abcbfd89e2fd334e5afe8361c833915170878",
+    "schemas/response.schema.json": "dc988c87f5bf58288d05ad37979261424711b9e311c8b9b63e47e811208b3260",
+    "schemas/step.schema.json": "dc74ed1bbafc6227cd47dd20297d5d8e44d76b57119f5ec60869b14d13502617",
+    "schemas/vlm_output.schema.json": "a2066e2997798ff99d06526cad7cd7813238f30b542f968793f157f1d51f3efe",
+    "selectors/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "selectors/baselines.py": "cd0d990b1e5866bcbf1bf7b21fb9fb4af0a23b54c8a00bc8b25f2e0c351727cc",
+    "selectors/instruction_parser_o1b.py": "886bafb42e31436cd786e1a435f8e0321e54d25df40416e94a1a38ecae4c65ab",
+    "selectors/instruction_parser_v2.py": "71ee7dff471fc6319c789a436c9aee7d442f0f5b9308e6f7de68e5bcd534aa67",
+    "selectors/layout_preserving.py": "58a22899c798b10c5e03c37a73f5c161f1810ebbd0034c6c55e517613e7d686a",
+    "selectors/layout_preserving_v2.py": "6b6302dcd7ab67b45d4f8c48b68a1cadb6d76b2c4536fbfb38336d0258621728",
+    "selectors/policy_executor_v2.py": "fc7e8eadac573881843ff3284a11a6031cd1821ce6e47a02ae433b0a6ee5761a",
+    "selectors/vlm.py": "6aee4e870c3d1a94634f09c01a22ad7311afe5e4725ad106d6ea0242180ed33f",
+    "validation.py": "59d9e358deea133bfb5b5ffa0b447bfad3806040c82b86ad6ab2d0eb80e96739",
+    "visualization/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "visualization/charts.py": "d4c9f2653f0fd1d74f0e904f1c0bdcb7f012b447588e725803377969bd0409dc",
+    "visualization/o3_animation.py": "d8207af70b64a3d1eb7e626e025fd3db3b7aea68cbd1a58154c282b858c37ec5",
+    "visualization/o3_order_case.py": "848b9d4bdd322f5724fe23824ab983954aa31c88f7ebb9504509b91c8d4379b4",
+    "visualization/primitives.py": "fe0f36fbba8a8f2e451721317328b71d62ed9e182d44e62ec121831ed20c259f",
+    "visualization/renderer.py": "9b7c3f3d0bf6a0acf7d25a39f1e28d0c91c663dd9683344dd1478727fbaa147b",
+    "vlm/__init__.py": "e89817ade1cdc7b21472495c0ec407494104b8c124e82bc0de179f189bbd8956",
+    "vlm/cache.py": "98030a1c19f5adf1c57ac1669ae3315a1105e5e55eda469918c97d32f48c3542",
+    "vlm/candidate_mapping.py": "5722842bc85661120da2547f65d2f7acb6dc4377107cb450e188df7b21599d0d",
+    "vlm/client.py": "fba055c603e7a3b710502dd694a53067c628faa251f32d828183b1bee3777477",
+    "vlm/deepseek_client.py": "0c6566bd9cda595f083d75f48be9197fe9e323aabac94fd4e12c492c5b27fd70",
+    "vlm/glm_client.py": "73afe8ef472a8fcd86a5518f250149a1f2d3ec34daa7a00218f3592497a246ba",
+    "vlm/layout_flash_client.py": "3604edc8b3266c1df5010d63196dcdabc4c8fca62f98423492fc527b6450059e",
+    "vlm/leakage.py": "5daa9c0237ebe9b35ec9f1cd8603fc3f5577db61174e26902d4a660340d0d6cc",
+    "vlm/pilot_protocol_v2.py": "b25b820a9d659db073f803b48495ab2cf59950e40b02e4353c38ea59e348f15d",
+    "vlm/policy_protocol_o2b.py": "4c6d11cb3b850b1d4e6b3afe5dfef8b5d788162fb1efb49e8ba7622b2183a127",
+    "vlm/prompt_builder.py": "5c7bfa793b465fbaea245bfd9fb176a1a55b92ced147894082b8e07e41e4df4e",
+    "vlm/protocol_o2a.py": "8251d42d6710800f9e73665016fee5019bd7360f6317191bffd1757c9cbd48e3",
+    "vlm/response_parser.py": "eb38014f7571ebc3ff1c504274584cf88d8cecd32deb18a2181c8ed836950599"
+  },
+  "extra_source_sha256": {
+    "semantic_pallet_planner/scripts/check_layout_v2_cross_runtime.py": "80c05f2ae6f661f0e66b81172129457d038103e41d26f40232f789bb64c875eb",
+    "semantic_pallet_planner/scripts/compare_layout_v2_runs.py": "7e44731bbd5735345f05fc5992a56771b122e5eb159634fd4ff0681f5eab65ed",
+    "semantic_pallet_planner/tests/unit/test_layout_preserving_v2.py": "54822daa6b538323f59543364c37714e4c3ecf13a6c10c55e36881b2ff036eb9",
+    "semantic_pallet_planner/tests/integration/test_layout_numeric_v2.py": "20c862f448cf4979ba30f6e98cedf4634cdd886b3c74f7e13a35657829223ef7"
+  }
+}

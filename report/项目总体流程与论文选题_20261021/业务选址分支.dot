@@ -1,0 +1,28 @@
+digraph decision {
+  graph [rankdir=TB,bgcolor="white",fontname="Noto Sans CJK SC",fontsize=21,
+    label="O3 V2｜业务模式与三种选址策略\n读图关键：先处理业务可行性，再比较软目标与布局",labelloc=t,pad=.3,nodesep=.40,ranksep=.40,splines=polyline];
+  node [shape=box,style="rounded,filled",fillcolor="#F1F6F8",color="#C7D9E1",fontname="Noto Sans CJK SC",fontsize=14,fontcolor="#19384A",margin=".18,.12"];
+  edge [fontname="Noto Sans CJK SC",fontsize=11,color="#57788A",fontcolor="#57788A",arrowsize=.75];
+  input [label="当前物理候选＋已解析有效政策"];
+  feasible [shape=diamond,label="存在放置后无业务违规的候选？",fillcolor=white];
+  pool [label="保留业务可行候选集合",fillcolor="#E5F3F1",color="#007E82"];
+  mode [shape=diamond,label="执行模式？",fillcolor=white];
+  stop [label="safe：停止\nno_business_feasible_candidate",fillcolor="#FFF0E9",color="#BE7C63"];
+  harm [label="observe_business：保留最小伤害层\n先最少新增 / 加重，再最少放后违规\n允许业务违规，物理检查仍保留",fillcolor="#FFF4E2",color="#CD9B43"];
+  anchor [label="冻结原执行器计算同状态参照动作\n业务层级 → 政策软目标 → 几何 → Cxx"];
+  variant [shape=diamond,label="本episode固定的变体？",fillcolor=white];
+  original [label="原策略\n直接采用原执行器动作",fillcolor="#EDF1F4"];
+  eligible [label="预算变体：计算允许集合\n相对原动作：居中损失≤0.25，低位损失≤0.05\n目标为N/A时，该目标不限制"];
+  geo [label="预算＋几何\n在允许集合内选几何最高",fillcolor="#E8F1FA",color="#3673AC"];
+  layout [label="预算＋布局\nsupport / capacity / height均值最高\n再比较几何，最后按Cxx",fillcolor="#E5F3F1",color="#007E82"];
+  check [label="提交前业务屏障与独立物理复核\nsafe拦截新增 / 加重违规；观察模式只记录\n物理复核失败在两模式下均不提交"];
+  commit [label="通过则提交；否则停止并记录原因"];
+  input -> feasible;
+  feasible -> pool [label="是"];feasible -> mode [label="否"];
+  mode -> stop [label="safe"];mode -> harm [label="observe_business"];
+  pool -> anchor;harm -> anchor;anchor -> variant;
+  variant -> original [label="original"];variant -> eligible [label="relaxed变体"];
+  eligible -> geo [label="relaxed_geometry"];eligible -> layout [label="relaxed_wo_floor"];
+  original -> check;geo -> check;layout -> check;check -> commit;
+  {rank=same;original;geo;layout;}
+}

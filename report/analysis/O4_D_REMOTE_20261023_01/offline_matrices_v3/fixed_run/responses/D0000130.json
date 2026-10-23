@@ -1,0 +1,510 @@
+{
+  "attempts": [
+    {
+      "attempt_id": 130,
+      "body_digest": "47547df620bd437142714611ad6ad8daed8f286bc155d87b5178aa7bd2083fb9",
+      "compilation_id": "D0000130",
+      "cost": null,
+      "error_detail": null,
+      "latency_s": 0.006855526997242123,
+      "payload": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "message": {
+              "content": "{\"instruction_digest\":\"890c0e0037521e95d88837205e5e65a7c749ac9f98f7889adbf1cb893786234e\",\"observation_digest\":\"39807af6c0d7272d15ebc779ba30903e4d7900e3685ec2eb78488242fb277306\",\"policy_ast\":{\"rules\":[{\"limit\":{\"field\":\"labels.max_top_load_kg\"},\"overrides\":[],\"priority\":20,\"rule_id\":\"r1\",\"target\":{\"all\":true},\"type\":\"max_top_load\"},{\"overrides\":[\"r1\"],\"priority\":10,\"rule_id\":\"r2\",\"target\":{\"eq\":{\"field\":\"labels.no_top_load\",\"value\":true}},\"type\":\"no_top_load\"},{\"limit\":{\"constant_kg\":2.0},\"overrides\":[\"r1\"],\"priority\":0,\"rule_id\":\"r3\",\"target\":{\"and\":[{\"eq\":{\"field\":\"cargo_category\",\"value\":\"glassware\"}},{\"eq\":{\"field\":\"packaging.reinforced\",\"value\":true}},{\"eq\":{\"field\":\"labels.no_top_load\",\"value\":false}}]},\"type\":\"max_top_load\"},{\"left\":{\"eq\":{\"field\":\"cargo_category\",\"value\":\"food\"}},\"overrides\":[],\"priority\":20,\"right\":{\"eq\":{\"field\":\"cargo_category\",\"value\":\"household_cleaner\"}},\"rule_id\":\"r4\",\"type\":\"forbidden_contact\"}],\"schema_version\":\"o4_policy_v1\"},\"request_id\":\"O4_ANCHOR_11_4\",\"schema_version\":\"o4_response_v1\",\"state_hash\":\"50caeaa409f6a957041376a166e9389ff75bc313a6d832dc686a7d2247d40272\"}"
+            }
+          }
+        ],
+        "id": "offline-130",
+        "model": "TEST_DOUBLE",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 1,
+          "total_tokens": 2
+        }
+      },
+      "raw_text": "{\"choices\":[{\"finish_reason\":\"stop\",\"message\":{\"content\":\"{\\\"instruction_digest\\\":\\\"890c0e0037521e95d88837205e5e65a7c749ac9f98f7889adbf1cb893786234e\\\",\\\"observation_digest\\\":\\\"39807af6c0d7272d15ebc779ba30903e4d7900e3685ec2eb78488242fb277306\\\",\\\"policy_ast\\\":{\\\"rules\\\":[{\\\"limit\\\":{\\\"field\\\":\\\"labels.max_top_load_kg\\\"},\\\"overrides\\\":[],\\\"priority\\\":20,\\\"rule_id\\\":\\\"r1\\\",\\\"target\\\":{\\\"all\\\":true},\\\"type\\\":\\\"max_top_load\\\"},{\\\"overrides\\\":[\\\"r1\\\"],\\\"priority\\\":10,\\\"rule_id\\\":\\\"r2\\\",\\\"target\\\":{\\\"eq\\\":{\\\"field\\\":\\\"labels.no_top_load\\\",\\\"value\\\":true}},\\\"type\\\":\\\"no_top_load\\\"},{\\\"limit\\\":{\\\"constant_kg\\\":2.0},\\\"overrides\\\":[\\\"r1\\\"],\\\"priority\\\":0,\\\"rule_id\\\":\\\"r3\\\",\\\"target\\\":{\\\"and\\\":[{\\\"eq\\\":{\\\"field\\\":\\\"cargo_category\\\",\\\"value\\\":\\\"glassware\\\"}},{\\\"eq\\\":{\\\"field\\\":\\\"packaging.reinforced\\\",\\\"value\\\":true}},{\\\"eq\\\":{\\\"field\\\":\\\"labels.no_top_load\\\",\\\"value\\\":false}}]},\\\"type\\\":\\\"max_top_load\\\"},{\\\"left\\\":{\\\"eq\\\":{\\\"field\\\":\\\"cargo_category\\\",\\\"value\\\":\\\"food\\\"}},\\\"overrides\\\":[],\\\"priority\\\":20,\\\"right\\\":{\\\"eq\\\":{\\\"field\\\":\\\"cargo_category\\\",\\\"value\\\":\\\"household_cleaner\\\"}},\\\"rule_id\\\":\\\"r4\\\",\\\"type\\\":\\\"forbidden_contact\\\"}],\\\"schema_version\\\":\\\"o4_policy_v1\\\"},\\\"request_id\\\":\\\"O4_ANCHOR_11_4\\\",\\\"schema_version\\\":\\\"o4_response_v1\\\",\\\"state_hash\\\":\\\"50caeaa409f6a957041376a166e9389ff75bc313a6d832dc686a7d2247d40272\\\"}\"}}],\"id\":\"offline-130\",\"model\":\"TEST_DOUBLE\",\"usage\":{\"completion_tokens\":1,\"prompt_tokens\":1,\"total_tokens\":2}}",
+      "repair": false,
+      "status": "valid",
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 1,
+        "total_tokens": 2
+      }
+    }
+  ],
+  "compilation_id": "D0000130",
+  "condition": "image",
+  "envelope": {
+    "binding_digest": "45a078bc091384ff4b1d6621790357cddbf2d227924fc5b4ad5c987ef6dd8bec",
+    "condition": "image",
+    "images": [
+      {
+        "path": "public/assets/scene_80d2847bcb147ba042db6488b6a7ac104f45c8c14ce57dd99ce71062013b080c.png",
+        "sha256": "7838ceefc0dd020ff2b4d92426fa95a20335db2ebcec622385c70e4a7a8c4368"
+      },
+      {
+        "path": "public/assets/page_e91b75aff5bee1857b8899c8dccea4023813cd3369b0202659ae1ba0f37e9238.png",
+        "sha256": "84bcd0f303c31ee8460d32aab7891c65368fa4f478e50d12e3f640efd64abd43"
+      }
+    ],
+    "public_request": {
+      "available_objects": [
+        {
+          "cargo_category": "household_cleaner",
+          "dimensions_mm": {
+            "height": 190,
+            "length": 590,
+            "width": 200
+          },
+          "fragile": false,
+          "labels": {
+            "max_top_load_kg": 8.0,
+            "no_top_load": false
+          },
+          "mass_kg": 6.65,
+          "object_id": "item_01",
+          "packaging": {
+            "reinforced": false
+          },
+          "physical_top_load_limit_kg": 73.99,
+          "stackable": true,
+          "weight_class": "medium"
+        }
+      ],
+      "container": {
+        "container_id": "P1210-H085",
+        "coordinate_frame": "container_bottom_center",
+        "length_mm": 1200,
+        "max_height_mm": 850,
+        "max_payload_kg": 1000.0,
+        "width_mm": 1000
+      },
+      "images": [
+        {
+          "path": "public/assets/scene_80d2847bcb147ba042db6488b6a7ac104f45c8c14ce57dd99ce71062013b080c.png",
+          "sha256": "7838ceefc0dd020ff2b4d92426fa95a20335db2ebcec622385c70e4a7a8c4368"
+        },
+        {
+          "path": "public/assets/page_e91b75aff5bee1857b8899c8dccea4023813cd3369b0202659ae1ba0f37e9238.png",
+          "sha256": "84bcd0f303c31ee8460d32aab7891c65368fa4f478e50d12e3f640efd64abd43"
+        }
+      ],
+      "instruction_digest": "890c0e0037521e95d88837205e5e65a7c749ac9f98f7889adbf1cb893786234e",
+      "instruction_text": "规则r1：对（全部箱体），累计顶部限载按标签；优先级20；覆盖无。规则r2：对（禁压标记等于是），禁止顶部加载；优先级10；覆盖r1。规则r3：对（同时满足（货物类别等于玻璃制品，包装加固等于是，禁压标记等于否）），累计顶部限载为2kg；优先级0；覆盖r1。规则r4：禁止（货物类别等于食品）与（货物类别等于清洁用品）直接面接触；优先级20；覆盖无。",
+      "observation_digest": "39807af6c0d7272d15ebc779ba30903e4d7900e3685ec2eb78488242fb277306",
+      "placed_objects": [],
+      "request_id": "O4_ANCHOR_11_4",
+      "schema_version": "o4_request_v1",
+      "state_hash": "50caeaa409f6a957041376a166e9389ff75bc313a6d832dc686a7d2247d40272",
+      "units": {
+        "length": "mm",
+        "mass": "kg"
+      }
+    },
+    "schema_version": "o4_visual_input_v1",
+    "visual_facts": {
+      "buffer_capacity": 1,
+      "container": {
+        "container_id": "P1210-H085",
+        "coordinate_frame": "container_bottom_center",
+        "length_mm": 1200,
+        "max_height_mm": 850,
+        "max_payload_kg": 1000.0,
+        "width_mm": 1000
+      },
+      "end_of_stream": null,
+      "facts_digest": "80d2847bcb147ba042db6488b6a7ac104f45c8c14ce57dd99ce71062013b080c",
+      "label_face_version": "o4_simulated_label_pos_x_v1",
+      "mode": "single",
+      "objects": [
+        {
+          "arrival_index": null,
+          "faces": [
+            {
+              "face_id": "pos_x",
+              "local_normal": [
+                1,
+                0,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  295.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  295.0,
+                  100.0,
+                  0
+                ],
+                [
+                  295.0,
+                  100.0,
+                  190
+                ],
+                [
+                  295.0,
+                  -100.0,
+                  190
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_x",
+              "local_normal": [
+                -1,
+                0,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  -295.0,
+                  100.0,
+                  0
+                ],
+                [
+                  -295.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  -295.0,
+                  -100.0,
+                  190
+                ],
+                [
+                  -295.0,
+                  100.0,
+                  190
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "pos_y",
+              "local_normal": [
+                0,
+                1,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  295.0,
+                  100.0,
+                  0
+                ],
+                [
+                  -295.0,
+                  100.0,
+                  0
+                ],
+                [
+                  -295.0,
+                  100.0,
+                  190
+                ],
+                [
+                  295.0,
+                  100.0,
+                  190
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_y",
+              "local_normal": [
+                0,
+                -1,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  -295.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  295.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  295.0,
+                  -100.0,
+                  190
+                ],
+                [
+                  -295.0,
+                  -100.0,
+                  190
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "pos_z",
+              "local_normal": [
+                0,
+                0,
+                1
+              ],
+              "local_vertices_mm": [
+                [
+                  -295.0,
+                  -100.0,
+                  190
+                ],
+                [
+                  295.0,
+                  -100.0,
+                  190
+                ],
+                [
+                  295.0,
+                  100.0,
+                  190
+                ],
+                [
+                  -295.0,
+                  100.0,
+                  190
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_z",
+              "local_normal": [
+                0,
+                0,
+                -1
+              ],
+              "local_vertices_mm": [
+                [
+                  -295.0,
+                  100.0,
+                  0
+                ],
+                [
+                  295.0,
+                  100.0,
+                  0
+                ],
+                [
+                  295.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  -295.0,
+                  -100.0,
+                  0
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            }
+          ],
+          "facts": {
+            "cargo_category": "household_cleaner",
+            "dimensions_mm": {
+              "height": 190,
+              "length": 590,
+              "width": 200
+            },
+            "fragile": false,
+            "labels": {
+              "max_top_load_kg": 8.0,
+              "no_top_load": false
+            },
+            "mass_kg": 6.65,
+            "object_id": "item_01",
+            "packaging": {
+              "reinforced": false
+            },
+            "physical_top_load_limit_kg": 73.99,
+            "stackable": true,
+            "weight_class": "medium"
+          },
+          "label": {
+            "face_id": "pos_x",
+            "payload": {
+              "cargo_category": "household_cleaner",
+              "max_top_load_kg": 8.0,
+              "no_top_load": false,
+              "object_id": "item_01",
+              "reinforced": false
+            },
+            "source": "accurate_simulated_public_print_layout",
+            "uv_rect": [
+              0.15,
+              0.25,
+              0.85,
+              0.75
+            ]
+          },
+          "location": "pending",
+          "object_id": "item_01",
+          "slot": null
+        }
+      ],
+      "rendering_version": "o4_public_render_v1",
+      "schema_version": "o4_visual_facts_v1",
+      "units": {
+        "length": "mm",
+        "mass": "kg"
+      }
+    },
+    "visual_facts_digest": "80d2847bcb147ba042db6488b6a7ac104f45c8c14ce57dd99ce71062013b080c"
+  },
+  "first_valid": true,
+  "prompt_digest": "7fb961b257e2cf690c25441c3da5c7d4688775756b4f5e379596078c48883d23",
+  "prompt_version": "o4_d_compile_prompt_v1",
+  "repaired_valid": false,
+  "response": {
+    "instruction_digest": "890c0e0037521e95d88837205e5e65a7c749ac9f98f7889adbf1cb893786234e",
+    "observation_digest": "39807af6c0d7272d15ebc779ba30903e4d7900e3685ec2eb78488242fb277306",
+    "policy_ast": {
+      "rules": [
+        {
+          "limit": {
+            "field": "labels.max_top_load_kg"
+          },
+          "overrides": [],
+          "priority": 20,
+          "rule_id": "r1",
+          "target": {
+            "all": true
+          },
+          "type": "max_top_load"
+        },
+        {
+          "overrides": [
+            "r1"
+          ],
+          "priority": 10,
+          "rule_id": "r2",
+          "target": {
+            "eq": {
+              "field": "labels.no_top_load",
+              "value": true
+            }
+          },
+          "type": "no_top_load"
+        },
+        {
+          "limit": {
+            "constant_kg": 2.0
+          },
+          "overrides": [
+            "r1"
+          ],
+          "priority": 0,
+          "rule_id": "r3",
+          "target": {
+            "and": [
+              {
+                "eq": {
+                  "field": "cargo_category",
+                  "value": "glassware"
+                }
+              },
+              {
+                "eq": {
+                  "field": "packaging.reinforced",
+                  "value": true
+                }
+              },
+              {
+                "eq": {
+                  "field": "labels.no_top_load",
+                  "value": false
+                }
+              }
+            ]
+          },
+          "type": "max_top_load"
+        },
+        {
+          "left": {
+            "eq": {
+              "field": "cargo_category",
+              "value": "food"
+            }
+          },
+          "overrides": [],
+          "priority": 20,
+          "right": {
+            "eq": {
+              "field": "cargo_category",
+              "value": "household_cleaner"
+            }
+          },
+          "rule_id": "r4",
+          "type": "forbidden_contact"
+        }
+      ],
+      "schema_version": "o4_policy_v1"
+    },
+    "request_id": "O4_ANCHOR_11_4",
+    "schema_version": "o4_response_v1",
+    "state_hash": "50caeaa409f6a957041376a166e9389ff75bc313a6d832dc686a7d2247d40272"
+  },
+  "source": {
+    "available_objects": [
+      {
+        "cargo_category": "household_cleaner",
+        "dimensions_mm": {
+          "height": 190,
+          "length": 590,
+          "width": 200
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 8.0,
+          "no_top_load": false
+        },
+        "mass_kg": 6.65,
+        "object_id": "item_01",
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 73.99,
+        "stackable": true,
+        "weight_class": "medium"
+      }
+    ],
+    "container": {
+      "container_id": "P1210-H085",
+      "coordinate_frame": "container_bottom_center",
+      "length_mm": 1200,
+      "max_height_mm": 850,
+      "max_payload_kg": 1000.0,
+      "width_mm": 1000
+    },
+    "images": [],
+    "instruction_digest": "890c0e0037521e95d88837205e5e65a7c749ac9f98f7889adbf1cb893786234e",
+    "instruction_text": "规则r1：对（全部箱体），累计顶部限载按标签；优先级20；覆盖无。规则r2：对（禁压标记等于是），禁止顶部加载；优先级10；覆盖r1。规则r3：对（同时满足（货物类别等于玻璃制品，包装加固等于是，禁压标记等于否）），累计顶部限载为2kg；优先级0；覆盖r1。规则r4：禁止（货物类别等于食品）与（货物类别等于清洁用品）直接面接触；优先级20；覆盖无。",
+    "observation_digest": "681ffcd26ff57981723fede6ef04facfb8f5c4dabc7c488ce9ed3b802dd36252",
+    "placed_objects": [],
+    "request_id": "O4_ANCHOR_11_4",
+    "schema_version": "o4_request_v1",
+    "state_hash": "50caeaa409f6a957041376a166e9389ff75bc313a6d832dc686a7d2247d40272",
+    "units": {
+      "length": "mm",
+      "mass": "kg"
+    }
+  },
+  "status": "valid",
+  "test_double": true
+}

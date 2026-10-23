@@ -1,0 +1,81 @@
+{
+  "acceptance_report.json": {
+    "sha256": "9235fea57c34055930f4fd38b3488fb7be933c7c5ea46381c4ba51ea69df549a"
+  },
+  "data_audit.json": {
+    "sha256": "7f370e86e2ea97cac22353c5f7a22cb32ce78cb6095ce180615bf9fa701db288"
+  },
+  "semantic_acceptance.json": {
+    "sha256": "a15eff47d8a0ea3b18239167db1d35f458aed3ea2e7ee8a0fb9bbb5368b2b47c"
+  },
+  "manifest.json": {
+    "sha256": "8e0e828cbfde62992a09b3ccabe998bfcecf33523a18cfcc6580bffccbf94861"
+  },
+  "delivery_manifest.json": {
+    "sha256": "a29c2a5a7063031057740230da2ad753d609eb5356f8d37559ff4c496e242bfb"
+  },
+  "split_manifest.json": {
+    "sha256": "007718e8b5d9acd45f34dc81ea2290395bc6e179ea978851609e215492fdb410"
+  },
+  "tests": {
+    "tests": "278",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "137.415"
+  },
+  "dataset_regression": {
+    "command": "python -m unittest discover -s semantic_pallet_dataset_v1/tests -v",
+    "tests": 7,
+    "failures": 0
+  },
+  "acceptance": {
+    "counts": {
+      "fixed_records": 144,
+      "gold": 36,
+      "invalid": 24,
+      "online_episodes_executed": 0,
+      "opportunity_pairs": 34,
+      "order_task_definitions": 72,
+      "pairs": 72,
+      "remote_calls": 0,
+      "sources": 12
+    },
+    "criteria": {
+      "A1": "PASS",
+      "A2": "PASS",
+      "A3": "PASS",
+      "A4": "PASS",
+      "A5": "DEFERRED_FORMAL_IMAGES",
+      "A6": "AUTOMATED_PASS_HUMAN_REVIEW_PENDING",
+      "B1": "PASS",
+      "B2": "PASS",
+      "B3": "PASS",
+      "B4": "PASS",
+      "B5": "PASS",
+      "B6": "PASS",
+      "C": "NOT_RUN",
+      "D": "NOT_RUN",
+      "F": "NOT_RUN"
+    },
+    "evidence": {
+      "A1": "data_audit.json",
+      "A2": "data_audit.json",
+      "A3": "public/ + closed observation schema",
+      "A4": "plan.json + split_manifest.json",
+      "A5": "formal images deferred",
+      "A6": "private/data.json gold expected values; human review pending",
+      "B1": "metrics/gold.json",
+      "B2": "metrics/invalid.json",
+      "B3": "metrics/fixed.json",
+      "B4": "metrics/gold.json",
+      "B5": "metrics/transport.json",
+      "B6": "metrics/injections.json"
+    },
+    "failures": [],
+    "full_o4_status": "INCOMPLETE",
+    "remote_calls": 0,
+    "scope": "O4_A_B_OFFLINE_CORE",
+    "status": "PASS"
+  }
+}

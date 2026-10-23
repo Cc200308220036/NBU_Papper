@@ -1,0 +1,64 @@
+{
+  "backend": "oracle_ast",
+  "case_id": "sets_3",
+  "compilation_id": null,
+  "job_id": "J000028",
+  "kind": "fixed",
+  "metrics": {
+    "allowed_set_equal": true,
+    "applicable_objects_equal": true,
+    "conditions_exceptions_equal": true,
+    "false_allow_ids": [],
+    "false_reject_ids": [],
+    "method_allowed_ids": [],
+    "policy_comparison": {
+      "counterexamples": [],
+      "finite_domain_equal": true,
+      "probe_count": 336,
+      "probe_scope": "observed objects plus 40 category/boolean combinations x 8 load values; not an equivalence proof",
+      "raw_ast_equal": true,
+      "semantic_equal": true
+    },
+    "reference_allowed_ids": [],
+    "semantic_equal": true,
+    "valid_ast": true
+  },
+  "response": {
+    "instruction_digest": "d6c432d57628900fb21a4cd776a3929ad66f932bf4e41162840ce7b71a082509",
+    "observation_digest": "0b6e4a13d4b079b38138e7414ae812ee32237f3d0cc154f5e27306629fe8fb4d",
+    "policy_ast": {
+      "rules": [
+        {
+          "limit": {
+            "constant_kg": 2.0
+          },
+          "overrides": [],
+          "priority": 20,
+          "rule_id": "r1",
+          "target": {
+            "or": [
+              {
+                "eq": {
+                  "field": "cargo_category",
+                  "value": "food"
+                }
+              },
+              {
+                "eq": {
+                  "field": "cargo_category",
+                  "value": "glassware"
+                }
+              }
+            ]
+          },
+          "type": "max_top_load"
+        }
+      ],
+      "schema_version": "o4_policy_v1"
+    },
+    "request_id": "O4_GOLD_021",
+    "schema_version": "o4_response_v1",
+    "state_hash": "b2f93bc6fba2dc5674e47f1023b43b39b6b98094fef7fb6aa7b53a7ac61d3d60"
+  },
+  "status": "valid"
+}

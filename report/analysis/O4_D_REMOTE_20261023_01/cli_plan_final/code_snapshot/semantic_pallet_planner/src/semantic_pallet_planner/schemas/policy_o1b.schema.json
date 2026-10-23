@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "condition", "then_policy", "else_policy"],
+  "properties": {
+    "schema_version": {"const": "pallet_policy_o1b_conditional_1"},
+    "condition": {"type": "object", "additionalProperties": false,
+      "required": ["field", "equals"], "properties": {
+        "field": {"const": "weight_class"}, "equals": {"const": "heavy"}}},
+    "then_policy": {"type": "object"},
+    "else_policy": {"type": "object"}
+  }
+}

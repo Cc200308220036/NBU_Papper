@@ -1,0 +1,123 @@
+{
+  "files": {
+    "offline_acceptance.json": {
+      "sha256": "000ad15aadb5eccb167d5af46dc329e218a7a36de009d8b99092acb5e54ca565"
+    },
+    "replay_report.json": {
+      "sha256": "de0df8a4f761b0bbd603faae4f60e4709a65b4c81423ef4b61ade52aef1d5044"
+    },
+    "audit/protected.after.json": {
+      "sha256": "4c9a92962cb0cd2fc8b6b24c1e37588fbb9b87a9861938d5dc866670a532d12e"
+    },
+    "audit/repeat_run.json": {
+      "sha256": "150a6706c49574f9ec36aba17b9c11707894f181f95641ee876c3198f6263dc1"
+    },
+    "audit/parser_oracle_agreement.json": {
+      "sha256": "790fd419ef98d763de4b765339a8d9dac3492b95ba8232d8c7f2a513d6acd795"
+    },
+    "audit/soft_budgets.json": {
+      "sha256": "0c0f7cdd4c858bee2bb13a70c9a07d39a8d9bb1e78d76f8b2ca86fb20bb66804"
+    },
+    "audit/tamper.json": {
+      "sha256": "c4a106d5e140c63797b1caec1593d5e597e09eb2c9b3175f0c437089b1fea48b"
+    },
+    "audit/network.json": {
+      "sha256": "e536bb70f75445fffd93c8570dc04ac0cb2df7d3e0bc92ff8cdc569ff2501743"
+    },
+    "manifest.json": {
+      "sha256": "c196f68a6066c6eb5b9755ad634d335b0a2e90f6547f7ed21d8e0d60504ec15d"
+    },
+    "delivery_manifest.json": {
+      "sha256": "5db8a088bca6e7caf7b48e9568eb30f7aa191c96aedd801fae25b016dcd0f8e2"
+    }
+  },
+  "acceptance": {
+    "counts": {
+      "decision_records": 1604,
+      "fixed_action_change_pairs": 6,
+      "fixed_records": 144,
+      "fixed_reference_opportunity_pairs": 34,
+      "network_attempts": 0,
+      "placed_items": 1482,
+      "planned_episodes": 144,
+      "planned_tasks_per_method": 72,
+      "recorded_episodes": 144,
+      "remote_calls": 0,
+      "source_orders": 12
+    },
+    "criteria": {
+      "C1": true,
+      "C2": true,
+      "C3": true,
+      "C4": true,
+      "C5": true,
+      "C6": true,
+      "C7": true,
+      "C8": true
+    },
+    "deferred": {
+      "A5": "FORMAL_IMAGES",
+      "A6": "HUMAN_REVIEW",
+      "D": "NOT_RUN",
+      "F": "NOT_RUN"
+    },
+    "evidence": {
+      "C1": "metrics/per_episode.json",
+      "C2": "metrics/fixed.json",
+      "C3": "metrics/opportunities.json + metrics/invariance.json",
+      "C4": "audit/parser_oracle_agreement.json + metrics/legacy_equivalence.json",
+      "C5": "metrics/diagnostics.json + audit/soft_budgets.json",
+      "C6": "audit/repeat_run.json + replay_report.json",
+      "C7": "audit/tamper.json",
+      "C8": "audit/protected.after.json + audit/network.json"
+    },
+    "full_o4_status": "INCOMPLETE",
+    "scope": "O4_C_OFFLINE",
+    "status": "PASS"
+  },
+  "replay": {
+    "counts": {
+      "decision_records": 1604,
+      "fixed_action_change_pairs": 6,
+      "fixed_records": 144,
+      "fixed_reference_opportunity_pairs": 34,
+      "network_attempts": 0,
+      "placed_items": 1482,
+      "planned_episodes": 144,
+      "planned_tasks_per_method": 72,
+      "recorded_episodes": 144,
+      "remote_calls": 0,
+      "source_orders": 12
+    },
+    "failures": [],
+    "network_attempts": 0,
+    "read_only": true,
+    "status": "PASS"
+  },
+  "dataset_regression": {
+    "tests": 7,
+    "failures": 0,
+    "command": "python -m unittest discover -s semantic_pallet_dataset_v1/tests -v"
+  },
+  "pytest": {
+    "tests": "300",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "183.326"
+  },
+  "external_command_validation": {
+    "C_replay": {
+      "status": "PASS",
+      "read_only": true,
+      "failures": [],
+      "command": "python -m semantic_pallet_planner.runners.o4_online replay --output semantic_pallet_planner/outputs/EXP_O4_C_ONLINE_20261021_01"
+    },
+    "AB_original_replay": {
+      "status": "PASS",
+      "read_only": true,
+      "failures": [],
+      "command": "python -m semantic_pallet_planner.runners.o4 replay --output semantic_pallet_planner/outputs/EXP_O4_AB_OFFLINE_20261021_01"
+    }
+  }
+}

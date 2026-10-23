@@ -1,0 +1,57 @@
+{
+  "backend": "remote_text",
+  "case_id": "forbidden_contact_1",
+  "compilation_id": "D0000009",
+  "job_id": "J000018",
+  "kind": "fixed",
+  "metrics": {
+    "allowed_set_equal": true,
+    "applicable_objects_equal": true,
+    "conditions_exceptions_equal": true,
+    "false_allow_ids": [],
+    "false_reject_ids": [],
+    "method_allowed_ids": [],
+    "policy_comparison": {
+      "counterexamples": [],
+      "finite_domain_equal": true,
+      "probe_count": 336,
+      "probe_scope": "observed objects plus 40 category/boolean combinations x 8 load values; not an equivalence proof",
+      "raw_ast_equal": true,
+      "semantic_equal": true
+    },
+    "reference_allowed_ids": [],
+    "semantic_equal": true,
+    "valid_ast": true
+  },
+  "response": {
+    "instruction_digest": "3eeaa70ec9159f299b9a0d056d5162ddba513834ed3d5f04f6cc3a2cd75a421f",
+    "observation_digest": "81c7d70dc5a7bd8657974f9d6b920532204a9e8efa180da6b2cac7207ad7b180",
+    "policy_ast": {
+      "rules": [
+        {
+          "left": {
+            "eq": {
+              "field": "cargo_category",
+              "value": "food"
+            }
+          },
+          "overrides": [],
+          "priority": 20,
+          "right": {
+            "eq": {
+              "field": "cargo_category",
+              "value": "household_cleaner"
+            }
+          },
+          "rule_id": "r1",
+          "type": "forbidden_contact"
+        }
+      ],
+      "schema_version": "o4_policy_v1"
+    },
+    "request_id": "O4_GOLD_013",
+    "schema_version": "o4_response_v1",
+    "state_hash": "ff95fc391c7c8accd35c4ea01a9e5770dedc59b97c66e0e8e6d2fe092dde84da"
+  },
+  "status": "valid"
+}

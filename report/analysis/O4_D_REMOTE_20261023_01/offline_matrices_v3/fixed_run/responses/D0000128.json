@@ -1,0 +1,445 @@
+{
+  "attempts": [
+    {
+      "attempt_id": 128,
+      "body_digest": "3f6abeb3fc5f0f214f75db1b651037784a20d6820ebd08f55c6fea7e3b700e7c",
+      "compilation_id": "D0000128",
+      "cost": null,
+      "error_detail": null,
+      "latency_s": 0.0037644219992216676,
+      "payload": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "message": {
+              "content": "{\"instruction_digest\":\"ece754d7c434da1f93d411ef07566884b735ac59b95b8650d746be3773689829\",\"observation_digest\":\"7d9628769d5a1448585a3ff828d13ab2ac65d7571ad37354504deed08d782906\",\"policy_ast\":{\"rules\":[{\"limit\":{\"constant_kg\":100000.0},\"overrides\":[],\"priority\":20,\"rule_id\":\"r1\",\"target\":{\"all\":true},\"type\":\"max_top_load\"}],\"schema_version\":\"o4_policy_v1\"},\"request_id\":\"O4_ANCHOR_11_3\",\"schema_version\":\"o4_response_v1\",\"state_hash\":\"28bbe7339f91dec88256fe4a29f70717096ea0158a9013414b188b9e83b02426\"}"
+            }
+          }
+        ],
+        "id": "offline-128",
+        "model": "TEST_DOUBLE",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 1,
+          "total_tokens": 2
+        }
+      },
+      "raw_text": "{\"choices\":[{\"finish_reason\":\"stop\",\"message\":{\"content\":\"{\\\"instruction_digest\\\":\\\"ece754d7c434da1f93d411ef07566884b735ac59b95b8650d746be3773689829\\\",\\\"observation_digest\\\":\\\"7d9628769d5a1448585a3ff828d13ab2ac65d7571ad37354504deed08d782906\\\",\\\"policy_ast\\\":{\\\"rules\\\":[{\\\"limit\\\":{\\\"constant_kg\\\":100000.0},\\\"overrides\\\":[],\\\"priority\\\":20,\\\"rule_id\\\":\\\"r1\\\",\\\"target\\\":{\\\"all\\\":true},\\\"type\\\":\\\"max_top_load\\\"}],\\\"schema_version\\\":\\\"o4_policy_v1\\\"},\\\"request_id\\\":\\\"O4_ANCHOR_11_3\\\",\\\"schema_version\\\":\\\"o4_response_v1\\\",\\\"state_hash\\\":\\\"28bbe7339f91dec88256fe4a29f70717096ea0158a9013414b188b9e83b02426\\\"}\"}}],\"id\":\"offline-128\",\"model\":\"TEST_DOUBLE\",\"usage\":{\"completion_tokens\":1,\"prompt_tokens\":1,\"total_tokens\":2}}",
+      "repair": false,
+      "status": "valid",
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 1,
+        "total_tokens": 2
+      }
+    }
+  ],
+  "compilation_id": "D0000128",
+  "condition": "image",
+  "envelope": {
+    "binding_digest": "22f258fd2624ffb965f8a28be3cc19b181988bd7f44dca8901031567ff28fbce",
+    "condition": "image",
+    "images": [
+      {
+        "path": "public/assets/scene_15e5901c04f88ebe4de2cb2eb24702bbe0c321331bd55642a4718e0233c4ed11.png",
+        "sha256": "0760e0249d2fd94b29b66f2c8a5207617a8a46cf7fb26c4fe48b7fc78d38854a"
+      },
+      {
+        "path": "public/assets/page_49009c30d630383275c641c85a15de9e6e2af824ba67defcb5d44981d06f7476.png",
+        "sha256": "910f99a509af60537f27eb0efe6f8e75f7ff38207b4079513364424b25310888"
+      }
+    ],
+    "public_request": {
+      "available_objects": [
+        {
+          "cargo_category": "household_cleaner",
+          "dimensions_mm": {
+            "height": 190,
+            "length": 590,
+            "width": 200
+          },
+          "fragile": false,
+          "labels": {
+            "max_top_load_kg": 100000.0,
+            "no_top_load": false
+          },
+          "mass_kg": 6.65,
+          "object_id": "item_01",
+          "packaging": {
+            "reinforced": false
+          },
+          "physical_top_load_limit_kg": 73.99,
+          "stackable": true,
+          "weight_class": "medium"
+        }
+      ],
+      "container": {
+        "container_id": "P1210-H085",
+        "coordinate_frame": "container_bottom_center",
+        "length_mm": 1200,
+        "max_height_mm": 850,
+        "max_payload_kg": 1000.0,
+        "width_mm": 1000
+      },
+      "images": [
+        {
+          "path": "public/assets/scene_15e5901c04f88ebe4de2cb2eb24702bbe0c321331bd55642a4718e0233c4ed11.png",
+          "sha256": "0760e0249d2fd94b29b66f2c8a5207617a8a46cf7fb26c4fe48b7fc78d38854a"
+        },
+        {
+          "path": "public/assets/page_49009c30d630383275c641c85a15de9e6e2af824ba67defcb5d44981d06f7476.png",
+          "sha256": "910f99a509af60537f27eb0efe6f8e75f7ff38207b4079513364424b25310888"
+        }
+      ],
+      "instruction_digest": "ece754d7c434da1f93d411ef07566884b735ac59b95b8650d746be3773689829",
+      "instruction_text": "规则r1：对（全部箱体），累计顶部限载为100000kg；优先级20；覆盖无。",
+      "observation_digest": "7d9628769d5a1448585a3ff828d13ab2ac65d7571ad37354504deed08d782906",
+      "placed_objects": [],
+      "request_id": "O4_ANCHOR_11_3",
+      "schema_version": "o4_request_v1",
+      "state_hash": "28bbe7339f91dec88256fe4a29f70717096ea0158a9013414b188b9e83b02426",
+      "units": {
+        "length": "mm",
+        "mass": "kg"
+      }
+    },
+    "schema_version": "o4_visual_input_v1",
+    "visual_facts": {
+      "buffer_capacity": 1,
+      "container": {
+        "container_id": "P1210-H085",
+        "coordinate_frame": "container_bottom_center",
+        "length_mm": 1200,
+        "max_height_mm": 850,
+        "max_payload_kg": 1000.0,
+        "width_mm": 1000
+      },
+      "end_of_stream": null,
+      "facts_digest": "15e5901c04f88ebe4de2cb2eb24702bbe0c321331bd55642a4718e0233c4ed11",
+      "label_face_version": "o4_simulated_label_pos_x_v1",
+      "mode": "single",
+      "objects": [
+        {
+          "arrival_index": null,
+          "faces": [
+            {
+              "face_id": "pos_x",
+              "local_normal": [
+                1,
+                0,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  295.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  295.0,
+                  100.0,
+                  0
+                ],
+                [
+                  295.0,
+                  100.0,
+                  190
+                ],
+                [
+                  295.0,
+                  -100.0,
+                  190
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_x",
+              "local_normal": [
+                -1,
+                0,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  -295.0,
+                  100.0,
+                  0
+                ],
+                [
+                  -295.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  -295.0,
+                  -100.0,
+                  190
+                ],
+                [
+                  -295.0,
+                  100.0,
+                  190
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "pos_y",
+              "local_normal": [
+                0,
+                1,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  295.0,
+                  100.0,
+                  0
+                ],
+                [
+                  -295.0,
+                  100.0,
+                  0
+                ],
+                [
+                  -295.0,
+                  100.0,
+                  190
+                ],
+                [
+                  295.0,
+                  100.0,
+                  190
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_y",
+              "local_normal": [
+                0,
+                -1,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  -295.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  295.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  295.0,
+                  -100.0,
+                  190
+                ],
+                [
+                  -295.0,
+                  -100.0,
+                  190
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "pos_z",
+              "local_normal": [
+                0,
+                0,
+                1
+              ],
+              "local_vertices_mm": [
+                [
+                  -295.0,
+                  -100.0,
+                  190
+                ],
+                [
+                  295.0,
+                  -100.0,
+                  190
+                ],
+                [
+                  295.0,
+                  100.0,
+                  190
+                ],
+                [
+                  -295.0,
+                  100.0,
+                  190
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_z",
+              "local_normal": [
+                0,
+                0,
+                -1
+              ],
+              "local_vertices_mm": [
+                [
+                  -295.0,
+                  100.0,
+                  0
+                ],
+                [
+                  295.0,
+                  100.0,
+                  0
+                ],
+                [
+                  295.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  -295.0,
+                  -100.0,
+                  0
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            }
+          ],
+          "facts": {
+            "cargo_category": "household_cleaner",
+            "dimensions_mm": {
+              "height": 190,
+              "length": 590,
+              "width": 200
+            },
+            "fragile": false,
+            "labels": {
+              "max_top_load_kg": 100000.0,
+              "no_top_load": false
+            },
+            "mass_kg": 6.65,
+            "object_id": "item_01",
+            "packaging": {
+              "reinforced": false
+            },
+            "physical_top_load_limit_kg": 73.99,
+            "stackable": true,
+            "weight_class": "medium"
+          },
+          "label": {
+            "face_id": "pos_x",
+            "payload": {
+              "cargo_category": "household_cleaner",
+              "max_top_load_kg": 100000.0,
+              "no_top_load": false,
+              "object_id": "item_01",
+              "reinforced": false
+            },
+            "source": "accurate_simulated_public_print_layout",
+            "uv_rect": [
+              0.15,
+              0.25,
+              0.85,
+              0.75
+            ]
+          },
+          "location": "pending",
+          "object_id": "item_01",
+          "slot": null
+        }
+      ],
+      "rendering_version": "o4_public_render_v1",
+      "schema_version": "o4_visual_facts_v1",
+      "units": {
+        "length": "mm",
+        "mass": "kg"
+      }
+    },
+    "visual_facts_digest": "15e5901c04f88ebe4de2cb2eb24702bbe0c321331bd55642a4718e0233c4ed11"
+  },
+  "first_valid": true,
+  "prompt_digest": "7fb961b257e2cf690c25441c3da5c7d4688775756b4f5e379596078c48883d23",
+  "prompt_version": "o4_d_compile_prompt_v1",
+  "repaired_valid": false,
+  "response": {
+    "instruction_digest": "ece754d7c434da1f93d411ef07566884b735ac59b95b8650d746be3773689829",
+    "observation_digest": "7d9628769d5a1448585a3ff828d13ab2ac65d7571ad37354504deed08d782906",
+    "policy_ast": {
+      "rules": [
+        {
+          "limit": {
+            "constant_kg": 100000.0
+          },
+          "overrides": [],
+          "priority": 20,
+          "rule_id": "r1",
+          "target": {
+            "all": true
+          },
+          "type": "max_top_load"
+        }
+      ],
+      "schema_version": "o4_policy_v1"
+    },
+    "request_id": "O4_ANCHOR_11_3",
+    "schema_version": "o4_response_v1",
+    "state_hash": "28bbe7339f91dec88256fe4a29f70717096ea0158a9013414b188b9e83b02426"
+  },
+  "source": {
+    "available_objects": [
+      {
+        "cargo_category": "household_cleaner",
+        "dimensions_mm": {
+          "height": 190,
+          "length": 590,
+          "width": 200
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 100000.0,
+          "no_top_load": false
+        },
+        "mass_kg": 6.65,
+        "object_id": "item_01",
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 73.99,
+        "stackable": true,
+        "weight_class": "medium"
+      }
+    ],
+    "container": {
+      "container_id": "P1210-H085",
+      "coordinate_frame": "container_bottom_center",
+      "length_mm": 1200,
+      "max_height_mm": 850,
+      "max_payload_kg": 1000.0,
+      "width_mm": 1000
+    },
+    "images": [],
+    "instruction_digest": "ece754d7c434da1f93d411ef07566884b735ac59b95b8650d746be3773689829",
+    "instruction_text": "规则r1：对（全部箱体），累计顶部限载为100000kg；优先级20；覆盖无。",
+    "observation_digest": "0c8c6f29b914a2d4843410996271cf6c4c1107c59f7e6c39813bce50b1a86c28",
+    "placed_objects": [],
+    "request_id": "O4_ANCHOR_11_3",
+    "schema_version": "o4_request_v1",
+    "state_hash": "28bbe7339f91dec88256fe4a29f70717096ea0158a9013414b188b9e83b02426",
+    "units": {
+      "length": "mm",
+      "mass": "kg"
+    }
+  },
+  "status": "valid",
+  "test_double": true
+}

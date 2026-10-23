@@ -1,0 +1,148 @@
+{
+  "backend": "oracle_ast",
+  "case_id": "O4_ANCHOR_18_5",
+  "compilation_id": null,
+  "job_id": "J000432",
+  "kind": "fixed",
+  "metrics": {
+    "allowed_set_equal": true,
+    "applicable_objects_equal": true,
+    "conditions_exceptions_equal": true,
+    "false_allow_ids": [],
+    "false_reject_ids": [],
+    "method_allowed_ids": [
+      "cand_02a6c1754581",
+      "cand_1277160eb40c",
+      "cand_3a20d8afe537",
+      "cand_47d9c2ba963c",
+      "cand_4f788f7454d2",
+      "cand_5ab85a31b49e",
+      "cand_69c4dc35020a",
+      "cand_6a47466ca478",
+      "cand_7294cb9f8bb8",
+      "cand_8e38e6f60b7a",
+      "cand_91eee445445f",
+      "cand_af3643b168c5",
+      "cand_d0cd81b39951",
+      "cand_d8f2259d67d8",
+      "cand_fe7a7702b45e"
+    ],
+    "policy_comparison": {
+      "counterexamples": [],
+      "finite_domain_equal": true,
+      "probe_count": 352,
+      "probe_scope": "observed objects plus 40 category/boolean combinations x 8 load values; not an equivalence proof",
+      "raw_ast_equal": true,
+      "semantic_equal": true
+    },
+    "reference_allowed_ids": [
+      "cand_02a6c1754581",
+      "cand_1277160eb40c",
+      "cand_3a20d8afe537",
+      "cand_47d9c2ba963c",
+      "cand_4f788f7454d2",
+      "cand_5ab85a31b49e",
+      "cand_69c4dc35020a",
+      "cand_6a47466ca478",
+      "cand_7294cb9f8bb8",
+      "cand_8e38e6f60b7a",
+      "cand_91eee445445f",
+      "cand_af3643b168c5",
+      "cand_d0cd81b39951",
+      "cand_d8f2259d67d8",
+      "cand_fe7a7702b45e"
+    ],
+    "semantic_equal": true,
+    "valid_ast": true
+  },
+  "response": {
+    "instruction_digest": "c0cf26bb4ea1fe07c956364bbaec6a963d88fc6f26de4068c4eea2f453a09e89",
+    "observation_digest": "d0070bda6f11a83fea56f8f4022ea06099ba05498c170b87b9de9da9f2050450",
+    "policy_ast": {
+      "rules": [
+        {
+          "limit": {
+            "field": "labels.max_top_load_kg"
+          },
+          "overrides": [],
+          "priority": 20,
+          "rule_id": "r1",
+          "target": {
+            "all": true
+          },
+          "type": "max_top_load"
+        },
+        {
+          "overrides": [
+            "r1"
+          ],
+          "priority": 10,
+          "rule_id": "r2",
+          "target": {
+            "eq": {
+              "field": "labels.no_top_load",
+              "value": true
+            }
+          },
+          "type": "no_top_load"
+        },
+        {
+          "limit": {
+            "constant_kg": 2.0
+          },
+          "overrides": [
+            "r1"
+          ],
+          "priority": 0,
+          "rule_id": "r3",
+          "target": {
+            "and": [
+              {
+                "eq": {
+                  "field": "cargo_category",
+                  "value": "glassware"
+                }
+              },
+              {
+                "eq": {
+                  "field": "packaging.reinforced",
+                  "value": true
+                }
+              },
+              {
+                "eq": {
+                  "field": "labels.no_top_load",
+                  "value": false
+                }
+              }
+            ]
+          },
+          "type": "max_top_load"
+        },
+        {
+          "left": {
+            "eq": {
+              "field": "cargo_category",
+              "value": "food"
+            }
+          },
+          "overrides": [],
+          "priority": 20,
+          "right": {
+            "eq": {
+              "field": "cargo_category",
+              "value": "household_cleaner"
+            }
+          },
+          "rule_id": "r4",
+          "type": "forbidden_contact"
+        }
+      ],
+      "schema_version": "o4_policy_v1"
+    },
+    "request_id": "O4_ANCHOR_18_5",
+    "schema_version": "o4_response_v1",
+    "state_hash": "0579745b1c0cebc7aa7a101043e0ed15b2f8844d7a5636ea17589642411bbb6b"
+  },
+  "status": "valid"
+}

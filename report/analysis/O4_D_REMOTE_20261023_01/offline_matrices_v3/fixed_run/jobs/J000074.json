@@ -1,0 +1,75 @@
+{
+  "backend": "remote_text",
+  "case_id": "O4_ANCHOR_04_0",
+  "compilation_id": "D0000037",
+  "job_id": "J000074",
+  "kind": "fixed",
+  "metrics": {
+    "allowed_set_equal": true,
+    "applicable_objects_equal": true,
+    "conditions_exceptions_equal": true,
+    "false_allow_ids": [],
+    "false_reject_ids": [],
+    "method_allowed_ids": [
+      "cand_0c0f4d9298e9",
+      "cand_67dfc7380a36",
+      "cand_682e3fa1d2da",
+      "cand_85a93f15cdd5"
+    ],
+    "policy_comparison": {
+      "counterexamples": [],
+      "finite_domain_equal": true,
+      "probe_count": 392,
+      "probe_scope": "observed objects plus 40 category/boolean combinations x 8 load values; not an equivalence proof",
+      "raw_ast_equal": true,
+      "semantic_equal": true
+    },
+    "reference_allowed_ids": [
+      "cand_0c0f4d9298e9",
+      "cand_67dfc7380a36",
+      "cand_682e3fa1d2da",
+      "cand_85a93f15cdd5"
+    ],
+    "semantic_equal": true,
+    "valid_ast": true
+  },
+  "response": {
+    "instruction_digest": "ceb40b9929f48011ecb4cb24455f69f802f57dc9c25fd7d4ea7e1131d6a3e689",
+    "observation_digest": "dad053d8902123fc5e7d749f4eb990808d41e76c35f644951ff0c12e49f6a7d8",
+    "policy_ast": {
+      "rules": [
+        {
+          "limit": {
+            "field": "labels.max_top_load_kg"
+          },
+          "overrides": [],
+          "priority": 20,
+          "rule_id": "r1",
+          "target": {
+            "all": true
+          },
+          "type": "max_top_load"
+        },
+        {
+          "overrides": [
+            "r1"
+          ],
+          "priority": 10,
+          "rule_id": "r2",
+          "target": {
+            "eq": {
+              "field": "labels.no_top_load",
+              "value": true
+            }
+          },
+          "type": "no_top_load"
+        }
+      ],
+      "schema_version": "o4_policy_v1"
+    },
+    "request_id": "O4_ANCHOR_04_0",
+    "schema_version": "o4_response_v1",
+    "state_hash": "0d32549f4f2c5c2db3402c742be3cdf8baa6f9a2d3ba369e76d3318938a2157e"
+  },
+  "status": "valid"
+}

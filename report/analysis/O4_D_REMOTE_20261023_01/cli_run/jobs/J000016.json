@@ -1,0 +1,53 @@
+{
+  "backend": "oracle_ast",
+  "case_id": "max_top_load_4",
+  "compilation_id": null,
+  "job_id": "J000016",
+  "kind": "fixed",
+  "metrics": {
+    "allowed_set_equal": true,
+    "applicable_objects_equal": true,
+    "conditions_exceptions_equal": true,
+    "false_allow_ids": [],
+    "false_reject_ids": [],
+    "method_allowed_ids": [],
+    "policy_comparison": {
+      "counterexamples": [],
+      "finite_domain_equal": true,
+      "probe_count": 336,
+      "probe_scope": "observed objects plus 40 category/boolean combinations x 8 load values; not an equivalence proof",
+      "raw_ast_equal": true,
+      "semantic_equal": true
+    },
+    "reference_allowed_ids": [],
+    "semantic_equal": true,
+    "valid_ast": true
+  },
+  "response": {
+    "instruction_digest": "1bf7505f47a48b3827aece31047245e77518c412568b64beb301854096e351b0",
+    "observation_digest": "7248f3cfd06cc281ac910a5d4bf26baecb1f53a116cd7116424263d72ca8bdc1",
+    "policy_ast": {
+      "rules": [
+        {
+          "limit": {
+            "constant_kg": 2.0
+          },
+          "overrides": [],
+          "priority": 20,
+          "rule_id": "r1",
+          "target": {
+            "object_ids": [
+              "base"
+            ]
+          },
+          "type": "max_top_load"
+        }
+      ],
+      "schema_version": "o4_policy_v1"
+    },
+    "request_id": "O4_GOLD_010",
+    "schema_version": "o4_response_v1",
+    "state_hash": "7384119e0c6cd6dac0c230b66a4b4875c9b1fb47498e7c358d5aaf4efe3c50f7"
+  },
+  "status": "valid"
+}

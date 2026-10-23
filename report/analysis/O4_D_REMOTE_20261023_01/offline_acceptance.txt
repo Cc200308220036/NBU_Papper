@@ -1,0 +1,21 @@
+{"starting": "compile", "jobs": 48}
+{"matrix": "compile", "service_requests": 24, "actual_png_transfers": 24, "scope": "O4_D_OFFLINE_PROTOCOL", "status": "PASS", "profile": "compile-smoke", "full_development_matrix": false, "test_double": true, "real_api_attempts": 0, "planned_jobs": 48, "recorded_jobs": 48, "full_o4_status": "INCOMPLETE", "unseen_generalization": "NOT_MEASURED", "D1": true, "D2": "OFFLINE_ONLY", "D3": true, "D4": true, "D5": true, "D6": true, "human_review": "NOT_REQUIRED_BY_USER"}
+{"starting": "fixed", "jobs": 576}
+{"matrix": "fixed", "service_requests": 288, "actual_png_transfers": 324, "scope": "O4_D_OFFLINE_PROTOCOL", "status": "PASS", "profile": "fixed", "full_development_matrix": false, "test_double": true, "real_api_attempts": 0, "planned_jobs": 576, "recorded_jobs": 576, "full_o4_status": "INCOMPLETE", "unseen_generalization": "NOT_MEASURED", "D1": true, "D2": "OFFLINE_ONLY", "D3": true, "D4": true, "D5": true, "D6": true, "human_review": "NOT_REQUIRED_BY_USER"}
+{"starting": "orders", "jobs": 96}
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/report/analysis/O4_D_REMOTE_20261023_01/run_acceptance.py", line 53, in <module>
+    main(sys.argv[1])
+  File "/home/cyw/NBU_Papper/report/analysis/O4_D_REMOTE_20261023_01/run_acceptance.py", line 28, in main
+    report = execute(plan_root, root / (name + "_run"), budget=plan["maximum_api_attempts"],
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/o4/remote/experiment.py", line 325, in execute
+    event_audits.append({"job_id": job["job_id"], **audit_episode(
+                                                    ^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/o4/remote/audit.py", line 58, in audit_episode
+    errors = check_candidate(raw, {"container": raw["container"]}, candidate["raw"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/evaluation/geometry_oracle.py", line 106, in check_candidate
+    if item["supported_load_kg"] + extra > item["top_load_limit_kg_synthetic"] + TOL:
+       ~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'supported_load_kg'

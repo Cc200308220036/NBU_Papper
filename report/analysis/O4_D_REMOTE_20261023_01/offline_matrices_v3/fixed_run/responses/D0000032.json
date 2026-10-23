@@ -1,0 +1,445 @@
+{
+  "attempts": [
+    {
+      "attempt_id": 32,
+      "body_digest": "16df49e538ed6e5efbb448131316701d6379efb5ffd98230ea1afcb86385c3fc",
+      "compilation_id": "D0000032",
+      "cost": null,
+      "error_detail": null,
+      "latency_s": 0.0032861190011317376,
+      "payload": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "message": {
+              "content": "{\"instruction_digest\":\"ece754d7c434da1f93d411ef07566884b735ac59b95b8650d746be3773689829\",\"observation_digest\":\"5893af5f3a8fb7f327b9cf5133627cd229744ae76ee5bc97b517f6c1e80104b9\",\"policy_ast\":{\"rules\":[{\"limit\":{\"constant_kg\":100000.0},\"overrides\":[],\"priority\":20,\"rule_id\":\"r1\",\"target\":{\"all\":true},\"type\":\"max_top_load\"}],\"schema_version\":\"o4_policy_v1\"},\"request_id\":\"O4_ANCHOR_03_3\",\"schema_version\":\"o4_response_v1\",\"state_hash\":\"89147c4a73fc6873160cf9f1cebfc80fdd811c9afb271d06dc25d7ece0efc4c3\"}"
+            }
+          }
+        ],
+        "id": "offline-32",
+        "model": "TEST_DOUBLE",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 1,
+          "total_tokens": 2
+        }
+      },
+      "raw_text": "{\"choices\":[{\"finish_reason\":\"stop\",\"message\":{\"content\":\"{\\\"instruction_digest\\\":\\\"ece754d7c434da1f93d411ef07566884b735ac59b95b8650d746be3773689829\\\",\\\"observation_digest\\\":\\\"5893af5f3a8fb7f327b9cf5133627cd229744ae76ee5bc97b517f6c1e80104b9\\\",\\\"policy_ast\\\":{\\\"rules\\\":[{\\\"limit\\\":{\\\"constant_kg\\\":100000.0},\\\"overrides\\\":[],\\\"priority\\\":20,\\\"rule_id\\\":\\\"r1\\\",\\\"target\\\":{\\\"all\\\":true},\\\"type\\\":\\\"max_top_load\\\"}],\\\"schema_version\\\":\\\"o4_policy_v1\\\"},\\\"request_id\\\":\\\"O4_ANCHOR_03_3\\\",\\\"schema_version\\\":\\\"o4_response_v1\\\",\\\"state_hash\\\":\\\"89147c4a73fc6873160cf9f1cebfc80fdd811c9afb271d06dc25d7ece0efc4c3\\\"}\"}}],\"id\":\"offline-32\",\"model\":\"TEST_DOUBLE\",\"usage\":{\"completion_tokens\":1,\"prompt_tokens\":1,\"total_tokens\":2}}",
+      "repair": false,
+      "status": "valid",
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 1,
+        "total_tokens": 2
+      }
+    }
+  ],
+  "compilation_id": "D0000032",
+  "condition": "image",
+  "envelope": {
+    "binding_digest": "897faa2fcc45a97c5e0c6db791c0a5b3c165a87b70cfd40058945d27cf2306ba",
+    "condition": "image",
+    "images": [
+      {
+        "path": "public/assets/scene_bed5d9fb586937746922e929b4d3d500668da739ed266e054f40a983b95d54c4.png",
+        "sha256": "eaee6b0cae298354e197d011653e40ac65c29670bf79715f838720fb4a5e3605"
+      },
+      {
+        "path": "public/assets/page_922e562aea05f9419db1f0f50ef0b3e3c3a2af3ee060804b3e2e5aece0554a3f.png",
+        "sha256": "02c6bd6551ef77448689e03dd0332878b41edc4235213a9ab4ebef71dc1e042f"
+      }
+    ],
+    "public_request": {
+      "available_objects": [
+        {
+          "cargo_category": "food",
+          "dimensions_mm": {
+            "height": 325,
+            "length": 390,
+            "width": 295
+          },
+          "fragile": false,
+          "labels": {
+            "max_top_load_kg": 100000.0,
+            "no_top_load": false
+          },
+          "mass_kg": 7.632,
+          "object_id": "item_01",
+          "packaging": {
+            "reinforced": true
+          },
+          "physical_top_load_limit_kg": 82.26,
+          "stackable": true,
+          "weight_class": "medium"
+        }
+      ],
+      "container": {
+        "container_id": "P1210-H085",
+        "coordinate_frame": "container_bottom_center",
+        "length_mm": 1200,
+        "max_height_mm": 850,
+        "max_payload_kg": 1000.0,
+        "width_mm": 1000
+      },
+      "images": [
+        {
+          "path": "public/assets/scene_bed5d9fb586937746922e929b4d3d500668da739ed266e054f40a983b95d54c4.png",
+          "sha256": "eaee6b0cae298354e197d011653e40ac65c29670bf79715f838720fb4a5e3605"
+        },
+        {
+          "path": "public/assets/page_922e562aea05f9419db1f0f50ef0b3e3c3a2af3ee060804b3e2e5aece0554a3f.png",
+          "sha256": "02c6bd6551ef77448689e03dd0332878b41edc4235213a9ab4ebef71dc1e042f"
+        }
+      ],
+      "instruction_digest": "ece754d7c434da1f93d411ef07566884b735ac59b95b8650d746be3773689829",
+      "instruction_text": "规则r1：对（全部箱体），累计顶部限载为100000kg；优先级20；覆盖无。",
+      "observation_digest": "5893af5f3a8fb7f327b9cf5133627cd229744ae76ee5bc97b517f6c1e80104b9",
+      "placed_objects": [],
+      "request_id": "O4_ANCHOR_03_3",
+      "schema_version": "o4_request_v1",
+      "state_hash": "89147c4a73fc6873160cf9f1cebfc80fdd811c9afb271d06dc25d7ece0efc4c3",
+      "units": {
+        "length": "mm",
+        "mass": "kg"
+      }
+    },
+    "schema_version": "o4_visual_input_v1",
+    "visual_facts": {
+      "buffer_capacity": 1,
+      "container": {
+        "container_id": "P1210-H085",
+        "coordinate_frame": "container_bottom_center",
+        "length_mm": 1200,
+        "max_height_mm": 850,
+        "max_payload_kg": 1000.0,
+        "width_mm": 1000
+      },
+      "end_of_stream": null,
+      "facts_digest": "bed5d9fb586937746922e929b4d3d500668da739ed266e054f40a983b95d54c4",
+      "label_face_version": "o4_simulated_label_pos_x_v1",
+      "mode": "single",
+      "objects": [
+        {
+          "arrival_index": null,
+          "faces": [
+            {
+              "face_id": "pos_x",
+              "local_normal": [
+                1,
+                0,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  195.0,
+                  -147.5,
+                  0
+                ],
+                [
+                  195.0,
+                  147.5,
+                  0
+                ],
+                [
+                  195.0,
+                  147.5,
+                  325
+                ],
+                [
+                  195.0,
+                  -147.5,
+                  325
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_x",
+              "local_normal": [
+                -1,
+                0,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  -195.0,
+                  147.5,
+                  0
+                ],
+                [
+                  -195.0,
+                  -147.5,
+                  0
+                ],
+                [
+                  -195.0,
+                  -147.5,
+                  325
+                ],
+                [
+                  -195.0,
+                  147.5,
+                  325
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "pos_y",
+              "local_normal": [
+                0,
+                1,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  195.0,
+                  147.5,
+                  0
+                ],
+                [
+                  -195.0,
+                  147.5,
+                  0
+                ],
+                [
+                  -195.0,
+                  147.5,
+                  325
+                ],
+                [
+                  195.0,
+                  147.5,
+                  325
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_y",
+              "local_normal": [
+                0,
+                -1,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  -195.0,
+                  -147.5,
+                  0
+                ],
+                [
+                  195.0,
+                  -147.5,
+                  0
+                ],
+                [
+                  195.0,
+                  -147.5,
+                  325
+                ],
+                [
+                  -195.0,
+                  -147.5,
+                  325
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "pos_z",
+              "local_normal": [
+                0,
+                0,
+                1
+              ],
+              "local_vertices_mm": [
+                [
+                  -195.0,
+                  -147.5,
+                  325
+                ],
+                [
+                  195.0,
+                  -147.5,
+                  325
+                ],
+                [
+                  195.0,
+                  147.5,
+                  325
+                ],
+                [
+                  -195.0,
+                  147.5,
+                  325
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_z",
+              "local_normal": [
+                0,
+                0,
+                -1
+              ],
+              "local_vertices_mm": [
+                [
+                  -195.0,
+                  147.5,
+                  0
+                ],
+                [
+                  195.0,
+                  147.5,
+                  0
+                ],
+                [
+                  195.0,
+                  -147.5,
+                  0
+                ],
+                [
+                  -195.0,
+                  -147.5,
+                  0
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            }
+          ],
+          "facts": {
+            "cargo_category": "food",
+            "dimensions_mm": {
+              "height": 325,
+              "length": 390,
+              "width": 295
+            },
+            "fragile": false,
+            "labels": {
+              "max_top_load_kg": 100000.0,
+              "no_top_load": false
+            },
+            "mass_kg": 7.632,
+            "object_id": "item_01",
+            "packaging": {
+              "reinforced": true
+            },
+            "physical_top_load_limit_kg": 82.26,
+            "stackable": true,
+            "weight_class": "medium"
+          },
+          "label": {
+            "face_id": "pos_x",
+            "payload": {
+              "cargo_category": "food",
+              "max_top_load_kg": 100000.0,
+              "no_top_load": false,
+              "object_id": "item_01",
+              "reinforced": true
+            },
+            "source": "accurate_simulated_public_print_layout",
+            "uv_rect": [
+              0.15,
+              0.25,
+              0.85,
+              0.75
+            ]
+          },
+          "location": "pending",
+          "object_id": "item_01",
+          "slot": null
+        }
+      ],
+      "rendering_version": "o4_public_render_v1",
+      "schema_version": "o4_visual_facts_v1",
+      "units": {
+        "length": "mm",
+        "mass": "kg"
+      }
+    },
+    "visual_facts_digest": "bed5d9fb586937746922e929b4d3d500668da739ed266e054f40a983b95d54c4"
+  },
+  "first_valid": true,
+  "prompt_digest": "7fb961b257e2cf690c25441c3da5c7d4688775756b4f5e379596078c48883d23",
+  "prompt_version": "o4_d_compile_prompt_v1",
+  "repaired_valid": false,
+  "response": {
+    "instruction_digest": "ece754d7c434da1f93d411ef07566884b735ac59b95b8650d746be3773689829",
+    "observation_digest": "5893af5f3a8fb7f327b9cf5133627cd229744ae76ee5bc97b517f6c1e80104b9",
+    "policy_ast": {
+      "rules": [
+        {
+          "limit": {
+            "constant_kg": 100000.0
+          },
+          "overrides": [],
+          "priority": 20,
+          "rule_id": "r1",
+          "target": {
+            "all": true
+          },
+          "type": "max_top_load"
+        }
+      ],
+      "schema_version": "o4_policy_v1"
+    },
+    "request_id": "O4_ANCHOR_03_3",
+    "schema_version": "o4_response_v1",
+    "state_hash": "89147c4a73fc6873160cf9f1cebfc80fdd811c9afb271d06dc25d7ece0efc4c3"
+  },
+  "source": {
+    "available_objects": [
+      {
+        "cargo_category": "food",
+        "dimensions_mm": {
+          "height": 325,
+          "length": 390,
+          "width": 295
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 100000.0,
+          "no_top_load": false
+        },
+        "mass_kg": 7.632,
+        "object_id": "item_01",
+        "packaging": {
+          "reinforced": true
+        },
+        "physical_top_load_limit_kg": 82.26,
+        "stackable": true,
+        "weight_class": "medium"
+      }
+    ],
+    "container": {
+      "container_id": "P1210-H085",
+      "coordinate_frame": "container_bottom_center",
+      "length_mm": 1200,
+      "max_height_mm": 850,
+      "max_payload_kg": 1000.0,
+      "width_mm": 1000
+    },
+    "images": [],
+    "instruction_digest": "ece754d7c434da1f93d411ef07566884b735ac59b95b8650d746be3773689829",
+    "instruction_text": "规则r1：对（全部箱体），累计顶部限载为100000kg；优先级20；覆盖无。",
+    "observation_digest": "64caa5062d63c0f7ab71c589fe876ba020758f9accff5e444d76592af38e3208",
+    "placed_objects": [],
+    "request_id": "O4_ANCHOR_03_3",
+    "schema_version": "o4_request_v1",
+    "state_hash": "89147c4a73fc6873160cf9f1cebfc80fdd811c9afb271d06dc25d7ece0efc4c3",
+    "units": {
+      "length": "mm",
+      "mass": "kg"
+    }
+  },
+  "status": "valid",
+  "test_double": true
+}

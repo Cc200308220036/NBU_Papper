@@ -1,0 +1,54 @@
+{
+  "backend": "public_parser",
+  "case_id": "conditions_2",
+  "compilation_id": null,
+  "job_id": "J000033",
+  "kind": "fixed",
+  "metrics": {
+    "allowed_set_equal": true,
+    "applicable_objects_equal": true,
+    "conditions_exceptions_equal": true,
+    "false_allow_ids": [],
+    "false_reject_ids": [],
+    "method_allowed_ids": [],
+    "policy_comparison": {
+      "counterexamples": [],
+      "finite_domain_equal": true,
+      "probe_count": 336,
+      "probe_scope": "observed objects plus 40 category/boolean combinations x 8 load values; not an equivalence proof",
+      "raw_ast_equal": true,
+      "semantic_equal": true
+    },
+    "reference_allowed_ids": [],
+    "semantic_equal": true,
+    "valid_ast": true
+  },
+  "response": {
+    "instruction_digest": "84da16d211b5c347f4a4ee8a604f426fa74de707b6ddd6b364f2acb88b250538",
+    "observation_digest": "03a68077065dd463a16b72dc276e5dbbc838bae71286762f8762c8f140c906ef",
+    "policy_ast": {
+      "rules": [
+        {
+          "limit": {
+            "constant_kg": 2.0
+          },
+          "overrides": [],
+          "priority": 20,
+          "rule_id": "r1",
+          "target": {
+            "le": {
+              "field": "mass_kg",
+              "value": 1.0
+            }
+          },
+          "type": "max_top_load"
+        }
+      ],
+      "schema_version": "o4_policy_v1"
+    },
+    "request_id": "O4_GOLD_026",
+    "schema_version": "o4_response_v1",
+    "state_hash": "428f3fa7508f3af3850b2db2a4493470cb12c69392cca06981349bf3b9ca505b"
+  },
+  "status": "valid"
+}

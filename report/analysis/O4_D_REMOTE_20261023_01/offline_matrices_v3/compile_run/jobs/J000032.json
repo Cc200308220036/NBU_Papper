@@ -1,0 +1,56 @@
+{
+  "backend": "oracle_ast",
+  "case_id": "sets_4",
+  "compilation_id": null,
+  "job_id": "J000032",
+  "kind": "fixed",
+  "metrics": {
+    "allowed_set_equal": true,
+    "applicable_objects_equal": true,
+    "conditions_exceptions_equal": true,
+    "false_allow_ids": [],
+    "false_reject_ids": [],
+    "method_allowed_ids": [],
+    "policy_comparison": {
+      "counterexamples": [],
+      "finite_domain_equal": true,
+      "probe_count": 336,
+      "probe_scope": "observed objects plus 40 category/boolean combinations x 8 load values; not an equivalence proof",
+      "raw_ast_equal": true,
+      "semantic_equal": true
+    },
+    "reference_allowed_ids": [],
+    "semantic_equal": true,
+    "valid_ast": true
+  },
+  "response": {
+    "instruction_digest": "fe28f113554576e97e37ff783015ab41c275203b1b6d5ad965b72bd746575827",
+    "observation_digest": "7e8424319035bee8c5d2bd7fb970553fa37c89fe314b8126ff8c6aea68e7db5e",
+    "policy_ast": {
+      "rules": [
+        {
+          "limit": {
+            "constant_kg": 2.0
+          },
+          "overrides": [],
+          "priority": 20,
+          "rule_id": "r1",
+          "target": {
+            "not": {
+              "eq": {
+                "field": "cargo_category",
+                "value": "food"
+              }
+            }
+          },
+          "type": "max_top_load"
+        }
+      ],
+      "schema_version": "o4_policy_v1"
+    },
+    "request_id": "O4_GOLD_022",
+    "schema_version": "o4_response_v1",
+    "state_hash": "b2f93bc6fba2dc5674e47f1023b43b39b6b98094fef7fb6aa7b53a7ac61d3d60"
+  },
+  "status": "valid"
+}

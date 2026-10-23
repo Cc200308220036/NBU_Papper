@@ -1,0 +1,28 @@
+usage: o4_buffer.py [-h] --output OUTPUT [--c-baseline C_BASELINE]
+                    [--config CONFIG] [--limit-tasks LIMIT_TASKS]
+                    [--workers WORKERS]
+                    [--protection-before PROTECTION_BEFORE]
+                    [--checkpoint CHECKPOINT] [--rerun] [--capacity {1,2,3}]
+                    [--method {single_greedy,buffer_fifo,buffer_heuristic,buffer_search}]
+                    [--task-index TASK_INDEX]
+                    {acceptance,smoke,replay,resume,rollout}
+
+O4-F offline buffer acceptance, checkpoint resume and read-only replay. No
+Flash/API.
+
+positional arguments:
+  {acceptance,smoke,replay,resume,rollout}
+
+options:
+  -h, --help            show this help message and exit
+  --output OUTPUT
+  --c-baseline C_BASELINE
+  --config CONFIG
+  --limit-tasks LIMIT_TASKS
+  --workers WORKERS
+  --protection-before PROTECTION_BEFORE
+  --checkpoint CHECKPOINT
+  --rerun
+  --capacity {1,2,3}
+  --method {single_greedy,buffer_fifo,buffer_heuristic,buffer_search}
+  --task-index TASK_INDEX

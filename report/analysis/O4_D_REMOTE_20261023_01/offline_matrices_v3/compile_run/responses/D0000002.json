@@ -1,0 +1,909 @@
+{
+  "attempts": [
+    {
+      "attempt_id": 2,
+      "body_digest": "252fd04ce2bcf39c6a0bc862ce76a0731c583422382377618daf30e4cd9ee51a",
+      "compilation_id": "D0000002",
+      "cost": null,
+      "error_detail": null,
+      "latency_s": 0.003642743999080267,
+      "payload": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "message": {
+              "content": "{\"instruction_digest\":\"66d337eedd428bd329ed4cc27cf3f732bb4510affaf34d1b9145f38c46026f36\",\"observation_digest\":\"c5d063ae6f40d7c228e7dfee53799156f08d2b700a32d67c9d0342c41f1321eb\",\"policy_ast\":{\"rules\":[{\"overrides\":[],\"priority\":20,\"rule_id\":\"r1\",\"target\":{\"object_ids\":[\"base\"]},\"type\":\"no_top_load\"}],\"schema_version\":\"o4_policy_v1\"},\"request_id\":\"O4_GOLD_001\",\"schema_version\":\"o4_response_v1\",\"state_hash\":\"74b1e04ea69b95b8eb29b2d254a0c67a2e97c4dee61a38f8e8db009e04d9ab55\"}"
+            }
+          }
+        ],
+        "id": "offline-2",
+        "model": "TEST_DOUBLE",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 1,
+          "total_tokens": 2
+        }
+      },
+      "raw_text": "{\"choices\":[{\"finish_reason\":\"stop\",\"message\":{\"content\":\"{\\\"instruction_digest\\\":\\\"66d337eedd428bd329ed4cc27cf3f732bb4510affaf34d1b9145f38c46026f36\\\",\\\"observation_digest\\\":\\\"c5d063ae6f40d7c228e7dfee53799156f08d2b700a32d67c9d0342c41f1321eb\\\",\\\"policy_ast\\\":{\\\"rules\\\":[{\\\"overrides\\\":[],\\\"priority\\\":20,\\\"rule_id\\\":\\\"r1\\\",\\\"target\\\":{\\\"object_ids\\\":[\\\"base\\\"]},\\\"type\\\":\\\"no_top_load\\\"}],\\\"schema_version\\\":\\\"o4_policy_v1\\\"},\\\"request_id\\\":\\\"O4_GOLD_001\\\",\\\"schema_version\\\":\\\"o4_response_v1\\\",\\\"state_hash\\\":\\\"74b1e04ea69b95b8eb29b2d254a0c67a2e97c4dee61a38f8e8db009e04d9ab55\\\"}\"}}],\"id\":\"offline-2\",\"model\":\"TEST_DOUBLE\",\"usage\":{\"completion_tokens\":1,\"prompt_tokens\":1,\"total_tokens\":2}}",
+      "repair": false,
+      "status": "valid",
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 1,
+        "total_tokens": 2
+      }
+    }
+  ],
+  "compilation_id": "D0000002",
+  "condition": "image",
+  "envelope": {
+    "binding_digest": "aee5b371a1e7bea518af612a6e5c984870def52464e065e08e7ca46e0ecc9622",
+    "condition": "image",
+    "images": [
+      {
+        "path": "public/assets/scene_8f61660602afd9de635f415c342e7337728056ecfea8c2e9aae1aaf1cae4f92b.png",
+        "sha256": "3685e6ce395b4586b53f20403f08db504a84e5b27ea23541444ce2a13d9f5d9b"
+      },
+      {
+        "path": "public/assets/page_5a0442f6e2f68a6ab7f25be234a714ce11e6e633b29be08a7b1a4d62bd5a9626.png",
+        "sha256": "810dbda71a72cf38af5754c857f19696aa2d6c3556eff68738b01e343aecf713"
+      }
+    ],
+    "public_request": {
+      "available_objects": [
+        {
+          "cargo_category": "general",
+          "dimensions_mm": {
+            "height": 100,
+            "length": 100,
+            "width": 100
+          },
+          "fragile": false,
+          "labels": {
+            "max_top_load_kg": 5.0,
+            "no_top_load": false
+          },
+          "mass_kg": 1.0,
+          "object_id": "top",
+          "packaging": {
+            "reinforced": false
+          },
+          "physical_top_load_limit_kg": 100.0,
+          "stackable": true,
+          "weight_class": "light"
+        }
+      ],
+      "container": {
+        "container_id": "O4_GOLD",
+        "coordinate_frame": "container_bottom_center",
+        "length_mm": 1000,
+        "max_height_mm": 1000,
+        "max_payload_kg": 1000,
+        "width_mm": 1000
+      },
+      "images": [
+        {
+          "path": "public/assets/scene_8f61660602afd9de635f415c342e7337728056ecfea8c2e9aae1aaf1cae4f92b.png",
+          "sha256": "3685e6ce395b4586b53f20403f08db504a84e5b27ea23541444ce2a13d9f5d9b"
+        },
+        {
+          "path": "public/assets/page_5a0442f6e2f68a6ab7f25be234a714ce11e6e633b29be08a7b1a4d62bd5a9626.png",
+          "sha256": "810dbda71a72cf38af5754c857f19696aa2d6c3556eff68738b01e343aecf713"
+        }
+      ],
+      "instruction_digest": "66d337eedd428bd329ed4cc27cf3f732bb4510affaf34d1b9145f38c46026f36",
+      "instruction_text": "规则r1：对（对象（base）），禁止顶部加载；优先级20；覆盖无。",
+      "observation_digest": "c5d063ae6f40d7c228e7dfee53799156f08d2b700a32d67c9d0342c41f1321eb",
+      "placed_objects": [
+        {
+          "cargo_category": "general",
+          "dimensions_mm": {
+            "height": 100,
+            "length": 100,
+            "width": 100
+          },
+          "fragile": false,
+          "labels": {
+            "max_top_load_kg": 5.0,
+            "no_top_load": false
+          },
+          "mass_kg": 1.0,
+          "object_id": "base",
+          "oriented_size_mm": [
+            100,
+            100,
+            100
+          ],
+          "packaging": {
+            "reinforced": false
+          },
+          "physical_top_load_limit_kg": 100.0,
+          "pose": {
+            "x_mm": 0,
+            "y_mm": 0.0,
+            "yaw_deg": 0,
+            "z_base_mm": 0
+          },
+          "stackable": true,
+          "weight_class": "light"
+        }
+      ],
+      "request_id": "O4_GOLD_001",
+      "schema_version": "o4_request_v1",
+      "state_hash": "74b1e04ea69b95b8eb29b2d254a0c67a2e97c4dee61a38f8e8db009e04d9ab55",
+      "units": {
+        "length": "mm",
+        "mass": "kg"
+      }
+    },
+    "schema_version": "o4_visual_input_v1",
+    "visual_facts": {
+      "buffer_capacity": 1,
+      "container": {
+        "container_id": "O4_GOLD",
+        "coordinate_frame": "container_bottom_center",
+        "length_mm": 1000,
+        "max_height_mm": 1000,
+        "max_payload_kg": 1000,
+        "width_mm": 1000
+      },
+      "end_of_stream": null,
+      "facts_digest": "8f61660602afd9de635f415c342e7337728056ecfea8c2e9aae1aaf1cae4f92b",
+      "label_face_version": "o4_simulated_label_pos_x_v1",
+      "mode": "single",
+      "objects": [
+        {
+          "arrival_index": null,
+          "faces": [
+            {
+              "face_id": "pos_x",
+              "local_normal": [
+                1,
+                0,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  50.0,
+                  100
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  100
+                ]
+              ],
+              "world_normal": [
+                1,
+                0,
+                0
+              ],
+              "world_vertices_mm": [
+                [
+                  50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  50.0,
+                  100
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  100
+                ]
+              ]
+            },
+            {
+              "face_id": "neg_x",
+              "local_normal": [
+                -1,
+                0,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  -50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  -50.0,
+                  100
+                ],
+                [
+                  -50.0,
+                  50.0,
+                  100
+                ]
+              ],
+              "world_normal": [
+                -1,
+                0,
+                0
+              ],
+              "world_vertices_mm": [
+                [
+                  -50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  -50.0,
+                  100
+                ],
+                [
+                  -50.0,
+                  50.0,
+                  100
+                ]
+              ]
+            },
+            {
+              "face_id": "pos_y",
+              "local_normal": [
+                0,
+                1,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  50.0,
+                  100
+                ],
+                [
+                  50.0,
+                  50.0,
+                  100
+                ]
+              ],
+              "world_normal": [
+                0,
+                1,
+                0
+              ],
+              "world_vertices_mm": [
+                [
+                  50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  50.0,
+                  100
+                ],
+                [
+                  50.0,
+                  50.0,
+                  100
+                ]
+              ]
+            },
+            {
+              "face_id": "neg_y",
+              "local_normal": [
+                0,
+                -1,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  -50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  100
+                ],
+                [
+                  -50.0,
+                  -50.0,
+                  100
+                ]
+              ],
+              "world_normal": [
+                0,
+                -1,
+                0
+              ],
+              "world_vertices_mm": [
+                [
+                  -50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  100
+                ],
+                [
+                  -50.0,
+                  -50.0,
+                  100
+                ]
+              ]
+            },
+            {
+              "face_id": "pos_z",
+              "local_normal": [
+                0,
+                0,
+                1
+              ],
+              "local_vertices_mm": [
+                [
+                  -50.0,
+                  -50.0,
+                  100
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  100
+                ],
+                [
+                  50.0,
+                  50.0,
+                  100
+                ],
+                [
+                  -50.0,
+                  50.0,
+                  100
+                ]
+              ],
+              "world_normal": [
+                0,
+                0,
+                1
+              ],
+              "world_vertices_mm": [
+                [
+                  -50.0,
+                  -50.0,
+                  100
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  100
+                ],
+                [
+                  50.0,
+                  50.0,
+                  100
+                ],
+                [
+                  -50.0,
+                  50.0,
+                  100
+                ]
+              ]
+            },
+            {
+              "face_id": "neg_z",
+              "local_normal": [
+                0,
+                0,
+                -1
+              ],
+              "local_vertices_mm": [
+                [
+                  -50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  -50.0,
+                  0
+                ]
+              ],
+              "world_normal": [
+                0,
+                0,
+                -1
+              ],
+              "world_vertices_mm": [
+                [
+                  -50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  -50.0,
+                  0
+                ]
+              ]
+            }
+          ],
+          "facts": {
+            "cargo_category": "general",
+            "dimensions_mm": {
+              "height": 100,
+              "length": 100,
+              "width": 100
+            },
+            "fragile": false,
+            "labels": {
+              "max_top_load_kg": 5.0,
+              "no_top_load": false
+            },
+            "mass_kg": 1.0,
+            "object_id": "base",
+            "oriented_size_mm": [
+              100,
+              100,
+              100
+            ],
+            "packaging": {
+              "reinforced": false
+            },
+            "physical_top_load_limit_kg": 100.0,
+            "pose": {
+              "x_mm": 0,
+              "y_mm": 0.0,
+              "yaw_deg": 0,
+              "z_base_mm": 0
+            },
+            "stackable": true,
+            "weight_class": "light"
+          },
+          "label": {
+            "face_id": "pos_x",
+            "payload": {
+              "cargo_category": "general",
+              "max_top_load_kg": 5.0,
+              "no_top_load": false,
+              "object_id": "base",
+              "reinforced": false
+            },
+            "source": "accurate_simulated_public_print_layout",
+            "uv_rect": [
+              0.15,
+              0.25,
+              0.85,
+              0.75
+            ]
+          },
+          "location": "placed",
+          "object_id": "base",
+          "slot": null
+        },
+        {
+          "arrival_index": null,
+          "faces": [
+            {
+              "face_id": "pos_x",
+              "local_normal": [
+                1,
+                0,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  50.0,
+                  100
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  100
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_x",
+              "local_normal": [
+                -1,
+                0,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  -50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  -50.0,
+                  100
+                ],
+                [
+                  -50.0,
+                  50.0,
+                  100
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "pos_y",
+              "local_normal": [
+                0,
+                1,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  50.0,
+                  100
+                ],
+                [
+                  50.0,
+                  50.0,
+                  100
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_y",
+              "local_normal": [
+                0,
+                -1,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  -50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  100
+                ],
+                [
+                  -50.0,
+                  -50.0,
+                  100
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "pos_z",
+              "local_normal": [
+                0,
+                0,
+                1
+              ],
+              "local_vertices_mm": [
+                [
+                  -50.0,
+                  -50.0,
+                  100
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  100
+                ],
+                [
+                  50.0,
+                  50.0,
+                  100
+                ],
+                [
+                  -50.0,
+                  50.0,
+                  100
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_z",
+              "local_normal": [
+                0,
+                0,
+                -1
+              ],
+              "local_vertices_mm": [
+                [
+                  -50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  50.0,
+                  0
+                ],
+                [
+                  50.0,
+                  -50.0,
+                  0
+                ],
+                [
+                  -50.0,
+                  -50.0,
+                  0
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            }
+          ],
+          "facts": {
+            "cargo_category": "general",
+            "dimensions_mm": {
+              "height": 100,
+              "length": 100,
+              "width": 100
+            },
+            "fragile": false,
+            "labels": {
+              "max_top_load_kg": 5.0,
+              "no_top_load": false
+            },
+            "mass_kg": 1.0,
+            "object_id": "top",
+            "packaging": {
+              "reinforced": false
+            },
+            "physical_top_load_limit_kg": 100.0,
+            "stackable": true,
+            "weight_class": "light"
+          },
+          "label": {
+            "face_id": "pos_x",
+            "payload": {
+              "cargo_category": "general",
+              "max_top_load_kg": 5.0,
+              "no_top_load": false,
+              "object_id": "top",
+              "reinforced": false
+            },
+            "source": "accurate_simulated_public_print_layout",
+            "uv_rect": [
+              0.15,
+              0.25,
+              0.85,
+              0.75
+            ]
+          },
+          "location": "pending",
+          "object_id": "top",
+          "slot": null
+        }
+      ],
+      "rendering_version": "o4_public_render_v1",
+      "schema_version": "o4_visual_facts_v1",
+      "units": {
+        "length": "mm",
+        "mass": "kg"
+      }
+    },
+    "visual_facts_digest": "8f61660602afd9de635f415c342e7337728056ecfea8c2e9aae1aaf1cae4f92b"
+  },
+  "first_valid": true,
+  "prompt_digest": "7fb961b257e2cf690c25441c3da5c7d4688775756b4f5e379596078c48883d23",
+  "prompt_version": "o4_d_compile_prompt_v1",
+  "repaired_valid": false,
+  "response": {
+    "instruction_digest": "66d337eedd428bd329ed4cc27cf3f732bb4510affaf34d1b9145f38c46026f36",
+    "observation_digest": "c5d063ae6f40d7c228e7dfee53799156f08d2b700a32d67c9d0342c41f1321eb",
+    "policy_ast": {
+      "rules": [
+        {
+          "overrides": [],
+          "priority": 20,
+          "rule_id": "r1",
+          "target": {
+            "object_ids": [
+              "base"
+            ]
+          },
+          "type": "no_top_load"
+        }
+      ],
+      "schema_version": "o4_policy_v1"
+    },
+    "request_id": "O4_GOLD_001",
+    "schema_version": "o4_response_v1",
+    "state_hash": "74b1e04ea69b95b8eb29b2d254a0c67a2e97c4dee61a38f8e8db009e04d9ab55"
+  },
+  "source": {
+    "available_objects": [
+      {
+        "cargo_category": "general",
+        "dimensions_mm": {
+          "height": 100,
+          "length": 100,
+          "width": 100
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 5.0,
+          "no_top_load": false
+        },
+        "mass_kg": 1.0,
+        "object_id": "top",
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 100.0,
+        "stackable": true,
+        "weight_class": "light"
+      }
+    ],
+    "container": {
+      "container_id": "O4_GOLD",
+      "coordinate_frame": "container_bottom_center",
+      "length_mm": 1000,
+      "max_height_mm": 1000,
+      "max_payload_kg": 1000,
+      "width_mm": 1000
+    },
+    "images": [],
+    "instruction_digest": "66d337eedd428bd329ed4cc27cf3f732bb4510affaf34d1b9145f38c46026f36",
+    "instruction_text": "规则r1：对（对象（base）），禁止顶部加载；优先级20；覆盖无。",
+    "observation_digest": "96c7abf921f1136bf1f32f00d7dfc43f58307cf39914301ebc2fc1060ee697aa",
+    "placed_objects": [
+      {
+        "cargo_category": "general",
+        "dimensions_mm": {
+          "height": 100,
+          "length": 100,
+          "width": 100
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 5.0,
+          "no_top_load": false
+        },
+        "mass_kg": 1.0,
+        "object_id": "base",
+        "oriented_size_mm": [
+          100,
+          100,
+          100
+        ],
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 100.0,
+        "pose": {
+          "x_mm": 0,
+          "y_mm": 0.0,
+          "yaw_deg": 0,
+          "z_base_mm": 0
+        },
+        "stackable": true,
+        "weight_class": "light"
+      }
+    ],
+    "request_id": "O4_GOLD_001",
+    "schema_version": "o4_request_v1",
+    "state_hash": "74b1e04ea69b95b8eb29b2d254a0c67a2e97c4dee61a38f8e8db009e04d9ab55",
+    "units": {
+      "length": "mm",
+      "mass": "kg"
+    }
+  },
+  "status": "valid",
+  "test_double": true
+}

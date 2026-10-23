@@ -1,0 +1,43 @@
+{
+  "version": "o4_d_remote_v1",
+  "profile": "full",
+  "maximum_api_attempts": 19296,
+  "fixed_cases": 144,
+  "order_tasks": 72,
+  "planned_episodes": 1152,
+  "backends": [
+    "public_parser",
+    "remote_text",
+    "remote_image",
+    "oracle_ast"
+  ],
+  "planners": [
+    "single_greedy",
+    "buffer_fifo",
+    "buffer_heuristic",
+    "buffer_search"
+  ],
+  "prompt_version": "o4_d_compile_prompt_v1",
+  "role": "development",
+  "human_review": "NOT_REQUIRED_BY_USER",
+  "unseen_test": false,
+  "independent_order_sources": 12,
+  "fixed_development_sources": 12,
+  "smoke_case_ids": [
+    "no_top_load_1",
+    "no_top_load_2",
+    "max_top_load_2",
+    "max_top_load_4",
+    "forbidden_contact_1",
+    "forbidden_contact_2",
+    "sets_3",
+    "sets_4",
+    "conditions_2",
+    "conditions_3",
+    "overrides_3",
+    "overrides_5"
+  ],
+  "repairs_per_compilation": 1,
+  "receiver": "fill_then_plan",
+  "eos_mode": "empty_read"
+}

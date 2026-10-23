@@ -1,0 +1,99 @@
+{
+  "backend": "remote_image",
+  "case_id": "O4_ANCHOR_10_0",
+  "compilation_id": "D0000110",
+  "job_id": "J000219",
+  "kind": "fixed",
+  "metrics": {
+    "allowed_set_equal": true,
+    "applicable_objects_equal": true,
+    "conditions_exceptions_equal": true,
+    "false_allow_ids": [],
+    "false_reject_ids": [],
+    "method_allowed_ids": [
+      "cand_069ea09c669e",
+      "cand_0708f2fcc738",
+      "cand_143e215d49ed",
+      "cand_1fac1d5f7f1d",
+      "cand_46f44cca79f1",
+      "cand_4a4d6234db54",
+      "cand_782d1d4569cb",
+      "cand_8b43c19ea490",
+      "cand_a6a9186f6edd",
+      "cand_a74dbc65bf86",
+      "cand_b710f014bd8a",
+      "cand_d5ec0eaf8bdc",
+      "cand_d608acf2087b",
+      "cand_e40d9ecc69db",
+      "cand_f41f4c9f1f12",
+      "cand_fa68bc758a8b"
+    ],
+    "policy_comparison": {
+      "counterexamples": [],
+      "finite_domain_equal": true,
+      "probe_count": 336,
+      "probe_scope": "observed objects plus 40 category/boolean combinations x 8 load values; not an equivalence proof",
+      "raw_ast_equal": true,
+      "semantic_equal": true
+    },
+    "reference_allowed_ids": [
+      "cand_069ea09c669e",
+      "cand_0708f2fcc738",
+      "cand_143e215d49ed",
+      "cand_1fac1d5f7f1d",
+      "cand_46f44cca79f1",
+      "cand_4a4d6234db54",
+      "cand_782d1d4569cb",
+      "cand_8b43c19ea490",
+      "cand_a6a9186f6edd",
+      "cand_a74dbc65bf86",
+      "cand_b710f014bd8a",
+      "cand_d5ec0eaf8bdc",
+      "cand_d608acf2087b",
+      "cand_e40d9ecc69db",
+      "cand_f41f4c9f1f12",
+      "cand_fa68bc758a8b"
+    ],
+    "semantic_equal": true,
+    "valid_ast": true
+  },
+  "response": {
+    "instruction_digest": "ceb40b9929f48011ecb4cb24455f69f802f57dc9c25fd7d4ea7e1131d6a3e689",
+    "observation_digest": "f5becbab5252db03af0db0f37366deb6efacd26de51032b8845f1c541713cf31",
+    "policy_ast": {
+      "rules": [
+        {
+          "limit": {
+            "field": "labels.max_top_load_kg"
+          },
+          "overrides": [],
+          "priority": 20,
+          "rule_id": "r1",
+          "target": {
+            "all": true
+          },
+          "type": "max_top_load"
+        },
+        {
+          "overrides": [
+            "r1"
+          ],
+          "priority": 10,
+          "rule_id": "r2",
+          "target": {
+            "eq": {
+              "field": "labels.no_top_load",
+              "value": true
+            }
+          },
+          "type": "no_top_load"
+        }
+      ],
+      "schema_version": "o4_policy_v1"
+    },
+    "request_id": "O4_ANCHOR_10_0",
+    "schema_version": "o4_response_v1",
+    "state_hash": "0c2bd2769f9fa351fa1e7a5b6867109db6ff42ed03368425e844c156e73383de"
+  },
+  "status": "valid"
+}

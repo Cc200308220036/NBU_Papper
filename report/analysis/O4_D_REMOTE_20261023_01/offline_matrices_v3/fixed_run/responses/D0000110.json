@@ -1,0 +1,924 @@
+{
+  "attempts": [
+    {
+      "attempt_id": 110,
+      "body_digest": "b5f00504230d28d88a76f64919af449bbaf2f78d01108904b0b7d0470acd1d85",
+      "compilation_id": "D0000110",
+      "cost": null,
+      "error_detail": null,
+      "latency_s": 0.00421968099908554,
+      "payload": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "message": {
+              "content": "{\"instruction_digest\":\"ceb40b9929f48011ecb4cb24455f69f802f57dc9c25fd7d4ea7e1131d6a3e689\",\"observation_digest\":\"f5becbab5252db03af0db0f37366deb6efacd26de51032b8845f1c541713cf31\",\"policy_ast\":{\"rules\":[{\"limit\":{\"field\":\"labels.max_top_load_kg\"},\"overrides\":[],\"priority\":20,\"rule_id\":\"r1\",\"target\":{\"all\":true},\"type\":\"max_top_load\"},{\"overrides\":[\"r1\"],\"priority\":10,\"rule_id\":\"r2\",\"target\":{\"eq\":{\"field\":\"labels.no_top_load\",\"value\":true}},\"type\":\"no_top_load\"}],\"schema_version\":\"o4_policy_v1\"},\"request_id\":\"O4_ANCHOR_10_0\",\"schema_version\":\"o4_response_v1\",\"state_hash\":\"0c2bd2769f9fa351fa1e7a5b6867109db6ff42ed03368425e844c156e73383de\"}"
+            }
+          }
+        ],
+        "id": "offline-110",
+        "model": "TEST_DOUBLE",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 1,
+          "total_tokens": 2
+        }
+      },
+      "raw_text": "{\"choices\":[{\"finish_reason\":\"stop\",\"message\":{\"content\":\"{\\\"instruction_digest\\\":\\\"ceb40b9929f48011ecb4cb24455f69f802f57dc9c25fd7d4ea7e1131d6a3e689\\\",\\\"observation_digest\\\":\\\"f5becbab5252db03af0db0f37366deb6efacd26de51032b8845f1c541713cf31\\\",\\\"policy_ast\\\":{\\\"rules\\\":[{\\\"limit\\\":{\\\"field\\\":\\\"labels.max_top_load_kg\\\"},\\\"overrides\\\":[],\\\"priority\\\":20,\\\"rule_id\\\":\\\"r1\\\",\\\"target\\\":{\\\"all\\\":true},\\\"type\\\":\\\"max_top_load\\\"},{\\\"overrides\\\":[\\\"r1\\\"],\\\"priority\\\":10,\\\"rule_id\\\":\\\"r2\\\",\\\"target\\\":{\\\"eq\\\":{\\\"field\\\":\\\"labels.no_top_load\\\",\\\"value\\\":true}},\\\"type\\\":\\\"no_top_load\\\"}],\\\"schema_version\\\":\\\"o4_policy_v1\\\"},\\\"request_id\\\":\\\"O4_ANCHOR_10_0\\\",\\\"schema_version\\\":\\\"o4_response_v1\\\",\\\"state_hash\\\":\\\"0c2bd2769f9fa351fa1e7a5b6867109db6ff42ed03368425e844c156e73383de\\\"}\"}}],\"id\":\"offline-110\",\"model\":\"TEST_DOUBLE\",\"usage\":{\"completion_tokens\":1,\"prompt_tokens\":1,\"total_tokens\":2}}",
+      "repair": false,
+      "status": "valid",
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 1,
+        "total_tokens": 2
+      }
+    }
+  ],
+  "compilation_id": "D0000110",
+  "condition": "image",
+  "envelope": {
+    "binding_digest": "dcaf2eda2caf10876df267e45105dd21ca36f3715161e57634f654425dd4fddb",
+    "condition": "image",
+    "images": [
+      {
+        "path": "public/assets/scene_c079bd3ce74d8bf5cc66974dc0a5f97f50ced20ca20b892869e233caa0c2c8ee.png",
+        "sha256": "f6555b755f056bda331c5976c6db7a29a1448be71df9a9d0e8be0dede303dd2b"
+      },
+      {
+        "path": "public/assets/page_877492422c66ad8c755ac0de084c610f4b3828f1b905a3f0ac041ce9e12503ef.png",
+        "sha256": "e2bcc3eef708407c217e3667ccd28bcb48f8337400e1bad72e40bded87ca628a"
+      }
+    ],
+    "public_request": {
+      "available_objects": [
+        {
+          "cargo_category": "general",
+          "dimensions_mm": {
+            "height": 260,
+            "length": 350,
+            "width": 200
+          },
+          "fragile": false,
+          "labels": {
+            "max_top_load_kg": 100000.0,
+            "no_top_load": false
+          },
+          "mass_kg": 4.25,
+          "object_id": "item_02",
+          "packaging": {
+            "reinforced": true
+          },
+          "physical_top_load_limit_kg": 70.98,
+          "stackable": true,
+          "weight_class": "light"
+        }
+      ],
+      "container": {
+        "container_id": "P1210-H085",
+        "coordinate_frame": "container_bottom_center",
+        "length_mm": 1200,
+        "max_height_mm": 850,
+        "max_payload_kg": 1000.0,
+        "width_mm": 1000
+      },
+      "images": [
+        {
+          "path": "public/assets/scene_c079bd3ce74d8bf5cc66974dc0a5f97f50ced20ca20b892869e233caa0c2c8ee.png",
+          "sha256": "f6555b755f056bda331c5976c6db7a29a1448be71df9a9d0e8be0dede303dd2b"
+        },
+        {
+          "path": "public/assets/page_877492422c66ad8c755ac0de084c610f4b3828f1b905a3f0ac041ce9e12503ef.png",
+          "sha256": "e2bcc3eef708407c217e3667ccd28bcb48f8337400e1bad72e40bded87ca628a"
+        }
+      ],
+      "instruction_digest": "ceb40b9929f48011ecb4cb24455f69f802f57dc9c25fd7d4ea7e1131d6a3e689",
+      "instruction_text": "规则r1：对（全部箱体），累计顶部限载按标签；优先级20；覆盖无。规则r2：对（禁压标记等于是），禁止顶部加载；优先级10；覆盖r1。",
+      "observation_digest": "f5becbab5252db03af0db0f37366deb6efacd26de51032b8845f1c541713cf31",
+      "placed_objects": [
+        {
+          "cargo_category": "electronics",
+          "dimensions_mm": {
+            "height": 250,
+            "length": 490,
+            "width": 220
+          },
+          "fragile": false,
+          "labels": {
+            "max_top_load_kg": 100000.0,
+            "no_top_load": false
+          },
+          "mass_kg": 4.0,
+          "object_id": "item_01",
+          "oriented_size_mm": [
+            490.0,
+            220.0,
+            250.0
+          ],
+          "packaging": {
+            "reinforced": true
+          },
+          "physical_top_load_limit_kg": 30.32,
+          "pose": {
+            "x_mm": 355.0,
+            "y_mm": -390.0,
+            "yaw_deg": 0,
+            "z_base_mm": 0.0
+          },
+          "stackable": true,
+          "weight_class": "light"
+        }
+      ],
+      "request_id": "O4_ANCHOR_10_0",
+      "schema_version": "o4_request_v1",
+      "state_hash": "0c2bd2769f9fa351fa1e7a5b6867109db6ff42ed03368425e844c156e73383de",
+      "units": {
+        "length": "mm",
+        "mass": "kg"
+      }
+    },
+    "schema_version": "o4_visual_input_v1",
+    "visual_facts": {
+      "buffer_capacity": 1,
+      "container": {
+        "container_id": "P1210-H085",
+        "coordinate_frame": "container_bottom_center",
+        "length_mm": 1200,
+        "max_height_mm": 850,
+        "max_payload_kg": 1000.0,
+        "width_mm": 1000
+      },
+      "end_of_stream": null,
+      "facts_digest": "c079bd3ce74d8bf5cc66974dc0a5f97f50ced20ca20b892869e233caa0c2c8ee",
+      "label_face_version": "o4_simulated_label_pos_x_v1",
+      "mode": "single",
+      "objects": [
+        {
+          "arrival_index": null,
+          "faces": [
+            {
+              "face_id": "pos_x",
+              "local_normal": [
+                1,
+                0,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  245.0,
+                  -110.0,
+                  0
+                ],
+                [
+                  245.0,
+                  110.0,
+                  0
+                ],
+                [
+                  245.0,
+                  110.0,
+                  250
+                ],
+                [
+                  245.0,
+                  -110.0,
+                  250
+                ]
+              ],
+              "world_normal": [
+                1,
+                0,
+                0
+              ],
+              "world_vertices_mm": [
+                [
+                  600.0,
+                  -500.0,
+                  0.0
+                ],
+                [
+                  600.0,
+                  -280.0,
+                  0.0
+                ],
+                [
+                  600.0,
+                  -280.0,
+                  250.0
+                ],
+                [
+                  600.0,
+                  -500.0,
+                  250.0
+                ]
+              ]
+            },
+            {
+              "face_id": "neg_x",
+              "local_normal": [
+                -1,
+                0,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  -245.0,
+                  110.0,
+                  0
+                ],
+                [
+                  -245.0,
+                  -110.0,
+                  0
+                ],
+                [
+                  -245.0,
+                  -110.0,
+                  250
+                ],
+                [
+                  -245.0,
+                  110.0,
+                  250
+                ]
+              ],
+              "world_normal": [
+                -1,
+                0,
+                0
+              ],
+              "world_vertices_mm": [
+                [
+                  110.0,
+                  -280.0,
+                  0.0
+                ],
+                [
+                  110.0,
+                  -500.0,
+                  0.0
+                ],
+                [
+                  110.0,
+                  -500.0,
+                  250.0
+                ],
+                [
+                  110.0,
+                  -280.0,
+                  250.0
+                ]
+              ]
+            },
+            {
+              "face_id": "pos_y",
+              "local_normal": [
+                0,
+                1,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  245.0,
+                  110.0,
+                  0
+                ],
+                [
+                  -245.0,
+                  110.0,
+                  0
+                ],
+                [
+                  -245.0,
+                  110.0,
+                  250
+                ],
+                [
+                  245.0,
+                  110.0,
+                  250
+                ]
+              ],
+              "world_normal": [
+                0,
+                1,
+                0
+              ],
+              "world_vertices_mm": [
+                [
+                  600.0,
+                  -280.0,
+                  0.0
+                ],
+                [
+                  110.0,
+                  -280.0,
+                  0.0
+                ],
+                [
+                  110.0,
+                  -280.0,
+                  250.0
+                ],
+                [
+                  600.0,
+                  -280.0,
+                  250.0
+                ]
+              ]
+            },
+            {
+              "face_id": "neg_y",
+              "local_normal": [
+                0,
+                -1,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  -245.0,
+                  -110.0,
+                  0
+                ],
+                [
+                  245.0,
+                  -110.0,
+                  0
+                ],
+                [
+                  245.0,
+                  -110.0,
+                  250
+                ],
+                [
+                  -245.0,
+                  -110.0,
+                  250
+                ]
+              ],
+              "world_normal": [
+                0,
+                -1,
+                0
+              ],
+              "world_vertices_mm": [
+                [
+                  110.0,
+                  -500.0,
+                  0.0
+                ],
+                [
+                  600.0,
+                  -500.0,
+                  0.0
+                ],
+                [
+                  600.0,
+                  -500.0,
+                  250.0
+                ],
+                [
+                  110.0,
+                  -500.0,
+                  250.0
+                ]
+              ]
+            },
+            {
+              "face_id": "pos_z",
+              "local_normal": [
+                0,
+                0,
+                1
+              ],
+              "local_vertices_mm": [
+                [
+                  -245.0,
+                  -110.0,
+                  250
+                ],
+                [
+                  245.0,
+                  -110.0,
+                  250
+                ],
+                [
+                  245.0,
+                  110.0,
+                  250
+                ],
+                [
+                  -245.0,
+                  110.0,
+                  250
+                ]
+              ],
+              "world_normal": [
+                0,
+                0,
+                1
+              ],
+              "world_vertices_mm": [
+                [
+                  110.0,
+                  -500.0,
+                  250.0
+                ],
+                [
+                  600.0,
+                  -500.0,
+                  250.0
+                ],
+                [
+                  600.0,
+                  -280.0,
+                  250.0
+                ],
+                [
+                  110.0,
+                  -280.0,
+                  250.0
+                ]
+              ]
+            },
+            {
+              "face_id": "neg_z",
+              "local_normal": [
+                0,
+                0,
+                -1
+              ],
+              "local_vertices_mm": [
+                [
+                  -245.0,
+                  110.0,
+                  0
+                ],
+                [
+                  245.0,
+                  110.0,
+                  0
+                ],
+                [
+                  245.0,
+                  -110.0,
+                  0
+                ],
+                [
+                  -245.0,
+                  -110.0,
+                  0
+                ]
+              ],
+              "world_normal": [
+                0,
+                0,
+                -1
+              ],
+              "world_vertices_mm": [
+                [
+                  110.0,
+                  -280.0,
+                  0.0
+                ],
+                [
+                  600.0,
+                  -280.0,
+                  0.0
+                ],
+                [
+                  600.0,
+                  -500.0,
+                  0.0
+                ],
+                [
+                  110.0,
+                  -500.0,
+                  0.0
+                ]
+              ]
+            }
+          ],
+          "facts": {
+            "cargo_category": "electronics",
+            "dimensions_mm": {
+              "height": 250,
+              "length": 490,
+              "width": 220
+            },
+            "fragile": false,
+            "labels": {
+              "max_top_load_kg": 100000.0,
+              "no_top_load": false
+            },
+            "mass_kg": 4.0,
+            "object_id": "item_01",
+            "oriented_size_mm": [
+              490.0,
+              220.0,
+              250.0
+            ],
+            "packaging": {
+              "reinforced": true
+            },
+            "physical_top_load_limit_kg": 30.32,
+            "pose": {
+              "x_mm": 355.0,
+              "y_mm": -390.0,
+              "yaw_deg": 0,
+              "z_base_mm": 0.0
+            },
+            "stackable": true,
+            "weight_class": "light"
+          },
+          "label": {
+            "face_id": "pos_x",
+            "payload": {
+              "cargo_category": "electronics",
+              "max_top_load_kg": 100000.0,
+              "no_top_load": false,
+              "object_id": "item_01",
+              "reinforced": true
+            },
+            "source": "accurate_simulated_public_print_layout",
+            "uv_rect": [
+              0.15,
+              0.25,
+              0.85,
+              0.75
+            ]
+          },
+          "location": "placed",
+          "object_id": "item_01",
+          "slot": null
+        },
+        {
+          "arrival_index": null,
+          "faces": [
+            {
+              "face_id": "pos_x",
+              "local_normal": [
+                1,
+                0,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  175.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  175.0,
+                  100.0,
+                  0
+                ],
+                [
+                  175.0,
+                  100.0,
+                  260
+                ],
+                [
+                  175.0,
+                  -100.0,
+                  260
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_x",
+              "local_normal": [
+                -1,
+                0,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  -175.0,
+                  100.0,
+                  0
+                ],
+                [
+                  -175.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  -175.0,
+                  -100.0,
+                  260
+                ],
+                [
+                  -175.0,
+                  100.0,
+                  260
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "pos_y",
+              "local_normal": [
+                0,
+                1,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  175.0,
+                  100.0,
+                  0
+                ],
+                [
+                  -175.0,
+                  100.0,
+                  0
+                ],
+                [
+                  -175.0,
+                  100.0,
+                  260
+                ],
+                [
+                  175.0,
+                  100.0,
+                  260
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_y",
+              "local_normal": [
+                0,
+                -1,
+                0
+              ],
+              "local_vertices_mm": [
+                [
+                  -175.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  175.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  175.0,
+                  -100.0,
+                  260
+                ],
+                [
+                  -175.0,
+                  -100.0,
+                  260
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "pos_z",
+              "local_normal": [
+                0,
+                0,
+                1
+              ],
+              "local_vertices_mm": [
+                [
+                  -175.0,
+                  -100.0,
+                  260
+                ],
+                [
+                  175.0,
+                  -100.0,
+                  260
+                ],
+                [
+                  175.0,
+                  100.0,
+                  260
+                ],
+                [
+                  -175.0,
+                  100.0,
+                  260
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            },
+            {
+              "face_id": "neg_z",
+              "local_normal": [
+                0,
+                0,
+                -1
+              ],
+              "local_vertices_mm": [
+                [
+                  -175.0,
+                  100.0,
+                  0
+                ],
+                [
+                  175.0,
+                  100.0,
+                  0
+                ],
+                [
+                  175.0,
+                  -100.0,
+                  0
+                ],
+                [
+                  -175.0,
+                  -100.0,
+                  0
+                ]
+              ],
+              "world_normal": null,
+              "world_vertices_mm": null
+            }
+          ],
+          "facts": {
+            "cargo_category": "general",
+            "dimensions_mm": {
+              "height": 260,
+              "length": 350,
+              "width": 200
+            },
+            "fragile": false,
+            "labels": {
+              "max_top_load_kg": 100000.0,
+              "no_top_load": false
+            },
+            "mass_kg": 4.25,
+            "object_id": "item_02",
+            "packaging": {
+              "reinforced": true
+            },
+            "physical_top_load_limit_kg": 70.98,
+            "stackable": true,
+            "weight_class": "light"
+          },
+          "label": {
+            "face_id": "pos_x",
+            "payload": {
+              "cargo_category": "general",
+              "max_top_load_kg": 100000.0,
+              "no_top_load": false,
+              "object_id": "item_02",
+              "reinforced": true
+            },
+            "source": "accurate_simulated_public_print_layout",
+            "uv_rect": [
+              0.15,
+              0.25,
+              0.85,
+              0.75
+            ]
+          },
+          "location": "pending",
+          "object_id": "item_02",
+          "slot": null
+        }
+      ],
+      "rendering_version": "o4_public_render_v1",
+      "schema_version": "o4_visual_facts_v1",
+      "units": {
+        "length": "mm",
+        "mass": "kg"
+      }
+    },
+    "visual_facts_digest": "c079bd3ce74d8bf5cc66974dc0a5f97f50ced20ca20b892869e233caa0c2c8ee"
+  },
+  "first_valid": true,
+  "prompt_digest": "7fb961b257e2cf690c25441c3da5c7d4688775756b4f5e379596078c48883d23",
+  "prompt_version": "o4_d_compile_prompt_v1",
+  "repaired_valid": false,
+  "response": {
+    "instruction_digest": "ceb40b9929f48011ecb4cb24455f69f802f57dc9c25fd7d4ea7e1131d6a3e689",
+    "observation_digest": "f5becbab5252db03af0db0f37366deb6efacd26de51032b8845f1c541713cf31",
+    "policy_ast": {
+      "rules": [
+        {
+          "limit": {
+            "field": "labels.max_top_load_kg"
+          },
+          "overrides": [],
+          "priority": 20,
+          "rule_id": "r1",
+          "target": {
+            "all": true
+          },
+          "type": "max_top_load"
+        },
+        {
+          "overrides": [
+            "r1"
+          ],
+          "priority": 10,
+          "rule_id": "r2",
+          "target": {
+            "eq": {
+              "field": "labels.no_top_load",
+              "value": true
+            }
+          },
+          "type": "no_top_load"
+        }
+      ],
+      "schema_version": "o4_policy_v1"
+    },
+    "request_id": "O4_ANCHOR_10_0",
+    "schema_version": "o4_response_v1",
+    "state_hash": "0c2bd2769f9fa351fa1e7a5b6867109db6ff42ed03368425e844c156e73383de"
+  },
+  "source": {
+    "available_objects": [
+      {
+        "cargo_category": "general",
+        "dimensions_mm": {
+          "height": 260,
+          "length": 350,
+          "width": 200
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 100000.0,
+          "no_top_load": false
+        },
+        "mass_kg": 4.25,
+        "object_id": "item_02",
+        "packaging": {
+          "reinforced": true
+        },
+        "physical_top_load_limit_kg": 70.98,
+        "stackable": true,
+        "weight_class": "light"
+      }
+    ],
+    "container": {
+      "container_id": "P1210-H085",
+      "coordinate_frame": "container_bottom_center",
+      "length_mm": 1200,
+      "max_height_mm": 850,
+      "max_payload_kg": 1000.0,
+      "width_mm": 1000
+    },
+    "images": [],
+    "instruction_digest": "ceb40b9929f48011ecb4cb24455f69f802f57dc9c25fd7d4ea7e1131d6a3e689",
+    "instruction_text": "规则r1：对（全部箱体），累计顶部限载按标签；优先级20；覆盖无。规则r2：对（禁压标记等于是），禁止顶部加载；优先级10；覆盖r1。",
+    "observation_digest": "1c6de3ba0017a5dfb4113ef03ff6214e062ce12665aa2ea1e9e5d4a52e53288f",
+    "placed_objects": [
+      {
+        "cargo_category": "electronics",
+        "dimensions_mm": {
+          "height": 250,
+          "length": 490,
+          "width": 220
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 100000.0,
+          "no_top_load": false
+        },
+        "mass_kg": 4.0,
+        "object_id": "item_01",
+        "oriented_size_mm": [
+          490.0,
+          220.0,
+          250.0
+        ],
+        "packaging": {
+          "reinforced": true
+        },
+        "physical_top_load_limit_kg": 30.32,
+        "pose": {
+          "x_mm": 355.0,
+          "y_mm": -390.0,
+          "yaw_deg": 0,
+          "z_base_mm": 0.0
+        },
+        "stackable": true,
+        "weight_class": "light"
+      }
+    ],
+    "request_id": "O4_ANCHOR_10_0",
+    "schema_version": "o4_request_v1",
+    "state_hash": "0c2bd2769f9fa351fa1e7a5b6867109db6ff42ed03368425e844c156e73383de",
+    "units": {
+      "length": "mm",
+      "mass": "kg"
+    }
+  },
+  "status": "valid",
+  "test_double": true
+}

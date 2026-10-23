@@ -1,0 +1,87 @@
+{
+  "status": "PASS",
+  "scope": "O4_F_OFFLINE",
+  "final_date": "2026-10-22",
+  "criteria": {
+    "F1": true,
+    "F10": true,
+    "F2": true,
+    "F3": true,
+    "F4": true,
+    "F5": true,
+    "F6": true,
+    "F7": true,
+    "F8": true,
+    "F9": true
+  },
+  "evidence": {
+    "F1": [
+      "cases/gold.json",
+      "audit/repeat_resume.json",
+      "completion_audit.json"
+    ],
+    "F2": [
+      "cases/constructs.json",
+      "completion_audit.json"
+    ],
+    "F3": [
+      "plan.json",
+      "metrics/per_episode.json",
+      "audit/compatibility.json",
+      "completion_audit.json"
+    ],
+    "F4": [
+      "cases/diagnostics.json",
+      "metrics/per_episode.json",
+      "completion_audit.json"
+    ],
+    "F5": [
+      "metrics/resources.json",
+      "completion_audit.json"
+    ],
+    "F6": [
+      "cases/diagnostics.json",
+      "future_environment_audit.json"
+    ],
+    "F7": [
+      "audit/compatibility.json",
+      "completion_audit.json"
+    ],
+    "F8": [
+      "audit/repeat_resume.json",
+      "audit/tamper.json",
+      "replay_report.json",
+      "full_rerun_replay.json"
+    ],
+    "F9": [
+      "metrics/per_episode.json",
+      "metrics/per_source.json",
+      "metrics/resources.json",
+      "completion_audit.json"
+    ],
+    "F10": [
+      "audit/protected.after.json",
+      "audit/network.json",
+      "independent_protection.json",
+      "legacy_ab_snapshot_replay.json",
+      "legacy_c_snapshot_replay.json",
+      "cli_help.txt"
+    ]
+  },
+  "paths_note": "cases/metrics/audit/replay_report/plan relative to experiment; other paths relative to this report directory",
+  "tests": {
+    "planner_regression": 344,
+    "additional_binding": 1,
+    "dataset_regression": 7,
+    "all_passed": true
+  },
+  "complete_o4": false,
+  "deferred": [
+    "A5 formal images",
+    "A6 actual human review",
+    "D real model/API evaluation",
+    "E extensions"
+  ],
+  "flash_required_for_f": false,
+  "real_api_calls": 0
+}

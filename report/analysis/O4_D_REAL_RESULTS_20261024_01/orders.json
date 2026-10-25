@@ -1,0 +1,566 @@
+{
+  "acceptance": {
+    "D1": true,
+    "D2": true,
+    "D3": true,
+    "D4": true,
+    "D5": true,
+    "D6": true,
+    "full_development_matrix": false,
+    "full_o4_status": "INCOMPLETE",
+    "human_review": "NOT_REQUIRED_BY_USER",
+    "planned_jobs": 1152,
+    "profile": "orders",
+    "real_api_attempts": 4472,
+    "recorded_jobs": 1152,
+    "scope": "O4_D_REAL_DEVELOPMENT_MATRIX",
+    "status": "PASS",
+    "test_double": false,
+    "unseen_generalization": "NOT_MEASURED"
+  },
+  "alias_only_counterfactual": {
+    "failed_compilations": 243,
+    "mapping": {
+      "cleaning_supplies": "household_cleaner",
+      "glass": "glassware",
+      "清洁用品": "household_cleaner"
+    },
+    "matching_reference_after_alias_replacement": 233,
+    "scope": "post-hoc diagnosis of copies; not model accuracy, not a new rollout, originals unchanged"
+  },
+  "event_audit_counts": {
+    "events": 23778,
+    "physical_checks": 10024,
+    "reference_checks": 23778,
+    "search_evaluations": 635552
+  },
+  "experiment": "EXP_O4_D_ORDERS_REAL_20261023_01",
+  "failure_examples": [
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000157",
+      "condition": "text",
+      "error": "invalid_ast: unknown category"
+    },
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000158",
+      "condition": "image",
+      "error": "invalid_ast: unknown category"
+    },
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000159",
+      "condition": "text",
+      "error": "invalid_ast: unknown category"
+    },
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000160",
+      "condition": "image",
+      "error": "invalid_ast: unknown category"
+    },
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000161",
+      "condition": "text",
+      "error": "invalid_ast: unknown category"
+    },
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000162",
+      "condition": "image",
+      "error": "invalid_ast: unknown category"
+    },
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000163",
+      "condition": "text",
+      "error": "invalid_ast: unknown category"
+    },
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000164",
+      "condition": "image",
+      "error": "invalid_ast: unknown category"
+    },
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000165",
+      "condition": "text",
+      "error": "invalid_ast: unknown category"
+    },
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000166",
+      "condition": "image",
+      "error": "invalid_ast: unknown category"
+    },
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000167",
+      "condition": "text",
+      "error": "invalid_ast: unknown category"
+    },
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000168",
+      "condition": "image",
+      "error": "invalid_ast: unknown category"
+    }
+  ],
+  "full_planner_pixel_replay_repeated": false,
+  "integrity_files_checked": 8065,
+  "invalid_attempts_by_reason": {
+    "invalid_ast": 7,
+    "invalid_binding": 15,
+    "unknown_category": 476
+  },
+  "latency_sum_s": 8925.145019002975,
+  "matched_states": {
+    "both_reached_same_public_state": 1988,
+    "text_valid=False,image_valid=False": 98,
+    "text_valid=False,image_valid=True": 14,
+    "text_valid=True,image_valid=False": 21,
+    "text_valid=True,image_valid=True": 1855
+  },
+  "new_api_calls": 0,
+  "prompt_contains_complete_category_dictionary": false,
+  "read_only": true,
+  "request_response_ledger_audited": true,
+  "saved_D4": true,
+  "status": "PASS",
+  "summary": {
+    "api": {
+      "attempts": 4472,
+      "by_condition": {
+        "image": {
+          "attempts": 2192,
+          "compilations": 2064,
+          "final_valid": 1939,
+          "first_valid": 1936,
+          "repaired_valid": 3
+        },
+        "text": {
+          "attempts": 2280,
+          "compilations": 2153,
+          "final_valid": 2035,
+          "first_valid": 2026,
+          "repaired_valid": 9
+        }
+      },
+      "compilations": 4217,
+      "cost": null,
+      "final_valid": 3974,
+      "first_valid": 3962,
+      "latency_max_s": 7.834817331997328,
+      "latency_p50_s": 1.9750114240014227,
+      "latency_p95_s": 2.6374097110019648,
+      "missing_usage": 0,
+      "provider_failures": 0,
+      "repaired_valid": 12,
+      "repairs": 255,
+      "served_models": [
+        "deepseek-flash"
+      ],
+      "tokens": {
+        "completion_tokens": {
+          "known_sum": 1288867,
+          "missing_attempts": 0
+        },
+        "prompt_tokens": {
+          "known_sum": 58803700,
+          "missing_attempts": 0
+        },
+        "total_tokens": {
+          "known_sum": 60092567,
+          "missing_attempts": 0
+        }
+      }
+    },
+    "compilation": {
+      "oracle_ast": {
+        "allowed_set_equal": 3402,
+        "applicable_objects_equal": 3402,
+        "conditions_exceptions_equal": 3402,
+        "denominator": "all planned compilation opportunities; failures retained",
+        "false_allow_count": 0,
+        "false_reject_count": 0,
+        "planned_compilations": 3402,
+        "semantic_equal": 3402,
+        "valid_ast": 3402
+      },
+      "public_parser": {
+        "allowed_set_equal": 3402,
+        "applicable_objects_equal": 3402,
+        "conditions_exceptions_equal": 3402,
+        "denominator": "all planned compilation opportunities; failures retained",
+        "false_allow_count": 0,
+        "false_reject_count": 0,
+        "planned_compilations": 3402,
+        "semantic_equal": 3402,
+        "valid_ast": 3402
+      },
+      "remote_image": {
+        "allowed_set_equal": 1939,
+        "applicable_objects_equal": 1939,
+        "conditions_exceptions_equal": 1939,
+        "denominator": "all planned compilation opportunities; failures retained",
+        "false_allow_count": 0,
+        "false_reject_count": 0,
+        "planned_compilations": 2064,
+        "semantic_equal": 1939,
+        "valid_ast": 1939
+      },
+      "remote_text": {
+        "allowed_set_equal": 2035,
+        "applicable_objects_equal": 2035,
+        "conditions_exceptions_equal": 2035,
+        "denominator": "all planned compilation opportunities; failures retained",
+        "false_allow_count": 0,
+        "false_reject_count": 0,
+        "planned_compilations": 2153,
+        "semantic_equal": 2035,
+        "valid_ast": 2035
+      }
+    },
+    "episodes": [
+      {
+        "backend": "oracle_ast",
+        "business_violations": 0,
+        "clean_completed": 11,
+        "completed": 11,
+        "mean_item_ratio": 0.6375014658973637,
+        "mean_volume_ratio": 0.6243157966225136,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "buffer_fifo"
+      },
+      {
+        "backend": "oracle_ast",
+        "business_violations": 0,
+        "clean_completed": 17,
+        "completed": 17,
+        "mean_item_ratio": 0.7494980961328358,
+        "mean_volume_ratio": 0.7262890656017666,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "buffer_heuristic"
+      },
+      {
+        "backend": "oracle_ast",
+        "business_violations": 0,
+        "clean_completed": 13,
+        "completed": 13,
+        "mean_item_ratio": 0.6992725922550485,
+        "mean_volume_ratio": 0.6898482612888394,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "buffer_search"
+      },
+      {
+        "backend": "oracle_ast",
+        "business_violations": 0,
+        "clean_completed": 11,
+        "completed": 11,
+        "mean_item_ratio": 0.6375014658973637,
+        "mean_volume_ratio": 0.6243157966225136,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "single_greedy"
+      },
+      {
+        "backend": "public_parser",
+        "business_violations": 0,
+        "clean_completed": 11,
+        "completed": 11,
+        "mean_item_ratio": 0.6375014658973637,
+        "mean_volume_ratio": 0.6243157966225136,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "buffer_fifo"
+      },
+      {
+        "backend": "public_parser",
+        "business_violations": 0,
+        "clean_completed": 17,
+        "completed": 17,
+        "mean_item_ratio": 0.7494980961328358,
+        "mean_volume_ratio": 0.7262890656017666,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "buffer_heuristic"
+      },
+      {
+        "backend": "public_parser",
+        "business_violations": 0,
+        "clean_completed": 13,
+        "completed": 13,
+        "mean_item_ratio": 0.6992725922550485,
+        "mean_volume_ratio": 0.6898482612888394,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "buffer_search"
+      },
+      {
+        "backend": "public_parser",
+        "business_violations": 0,
+        "clean_completed": 11,
+        "completed": 11,
+        "mean_item_ratio": 0.6375014658973637,
+        "mean_volume_ratio": 0.6243157966225136,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "single_greedy"
+      },
+      {
+        "backend": "remote_image",
+        "business_violations": 0,
+        "clean_completed": 7,
+        "completed": 7,
+        "mean_item_ratio": 0.36894155865872835,
+        "mean_volume_ratio": 0.3635707795513987,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "buffer_fifo"
+      },
+      {
+        "backend": "remote_image",
+        "business_violations": 0,
+        "clean_completed": 6,
+        "completed": 6,
+        "mean_item_ratio": 0.4305956210900097,
+        "mean_volume_ratio": 0.4176468022185055,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "buffer_heuristic"
+      },
+      {
+        "backend": "remote_image",
+        "business_violations": 0,
+        "clean_completed": 7,
+        "completed": 7,
+        "mean_item_ratio": 0.4254289657782305,
+        "mean_volume_ratio": 0.4224433934319642,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "buffer_search"
+      },
+      {
+        "backend": "remote_image",
+        "business_violations": 0,
+        "clean_completed": 3,
+        "completed": 3,
+        "mean_item_ratio": 0.2851824519458678,
+        "mean_volume_ratio": 0.28016697836166304,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "single_greedy"
+      },
+      {
+        "backend": "remote_text",
+        "business_violations": 0,
+        "clean_completed": 8,
+        "completed": 8,
+        "mean_item_ratio": 0.40620703136827996,
+        "mean_volume_ratio": 0.39822051448307505,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "buffer_fifo"
+      },
+      {
+        "backend": "remote_text",
+        "business_violations": 0,
+        "clean_completed": 7,
+        "completed": 7,
+        "mean_item_ratio": 0.44081042826044115,
+        "mean_volume_ratio": 0.4288421636806457,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "buffer_heuristic"
+      },
+      {
+        "backend": "remote_text",
+        "business_violations": 0,
+        "clean_completed": 8,
+        "completed": 8,
+        "mean_item_ratio": 0.42556280220753906,
+        "mean_volume_ratio": 0.4188398320785941,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "buffer_search"
+      },
+      {
+        "backend": "remote_text",
+        "business_violations": 0,
+        "clean_completed": 5,
+        "completed": 5,
+        "mean_item_ratio": 0.3115530659809555,
+        "mean_volume_ratio": 0.3042337414448163,
+        "physical_violations": 0,
+        "planned": 72,
+        "planner": "single_greedy"
+      }
+    ]
+  },
+  "summary_recomputed": true,
+  "terminal_model_failures": {
+    "invalid_ast": 3,
+    "invalid_binding": 7,
+    "unknown_category": 233
+  },
+  "terminations": {
+    "oracle_ast": {
+      "all_items_placed": 52,
+      "buffer_no_compiled_business_action": 170,
+      "buffer_no_physical_action": 36,
+      "fifo_head_blocked": 30
+    },
+    "public_parser": {
+      "all_items_placed": 52,
+      "buffer_no_compiled_business_action": 170,
+      "buffer_no_physical_action": 36,
+      "fifo_head_blocked": 30
+    },
+    "remote_image": {
+      "all_items_placed": 23,
+      "buffer_no_compiled_business_action": 105,
+      "buffer_no_physical_action": 16,
+      "fifo_head_blocked": 19,
+      "invalid_ast": 118,
+      "invalid_binding": 7
+    },
+    "remote_text": {
+      "all_items_placed": 28,
+      "buffer_no_compiled_business_action": 104,
+      "buffer_no_physical_action": 17,
+      "fifo_head_blocked": 21,
+      "invalid_ast": 118
+    }
+  },
+  "terminations_by_configuration": {
+    "oracle_ast/0": {
+      "buffer_no_compiled_business_action": 41,
+      "fifo_head_blocked": 7
+    },
+    "oracle_ast/1": {
+      "buffer_no_compiled_business_action": 42,
+      "fifo_head_blocked": 6
+    },
+    "oracle_ast/2": {
+      "all_items_placed": 21,
+      "buffer_no_compiled_business_action": 1,
+      "buffer_no_physical_action": 20,
+      "fifo_head_blocked": 6
+    },
+    "oracle_ast/3": {
+      "all_items_placed": 31,
+      "buffer_no_compiled_business_action": 1,
+      "buffer_no_physical_action": 15,
+      "fifo_head_blocked": 1
+    },
+    "oracle_ast/4": {
+      "buffer_no_compiled_business_action": 41,
+      "buffer_no_physical_action": 1,
+      "fifo_head_blocked": 6
+    },
+    "oracle_ast/5": {
+      "buffer_no_compiled_business_action": 44,
+      "fifo_head_blocked": 4
+    },
+    "public_parser/0": {
+      "buffer_no_compiled_business_action": 41,
+      "fifo_head_blocked": 7
+    },
+    "public_parser/1": {
+      "buffer_no_compiled_business_action": 42,
+      "fifo_head_blocked": 6
+    },
+    "public_parser/2": {
+      "all_items_placed": 21,
+      "buffer_no_compiled_business_action": 1,
+      "buffer_no_physical_action": 20,
+      "fifo_head_blocked": 6
+    },
+    "public_parser/3": {
+      "all_items_placed": 31,
+      "buffer_no_compiled_business_action": 1,
+      "buffer_no_physical_action": 15,
+      "fifo_head_blocked": 1
+    },
+    "public_parser/4": {
+      "buffer_no_compiled_business_action": 41,
+      "buffer_no_physical_action": 1,
+      "fifo_head_blocked": 6
+    },
+    "public_parser/5": {
+      "buffer_no_compiled_business_action": 44,
+      "fifo_head_blocked": 4
+    },
+    "remote_image/0": {
+      "buffer_no_compiled_business_action": 41,
+      "fifo_head_blocked": 7
+    },
+    "remote_image/1": {
+      "buffer_no_compiled_business_action": 40,
+      "fifo_head_blocked": 6,
+      "invalid_binding": 2
+    },
+    "remote_image/2": {
+      "all_items_placed": 7,
+      "buffer_no_physical_action": 8,
+      "fifo_head_blocked": 3,
+      "invalid_ast": 27,
+      "invalid_binding": 3
+    },
+    "remote_image/3": {
+      "all_items_placed": 16,
+      "buffer_no_compiled_business_action": 1,
+      "buffer_no_physical_action": 8,
+      "fifo_head_blocked": 1,
+      "invalid_ast": 22
+    },
+    "remote_image/4": {
+      "buffer_no_compiled_business_action": 13,
+      "fifo_head_blocked": 2,
+      "invalid_ast": 32,
+      "invalid_binding": 1
+    },
+    "remote_image/5": {
+      "buffer_no_compiled_business_action": 10,
+      "invalid_ast": 37,
+      "invalid_binding": 1
+    },
+    "remote_text/0": {
+      "buffer_no_compiled_business_action": 41,
+      "fifo_head_blocked": 7
+    },
+    "remote_text/1": {
+      "buffer_no_compiled_business_action": 41,
+      "fifo_head_blocked": 6,
+      "invalid_ast": 1
+    },
+    "remote_text/2": {
+      "all_items_placed": 10,
+      "buffer_no_physical_action": 10,
+      "fifo_head_blocked": 3,
+      "invalid_ast": 25
+    },
+    "remote_text/3": {
+      "all_items_placed": 18,
+      "buffer_no_physical_action": 7,
+      "fifo_head_blocked": 1,
+      "invalid_ast": 22
+    },
+    "remote_text/4": {
+      "buffer_no_compiled_business_action": 11,
+      "fifo_head_blocked": 3,
+      "invalid_ast": 34
+    },
+    "remote_text/5": {
+      "buffer_no_compiled_business_action": 11,
+      "fifo_head_blocked": 1,
+      "invalid_ast": 36
+    }
+  }
+}

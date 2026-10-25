@@ -1,0 +1,321 @@
+{
+  "E4": "OUT_OF_SCOPE",
+  "items": [
+    {
+      "evidence": [
+        "config.snapshot.json",
+        "plan.json",
+        "semantic_pallet_planner/tests/unit/test_o4_e1_extensions.py"
+      ],
+      "observed": {
+        "capability": "o4_e1_v1",
+        "max_rules": 32,
+        "max_selector_depth": 4,
+        "schemas": 3,
+        "top_label": "pos_z"
+      },
+      "requirement": "E0_contract_and_capability",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "report/analysis/O4_E0_E1_DEVELOPMENT_20261025_01/pytest.xml",
+        "audit/faults.json"
+      ],
+      "observed": {
+        "binding_fields": [
+          "request_id",
+          "state_hash",
+          "instruction_digest",
+          "observation_digest"
+        ],
+        "faults": 21,
+        "source_identical_to_snapshot": true,
+        "tests": 190
+      },
+      "requirement": "EX-E0-CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "private/data.json",
+        "metrics/gold.json",
+        "metrics/invalid.json"
+      ],
+      "observed": {
+        "all_expected": true,
+        "gold": 24,
+        "invalid": 12
+      },
+      "requirement": "EX-E1-GOLD_and_E1-A",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "metrics/pairs.json",
+        "metrics/pair_checks.json"
+      ],
+      "observed": {
+        "action_change_pairs": 4,
+        "allowed_change_pairs": 6,
+        "invariant_pairs": 6,
+        "pair_records": 48
+      },
+      "requirement": "EX-E1-PAIR_and_E1-B",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "metrics/candidate_coverage.json",
+        "report/analysis/O4_E0_E1_DEVELOPMENT_20261025_01/manual_positive_witnesses.json",
+        "private/data.json"
+      ],
+      "observed": {
+        "manual_positive_witnesses": 8,
+        "predeclared_negative_tasks": 4,
+        "recovery_records": 174
+      },
+      "requirement": "E1-C_candidate_coverage_and_existence",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "metrics/legacy_regression.json",
+        "audit/faults.json",
+        "report/analysis/O4_E0_E1_DEVELOPMENT_20261025_01/physical_commit_checks.json"
+      ],
+      "observed": {
+        "old_gold_regression": 36,
+        "physical_commits": 264,
+        "physical_violations": 0,
+        "wrong_ast_exposed": true
+      },
+      "requirement": "E1-D_legacy_combinations_and_independent_reference",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "metrics/episodes.json",
+        "audit/episode_recomputation.json",
+        "report/analysis/O4_E0_E1_DEVELOPMENT_20261025_01/completion_checks.json"
+      ],
+      "observed": {
+        "backend_planner_cells": 8,
+        "completed": 64,
+        "planned_episodes": 96,
+        "predeclared_uncompleted": 32
+      },
+      "requirement": "EX-E1-CONSTRUCT_and_E1-E",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "metrics/legacy_regression.json"
+      ],
+      "observed": {
+        "all_correct": true,
+        "old_gold": 36
+      },
+      "requirement": "EX-E1-REGRESSION",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "audit/repeats.json",
+        "audit/restores.json",
+        "report/analysis/O4_E0_E1_DEVELOPMENT_20261025_01/fifo_single_checks.json"
+      ],
+      "observed": {
+        "all_disk_results_equal": true,
+        "fifo_single_pairs": 24,
+        "repeats": 48,
+        "restores": 48
+      },
+      "requirement": "E1_repeats_restore_fifo",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "audit/visual.json",
+        "semantic_pallet_planner/src/semantic_pallet_planner/o4/extensions/visual_verify.py"
+      ],
+      "observed": {
+        "independent_scene_and_text_pixels": true,
+        "input_checks": 344,
+        "unique_png": 104
+      },
+      "requirement": "EX-E-VISUAL_E1_increment",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "report/analysis/O4_E0_E1_DEVELOPMENT_20261025_01/cli_verify.json",
+        "delivery_manifest.json"
+      ],
+      "observed": {
+        "episode_records_recomputed": 96,
+        "new_api_attempts": 0,
+        "sealed_files": 419,
+        "status": "PASS"
+      },
+      "requirement": "new_result_read_only_verification",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "audit/protected.json",
+        "report/analysis/O4_E0_E1_DEVELOPMENT_20261025_01/protected.before.json"
+      ],
+      "observed": {
+        "changed": [],
+        "checked": 101248,
+        "status": "PASS"
+      },
+      "requirement": "old_file_protection",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "semantic_pallet_planner/outputs/PLAN_O4_E1_SMOKE_READY_20261025_01/plan.json",
+        "semantic_pallet_planner/outputs/PLAN_O4_E1_FIXED_READY_20261025_01/plan.json",
+        "docs/04_运行与复核手册/O4E0与E1区域约束运行及验收手册_20261025.md"
+      ],
+      "observed": {
+        "actual_api_attempts": 0,
+        "fixed_budget": 96,
+        "smoke_budget": 48
+      },
+      "requirement": "real_compile_delivery_without_calls",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "EA-01",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "EA-02",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "EA-03",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "EA-04",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "EA-05",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "EA-06",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "EA-07",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "EA-08",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "EA-09",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "EA-10",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "E1-A",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "E1-B",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "E1-C",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "E1-D",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "acceptance_report.json"
+      ],
+      "observed": true,
+      "requirement": "E1-E",
+      "status": "PASS"
+    }
+  ],
+  "out_of_scope": [
+    "E2",
+    "E3",
+    "E5",
+    "real_api_execution",
+    "unseen_generalization"
+  ],
+  "scope": "E0_and_E1_only",
+  "status": "PASS"
+}

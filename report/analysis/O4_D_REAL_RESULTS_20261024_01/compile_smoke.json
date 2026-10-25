@@ -1,0 +1,194 @@
+{
+  "acceptance": {
+    "D1": true,
+    "D2": true,
+    "D3": true,
+    "D4": true,
+    "D5": true,
+    "D6": true,
+    "full_development_matrix": false,
+    "full_o4_status": "INCOMPLETE",
+    "human_review": "NOT_REQUIRED_BY_USER",
+    "planned_jobs": 48,
+    "profile": "compile-smoke",
+    "real_api_attempts": 28,
+    "recorded_jobs": 48,
+    "scope": "O4_D_REAL_DEVELOPMENT_MATRIX",
+    "status": "PASS",
+    "test_double": false,
+    "unseen_generalization": "NOT_MEASURED"
+  },
+  "alias_only_counterfactual": {
+    "failed_compilations": 4,
+    "mapping": {
+      "cleaning_supplies": "household_cleaner",
+      "glass": "glassware",
+      "清洁用品": "household_cleaner"
+    },
+    "matching_reference_after_alias_replacement": 4,
+    "scope": "post-hoc diagnosis of copies; not model accuracy, not a new rollout, originals unchanged"
+  },
+  "event_audit_counts": {
+    "events": 0,
+    "physical_checks": 0,
+    "reference_checks": 0,
+    "search_evaluations": 0
+  },
+  "experiment": "EXP_O4_D_COMPILE_SMOKE_REAL_20261023_01",
+  "failure_examples": [
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000021",
+      "condition": "text",
+      "error": "invalid_ast: unknown category"
+    },
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000022",
+      "condition": "image",
+      "error": "invalid_ast: unknown category"
+    },
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000023",
+      "condition": "text",
+      "error": "invalid_ast: unknown category"
+    },
+    {
+      "alias_only_diagnostic_equal": true,
+      "compilation_id": "D0000024",
+      "condition": "image",
+      "error": "invalid_ast: unknown category"
+    }
+  ],
+  "full_planner_pixel_replay_repeated": false,
+  "integrity_files_checked": 254,
+  "invalid_attempts_by_reason": {
+    "unknown_category": 8
+  },
+  "latency_sum_s": 49.44610527899931,
+  "matched_states": {},
+  "new_api_calls": 0,
+  "prompt_contains_complete_category_dictionary": false,
+  "read_only": true,
+  "request_response_ledger_audited": true,
+  "saved_D4": true,
+  "status": "PASS",
+  "summary": {
+    "api": {
+      "attempts": 28,
+      "by_condition": {
+        "image": {
+          "attempts": 14,
+          "compilations": 12,
+          "final_valid": 10,
+          "first_valid": 10,
+          "repaired_valid": 0
+        },
+        "text": {
+          "attempts": 14,
+          "compilations": 12,
+          "final_valid": 10,
+          "first_valid": 10,
+          "repaired_valid": 0
+        }
+      },
+      "compilations": 24,
+      "cost": null,
+      "final_valid": 20,
+      "first_valid": 20,
+      "latency_max_s": 2.3391052469996794,
+      "latency_p50_s": 1.7284117700000934,
+      "latency_p95_s": 2.2805889440023748,
+      "missing_usage": 0,
+      "provider_failures": 0,
+      "repaired_valid": 0,
+      "repairs": 4,
+      "served_models": [
+        "deepseek-flash"
+      ],
+      "tokens": {
+        "completion_tokens": {
+          "known_sum": 7310,
+          "missing_attempts": 0
+        },
+        "prompt_tokens": {
+          "known_sum": 164435,
+          "missing_attempts": 0
+        },
+        "total_tokens": {
+          "known_sum": 171745,
+          "missing_attempts": 0
+        }
+      }
+    },
+    "compilation": {
+      "oracle_ast": {
+        "allowed_set_equal": 12,
+        "applicable_objects_equal": 12,
+        "conditions_exceptions_equal": 12,
+        "denominator": "all planned compilation opportunities; failures retained",
+        "false_allow_count": 0,
+        "false_reject_count": 0,
+        "planned_compilations": 12,
+        "semantic_equal": 12,
+        "valid_ast": 12
+      },
+      "public_parser": {
+        "allowed_set_equal": 12,
+        "applicable_objects_equal": 12,
+        "conditions_exceptions_equal": 12,
+        "denominator": "all planned compilation opportunities; failures retained",
+        "false_allow_count": 0,
+        "false_reject_count": 0,
+        "planned_compilations": 12,
+        "semantic_equal": 12,
+        "valid_ast": 12
+      },
+      "remote_image": {
+        "allowed_set_equal": 10,
+        "applicable_objects_equal": 10,
+        "conditions_exceptions_equal": 10,
+        "denominator": "all planned compilation opportunities; failures retained",
+        "false_allow_count": 0,
+        "false_reject_count": 0,
+        "planned_compilations": 12,
+        "semantic_equal": 10,
+        "valid_ast": 10
+      },
+      "remote_text": {
+        "allowed_set_equal": 10,
+        "applicable_objects_equal": 10,
+        "conditions_exceptions_equal": 10,
+        "denominator": "all planned compilation opportunities; failures retained",
+        "false_allow_count": 0,
+        "false_reject_count": 0,
+        "planned_compilations": 12,
+        "semantic_equal": 10,
+        "valid_ast": 10
+      }
+    },
+    "episodes": []
+  },
+  "summary_recomputed": true,
+  "terminal_model_failures": {
+    "unknown_category": 4
+  },
+  "terminations": {
+    "oracle_ast": {
+      "valid": 12
+    },
+    "public_parser": {
+      "valid": 12
+    },
+    "remote_image": {
+      "invalid_ast": 2,
+      "valid": 10
+    },
+    "remote_text": {
+      "invalid_ast": 2,
+      "valid": 10
+    }
+  },
+  "terminations_by_configuration": {}
+}

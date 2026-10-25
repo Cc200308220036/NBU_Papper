@@ -1,0 +1,999 @@
+{
+  "acceptance": {
+    "D1": true,
+    "D2": true,
+    "D3": true,
+    "D4": true,
+    "D5": true,
+    "D6": true,
+    "full_development_matrix": false,
+    "full_o4_status": "INCOMPLETE",
+    "human_review": "NOT_REQUIRED_BY_USER",
+    "planned_jobs": 576,
+    "profile": "fixed",
+    "real_api_attempts": 288,
+    "recorded_jobs": 576,
+    "scope": "O4_D_REAL_DEVELOPMENT_MATRIX",
+    "status": "PASS",
+    "test_double": false,
+    "unseen_generalization": "NOT_MEASURED"
+  },
+  "cases": 144,
+  "conditions": {
+    "image": {
+      "attempts": 144,
+      "input_tokens": 2129024,
+      "latency_p50_s": 2.107411956996657,
+      "latency_p95_s": 2.814414955006214,
+      "latency_total_s": 305.56761686792015,
+      "output_tokens": 40728
+    },
+    "text": {
+      "attempts": 144,
+      "input_tokens": 1785091,
+      "latency_p50_s": 1.8038837199856061,
+      "latency_p95_s": 2.4872140219958965,
+      "latency_total_s": 266.087549052987,
+      "output_tokens": 40703
+    }
+  },
+  "distinct_provider_ids": 288,
+  "experiment": "EXP_O4_D_V2_FIXED_REAL_20261025_01",
+  "full_replay_repeated": false,
+  "known_development_sources": 12,
+  "method": "sealed-file, request/PNG encoding, raw response, ledger and per-job metric recomputation",
+  "mismatches": [
+    {
+      "actual": {
+        "rules": [
+          {
+            "overrides": [],
+            "priority": 20,
+            "rule_id": "r1",
+            "target": {
+              "all": true
+            },
+            "type": "no_top_load"
+          }
+        ],
+        "schema_version": "o4_policy_v1"
+      },
+      "allowed_set_equal": true,
+      "backend": "remote_text",
+      "case_id": "O4_ANCHOR_04_2",
+      "classification": "zero_limit_equivalent_representation",
+      "compilation_id": "D0000041",
+      "finite_domain_equal": true,
+      "instruction_text": "规则r1：对（全部箱体），累计顶部限载为0kg；优先级20；覆盖无。",
+      "job_id": "J000082",
+      "original_metrics": {
+        "allowed_set_equal": true,
+        "applicable_objects_equal": false,
+        "conditions_exceptions_equal": false,
+        "false_allow_ids": [],
+        "false_reject_ids": [],
+        "method_allowed_ids": [],
+        "policy_comparison": {
+          "counterexamples": [],
+          "finite_domain_equal": true,
+          "probe_count": 392,
+          "probe_scope": "observed objects plus 40 category/boolean combinations x 8 load values; not an equivalence proof",
+          "raw_ast_equal": false,
+          "semantic_equal": false
+        },
+        "reference_allowed_ids": [],
+        "semantic_equal": false,
+        "valid_ast": true
+      },
+      "reference": {
+        "rules": [
+          {
+            "limit": {
+              "constant_kg": 0.0
+            },
+            "overrides": [],
+            "priority": 20,
+            "rule_id": "r1",
+            "target": {
+              "all": true
+            },
+            "type": "max_top_load"
+          }
+        ],
+        "schema_version": "o4_policy_v1"
+      }
+    },
+    {
+      "actual": {
+        "rules": [
+          {
+            "overrides": [],
+            "priority": 20,
+            "rule_id": "r1",
+            "target": {
+              "all": true
+            },
+            "type": "no_top_load"
+          }
+        ],
+        "schema_version": "o4_policy_v1"
+      },
+      "allowed_set_equal": true,
+      "backend": "remote_text",
+      "case_id": "O4_ANCHOR_05_2",
+      "classification": "zero_limit_equivalent_representation",
+      "compilation_id": "D0000053",
+      "finite_domain_equal": true,
+      "instruction_text": "规则r1：对（全部箱体），累计顶部限载为0kg；优先级20；覆盖无。",
+      "job_id": "J000106",
+      "original_metrics": {
+        "allowed_set_equal": true,
+        "applicable_objects_equal": false,
+        "conditions_exceptions_equal": false,
+        "false_allow_ids": [],
+        "false_reject_ids": [],
+        "method_allowed_ids": [
+          "cand_1628e5e3b9d8",
+          "cand_43ce9d3f5d2e",
+          "cand_50354c43aa2b",
+          "cand_60c3dc50d14c",
+          "cand_67289f83870c",
+          "cand_7b91e7c0d616",
+          "cand_95a6ffad83bc",
+          "cand_ae45dcc0b708",
+          "cand_b37144fda27e",
+          "cand_cad4dcfdfeb6",
+          "cand_e1c5fc1a4d0e",
+          "cand_fcba956396c6"
+        ],
+        "policy_comparison": {
+          "counterexamples": [],
+          "finite_domain_equal": true,
+          "probe_count": 360,
+          "probe_scope": "observed objects plus 40 category/boolean combinations x 8 load values; not an equivalence proof",
+          "raw_ast_equal": false,
+          "semantic_equal": false
+        },
+        "reference_allowed_ids": [
+          "cand_1628e5e3b9d8",
+          "cand_43ce9d3f5d2e",
+          "cand_50354c43aa2b",
+          "cand_60c3dc50d14c",
+          "cand_67289f83870c",
+          "cand_7b91e7c0d616",
+          "cand_95a6ffad83bc",
+          "cand_ae45dcc0b708",
+          "cand_b37144fda27e",
+          "cand_cad4dcfdfeb6",
+          "cand_e1c5fc1a4d0e",
+          "cand_fcba956396c6"
+        ],
+        "semantic_equal": false,
+        "valid_ast": true
+      },
+      "reference": {
+        "rules": [
+          {
+            "limit": {
+              "constant_kg": 0.0
+            },
+            "overrides": [],
+            "priority": 20,
+            "rule_id": "r1",
+            "target": {
+              "all": true
+            },
+            "type": "max_top_load"
+          }
+        ],
+        "schema_version": "o4_policy_v1"
+      }
+    },
+    {
+      "actual": {
+        "rules": [
+          {
+            "overrides": [],
+            "priority": 20,
+            "rule_id": "r1",
+            "target": {
+              "all": true
+            },
+            "type": "no_top_load"
+          }
+        ],
+        "schema_version": "o4_policy_v1"
+      },
+      "allowed_set_equal": true,
+      "backend": "remote_text",
+      "case_id": "O4_ANCHOR_07_2",
+      "classification": "zero_limit_equivalent_representation",
+      "compilation_id": "D0000077",
+      "finite_domain_equal": true,
+      "instruction_text": "规则r1：对（全部箱体），累计顶部限载为0kg；优先级20；覆盖无。",
+      "job_id": "J000154",
+      "original_metrics": {
+        "allowed_set_equal": true,
+        "applicable_objects_equal": false,
+        "conditions_exceptions_equal": false,
+        "false_allow_ids": [],
+        "false_reject_ids": [],
+        "method_allowed_ids": [
+          "cand_06775eafea6a",
+          "cand_2ae8b2f4c641",
+          "cand_33ae03fe83ed",
+          "cand_3ed630335367",
+          "cand_52e128671ad8",
+          "cand_5dab7bae9f58",
+          "cand_7cd5b9d0f0a2",
+          "cand_844cb1bcbf5d",
+          "cand_8a850dbcc052",
+          "cand_943b1a40e016",
+          "cand_9a5d90f890d5",
+          "cand_b272bc86d42d",
+          "cand_db1104eed829",
+          "cand_e296fbb4da2b"
+        ],
+        "policy_comparison": {
+          "counterexamples": [],
+          "finite_domain_equal": true,
+          "probe_count": 352,
+          "probe_scope": "observed objects plus 40 category/boolean combinations x 8 load values; not an equivalence proof",
+          "raw_ast_equal": false,
+          "semantic_equal": false
+        },
+        "reference_allowed_ids": [
+          "cand_06775eafea6a",
+          "cand_2ae8b2f4c641",
+          "cand_33ae03fe83ed",
+          "cand_3ed630335367",
+          "cand_52e128671ad8",
+          "cand_5dab7bae9f58",
+          "cand_7cd5b9d0f0a2",
+          "cand_844cb1bcbf5d",
+          "cand_8a850dbcc052",
+          "cand_943b1a40e016",
+          "cand_9a5d90f890d5",
+          "cand_b272bc86d42d",
+          "cand_db1104eed829",
+          "cand_e296fbb4da2b"
+        ],
+        "semantic_equal": false,
+        "valid_ast": true
+      },
+      "reference": {
+        "rules": [
+          {
+            "limit": {
+              "constant_kg": 0.0
+            },
+            "overrides": [],
+            "priority": 20,
+            "rule_id": "r1",
+            "target": {
+              "all": true
+            },
+            "type": "max_top_load"
+          }
+        ],
+        "schema_version": "o4_policy_v1"
+      }
+    },
+    {
+      "actual": {
+        "rules": [
+          {
+            "overrides": [],
+            "priority": 20,
+            "rule_id": "r1",
+            "target": {
+              "all": true
+            },
+            "type": "no_top_load"
+          }
+        ],
+        "schema_version": "o4_policy_v1"
+      },
+      "allowed_set_equal": true,
+      "backend": "remote_text",
+      "case_id": "O4_ANCHOR_10_2",
+      "classification": "zero_limit_equivalent_representation",
+      "compilation_id": "D0000113",
+      "finite_domain_equal": true,
+      "instruction_text": "规则r1：对（全部箱体），累计顶部限载为0kg；优先级20；覆盖无。",
+      "job_id": "J000226",
+      "original_metrics": {
+        "allowed_set_equal": true,
+        "applicable_objects_equal": false,
+        "conditions_exceptions_equal": false,
+        "false_allow_ids": [],
+        "false_reject_ids": [],
+        "method_allowed_ids": [
+          "cand_069ea09c669e",
+          "cand_0708f2fcc738",
+          "cand_1fac1d5f7f1d",
+          "cand_46f44cca79f1",
+          "cand_4a4d6234db54",
+          "cand_782d1d4569cb",
+          "cand_a6a9186f6edd",
+          "cand_a74dbc65bf86",
+          "cand_b710f014bd8a",
+          "cand_d5ec0eaf8bdc",
+          "cand_f41f4c9f1f12",
+          "cand_fa68bc758a8b"
+        ],
+        "policy_comparison": {
+          "counterexamples": [],
+          "finite_domain_equal": true,
+          "probe_count": 336,
+          "probe_scope": "observed objects plus 40 category/boolean combinations x 8 load values; not an equivalence proof",
+          "raw_ast_equal": false,
+          "semantic_equal": false
+        },
+        "reference_allowed_ids": [
+          "cand_069ea09c669e",
+          "cand_0708f2fcc738",
+          "cand_1fac1d5f7f1d",
+          "cand_46f44cca79f1",
+          "cand_4a4d6234db54",
+          "cand_782d1d4569cb",
+          "cand_a6a9186f6edd",
+          "cand_a74dbc65bf86",
+          "cand_b710f014bd8a",
+          "cand_d5ec0eaf8bdc",
+          "cand_f41f4c9f1f12",
+          "cand_fa68bc758a8b"
+        ],
+        "semantic_equal": false,
+        "valid_ast": true
+      },
+      "reference": {
+        "rules": [
+          {
+            "limit": {
+              "constant_kg": 0.0
+            },
+            "overrides": [],
+            "priority": 20,
+            "rule_id": "r1",
+            "target": {
+              "all": true
+            },
+            "type": "max_top_load"
+          }
+        ],
+        "schema_version": "o4_policy_v1"
+      }
+    },
+    {
+      "actual": {
+        "rules": [
+          {
+            "overrides": [],
+            "priority": 20,
+            "rule_id": "r1",
+            "target": {
+              "all": true
+            },
+            "type": "no_top_load"
+          }
+        ],
+        "schema_version": "o4_policy_v1"
+      },
+      "allowed_set_equal": true,
+      "backend": "remote_text",
+      "case_id": "O4_ANCHOR_19_2",
+      "classification": "zero_limit_equivalent_representation",
+      "compilation_id": "D0000221",
+      "finite_domain_equal": true,
+      "instruction_text": "规则r1：对（全部箱体），累计顶部限载为0kg；优先级20；覆盖无。",
+      "job_id": "J000442",
+      "original_metrics": {
+        "allowed_set_equal": true,
+        "applicable_objects_equal": false,
+        "conditions_exceptions_equal": false,
+        "false_allow_ids": [],
+        "false_reject_ids": [],
+        "method_allowed_ids": [
+          "cand_14e5fdeaf507",
+          "cand_1dc51dbb365f",
+          "cand_2d48c90e6172",
+          "cand_476b5834ec83",
+          "cand_48281699b057",
+          "cand_550fece5be3f",
+          "cand_743f4405cb76",
+          "cand_750ba383f65b",
+          "cand_9d38018f2dba",
+          "cand_9e42799bd909",
+          "cand_a53f448ad683",
+          "cand_baf92d8ebddf"
+        ],
+        "policy_comparison": {
+          "counterexamples": [],
+          "finite_domain_equal": true,
+          "probe_count": 336,
+          "probe_scope": "observed objects plus 40 category/boolean combinations x 8 load values; not an equivalence proof",
+          "raw_ast_equal": false,
+          "semantic_equal": false
+        },
+        "reference_allowed_ids": [
+          "cand_14e5fdeaf507",
+          "cand_1dc51dbb365f",
+          "cand_2d48c90e6172",
+          "cand_476b5834ec83",
+          "cand_48281699b057",
+          "cand_550fece5be3f",
+          "cand_743f4405cb76",
+          "cand_750ba383f65b",
+          "cand_9d38018f2dba",
+          "cand_9e42799bd909",
+          "cand_a53f448ad683",
+          "cand_baf92d8ebddf"
+        ],
+        "semantic_equal": false,
+        "valid_ast": true
+      },
+      "reference": {
+        "rules": [
+          {
+            "limit": {
+              "constant_kg": 0.0
+            },
+            "overrides": [],
+            "priority": 20,
+            "rule_id": "r1",
+            "target": {
+              "all": true
+            },
+            "type": "max_top_load"
+          }
+        ],
+        "schema_version": "o4_policy_v1"
+      }
+    },
+    {
+      "actual": {
+        "rules": [
+          {
+            "overrides": [],
+            "priority": 20,
+            "rule_id": "r1",
+            "target": {
+              "all": true
+            },
+            "type": "no_top_load"
+          }
+        ],
+        "schema_version": "o4_policy_v1"
+      },
+      "allowed_set_equal": true,
+      "backend": "remote_text",
+      "case_id": "O4_ANCHOR_20_2",
+      "classification": "zero_limit_equivalent_representation",
+      "compilation_id": "D0000233",
+      "finite_domain_equal": true,
+      "instruction_text": "规则r1：对（全部箱体），累计顶部限载为0kg；优先级20；覆盖无。",
+      "job_id": "J000466",
+      "original_metrics": {
+        "allowed_set_equal": true,
+        "applicable_objects_equal": false,
+        "conditions_exceptions_equal": false,
+        "false_allow_ids": [],
+        "false_reject_ids": [],
+        "method_allowed_ids": [
+          "cand_14549c3a7964",
+          "cand_20f48a2037f2",
+          "cand_22a85e2e4e4f",
+          "cand_23118bf523a7",
+          "cand_266361ac7ca4",
+          "cand_44dcf95552dd",
+          "cand_50762a7c6a73",
+          "cand_52796cb262e8",
+          "cand_7f5a6d3e4e85",
+          "cand_86d9eabf5d30",
+          "cand_a1c60a7463d6",
+          "cand_ace3435ad674",
+          "cand_b9b08ffa0e79",
+          "cand_d2d046f17709",
+          "cand_dc929d3d07de"
+        ],
+        "policy_comparison": {
+          "counterexamples": [],
+          "finite_domain_equal": true,
+          "probe_count": 352,
+          "probe_scope": "observed objects plus 40 category/boolean combinations x 8 load values; not an equivalence proof",
+          "raw_ast_equal": false,
+          "semantic_equal": false
+        },
+        "reference_allowed_ids": [
+          "cand_14549c3a7964",
+          "cand_20f48a2037f2",
+          "cand_22a85e2e4e4f",
+          "cand_23118bf523a7",
+          "cand_266361ac7ca4",
+          "cand_44dcf95552dd",
+          "cand_50762a7c6a73",
+          "cand_52796cb262e8",
+          "cand_7f5a6d3e4e85",
+          "cand_86d9eabf5d30",
+          "cand_a1c60a7463d6",
+          "cand_ace3435ad674",
+          "cand_b9b08ffa0e79",
+          "cand_d2d046f17709",
+          "cand_dc929d3d07de"
+        ],
+        "semantic_equal": false,
+        "valid_ast": true
+      },
+      "reference": {
+        "rules": [
+          {
+            "limit": {
+              "constant_kg": 0.0
+            },
+            "overrides": [],
+            "priority": 20,
+            "rule_id": "r1",
+            "target": {
+              "all": true
+            },
+            "type": "max_top_load"
+          }
+        ],
+        "schema_version": "o4_policy_v1"
+      }
+    }
+  ],
+  "new_api_calls": 0,
+  "original_files_unchanged": true,
+  "pair_stats": {
+    "oracle_ast": {
+      "attribute_change_allowed_changes": 17,
+      "attribute_change_pairs": 24,
+      "business_change_allowed_changes": 17,
+      "business_change_pairs": 24,
+      "semantic_invariant_allowed_changes": 0,
+      "semantic_invariant_pairs": 24
+    },
+    "public_parser": {
+      "attribute_change_allowed_changes": 17,
+      "attribute_change_pairs": 24,
+      "business_change_allowed_changes": 17,
+      "business_change_pairs": 24,
+      "semantic_invariant_allowed_changes": 0,
+      "semantic_invariant_pairs": 24
+    },
+    "remote_image": {
+      "attribute_change_allowed_changes": 17,
+      "attribute_change_pairs": 24,
+      "business_change_allowed_changes": 17,
+      "business_change_pairs": 24,
+      "semantic_invariant_allowed_changes": 0,
+      "semantic_invariant_pairs": 24
+    },
+    "remote_text": {
+      "attribute_change_allowed_changes": 17,
+      "attribute_change_pairs": 24,
+      "business_change_allowed_changes": 17,
+      "business_change_pairs": 24,
+      "semantic_invariant_allowed_changes": 0,
+      "semantic_invariant_pairs": 24
+    }
+  },
+  "provider_ids": [
+    "b567695d-9e33-4416-97d2-c481ad34d38c",
+    "17f1f238-91f8-4292-9da8-2f021e7f93cc",
+    "0319608e-bc76-4ddf-b51b-d09fefddf168",
+    "8189ae97-8d7c-4b42-9998-294c914fc63c",
+    "d5a213d8-6f35-44cd-8644-b2a7e0e63dcc",
+    "5104752b-5a16-4924-93b5-4369851fe849",
+    "66b7fe6e-61f2-4b8b-b2ac-153954640576",
+    "fa08c471-8679-45d3-99fe-ad9f70a93e1d",
+    "7448a081-cb21-4a3a-a543-85f973637c83",
+    "c2d624ce-f975-4a6c-b07d-8d6e4cef3693",
+    "1ea1b7ae-e60c-432e-b280-8ede91d1f2d1",
+    "8a03af34-80fe-42ab-a840-1c89b6db82ab",
+    "0139b7b8-85e8-49a6-a2e2-46ddbb68ce16",
+    "5aa7f050-858a-4074-acf8-76dc99225ea4",
+    "141bb611-c607-4465-b304-30519da58392",
+    "6edb4ce3-29a3-4d91-907f-b2bf33556f14",
+    "d1204961-83b0-4bc3-a4f8-4e9373aacf89",
+    "e9c8120a-60e2-48de-b708-d3c0aadb1d56",
+    "09602c9e-7abf-4c90-a124-578911735556",
+    "3852c09e-192a-463e-9dc1-bb2907b5eff0",
+    "a199f959-527d-4b1f-a6ce-e13cda640af3",
+    "b22216aa-1370-44bf-9776-b425d6587ba7",
+    "6ede32f7-e28c-482b-82d6-565bcea995f9",
+    "e9b309e8-6587-45ad-91d0-3e5081bf2dee",
+    "d062df04-c216-4811-bbeb-8c80fc5ef396",
+    "e9aae9ca-2d2d-4f4d-9e08-c4966cc828ba",
+    "2ebb90ff-e5ec-4dd0-8715-507e786537c8",
+    "750c5d75-8dc8-4cf0-a495-aef26a1ad48b",
+    "5fe7030f-be6c-4f97-987b-aa0327735077",
+    "2616892f-8d31-446f-944b-9ffb7cefaba7",
+    "f0e3b839-ab7e-4ae4-8b28-e97b33240d53",
+    "e9edb43a-19d5-4619-a6c5-9188e32c7324",
+    "743ed339-5b8a-48a4-8576-44ecec59bb93",
+    "a87df128-24f0-421b-9d06-232216b60434",
+    "cc0c6347-4a04-4792-bccf-311dcc3cd1ec",
+    "3bde19f3-3fed-4038-ac03-dc7cb4588320",
+    "23896314-1e8a-4393-83f0-8645ec7381ca",
+    "432baeb1-18b5-4171-925e-4056960fd811",
+    "a8d195d1-9995-42cf-b3dd-403c5f603c29",
+    "817d3089-553a-4a02-83d6-7b12760d705d",
+    "e84c8abe-aa37-420b-882d-ce797aab4c57",
+    "ca2bd127-d5f9-4a34-9128-392a62773735",
+    "f1a20fae-416e-4b2b-94ab-4acd7124626d",
+    "f07f99ba-2550-4b5e-a506-2c51b91da6ae",
+    "4067d3ae-1e4d-4137-abbf-70336507a268",
+    "aa854e32-06a2-4935-8911-394ff1346649",
+    "1c14a5fb-ebe4-425c-9c86-66c3333e4af6",
+    "566c96f9-e419-4615-b68c-ca179187d66c",
+    "01049ab8-96b0-4a83-95b3-9d49cf057f86",
+    "e7015fa5-6c78-4af3-abfb-1836f90432be",
+    "fc4c9d17-a212-4fa7-9651-e2963102fbcb",
+    "1f753208-5ec8-4771-9a68-ad0eeeae9c0e",
+    "d6d07b67-56f1-433c-a57d-573d8659d390",
+    "2bafa875-2ac5-4451-9faa-c6189fcd2994",
+    "cef5c887-1a39-4cb9-92d1-3a3bb2c50778",
+    "07ee1203-bc80-440d-9bcf-c650432168a6",
+    "21b02c5d-178a-414b-9f5a-2c829d636b13",
+    "41eaec39-90ce-406d-846c-b9a9f093cd4a",
+    "1ce5618c-ab31-48b2-8660-624df579b06b",
+    "32cdcf66-45a4-45f1-8d54-9d6af71229ee",
+    "31841df9-0ba9-4e12-96d8-06a5b6c5cd96",
+    "66a41caf-f141-4d81-b04e-03cbcf264b9d",
+    "4f30ef15-2181-478d-9088-871846647fc5",
+    "5ed48acf-ae95-41ca-bc73-9747cd97c4a2",
+    "30c681ed-2bf6-4312-a6ac-798f9df3d200",
+    "63ba6e99-22d6-4914-8d3b-bccc8d54fcb5",
+    "be81850e-590d-40ce-8596-1332b88ddcd1",
+    "a97ca547-ed26-4434-94c0-09226f2ddfe7",
+    "b6f1a6de-6fe6-4cc1-bd80-0460a432aacf",
+    "888f84dc-9f1c-4092-a1dd-3c246e206edc",
+    "3b34d191-a6a8-419d-85ea-42a0ca610da9",
+    "b6c9d7a8-b6aa-4e83-be04-4f6490eff973",
+    "ec41adea-312f-4417-83d0-1b0745c83b3c",
+    "270554b8-05ed-4be0-9670-2d242eee8aa2",
+    "c77aa9c9-90b6-461b-a126-515800c1eadd",
+    "be6888ad-93c9-460b-97d6-6e62d237aa2c",
+    "559b6b84-ac2f-489d-a67f-4beced65c8fc",
+    "a242d54c-4397-410a-b0df-28a3ea9f7512",
+    "a7228508-376f-4a23-8722-84f78e919810",
+    "709a6d71-67d8-4be0-8ce5-7a99eed4b642",
+    "c3ad9eef-50aa-46d7-b15f-348ebcd38d14",
+    "b72b3b5f-230b-4f4c-a56a-b0b9b386cabc",
+    "b4e2bb3f-0c28-4b50-af59-6161d5af36d4",
+    "14872479-acca-4938-8ed4-17bd6da2d0e0",
+    "d42db92c-b69a-4b68-86dc-9091aca086d3",
+    "ba69943c-f933-4e63-b8e9-c38f2ff07b78",
+    "3b3ff7ed-8696-4824-a5b0-8c643eab3b16",
+    "8dd4a127-b026-46ef-9f46-d774fbd5513a",
+    "26bc591a-ddba-4e59-ac61-eb6b66678434",
+    "f6da6580-41e4-474d-80d6-fb9fdbfec383",
+    "661ce39c-205c-4f63-ad1a-d95eb28c41c6",
+    "ba7718ca-ff62-4749-b7d9-c4e2837fa475",
+    "b49b7233-5076-4a62-8096-f60ff45c2e20",
+    "87a43891-1568-4cc2-b495-ff0e13a5c054",
+    "750fc079-766a-4f9a-a9c4-622c28467007",
+    "a1d2cb6a-7a11-4bb5-b606-fb6de41d7727",
+    "6bc7150c-997b-4072-98ea-67e8187e216c",
+    "f7eadb5c-eb25-4eb1-8319-7330bebc2430",
+    "596bf9a2-835a-422a-818f-60f61f1fbbf9",
+    "03498144-5850-46f7-a057-b06861b3bcfd",
+    "71c9868b-1e49-455c-8a9c-f83f98d4b215",
+    "2f44de2d-cc2c-43d8-8aa1-2d750b82665f",
+    "7fef7889-1bcd-414f-a0d8-97aea7c84ad2",
+    "f9ae8235-8ad5-4cea-830d-07bace7a0b6f",
+    "2c108393-148c-477a-a414-9db2cdc7e244",
+    "43a5879e-c34e-463f-9346-d73d04fb1485",
+    "81e01ec8-2449-4363-a8ae-9337f02623ca",
+    "40f8bbfc-6323-4e84-bee1-64b92ba7b240",
+    "562bdae0-ce17-4d2c-8f12-17aea2da5c75",
+    "593a166d-b800-4172-a665-688837d7528e",
+    "e6c01d6a-02cc-4fc2-9758-fda6e954d42f",
+    "493826dc-da20-46fb-9bd7-131cf0267193",
+    "387ec144-096c-40fd-bdf2-82f2ddecf932",
+    "5d3d83f1-10d8-4cdd-9755-e4b812a39363",
+    "27af76bd-27fa-4af2-8833-3866c150c67f",
+    "643cb1e7-ea5a-4560-acdf-c2923a3c55bd",
+    "16d9082c-bfce-4c87-befa-437f40b5187a",
+    "321429c9-2036-4001-b6b8-e33c1ee0e49c",
+    "c57b8359-0ce7-4a56-a2cd-9476e493502c",
+    "2a145c99-cfce-42f6-b16c-0a810702fd85",
+    "b14e2021-3213-4ad3-8c74-f7f7f2381f40",
+    "aea2af43-4586-4058-9d9d-9934eb2077de",
+    "6bc74e83-a09f-482f-9997-6c7e027c7f99",
+    "5016299e-37b7-4e3c-9ae1-83fa32514e43",
+    "578f616f-9db9-4c98-b643-9b4a4cf41ce1",
+    "3a53f8ea-7c6e-46c0-b609-2af90125f923",
+    "a54cd9eb-f11c-43be-a93d-79e753379085",
+    "cb5abe03-6836-4977-b6e7-a21ea63dc4f7",
+    "57feb395-a4ff-40a5-9eee-fc2f0979ad3c",
+    "32ccb62d-3134-481a-9a8a-5bf4fc2ccaff",
+    "6bd68ed6-5ddb-4ea0-8b1e-23942f71138b",
+    "ec388342-8bfd-4552-9f16-9f4a8c6cde2f",
+    "d6a97181-517a-4178-afc9-aac929bdcd47",
+    "e383f710-5256-4471-b88f-d8da60d3daae",
+    "87bfc446-4142-403e-92c8-e3948f43a10c",
+    "9e52c97e-d709-4ae8-9ea9-2abd2a3a9a0e",
+    "c8d62818-849f-463a-a03b-63984b4f8626",
+    "38955079-f74d-49bd-9aea-61edcd392e2b",
+    "d08666b6-d54f-449a-80bb-ad6317b28514",
+    "f16c1ad0-3b9c-4794-b555-131a7fe1723b",
+    "b1390fd5-363f-43c6-b722-3f33e358a0b4",
+    "72cab2fb-9855-45dd-91a4-d62cb9495b72",
+    "f1bcdb04-d2a7-4fdf-a642-20d230ab222b",
+    "03391f13-f49e-409d-8fdc-5f92c641ccf1",
+    "1732035f-0e2c-4549-b410-50482e398ae1",
+    "d091274c-132a-4a7d-ab8f-e942221b29b9",
+    "053b25cc-1550-47eb-8307-f01a05c1528d",
+    "4092481b-cb74-45e8-bfc3-5845718d2dc4",
+    "e50320df-db73-40b5-9dcf-f144111c12f5",
+    "21bd0239-45ff-4ecf-a8e4-f71fad950454",
+    "ed435478-6a0b-4782-8588-e1deaef345fe",
+    "6808f852-dd48-4cf0-baf3-5679af72f371",
+    "590ecd59-50cb-48fb-a4cc-8b712691b3ad",
+    "cd18106e-ed81-446e-bcd4-553f06c495a4",
+    "fdda5d2d-d16a-4412-ab79-74db6854948e",
+    "8707bb85-ae6b-4536-87f8-7e40546f1945",
+    "749ac86a-1bcb-4f66-9d38-fa0654f3352f",
+    "4c795c9e-639c-49f5-a35a-8c59685f4e37",
+    "96ccdef3-eaa2-4860-8769-a8f8f1969013",
+    "a941208a-578e-4680-85ec-3b6356340e6c",
+    "3c46355a-903e-4f23-a581-a3c6dcc1cb98",
+    "4e6362b9-33cc-4d2e-8812-649b9b822580",
+    "22d003a8-97f8-4e7a-9fcf-3dc83263dcd0",
+    "fb5fc8f9-819d-4322-acc6-b607cd54c08b",
+    "bb94780a-f1b4-45a3-a80a-456689b80642",
+    "2537d193-64de-42ee-8817-c6de553d22ce",
+    "b16e7e7e-9ea2-41e4-afdf-de0ae0b6b305",
+    "07e93543-4644-4ddc-893c-a264b4f3aed8",
+    "93493954-9feb-4076-a20f-e6b9360fc344",
+    "bca60b6e-6038-44ef-9c18-e0996bdbb9ab",
+    "a7cef38b-f95d-4b7c-9e92-2082717f7fea",
+    "3b89cf1b-7c0a-40b2-b4af-df36e184772e",
+    "3f24c19e-2063-4435-b0ac-c68b9abb073e",
+    "b61414c3-d5aa-4811-8818-3933310115cc",
+    "8e9f5282-2343-48cb-882e-d7f5493e2070",
+    "f7409b95-817f-4e44-a4ba-357abefb35ce",
+    "e6f30f94-52f7-4865-946b-88d5d20a617f",
+    "9cafca54-8199-4e68-a765-e78b3ccbb253",
+    "50dbb242-73e8-455c-966d-fca04fa6ddaf",
+    "400a7b76-a761-41ca-ab94-b25c593be6ac",
+    "984ec72e-650c-44e3-aed7-301d17be5da9",
+    "c9a90d77-a0ac-4966-9c64-2c3769de4b34",
+    "50344724-16c3-4444-914f-1a810f48b25a",
+    "23172970-611c-4379-935e-43bfd812eca8",
+    "a4b099ba-4742-4f9d-a69f-c4120604f033",
+    "9921f154-0389-43b4-9395-e35217e2df1f",
+    "4c9f4298-9f1e-4b9f-b2ca-51829d3b369e",
+    "f513b241-15d2-4a78-ba6d-05ca930627f5",
+    "e8f8940a-9ff8-4955-9869-a273a9f7da37",
+    "32f0c7e7-47b9-4e3f-b533-b6efa32a2f45",
+    "1fa937f0-b46c-4c68-91c1-99527ae5bf95",
+    "b0d4bcdc-7c3c-435d-9d64-6eb285ecbab4",
+    "da515f5d-750e-4531-b06e-9de78f3c06b8",
+    "f3593107-5648-4efa-adc3-bf5aee7f6dbe",
+    "bdab8182-b9fe-427c-8531-3e6c9e729ef7",
+    "7b810bdc-1e18-4944-bc5d-a33e6861404d",
+    "a425739b-730f-4868-abc3-d3a80da5ad04",
+    "06ce1e4a-f766-4a1e-8e9a-f4373bb494b8",
+    "6d6410ef-c0ba-46e0-ac29-dd9673a34cd0",
+    "ed69ebf7-3288-46c9-b22a-d00623268c37",
+    "00267b84-e60f-4fe3-935c-c5192c935750",
+    "cfb64454-0fe8-4b68-9d71-80be742a7422",
+    "3c63c882-c327-4ed8-9f12-726ef7e41235",
+    "15db3ad1-6a48-4ca8-83e7-32ec6fa760c5",
+    "5092d388-c525-4557-8e17-46a88073d83a",
+    "edf4ab0e-3fb8-4b27-9048-1cd1162290b2",
+    "7230bc5f-4e40-4004-8ea7-796ac906159c",
+    "9788fabe-0942-488b-a67d-277579c95135",
+    "4eabbce3-8dd7-419a-b3af-6dd908b92616",
+    "f2dcac22-c429-42ef-af50-6b002582122c",
+    "efcee7ff-9588-45a2-8154-228907a1ad7d",
+    "69da39b2-39e2-490a-9d95-41ca5ce35e68",
+    "ec37470b-7da4-4420-ab09-5aa56ce11baa",
+    "2e672b2f-61a7-46f7-9a2a-e93f9e407c5f",
+    "b5b034e4-2607-416a-b822-dd7468de40ee",
+    "2f4988f5-7cba-4811-9863-bb794afdf15d",
+    "d86e2ce7-70da-42a4-b129-5038a854d65a",
+    "6d03cb4a-1b44-4d57-ae88-2bcea8c5f657",
+    "37900803-ddc6-4628-bfd1-ea236dc9753c",
+    "121dc02b-cc83-487d-8434-83bd9ed979cd",
+    "bc853db0-026c-4076-aec6-10d65770fb36",
+    "57365821-d0c9-4571-99ab-0e76f4ba5525",
+    "5926c382-c440-4c3f-b441-4fe7f74376db",
+    "008fc38a-dacd-46c0-9059-8fb79e79ec4d",
+    "c480f50f-4d37-4658-8513-e01a6235f75b",
+    "041ce6b6-a654-4d2b-af33-783e851a1c18",
+    "684ae45b-b02a-4cd4-af6c-8968254ff735",
+    "c19838c5-5cea-4dc0-8ef4-dc022b1a8f12",
+    "6d926e87-eb4c-4735-a9f7-adefb3a45f8d",
+    "db933605-765a-4b90-a243-778bde3e6e51",
+    "53c5fee8-50cd-43ff-a552-ab8fccd3559e",
+    "76c31ba7-7438-4e4b-90f3-0b9eeeedf57e",
+    "ab05fc50-2550-4cbf-9d8f-c008f62ee047",
+    "fd249f4e-1177-4f33-9771-341502d10ece",
+    "3c2806ba-a0df-45c1-840c-32aa13240b21",
+    "ec6b7818-e775-4c03-aa6b-9ad4397380de",
+    "9c5471b0-f0d3-4371-b099-d4a628deea72",
+    "be9333af-fead-4b53-b0dc-f167b887f487",
+    "f7c473b7-a2a8-414c-b354-f56d6c920253",
+    "6bd96507-ed69-4d71-b9ef-b76f747b1f8d",
+    "b3b848e5-ef7c-42f6-adcc-87d112e7fe24",
+    "9740b694-ac56-49fc-96da-bcc1298effef",
+    "e680d363-21c5-4267-a947-5bf3212c86f7",
+    "4772ef15-b4b1-4b43-ba8a-0c50183ce55d",
+    "f13de123-89fe-4214-82b5-2d181092808c",
+    "d0d8d021-7c94-435c-91f2-906faf40aa2d",
+    "945dff10-7214-408e-b2c0-7cd092b22778",
+    "47ba139f-ba5b-462d-89f7-bddc75004916",
+    "76eebca8-48c5-46ae-96cb-ccf4bface564",
+    "36d743e8-5d10-4fd2-acfb-9c67c7ca995b",
+    "e11fcaab-b434-4ecb-a043-9942b75f9ee3",
+    "c5f588c9-b84a-4e57-9504-946e15985f1f",
+    "b5648935-e400-4d2b-8117-56920ba639e3",
+    "06c5cd07-0bb1-4831-a1fb-cfe42e2d2257",
+    "853fab75-b6d1-4fe0-8431-3c76609e2399",
+    "5f1b5ce3-e086-4ece-9cc9-54cb2715b85a",
+    "56fd5fef-dd69-485c-b9c2-f0e48499cab9",
+    "fdb7baca-0aa3-4a86-a9b4-c20c04165380",
+    "51e9a67b-b859-48d0-8075-65446b303c47",
+    "41094695-54be-43a1-b411-49d8f21d0562",
+    "d4a29127-4e5e-414f-b6e6-30cdfabf62a8",
+    "4a716f97-dfa7-42f7-ae88-4e21fa42e1b5",
+    "c36c64bf-c535-46dc-8393-729425651574",
+    "4a5b1af8-cb12-45f4-a703-2174ad980669",
+    "86f5d7a8-1383-4785-abed-32d419adb37c",
+    "2c4466bf-d134-44ea-9b35-8a5855158d8b",
+    "ca95f76b-d5d4-410c-a211-128ae12d087b",
+    "0c2baab1-e215-4e5d-a5d6-a11e745be200",
+    "987b0d07-0ce4-449e-91e9-3eaae2f187e8",
+    "3ddd4568-ce0a-4245-ad29-2154e5831299",
+    "800e1636-f99b-4388-81d3-d430e5f11133",
+    "a6dfb0cf-7d14-440e-9255-95abc21c2bc2",
+    "4fd584ad-eaaa-4f58-a345-0016bdd00f31",
+    "b81f2acc-2987-439e-ad8b-1e03fc0a3d60",
+    "cdeef124-c2e7-467e-a71f-96e8f29b9c9e",
+    "c1873a03-c9bb-4397-9a03-7c022f31c8e3",
+    "88b7b963-1ae1-4f6b-bc09-7dac03c4e8dd",
+    "8ee9dd23-d3d3-4ac6-9c7f-b153e3d700ef",
+    "1573f34e-82a5-4d1a-9e3e-e77b09cecbae",
+    "f2cc26cc-1656-4ee6-9383-551ad1e7de31",
+    "c90fc150-86b5-4246-b83c-2072e10d1298",
+    "2432eb24-cc88-44b0-83e6-3788c1c71449",
+    "c2b059d5-2211-419a-b7b5-c61df56c30bc",
+    "5c288327-cdfc-40ee-9d7e-9f501fe2c4a5",
+    "67d445af-8c54-4dcc-b030-24a20d3cb713",
+    "e4801f12-75a0-4a9b-9712-a9353733eb84",
+    "d41a709d-026c-4e7a-a35c-d3b378f6df77",
+    "c84002d0-6690-431b-a280-8759973a77b5"
+  ],
+  "raw_stats": {
+    "oracle_ast": {
+      "finite_domain_equal": 144,
+      "raw_ast_equal": 144,
+      "records": 144
+    },
+    "public_parser": {
+      "finite_domain_equal": 144,
+      "raw_ast_equal": 120,
+      "records": 144
+    },
+    "remote_image": {
+      "finite_domain_equal": 144,
+      "raw_ast_equal": 120,
+      "records": 144
+    },
+    "remote_text": {
+      "finite_domain_equal": 144,
+      "raw_ast_equal": 114,
+      "records": 144
+    }
+  },
+  "reference_empty_cases": 16,
+  "sealed_files_checked": 1367,
+  "summary": {
+    "api": {
+      "attempts": 288,
+      "by_condition": {
+        "image": {
+          "attempts": 144,
+          "compilations": 144,
+          "final_valid": 144,
+          "first_valid": 144,
+          "repaired_valid": 0
+        },
+        "text": {
+          "attempts": 144,
+          "compilations": 144,
+          "final_valid": 144,
+          "first_valid": 144,
+          "repaired_valid": 0
+        }
+      },
+      "compilations": 288,
+      "cost": null,
+      "final_valid": 288,
+      "first_valid": 288,
+      "latency_max_s": 6.502866548020393,
+      "latency_p50_s": 1.9390303270192817,
+      "latency_p95_s": 2.701508023979841,
+      "missing_usage": 0,
+      "provider_failures": 0,
+      "repaired_valid": 0,
+      "repairs": 0,
+      "served_models": [
+        "deepseek-flash"
+      ],
+      "tokens": {
+        "completion_tokens": {
+          "known_sum": 81431,
+          "missing_attempts": 0
+        },
+        "prompt_tokens": {
+          "known_sum": 3914115,
+          "missing_attempts": 0
+        },
+        "total_tokens": {
+          "known_sum": 3995546,
+          "missing_attempts": 0
+        }
+      }
+    },
+    "compilation": {
+      "oracle_ast": {
+        "allowed_set_equal": 144,
+        "applicable_objects_equal": 144,
+        "conditions_exceptions_equal": 144,
+        "denominator": "all planned compilation opportunities; failures retained",
+        "false_allow_count": 0,
+        "false_reject_count": 0,
+        "planned_compilations": 144,
+        "semantic_equal": 144,
+        "valid_ast": 144
+      },
+      "public_parser": {
+        "allowed_set_equal": 144,
+        "applicable_objects_equal": 144,
+        "conditions_exceptions_equal": 144,
+        "denominator": "all planned compilation opportunities; failures retained",
+        "false_allow_count": 0,
+        "false_reject_count": 0,
+        "planned_compilations": 144,
+        "semantic_equal": 144,
+        "valid_ast": 144
+      },
+      "remote_image": {
+        "allowed_set_equal": 144,
+        "applicable_objects_equal": 144,
+        "conditions_exceptions_equal": 144,
+        "denominator": "all planned compilation opportunities; failures retained",
+        "false_allow_count": 0,
+        "false_reject_count": 0,
+        "planned_compilations": 144,
+        "semantic_equal": 144,
+        "valid_ast": 144
+      },
+      "remote_text": {
+        "allowed_set_equal": 144,
+        "applicable_objects_equal": 138,
+        "conditions_exceptions_equal": 138,
+        "denominator": "all planned compilation opportunities; failures retained",
+        "false_allow_count": 0,
+        "false_reject_count": 0,
+        "planned_compilations": 144,
+        "semantic_equal": 138,
+        "valid_ast": 144
+      }
+    },
+    "episodes": []
+  },
+  "zero_limit_equivalence_diagnostic": {
+    "oracle_ast": 144,
+    "public_parser": 144,
+    "remote_image": 144,
+    "remote_text": 144
+  }
+}

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O4-D · 缓冲码垛实验观察台</title>
+<style>
+:root{font-family:system-ui,"Noto Sans CJK SC","Microsoft Yahei",sans-serif;color:#203247;background:#f1f5f9;font-size:14px}*{box-sizing:border-box}body{margin:0}header{padding:32px max(24px,calc((100vw - 1440px)/2));background:#102a43;color:white}h1{margin:8px 0 12px;font-size:30px}p{line-height:1.7}.eyebrow{letter-spacing:2px;color:#7dd3fc;font-size:12px}.wrap{max-width:1488px;margin:auto;padding:24px} .stats,.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.stat,.panel,.card{background:white;border:1px solid #dce5ee;border-radius:12px;padding:18px}.stat strong{font-size:26px;display:block;color:#075985;margin-bottom:6px}.muted{color:#61758b;font-size:12px}.panel{margin-top:20px}h2{font-size:19px;margin:0 0 12px}h3{margin:0;font-size:17px}.controls{display:flex;gap:16px;flex-wrap:wrap;align-items:center}select,button{font:inherit;border:1px solid #c2d2e0;border-radius:6px;padding:9px;background:white;color:#173650}button{cursor:pointer}button.active{background:#075985;color:white}label{display:flex;align-items:center;gap:8px}input[type=range]{flex:1;min-width:180px}.note{padding:12px 16px;background:#edf7fb;border-left:3px solid #0284c7;line-height:1.7;margin:16px 0}.card{padding:14px;min-width:0}.badge{display:inline-block;padding:4px 8px;border-radius:5px;font-size:12px;background:#e0f2fe;color:#075985}.count{font-size:25px;font-weight:700;margin:12px 0 2px}.scene{width:100%;height:260px;background:#f8fafc;border-radius:8px;margin:12px 0}.slots{display:flex;gap:5px;margin:8px 0;min-height:36px}.slot{border:1px dashed #9aabba;border-radius:5px;padding:8px;flex:1;text-align:center;font-size:11px;overflow-wrap:anywhere}.seq{font-family:monospace;font-size:11px;line-height:1.8;overflow-wrap:anywhere;min-height:48px}.status{font-size:12px;min-height:36px;line-height:1.6;color:#895317}.good{color:#087f5b}table{width:100%;border-collapse:collapse}th,td{text-align:left;border-bottom:1px solid #edf1f5;padding:10px 8px;font-size:13px}.bar{height:7px;background:#e5eef5;border-radius:5px;width:100px;margin-top:5px}.bar span{display:block;height:7px;background:#0284c7;border-radius:5px}.legend{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0}.dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px}a{color:#0369a1}.footer{line-height:1.8;color:#536b80}.overview{display:grid;grid-template-columns:1.2fr 1fr;gap:24px}@media(max-width:1150px){.cards{grid-template-columns:repeat(2,1fr)}.overview{grid-template-columns:1fr}}@media(max-width:650px){.cards,.stats{grid-template-columns:1fr}h1{font-size:23px}.wrap{padding:12px}.scene{height:300px}}
+</style>
+<header><div class="eyebrow">O4-D / REAL EXPERIMENT / 2026-10-24</div><h1>缓冲码垛 · 从到货顺序到实际布局</h1><p>同一订单，比较单箱、FIFO、启发式和三箱缓冲搜索。所有位置、待码箱和停止原因均取自已保存的真实实验。</p></header>
+<main class="wrap">
+<div class="stats"><div class="stat"><strong>1,152 / 1,152</strong>订单 episode 已记录</div><div class="stat"><strong>3 箱</strong>缓冲容量 · 单箱对照为 1</div><div class="stat"><strong>4,472 次</strong>订单真实 API 尝试 · 含修复</div><div class="stat"><strong>0</strong>已提交物理 / 最终业务违规</div></div>
+<section class="panel"><h2>先看一个真实订单</h2><div class="controls"><label>案例 <select id="case"></select></label><label>编译来源 <select id="backend"><option value="remote_text">Flash Text · 真实模型</option><option value="remote_image">Flash Image · 真实模型</option><option value="public_parser">Public Parser · 强规则</option><option value="oracle_ast">Oracle AST · 参考规则</option></select></label><label>视角 <select id="view"><option value="iso">立体布局</option><option value="top">俯视位置</option></select></label><button id="reset">查看最终结果</button></div><div class="note" id="caseNote"></div><p class="muted" id="instruction"></p><div class="legend" id="legend"></div><div class="controls"><button id="play">▶ 播放</button><button id="back">上一步</button><input id="step" type="range" min="0" value="0"><button id="next">下一步</button><span id="stepLabel"></span></div><p class="muted">滑块按各轨迹的事件序号推进：接收、放置、EOS 和停止均保留。事件序号不表示同一物理时间；短轨迹结束后保持末状态。</p><div class="cards" id="cards"></div></section>
+<section class="panel"><h2>整个开发矩阵：缓冲有效，但搜索并非总是最好</h2><div class="overview"><div><table><thead><tr><th>规划器</th><th>Parser / Oracle</th><th>Text</th><th>Image</th></tr></thead><tbody id="overview"></tbody></table><p class="muted">每格：完整且无违规完成数 / 72 个任务。72 = 12 个已见来源 × 6 业务配置。Parser 与 Oracle 相同。</p></div><div><p><b>规划能力：</b>Oracle 下单箱 11/72、启发式 17/72、搜索 13/72。启发式本轮优于有界搜索。</p><p><b>真实模型瓶颈：</b>两种模型共 576 个 episode，243 个因 AST / 绑定协议错误停止，其中 233 个为类别枚举不符；不能把协议停止归因于空间搜索。</p><p><b>当前设计：</b>业务硬约束 → 重箱低放 / 居中软预算 0.05 / 0.25 → 几何选址或缓冲搜索。搜索上限为深度 3、束宽 8、每次 256 次后继评价。</p><p><b>尚未接入：</b>O3 完整“预算＋布局”评分及消融方案。当前搜索含顶面与垛高评价，但并不等同于已迁移该方案。</p></div></div></section>
+<section class="panel footer"><b>证据与进度边界</b><p>本页展示 3 个明确选择的开发案例，不是随机代表样本或未见测试。改善例按 Oracle 搜索相对单箱增量选取；边界例展示搜索退化与模型协议失败。默认案例确实来自 O4-D，未用三箱构造例替代真实订单。</p><p>O4-D 客户端、冒烟、完整订单及回放已验收；144 条配对固定题真实矩阵待补。无新增 API 调用、无轨迹补全、无修改冻结实验；仿真结果不等于机器人真实搬运吞吐率。</p><a href="README.md">案例与复现说明</a> · <a href="source_hashes.json">所用原始文件 SHA256</a> · <a href="data.json">展示数据</a></section>
+</main>
+<script id="experiment" type="application/json">__EXPERIMENT_DATA__</script>
+<script>
+'use strict';
+const data=JSON.parse(document.getElementById('experiment').textContent);
+const $=id=>document.getElementById(id), methods=['single_greedy','buffer_fifo','buffer_heuristic','buffer_search'];
+const names=['单箱贪心','缓冲 FIFO','缓冲启发式','缓冲搜索'];
+const cats={food:['食品','#eab967'],household_cleaner:['清洁用品','#bd92d5'],glassware:['玻璃制品','#66bcbc'],general:['普通货物','#85a9ca'],electronics:['电子产品','#df8f8f']};
+const reasons={all_items_placed:'全部放完',buffer_no_physical_action:'物理候选耗尽',buffer_no_compiled_business_action:'业务可行候选为空',fifo_head_blocked:'FIFO 队首受阻',invalid_ast:'AST 协议校验失败',invalid_binding:'响应绑定校验失败'};
+const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const short=id=>String(id).replace('item_','');
+let timer=null;
+for(const [id,c] of Object.entries(data.cases))$('case').add(new Option(c.title,id));
+$('legend').innerHTML=Object.values(cats).map(([n,c])=>`<span><i class="dot" style="background:${c}"></i>${n}</span>`).join('');
+function selected(){return methods.map(m=>data.episodes.find(e=>e.task===$('case').value&&e.backend===$('backend').value&&e.planner===m));}
+function shade(hex,f){return '#'+hex.slice(1).match(/../g).map(s=>Math.min(255,Math.round(parseInt(s,16)*f)).toString(16).padStart(2,'0')).join('');}
+function draw(e,f){
+ const top=$('view').value==='top',c=e.container,L=c.length_mm,W=c.width_mm,H=c.max_height_mm;
+ const project=(x,y,z)=>top?[165+x/L*260,145+y/W*240]:[165+(x/L-y/L)*150,182+(x/L+y/L)*65-z/H*145];
+ const polygon=(pts,fill,stroke='#ffffff',extra='')=>`<polygon points="${pts.map(p=>project(...p).join(',')).join(' ')}" fill="${fill}" stroke="${stroke}" stroke-width="1" ${extra}/>`;
+ let svg=polygon([[-L/2,-W/2,0],[L/2,-W/2,0],[L/2,W/2,0],[-L/2,W/2,0]],'#d9e4ed','#95a9b9');
+ const boxes=[...f.placed].sort((a,b)=>top?a.pose.z_base_mm-b.pose.z_base_mm:(a.pose.x_mm+a.pose.y_mm)-(b.pose.x_mm+b.pose.y_mm)||a.pose.z_base_mm-b.pose.z_base_mm);
+ for(const b of boxes){
+  const p=b.pose,[l,w,h]=b.oriented_size_mm,x=p.x_mm-l/2,y=p.y_mm-w/2,z=p.z_base_mm;
+  const col=(cats[b.cargo_category]||['未知','#b2bdc8'])[1],title=`${b.object_id} · ${(cats[b.cargo_category]||[b.cargo_category])[0]} · ${b.mass_kg}kg · 底高 ${z}mm · ${l}×${w}×${h}mm`;
+  let parts='';
+  if(!top){parts+=polygon([[x+l,y,z],[x+l,y+w,z],[x+l,y+w,z+h],[x+l,y,z+h]],shade(col,.72));parts+=polygon([[x,y+w,z],[x+l,y+w,z],[x+l,y+w,z+h],[x,y+w,z+h]],shade(col,.87));}
+  parts+=polygon([[x,y,z+h],[x+l,y,z+h],[x+l,y+w,z+h],[x,y+w,z+h]],col);
+  const [tx,ty]=project(p.x_mm,p.y_mm,z+h);
+  parts+=`<text x="${tx}" y="${ty+3}" text-anchor="middle" font-size="10" fill="#173650">${escape(short(b.object_id))}</text>`;
+  svg+=`<g><title>${escape(title)}</title>${parts}</g>`;
+ }
+ return `<svg class="scene" viewBox="0 0 330 300" role="img" aria-label="${escape(e.planner)} 当前已码 ${f.placed.length} 箱"><text x="12" y="18" fill="#61758b" font-size="11">${L} × ${W} × ${H} mm · ${top?'俯视投影':'立体投影'}</text>${svg}<text x="12" y="288" font-size="10" fill="#61758b">箱号标在顶面 · 悬停查看尺寸与重量</text></svg>`;
+}
+function render(){
+ const episodes=selected(),step=+$('step').value,max=+$('step').max;
+ $('stepLabel').textContent=`事件 ${step} / ${max}`;
+ $('caseNote').textContent=data.cases[$('case').value].note;
+ $('instruction').textContent='业务要求：'+episodes[0].instruction;
+ $('cards').innerHTML=episodes.map((e,i)=>{
+  const n=Math.min(step,e.frames.length-1),f=e.frames[n],done=n===e.frames.length-1,s=e.summary;
+  const slots=Array.from({length:i===0?1:3},(_,j)=>{const b=f.pending[j];return `<div class="slot">${b?escape(b.object_id)+'<br>'+escape((cats[b.facts.cargo_category]||[b.facts.cargo_category])[0]):'空槽'}</div>`;}).join('');
+  const count=f.placed.length,seq=e.sequence.slice(0,count).map(short).join(' → ');
+  return `<article class="card"><h3>${names[i]}</h3><p class="muted">容量 ${i===0?1:3} · ${e.id}</p><div class="count">${count} <span class="muted">/ ${s.planned_items} 箱</span></div><div class="status ${done&&s.clean_completed?'good':''}">${done?escape(reasons[s.termination_reason]||s.termination_reason):'进行中：'+escape(f.kind)+' / '+escape(f.status)}</div>${draw(e,f)}<div class="muted">暂存区 · 已接收 ${f.arrivals} 箱</div><div class="slots">${slots}</div><div class="muted">实际码放顺序（箱号）</div><div class="seq">${escape(seq||'尚未放置')}</div><div class="muted">${done?'最终结果':'事件 '+n} · ${f.compilation_id?'编译 '+escape(f.compilation_id):escape(f.kind)}</div><p class="muted">累计到货：${escape(e.arrival.slice(0,f.arrivals).map(short).join(' → '))}</p><a class="muted" href="../../../semantic_pallet_planner/outputs/${data.source}/episodes/${e.id}.jsonl">原始事件记录 ↗</a></article>`;
+ }).join('');
+}
+function stop(){clearInterval(timer);timer=null;$('play').textContent='▶ 播放';}
+function load(){stop();$('step').max=Math.max(...selected().map(e=>e.frames.length-1));$('step').value=$('step').max;render();}
+$('case').onchange=load;$('backend').onchange=load;$('view').onchange=render;$('step').oninput=()=>{stop();render();};
+$('reset').onclick=()=>{stop();$('step').value=$('step').max;render();};
+$('back').onclick=()=>{stop();$('step').value=Math.max(0,+$('step').value-1);render();};
+$('next').onclick=()=>{stop();$('step').value=Math.min(+$('step').max,+$('step').value+1);render();};
+$('play').onclick=()=>{if(timer){stop();return;}if(+$('step').value===+$('step').max)$('step').value=0;$('play').textContent='⏸ 暂停';render();timer=setInterval(()=>{$('step').value=+$('step').value+1;render();if(+$('step').value===+$('step').max)stop();},600);};
+$('overview').innerHTML=methods.map((m,i)=>`<tr><td>${names[i]}</td>${['oracle_ast','remote_text','remote_image'].map(b=>{const r=data.overview.find(x=>x.backend===b&&x.planner===m);return `<td>${r.clean}/${r.count}<div class="bar"><span style="width:${r.clean/r.count*100}%"></span></div><small class="muted">平均件数 ${(r.placed_ratio*100).toFixed(2)}%</small></td>`;}).join('')}</tr>`).join('');
+load();
+</script></html>

@@ -1,0 +1,121 @@
+{
+  "attempts": [
+    {
+      "attempt_id": 1,
+      "body_digest": "cd9a675d092f9c0f04b6578001f502fd5658c4a598db4e6756a65f713dd7df4f",
+      "compilation_id": "image_D0000",
+      "cost": null,
+      "job_id": "image",
+      "latency_s": 0.03230789498775266,
+      "payload": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "message": {
+              "content": "{\"schema_version\": \"o4_e2_response_v1\", \"request_id\": \"O4F_E0003\", \"state_hash\": \"ebaac42b5e91543da5bcf6627742145096625ea76cad3c579898d19b5bd2b3cc\", \"observation_digest\": \"de395810f8eb862e589308cf5c71937ccba7155565edf4ea6ad0c32a00942532\", \"instruction_digest\": \"94b02200961fdb238223369ce9ff92f1551ad7eb2db95b2687adff6a2bc4a4f6\", \"policy_ast\": {\"schema_version\": \"o4_e2_policy_v1\", \"rules\": [{\"rule_id\": \"label\", \"priority\": 20, \"overrides\": [], \"target\": {\"all\": true}, \"type\": \"max_top_load\", \"limit\": {\"field\": \"labels.max_top_load_kg\"}}, {\"rule_id\": \"no_top\", \"priority\": 10, \"overrides\": [\"label\"], \"target\": {\"eq\": {\"field\": \"labels.no_top_load\", \"value\": true}}, \"type\": \"no_top_load\"}, {\"rule_id\": \"reinforced\", \"priority\": 0, \"overrides\": [\"label\"], \"target\": {\"and\": [{\"eq\": {\"field\": \"cargo_category\", \"value\": \"glassware\"}}, {\"eq\": {\"field\": \"packaging.reinforced\", \"value\": true}}, {\"eq\": {\"field\": \"labels.no_top_load\", \"value\": false}}]}, \"type\": \"max_top_load\", \"limit\": {\"constant_kg\": 2.0}}, {\"rule_id\": \"contact\", \"priority\": 20, \"overrides\": [], \"type\": \"forbidden_contact\", \"left\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"right\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}}, {\"rule_id\": \"food_region\", \"type\": \"inside_region\", \"target\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"region_id\": \"L\", \"priority\": 20, \"overrides\": []}, {\"rule_id\": \"cleaner_region\", \"type\": \"inside_region\", \"target\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}, \"region_id\": \"R\", \"priority\": 20, \"overrides\": []}, {\"rule_id\": \"relation\", \"type\": \"relative_position\", \"subject\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"reference\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}, \"relation\": \"left_of\", \"min_gap_mm\": 50.0, \"priority\": 20, \"overrides\": []}]}}"
+            }
+          }
+        ],
+        "usage": {
+          "total_tokens": 1
+        }
+      },
+      "raw_text": "{\"choices\": [{\"finish_reason\": \"stop\", \"message\": {\"content\": \"{\\\"schema_version\\\": \\\"o4_e2_response_v1\\\", \\\"request_id\\\": \\\"O4F_E0003\\\", \\\"state_hash\\\": \\\"ebaac42b5e91543da5bcf6627742145096625ea76cad3c579898d19b5bd2b3cc\\\", \\\"observation_digest\\\": \\\"de395810f8eb862e589308cf5c71937ccba7155565edf4ea6ad0c32a00942532\\\", \\\"instruction_digest\\\": \\\"94b02200961fdb238223369ce9ff92f1551ad7eb2db95b2687adff6a2bc4a4f6\\\", \\\"policy_ast\\\": {\\\"schema_version\\\": \\\"o4_e2_policy_v1\\\", \\\"rules\\\": [{\\\"rule_id\\\": \\\"label\\\", \\\"priority\\\": 20, \\\"overrides\\\": [], \\\"target\\\": {\\\"all\\\": true}, \\\"type\\\": \\\"max_top_load\\\", \\\"limit\\\": {\\\"field\\\": \\\"labels.max_top_load_kg\\\"}}, {\\\"rule_id\\\": \\\"no_top\\\", \\\"priority\\\": 10, \\\"overrides\\\": [\\\"label\\\"], \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"labels.no_top_load\\\", \\\"value\\\": true}}, \\\"type\\\": \\\"no_top_load\\\"}, {\\\"rule_id\\\": \\\"reinforced\\\", \\\"priority\\\": 0, \\\"overrides\\\": [\\\"label\\\"], \\\"target\\\": {\\\"and\\\": [{\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"glassware\\\"}}, {\\\"eq\\\": {\\\"field\\\": \\\"packaging.reinforced\\\", \\\"value\\\": true}}, {\\\"eq\\\": {\\\"field\\\": \\\"labels.no_top_load\\\", \\\"value\\\": false}}]}, \\\"type\\\": \\\"max_top_load\\\", \\\"limit\\\": {\\\"constant_kg\\\": 2.0}}, {\\\"rule_id\\\": \\\"contact\\\", \\\"priority\\\": 20, \\\"overrides\\\": [], \\\"type\\\": \\\"forbidden_contact\\\", \\\"left\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"right\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}}, {\\\"rule_id\\\": \\\"food_region\\\", \\\"type\\\": \\\"inside_region\\\", \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"region_id\\\": \\\"L\\\", \\\"priority\\\": 20, \\\"overrides\\\": []}, {\\\"rule_id\\\": \\\"cleaner_region\\\", \\\"type\\\": \\\"inside_region\\\", \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}, \\\"region_id\\\": \\\"R\\\", \\\"priority\\\": 20, \\\"overrides\\\": []}, {\\\"rule_id\\\": \\\"relation\\\", \\\"type\\\": \\\"relative_position\\\", \\\"subject\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"reference\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}, \\\"relation\\\": \\\"left_of\\\", \\\"min_gap_mm\\\": 50.0, \\\"priority\\\": 20, \\\"overrides\\\": []}]}}\"}}], \"usage\": {\"total_tokens\": 1}}",
+      "repair": false,
+      "repair_diagnostic": null,
+      "status": "valid",
+      "usage": {
+        "total_tokens": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "body_digest": "8ea89d46da155136aa997d02f0a2df453ddfb787cb98ddee74087226e6b9f006",
+      "compilation_id": "image_D0001",
+      "cost": null,
+      "job_id": "image",
+      "latency_s": 0.032913114002440125,
+      "payload": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "message": {
+              "content": "{\"schema_version\": \"o4_e2_response_v1\", \"request_id\": \"O4F_E0005\", \"state_hash\": \"b193ab26396ae79ebd242f79621d8c21cfff07415e93bd991b84021524e21257\", \"observation_digest\": \"be8418f55bce84fddbdad561c45a4441f49f89157a91cf594dd2ef3db14250b1\", \"instruction_digest\": \"94b02200961fdb238223369ce9ff92f1551ad7eb2db95b2687adff6a2bc4a4f6\", \"policy_ast\": {\"schema_version\": \"o4_e2_policy_v1\", \"rules\": [{\"rule_id\": \"label\", \"priority\": 20, \"overrides\": [], \"target\": {\"all\": true}, \"type\": \"max_top_load\", \"limit\": {\"field\": \"labels.max_top_load_kg\"}}, {\"rule_id\": \"no_top\", \"priority\": 10, \"overrides\": [\"label\"], \"target\": {\"eq\": {\"field\": \"labels.no_top_load\", \"value\": true}}, \"type\": \"no_top_load\"}, {\"rule_id\": \"reinforced\", \"priority\": 0, \"overrides\": [\"label\"], \"target\": {\"and\": [{\"eq\": {\"field\": \"cargo_category\", \"value\": \"glassware\"}}, {\"eq\": {\"field\": \"packaging.reinforced\", \"value\": true}}, {\"eq\": {\"field\": \"labels.no_top_load\", \"value\": false}}]}, \"type\": \"max_top_load\", \"limit\": {\"constant_kg\": 2.0}}, {\"rule_id\": \"contact\", \"priority\": 20, \"overrides\": [], \"type\": \"forbidden_contact\", \"left\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"right\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}}, {\"rule_id\": \"food_region\", \"type\": \"inside_region\", \"target\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"region_id\": \"L\", \"priority\": 20, \"overrides\": []}, {\"rule_id\": \"cleaner_region\", \"type\": \"inside_region\", \"target\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}, \"region_id\": \"R\", \"priority\": 20, \"overrides\": []}, {\"rule_id\": \"relation\", \"type\": \"relative_position\", \"subject\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"reference\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}, \"relation\": \"left_of\", \"min_gap_mm\": 50.0, \"priority\": 20, \"overrides\": []}]}}"
+            }
+          }
+        ],
+        "usage": {
+          "total_tokens": 1
+        }
+      },
+      "raw_text": "{\"choices\": [{\"finish_reason\": \"stop\", \"message\": {\"content\": \"{\\\"schema_version\\\": \\\"o4_e2_response_v1\\\", \\\"request_id\\\": \\\"O4F_E0005\\\", \\\"state_hash\\\": \\\"b193ab26396ae79ebd242f79621d8c21cfff07415e93bd991b84021524e21257\\\", \\\"observation_digest\\\": \\\"be8418f55bce84fddbdad561c45a4441f49f89157a91cf594dd2ef3db14250b1\\\", \\\"instruction_digest\\\": \\\"94b02200961fdb238223369ce9ff92f1551ad7eb2db95b2687adff6a2bc4a4f6\\\", \\\"policy_ast\\\": {\\\"schema_version\\\": \\\"o4_e2_policy_v1\\\", \\\"rules\\\": [{\\\"rule_id\\\": \\\"label\\\", \\\"priority\\\": 20, \\\"overrides\\\": [], \\\"target\\\": {\\\"all\\\": true}, \\\"type\\\": \\\"max_top_load\\\", \\\"limit\\\": {\\\"field\\\": \\\"labels.max_top_load_kg\\\"}}, {\\\"rule_id\\\": \\\"no_top\\\", \\\"priority\\\": 10, \\\"overrides\\\": [\\\"label\\\"], \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"labels.no_top_load\\\", \\\"value\\\": true}}, \\\"type\\\": \\\"no_top_load\\\"}, {\\\"rule_id\\\": \\\"reinforced\\\", \\\"priority\\\": 0, \\\"overrides\\\": [\\\"label\\\"], \\\"target\\\": {\\\"and\\\": [{\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"glassware\\\"}}, {\\\"eq\\\": {\\\"field\\\": \\\"packaging.reinforced\\\", \\\"value\\\": true}}, {\\\"eq\\\": {\\\"field\\\": \\\"labels.no_top_load\\\", \\\"value\\\": false}}]}, \\\"type\\\": \\\"max_top_load\\\", \\\"limit\\\": {\\\"constant_kg\\\": 2.0}}, {\\\"rule_id\\\": \\\"contact\\\", \\\"priority\\\": 20, \\\"overrides\\\": [], \\\"type\\\": \\\"forbidden_contact\\\", \\\"left\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"right\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}}, {\\\"rule_id\\\": \\\"food_region\\\", \\\"type\\\": \\\"inside_region\\\", \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"region_id\\\": \\\"L\\\", \\\"priority\\\": 20, \\\"overrides\\\": []}, {\\\"rule_id\\\": \\\"cleaner_region\\\", \\\"type\\\": \\\"inside_region\\\", \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}, \\\"region_id\\\": \\\"R\\\", \\\"priority\\\": 20, \\\"overrides\\\": []}, {\\\"rule_id\\\": \\\"relation\\\", \\\"type\\\": \\\"relative_position\\\", \\\"subject\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"reference\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}, \\\"relation\\\": \\\"left_of\\\", \\\"min_gap_mm\\\": 50.0, \\\"priority\\\": 20, \\\"overrides\\\": []}]}}\"}}], \"usage\": {\"total_tokens\": 1}}",
+      "repair": false,
+      "repair_diagnostic": null,
+      "status": "valid",
+      "usage": {
+        "total_tokens": 1
+      }
+    },
+    {
+      "attempt_id": 3,
+      "body_digest": "5003587047997ecf10458a41fdd11ef4e548f6e8ac231c601263420044a1d08d",
+      "compilation_id": "image_D0002",
+      "cost": null,
+      "job_id": "image",
+      "latency_s": 0.03215810298570432,
+      "payload": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "message": {
+              "content": "{\"schema_version\": \"o4_e2_response_v1\", \"request_id\": \"O4F_E0007\", \"state_hash\": \"07563bbe8c1ac4f37613092e742e5a25317a702a26661317d92a8ac1e2e4aac6\", \"observation_digest\": \"caf52e39ece296d4175db0011959297f0b2e8a786c40f49a9cc98651d720306f\", \"instruction_digest\": \"94b02200961fdb238223369ce9ff92f1551ad7eb2db95b2687adff6a2bc4a4f6\", \"policy_ast\": {\"schema_version\": \"o4_e2_policy_v1\", \"rules\": [{\"rule_id\": \"label\", \"priority\": 20, \"overrides\": [], \"target\": {\"all\": true}, \"type\": \"max_top_load\", \"limit\": {\"field\": \"labels.max_top_load_kg\"}}, {\"rule_id\": \"no_top\", \"priority\": 10, \"overrides\": [\"label\"], \"target\": {\"eq\": {\"field\": \"labels.no_top_load\", \"value\": true}}, \"type\": \"no_top_load\"}, {\"rule_id\": \"reinforced\", \"priority\": 0, \"overrides\": [\"label\"], \"target\": {\"and\": [{\"eq\": {\"field\": \"cargo_category\", \"value\": \"glassware\"}}, {\"eq\": {\"field\": \"packaging.reinforced\", \"value\": true}}, {\"eq\": {\"field\": \"labels.no_top_load\", \"value\": false}}]}, \"type\": \"max_top_load\", \"limit\": {\"constant_kg\": 2.0}}, {\"rule_id\": \"contact\", \"priority\": 20, \"overrides\": [], \"type\": \"forbidden_contact\", \"left\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"right\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}}, {\"rule_id\": \"food_region\", \"type\": \"inside_region\", \"target\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"region_id\": \"L\", \"priority\": 20, \"overrides\": []}, {\"rule_id\": \"cleaner_region\", \"type\": \"inside_region\", \"target\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}, \"region_id\": \"R\", \"priority\": 20, \"overrides\": []}, {\"rule_id\": \"relation\", \"type\": \"relative_position\", \"subject\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"reference\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}, \"relation\": \"left_of\", \"min_gap_mm\": 50.0, \"priority\": 20, \"overrides\": []}]}}"
+            }
+          }
+        ],
+        "usage": {
+          "total_tokens": 1
+        }
+      },
+      "raw_text": "{\"choices\": [{\"finish_reason\": \"stop\", \"message\": {\"content\": \"{\\\"schema_version\\\": \\\"o4_e2_response_v1\\\", \\\"request_id\\\": \\\"O4F_E0007\\\", \\\"state_hash\\\": \\\"07563bbe8c1ac4f37613092e742e5a25317a702a26661317d92a8ac1e2e4aac6\\\", \\\"observation_digest\\\": \\\"caf52e39ece296d4175db0011959297f0b2e8a786c40f49a9cc98651d720306f\\\", \\\"instruction_digest\\\": \\\"94b02200961fdb238223369ce9ff92f1551ad7eb2db95b2687adff6a2bc4a4f6\\\", \\\"policy_ast\\\": {\\\"schema_version\\\": \\\"o4_e2_policy_v1\\\", \\\"rules\\\": [{\\\"rule_id\\\": \\\"label\\\", \\\"priority\\\": 20, \\\"overrides\\\": [], \\\"target\\\": {\\\"all\\\": true}, \\\"type\\\": \\\"max_top_load\\\", \\\"limit\\\": {\\\"field\\\": \\\"labels.max_top_load_kg\\\"}}, {\\\"rule_id\\\": \\\"no_top\\\", \\\"priority\\\": 10, \\\"overrides\\\": [\\\"label\\\"], \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"labels.no_top_load\\\", \\\"value\\\": true}}, \\\"type\\\": \\\"no_top_load\\\"}, {\\\"rule_id\\\": \\\"reinforced\\\", \\\"priority\\\": 0, \\\"overrides\\\": [\\\"label\\\"], \\\"target\\\": {\\\"and\\\": [{\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"glassware\\\"}}, {\\\"eq\\\": {\\\"field\\\": \\\"packaging.reinforced\\\", \\\"value\\\": true}}, {\\\"eq\\\": {\\\"field\\\": \\\"labels.no_top_load\\\", \\\"value\\\": false}}]}, \\\"type\\\": \\\"max_top_load\\\", \\\"limit\\\": {\\\"constant_kg\\\": 2.0}}, {\\\"rule_id\\\": \\\"contact\\\", \\\"priority\\\": 20, \\\"overrides\\\": [], \\\"type\\\": \\\"forbidden_contact\\\", \\\"left\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"right\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}}, {\\\"rule_id\\\": \\\"food_region\\\", \\\"type\\\": \\\"inside_region\\\", \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"region_id\\\": \\\"L\\\", \\\"priority\\\": 20, \\\"overrides\\\": []}, {\\\"rule_id\\\": \\\"cleaner_region\\\", \\\"type\\\": \\\"inside_region\\\", \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}, \\\"region_id\\\": \\\"R\\\", \\\"priority\\\": 20, \\\"overrides\\\": []}, {\\\"rule_id\\\": \\\"relation\\\", \\\"type\\\": \\\"relative_position\\\", \\\"subject\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"reference\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}, \\\"relation\\\": \\\"left_of\\\", \\\"min_gap_mm\\\": 50.0, \\\"priority\\\": 20, \\\"overrides\\\": []}]}}\"}}], \"usage\": {\"total_tokens\": 1}}",
+      "repair": false,
+      "repair_diagnostic": null,
+      "status": "valid",
+      "usage": {
+        "total_tokens": 1
+      }
+    },
+    {
+      "attempt_id": 4,
+      "body_digest": "a1dcbb12fe9aed4a04e13418ecfeac56a52d7cf6793a5255fbf28874b1b71146",
+      "compilation_id": "image_D0003",
+      "cost": null,
+      "job_id": "image",
+      "latency_s": 0.0323198479891289,
+      "payload": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "message": {
+              "content": "{\"schema_version\": \"o4_e2_response_v1\", \"request_id\": \"O4F_E0008\", \"state_hash\": \"74e1b4c5403e9e4b162c5224ce8bb6e1f1d4512d2278fa59fc5319f7393aa464\", \"observation_digest\": \"f63371910946fea7015cc28dfb03085fad561538a56be3f0a59c6bcd0dd83758\", \"instruction_digest\": \"94b02200961fdb238223369ce9ff92f1551ad7eb2db95b2687adff6a2bc4a4f6\", \"policy_ast\": {\"schema_version\": \"o4_e2_policy_v1\", \"rules\": [{\"rule_id\": \"label\", \"priority\": 20, \"overrides\": [], \"target\": {\"all\": true}, \"type\": \"max_top_load\", \"limit\": {\"field\": \"labels.max_top_load_kg\"}}, {\"rule_id\": \"no_top\", \"priority\": 10, \"overrides\": [\"label\"], \"target\": {\"eq\": {\"field\": \"labels.no_top_load\", \"value\": true}}, \"type\": \"no_top_load\"}, {\"rule_id\": \"reinforced\", \"priority\": 0, \"overrides\": [\"label\"], \"target\": {\"and\": [{\"eq\": {\"field\": \"cargo_category\", \"value\": \"glassware\"}}, {\"eq\": {\"field\": \"packaging.reinforced\", \"value\": true}}, {\"eq\": {\"field\": \"labels.no_top_load\", \"value\": false}}]}, \"type\": \"max_top_load\", \"limit\": {\"constant_kg\": 2.0}}, {\"rule_id\": \"contact\", \"priority\": 20, \"overrides\": [], \"type\": \"forbidden_contact\", \"left\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"right\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}}, {\"rule_id\": \"food_region\", \"type\": \"inside_region\", \"target\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"region_id\": \"L\", \"priority\": 20, \"overrides\": []}, {\"rule_id\": \"cleaner_region\", \"type\": \"inside_region\", \"target\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}, \"region_id\": \"R\", \"priority\": 20, \"overrides\": []}, {\"rule_id\": \"relation\", \"type\": \"relative_position\", \"subject\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"reference\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}, \"relation\": \"left_of\", \"min_gap_mm\": 50.0, \"priority\": 20, \"overrides\": []}]}}"
+            }
+          }
+        ],
+        "usage": {
+          "total_tokens": 1
+        }
+      },
+      "raw_text": "{\"choices\": [{\"finish_reason\": \"stop\", \"message\": {\"content\": \"{\\\"schema_version\\\": \\\"o4_e2_response_v1\\\", \\\"request_id\\\": \\\"O4F_E0008\\\", \\\"state_hash\\\": \\\"74e1b4c5403e9e4b162c5224ce8bb6e1f1d4512d2278fa59fc5319f7393aa464\\\", \\\"observation_digest\\\": \\\"f63371910946fea7015cc28dfb03085fad561538a56be3f0a59c6bcd0dd83758\\\", \\\"instruction_digest\\\": \\\"94b02200961fdb238223369ce9ff92f1551ad7eb2db95b2687adff6a2bc4a4f6\\\", \\\"policy_ast\\\": {\\\"schema_version\\\": \\\"o4_e2_policy_v1\\\", \\\"rules\\\": [{\\\"rule_id\\\": \\\"label\\\", \\\"priority\\\": 20, \\\"overrides\\\": [], \\\"target\\\": {\\\"all\\\": true}, \\\"type\\\": \\\"max_top_load\\\", \\\"limit\\\": {\\\"field\\\": \\\"labels.max_top_load_kg\\\"}}, {\\\"rule_id\\\": \\\"no_top\\\", \\\"priority\\\": 10, \\\"overrides\\\": [\\\"label\\\"], \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"labels.no_top_load\\\", \\\"value\\\": true}}, \\\"type\\\": \\\"no_top_load\\\"}, {\\\"rule_id\\\": \\\"reinforced\\\", \\\"priority\\\": 0, \\\"overrides\\\": [\\\"label\\\"], \\\"target\\\": {\\\"and\\\": [{\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"glassware\\\"}}, {\\\"eq\\\": {\\\"field\\\": \\\"packaging.reinforced\\\", \\\"value\\\": true}}, {\\\"eq\\\": {\\\"field\\\": \\\"labels.no_top_load\\\", \\\"value\\\": false}}]}, \\\"type\\\": \\\"max_top_load\\\", \\\"limit\\\": {\\\"constant_kg\\\": 2.0}}, {\\\"rule_id\\\": \\\"contact\\\", \\\"priority\\\": 20, \\\"overrides\\\": [], \\\"type\\\": \\\"forbidden_contact\\\", \\\"left\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"right\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}}, {\\\"rule_id\\\": \\\"food_region\\\", \\\"type\\\": \\\"inside_region\\\", \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"region_id\\\": \\\"L\\\", \\\"priority\\\": 20, \\\"overrides\\\": []}, {\\\"rule_id\\\": \\\"cleaner_region\\\", \\\"type\\\": \\\"inside_region\\\", \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}, \\\"region_id\\\": \\\"R\\\", \\\"priority\\\": 20, \\\"overrides\\\": []}, {\\\"rule_id\\\": \\\"relation\\\", \\\"type\\\": \\\"relative_position\\\", \\\"subject\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"reference\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}, \\\"relation\\\": \\\"left_of\\\", \\\"min_gap_mm\\\": 50.0, \\\"priority\\\": 20, \\\"overrides\\\": []}]}}\"}}], \"usage\": {\"total_tokens\": 1}}",
+      "repair": false,
+      "repair_diagnostic": null,
+      "status": "valid",
+      "usage": {
+        "total_tokens": 1
+      }
+    }
+  ],
+  "budget": 10,
+  "job_limits": {
+    "image": 10
+  },
+  "test_double": true
+}

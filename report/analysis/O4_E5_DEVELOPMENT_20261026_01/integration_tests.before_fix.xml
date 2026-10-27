@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="6" time="102.820" timestamp="2026-10-26T11:56:08.335301+08:00" hostname="cyw-R7000P"><testcase classname="tests.integration.test_o4_e5_delivery" name="test_plan_full_denominators_frozen_source_and_no_overwrite" time="40.372" /><testcase classname="tests.integration.test_o4_e5_delivery" name="test_offline_bounded_run_and_real_checkpoint_continuation" time="48.782" /><testcase classname="tests.integration.test_o4_e5_delivery" name="test_plan_tamper_detected" time="0.061" /><testcase classname="tests.integration.test_o4_e5_delivery" name="test_real_flag_required_before_read_or_network" time="0.001" /><testcase classname="tests.integration.test_o4_e5_delivery" name="test_forged_pass_without_execution_evidence_is_not_sufficient" time="0.066" /><testcase classname="tests.integration.test_o4_e5_delivery" name="test_fake_online_scheduler_budget_resume_and_raw_http_verifier" time="13.392"><failure message="TypeError: object of type 'generator' has no len()">prepared = PosixPath('/tmp/pytest-of-cyw/pytest-26/e5delivery0/plan')
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-26/test_fake_online_scheduler_bud0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x76d08745dc90&gt;
+
+    def test_fake_online_scheduler_budget_resume_and_raw_http_verifier(prepared,tmp_path,monkeypatch):
+        """Explicitly marked test-only plan; no claim of offline acceptance/real API."""
+        import hashlib
+        import io
+        from semantic_pallet_planner.o4.remote.transport import ModelConfig,ChatTransport
+        from semantic_pallet_planner.o4.extensions.e2.visual import FONT
+        from semantic_pallet_planner.o4.extensions.e2.remote import prompt
+        from semantic_pallet_planner.o4.extensions.e2.compiler import compile_policy
+        from semantic_pallet_planner.o4.extensions.e2.experiment import files
+        from semantic_pallet_planner.o4.extensions.e5.experiment import PACKAGE
+        from semantic_pallet_planner.o4.extensions.e5.online import ONLINE_VERSION,verify_online
+        _,data,config=validate_plan(prepared)
+        planroot=tmp_path/'online_fixture';planroot.mkdir();model=ModelConfig(endpoint='https://offline.invalid/chat/completions',model='test-double',api_key_env='E5_SCHEDULER_TEST_KEY')
+        write(planroot/'private/input_snapshot.json',data);write(planroot/'config.snapshot.json',config);write(planroot/'model.snapshot.json',model.snapshot());(planroot/'prompt.txt').write_text(prompt())
+        jobs=online_jobs(data)
+        write(planroot/'plan.json',{'version':ONLINE_VERSION,'test_fixture_only':True,'jobs':jobs,'maximum_api_attempts':3100,
+              'data_digest':digest(data),'config_digest':digest(config),'model_digest':digest(model.snapshot()),
+              'source_files':files(PACKAGE),'font_sha256':hashlib.sha256(Path(FONT).read_bytes()).hexdigest()})
+        seal(planroot)
+        with pytest.raises(O4Error,match='test_fixture_requires'):remote_run(planroot,tmp_path/'forbidden',3100,remote=True)
+        monkeypatch.setenv('E5_SCHEDULER_TEST_KEY','offline-test-only');bodies=[]
+        def opener(req,timeout):
+            b=json.loads(req.data);bodies.append(b)
+            q=json.loads(b['messages'][1]['content'][0]['text'])['public_input']['public_request']
+            payload={'choices':[{'finish_reason':'stop','message':{'content':json.dumps(compile_policy(q))}}],'usage':{'total_tokens':1}}
+            class Response(io.BytesIO):
+                def __enter__(self):return self
+                def __exit__(self,*args):self.close()
+            return Response(json.dumps(payload).encode())
+        transport=ChatTransport(model,opener=opener,test_double=True);output=tmp_path/'real_encoding_test'
+&gt;       a=remote_run(planroot,output,3100,remote=True,max_jobs=2,transport=transport)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+semantic_pallet_planner/tests/integration/test_o4_e5_delivery.py:102: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/o4/extensions/e5/online.py:109: in remote_run
+    report=refresh(root,plan,data,jobs,ledger,complete=complete)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+semantic_pallet_planner/src/semantic_pallet_planner/o4/extensions/e5/online.py:119: in refresh
+    root=Path(root);summary=aggregate(lightweight_results(root,jobs),jobs);write(root/'metrics/summary.json',summary)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+results = &lt;generator object lightweight_results at 0x76d0a6b87d40&gt;
+jobs = [{'attempt_limit': 0, 'backend': 'public_parser', 'job_id': 'E5_SRC00_C0_public_parser_single', 'planner': 'single', ....imit': 0, 'backend': 'oracle_ast', 'job_id': 'E5_SRC00_C0_oracle_ast_buffer_fifo', 'planner': 'buffer_fifo', ...}, ...]
+
+    def aggregate(results,jobs):
+        groups=defaultdict(list)
+        for result in results:
+            s=result['summary'];groups[(s['source_kind'],str(s['configuration']),s['backend'],s['planner'])].append(result)
+        rows=[]
+        for (kind,configuration,backend,planner),runs in sorted(groups.items()):
+            events=[e for r in runs for e in r['events'] if e['event'] in ('PLACE','STOP')]
+            components={}
+            keys=sorted({k for e in events for k,v in e['compilation_metrics'].items() if isinstance(v,bool) or v is None})
+            for key in keys:
+                values=[e['compilation_metrics'].get(key) for e in events]
+                components[key]={'correct':sum(v is True for v in values),'applicable':sum(v is not None for v in values),'not_applicable_or_unidentifiable':sum(v is None for v in values)}
+            rows.append({'source_kind':kind,'configuration':configuration,'backend':backend,'planner':planner,
+              'recorded_episodes':len(runs),'independent_sources':len({r['summary']['source_order_key'] for r in runs}) if kind!='constructed' else 0,
+              'execution_pass':sum(r['summary']['execution_status']=='PASS' for r in runs),
+              'completed':sum(r['summary']['completed'] for r in runs),'clean_completed':sum(r['summary']['clean_completed'] for r in runs),
+              'planned_items':sum(r['summary']['planned_items'] for r in runs),'placed_items':sum(r['summary']['placed_items'] for r in runs),
+              'violating_steps':sum(r['summary']['violating_steps'] for r in runs),'termination_reasons':dict(Counter(r['summary']['termination_reason'] for r in runs)),
+              'components':components,'false_allow':sum(len(e['compilation_metrics']['false_allow_ids']) for e in events),
+              'false_reject':sum(len(e['compilation_metrics']['false_reject_ids']) for e in events),
+              'rule_applicability_states':dict(Counter(v['status'] for e in events for v in e['reference_after']['relation_status'].values()))})
+&gt;       return {'planned_jobs':len(jobs),'recorded_episodes':len(results),'job_statuses':dict(Counter(j['status'] for j in jobs)),
+                                                             ^^^^^^^^^^^^
+                'groups':rows,'interpretation':'constructed orders and source/configuration repeats are not new independent sources'}
+E       TypeError: object of type 'generator' has no len()
+
+semantic_pallet_planner/src/semantic_pallet_planner/o4/extensions/e5/metrics.py:26: TypeError</failure></testcase></testsuite></testsuites>

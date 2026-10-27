@@ -1,0 +1,115 @@
+{
+  "instruction_digest": "efce414af6fe5824c429b855cba31a2b0a4ccdbaf8c95ecb9e1a396e9bd16115",
+  "observation_digest": "fcf680b6fe7ff1fa6837b9464625662d75279c24322881e29a2a7e8fc723ac73",
+  "policy_ast": {
+    "rules": [
+      {
+        "limit": {
+          "field": "labels.max_top_load_kg"
+        },
+        "overrides": [],
+        "priority": 20,
+        "rule_id": "label",
+        "target": {
+          "all": true
+        },
+        "type": "max_top_load"
+      },
+      {
+        "overrides": [
+          "label"
+        ],
+        "priority": 10,
+        "rule_id": "no_top",
+        "target": {
+          "eq": {
+            "field": "labels.no_top_load",
+            "value": true
+          }
+        },
+        "type": "no_top_load"
+      },
+      {
+        "limit": {
+          "constant_kg": 2
+        },
+        "overrides": [
+          "label"
+        ],
+        "priority": 0,
+        "rule_id": "reinforced",
+        "target": {
+          "and": [
+            {
+              "eq": {
+                "field": "cargo_category",
+                "value": "glassware"
+              }
+            },
+            {
+              "eq": {
+                "field": "packaging.reinforced",
+                "value": true
+              }
+            },
+            {
+              "eq": {
+                "field": "labels.no_top_load",
+                "value": false
+              }
+            }
+          ]
+        },
+        "type": "max_top_load"
+      },
+      {
+        "left": {
+          "eq": {
+            "field": "cargo_category",
+            "value": "food"
+          }
+        },
+        "overrides": [],
+        "priority": 20,
+        "right": {
+          "eq": {
+            "field": "cargo_category",
+            "value": "household_cleaner"
+          }
+        },
+        "rule_id": "contact",
+        "type": "forbidden_contact"
+      },
+      {
+        "overrides": [],
+        "priority": 20,
+        "region_id": "F",
+        "rule_id": "food_region",
+        "target": {
+          "eq": {
+            "field": "cargo_category",
+            "value": "food"
+          }
+        },
+        "type": "inside_region"
+      },
+      {
+        "overrides": [],
+        "priority": 20,
+        "region_id": "B",
+        "rule_id": "cleaner_region",
+        "target": {
+          "eq": {
+            "field": "cargo_category",
+            "value": "household_cleaner"
+          }
+        },
+        "type": "inside_region"
+      }
+    ],
+    "schema_version": "o4_e2_policy_v1"
+  },
+  "request_id": "O4F_E0013",
+  "schema_version": "o4_e2_response_v1",
+  "state_hash": "ebfe5ed20ab89ea27861810772914658b8800e6ef92d1d692038ecc8aec6f7fe"
+}

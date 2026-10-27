@@ -1,0 +1,291 @@
+{
+  "changed_request": {
+    "available_objects": [
+      {
+        "cargo_category": "food",
+        "dimensions_mm": {
+          "height": 100,
+          "length": 100,
+          "width": 100
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 20.0,
+          "no_top_load": true
+        },
+        "mass_kg": 1.0,
+        "object_id": "A",
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 100.0,
+        "stackable": true,
+        "weight_class": "light"
+      },
+      {
+        "cargo_category": "household_cleaner",
+        "dimensions_mm": {
+          "height": 100,
+          "length": 100,
+          "width": 100
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 20.0,
+          "no_top_load": false
+        },
+        "mass_kg": 1.0,
+        "object_id": "B",
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 100.0,
+        "stackable": true,
+        "weight_class": "light"
+      },
+      {
+        "cargo_category": "general",
+        "dimensions_mm": {
+          "height": 100,
+          "length": 100,
+          "width": 100
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 20.0,
+          "no_top_load": true
+        },
+        "mass_kg": 1.0,
+        "object_id": "C",
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 100.0,
+        "stackable": true,
+        "weight_class": "light"
+      }
+    ],
+    "buffer_context": {
+      "capacity": 3,
+      "end_of_stream": false,
+      "event_index": 3,
+      "pending": [
+        {
+          "arrival_index": 0,
+          "object_id": "A",
+          "slot": 0
+        },
+        {
+          "arrival_index": 1,
+          "object_id": "B",
+          "slot": 1
+        },
+        {
+          "arrival_index": 2,
+          "object_id": "C",
+          "slot": 2
+        }
+      ]
+    },
+    "capability_version": "o4_e2_v1",
+    "container": {
+      "container_id": "O4_GOLD",
+      "coordinate_frame": "container_bottom_center",
+      "length_mm": 1000,
+      "max_height_mm": 1000,
+      "max_payload_kg": 1000,
+      "width_mm": 1000
+    },
+    "coordinate_convention": "bottom_center_x_right_y_back_z_up_v1",
+    "images": [
+      {
+        "path": "public/images/image_D0000.png",
+        "sha256": "ae1a9f7ed4110d2661bd710f3be93126ac0be83ea830c037a1317a8dbca566be"
+      }
+    ],
+    "instruction_digest": "94b02200961fdb238223369ce9ff92f1551ad7eb2db95b2687adff6a2bc4a4f6",
+    "instruction_text": "规则label：对（全部箱体），累计顶部限载按标签；优先级20；覆盖无。\n规则no_top：对（禁压标记等于是），禁止顶部加载；优先级10；覆盖label。\n规则reinforced：对（同时满足（货物类别等于玻璃制品，包装加固等于是，禁压标记等于否）），累计顶部限载为2kg；优先级0；覆盖label。\n规则contact：禁止（货物类别等于食品）与（货物类别等于清洁用品）直接面接触；优先级20；覆盖无。\n规则food_region：对（货物类别等于食品），底面完全位于区域L；优先级20；覆盖无。\n规则cleaner_region：对（货物类别等于清洁用品），底面完全位于区域R；优先级20；覆盖无。\n规则relation：要求（货物类别等于食品）位于（货物类别等于清洁用品）的左侧；最小间距50.0mm；优先级20；覆盖无。",
+    "observation_digest": "b53ad906695095cc5cbe644cf6db04c07bac466ee9c1c5fb5a45ef27824370f7",
+    "placed_objects": [],
+    "placement_convention": "upright_label_pos_z_v1",
+    "regions": [
+      {
+        "region_id": "L",
+        "x_max_mm": 250.0,
+        "x_min_mm": -500.0,
+        "y_max_mm": 500.0,
+        "y_min_mm": -500.0
+      },
+      {
+        "region_id": "R",
+        "x_max_mm": 500.0,
+        "x_min_mm": -250.0,
+        "y_max_mm": 500.0,
+        "y_min_mm": -500.0
+      },
+      {
+        "region_id": "F",
+        "x_max_mm": 500.0,
+        "x_min_mm": -500.0,
+        "y_max_mm": 250.0,
+        "y_min_mm": -500.0
+      },
+      {
+        "region_id": "B",
+        "x_max_mm": 500.0,
+        "x_min_mm": -500.0,
+        "y_max_mm": 500.0,
+        "y_min_mm": -250.0
+      }
+    ],
+    "rendering_version": "o4_e2_top_label_render_v1",
+    "request_id": "O4F_E0003",
+    "sampling_grid_mm": [
+      0,
+      50,
+      100
+    ],
+    "schema_version": "o4_e2_request_v1",
+    "spatial_eps_mm": 1e-06,
+    "state_hash": "075a6bb1204e92423c3d20cf143cd3d0b149088a1f8ef9c031e6ef5bf5399f92",
+    "units": {
+      "length": "mm",
+      "mass": "kg"
+    }
+  },
+  "original_response": {
+    "instruction_digest": "94b02200961fdb238223369ce9ff92f1551ad7eb2db95b2687adff6a2bc4a4f6",
+    "observation_digest": "de395810f8eb862e589308cf5c71937ccba7155565edf4ea6ad0c32a00942532",
+    "policy_ast": {
+      "rules": [
+        {
+          "limit": {
+            "field": "labels.max_top_load_kg"
+          },
+          "overrides": [],
+          "priority": 20,
+          "rule_id": "label",
+          "target": {
+            "all": true
+          },
+          "type": "max_top_load"
+        },
+        {
+          "overrides": [
+            "label"
+          ],
+          "priority": 10,
+          "rule_id": "no_top",
+          "target": {
+            "eq": {
+              "field": "labels.no_top_load",
+              "value": true
+            }
+          },
+          "type": "no_top_load"
+        },
+        {
+          "limit": {
+            "constant_kg": 2.0
+          },
+          "overrides": [
+            "label"
+          ],
+          "priority": 0,
+          "rule_id": "reinforced",
+          "target": {
+            "and": [
+              {
+                "eq": {
+                  "field": "cargo_category",
+                  "value": "glassware"
+                }
+              },
+              {
+                "eq": {
+                  "field": "packaging.reinforced",
+                  "value": true
+                }
+              },
+              {
+                "eq": {
+                  "field": "labels.no_top_load",
+                  "value": false
+                }
+              }
+            ]
+          },
+          "type": "max_top_load"
+        },
+        {
+          "left": {
+            "eq": {
+              "field": "cargo_category",
+              "value": "food"
+            }
+          },
+          "overrides": [],
+          "priority": 20,
+          "right": {
+            "eq": {
+              "field": "cargo_category",
+              "value": "household_cleaner"
+            }
+          },
+          "rule_id": "contact",
+          "type": "forbidden_contact"
+        },
+        {
+          "overrides": [],
+          "priority": 20,
+          "region_id": "L",
+          "rule_id": "food_region",
+          "target": {
+            "eq": {
+              "field": "cargo_category",
+              "value": "food"
+            }
+          },
+          "type": "inside_region"
+        },
+        {
+          "overrides": [],
+          "priority": 20,
+          "region_id": "R",
+          "rule_id": "cleaner_region",
+          "target": {
+            "eq": {
+              "field": "cargo_category",
+              "value": "household_cleaner"
+            }
+          },
+          "type": "inside_region"
+        },
+        {
+          "min_gap_mm": 50.0,
+          "overrides": [],
+          "priority": 20,
+          "reference": {
+            "eq": {
+              "field": "cargo_category",
+              "value": "household_cleaner"
+            }
+          },
+          "relation": "left_of",
+          "rule_id": "relation",
+          "subject": {
+            "eq": {
+              "field": "cargo_category",
+              "value": "food"
+            }
+          },
+          "type": "relative_position"
+        }
+      ],
+      "schema_version": "o4_e2_policy_v1"
+    },
+    "request_id": "O4F_E0003",
+    "schema_version": "o4_e2_response_v1",
+    "state_hash": "ebaac42b5e91543da5bcf6627742145096625ea76cad3c579898d19b5bd2b3cc"
+  }
+}

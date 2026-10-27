@@ -1,0 +1,172 @@
+{
+  "experiments": [
+    {
+      "attempt_statuses": {
+        "invalid_binding": 1,
+        "valid": 24
+      },
+      "bindings_raw_response_ledger_png_body_digest_verified": true,
+      "candidate_counts": {
+        "1": 12
+      },
+      "cases": 12,
+      "experiment": "EXP_O4_E2_SMOKE_REAL_20261025_01",
+      "first_valid": 23,
+      "mean_latency_s": 2.027258893242106,
+      "metrics_recomputed": true,
+      "model": "deepseek-flash",
+      "new_api_attempts": 0,
+      "observed_object_counts": {
+        "1": 1,
+        "2": 11
+      },
+      "per_backend": {
+        "oracle_ast": {
+          "allowed_set_equal": 12,
+          "false_allow": 0,
+          "false_reject": 0,
+          "raw_ast_equal": 12,
+          "records": 12,
+          "semantic_equal": 12,
+          "valid_ast": 12
+        },
+        "public_parser": {
+          "allowed_set_equal": 12,
+          "false_allow": 0,
+          "false_reject": 0,
+          "raw_ast_equal": 11,
+          "records": 12,
+          "semantic_equal": 12,
+          "valid_ast": 12
+        },
+        "remote_image": {
+          "allowed_set_equal": 12,
+          "false_allow": 0,
+          "false_reject": 0,
+          "raw_ast_equal": 0,
+          "records": 12,
+          "semantic_equal": 12,
+          "valid_ast": 12
+        },
+        "remote_text": {
+          "allowed_set_equal": 12,
+          "false_allow": 0,
+          "false_reject": 0,
+          "raw_ast_equal": 0,
+          "records": 12,
+          "semantic_equal": 12,
+          "valid_ast": 12
+        }
+      },
+      "plan_files_checked": 202,
+      "real_api_attempts": 25,
+      "real_online_status": "NOT_RUN",
+      "records": 48,
+      "repaired_valid": 1,
+      "repairs": [
+        {
+          "backend": "remote_text",
+          "case_id": "E2_G24",
+          "changed_top_level_fields": [
+            "instruction_digest"
+          ],
+          "compilation_id": "E2C000023",
+          "diagnostic": {
+            "code": "invalid_binding",
+            "detail": "invalid_binding: $.instruction_digest: response belongs to a different request/state",
+            "repair_scope": "format/bindings only; no reference answer"
+          },
+          "expected_instruction_digest_length": 64,
+          "first_status": "invalid_binding",
+          "initial_instruction_digest_length": 63,
+          "policy_ast_unchanged": true
+        }
+      ],
+      "sealed_files_checked": 78,
+      "status": "PASS",
+      "temperature": 0.0,
+      "thinking": "disabled",
+      "unseen_generalization": "NOT_MEASURED",
+      "usage": {
+        "completion_tokens": 6588,
+        "prompt_tokens": 315043,
+        "total_tokens": 321631
+      }
+    },
+    {
+      "attempt_statuses": {
+        "valid": 48
+      },
+      "bindings_raw_response_ledger_png_body_digest_verified": true,
+      "candidate_counts": {
+        "2": 24
+      },
+      "cases": 24,
+      "experiment": "EXP_O4_E2_FIXED_REAL_20261025_01",
+      "first_valid": 48,
+      "mean_latency_s": 1.7789185393115379,
+      "metrics_recomputed": true,
+      "model": "deepseek-flash",
+      "new_api_attempts": 0,
+      "observed_object_counts": {
+        "2": 24
+      },
+      "per_backend": {
+        "oracle_ast": {
+          "allowed_set_equal": 24,
+          "false_allow": 0,
+          "false_reject": 0,
+          "raw_ast_equal": 24,
+          "records": 24,
+          "semantic_equal": 24,
+          "valid_ast": 24
+        },
+        "public_parser": {
+          "allowed_set_equal": 24,
+          "false_allow": 0,
+          "false_reject": 0,
+          "raw_ast_equal": 23,
+          "records": 24,
+          "semantic_equal": 24,
+          "valid_ast": 24
+        },
+        "remote_image": {
+          "allowed_set_equal": 24,
+          "false_allow": 0,
+          "false_reject": 0,
+          "raw_ast_equal": 1,
+          "records": 24,
+          "semantic_equal": 24,
+          "valid_ast": 24
+        },
+        "remote_text": {
+          "allowed_set_equal": 24,
+          "false_allow": 0,
+          "false_reject": 0,
+          "raw_ast_equal": 1,
+          "records": 24,
+          "semantic_equal": 24,
+          "valid_ast": 24
+        }
+      },
+      "plan_files_checked": 202,
+      "real_api_attempts": 48,
+      "real_online_status": "NOT_RUN",
+      "records": 96,
+      "repaired_valid": 0,
+      "repairs": [],
+      "sealed_files_checked": 150,
+      "status": "PASS",
+      "temperature": 0.0,
+      "thinking": "disabled",
+      "unseen_generalization": "NOT_MEASURED",
+      "usage": {
+        "completion_tokens": 12120,
+        "prompt_tokens": 606499,
+        "total_tokens": 618619
+      }
+    }
+  ],
+  "new_api_attempts": 0,
+  "status": "PASS"
+}

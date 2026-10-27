@@ -1,0 +1,48 @@
+{
+  "status": "PASS_UNDER_USER_REVISED_POLICY",
+  "policy": {
+    "extra_full_batch_recheck": "SKIPPED_BY_USER",
+    "kept": "first-run protocol/state/planning/reference checks, existing repeat/restore comparisons, metrics aggregation and file hashes",
+    "original_remote_prepare_full_recheck": "NOT_RUN",
+    "original_spec_deviation": "post-run all-episode recomputation requirement waived by explicit later user instruction",
+    "raw_episode_records_modified": false,
+    "real_api_attempts": 0,
+    "runtime_checked_jobs": 240,
+    "standalone_verify_command": "NOT_RUN",
+    "user_instruction": "不需要对240条都做复查，我觉得意义不大",
+    "version": "user_requested_runtime_checks_without_extra_batch_recheck_20261026_v1"
+  },
+  "gates": {
+    "E5-01": "PASS",
+    "E5-02": "PASS",
+    "E5-03": "PASS",
+    "E5-04": "PASS",
+    "E5-05": "PASS",
+    "E5-06": "PASS",
+    "E5-07": "PASS",
+    "E5-08": "PASS",
+    "E5-09": "PARTIAL_USER_WAIVER_EXTRA_FULL_RECHECK",
+    "E5-10": "PASS"
+  },
+  "evidence": {
+    "runtime_results": "runtime_checked_delivery.json",
+    "tests": "tests_acceptance_v2_final.xml",
+    "test_source_binding": "tests_v2_source_binding.json",
+    "faults": "preflight_faults_snapshot06.json",
+    "offline_report": "semantic_pallet_planner/outputs/EXP_O4_E5_090_OFFLINE_20261026_06/acceptance_report.json",
+    "runtime_checks": "semantic_pallet_planner/outputs/EXP_O4_E5_090_OFFLINE_20261026_06/audit/runtime_checks_summary.json",
+    "policy": "semantic_pallet_planner/outputs/EXP_O4_E5_090_OFFLINE_20261026_06/verification_policy.json",
+    "online_plan": {
+      "jobs": 240,
+      "maximum_api_attempts": 3100,
+      "metadata_source_model_and_seal_validation": "PASS",
+      "path": "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/PLAN_O4_E5_090_ONLINE_READY_20261026_01",
+      "prefix_jobs": 20,
+      "prefix_maximum_api_attempts": 260,
+      "trajectory_replay": "NOT_RUN"
+    }
+  },
+  "original_all_gates_pass": false,
+  "E5_R": "NOT_RUN",
+  "note": "No new trajectory replay or model call; original E5-09 additional full recomputation explicitly waived by later user instruction."
+}

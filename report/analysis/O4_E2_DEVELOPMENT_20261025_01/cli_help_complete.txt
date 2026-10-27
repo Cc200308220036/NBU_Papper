@@ -1,0 +1,73 @@
+
+$ python -P -m semantic_pallet_planner.runners.o4_e2 --help
+usage: - [-h] {prepare,validate-plan,run,verify,remote-prepare,remote-run} ...
+
+O4 E2 upright top-label spatial development
+
+positional arguments:
+  {prepare,validate-plan,run,verify,remote-prepare,remote-run}
+    prepare             build/validate fixtures and freeze source/data/config
+                        plan
+    validate-plan       verify sealed plan, input counts and source snapshot
+    run                 run full offline E2 matrix, repeats, restore and audit
+    verify              read-only recomputation of NEW E2 experiment, without
+                        APIs
+    remote-prepare      freeze E2 real compile smoke/fixed plan; no network
+    remote-run          explicit real E2 compile run, no online-order claim
+
+options:
+  -h, --help            show this help message and exit
+
+$ python -P -m semantic_pallet_planner.runners.o4_e2 prepare --help
+usage: - prepare [-h] --output OUTPUT
+
+options:
+  -h, --help       show this help message and exit
+  --output OUTPUT
+
+$ python -P -m semantic_pallet_planner.runners.o4_e2 validate-plan --help
+usage: - validate-plan [-h] --plan PLAN
+
+options:
+  -h, --help   show this help message and exit
+  --plan PLAN
+
+$ python -P -m semantic_pallet_planner.runners.o4_e2 run --help
+usage: - run [-h] --plan PLAN --output OUTPUT --protection PROTECTION
+
+options:
+  -h, --help            show this help message and exit
+  --plan PLAN
+  --output OUTPUT
+  --protection PROTECTION
+                        pre-development SHA256 manifest
+
+$ python -P -m semantic_pallet_planner.runners.o4_e2 verify --help
+usage: - verify [-h] --experiment EXPERIMENT
+
+options:
+  -h, --help            show this help message and exit
+  --experiment EXPERIMENT
+
+$ python -P -m semantic_pallet_planner.runners.o4_e2 remote-prepare --help
+usage: - remote-prepare [-h] --development-plan DEVELOPMENT_PLAN --profile
+                        {compile-smoke,fixed} --model-config MODEL_CONFIG
+                        --output OUTPUT
+
+options:
+  -h, --help            show this help message and exit
+  --development-plan DEVELOPMENT_PLAN
+  --profile {compile-smoke,fixed}
+  --model-config MODEL_CONFIG
+  --output OUTPUT
+
+$ python -P -m semantic_pallet_planner.runners.o4_e2 remote-run --help
+usage: - remote-run [-h] --plan PLAN --output OUTPUT --api-budget API_BUDGET
+                    --remote
+
+options:
+  -h, --help            show this help message and exit
+  --plan PLAN
+  --output OUTPUT
+  --api-budget API_BUDGET
+  --remote

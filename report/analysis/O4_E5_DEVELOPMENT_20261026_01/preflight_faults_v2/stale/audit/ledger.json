@@ -1,0 +1,73 @@
+{
+  "attempts": [
+    {
+      "attempt_id": 1,
+      "body_digest": "7cb1fe9e6ab56156c3b6b5d7376e608640f80e529e73c9355c452b1116d01ede",
+      "compilation_id": "stale_D0000",
+      "cost": null,
+      "job_id": "stale",
+      "latency_s": 0.026587371015921235,
+      "payload": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "message": {
+              "content": "{\"schema_version\": \"o4_e2_response_v1\", \"request_id\": \"O4F_E0001\", \"state_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"observation_digest\": \"2aa5d459885c87d7ac8f908f3c414a88eaf134c3ada3e84adc01d539f0042d00\", \"instruction_digest\": \"94b02200961fdb238223369ce9ff92f1551ad7eb2db95b2687adff6a2bc4a4f6\", \"policy_ast\": {\"schema_version\": \"o4_e2_policy_v1\", \"rules\": [{\"rule_id\": \"label\", \"priority\": 20, \"overrides\": [], \"target\": {\"all\": true}, \"type\": \"max_top_load\", \"limit\": {\"field\": \"labels.max_top_load_kg\"}}, {\"rule_id\": \"no_top\", \"priority\": 10, \"overrides\": [\"label\"], \"target\": {\"eq\": {\"field\": \"labels.no_top_load\", \"value\": true}}, \"type\": \"no_top_load\"}, {\"rule_id\": \"reinforced\", \"priority\": 0, \"overrides\": [\"label\"], \"target\": {\"and\": [{\"eq\": {\"field\": \"cargo_category\", \"value\": \"glassware\"}}, {\"eq\": {\"field\": \"packaging.reinforced\", \"value\": true}}, {\"eq\": {\"field\": \"labels.no_top_load\", \"value\": false}}]}, \"type\": \"max_top_load\", \"limit\": {\"constant_kg\": 2.0}}, {\"rule_id\": \"contact\", \"priority\": 20, \"overrides\": [], \"type\": \"forbidden_contact\", \"left\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"right\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}}, {\"rule_id\": \"food_region\", \"type\": \"inside_region\", \"target\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"region_id\": \"L\", \"priority\": 20, \"overrides\": []}, {\"rule_id\": \"cleaner_region\", \"type\": \"inside_region\", \"target\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}, \"region_id\": \"R\", \"priority\": 20, \"overrides\": []}, {\"rule_id\": \"relation\", \"type\": \"relative_position\", \"subject\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"reference\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}, \"relation\": \"left_of\", \"min_gap_mm\": 50.0, \"priority\": 20, \"overrides\": []}]}}"
+            }
+          }
+        ],
+        "usage": {
+          "total_tokens": 1
+        }
+      },
+      "raw_text": "{\"choices\": [{\"finish_reason\": \"stop\", \"message\": {\"content\": \"{\\\"schema_version\\\": \\\"o4_e2_response_v1\\\", \\\"request_id\\\": \\\"O4F_E0001\\\", \\\"state_hash\\\": \\\"0000000000000000000000000000000000000000000000000000000000000000\\\", \\\"observation_digest\\\": \\\"2aa5d459885c87d7ac8f908f3c414a88eaf134c3ada3e84adc01d539f0042d00\\\", \\\"instruction_digest\\\": \\\"94b02200961fdb238223369ce9ff92f1551ad7eb2db95b2687adff6a2bc4a4f6\\\", \\\"policy_ast\\\": {\\\"schema_version\\\": \\\"o4_e2_policy_v1\\\", \\\"rules\\\": [{\\\"rule_id\\\": \\\"label\\\", \\\"priority\\\": 20, \\\"overrides\\\": [], \\\"target\\\": {\\\"all\\\": true}, \\\"type\\\": \\\"max_top_load\\\", \\\"limit\\\": {\\\"field\\\": \\\"labels.max_top_load_kg\\\"}}, {\\\"rule_id\\\": \\\"no_top\\\", \\\"priority\\\": 10, \\\"overrides\\\": [\\\"label\\\"], \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"labels.no_top_load\\\", \\\"value\\\": true}}, \\\"type\\\": \\\"no_top_load\\\"}, {\\\"rule_id\\\": \\\"reinforced\\\", \\\"priority\\\": 0, \\\"overrides\\\": [\\\"label\\\"], \\\"target\\\": {\\\"and\\\": [{\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"glassware\\\"}}, {\\\"eq\\\": {\\\"field\\\": \\\"packaging.reinforced\\\", \\\"value\\\": true}}, {\\\"eq\\\": {\\\"field\\\": \\\"labels.no_top_load\\\", \\\"value\\\": false}}]}, \\\"type\\\": \\\"max_top_load\\\", \\\"limit\\\": {\\\"constant_kg\\\": 2.0}}, {\\\"rule_id\\\": \\\"contact\\\", \\\"priority\\\": 20, \\\"overrides\\\": [], \\\"type\\\": \\\"forbidden_contact\\\", \\\"left\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"right\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}}, {\\\"rule_id\\\": \\\"food_region\\\", \\\"type\\\": \\\"inside_region\\\", \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"region_id\\\": \\\"L\\\", \\\"priority\\\": 20, \\\"overrides\\\": []}, {\\\"rule_id\\\": \\\"cleaner_region\\\", \\\"type\\\": \\\"inside_region\\\", \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}, \\\"region_id\\\": \\\"R\\\", \\\"priority\\\": 20, \\\"overrides\\\": []}, {\\\"rule_id\\\": \\\"relation\\\", \\\"type\\\": \\\"relative_position\\\", \\\"subject\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"reference\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}, \\\"relation\\\": \\\"left_of\\\", \\\"min_gap_mm\\\": 50.0, \\\"priority\\\": 20, \\\"overrides\\\": []}]}}\"}}], \"usage\": {\"total_tokens\": 1}}",
+      "repair": false,
+      "repair_diagnostic": {
+        "code": "invalid_binding",
+        "detail": "invalid_binding: $.state_hash: response belongs to a different request/state",
+        "repair_scope": "format/bindings only; no reference answer"
+      },
+      "status": "invalid_binding",
+      "usage": {
+        "total_tokens": 1
+      }
+    },
+    {
+      "attempt_id": 2,
+      "body_digest": "22ebcb4bd7c076753d34ba5b3e47e710dc511b0034fda3a4b20c71780995d054",
+      "compilation_id": "stale_D0000",
+      "cost": null,
+      "job_id": "stale",
+      "latency_s": 0.03231798400520347,
+      "payload": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "message": {
+              "content": "{\"schema_version\": \"o4_e2_response_v1\", \"request_id\": \"O4F_E0001\", \"state_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"observation_digest\": \"2aa5d459885c87d7ac8f908f3c414a88eaf134c3ada3e84adc01d539f0042d00\", \"instruction_digest\": \"94b02200961fdb238223369ce9ff92f1551ad7eb2db95b2687adff6a2bc4a4f6\", \"policy_ast\": {\"schema_version\": \"o4_e2_policy_v1\", \"rules\": [{\"rule_id\": \"label\", \"priority\": 20, \"overrides\": [], \"target\": {\"all\": true}, \"type\": \"max_top_load\", \"limit\": {\"field\": \"labels.max_top_load_kg\"}}, {\"rule_id\": \"no_top\", \"priority\": 10, \"overrides\": [\"label\"], \"target\": {\"eq\": {\"field\": \"labels.no_top_load\", \"value\": true}}, \"type\": \"no_top_load\"}, {\"rule_id\": \"reinforced\", \"priority\": 0, \"overrides\": [\"label\"], \"target\": {\"and\": [{\"eq\": {\"field\": \"cargo_category\", \"value\": \"glassware\"}}, {\"eq\": {\"field\": \"packaging.reinforced\", \"value\": true}}, {\"eq\": {\"field\": \"labels.no_top_load\", \"value\": false}}]}, \"type\": \"max_top_load\", \"limit\": {\"constant_kg\": 2.0}}, {\"rule_id\": \"contact\", \"priority\": 20, \"overrides\": [], \"type\": \"forbidden_contact\", \"left\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"right\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}}, {\"rule_id\": \"food_region\", \"type\": \"inside_region\", \"target\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"region_id\": \"L\", \"priority\": 20, \"overrides\": []}, {\"rule_id\": \"cleaner_region\", \"type\": \"inside_region\", \"target\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}, \"region_id\": \"R\", \"priority\": 20, \"overrides\": []}, {\"rule_id\": \"relation\", \"type\": \"relative_position\", \"subject\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"food\"}}, \"reference\": {\"eq\": {\"field\": \"cargo_category\", \"value\": \"household_cleaner\"}}, \"relation\": \"left_of\", \"min_gap_mm\": 50.0, \"priority\": 20, \"overrides\": []}]}}"
+            }
+          }
+        ],
+        "usage": {
+          "total_tokens": 1
+        }
+      },
+      "raw_text": "{\"choices\": [{\"finish_reason\": \"stop\", \"message\": {\"content\": \"{\\\"schema_version\\\": \\\"o4_e2_response_v1\\\", \\\"request_id\\\": \\\"O4F_E0001\\\", \\\"state_hash\\\": \\\"0000000000000000000000000000000000000000000000000000000000000000\\\", \\\"observation_digest\\\": \\\"2aa5d459885c87d7ac8f908f3c414a88eaf134c3ada3e84adc01d539f0042d00\\\", \\\"instruction_digest\\\": \\\"94b02200961fdb238223369ce9ff92f1551ad7eb2db95b2687adff6a2bc4a4f6\\\", \\\"policy_ast\\\": {\\\"schema_version\\\": \\\"o4_e2_policy_v1\\\", \\\"rules\\\": [{\\\"rule_id\\\": \\\"label\\\", \\\"priority\\\": 20, \\\"overrides\\\": [], \\\"target\\\": {\\\"all\\\": true}, \\\"type\\\": \\\"max_top_load\\\", \\\"limit\\\": {\\\"field\\\": \\\"labels.max_top_load_kg\\\"}}, {\\\"rule_id\\\": \\\"no_top\\\", \\\"priority\\\": 10, \\\"overrides\\\": [\\\"label\\\"], \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"labels.no_top_load\\\", \\\"value\\\": true}}, \\\"type\\\": \\\"no_top_load\\\"}, {\\\"rule_id\\\": \\\"reinforced\\\", \\\"priority\\\": 0, \\\"overrides\\\": [\\\"label\\\"], \\\"target\\\": {\\\"and\\\": [{\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"glassware\\\"}}, {\\\"eq\\\": {\\\"field\\\": \\\"packaging.reinforced\\\", \\\"value\\\": true}}, {\\\"eq\\\": {\\\"field\\\": \\\"labels.no_top_load\\\", \\\"value\\\": false}}]}, \\\"type\\\": \\\"max_top_load\\\", \\\"limit\\\": {\\\"constant_kg\\\": 2.0}}, {\\\"rule_id\\\": \\\"contact\\\", \\\"priority\\\": 20, \\\"overrides\\\": [], \\\"type\\\": \\\"forbidden_contact\\\", \\\"left\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"right\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}}, {\\\"rule_id\\\": \\\"food_region\\\", \\\"type\\\": \\\"inside_region\\\", \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"region_id\\\": \\\"L\\\", \\\"priority\\\": 20, \\\"overrides\\\": []}, {\\\"rule_id\\\": \\\"cleaner_region\\\", \\\"type\\\": \\\"inside_region\\\", \\\"target\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}, \\\"region_id\\\": \\\"R\\\", \\\"priority\\\": 20, \\\"overrides\\\": []}, {\\\"rule_id\\\": \\\"relation\\\", \\\"type\\\": \\\"relative_position\\\", \\\"subject\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"food\\\"}}, \\\"reference\\\": {\\\"eq\\\": {\\\"field\\\": \\\"cargo_category\\\", \\\"value\\\": \\\"household_cleaner\\\"}}, \\\"relation\\\": \\\"left_of\\\", \\\"min_gap_mm\\\": 50.0, \\\"priority\\\": 20, \\\"overrides\\\": []}]}}\"}}], \"usage\": {\"total_tokens\": 1}}",
+      "repair": true,
+      "repair_diagnostic": {
+        "code": "invalid_binding",
+        "detail": "invalid_binding: $.state_hash: response belongs to a different request/state",
+        "repair_scope": "format/bindings only; no reference answer"
+      },
+      "status": "invalid_binding",
+      "usage": {
+        "total_tokens": 1
+      }
+    }
+  ],
+  "budget": 4,
+  "job_limits": {
+    "stale": 4
+  },
+  "test_double": true
+}

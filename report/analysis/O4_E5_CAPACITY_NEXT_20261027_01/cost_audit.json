@@ -1,0 +1,117 @@
+{
+  "status": "PASS",
+  "valid_process_invocations": 3,
+  "aborted_instrumentation_processes": 1,
+  "total_started_processes": 4,
+  "cold_calls": 72,
+  "hot_calls": 72,
+  "sample_scope": "six frozen core tasks x two methods x A/F x three processes; same saved fourth decision",
+  "T0_calls_added": 0,
+  "performance_orders_added": 0,
+  "minimum_denominator_seconds": 0.001,
+  "aggregates": [
+    {
+      "method": "single",
+      "cache": "cold",
+      "stats": {
+        "A": {
+          "n": 18,
+          "median": 0.24164525253581814,
+          "p95": 0.26239532906620294,
+          "min": 0.22754027805058286,
+          "max": 0.274910383974202
+        },
+        "F": {
+          "n": 18,
+          "median": 0.25937391648767516,
+          "p95": 0.2752929825423052,
+          "min": 0.234518671000842,
+          "max": 0.2921554499771446
+        }
+      },
+      "ratios": {
+        "median": 1.0733664897853896,
+        "p95": 1.0491535177931774
+      },
+      "pass": true
+    },
+    {
+      "method": "single",
+      "cache": "hot",
+      "stats": {
+        "A": {
+          "n": 18,
+          "median": 0.0014422320236917585,
+          "p95": 0.002412079300847835,
+          "min": 0.0012266619596630335,
+          "max": 0.002980221004690975
+        },
+        "F": {
+          "n": 18,
+          "median": 0.0014779735065530986,
+          "p95": 0.0020739541330840423,
+          "min": 0.001296382979489863,
+          "max": 0.0030406370060518384
+        }
+      },
+      "ratios": {
+        "median": 1.024782061606045,
+        "p95": 0.8598200450354417
+      },
+      "pass": true
+    },
+    {
+      "method": "buffer_search",
+      "cache": "cold",
+      "stats": {
+        "A": {
+          "n": 18,
+          "median": 3.9317223245452624,
+          "p95": 4.379139058059081,
+          "min": 3.725137989036739,
+          "max": 4.558044293022249
+        },
+        "F": {
+          "n": 18,
+          "median": 4.2873003580316436,
+          "p95": 4.902838602877455,
+          "min": 4.05034195096232,
+          "max": 4.903521152038593
+        }
+      },
+      "ratios": {
+        "median": 1.09043823651191,
+        "p95": 1.1195896129068088
+      },
+      "pass": true
+    },
+    {
+      "method": "buffer_search",
+      "cache": "hot",
+      "stats": {
+        "A": {
+          "n": 18,
+          "median": 0.005516659002751112,
+          "p95": 0.061598587647313255,
+          "min": 0.004093330993782729,
+          "max": 0.06179380801040679
+        },
+        "F": {
+          "n": 18,
+          "median": 0.005481338012032211,
+          "p95": 0.009551702451426534,
+          "min": 0.004498763009905815,
+          "max": 0.010368260031100363
+        }
+      },
+      "ratios": {
+        "median": 0.9935973946003755,
+        "p95": 0.1550636600000544
+      },
+      "pass": true
+    }
+  ],
+  "cost_gate": "both cold/hot: median<=2x, p95<=3x; no V2-D timing reused",
+  "component_scope": "root candidate sampling includes full quality; isolated quality remeasurement is a separate metadata-only diagnostic, AST/placement work=0",
+  "new_api_attempts": 0
+}

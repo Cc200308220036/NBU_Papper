@@ -1,0 +1,289 @@
+{
+  "engineering_status": "PASS",
+  "engineering_scope": "C01-C14, local feature/guard checks and new 48+8 execution; no claim of packing benefit",
+  "performance_status": "L2_FAILED_TO_QUALIFY_FOR_EXPANSION",
+  "default_replacement_status": "NOT_ELIGIBLE_ORIGINAL_REMAINS_DEFAULT",
+  "L3_status": "NOT_RUN_L2_GATE_NOT_MET",
+  "new_api_attempts": 0,
+  "main_episodes": 48,
+  "compatibility_episodes": 8,
+  "actual_submissions": 444,
+  "maxima": {
+    "joint": 48,
+    "per_object": 16,
+    "evaluations": 256,
+    "depth": 3,
+    "beam": 8
+  },
+  "checks": {
+    "C01": {
+      "status": "PASS",
+      "evidence": [
+        "frozen/default source comparison",
+        "test_c01_default_dispatch_and_closed_version"
+      ]
+    },
+    "C02": {
+      "status": "PASS",
+      "evidence": [
+        "test_c02_contact_coordinates_and_height_separation",
+        "fixed_decisions.json"
+      ]
+    },
+    "C03": {
+      "status": "PASS",
+      "evidence": [
+        "test_c03_l0_original_alignment_is_retained_from_same_pool",
+        "per-episode retention and coverage_lost"
+      ]
+    },
+    "C04": {
+      "status": "PASS",
+      "evidence": [
+        "test_c04_l0_micro_probe_difference_cannot_defeat_contact",
+        "L0 A/B/C/D fixed-state choices"
+      ]
+    },
+    "C05": {
+      "status": "PASS",
+      "evidence": [
+        "test_c05_unique_gap_region_and_forbidden_contact_survive_retention",
+        "positive and contradictory orders"
+      ]
+    },
+    "C06": {
+      "status": "PASS",
+      "evidence": [
+        "test_c06_visible_small_box_can_use_narrow_gap"
+      ]
+    },
+    "C07": {
+      "status": "PASS",
+      "evidence": [
+        "test_c07_mirror_geometry_quality_and_empty_contact",
+        "all saved submitted candidates in original soft eligible set"
+      ]
+    },
+    "C08": {
+      "status": "PASS",
+      "evidence": [
+        "test_c08_actual_stacking_vs_zero_load_business_counterexample",
+        "supplementary cumulative load and third-layer boundary checks"
+      ]
+    },
+    "C09": {
+      "status": "PASS",
+      "evidence": [
+        "test_c06_c09_exact_union_and_fragmentation_are_soft_descriptors",
+        "tuple ranking, exact rectangle boundaries, positive dimensions"
+      ]
+    },
+    "C10": {
+      "status": "PASS",
+      "evidence": [
+        "test_c10_c11_hidden_data_cache_isolation_and_stale_action",
+        "unchanged bound commit and public state projection"
+      ]
+    },
+    "C11": {
+      "status": "PASS",
+      "evidence": [
+        "search construction checks",
+        "all saved budget and root-state checks",
+        "frozen cache supplementary check"
+      ]
+    },
+    "C12": {
+      "status": "PASS",
+      "evidence": [
+        "test_c12_independent_repeat_and_checkpoint_restore",
+        "supplementary second construct repeat/restore"
+      ]
+    },
+    "C13": {
+      "status": "PASS",
+      "evidence": [
+        "local_decisions.png visually inspected",
+        "layouts.html",
+        "visual_validation.json"
+      ],
+      "limitation": "no automated browser session; generated SVG XML and source data validated"
+    },
+    "C14": {
+      "status": "PASS",
+      "evidence": [
+        "historical_protection.json",
+        "unchanged legacy source comparison",
+        "frozen manifest and input equality"
+      ]
+    }
+  },
+  "primary_behavior_tests": 21,
+  "frozen_supplementary_checks": 4,
+  "historical_protection": {
+    "status": "PASS",
+    "checked": 121353,
+    "changed": [],
+    "scope": "predevelopment historical artifacts and frozen E1/E2/planner/schema/data files; excludes __pycache__"
+  },
+  "cost": [
+    {
+      "method": "single",
+      "groups": {
+        "A": {
+          "cold_median_seconds": 0.19244132449966855,
+          "cold_p95_seconds": 0.22190338301879817,
+          "hot_median_seconds": 0.0013150324812158942,
+          "samples": 18,
+          "cold_run_cache_info": {
+            "legacy_root": {
+              "hits": 0,
+              "misses": 18,
+              "hit_rate": 0.0
+            },
+            "new_root": {
+              "hits": 0,
+              "misses": 0,
+              "hit_rate": null
+            },
+            "legacy_candidates": {
+              "hits": 0,
+              "misses": 18,
+              "hit_rate": 0.0
+            },
+            "new_candidates": {
+              "hits": 0,
+              "misses": 0,
+              "hit_rate": null
+            }
+          },
+          "hot_root_hit_rate": 1.0
+        },
+        "D": {
+          "cold_median_seconds": 0.20346351352054626,
+          "cold_p95_seconds": 0.23941880151978692,
+          "hot_median_seconds": 0.0013960145006421953,
+          "samples": 18,
+          "cold_run_cache_info": {
+            "legacy_root": {
+              "hits": 0,
+              "misses": 0,
+              "hit_rate": null
+            },
+            "new_root": {
+              "hits": 0,
+              "misses": 18,
+              "hit_rate": 0.0
+            },
+            "legacy_candidates": {
+              "hits": 0,
+              "misses": 18,
+              "hit_rate": 0.0
+            },
+            "new_candidates": {
+              "hits": 0,
+              "misses": 18,
+              "hit_rate": 0.0
+            }
+          },
+          "hot_root_hit_rate": 1.0
+        }
+      },
+      "median_ratio": 1.057275582827828,
+      "p95_ratio": 1.0789326339360268,
+      "local_cost_gate": true
+    },
+    {
+      "method": "buffer_search",
+      "groups": {
+        "A": {
+          "cold_median_seconds": 3.082913775986526,
+          "cold_p95_seconds": 3.4066216450446514,
+          "hot_median_seconds": 0.003736309503437951,
+          "samples": 18,
+          "cold_run_cache_info": {
+            "legacy_root": {
+              "hits": 0,
+              "misses": 18,
+              "hit_rate": 0.0
+            },
+            "new_root": {
+              "hits": 0,
+              "misses": 0,
+              "hit_rate": null
+            },
+            "legacy_candidates": {
+              "hits": 0,
+              "misses": 288,
+              "hit_rate": 0.0
+            },
+            "new_candidates": {
+              "hits": 0,
+              "misses": 0,
+              "hit_rate": null
+            }
+          },
+          "hot_root_hit_rate": 1.0
+        },
+        "D": {
+          "cold_median_seconds": 3.2890995380003005,
+          "cold_p95_seconds": 3.8297326698491814,
+          "hot_median_seconds": 0.0046228040009737015,
+          "samples": 18,
+          "cold_run_cache_info": {
+            "legacy_root": {
+              "hits": 0,
+              "misses": 0,
+              "hit_rate": null
+            },
+            "new_root": {
+              "hits": 0,
+              "misses": 18,
+              "hit_rate": 0.0
+            },
+            "legacy_candidates": {
+              "hits": 0,
+              "misses": 288,
+              "hit_rate": 0.0
+            },
+            "new_candidates": {
+              "hits": 0,
+              "misses": 288,
+              "hit_rate": 0.0
+            }
+          },
+          "hot_root_hit_rate": 1.0
+        }
+      },
+      "median_ratio": 1.0668801585110161,
+      "p95_ratio": 1.1242025293357707,
+      "local_cost_gate": true
+    }
+  ],
+  "pending_user_review": [
+    {
+      "task_id": "E5_SRC04_C0",
+      "method": "buffer_search",
+      "questions": [
+        "search path-level choice versus beam-pruning contribution"
+      ]
+    },
+    {
+      "task_id": "E5_SRC04_C1",
+      "method": "buffer_search",
+      "questions": [
+        "search path-level choice versus beam-pruning contribution"
+      ]
+    }
+  ],
+  "pending_review_scope": "explanatory causal attribution only; no changes or retuning attempted",
+  "business_support_quality": "NOT_IMPLEMENTED",
+  "probe_quality": "NOT_IMPLEMENTED",
+  "independent_generalization": "NOT_MEASURED",
+  "old_240_extra_recheck": "NOT_RUN_USER_WAIVER_PRESERVED",
+  "old_D_replay": "NOT_RUN",
+  "documentation": [
+    "docs/03_阶段产出分析/O4/O4E5规划质量V2开发与分级验收_20261027.md",
+    "docs/04_运行与复核手册/O4E5规划质量V2本地运行与复核_20261027.md"
+  ]
+}

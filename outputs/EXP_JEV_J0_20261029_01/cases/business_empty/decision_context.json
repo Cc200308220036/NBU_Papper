@@ -1,0 +1,91 @@
+{
+  "criteria": {},
+  "display_mapping": {},
+  "local_binding": {
+    "config_digest": "3895dd5641ec83a44ca43a91639c15de8568dde2d7ab68a8294afb4c9223afc4",
+    "criteria_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "event_index": 1,
+    "feature_version": "features_basic_v1",
+    "generator_config_digest": "08909846efdaa6e9c19e4b3359790033e659af7657bed11f4d9c94dc2c79f8ee",
+    "instruction_digest": "40e7bd0c1e4701d9caeeafd166b0df9091111203d3429e6fec0f51543ed48755",
+    "mapping_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "memory_digest": "63ac478cb39a3c1f838e9b53aca376bfafe992a72824ecd6921785de21717242",
+    "model_state_digest": "700e7f9524bd85d8f9b9d95926b843d2d0f5a0fea2ce48737cb1d8dce18737fc",
+    "observation_digest": "43ea69928f8e30ee3942b34b03aeb0b7798cd864a45ee74cc29650354c4d41e2",
+    "physical_digest": "2d6aa4bfb55f06810e8d34e0a2529af8b5a047f13f2283125a64c34a96eb071e",
+    "policy_digest": "e7bfce2ecce486a8dd383f616d652185c47f15a01a9dba5eeaa8824968a22a98",
+    "prompt_version": "jev_direct_en_v1",
+    "request_body_digest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "request_id": "O4F_E0001",
+    "selectable_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "state_hash": "762140fbd6d9bc92c8bb254af1650a357cd4e40066a41d02a4d794b06f13d61a"
+  },
+  "model_state": {
+    "available_objects": [
+      {
+        "cargo_category": "general",
+        "dimensions_mm": {
+          "height": 100,
+          "length": 100,
+          "width": 100
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 5.0,
+          "no_top_load": false
+        },
+        "mass_kg": 1.0,
+        "object_id": "B001",
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 100.0,
+        "stackable": true,
+        "weight_class": "light"
+      }
+    ],
+    "buffer": {
+      "capacity": 3,
+      "end_of_stream": false,
+      "pending": [
+        {
+          "arrival_index": 0,
+          "object_id": "B001",
+          "slot": 0
+        }
+      ]
+    },
+    "business_requirements": {
+      "english_descriptions": [
+        "R01: The entire footprint of all boxes must be inside public region tiny. Priority=20; explicitly overrides=none on matching objects."
+      ],
+      "original_text": "规则region：对（全部箱体），底面完全位于区域tiny；优先级20；覆盖无。"
+    },
+    "container": {
+      "length_mm": 1000,
+      "max_height_mm": 1000,
+      "max_payload_kg": 1000,
+      "width_mm": 1000
+    },
+    "coordinate_convention": "bottom_center_x_right_y_back_z_up_v1",
+    "memories": [],
+    "objective": "Prioritize completing the order without business violations. Compare the future usefulness of remaining space using only observed facts. Prefer low and central heavy-box placement when it does not undermine completion. No future arrivals are known.",
+    "placed_objects": [],
+    "regions": [
+      {
+        "region_id": "tiny",
+        "x_max_mm": 5,
+        "x_min_mm": -5,
+        "y_max_mm": 5,
+        "y_min_mm": -5
+      }
+    ],
+    "units": {
+      "length": "mm",
+      "mass": "kg"
+    }
+  },
+  "request_body": null,
+  "route": "STOP_NO_BUSINESS_CANDIDATE",
+  "version": "jev_decision_context_v1"
+}

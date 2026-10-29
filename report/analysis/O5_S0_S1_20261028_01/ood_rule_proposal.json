@@ -1,0 +1,38 @@
+{
+  "current_rule_preserved": "maximum_box_planar_aspect_ratio>3; only4OOD; BLOCKED_DATA artifacts remain unchanged",
+  "feasibility": {
+    "id_median_aspect_ratio": 1.5324675324675325,
+    "id_needed": 120,
+    "id_pool": 291,
+    "ood_median_aspect_ratio": 2.269230769230769,
+    "ood_needed": 20,
+    "ood_pool": 62
+  },
+  "feature": "max over items of max(length,width)/min(length,width)",
+  "formal_splits_generated": false,
+  "input": {
+    "eligible_source_clusters": 353,
+    "path": "semantic_pallet_planner/outputs/DATA_O5_DIRECT_MEMORY_20261028_02/source_exposure_ledger.json",
+    "representative_seed": 20261028,
+    "sha256": "42e15e58deb01eb1e3715ab3f471622e42911b72cbd969ec5a41664b69b29445"
+  },
+  "limits": [
+    "exogenous geometry partition only; no model results used",
+    "not independently collected industrial data or statistical power certification",
+    "no scope/budget quota change proposed; exact rule and sampled-source manifests must be frozen before any model experiment"
+  ],
+  "new_api_attempts": 0,
+  "planning_calls": 0,
+  "protocol_changed": false,
+  "quantile": {
+    "algorithm": "nearest rank: sorted values[ceil(q*n)-1]",
+    "boundary_rule": "ID <= threshold; OOD strictly > threshold; all ties remain ID",
+    "q": 0.8,
+    "rank_1_based": 283,
+    "threshold": 2.0344827586206895,
+    "ties_at_boundary": 36
+  },
+  "sampling_if_approved": "use existing deterministic seed/hash order inside each pool;60train/20dev/40ID/20OOD;one representative per source cluster",
+  "schema_version": "o5_ood_rule_proposal_v1",
+  "status": "AWAITING_USER_DECISION_NOT_APPLIED"
+}

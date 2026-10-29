@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.126" timestamp="2026-10-28T10:29:20.061692+08:00" hostname="cyw-R7000P"><testcase classname="tests.unit.test_o5_direct_text" name="test_text_usage_above_bound_halts" time="0.014"><failure message="Failed: DID NOT RAISE O5Error">decision = ({'schema_version': 'o5_direct_text_request_v1', 'request_id': 'REQ_1c67c5a7046789c6f9c33ccd', 'container': {'containe..., 'mass_kg': 3.5, 'stackable': True, ...}, ...], 'source_cluster_id': '00100377', 'source_order_key': '00102276', ...})
+profile = {'schema_version': 'o5_direct_text_provider_profile_v1', 'amount_policy': 'unlimited', 'provider': 'deepseek', 'endpoint': 'https://api.deepseek.com/chat/completions', ...}
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-67/test_text_usage_above_bound_ha0')
+
+    def test_text_usage_above_bound_halts(decision,profile,tmp_path):
+        rt,wire,budget=runtime(tmp_path,profile)
+        req=decision[0]
+        def too_large(req,a):
+            return (200,{},json.dumps({'model':'deepseek-flash','choices':[{'finish_reason':'stop','message':{'content':json.dumps(a)}}],
+                   'usage':{'prompt_tokens':12001,'completion_tokens':40}}))
+        wire.script=[too_large]
+&gt;       with pytest.raises(O5Error,match='SYSTEM_USAGE_BOUND_EXCEEDED'):rt.choose(req,tmp_path)
+E       Failed: DID NOT RAISE O5Error
+
+semantic_pallet_planner/tests/unit/test_o5_direct_text.py:295: Failed</failure></testcase></testsuite></testsuites>

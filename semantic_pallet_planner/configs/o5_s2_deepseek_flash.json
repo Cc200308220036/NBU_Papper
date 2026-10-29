@@ -1,0 +1,44 @@
+{
+  "schema_version": "o5_s2_provider_profile_v2",
+  "amount_policy": "unlimited",
+  "provider": "deepseek",
+  "endpoint": "https://api.deepseek.com/chat/completions",
+  "model": "deepseek-flash",
+  "returned_model": "deepseek-flash",
+  "snapshot_note": "Live Flash alias, no immutable snapshot assumed; record returned model and time. Seed omitted: not exposed in current documented request schema.",
+  "account_id": "local-pallet_vlm-DEEPSEEK_API_KEY",
+  "credential_env": "DEEPSEEK_API_KEY",
+  "adapter": "deepseek_flash_chat_v1",
+  "transport_verified": false,
+  "timeout_seconds": 90,
+  "temperature": 0,
+  "seed": null,
+  "seed_support": "UNSUPPORTED",
+  "image_detail": "high",
+  "input_limit": 12000,
+  "output_limit": 256,
+  "max_request_bytes": 30000000,
+  "token_bound": {
+    "algorithm": "utf8_bytes_plus_image_bounds_v1",
+    "framing_tokens": 512,
+    "per_image_tokens": 1024,
+    "evidence": "2026-10-28 https://api-docs.deepseek.com/guides/vision/ documents <=1024 tokens per image, high=original. Text UTF-8 byte bound plus 512 framing tokens is an engineering margin, not a provider-exact tokenizer promise; raw usage is checked on every response."
+  },
+  "pricing": {
+    "currency": null,
+    "input_per_million": null,
+    "output_per_million": null,
+    "fixed_per_request": null,
+    "quantum": "0.000001",
+    "source": null,
+    "verified_at": null,
+    "coverage": null
+  },
+  "limits": {
+    "preflight_attempts": 4,
+    "pilot_attempts": 290,
+    "preflight_amount": null,
+    "pilot_amount": null,
+    "total_amount": null
+  }
+}

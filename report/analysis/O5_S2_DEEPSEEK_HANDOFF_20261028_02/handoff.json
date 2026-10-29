@@ -1,0 +1,38 @@
+{
+  "amount_policy": "unlimited",
+  "commands": {
+    "prepare-pilot": "python -B -m semantic_pallet_planner.runners.o5_deepseek prepare-pilot --id 20261028_02",
+    "report-pilot": "python -B -m semantic_pallet_planner.runners.o5_deepseek report-pilot --id 20261028_02",
+    "run-pilot": "python -B -m semantic_pallet_planner.runners.o5_deepseek run-pilot --id 20261028_02",
+    "run-preflight": "python -B -m semantic_pallet_planner.runners.o5_deepseek run-preflight --id 20261028_02",
+    "verify-pilot": "python -B -m semantic_pallet_planner.runners.o5_deepseek verify-pilot --id 20261028_02",
+    "verify-preflight": "python -B -m semantic_pallet_planner.runners.o5_deepseek verify-preflight --id 20261028_02"
+  },
+  "credential_env": "DEEPSEEK_API_KEY",
+  "id": "20261028_02",
+  "maximum_pilot_requests": 290,
+  "maximum_preflight_requests": 4,
+  "model": "deepseek-flash",
+  "not_claimed": "No real multimodal preflight or pilot has run.",
+  "paths": {
+    "campaign": "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/CAMPAIGN_O5_DIRECT_MEMORY_DEEPSEEK_20261028_02",
+    "handoff": "/home/cyw/NBU_Papper/report/analysis/O5_S2_DEEPSEEK_HANDOFF_20261028_02",
+    "pilot_plan": "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/PLAN_O5_DIRECT_MEMORY_S2_C_DEEPSEEK_20261028_02",
+    "pilot_report": "/home/cyw/NBU_Papper/report/analysis/O5_S2_DEEPSEEK_PILOT_20261028_02",
+    "pilot_run": "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/EXP_O5_DIRECT_MEMORY_S2_C_DEEPSEEK_20261028_02",
+    "preflight_plan": "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/PLAN_O5_DIRECT_MEMORY_S2_B_DEEPSEEK_20261028_02",
+    "preflight_run": "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/EXP_O5_DIRECT_MEMORY_S2_B_DEEPSEEK_20261028_02"
+  },
+  "plan_digest": "b2f025987865709947ba74ef7e5cda0fa6c4ba2a47daa91b40a3f7eaf5f30c23",
+  "profile_sha256": "c217da7e83ed82010fe29b6b8229d37ea2faf12b382c4218ad3b304b33fb9acf",
+  "provider": "deepseek",
+  "python_dependencies": {
+    "Pillow": "11.1.0",
+    "jsonschema": "4.23.0",
+    "numpy": "2.1.3",
+    "python": "3.11.16"
+  },
+  "real_api_attempts": 0,
+  "schema_version": "o5_deepseek_handoff_v1",
+  "status": "READY_FOR_USER_PREFLIGHT"
+}

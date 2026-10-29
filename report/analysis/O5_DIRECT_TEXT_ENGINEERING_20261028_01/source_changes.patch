@@ -1,0 +1,758 @@
+--- before/semantic_pallet_planner/src/semantic_pallet_planner/o5/episode.py
++++ after/semantic_pallet_planner/src/semantic_pallet_planner/o5/episode.py
+@@ -8,7 +8,7 @@
+ from .common import O5Error, atomic, digest, read
+ from .config import validate as validate_config
+ from .candidates import generate, state_for, case_for, pool_fingerprint
+-from .public_request import build, parse_response, image_bytes
++from .public_request import build, parse_response, image_bytes, IMAGE_VERSION, TEXT_VERSION
+ from .schemas import validate
+ from .selectors import Ledger, geometry_choice, direct_choice
+ from .metrics import summarize
+@@ -28,12 +28,12 @@
+             raise O5Error('INVALID_PHYSICAL_ITEM')
+ 
+ 
+-def verify_journal(journal, task, placed, cursor, config, nonce, job_id, directory):
+-    validate('DecisionJournal', journal)
++def verify_journal(journal, task, placed, cursor, config, nonce, job_id, directory, request_version=IMAGE_VERSION):
++    validate('DirectTextJournal' if request_version == TEXT_VERSION else 'DecisionJournal', journal)
+     current = task['items'][cursor]
+     pool, _ = generate(task['container'], placed, current, cursor, config)
+     with tempfile.TemporaryDirectory(prefix='o5-rebuild-') as tmp:
+-        rebuilt, mapping = build(task['container'], placed, current, pool, config, [nonce, job_id, cursor], Path(tmp))
++        rebuilt, mapping = build(task['container'], placed, current, pool, config, [nonce, job_id, cursor], Path(tmp), request_version=request_version)
+     if (rebuilt != journal['request'] or mapping != journal['private_mapping'] or placed != journal['before']
+             or pool_fingerprint(pool) != journal['pool_fingerprint']):
+         raise O5Error('JOURNAL_REBUILD_MISMATCH')
+@@ -105,6 +105,7 @@
+ 
+ def run_episode(task, method, config, directory, job_id, nonce, *, transport=None,
+                 attempt_limit=40, resume=False, stop_after=None, _runtime=None):
++    request_version = _runtime.request_version if _runtime is not None else IMAGE_VERSION
+     validate_config(config)
+     validate_task(task, config)
+     if method not in ('G0', 'D0') or (_runtime is None and method == 'D0' and getattr(transport, 'offline_test_double', False) is not True):
+@@ -130,7 +131,7 @@
+             j = read(directory/f'decisions/{cursor:03d}/journal.json')
+             if digest(j) != checksum:
+                 raise O5Error('CHECKPOINT_JOURNAL_CHANGED')
+-            placed = verify_journal(j, task, placed, cursor, config, nonce, job_id, directory/f'decisions/{cursor:03d}')
++            placed = verify_journal(j, task, placed, cursor, config, nonce, job_id, directory/f'decisions/{cursor:03d}', request_version)
+             terminal_seen = j['reason'] != 'PLACED'
+             journals.append(j)
+         if placed != cp['placed'] or cp['cursor'] != sum(j['reason'] == 'PLACED' for j in journals):
+@@ -173,7 +174,7 @@
+         if (step/'request.json').exists():
+             req = read(step/'request.json')
+             with tempfile.TemporaryDirectory(prefix='o5-pending-') as tmp:
+-                rebuilt, rebuilt_mapping = build(task['container'], placed, current, pool, config, [nonce, job_id, cursor], Path(tmp))
++                rebuilt, rebuilt_mapping = build(task['container'], placed, current, pool, config, [nonce, job_id, cursor], Path(tmp), request_version=request_version)
+             if rebuilt != req:
+                 raise O5Error('PENDING_REQUEST_CHANGED')
+             if (step/'mapping.private.json').exists():
+@@ -186,10 +187,11 @@
+                 mapping = rebuilt_mapping
+                 atomic(step/'mapping.private.json', mapping)
+         else:
+-            req, mapping = build(task['container'], placed, current, pool, config, [nonce, job_id, cursor], step)
++            req, mapping = build(task['container'], placed, current, pool, config, [nonce, job_id, cursor], step, request_version=request_version)
+             atomic(step/'mapping.private.json', mapping)
+             atomic(step/'request.json', req)
+-        image_bytes(req, step)
++        if request_version == IMAGE_VERSION:
++            image_bytes(req, step)
+         response, attempts, failure = None, [], None
+         if not pool:
+             failure = 'NO_PHYSICAL_CANDIDATE'
+@@ -215,11 +217,11 @@
+                 else:
+                     placed = apply_candidate(case, proposal)
+                     committed = proposal
+-        journal = {'schema_version': 'o5_decision_journal_v1', 'request': req, 'private_mapping': mapping,
++        journal = {'schema_version': ('o5_direct_text_journal_v1' if request_version == TEXT_VERSION else 'o5_decision_journal_v1'), 'request': req, 'private_mapping': mapping,
+                    'pool_fingerprint': pool_fingerprint(pool), 'candidate_audit': audit, 'attempt_ids': attempts,
+                    'response': response, 'reason': failure or 'PLACED', 'before': before, 'after': copy.deepcopy(placed),
+                    'proposed_candidate': proposal, 'committed_candidate': committed, 'physical_errors': errors}
+-        validate('DecisionJournal', journal)
++        validate('DirectTextJournal' if request_version == TEXT_VERSION else 'DecisionJournal', journal)
+         # Reconcile a journal persisted just before a crash but not checkpointed.
+         if (step/'journal.json').exists():
+             old = read(step/'journal.json')
+--- before/semantic_pallet_planner/src/semantic_pallet_planner/o5/experiment.py
++++ after/semantic_pallet_planner/src/semantic_pallet_planner/o5/experiment.py
+@@ -12,11 +12,13 @@
+ from .testing import OfflineTransport, fixture_task
+ 
+ 
+-def source_files():
++def source_files(*, include_visual=True):
+     package = ROOT/'semantic_pallet_planner/src/semantic_pallet_planner'
+     files = {str(p.relative_to(ROOT)): sha(p) for p in sorted(package.rglob('*.py'))}
+     for name in ('semantic_pallet_dataset_v1/configs/mvd_v0.1.json',
+                  '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'):
++        if name.startswith('/') and not include_visual:
++            continue
+         p = Path(name) if name.startswith('/') else ROOT/name
+         files[name] = sha(p)
+     return files
+--- before/semantic_pallet_planner/src/semantic_pallet_planner/o5/public_request.py
++++ after/semantic_pallet_planner/src/semantic_pallet_planner/o5/public_request.py
+@@ -1,4 +1,4 @@
+-"""Strict projection, deterministic display permutation, image and response binding."""
++"""Versioned image/text projection, deterministic display permutation and response binding."""
+ import base64
+ import copy
+ import json
+@@ -6,10 +6,13 @@
+ from PIL import Image
+ from .common import O5Error, canonical, digest, sha
+ from .config import validate as validate_config
+-from .schemas import validate
++from .schemas import validate, TEXT_CONVENTIONS
+ from .visual import render
+ 
+ GOAL = 'Maximize the loaded fraction of the complete order within the stated physical limits. Only the current item and already placed items are visible.'
++TEXT_VERSION = 'o5_direct_text_request_v1'
++IMAGE_VERSION = 'o5_decision_request_v1'
++
+ CONTRACT = 'Return only JSON with request_id,state_hash,action,candidate_id. PLACE selects one listed Cxx. STOP uses candidate_id=null. Do not output coordinates or change item properties.'
+ 
+ 
+@@ -26,11 +29,12 @@
+ 
+ 
+ def validate_request(req):
+-    validate('DecisionRequest', req)
++    text = req.get('schema_version') == TEXT_VERSION
++    validate('DirectTextRequest' if text else 'DecisionRequest', req)
+     if req['state_hash'] != request_hash(req) or req['task_goal'] != GOAL or req['output_contract'] != CONTRACT:
+         raise O5Error('INVALID_REQUEST_BINDING')
+     labels = [c['candidate_id'] for c in req['candidates']]
+-    if labels != [f'C{i+1:02d}' for i in range(len(labels))] or [i['asset_id'] for i in req['images']] != ['workspace', 'candidates']:
++    if labels != [f'C{i+1:02d}' for i in range(len(labels))] or (not text and [i['asset_id'] for i in req['images']] != ['workspace', 'candidates']):
+         raise O5Error('INVALID_DISPLAY_MAPPING')
+     ids = [i['item_id'] for i in req['placed_items']] + [req['current_item']['item_id']]
+     if len(set(ids)) != len(ids):
+@@ -38,9 +42,11 @@
+     return req
+ 
+ 
+-def build(container, placed, current, pool, config, nonce, directory):
++def build(container, placed, current, pool, config, nonce, directory, *, request_version=IMAGE_VERSION):
+     validate_config(config)
+-    public = {'schema_version': 'o5_decision_request_v1', 'request_id': 'REQ_'+digest(nonce)[:24],
++    if request_version not in (IMAGE_VERSION, TEXT_VERSION):
++        raise O5Error('UNKNOWN_REQUEST_PROTOCOL')
++    public = {'schema_version': request_version, 'request_id': 'REQ_'+digest(nonce)[:24],
+               'container': copy.deepcopy(container), 'placed_items': [item_projection(p, True) for p in placed],
+               'current_item': item_projection(current), 'candidates': [], 'task_goal': GOAL, 'output_contract': CONTRACT}
+     ordered = sorted(pool, key=lambda c: canonical([c['pose'], c['oriented_size_mm']]))
+@@ -51,7 +57,10 @@
+         label = f'C{i+1:02d}'
+         mapping[label] = copy.deepcopy(c)
+         public['candidates'].append({'candidate_id': label, **{k: copy.deepcopy(c[k]) for k in ('pose', 'oriented_size_mm', 'support')}})
+-    public['images'] = render(public, directory)
++    if request_version == TEXT_VERSION:
++        public['units_and_coordinates'] = copy.deepcopy(TEXT_CONVENTIONS)
++    else:
++        public['images'] = render(public, directory)
+     public['state_hash'] = request_hash(public)
+     validate_request(public)
+     return public, mapping
+@@ -85,6 +94,8 @@
+ def image_bytes(req, directory):
+     """Check original assets for every method, including a pending G0 decision."""
+     validate_request(req)
++    if req['schema_version'] == TEXT_VERSION:
++        return []
+     assets = []
+     for asset in req['images']:
+         path = directory/(asset['asset_id']+'.png')
+@@ -100,10 +111,11 @@
+ 
+ 
+ def envelope(req, directory, config, repair_error=None):
+-    """Production-shaped multimodal body; no network client and no old response cache."""
++    """Versioned production body; text requests never read or render image assets."""
+     validate_config(config)
+     content = [{'type': 'text', 'text': canonical({'public_input': req, 'repair_error': repair_error})}]
+-    for data in image_bytes(req, directory):
++    validate_request(req)
++    for data in ([] if req['schema_version'] == TEXT_VERSION else image_bytes(req, directory)):
+         content.append({'type': 'image_url', 'image_url': {'url': 'data:image/png;base64,'+base64.b64encode(data).decode(), 'detail': 'high'}})
+     body = {'messages': [{'role': 'system', 'content': GOAL+' '+CONTRACT}, {'role': 'user', 'content': content}],
+             'max_tokens': config['selection_max_output_tokens'], 'temperature': 0., 'stream': False}
+--- before/semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_authorized.py
++++ after/semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_authorized.py
+@@ -9,7 +9,7 @@
+ from .remote_budget import Budget
+ from .remote_runtime import Runtime
+ from .remote_experiment import validate_plan, budget_jobs, verify_job, validate_run
+-from .public_request import parse_response
++from .public_request import parse_response, TEXT_VERSION
+ from .episode import run_episode
+ from .visual_probe import evaluate as evaluate_visual
+ 
+@@ -17,9 +17,34 @@
+            'stage','stage_amount','total_amount','instruction_reference'}
+ 
+ 
++def validate_selection(raw,req,plan_root,task):
++    response=parse_response(raw,req)
++    if req['schema_version'] == TEXT_VERSION and response['action']=='PLACE':
++        from .candidates import case_for, state_for
++        from ..evaluation.geometry_oracle import check_candidate
++        directory=Path(plan_root)/Path(task['request_path']).parent
++        mapping=read(directory/'mapping.private.json')
++        # Recover evaluator-only support fractions from the frozen physical prefix.
++        _,tasks=validate_plan(plan_root)
++        from .selectors import geometry_choice
++        from ..evaluation.state import apply_candidate
++        placed=[];index=len(req['placed_items']);t=tasks[0]
++        if index:
++            first=read(Path(plan_root)/'text_states/0/request.json')
++            first_map=read(Path(plan_root)/'text_states/0/mapping.private.json')
++            proposal=first_map[geometry_choice(first,first_map)['candidate_id']]
++            placed=apply_candidate(case_for(state_for(t['container'],[],t['items'][0],0)),proposal)
++        case=case_for(state_for(t['container'],placed,t['items'][index],index))
++        if check_candidate(case,{'container':t['container']},mapping[response['candidate_id']]):
++            raise O5Error('PREFLIGHT_PHYSICAL_REJECTION')
++    return response
++
++
+ def validate_preflight(state):
+     keys={'schema_version','identity','plan','auth_digest','campaign','status','results','error','test_double'}
+-    if (set(state)!=keys or state['schema_version']!='o5_s2_preflight_v1' or state['test_double'] is not False
++    if (set(state)!=keys or state['schema_version'] not in ('o5_s2_preflight_v1','o5_direct_text_preflight_v1')
++            or type(state['test_double']) is not bool
++            or (state['schema_version']=='o5_s2_preflight_v1' and state['test_double'] is not False)
+             or state['status'] not in ('IN_PROGRESS','PASS','HOLD_ENGINEERING') or not isinstance(state['results'],list)):
+         raise O5Error('PREFLIGHT_SCHEMA_ERROR')
+     for row in state['results']:
+@@ -74,14 +99,14 @@
+     return auth
+ 
+ 
+-def campaign(root,plan,auth,*,create=False):
++def campaign(root,plan,auth,*,create=False,test_double=False):
+     path=Path(auth['campaign_path']).resolve()
+     if path==root or path.is_relative_to(root):
+         raise O5Error('CAMPAIGN_MUST_BE_SHARED_OUTSIDE_RUN')
+     # A campaign is created for preflight only. Pilot can never reset it.
+     if create:
+         new_directory(path)
+-    return Budget(path,plan['profile'],campaign_identity(plan),jobs_for(plan),False,create=create)
++    return Budget(path,plan['profile'],campaign_identity(plan),jobs_for(plan),test_double,create=create)
+ 
+ 
+ def visual_body(task,plan_root,profile):
+@@ -102,13 +127,16 @@
+                  'body_digest':digest(body),'maximum_amount':charge(profile,bound,256)}
+ 
+ 
+-def preflight(plan_root,output,auth_path,*,resume=False):
++def preflight(plan_root,output,auth_path,*,resume=False,_offline_wire=None):
+     plan_root=Path(plan_root).resolve();plan,_=validate_plan(plan_root)
+     require_cost(plan['profile'])
+     if plan['stage']!='preflight' or plan['mode']!='REMOTE_DRAFT':raise O5Error('WRONG_PREFLIGHT_PLAN')
+     auth=authorization(plan,auth_path,'preflight')
+     # Verify credentials before allocating any run/campaign directory.
+-    transport=ChatHTTPTransport(plan['profile']);transport.precheck()
++    text_only=plan['schema_version']=='o5_direct_text_plan_v1'
++    if _offline_wire is not None and (not text_only or _offline_wire.test_double is not True):
++        raise O5Error('TEXT_OFFLINE_WIRE_REQUIRED')
++    transport=ChatHTTPTransport(plan['profile'],_offline_wire);transport.precheck()
+     root=Path(output).resolve() if resume else new_directory(output)
+     identity=digest([digest(plan),str(root),digest(auth)])
+     with exclusive(root/'run.lock'):
+@@ -116,29 +144,37 @@
+             state=read(root/'preflight.json')
+             validate_preflight(state)
+             saved_authorization(plan,root,state,'preflight')
+-            if state['identity']!=identity:raise O5Error('PREFLIGHT_IDENTITY_CHANGED')
++            if state['identity']!=identity or state['test_double'] != transport.test_double:raise O5Error('PREFLIGHT_IDENTITY_CHANGED')
+             if state['status']!='IN_PROGRESS':
+-                return {'status':state['status'],'error':state['error'],'new_api_attempts':0}
++                checked=verify_preflight(root)
++                return {'status':checked['status'],'error':state['error'],'new_api_attempts':0}
+         else:
+-            state={'schema_version':'o5_s2_preflight_v1','identity':identity,'plan':str(plan_root),'auth_digest':digest(auth),
++            state={'schema_version':'o5_direct_text_preflight_v1' if text_only else 'o5_s2_preflight_v1','identity':identity,'plan':str(plan_root),'auth_digest':digest(auth),
+                    'campaign':auth['campaign_path'],'status':'IN_PROGRESS','results':[],'error':None,
+-                   'test_double':False}
++                   'test_double':transport.test_double}
+             atomic(root/'authorization.json',auth)
+             atomic(root/'preflight.json',state)
+-        budget=campaign(root,plan,auth,create=not resume)
++        budget=campaign(root,plan,auth,create=not resume,test_double=transport.test_double)
+         if budget.load()['halt']:raise O5Error(budget.state['halt'])
++        if resume and text_only:
++            # Check completed probes before any further transmission after an interruption.
++            verify_preflight_records(state,plan,budget)
+         try:
+             for task in plan['preflight_tasks']:
+                 if any(r['task_id']==task['task_id'] for r in state['results']):continue
+                 job='P_'+task['task_id']
+-                if task['task_id']=='probe_contract':
+-                    req=read(plan_root/'contract/request.json');ids=[];diagnostic=None;valid=False
++                if task['task_id']=='probe_contract' or 'request_path' in task:
++                    req=read(plan_root/task.get('request_path','contract/request.json'));ids=[];diagnostic=None;valid=False
+                     for index in range(2):
+-                        body,bound=prepare_body(req,plan_root/'contract',plan['physical'],plan['profile'],diagnostic)
++                        body,bound=prepare_body(req,plan_root/Path(task.get('request_path','contract/request.json')).parent,plan['physical'],plan['profile'],diagnostic)
+                         receipt,i,error=budget.attempt(job,req,body,bound,bool(index),transport);ids.append(i)
+                         if error:break
+-                        try:parse_response(receipt['text'],req);valid=True;break
+-                        except O5Error as e:diagnostic=e.code
++                        try:validate_selection(receipt['text'],req,plan_root,task);valid=True;break
++                        except O5Error as e:
++                            diagnostic=e.code
++                            if text_only and (index or e.code=='PREFLIGHT_PHYSICAL_REJECTION'):
++                                error=e.code
++                                break
+                 else:
+                     body,bound=visual_body(task,plan_root,plan['profile'])
+                     receipt,i,error=budget.attempt(job,task,body,bound,False,transport);ids=[i]
+@@ -153,20 +189,12 @@
+         atomic(root/'preflight.json',state)
+         atomic(root/'receipt_seal.json',{'files':{str(p.relative_to(root)):sha(p) for p in root.rglob('*') if p.is_file() and p.name not in ('receipt_seal.json','run.lock')}})
+         return {'status':state['status'],'completed_probes':len(state['results']),'error':state['error'],
+-                'real_api_attempts':len(budget.load()['attempts']),'cost':budget.totals()}
+-
+-
+-def verify_preflight(root):
+-    root=Path(root).resolve();state=read(root/'preflight.json');plan,_=validate_plan(state['plan'])
+-    validate_preflight(state)
+-    auth=saved_authorization(plan,root,state,'preflight')
+-    if state['identity']!=digest([digest(plan),str(root),digest(auth)]):
+-        raise O5Error('PREFLIGHT_IDENTITY_CHANGED')
+-    if state['schema_version']!='o5_s2_preflight_v1' or state['test_double'] is not False:
+-        raise O5Error('PREFLIGHT_NOT_REAL')
+-    seal=read(root/'receipt_seal.json')
+-    if any(sha(root/f)!=h for f,h in seal['files'].items()):raise O5Error('PREFLIGHT_RECEIPT_CHANGED')
+-    budget=Budget(state['campaign'],plan['profile'],campaign_identity(plan),jobs_for(plan),False)
++                'real_api_attempts':0 if transport.test_double else len(budget.load()['attempts']),
++                'test_double':transport.test_double,'offline_http_attempts':len(budget.state['attempts']) if transport.test_double else 0,'cost':budget.totals()}
++
++
++def verify_preflight_records(state,plan,budget):
++    text_only=plan['schema_version']=='o5_direct_text_plan_v1'
+     tasks={t['task_id']:t for t in plan['preflight_tasks']};seen=[]
+     for record in state['results']:
+         if record['task_id'] in seen or record['task_id'] not in tasks:raise O5Error('PREFLIGHT_TASK_CHANGED')
+@@ -176,32 +204,55 @@
+         diagnostic=None;valid=False;error=None;done=False
+         for index,row in enumerate(rows):
+             if done:raise O5Error('UNEXPECTED_REPAIR_ATTEMPT')
+-            if task['task_id']=='probe_contract':
+-                req=read(Path(state['plan'])/'contract/request.json')
+-                body,bound=prepare_body(req,Path(state['plan'])/'contract',plan['physical'],plan['profile'],diagnostic)
++            if task['task_id']=='probe_contract' or 'request_path' in task:
++                req=read(Path(state['plan'])/task.get('request_path','contract/request.json'))
++                body,bound=prepare_body(req,Path(state['plan'])/Path(task.get('request_path','contract/request.json')).parent,plan['physical'],plan['profile'],diagnostic)
+             else:
+                 body,bound=visual_body(task,state['plan'],plan['profile'])
+-            if row['body_digest']!=digest(body) or row['bound']!=bound:raise O5Error('PREFLIGHT_BODY_CHANGED')
++            if (row['body_digest']!=digest(body) or row['bound']!=bound
++                    or (text_only and (row['request_digest']!=digest(req) or row['repair']!=bool(index)))):
++                raise O5Error('PREFLIGHT_BODY_CHANGED')
+             receipt=read(budget.root/'attempts'/row['attempt_id']/'receipt.json');error=row['error']
+             if error:done=True;break
+             try:
+-                if task['task_id']=='probe_contract':parse_response(receipt['text'],req);valid=True
++                if task['task_id']=='probe_contract' or 'request_path' in task:validate_selection(receipt['text'],req,Path(state['plan']),task);valid=True
+                 else:valid,error=evaluate_visual(task,receipt['text'])
+             except (O5Error,ValueError,TypeError) as e:
+                 diagnostic=e.code if isinstance(e,O5Error) else 'INVALID_JSON'
+-            done=valid or task['task_id']!='probe_contract'
++                if text_only and (index or diagnostic=='PREFLIGHT_PHYSICAL_REJECTION'):
++                    error=diagnostic
++            done=valid or bool(error) or (task['task_id']!='probe_contract' and 'request_path' not in task)
+         if record['pass']!=valid or record['error']!=error:raise O5Error('PREFLIGHT_RESULT_CHANGED')
++    return tasks,seen
++
++
++def verify_preflight(root):
++    root=Path(root).resolve();state=read(root/'preflight.json');plan,_=validate_plan(state['plan'])
++    validate_preflight(state)
++    auth=saved_authorization(plan,root,state,'preflight')
++    if state['identity']!=digest([digest(plan),str(root),digest(auth)]):
++        raise O5Error('PREFLIGHT_IDENTITY_CHANGED')
++    text_only=plan['schema_version']=='o5_direct_text_plan_v1'
++    if state['schema_version']!=('o5_direct_text_preflight_v1' if text_only else 'o5_s2_preflight_v1'):
++        raise O5Error('PREFLIGHT_PROTOCOL_MISMATCH')
++    seal=read(root/'receipt_seal.json')
++    if any(sha(root/f)!=h for f,h in seal['files'].items()):raise O5Error('PREFLIGHT_RECEIPT_CHANGED')
++    budget=Budget(state['campaign'],plan['profile'],campaign_identity(plan),jobs_for(plan),state['test_double'])
++    tasks,seen=verify_preflight_records(state,plan,budget)
+     preflight_rows=[r for r in budget.state['attempts'] if r['phase']=='preflight']
+     passed=(seen==list(tasks) and all(r['pass'] for r in state['results'])
++            and not budget.state['halt']
+             and all(r['status'] in ('completed','failed') for r in preflight_rows))
+     if state['status']=='PASS' and not passed:raise O5Error('PREMATURE_PREFLIGHT_SUCCESS')
+-    return {'status':'PASS' if passed else 'HOLD_ENGINEERING','real_api_attempts':len([r for r in budget.state['attempts'] if r['phase']=='preflight']),
+-            'plan':plan,'campaign':str(budget.root),'source_preflight':str(root),'test_double':False}
++    return {'status':'PASS' if passed else 'HOLD_ENGINEERING','real_api_attempts':0 if state['test_double'] else len([r for r in budget.state['attempts'] if r['phase']=='preflight']),
++            'plan':plan,'campaign':str(budget.root),'source_preflight':str(root),'test_double':state['test_double'],
++            'protocol_version':plan.get('protocol_version','o5_direct_memory_v1'),'cost':budget.totals()}
+ 
+ 
+ def prepare_pilot_from_preflight(preflight_root,output):
+     evidence=verify_preflight(preflight_root)
+     if evidence['status']!='PASS':raise O5Error('PREFLIGHT_NOT_PASSED')
++    if evidence['test_double']:raise O5Error('PREFLIGHT_NOT_REAL')
+     from .remote_experiment import prepare
+     source=evidence['plan']
+     result=prepare(source['dataset_path'],output,source['profile'],stage='pilot')
+@@ -223,7 +274,8 @@
+     if plan['status']!='READY_FOR_OPERATOR_AUTHORIZATION' or plan['mode']!='REMOTE_DRAFT' or plan['stage']!='pilot':
+         raise O5Error('PILOT_PLAN_NOT_READY')
+     binding=read(plan_root/'preflight_binding.json');evidence=verify_preflight(binding['preflight'])
+-    if (evidence['status']!='PASS' or digest(evidence['plan']['profile'])!=digest(plan['profile'])
++    if (evidence['test_double'] or evidence['status']!='PASS' or evidence['plan']['schema_version']!=plan['schema_version']
++            or digest(evidence['plan']['profile'])!=digest(plan['profile'])
+             or sha(Path(binding['preflight'])/'preflight.json')!=binding['preflight_file_sha256']):
+         raise O5Error('PREFLIGHT_BINDING_CHANGED')
+     auth=authorization(plan,auth_path,'pilot')
+--- before/semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_config.py
++++ after/semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_config.py
+@@ -23,6 +23,19 @@
+ }
+ LEGACY_TEMPLATE = {k:copy.deepcopy(v) for k,v in TEMPLATE.items() if k!='amount_policy'}
+ LEGACY_TEMPLATE['schema_version']='o5_s2_provider_profile_v1'
++
++
++TEXT_PROFILE_VERSION = 'o5_direct_text_provider_profile_v1'
++TEXT_TEMPLATE = copy.deepcopy(TEMPLATE)
++TEXT_TEMPLATE['schema_version'] = TEXT_PROFILE_VERSION
++del TEXT_TEMPLATE['image_detail']
++TEXT_TEMPLATE['token_bound'] = {'algorithm': 'utf8_bytes_plus_framing_v1',
++                                 'framing_tokens': None, 'evidence': None}
++
++
++def request_version(profile):
++    return ('o5_direct_text_request_v1' if profile['schema_version'] == TEXT_PROFILE_VERSION
++            else 'o5_decision_request_v1')
+ 
+ 
+ def amount_policy(profile):
+@@ -58,7 +71,7 @@
+ 
+ def validate(profile):
+     profile=copy.deepcopy(profile)
+-    if isinstance(profile,dict) and profile.get('schema_version')==TEMPLATE['schema_version']:
++    if isinstance(profile,dict) and profile.get('schema_version') in (TEMPLATE['schema_version'],TEXT_PROFILE_VERSION):
+         if 'pricing' not in profile:
+             profile['pricing']=copy.deepcopy(TEMPLATE['pricing'])
+         elif isinstance(profile['pricing'],dict):
+@@ -67,13 +80,15 @@
+             for k in ('preflight_amount','pilot_amount','total_amount'):
+                 profile['limits'].setdefault(k,None)
+     exemplar=LEGACY_TEMPLATE if isinstance(profile,dict) and profile.get('schema_version')==LEGACY_TEMPLATE['schema_version'] else TEMPLATE
++    if isinstance(profile,dict) and profile.get('schema_version') == TEXT_PROFILE_VERSION:
++        exemplar = TEXT_TEMPLATE
+     closed(profile, exemplar)
+     canonical(profile)
+     if (profile['schema_version'] != exemplar['schema_version'] or profile['adapter'] not in (TEMPLATE['adapter'],'deepseek_flash_chat_v1')
+             or amount_policy(profile) not in ('unlimited','capped')
+             or type(profile['transport_verified']) is not bool
+             or type(profile['timeout_seconds']) not in (int, float) or not 0 < profile['timeout_seconds'] <= 600
+-            or profile['temperature'] != 0 or profile['image_detail'] != 'high'
++            or profile['temperature'] != 0 or (profile.get('image_detail', 'high') != 'high')
+             or profile['input_limit'] != 12000 or profile['output_limit'] != 256
+             or profile['max_request_bytes'] != 30000000
+             or profile['seed_support'] not in ('UNKNOWN', 'SUPPORTED', 'UNSUPPORTED')
+@@ -93,9 +108,9 @@
+     if profile['credential_env'] is not None and not re.fullmatch(r'[A-Z][A-Z0-9_]*', profile['credential_env']):
+         raise O5Error('INVALID_CREDENTIAL_REFERENCE')
+     t = profile['token_bound']
+-    if t['algorithm'] != TEMPLATE['token_bound']['algorithm']:
++    if t['algorithm'] != exemplar['token_bound']['algorithm']:
+         raise O5Error('UNSUPPORTED_TOKEN_BOUND')
+-    for k in ('framing_tokens','per_image_tokens'):
++    for k in (set(exemplar['token_bound']) - {'algorithm','evidence'}):
+         if t[k] is not None and (type(t[k]) is not int or t[k] <= 0):
+             raise O5Error('INVALID_TOKEN_BOUND')
+     if t['evidence'] is not None and (not isinstance(t['evidence'],str) or not t['evidence'].strip()):
+--- before/semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_experiment.py
++++ after/semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_experiment.py
+@@ -13,9 +13,9 @@
+ from .experiment import source_files, dependencies
+ from .episode import run_episode, verify_journal, validate_task
+ from .metrics import summarize
+-from .public_request import build
++from .public_request import build, TEXT_VERSION, IMAGE_VERSION
+ from .candidates import generate
+-from .remote_config import TEMPLATE, validate, gaps, require_cost, money, amount_policy, pricing_ready
++from .remote_config import TEMPLATE, validate, gaps, require_cost, money, amount_policy, pricing_ready, request_version
+ from .remote_budget import Budget
+ from .remote_runtime import Runtime
+ from .remote_transport import ChatHTTPTransport
+@@ -25,9 +25,40 @@
+ SPECS = ['docs/02_阶段实施方案/O5/O5直接VLM基线与自然语言经验沉淀开发及验收规范_20261027.md',
+          'docs/02_阶段实施方案/O5/O5S2真实VLM接入与D0Pilot开发及验收规范_20261028.md',
+          'docs/02_阶段实施方案/O5/O5S2金额预算可选修订_20261028.md']
++TEXT_SPEC = 'docs/02_阶段实施方案/O5/O5DirectText独立协议修订与开发验收规范_20261028.md'
++
+ PLAN_KEYS = {'schema_version','stage','mode','status','gaps','dataset_path','dataset_digest','physical',
+              'profile','tasks_digest','jobs','source_files','dependencies','documents','preflight_tasks',
+              'maximum_selection_attempts','real_api_attempts','error_policy'}
++
++
++def plan_sources(profile):
++    return source_files(include_visual=False) if request_version(profile) == TEXT_VERSION else source_files()
++
++
++def text_preflight_states(task,cfg,dest):
++    from .selectors import geometry_choice
++    from .candidates import case_for, state_for
++    from ..evaluation.geometry_oracle import check_candidate
++    from ..evaluation.state import apply_candidate
++    placed=[]; probes=[]
++    for index in range(2):
++        directory=Path(dest)/'text_states'/str(index)
++        pool,_=generate(task['container'],placed,task['items'][index],index,cfg)
++        if not pool:raise O5Error('TEXT_PREFLIGHT_EMPTY_POOL')
++        req,mapping=build(task['container'],placed,task['items'][index],pool,cfg,
++                          ['O5_DIRECT_TEXT_PREFLIGHT',index],directory,request_version=TEXT_VERSION)
++        atomic(directory/'request.json',req);atomic(directory/'mapping.private.json',mapping)
++        probes.append({'task_id':f'text_state_{index}','attempt_limit':2,
++                       'request_path':str((directory/'request.json').relative_to(dest)),
++                       'request_digest':digest(req)})
++        if index==0:
++            response=geometry_choice(req,mapping);proposal=mapping[response['candidate_id']]
++            case=case_for(state_for(task['container'],placed,task['items'][index],index))
++            if check_candidate(case,{'container':task['container']},proposal):
++                raise O5Error('TEXT_PREFLIGHT_PHYSICAL_REJECTION')
++            placed=apply_candidate(case,proposal)
++    return probes
+ 
+ 
+ def validate_run(state,plan):
+@@ -81,7 +112,8 @@
+     (dest/'private').mkdir(mode=0o700)
+     atomic(dest/'private/tasks.json',tasks);(dest/'private/tasks.json').chmod(0o400)
+     probes=[]
+-    for name,colors in [('workspace',['red','blue']),('candidates',['green','yellow'])]:
++    text_only = request_version(p) == TEXT_VERSION
++    for name,colors in ([] if text_only else [('workspace',['red','blue']),('candidates',['green','yellow'])]):
+         assets=[]
+         for index,(asset,color) in enumerate(zip(('workspace','candidates'),colors)):
+             path=dest/'probes'/name/(asset+'.png');path.parent.mkdir(parents=True,exist_ok=True)
+@@ -93,28 +125,36 @@
+                            'width':256,'height':256,'expected_fact':color+('_circle' if index==0 else '_square')})
+         probes.append({'task_id':'probe_'+name,'attempt_limit':1,'images':assets,
+                        'response_contract':visual_contract(),'prompt':VISUAL_PROMPT})
+-    # Contract preflight uses a fixed public state, never an entire order result.
+-    pool,_=generate(tasks[0]['container'],[],tasks[0]['items'][0],0,cfg)
+-    req,mapping=build(tasks[0]['container'],[],tasks[0]['items'][0],pool,cfg,['S2_PREFLIGHT',0],dest/'contract')
+-    atomic(dest/'contract/request.json',req)
+-    atomic(dest/'private/contract_mapping.json',mapping)
+-    plan={'schema_version':'o5_s2_remote_plan_v1','stage':stage,
++    if text_only:
++        probes = text_preflight_states(tasks[0],cfg,dest)
++    else:
++        # The historical image contract remains unchanged.
++        pool,_=generate(tasks[0]['container'],[],tasks[0]['items'][0],0,cfg)
++        req,mapping=build(tasks[0]['container'],[],tasks[0]['items'][0],pool,cfg,['S2_PREFLIGHT',0],dest/'contract')
++        atomic(dest/'contract/request.json',req)
++        atomic(dest/'private/contract_mapping.json',mapping)
++    specs = SPECS + ([TEXT_SPEC] if text_only else [])
++    plan={'schema_version':'o5_direct_text_plan_v1' if text_only else 'o5_s2_remote_plan_v1','stage':stage,
+           'mode':'OFFLINE_HTTP_FIXTURE' if fixture else 'REMOTE_DRAFT',
+           'status':'OFFLINE_FIXTURE_ONLY' if fixture else 'DRAFT_NOT_EXECUTABLE','gaps':missing,
+           'dataset_path':'SYNTHETIC_FIXTURE' if fixture else str(Path(dataset).resolve()),
+           'dataset_digest':digest(data),'physical':cfg,'profile':p,'tasks_digest':digest(tasks),
+-          'jobs':jobs,'source_files':source_files(),'dependencies':dependencies(),
+-          'documents':{s:sha(ROOT/s) for s in SPECS},'preflight_tasks':probes+[
+-              {'task_id':'probe_contract','attempt_limit':2,'request_digest':digest(req)}],
++          'jobs':jobs,'source_files':plan_sources(p),'dependencies':dependencies(),
++          'documents':{s:sha(ROOT/s) for s in specs},'preflight_tasks':probes+([] if text_only else [
++              {'task_id':'probe_contract','attempt_limit':2,'request_digest':digest(req)}]),
+           'maximum_selection_attempts':sum(j['attempt_limit'] for j in jobs),'real_api_attempts':0,
+           'error_policy':{'format_repairs':1,'service_retries':0,'first_429':'HALT',
+                           'consecutive_5xx_stop':2,'unknown':'HALT_CAMPAIGN_NO_RESEND'}}
++    if text_only:
++        plan['protocol_version']='o5_direct_text_v1'
++        if stage=='preflight' and not fixture and not missing:
++            plan['status']='READY_FOR_USER_TEXT_PREFLIGHT'
+     atomic(dest/'plan.json',plan)
+     for name in plan['source_files']:
+         if not name.startswith('/'):
+             target=dest/'code_snapshot'/name;target.parent.mkdir(parents=True,exist_ok=True)
+             shutil.copyfile(ROOT/name,target)
+-    for name in SPECS:
++    for name in specs:
+         target=dest/'documents'/Path(name).name;target.parent.mkdir(parents=True,exist_ok=True)
+         shutil.copyfile(ROOT/name,target)
+     files={str(f.relative_to(dest)):sha(f) for f in dest.rglob('*') if f.is_file()}
+@@ -126,10 +166,15 @@
+ 
+ def validate_plan(root):
+     root=Path(root);plan=read(root/'plan.json');seal=read(root/'seal.json')
+-    if set(plan)!=PLAN_KEYS or plan['schema_version']!='o5_s2_remote_plan_v1':
++    text_only = plan.get('schema_version') == 'o5_direct_text_plan_v1'
++    if (set(plan)!=(PLAN_KEYS|{'protocol_version'} if text_only else PLAN_KEYS)
++            or plan['schema_version'] not in ('o5_s2_remote_plan_v1','o5_direct_text_plan_v1')
++            or (text_only and plan['protocol_version']!='o5_direct_text_v1')):
+         raise O5Error('REMOTE_PLAN_SCHEMA_ERROR')
+     validate(plan['profile'])
+-    if (digest(plan)!=seal['plan_digest'] or plan['source_files']!=source_files()
++    if text_only != (request_version(plan['profile']) == TEXT_VERSION):
++        raise O5Error('PLAN_PROFILE_PROTOCOL_MISMATCH')
++    if (digest(plan)!=seal['plan_digest'] or plan['source_files']!=plan_sources(plan['profile'])
+             or plan['dependencies']!=dependencies() or any(sha(root/n)!=h for n,h in seal['files'].items())
+             or any(sha(ROOT/n)!=h for n,h in plan['documents'].items())):
+         raise O5Error('PLAN_OR_SOURCE_DRIFT')
+@@ -146,6 +191,18 @@
+               for i,t in enumerate(tasks) for m in ('G0','D0')]
+     if plan['jobs']!=expected or sum(j['attempt_limit'] for j in expected)!=plan['maximum_selection_attempts']:
+         raise O5Error('REMOTE_JOB_MATRIX_CHANGED')
++    if text_only:
++        if sum(t['attempt_limit'] for t in plan['preflight_tasks'])>plan['profile']['limits']['preflight_attempts']:
++            raise O5Error('TEXT_PREFLIGHT_ATTEMPT_LIMIT')
++        with tempfile.TemporaryDirectory(prefix='o5-text-plan-check-') as tmp:
++            expected_tasks = text_preflight_states(tasks[0],plan['physical'],Path(tmp))
++            if expected_tasks != plan['preflight_tasks']:
++                raise O5Error('TEXT_PREFLIGHT_TASK_CHANGED')
++            for task in expected_tasks:
++                for name in ('request.json','mapping.private.json'):
++                    relative=Path(task['request_path']).parent/name
++                    if read(root/relative)!=read(Path(tmp)/relative):
++                        raise O5Error('TEXT_PREFLIGHT_STATE_CHANGED')
+     return plan,tasks
+ 
+ 
+@@ -237,7 +294,7 @@
+         if terminal or i>=len(task['items']):raise O5Error('EVENT_AFTER_TERMINAL')
+         step=directory/f'decisions/{i:03d}';journal=read(step/'journal.json')
+         if digest(journal)!=checksum:raise O5Error('CHECKPOINT_JOURNAL_CHANGED')
+-        placed=verify_journal(journal,task,placed,i,plan['physical'],budget.identity,job['job_id'],step)
++        placed=verify_journal(journal,task,placed,i,plan['physical'],budget.identity,job['job_id'],step,request_version(plan['profile']))
+         runtime.verify(journal,job['method'],step);journals.append(journal)
+         terminal=journal['reason']!='PLACED'
+     reason=journals[-1]['reason'] if terminal else ('ALL_ITEMS_PLACED' if len(placed)==len(task['items']) else None)
+@@ -252,10 +309,11 @@
+             pool,_=generate(task['container'],placed,task['items'][len(placed)],len(placed),plan['physical'])
+             with tempfile.TemporaryDirectory(prefix='o5-s2-pending-') as tmp:
+                 req,mapping=build(task['container'],placed,task['items'][len(placed)],pool,plan['physical'],
+-                                  [budget.identity,job['job_id'],len(placed)],Path(tmp))
++                                  [budget.identity,job['job_id'],len(placed)],Path(tmp),request_version=request_version(plan['profile']))
+             if req!=read(pending/'request.json') or mapping!=read(pending/'mapping.private.json'):
+                 raise O5Error('PENDING_REQUEST_CHANGED')
+-            image_bytes(req,pending)
++            if req['schema_version'] == IMAGE_VERSION:
++                image_bytes(req,pending)
+         return {'checkpoint_only':True,'job_id':job['job_id'],'verified_decisions':len(journals)}
+     expected={'schema_version':'o5_episode_result_v1','job_id':job['job_id'],'task_id':task['task_id'],
+               'source_cluster_id':task['source_cluster_id'],'method':job['method'],'test_double':budget.test_double,
+@@ -278,7 +336,7 @@
+         binding=read(Path(state['plan'])/'preflight_binding.json')
+         evidence=verify_preflight(binding['preflight'])
+         if (plan['mode']!='REMOTE_DRAFT' or plan['status']!='READY_FOR_OPERATOR_AUTHORIZATION'
+-                or evidence['status']!='PASS' or state['campaign']!=evidence['campaign']
++                or evidence['test_double'] or evidence['status']!='PASS' or state['campaign']!=evidence['campaign']
+                 or state['identity']!=campaign_identity(plan)):
+             raise O5Error('PREFLIGHT_BINDING_CHANGED')
+     elif state['identity']!=digest([plan,str(root)]) or state['mode']!=plan['mode']:
+@@ -301,6 +359,7 @@
+             'planned_jobs':len(state['jobs']),'verified_jobs':len(results),'results':results,
+             'verified_prefixes':prefixes,
+             'budget':budget.totals(),'halt':budget.state['halt'],'new_api_attempts':0,
++            'protocol_version':plan.get('protocol_version','o5_direct_memory_v1'),
+             'mode':state['mode'],'model_performance':'REAL_PILOT_ONLY' if real else 'NOT_MEASURED'}
+ 
+ 
+--- before/semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_runtime.py
++++ after/semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_runtime.py
+@@ -3,6 +3,7 @@
+ from .public_request import parse_response
+ from .remote_transport import prepare_body
+ from .selectors import geometry_choice
++from .remote_config import request_version
+ 
+ DENIALS = {'AMOUNT_BUDGET_EXHAUSTED','ATTEMPT_BUDGET_EXHAUSTED','INPUT_BOUND_EXCEEDED',
+            'REQUEST_TOO_LARGE','TEXT_TOKEN_UPPER_BOUND_EXCEEDED','MISSING_CREDENTIAL'}
+@@ -20,6 +21,7 @@
+ class Runtime:
+     def __init__(self, budget, job_id, profile, physical, directory, transport=None):
+         self.budget,self.job_id,self.profile,self.physical=budget,job_id,profile,physical
++        self.request_version=request_version(profile)
+         self.transport=transport
+         self.test_double=budget.test_double
+         self.result_scope='OFFLINE_HTTP_ENGINEERING_NOT_MODEL_PERFORMANCE' if self.test_double else 'REAL_D0_PILOT'
+--- before/semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_transport.py
++++ after/semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_transport.py
+@@ -8,7 +8,7 @@
+ import urllib.request
+ from .common import O5Error, canonical, digest
+ from .public_request import envelope
+-from .remote_config import require_cost, charge
++from .remote_config import require_cost, charge, request_version
+ 
+ 
+ class NoRedirect(urllib.request.HTTPRedirectHandler):
+@@ -40,6 +40,8 @@
+ 
+ def prepare_body(req, directory, physical, profile, repair=None):
+     profile=require_cost(profile)
++    if req['schema_version'] != request_version(profile):
++        raise O5Error('REQUEST_PROFILE_PROTOCOL_MISMATCH')
+     body = envelope(req, directory, physical, repair)
+     body.update(model=profile['model'], temperature=profile['temperature'])
+     if profile['seed'] is not None:
+@@ -60,9 +62,10 @@
+                     data = base64.b64decode(part['image_url']['url'].split(',')[1], validate=True)
+                     import hashlib
+                     images.append(hashlib.sha256(data).hexdigest())
+-    if len(images) != 2 or images != [asset['sha256'] for asset in req['images']]:
++    text_only = request_version(profile) == 'o5_direct_text_request_v1'
++    if (text_only and images) or (not text_only and (len(images) != 2 or images != [asset['sha256'] for asset in req['images']])):
+         raise O5Error('IMAGE_TRANSMISSION_BINDING_FAILED')
+-    bound = text_bytes + profile['token_bound']['framing_tokens'] + 2*profile['token_bound']['per_image_tokens']
++    bound = text_bytes + profile['token_bound']['framing_tokens'] + (0 if text_only else 2*profile['token_bound']['per_image_tokens'])
+     if bound > profile['input_limit']:
+         raise O5Error('INPUT_BOUND_EXCEEDED')
+     if len(canonical(body).encode()) > profile['max_request_bytes']:
+--- before/semantic_pallet_planner/src/semantic_pallet_planner/o5/schemas.py
++++ after/semantic_pallet_planner/src/semantic_pallet_planner/o5/schemas.py
+@@ -37,6 +37,18 @@
+                'candidates': {'type': 'array', 'items': CANDIDATE, 'maxItems': 16},
+                'images': {'type': 'array', 'items': IMAGE, 'minItems': 2, 'maxItems': 2},
+                'task_goal': TEXT, 'output_contract': TEXT})
++TEXT_REQUEST = copy.deepcopy(REQUEST)
++del TEXT_REQUEST['properties']['images']
++TEXT_REQUEST['required'].remove('images')
++TEXT_REQUEST['properties']['schema_version'] = {'const': 'o5_direct_text_request_v1'}
++TEXT_CONVENTIONS = {
++    'length': 'mm', 'mass_and_load': 'kg', 'yaw': 'degrees',
++    'origin': 'container_bottom_center', 'axes': 'x=length,y=width,z=up',
++    'pose': 'x_mm,y_mm=box_planar_center;z_base_mm=box_bottom',
++    'oriented_size_order': 'length,width,height',
++}
++TEXT_REQUEST['properties']['units_and_coordinates'] = {'const': TEXT_CONVENTIONS}
++TEXT_REQUEST['required'].append('units_and_coordinates')
+ RESPONSE = obj({'request_id': TEXT, 'state_hash': HASH, 'action': {'enum': ['PLACE', 'STOP']},
+                 'candidate_id': {'type': ['string', 'null']}})
+ 
+@@ -46,7 +58,7 @@
+ 
+ 
+ SCHEMAS = {
+-    'DecisionRequest': REQUEST, 'DecisionResponse': RESPONSE,
++    'DecisionRequest': REQUEST, 'DirectTextRequest': TEXT_REQUEST, 'DecisionResponse': RESPONSE,
+     'DatasetManifest': record('o5_dataset_manifest_v1', {
+         'protocol_version': TEXT, 'status': {'enum': ['PASS', 'BLOCKED_DATA']}, 'raw_sha256': HASH,
+         'raw_orders': {'type': 'integer'}, 'short_orders': {'type': 'integer'},
+@@ -87,6 +99,10 @@
+ # this field through validate_dataset's semantic checks.
+ SCHEMAS['DatasetManifest']['properties']['ood_rule'] = {'type': 'object'}
+ SCHEMAS['DatasetManifest']['properties']['raw_path'] = TEXT
++SCHEMAS['DirectTextJournal'] = copy.deepcopy(SCHEMAS['DecisionJournal'])
++SCHEMAS['DirectTextJournal']['properties']['schema_version'] = {'const': 'o5_direct_text_journal_v1'}
++SCHEMAS['DirectTextJournal']['properties']['request'] = TEXT_REQUEST
++
+ 
+ 
+ def validate(name, value):

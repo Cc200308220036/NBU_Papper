@@ -1,0 +1,27 @@
+{
+  "max_tokens": 256,
+  "messages": [
+    {
+      "content": "Maximize the loaded fraction of the complete order within the stated physical limits. Only the current item and already placed items are visible. Return only JSON with request_id,state_hash,action,candidate_id. PLACE selects one listed Cxx. STOP uses candidate_id=null. Do not output coordinates or change item properties.",
+      "role": "system"
+    },
+    {
+      "content": [
+        {
+          "text": "{\"public_input\":{\"candidates\":[{\"candidate_id\":\"C01\",\"oriented_size_mm\":[590,395,295],\"pose\":{\"x_mm\":305.0,\"y_mm\":-302.5,\"yaw_deg\":0,\"z_base_mm\":0.0},\"support\":{\"com_margin_mm\":197.5,\"support_item_ids\":[],\"support_ratio\":1.0}},{\"candidate_id\":\"C02\",\"oriented_size_mm\":[395,590,295],\"pose\":{\"x_mm\":-402.5,\"y_mm\":-205.0,\"yaw_deg\":90,\"z_base_mm\":0.0},\"support\":{\"com_margin_mm\":197.5,\"support_item_ids\":[],\"support_ratio\":1.0}},{\"candidate_id\":\"C03\",\"oriented_size_mm\":[395,590,295],\"pose\":{\"x_mm\":402.5,\"y_mm\":-205.0,\"yaw_deg\":90,\"z_base_mm\":0.0},\"support\":{\"com_margin_mm\":197.5,\"support_item_ids\":[],\"support_ratio\":1.0}},{\"candidate_id\":\"C04\",\"oriented_size_mm\":[590,395,295],\"pose\":{\"x_mm\":-305.0,\"y_mm\":302.5,\"yaw_deg\":0,\"z_base_mm\":0.0},\"support\":{\"com_margin_mm\":197.5,\"support_item_ids\":[],\"support_ratio\":1.0}},{\"candidate_id\":\"C05\",\"oriented_size_mm\":[395,590,295],\"pose\":{\"x_mm\":-402.5,\"y_mm\":205.0,\"yaw_deg\":90,\"z_base_mm\":0.0},\"support\":{\"com_margin_mm\":197.5,\"support_item_ids\":[],\"support_ratio\":1.0}},{\"candidate_id\":\"C06\",\"oriented_size_mm\":[395,590,295],\"pose\":{\"x_mm\":402.5,\"y_mm\":205.0,\"yaw_deg\":90,\"z_base_mm\":0.0},\"support\":{\"com_margin_mm\":197.5,\"support_item_ids\":[],\"support_ratio\":1.0}},{\"candidate_id\":\"C07\",\"oriented_size_mm\":[590,395,295],\"pose\":{\"x_mm\":305.0,\"y_mm\":302.5,\"yaw_deg\":0,\"z_base_mm\":0.0},\"support\":{\"com_margin_mm\":197.5,\"support_item_ids\":[],\"support_ratio\":1.0}},{\"candidate_id\":\"C08\",\"oriented_size_mm\":[590,395,295],\"pose\":{\"x_mm\":-305.0,\"y_mm\":-302.5,\"yaw_deg\":0,\"z_base_mm\":0.0},\"support\":{\"com_margin_mm\":197.5,\"support_item_ids\":[],\"support_ratio\":1.0}}],\"container\":{\"container_id\":\"P1210-H085\",\"coordinate_frame\":\"container_bottom_center\",\"length_mm\":1200,\"max_height_mm\":850,\"max_payload_kg\":1000.0,\"width_mm\":1000},\"current_item\":{\"dimensions_mm\":{\"height\":295,\"length\":590,\"width\":395},\"item_id\":\"box_01\",\"mass_kg\":9.0,\"physical_top_load_limit_kg\":100.0,\"stackable\":true},\"output_contract\":\"Return only JSON with request_id,state_hash,action,candidate_id. PLACE selects one listed Cxx. STOP uses candidate_id=null. Do not output coordinates or change item properties.\",\"placed_items\":[],\"request_id\":\"REQ_885d9852b1bb687c3643b515\",\"schema_version\":\"o5_direct_text_request_v1\",\"state_hash\":\"1346c7f4aa64e997169bf2dac3251a65bb4eef7161df52ad60e37267470e889e\",\"task_goal\":\"Maximize the loaded fraction of the complete order within the stated physical limits. Only the current item and already placed items are visible.\",\"units_and_coordinates\":{\"axes\":\"x=length,y=width,z=up\",\"length\":\"mm\",\"mass_and_load\":\"kg\",\"oriented_size_order\":\"length,width,height\",\"origin\":\"container_bottom_center\",\"pose\":\"x_mm,y_mm=box_planar_center;z_base_mm=box_bottom\",\"yaw\":\"degrees\"}},\"repair_error\":null}",
+          "type": "text"
+        }
+      ],
+      "role": "user"
+    }
+  ],
+  "model": "deepseek-flash",
+  "response_format": {
+    "type": "json_object"
+  },
+  "stream": false,
+  "temperature": 0,
+  "thinking": {
+    "type": "disabled"
+  }
+}

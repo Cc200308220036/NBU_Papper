@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="0.304" timestamp="2026-10-28T09:27:18.282521+08:00" hostname="cyw-R7000P"><testcase classname="tests.unit.test_o5_s2_remote" name="test_missing_checkpoint_or_mapping_never_recreates_s2_job[checkpoint]" time="0.094"><failure message="Failed: DID NOT RAISE &lt;class 'semantic_pallet_planner.o5.common.O5Error'&gt;">decision = ({'candidates': [{'candidate_id': 'C01', 'oriented_size_mm': [180, 140, 60], 'pose': {'x_mm': 510.0, 'y_mm': -430.0, '..._center', 'length_mm': 1200, 'max_height_mm': 850, ...}, 'data_design_version': 'o5_complete_orders_quantile_v1', ...})
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-56/test_missing_checkpoint_or_map0')
+missing = 'checkpoint'
+
+    @pytest.mark.parametrize('missing',['checkpoint','mapping'])
+    def test_missing_checkpoint_or_mapping_never_recreates_s2_job(decision,tmp_path,missing):
+        req,step,cfg=decision;p=fixture_profile();budget=setup_budget(tmp_path)
+        job=tmp_path/'job';Runtime(budget,'j',p,cfg,job)
+        atomic(job/'decisions/000/request.json',req)
+        if missing=='mapping':atomic(job/'checkpoint.json',{'identity':'saved'})
+        else:atomic(job/'decisions/000/mapping.private.json',{})
+        code='MISSING_CHECKPOINT' if missing=='checkpoint' else 'MISSING_MAPPING'
+&gt;       with pytest.raises(O5Error,match=code):Runtime(budget,'j',p,cfg,job)
+E       Failed: DID NOT RAISE &lt;class 'semantic_pallet_planner.o5.common.O5Error'&gt;
+
+semantic_pallet_planner/tests/unit/test_o5_s2_remote.py:467: Failed</failure></testcase><testcase classname="tests.unit.test_o5_s2_remote" name="test_missing_checkpoint_or_mapping_never_recreates_s2_job[mapping]" time="0.080"><failure message="Failed: DID NOT RAISE &lt;class 'semantic_pallet_planner.o5.common.O5Error'&gt;">decision = ({'candidates': [{'candidate_id': 'C01', 'oriented_size_mm': [180, 140, 60], 'pose': {'x_mm': 510.0, 'y_mm': -430.0, '..._center', 'length_mm': 1200, 'max_height_mm': 850, ...}, 'data_design_version': 'o5_complete_orders_quantile_v1', ...})
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-56/test_missing_checkpoint_or_map1')
+missing = 'mapping'
+
+    @pytest.mark.parametrize('missing',['checkpoint','mapping'])
+    def test_missing_checkpoint_or_mapping_never_recreates_s2_job(decision,tmp_path,missing):
+        req,step,cfg=decision;p=fixture_profile();budget=setup_budget(tmp_path)
+        job=tmp_path/'job';Runtime(budget,'j',p,cfg,job)
+        atomic(job/'decisions/000/request.json',req)
+        if missing=='mapping':atomic(job/'checkpoint.json',{'identity':'saved'})
+        else:atomic(job/'decisions/000/mapping.private.json',{})
+        code='MISSING_CHECKPOINT' if missing=='checkpoint' else 'MISSING_MAPPING'
+&gt;       with pytest.raises(O5Error,match=code):Runtime(budget,'j',p,cfg,job)
+E       Failed: DID NOT RAISE &lt;class 'semantic_pallet_planner.o5.common.O5Error'&gt;
+
+semantic_pallet_planner/tests/unit/test_o5_s2_remote.py:467: Failed</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,137 @@
+{
+  "D0_Pilot_performance": "NOT_VERIFIED",
+  "amount_policy": "unlimited",
+  "checked_existing_files": 14061,
+  "checks": {
+    "DT01": {
+      "evidence": "actual_provider_body_0.json; actual_provider_body_1.json; tests: real_state_complete_text_body_no_asset_dependency, closed_public_projection",
+      "status": "PASS_OFFLINE"
+    },
+    "DT02": {
+      "evidence": "final_plan_review.json; tests: placed_state_matches_oracle_and_candidate_mapping, same_candidate_mapping_as_legacy",
+      "status": "PASS_OFFLINE"
+    },
+    "DT03": {
+      "evidence": "tests: response_contract, bad_json_duplicate_keys, place_and_stop, repair_failure_stop_and_unknown_cost",
+      "status": "PASS_OFFLINE"
+    },
+    "DT04": {
+      "evidence": "tests: commit_independent_physical_check, text_empty_pool_does_not_call_model; independent fixture reconstruction",
+      "status": "PASS_OFFLINE"
+    },
+    "DT05": {
+      "evidence": "tests: unknown_stops_and_never_resends, receipt_crash_replays_without_second_wire, missing_recovery_evidence_not_recreated, interrupted_preflight_prefix_rechecked_before_more_calls; existing recovery/lock regressions",
+      "status": "PASS_OFFLINE"
+    },
+    "DT06": {
+      "evidence": "offline_lifecycle.json; offline_preflight_verification.json; offline_fixture_verification.json; PREFLIGHT_NOT_REAL gate",
+      "status": "PASS_OFFLINE"
+    },
+    "DT07": {
+      "evidence": "tests: input_boundary_and_repair_count_all_messages, text_usage_above_bound_halts; optional_amount/shared-campaign regressions; unknown costs=null",
+      "status": "PASS_OFFLINE"
+    },
+    "DT08": {
+      "evidence": "protection.json; source_changes.patch; tests: cross_protocol_profile_rejected, text_plan_rejects_cross_modal_profile; original image-probe regressions",
+      "status": "PASS_OFFLINE"
+    },
+    "DT09": {
+      "evidence": "tests.acceptance.final.xml; tests.acceptance.final.log",
+      "status": "PASS_OFFLINE"
+    }
+  },
+  "data_rederived": false,
+  "historical_image_preflight": "HOLD_ENGINEERING_RETAINED",
+  "historical_real_api_attempts": 1,
+  "intermediate_evidence": [
+    "tests.initial.xml:110 passed",
+    "tests.text.first.xml:35 passed",
+    "tests.acceptance.first.xml:297 passed/1 assertion failure",
+    "tests.usage.diagnostic.xml:initial assertion expected raise instead of recorded failure",
+    "tests.text.hardening.xml:39 passed/1 assertion failure on cached receipt replay",
+    "tests.acceptance.xml:second intermediate broad run; final result supersedes",
+    "tests.usage.fixed.xml:cached failure replay and new-request halt verified",
+    "environment_note.md:ROS auto-plugin startup conflict"
+  ],
+  "modified_o5_sources": [
+    "semantic_pallet_planner/src/semantic_pallet_planner/o5/episode.py",
+    "semantic_pallet_planner/src/semantic_pallet_planner/o5/experiment.py",
+    "semantic_pallet_planner/src/semantic_pallet_planner/o5/public_request.py",
+    "semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_authorized.py",
+    "semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_config.py",
+    "semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_experiment.py",
+    "semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_runtime.py",
+    "semantic_pallet_planner/src/semantic_pallet_planner/o5/remote_transport.py",
+    "semantic_pallet_planner/src/semantic_pallet_planner/o5/schemas.py"
+  ],
+  "new_profile": "semantic_pallet_planner/configs/o5_direct_text_deepseek_flash.json",
+  "new_real_api_attempts": 0,
+  "new_runner": "semantic_pallet_planner/src/semantic_pallet_planner/runners/o5_direct_text.py",
+  "new_tests": "semantic_pallet_planner/tests/unit/test_o5_direct_text.py",
+  "not_run": [
+    "real API",
+    "real text preflight",
+    "eight-order real Pilot",
+    "training trajectory collection",
+    "formal test-set episodes",
+    "S3",
+    "R0/M0",
+    "ReMe runtime"
+  ],
+  "official_real_text_preflight": "NOT_RUN_USER_EXECUTES",
+  "official_user_preflight_plan": "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/PLAN_O5_DIRECT_TEXT_PREFLIGHT_20261028_02",
+  "offline_evidence": {
+    "image_files": 0,
+    "model_performance": "NOT_MEASURED",
+    "probe_wire_attempts": 3,
+    "public_state_probes": 2,
+    "synthetic_commits": 68,
+    "synthetic_order_jobs": 4,
+    "synthetic_wire_attempts": 34,
+    "test_double": true
+  },
+  "old_specs_manuals_profiles_data_and_results_unchanged": true,
+  "physical_rules_scoring_backend_default_A_unchanged": true,
+  "pilot_matrix": {
+    "G0_API_attempts": 0,
+    "complete_order_items": 145,
+    "jobs": 16,
+    "max_D0_attempts": 290,
+    "precondition": "REAL_TEXT_PREFLIGHT_PASS",
+    "source": "DATA03 development_001..008"
+  },
+  "plan_digest": "6d7dd0c5706222f034536e2a0d81f93fffd78aec208005eaa1a1849e17f98884",
+  "protocol_version": "o5_direct_text_v1",
+  "remaining_limits": [
+    "live Flash alias has no immutable snapshot guarantee",
+    "512 framing margin is an engineering bound, actual usage must be checked",
+    "real service compatibility and selection quality unverified",
+    "text PASS cannot establish image capability",
+    "report gives descriptive orders; no automatic research admission or D0 freeze"
+  ],
+  "schema_version": "o5_direct_text_offline_acceptance_v1",
+  "status": "PASS_OFFLINE_ENGINEERING",
+  "superseded_direct_text_plan_01": "Preserved unused offline preparation; current source drift refused; final plan uses 02",
+  "tests": {
+    "by_module": {
+      "tests.unit.test_geometry": 5,
+      "tests.unit.test_o4_buffer_search": 16,
+      "tests.unit.test_o4_buffer_state": 27,
+      "tests.unit.test_o4_e2_extensions": 96,
+      "tests.unit.test_o5_data_derivation": 5,
+      "tests.unit.test_o5_deepseek": 5,
+      "tests.unit.test_o5_direct_text": 40,
+      "tests.unit.test_o5_optional_amount": 13,
+      "tests.unit.test_o5_recovery_hardening": 6,
+      "tests.unit.test_o5_s1": 32,
+      "tests.unit.test_o5_s2_remote": 45,
+      "tests.unit.test_o5_visual_probe": 9
+    },
+    "failed": 0,
+    "passed": 299,
+    "skipped": 0,
+    "xml": "tests.acceptance.final.xml"
+  },
+  "unknown_cost": "null/UNKNOWN; known subtotal separately reported",
+  "user_manual": "docs/04_运行与复核手册/O5/O5DirectText本地预检与D0Pilot命令_20261028.md"
+}

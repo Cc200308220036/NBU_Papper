@@ -1,0 +1,111 @@
+{
+  "attempt_fields": [
+    "accounted_amount",
+    "attempt_id",
+    "body_digest",
+    "bound",
+    "cost_basis",
+    "error",
+    "job_id",
+    "phase",
+    "receipt_digest",
+    "repair",
+    "request_digest",
+    "reserved_amount",
+    "status"
+  ],
+  "bound_fields": [
+    "algorithm",
+    "body_digest",
+    "bound_evidence",
+    "image_sha256",
+    "input_upper",
+    "maximum_amount",
+    "output_upper"
+  ],
+  "ledger_fields": [
+    "attempts",
+    "halt",
+    "identity",
+    "jobs",
+    "profile_digest",
+    "schema_version",
+    "test_double"
+  ],
+  "plan_fields": [
+    "dataset_digest",
+    "dataset_path",
+    "dependencies",
+    "documents",
+    "error_policy",
+    "gaps",
+    "jobs",
+    "maximum_selection_attempts",
+    "mode",
+    "physical",
+    "preflight_tasks",
+    "profile",
+    "real_api_attempts",
+    "schema_version",
+    "source_files",
+    "stage",
+    "status",
+    "tasks_digest"
+  ],
+  "profile_template": {
+    "account_id": null,
+    "adapter": "chat_completions_http_v1",
+    "credential_env": null,
+    "endpoint": null,
+    "image_detail": "high",
+    "input_limit": 12000,
+    "limits": {
+      "pilot_amount": null,
+      "pilot_attempts": 290,
+      "preflight_amount": null,
+      "preflight_attempts": 8,
+      "total_amount": null
+    },
+    "max_request_bytes": 30000000,
+    "model": null,
+    "output_limit": 256,
+    "pricing": {
+      "coverage": null,
+      "currency": null,
+      "fixed_per_request": null,
+      "input_per_million": null,
+      "output_per_million": null,
+      "quantum": "0.000001",
+      "source": null,
+      "verified_at": null
+    },
+    "provider": null,
+    "returned_model": null,
+    "schema_version": "o5_s2_provider_profile_v1",
+    "seed": null,
+    "seed_support": "UNKNOWN",
+    "snapshot_note": null,
+    "temperature": 0,
+    "timeout_seconds": 60,
+    "token_bound": {
+      "algorithm": "utf8_bytes_plus_image_bounds_v1",
+      "evidence": null,
+      "framing_tokens": null,
+      "per_image_tokens": null
+    },
+    "transport_verified": false
+  },
+  "receipt_fields": [
+    "error",
+    "finish_reason",
+    "http_status",
+    "latency_seconds",
+    "model",
+    "provider_request_id",
+    "raw_body",
+    "schema_version",
+    "text",
+    "usage"
+  ],
+  "validators": "remote_config.closed/validate; remote_experiment.validate_plan/validate_run; remote_authorized.validate_preflight/authorization; Budget.load"
+}

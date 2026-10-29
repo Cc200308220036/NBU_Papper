@@ -1,0 +1,53 @@
+--- S1/episode.py
++++ S2-A/episode.py
+@@ -104,10 +104,10 @@
+ 
+ 
+ def run_episode(task, method, config, directory, job_id, nonce, *, transport=None,
+-                attempt_limit=40, resume=False, stop_after=None):
++                attempt_limit=40, resume=False, stop_after=None, _runtime=None):
+     validate_config(config)
+     validate_task(task, config)
+-    if method not in ('G0', 'D0') or (method == 'D0' and getattr(transport, 'offline_test_double', False) is not True):
++    if method not in ('G0', 'D0') or (_runtime is None and method == 'D0' and getattr(transport, 'offline_test_double', False) is not True):
+         raise O5Error('INVALID_OFFLINE_METHOD')
+     directory = Path(directory)
+     directory.mkdir(parents=True, exist_ok=True)
+@@ -146,10 +146,14 @@
+         if resume:
+             raise O5Error('MISSING_CHECKPOINT')
+         placed, journals, reason = [], [], None
+-    ledger = Ledger(directory/'ledger.json', job_id, attempt_limit if method == 'D0' else 0)
++    ledger = (_runtime.ledger if _runtime is not None else
++              Ledger(directory/'ledger.json', job_id, attempt_limit if method == 'D0' else 0))
+     for index, journal in enumerate(journals):
+-        verify_accounting(journal, method, config, directory/f'decisions/{index:03d}',
+-                          ledger.data, job_id, attempt_limit)
++        if _runtime is not None:
++            _runtime.verify(journal, method, directory/f'decisions/{index:03d}')
++        else:
++            verify_accounting(journal, method, config, directory/f'decisions/{index:03d}',
++                              ledger.data, job_id, attempt_limit)
+     known_requests = {digest(j['request']) for j in journals}
+     pending_request = directory/f'decisions/{len(placed):03d}/request.json'
+     if reason is None and pending_request.is_file():
+@@ -192,7 +196,8 @@
+         elif method == 'G0':
+             response = geometry_choice(req, mapping)
+         else:
+-            response, attempts, failure = direct_choice(req, step, config, transport, ledger)
++            response, attempts, failure = (_runtime.choose(req, step) if _runtime is not None else
++                                           direct_choice(req, step, config, transport, ledger))
+         if failure == 'UNKNOWN_IN_FLIGHT':
+             save()
+             raise O5Error('UNKNOWN_IN_FLIGHT', job_id)
+@@ -238,6 +243,9 @@
+               'summary': summarize(task, placed, reason, journals),
+               'decisions': [f'decisions/{i:03d}/journal.json' for i in range(len(journals))], 'final_state': placed}
+     validate('EpisodeResult', result)
++    if _runtime is not None:
++        result['test_double'] = _runtime.test_double
++        result['summary']['result_scope'] = _runtime.result_scope
+     atomic(directory/'result.json', result)
+     return result
+ 

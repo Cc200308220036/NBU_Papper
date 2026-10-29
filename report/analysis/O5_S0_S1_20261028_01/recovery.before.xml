@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="4" time="3.997" timestamp="2026-10-28T01:19:12.497275+08:00" hostname="cyw-R7000P"><testcase classname="tests.unit.test_o5_recovery_hardening" name="test_recovery_hardening_request_mapping_write_gap" time="0.050"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-cyw/pytest-45/test_recovery_hardening_reques0/decisions/000/mapping.private.json'">tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-45/test_recovery_hardening_reques0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x78a52e9eed70&gt;
+
+    def test_recovery_hardening_request_mapping_write_gap(tmp_path, monkeypatch):
+        original = episode.atomic
+        failed = False
+        def crash(path, value):
+            nonlocal failed
+            if path.name == 'mapping.private.json' and not failed:
+                failed = True
+                raise KeyboardInterrupt('crash between durable request/mapping writes')
+            return original(path, value)
+        monkeypatch.setattr(episode, 'atomic', crash)
+        task = fixture_task()
+        first = OfflineTransport()
+        with pytest.raises(KeyboardInterrupt):
+            episode.run_episode(task, 'D0', DEFAULT, tmp_path, 'job', 'nonce', transport=first)
+        assert not first.calls
+        monkeypatch.setattr(episode, 'atomic', original)
+        resumed = OfflineTransport()
+&gt;       result = episode.run_episode(task, 'D0', DEFAULT, tmp_path, 'job', 'nonce', transport=resumed, resume=True)
+
+semantic_pallet_planner/tests/unit/test_o5_recovery_hardening.py:36: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/o5/episode.py:121: in run_episode
+    mapping = read(step/'mapping.private.json')
+semantic_pallet_planner/src/semantic_pallet_planner/o5/common.py:40: in read
+    return json.loads(Path(path).read_text(), parse_constant=reject)
+../anaconda3/lib/python3.13/pathlib/_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+../anaconda3/lib/python3.13/pathlib/_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/tmp/pytest-of-cyw/pytest-45/test_recovery_hardening_reques0/decisions/000/mapping.private.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-cyw/pytest-45/test_recovery_hardening_reques0/decisions/000/mapping.private.json'
+
+../anaconda3/lib/python3.13/pathlib/_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.unit.test_o5_recovery_hardening" name="test_recovery_hardening_missing_ledger_cannot_reset_budget" time="2.400"><failure message="Failed: DID NOT RAISE &lt;class 'semantic_pallet_planner.o5.common.O5Error'&gt;">tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-45/test_recovery_hardening_missin0')
+
+    def test_recovery_hardening_missing_ledger_cannot_reset_budget(tmp_path):
+        task = fixture_task()
+        episode.run_episode(task, 'D0', DEFAULT, tmp_path, 'job', 'nonce', transport=OfflineTransport(), stop_after=1)
+        (tmp_path/'ledger.json').unlink()
+        resumed = OfflineTransport()
+&gt;       with pytest.raises(O5Error, match='MISSING_LEDGER'):
+E       Failed: DID NOT RAISE &lt;class 'semantic_pallet_planner.o5.common.O5Error'&gt;
+
+semantic_pallet_planner/tests/unit/test_o5_recovery_hardening.py:45: Failed</failure></testcase><testcase classname="tests.unit.test_o5_recovery_hardening" name="test_recovery_hardening_saved_ledger_checked_before_next_call" time="1.395"><failure message="Failed: DID NOT RAISE &lt;class 'semantic_pallet_planner.o5.common.O5Error'&gt;">tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-45/test_recovery_hardening_saved_0')
+
+    def test_recovery_hardening_saved_ledger_checked_before_next_call(tmp_path):
+        task = fixture_task()
+        episode.run_episode(task, 'D0', DEFAULT, tmp_path, 'job', 'nonce', transport=OfflineTransport(), stop_after=1)
+        ledger = read(tmp_path/'ledger.json')
+        response = ledger['attempts'][0]['response']
+        response.update(action='STOP', candidate_id=None)
+        atomic(tmp_path/'ledger.json', ledger)
+        resumed = OfflineTransport()
+&gt;       with pytest.raises(O5Error, match='DECISION_LEDGER_RECOMPUTATION_MISMATCH'):
+E       Failed: DID NOT RAISE &lt;class 'semantic_pallet_planner.o5.common.O5Error'&gt;
+
+semantic_pallet_planner/tests/unit/test_o5_recovery_hardening.py:58: Failed</failure></testcase><testcase classname="tests.unit.test_o5_recovery_hardening" name="test_recovery_hardening_pending_g0_checks_original_image" time="0.077" /></testsuite></testsuites>

@@ -1,0 +1,573 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "o4_buffer_state_v1"
+    },
+    "mode": {
+      "enum": [
+        "single",
+        "buffer"
+      ]
+    },
+    "buffer_capacity": {
+      "enum": [
+        1,
+        2,
+        3
+      ]
+    },
+    "event_index": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "arrival_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "placed_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "end_of_stream": {
+      "type": "boolean"
+    },
+    "physical_state_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "instruction_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "buffer_state_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "o4_buffer_observation_v1"
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "state_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "observation_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "instruction_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "units": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "length": {
+              "const": "mm"
+            },
+            "mass": {
+              "const": "kg"
+            }
+          },
+          "required": [
+            "length",
+            "mass"
+          ]
+        },
+        "container": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "container_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "length_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "width_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "max_height_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "max_payload_kg": {
+              "type": "number",
+              "minimum": 0
+            },
+            "coordinate_frame": {
+              "const": "container_bottom_center"
+            }
+          },
+          "required": [
+            "container_id",
+            "length_mm",
+            "width_mm",
+            "max_height_mm",
+            "max_payload_kg",
+            "coordinate_frame"
+          ]
+        },
+        "placed_objects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "object_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "mass_kg": {
+                "type": "number",
+                "minimum": 0
+              },
+              "dimensions_mm": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "length": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "width": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "height": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                },
+                "required": [
+                  "length",
+                  "width",
+                  "height"
+                ]
+              },
+              "cargo_category": {
+                "enum": [
+                  "food",
+                  "glassware",
+                  "electronics",
+                  "household_cleaner",
+                  "general"
+                ]
+              },
+              "packaging": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "reinforced": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "reinforced"
+                ]
+              },
+              "labels": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "no_top_load": {
+                    "type": "boolean"
+                  },
+                  "max_top_load_kg": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "no_top_load",
+                  "max_top_load_kg"
+                ]
+              },
+              "physical_top_load_limit_kg": {
+                "type": "number",
+                "minimum": 0
+              },
+              "stackable": {
+                "type": "boolean"
+              },
+              "fragile": {
+                "type": "boolean"
+              },
+              "weight_class": {
+                "enum": [
+                  "light",
+                  "medium",
+                  "heavy"
+                ]
+              },
+              "pose": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "x_mm": {
+                    "type": "number"
+                  },
+                  "y_mm": {
+                    "type": "number"
+                  },
+                  "z_base_mm": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "yaw_deg": {
+                    "enum": [
+                      0,
+                      90
+                    ]
+                  }
+                },
+                "required": [
+                  "x_mm",
+                  "y_mm",
+                  "z_base_mm",
+                  "yaw_deg"
+                ]
+              },
+              "oriented_size_mm": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              }
+            },
+            "required": [
+              "object_id",
+              "mass_kg",
+              "dimensions_mm",
+              "cargo_category",
+              "packaging",
+              "labels",
+              "physical_top_load_limit_kg",
+              "stackable",
+              "fragile",
+              "weight_class",
+              "pose",
+              "oriented_size_mm"
+            ]
+          }
+        },
+        "available_objects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "object_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "mass_kg": {
+                "type": "number",
+                "minimum": 0
+              },
+              "dimensions_mm": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "length": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "width": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "height": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                },
+                "required": [
+                  "length",
+                  "width",
+                  "height"
+                ]
+              },
+              "cargo_category": {
+                "enum": [
+                  "food",
+                  "glassware",
+                  "electronics",
+                  "household_cleaner",
+                  "general"
+                ]
+              },
+              "packaging": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "reinforced": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "reinforced"
+                ]
+              },
+              "labels": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "no_top_load": {
+                    "type": "boolean"
+                  },
+                  "max_top_load_kg": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "no_top_load",
+                  "max_top_load_kg"
+                ]
+              },
+              "physical_top_load_limit_kg": {
+                "type": "number",
+                "minimum": 0
+              },
+              "stackable": {
+                "type": "boolean"
+              },
+              "fragile": {
+                "type": "boolean"
+              },
+              "weight_class": {
+                "enum": [
+                  "light",
+                  "medium",
+                  "heavy"
+                ]
+              }
+            },
+            "required": [
+              "object_id",
+              "mass_kg",
+              "dimensions_mm",
+              "cargo_category",
+              "packaging",
+              "labels",
+              "physical_top_load_limit_kg",
+              "stackable",
+              "fragile",
+              "weight_class"
+            ]
+          },
+          "maxItems": 3
+        },
+        "instruction_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ]
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "request_id",
+        "state_hash",
+        "observation_digest",
+        "instruction_digest",
+        "units",
+        "container",
+        "placed_objects",
+        "available_objects",
+        "instruction_text",
+        "images"
+      ],
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "pending_items": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "facts": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "object_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "mass_kg": {
+                "type": "number",
+                "minimum": 0
+              },
+              "dimensions_mm": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "length": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "width": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "height": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                },
+                "required": [
+                  "length",
+                  "width",
+                  "height"
+                ]
+              },
+              "cargo_category": {
+                "enum": [
+                  "food",
+                  "glassware",
+                  "electronics",
+                  "household_cleaner",
+                  "general"
+                ]
+              },
+              "packaging": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "reinforced": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "reinforced"
+                ]
+              },
+              "labels": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "no_top_load": {
+                    "type": "boolean"
+                  },
+                  "max_top_load_kg": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "no_top_load",
+                  "max_top_load_kg"
+                ]
+              },
+              "physical_top_load_limit_kg": {
+                "type": "number",
+                "minimum": 0
+              },
+              "stackable": {
+                "type": "boolean"
+              },
+              "fragile": {
+                "type": "boolean"
+              },
+              "weight_class": {
+                "enum": [
+                  "light",
+                  "medium",
+                  "heavy"
+                ]
+              }
+            },
+            "required": [
+              "object_id",
+              "mass_kg",
+              "dimensions_mm",
+              "cargo_category",
+              "packaging",
+              "labels",
+              "physical_top_load_limit_kg",
+              "stackable",
+              "fragile",
+              "weight_class"
+            ]
+          },
+          "slot": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2
+          },
+          "arrival_index": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "object_id",
+          "facts",
+          "slot",
+          "arrival_index"
+        ]
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "buffer_capacity",
+    "event_index",
+    "arrival_count",
+    "placed_count",
+    "end_of_stream",
+    "physical_state_hash",
+    "instruction_digest",
+    "buffer_state_hash",
+    "observation",
+    "pending_items"
+  ]
+}

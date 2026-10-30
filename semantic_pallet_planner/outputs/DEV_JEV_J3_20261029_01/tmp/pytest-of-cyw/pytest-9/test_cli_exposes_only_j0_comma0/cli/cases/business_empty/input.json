@@ -1,0 +1,147 @@
+{
+  "case_id": "business_empty",
+  "expected_route": "STOP_NO_BUSINESS_CANDIDATE",
+  "observation": {
+    "available_objects": [
+      {
+        "cargo_category": "general",
+        "dimensions_mm": {
+          "height": 100,
+          "length": 100,
+          "width": 100
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 5.0,
+          "no_top_load": false
+        },
+        "mass_kg": 1.0,
+        "object_id": "large",
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 100.0,
+        "stackable": true,
+        "weight_class": "light"
+      }
+    ],
+    "buffer_context": {
+      "capacity": 3,
+      "end_of_stream": false,
+      "event_index": 1,
+      "pending": [
+        {
+          "arrival_index": 0,
+          "object_id": "large",
+          "slot": 0
+        }
+      ]
+    },
+    "capability_version": "o4_e2_v1",
+    "container": {
+      "container_id": "O4_GOLD",
+      "coordinate_frame": "container_bottom_center",
+      "length_mm": 1000,
+      "max_height_mm": 1000,
+      "max_payload_kg": 1000,
+      "width_mm": 1000
+    },
+    "coordinate_convention": "bottom_center_x_right_y_back_z_up_v1",
+    "images": [],
+    "instruction_digest": "40e7bd0c1e4701d9caeeafd166b0df9091111203d3429e6fec0f51543ed48755",
+    "instruction_text": "规则region：对（全部箱体），底面完全位于区域tiny；优先级20；覆盖无。",
+    "observation_digest": "43ea69928f8e30ee3942b34b03aeb0b7798cd864a45ee74cc29650354c4d41e2",
+    "placed_objects": [],
+    "placement_convention": "upright_label_pos_z_v1",
+    "regions": [
+      {
+        "region_id": "tiny",
+        "x_max_mm": 5,
+        "x_min_mm": -5,
+        "y_max_mm": 5,
+        "y_min_mm": -5
+      }
+    ],
+    "rendering_version": "o4_e2_top_label_render_v1",
+    "request_id": "O4F_E0001",
+    "sampling_grid_mm": [
+      0,
+      50,
+      100
+    ],
+    "schema_version": "o4_e2_request_v1",
+    "spatial_eps_mm": 1e-06,
+    "state_hash": "762140fbd6d9bc92c8bb254af1650a357cd4e40066a41d02a4d794b06f13d61a",
+    "units": {
+      "length": "mm",
+      "mass": "kg"
+    }
+  },
+  "source_kind": "constructed_j0",
+  "state": {
+    "arrival_count": 1,
+    "arrived_ids": [
+      "large"
+    ],
+    "attributes": {
+      "large": {
+        "cargo_category": "general",
+        "labels": {
+          "max_top_load_kg": 5.0,
+          "no_top_load": false
+        },
+        "object_id": "large",
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 100.0
+      }
+    },
+    "buffer_capacity": 3,
+    "container": {
+      "container_id": "O4_GOLD",
+      "coordinate_frame": "container_bottom_center",
+      "length_mm": 1000,
+      "max_height_mm": 1000,
+      "max_payload_kg": 1000,
+      "width_mm": 1000
+    },
+    "end_of_stream": false,
+    "event_index": 1,
+    "pending_items": [
+      {
+        "arrival_index": 0,
+        "item": {
+          "dimensions_mm": {
+            "height": 100,
+            "length": 100,
+            "width": 100
+          },
+          "fragile": false,
+          "item_id": "large",
+          "mass_kg": 1.0,
+          "oriented_size_mm": [
+            100,
+            100,
+            100
+          ],
+          "pose": {
+            "x_mm": 0.0,
+            "y_mm": 0.0,
+            "yaw_deg": 0,
+            "z_base_mm": 0.0
+          },
+          "product_category": "general",
+          "stackable": true,
+          "support_fractions": [],
+          "supported_load_kg": 0.0,
+          "top_load_limit_kg_synthetic": 100.0,
+          "weight_class": "light"
+        },
+        "slot": 0
+      }
+    ],
+    "placed_count": 0,
+    "placed_items": []
+  }
+}

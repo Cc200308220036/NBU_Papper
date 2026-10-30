@@ -1,0 +1,81 @@
+{
+  "criteria": {},
+  "display_mapping": {},
+  "local_binding": {
+    "config_digest": "3895dd5641ec83a44ca43a91639c15de8568dde2d7ab68a8294afb4c9223afc4",
+    "criteria_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "event_index": 1,
+    "feature_version": "features_basic_v1",
+    "generator_config_digest": "08909846efdaa6e9c19e4b3359790033e659af7657bed11f4d9c94dc2c79f8ee",
+    "instruction_digest": "53c8da8f8fa9faf00ea5fc17b6d87370800fc5cf74a40d94c83ee60d68c45ae5",
+    "mapping_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "memory_digest": "63ac478cb39a3c1f838e9b53aca376bfafe992a72824ecd6921785de21717242",
+    "model_state_digest": "b4921324a74a3ce8cb1568d019ea2e980256c0b95f78e01b564a003896365b4c",
+    "observation_digest": "1db1e23b0457c8d0580892e86de41739bf75368717cce49352c2a69e5ff5e5ea",
+    "physical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "policy_digest": "818584146b6652ab90787901dca78917e95d45c743c24b462935406fc9b36681",
+    "prompt_version": "jev_direct_en_v1",
+    "request_body_digest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "request_id": "O4F_E0001",
+    "selectable_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "state_hash": "514e60fa5eb381ebbfff07db68835604878bc058f6c3574daa61f8fc2607648d"
+  },
+  "model_state": {
+    "available_objects": [
+      {
+        "cargo_category": "general",
+        "dimensions_mm": {
+          "height": 200,
+          "length": 200,
+          "width": 200
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 5.0,
+          "no_top_load": false
+        },
+        "mass_kg": 1.0,
+        "object_id": "B001",
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 100.0,
+        "stackable": true,
+        "weight_class": "light"
+      }
+    ],
+    "buffer": {
+      "capacity": 3,
+      "end_of_stream": false,
+      "pending": [
+        {
+          "arrival_index": 0,
+          "object_id": "B001",
+          "slot": 0
+        }
+      ]
+    },
+    "business_requirements": {
+      "english_descriptions": [],
+      "original_text": "无额外业务硬约束。"
+    },
+    "container": {
+      "length_mm": 100,
+      "max_height_mm": 100,
+      "max_payload_kg": 1000,
+      "width_mm": 100
+    },
+    "coordinate_convention": "bottom_center_x_right_y_back_z_up_v1",
+    "memories": [],
+    "objective": "Prioritize completing the order without business violations. Compare the future usefulness of remaining space using only observed facts. Prefer low and central heavy-box placement when it does not undermine completion. No future arrivals are known.",
+    "placed_objects": [],
+    "regions": [],
+    "units": {
+      "length": "mm",
+      "mass": "kg"
+    }
+  },
+  "request_body": null,
+  "route": "STOP_NO_PHYSICAL_CANDIDATE",
+  "version": "jev_decision_context_v1"
+}

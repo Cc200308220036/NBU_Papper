@@ -1,0 +1,287 @@
+{
+  "case_id": "mixed_attributes",
+  "expected_route": "CHOICE_REQUIRED",
+  "observation": {
+    "available_objects": [
+      {
+        "cargo_category": "food",
+        "dimensions_mm": {
+          "height": 100,
+          "length": 100,
+          "width": 100
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 5.0,
+          "no_top_load": false
+        },
+        "mass_kg": 1.0,
+        "object_id": "food",
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 100.0,
+        "stackable": true,
+        "weight_class": "light"
+      },
+      {
+        "cargo_category": "household_cleaner",
+        "dimensions_mm": {
+          "height": 100,
+          "length": 100,
+          "width": 100
+        },
+        "fragile": false,
+        "labels": {
+          "max_top_load_kg": 5.0,
+          "no_top_load": false
+        },
+        "mass_kg": 1.0,
+        "object_id": "clean",
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 100.0,
+        "stackable": true,
+        "weight_class": "light"
+      },
+      {
+        "cargo_category": "glassware",
+        "dimensions_mm": {
+          "height": 100,
+          "length": 100,
+          "width": 100
+        },
+        "fragile": true,
+        "labels": {
+          "max_top_load_kg": 5.0,
+          "no_top_load": true
+        },
+        "mass_kg": 1.0,
+        "object_id": "glass",
+        "packaging": {
+          "reinforced": true
+        },
+        "physical_top_load_limit_kg": 100.0,
+        "stackable": true,
+        "weight_class": "light"
+      }
+    ],
+    "buffer_context": {
+      "capacity": 3,
+      "end_of_stream": false,
+      "event_index": 3,
+      "pending": [
+        {
+          "arrival_index": 0,
+          "object_id": "food",
+          "slot": 0
+        },
+        {
+          "arrival_index": 1,
+          "object_id": "clean",
+          "slot": 1
+        },
+        {
+          "arrival_index": 2,
+          "object_id": "glass",
+          "slot": 2
+        }
+      ]
+    },
+    "capability_version": "o4_e2_v1",
+    "container": {
+      "container_id": "O4_GOLD",
+      "coordinate_frame": "container_bottom_center",
+      "length_mm": 1000,
+      "max_height_mm": 1000,
+      "max_payload_kg": 1000,
+      "width_mm": 1000
+    },
+    "coordinate_convention": "bottom_center_x_right_y_back_z_up_v1",
+    "images": [],
+    "instruction_digest": "16777baddc089befbd491ee4729f4066d2c270722c0b9d429e97aafd2220e6a6",
+    "instruction_text": "规则labels：对（全部箱体），累计顶部限载按标签；优先级20；覆盖无。\n规则no_top：对（禁压标记等于是），禁止顶部加载；优先级10；覆盖labels。\n规则contact：禁止（货物类别等于食品）与（货物类别等于清洁用品）直接面接触；优先级20；覆盖无。",
+    "observation_digest": "062dc6e0a12262c1364a5bd7da5f9cabeae75724028d6f29d03ffe7282382c62",
+    "placed_objects": [],
+    "placement_convention": "upright_label_pos_z_v1",
+    "regions": [
+      {
+        "region_id": "R",
+        "x_max_mm": 400,
+        "x_min_mm": -400,
+        "y_max_mm": 400,
+        "y_min_mm": -400
+      }
+    ],
+    "rendering_version": "o4_e2_top_label_render_v1",
+    "request_id": "O4F_E0003",
+    "sampling_grid_mm": [
+      0,
+      50,
+      100
+    ],
+    "schema_version": "o4_e2_request_v1",
+    "spatial_eps_mm": 1e-06,
+    "state_hash": "f2487a63fa02a298b47646130a9a341ea4cde9a1540f8ae7c33ef809711f0f02",
+    "units": {
+      "length": "mm",
+      "mass": "kg"
+    }
+  },
+  "source_kind": "constructed_j0",
+  "state": {
+    "arrival_count": 3,
+    "arrived_ids": [
+      "food",
+      "clean",
+      "glass"
+    ],
+    "attributes": {
+      "clean": {
+        "cargo_category": "household_cleaner",
+        "labels": {
+          "max_top_load_kg": 5.0,
+          "no_top_load": false
+        },
+        "object_id": "clean",
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 100.0
+      },
+      "food": {
+        "cargo_category": "food",
+        "labels": {
+          "max_top_load_kg": 5.0,
+          "no_top_load": false
+        },
+        "object_id": "food",
+        "packaging": {
+          "reinforced": false
+        },
+        "physical_top_load_limit_kg": 100.0
+      },
+      "glass": {
+        "cargo_category": "glassware",
+        "labels": {
+          "max_top_load_kg": 5.0,
+          "no_top_load": true
+        },
+        "object_id": "glass",
+        "packaging": {
+          "reinforced": true
+        },
+        "physical_top_load_limit_kg": 100.0
+      }
+    },
+    "buffer_capacity": 3,
+    "container": {
+      "container_id": "O4_GOLD",
+      "coordinate_frame": "container_bottom_center",
+      "length_mm": 1000,
+      "max_height_mm": 1000,
+      "max_payload_kg": 1000,
+      "width_mm": 1000
+    },
+    "end_of_stream": false,
+    "event_index": 3,
+    "pending_items": [
+      {
+        "arrival_index": 0,
+        "item": {
+          "dimensions_mm": {
+            "height": 100,
+            "length": 100,
+            "width": 100
+          },
+          "fragile": false,
+          "item_id": "food",
+          "mass_kg": 1.0,
+          "oriented_size_mm": [
+            100,
+            100,
+            100
+          ],
+          "pose": {
+            "x_mm": 0.0,
+            "y_mm": 0.0,
+            "yaw_deg": 0,
+            "z_base_mm": 0.0
+          },
+          "product_category": "general",
+          "stackable": true,
+          "support_fractions": [],
+          "supported_load_kg": 0.0,
+          "top_load_limit_kg_synthetic": 100.0,
+          "weight_class": "light"
+        },
+        "slot": 0
+      },
+      {
+        "arrival_index": 1,
+        "item": {
+          "dimensions_mm": {
+            "height": 100,
+            "length": 100,
+            "width": 100
+          },
+          "fragile": false,
+          "item_id": "clean",
+          "mass_kg": 1.0,
+          "oriented_size_mm": [
+            100,
+            100,
+            100
+          ],
+          "pose": {
+            "x_mm": 0.0,
+            "y_mm": 0.0,
+            "yaw_deg": 0,
+            "z_base_mm": 0.0
+          },
+          "product_category": "general",
+          "stackable": true,
+          "support_fractions": [],
+          "supported_load_kg": 0.0,
+          "top_load_limit_kg_synthetic": 100.0,
+          "weight_class": "light"
+        },
+        "slot": 1
+      },
+      {
+        "arrival_index": 2,
+        "item": {
+          "dimensions_mm": {
+            "height": 100,
+            "length": 100,
+            "width": 100
+          },
+          "fragile": true,
+          "item_id": "glass",
+          "mass_kg": 1.0,
+          "oriented_size_mm": [
+            100,
+            100,
+            100
+          ],
+          "pose": {
+            "x_mm": 0.0,
+            "y_mm": 0.0,
+            "yaw_deg": 0,
+            "z_base_mm": 0.0
+          },
+          "product_category": "general",
+          "stackable": true,
+          "support_fractions": [],
+          "supported_load_kg": 0.0,
+          "top_load_limit_kg_synthetic": 100.0,
+          "weight_class": "light"
+        },
+        "slot": 2
+      }
+    ],
+    "placed_count": 0,
+    "placed_items": []
+  }
+}

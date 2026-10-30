@@ -1,0 +1,4157 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "o4_e2_response_v1"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "state_hash": {
+      "type": "string"
+    },
+    "observation_digest": {
+      "type": "string"
+    },
+    "instruction_digest": {
+      "type": "string"
+    },
+    "policy_ast": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "o4_e2_policy_v1"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "rule_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000000
+                  },
+                  "overrides": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "maxItems": 32,
+                    "uniqueItems": true
+                  },
+                  "type": {
+                    "const": "no_top_load"
+                  },
+                  "target": {
+                    "$ref": "#/$defs/selector"
+                  }
+                },
+                "required": [
+                  "rule_id",
+                  "priority",
+                  "overrides",
+                  "type",
+                  "target"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "rule_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000000
+                  },
+                  "overrides": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "maxItems": 32,
+                    "uniqueItems": true
+                  },
+                  "type": {
+                    "const": "max_top_load"
+                  },
+                  "target": {
+                    "$ref": "#/$defs/selector"
+                  },
+                  "limit": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "constant_kg": {
+                            "type": "number",
+                            "minimum": 0
+                          }
+                        },
+                        "required": [
+                          "constant_kg"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "field": {
+                            "const": "labels.max_top_load_kg"
+                          }
+                        },
+                        "required": [
+                          "field"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "rule_id",
+                  "priority",
+                  "overrides",
+                  "type",
+                  "target",
+                  "limit"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "rule_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000000
+                  },
+                  "overrides": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "maxItems": 32,
+                    "uniqueItems": true
+                  },
+                  "type": {
+                    "const": "forbidden_contact"
+                  },
+                  "left": {
+                    "$ref": "#/$defs/selector"
+                  },
+                  "right": {
+                    "$ref": "#/$defs/selector"
+                  }
+                },
+                "required": [
+                  "rule_id",
+                  "priority",
+                  "overrides",
+                  "type",
+                  "left",
+                  "right"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "rule_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000000
+                  },
+                  "overrides": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "maxItems": 0,
+                    "uniqueItems": true
+                  },
+                  "type": {
+                    "const": "inside_region"
+                  },
+                  "target": {
+                    "$ref": "#/$defs/selector"
+                  },
+                  "region_id": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_]{1,64}$"
+                  }
+                },
+                "required": [
+                  "rule_id",
+                  "priority",
+                  "overrides",
+                  "type",
+                  "target",
+                  "region_id"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "rule_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000000
+                  },
+                  "overrides": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "maxItems": 0,
+                    "uniqueItems": true
+                  },
+                  "type": {
+                    "const": "relative_position"
+                  },
+                  "subject": {
+                    "$ref": "#/$defs/selector"
+                  },
+                  "reference": {
+                    "$ref": "#/$defs/selector"
+                  },
+                  "relation": {
+                    "enum": [
+                      "left_of",
+                      "right_of",
+                      "front_of",
+                      "behind"
+                    ]
+                  },
+                  "min_gap_mm": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "rule_id",
+                  "priority",
+                  "overrides",
+                  "type",
+                  "subject",
+                  "reference",
+                  "relation",
+                  "min_gap_mm"
+                ]
+              }
+            ]
+          },
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "schema_version",
+        "rules"
+      ],
+      "$defs": {
+        "selector": {
+          "$ref": "#/$defs/selector_d1"
+        },
+        "selector_d4": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "all": {
+                  "const": true
+                }
+              },
+              "required": [
+                "all"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "minItems": 1,
+                  "maxItems": 64,
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "object_ids"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "eq": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "cargo_category"
+                        },
+                        "value": {
+                          "enum": [
+                            "food",
+                            "glassware",
+                            "electronics",
+                            "household_cleaner",
+                            "general"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "weight_class"
+                        },
+                        "value": {
+                          "enum": [
+                            "light",
+                            "medium",
+                            "heavy"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "packaging.reinforced"
+                        },
+                        "value": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.no_top_load"
+                        },
+                        "value": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "fragile"
+                        },
+                        "value": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "eq"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "lt": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "lt"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "le": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "le"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "gt": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "gt"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "ge": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "ge"
+              ]
+            }
+          ]
+        },
+        "selector_d3": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "all": {
+                  "const": true
+                }
+              },
+              "required": [
+                "all"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "minItems": 1,
+                  "maxItems": 64,
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "object_ids"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "eq": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "cargo_category"
+                        },
+                        "value": {
+                          "enum": [
+                            "food",
+                            "glassware",
+                            "electronics",
+                            "household_cleaner",
+                            "general"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "weight_class"
+                        },
+                        "value": {
+                          "enum": [
+                            "light",
+                            "medium",
+                            "heavy"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "packaging.reinforced"
+                        },
+                        "value": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.no_top_load"
+                        },
+                        "value": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "fragile"
+                        },
+                        "value": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "eq"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "lt": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "lt"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "le": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "le"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "gt": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "gt"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "ge": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "ge"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "and": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/selector_d4"
+                  },
+                  "minItems": 1,
+                  "maxItems": 16
+                }
+              },
+              "required": [
+                "and"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "or": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/selector_d4"
+                  },
+                  "minItems": 1,
+                  "maxItems": 16
+                }
+              },
+              "required": [
+                "or"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "not": {
+                  "$ref": "#/$defs/selector_d4"
+                }
+              },
+              "required": [
+                "not"
+              ]
+            }
+          ]
+        },
+        "selector_d2": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "all": {
+                  "const": true
+                }
+              },
+              "required": [
+                "all"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "minItems": 1,
+                  "maxItems": 64,
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "object_ids"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "eq": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "cargo_category"
+                        },
+                        "value": {
+                          "enum": [
+                            "food",
+                            "glassware",
+                            "electronics",
+                            "household_cleaner",
+                            "general"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "weight_class"
+                        },
+                        "value": {
+                          "enum": [
+                            "light",
+                            "medium",
+                            "heavy"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "packaging.reinforced"
+                        },
+                        "value": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.no_top_load"
+                        },
+                        "value": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "fragile"
+                        },
+                        "value": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "eq"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "lt": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "lt"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "le": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "le"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "gt": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "gt"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "ge": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "ge"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "and": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/selector_d3"
+                  },
+                  "minItems": 1,
+                  "maxItems": 16
+                }
+              },
+              "required": [
+                "and"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "or": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/selector_d3"
+                  },
+                  "minItems": 1,
+                  "maxItems": 16
+                }
+              },
+              "required": [
+                "or"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "not": {
+                  "$ref": "#/$defs/selector_d3"
+                }
+              },
+              "required": [
+                "not"
+              ]
+            }
+          ]
+        },
+        "selector_d1": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "all": {
+                  "const": true
+                }
+              },
+              "required": [
+                "all"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "minItems": 1,
+                  "maxItems": 64,
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "object_ids"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "eq": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "cargo_category"
+                        },
+                        "value": {
+                          "enum": [
+                            "food",
+                            "glassware",
+                            "electronics",
+                            "household_cleaner",
+                            "general"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "weight_class"
+                        },
+                        "value": {
+                          "enum": [
+                            "light",
+                            "medium",
+                            "heavy"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "packaging.reinforced"
+                        },
+                        "value": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.no_top_load"
+                        },
+                        "value": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "fragile"
+                        },
+                        "value": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "eq"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "lt": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "lt"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "le": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "le"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "gt": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "gt"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "ge": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "labels.max_top_load_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "physical_top_load_limit_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "field": {
+                          "const": "mass_kg"
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "ge"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "and": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/selector_d2"
+                  },
+                  "minItems": 1,
+                  "maxItems": 16
+                }
+              },
+              "required": [
+                "and"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "or": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/selector_d2"
+                  },
+                  "minItems": 1,
+                  "maxItems": 16
+                }
+              },
+              "required": [
+                "or"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "not": {
+                  "$ref": "#/$defs/selector_d2"
+                }
+              },
+              "required": [
+                "not"
+              ]
+            }
+          ]
+        }
+      },
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    }
+  },
+  "required": [
+    "schema_version",
+    "request_id",
+    "state_hash",
+    "observation_digest",
+    "instruction_digest",
+    "policy_ast"
+  ],
+  "$defs": {
+    "selector": {
+      "$ref": "#/$defs/selector_d1"
+    },
+    "selector_d4": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "all": {
+              "const": true
+            }
+          },
+          "required": [
+            "all"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "minItems": 1,
+              "maxItems": 64,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "object_ids"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "eq": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "cargo_category"
+                    },
+                    "value": {
+                      "enum": [
+                        "food",
+                        "glassware",
+                        "electronics",
+                        "household_cleaner",
+                        "general"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "weight_class"
+                    },
+                    "value": {
+                      "enum": [
+                        "light",
+                        "medium",
+                        "heavy"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "packaging.reinforced"
+                    },
+                    "value": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.no_top_load"
+                    },
+                    "value": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "fragile"
+                    },
+                    "value": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "eq"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "lt": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "lt"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "le": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "le"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "gt": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "gt"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ge": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "ge"
+          ]
+        }
+      ]
+    },
+    "selector_d3": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "all": {
+              "const": true
+            }
+          },
+          "required": [
+            "all"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "minItems": 1,
+              "maxItems": 64,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "object_ids"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "eq": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "cargo_category"
+                    },
+                    "value": {
+                      "enum": [
+                        "food",
+                        "glassware",
+                        "electronics",
+                        "household_cleaner",
+                        "general"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "weight_class"
+                    },
+                    "value": {
+                      "enum": [
+                        "light",
+                        "medium",
+                        "heavy"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "packaging.reinforced"
+                    },
+                    "value": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.no_top_load"
+                    },
+                    "value": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "fragile"
+                    },
+                    "value": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "eq"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "lt": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "lt"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "le": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "le"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "gt": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "gt"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ge": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "ge"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "and": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/selector_d4"
+              },
+              "minItems": 1,
+              "maxItems": 16
+            }
+          },
+          "required": [
+            "and"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "or": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/selector_d4"
+              },
+              "minItems": 1,
+              "maxItems": 16
+            }
+          },
+          "required": [
+            "or"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "not": {
+              "$ref": "#/$defs/selector_d4"
+            }
+          },
+          "required": [
+            "not"
+          ]
+        }
+      ]
+    },
+    "selector_d2": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "all": {
+              "const": true
+            }
+          },
+          "required": [
+            "all"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "minItems": 1,
+              "maxItems": 64,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "object_ids"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "eq": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "cargo_category"
+                    },
+                    "value": {
+                      "enum": [
+                        "food",
+                        "glassware",
+                        "electronics",
+                        "household_cleaner",
+                        "general"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "weight_class"
+                    },
+                    "value": {
+                      "enum": [
+                        "light",
+                        "medium",
+                        "heavy"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "packaging.reinforced"
+                    },
+                    "value": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.no_top_load"
+                    },
+                    "value": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "fragile"
+                    },
+                    "value": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "eq"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "lt": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "lt"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "le": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "le"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "gt": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "gt"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ge": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "ge"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "and": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/selector_d3"
+              },
+              "minItems": 1,
+              "maxItems": 16
+            }
+          },
+          "required": [
+            "and"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "or": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/selector_d3"
+              },
+              "minItems": 1,
+              "maxItems": 16
+            }
+          },
+          "required": [
+            "or"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "not": {
+              "$ref": "#/$defs/selector_d3"
+            }
+          },
+          "required": [
+            "not"
+          ]
+        }
+      ]
+    },
+    "selector_d1": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "all": {
+              "const": true
+            }
+          },
+          "required": [
+            "all"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "minItems": 1,
+              "maxItems": 64,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "object_ids"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "eq": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "cargo_category"
+                    },
+                    "value": {
+                      "enum": [
+                        "food",
+                        "glassware",
+                        "electronics",
+                        "household_cleaner",
+                        "general"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "weight_class"
+                    },
+                    "value": {
+                      "enum": [
+                        "light",
+                        "medium",
+                        "heavy"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "packaging.reinforced"
+                    },
+                    "value": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.no_top_load"
+                    },
+                    "value": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "fragile"
+                    },
+                    "value": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "eq"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "lt": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "lt"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "le": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "le"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "gt": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "gt"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ge": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "labels.max_top_load_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "physical_top_load_limit_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "const": "mass_kg"
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "ge"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "and": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/selector_d2"
+              },
+              "minItems": 1,
+              "maxItems": 16
+            }
+          },
+          "required": [
+            "and"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "or": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/selector_d2"
+              },
+              "minItems": 1,
+              "maxItems": 16
+            }
+          },
+          "required": [
+            "or"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "not": {
+              "$ref": "#/$defs/selector_d2"
+            }
+          },
+          "required": [
+            "not"
+          ]
+        }
+      ]
+    }
+  }
+}

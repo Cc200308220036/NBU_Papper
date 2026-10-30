@@ -1,0 +1,25 @@
+..............................F......................................... [ 50%]
+.......................................................................  [100%]
+=================================== FAILURES ===================================
+_________ test_missing_snapshot_and_remote_fail_before_creating_output _________
+
+tmp_path = PosixPath('/private/var/folders/j4/2stn0ky95wzbmg0ws3txzzxh0000gn/T/pytest-of-cyw/pytest-6/test_missing_snapshot_and_remo0')
+
+    def test_missing_snapshot_and_remote_fail_before_creating_output(tmp_path):
+        with pytest.raises(JevSelectError,match='missing_input_snapshot'):
+            prepare_plan(tmp_path/'plan',profile='orders',input_snapshot=tmp_path/'missing.json')
+        assert not (tmp_path/'plan').exists()
+        prepare_plan(tmp_path/'plan',methods=('shared_geometry',))
+        with pytest.raises(JevSelectError,match='explicit_execution_mode_required'):
+            run_experiment(tmp_path/'plan',tmp_path/'run')
+        assert not (tmp_path/'run').exists()
+>       with pytest.raises(SystemExit):main(['run','--plan',str(tmp_path/'plan'),'--output',str(tmp_path/'run'),'--remote'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE SystemExit
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j1_episode.py:185: Failed
+----------------------------- Captured stdout call -----------------------------
+{"status": "FAIL", "error": "plan_mode_mismatch"}
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j1_episode.py::test_missing_snapshot_and_remote_fail_before_creating_output
+1 failed, 142 passed in 460.16s (0:07:40)

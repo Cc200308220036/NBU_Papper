@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {"const": "pallet_vlm_cache_v1"},
+    "cache_key": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "result": {"type": "object"}
+  },
+  "required": ["schema_version", "cache_key", "result"],
+  "additionalProperties": false
+}

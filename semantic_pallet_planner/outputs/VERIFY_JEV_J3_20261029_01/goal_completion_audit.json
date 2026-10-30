@@ -1,0 +1,1041 @@
+{
+  "status": "COMPLETE_WITH_EXPLICIT_USER_REPLAY_WAIVER",
+  "audit_date": "2026-10-29",
+  "formal_tasks": 80,
+  "method_jobs": 240,
+  "source_groups": 39,
+  "requirements": [
+    {
+      "id": "objective_1",
+      "requirement": "v2 physical candidate, context and commit with v1 history preserved",
+      "status": "PROVED",
+      "evidence": [
+        "engineering_acceptance_rc4.json",
+        "RC3_to_RC4_production_diff.json",
+        "legacy_replay.json",
+        "formal_lightweight_audit.json"
+      ]
+    },
+    {
+      "id": "objective_2",
+      "requirement": "complete V1 arrivals, public controlled spec, source groups and frozen split; no F dependency",
+      "status": "PROVED",
+      "evidence": [
+        "../PLAN_JEV_J3_TEST_20261029_01/input_manifest.json",
+        "../PLAN_JEV_J3_TEST_20261029_01/split_audit.json",
+        "../PLAN_JEV_J3_TEST_20261029_01/task_registry.json"
+      ]
+    },
+    {
+      "id": "objective_3",
+      "requirement": "three methods, trajectory metrics, timing, unlimited ledger and recovery capability",
+      "status": "PROVED",
+      "evidence": [
+        "engineering_acceptance_rc4.json",
+        "../EXP_JEV_J3_TEST_20261029_01/metrics/summary.json",
+        "../EXP_JEV_J3_TEST_20261029_01/metrics/timings.json",
+        "../EXP_JEV_J3_TEST_20261029_01/audit/attempts.json"
+      ]
+    },
+    {
+      "id": "objective_4",
+      "requirement": "engineering gates, installed package and real development before formal",
+      "status": "PROVED",
+      "evidence": [
+        "engineering_acceptance_rc4.json",
+        "wheel_check_rc4.json",
+        "development_04_independent_replay.json"
+      ]
+    },
+    {
+      "id": "objective_5",
+      "requirement": "all formal jobs including failures, source-paired and stratified analysis",
+      "status": "PROVED",
+      "evidence": [
+        "formal_execution_receipt.json",
+        "formal_lightweight_audit.json",
+        "formal_initial_information_equality.json",
+        "J3_result_analysis.json",
+        "../EXP_JEV_J3_TEST_20261029_01/metrics/by_source.json",
+        "../EXP_JEV_J3_TEST_20261029_01/metrics/paired.json"
+      ]
+    },
+    {
+      "id": "formal_replay",
+      "requirement": "future formal full offline trajectory replay",
+      "status": "WAIVED_BY_DIRECT_USER_INSTRUCTION",
+      "evidence": [
+        "user_replay_waiver.json",
+        "replay_skip_watch.json",
+        "../EXP_JEV_J3_TEST_20261029_01/replay_report.json"
+      ],
+      "not_claimed": "formal full replay PASS"
+    },
+    {
+      "id": "delivery",
+      "requirement": "code, README, frozen plan, raw records and explanatory report",
+      "status": "PROVED",
+      "evidence": [
+        "wheel_check_rc4.json",
+        "formal_lightweight_audit.json",
+        "document_link_check.json",
+        "J3_result_analysis.json"
+      ]
+    }
+  ],
+  "engineering_acceptance_items": [
+    {
+      "id": "A01",
+      "scenario": "业务合法与违规动作同时物理可行",
+      "requirement": "两者都进入同一模型池，完整动作不变",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A01_A11_A12_full_physical_pool_and_no_business_answer_features"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A01_A11_A12_full_physical_pool_and_no_business_answer_features",
+          "time": "0.065"
+        }
+      ]
+    },
+    {
+      "id": "A02",
+      "scenario": "全部物理候选均业务违规",
+      "requirement": "不出现业务STOP；模型/基线必须选项",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A02_A04_A20_business_violations_do_not_stop_episode"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A02_A04_A20_business_violations_do_not_stop_episode[shared_geometry]",
+          "time": "0.539"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A02_A04_A20_business_violations_do_not_stop_episode[shared_business_lexicographic]",
+          "time": "0.494"
+        }
+      ]
+    },
+    {
+      "id": "A03",
+      "scenario": "唯一候选违反业务",
+      "requirement": "不调用API，自动物理提交，记录违规并继续",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A03_singleton_violating_action_is_submitted_without_selector"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A03_singleton_violating_action_is_submitted_without_selector",
+          "time": "0.032"
+        }
+      ]
+    },
+    {
+      "id": "A04",
+      "scenario": "已有违规，后续另一个箱仍可放",
+      "requirement": "不因after.allowed=false拒绝所有后续动作",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A02_A04_A20_business_violations_do_not_stop_episode"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A02_A04_A20_business_violations_do_not_stop_episode[shared_geometry]",
+          "time": "0.539"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A02_A04_A20_business_violations_do_not_stop_episode[shared_business_lexicographic]",
+          "time": "0.494"
+        }
+      ]
+    },
+    {
+      "id": "A05",
+      "scenario": "业务禁压而物理可堆叠",
+      "requirement": "选中堆叠可提交，评价报业务禁压",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A05_A06_business_load_limit_is_not_a_physical_rejection"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A05_A06_business_load_limit_is_not_a_physical_rejection[0.0-max_top_load]",
+          "time": "0.039"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A05_A06_business_load_limit_is_not_a_physical_rejection[2.0-max_top_load]",
+          "time": "0.033"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A05_A06_business_load_limit_is_not_a_physical_rejection[0.0-no_top_load]",
+          "time": "0.030"
+        }
+      ]
+    },
+    {
+      "id": "A06",
+      "scenario": "超业务限载但未超物理承载",
+      "requirement": "可提交；超过物理承载则拒绝，两个原因不混用",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A05_A06_business_load_limit_is_not_a_physical_rejection"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A05_A06_business_load_limit_is_not_a_physical_rejection[0.0-max_top_load]",
+          "time": "0.039"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A05_A06_business_load_limit_is_not_a_physical_rejection[2.0-max_top_load]",
+          "time": "0.033"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A05_A06_business_load_limit_is_not_a_physical_rejection[0.0-no_top_load]",
+          "time": "0.030"
+        }
+      ]
+    },
+    {
+      "id": "A07",
+      "scenario": "禁接触/区域/相对位置",
+      "requirement": "每种规则存在真实非零违规见证，提交不被业务拒绝",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A07_business_rule_families_allow_physical_submission"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A07_business_rule_families_allow_physical_submission[forbidden_contact]",
+          "time": "0.038"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A07_business_rule_families_allow_physical_submission[inside_region]",
+          "time": "0.034"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A07_business_rule_families_allow_physical_submission[relative_position]",
+          "time": "0.032"
+        }
+      ]
+    },
+    {
+      "id": "A08",
+      "scenario": "碰撞、越界、支撑不足、不可堆叠",
+      "requirement": "无论业务模式均不能提交",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A08_stale_or_changed_selection_rejected",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A08_physical_stackability_and_capacity_remain_hard",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A08_commit_rejects_resigned_physically_invalid_candidate"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A08_stale_or_changed_selection_rejected",
+          "time": "0.111"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A08_physical_stackability_and_capacity_remain_hard[non_stackable]",
+          "time": "0.007"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A08_physical_stackability_and_capacity_remain_hard[overload]",
+          "time": "0.007"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A08_commit_rejects_resigned_physically_invalid_candidate[collision-overlap]",
+          "time": "0.052"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A08_commit_rejects_resigned_physically_invalid_candidate[bounds-out_of_bounds]",
+          "time": "0.046"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A08_commit_rejects_resigned_physically_invalid_candidate[unsupported-insufficient_support]",
+          "time": "0.047"
+        }
+      ]
+    },
+    {
+      "id": "A09",
+      "scenario": "一个缓冲箱无候选、另一个有候选",
+      "requirement": "联合池非空，仍可选择另一个箱",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A09_A10_another_box_can_be_selected_when_one_has_no_physical_pose"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A09_A10_another_box_can_be_selected_when_one_has_no_physical_pose",
+          "time": "0.134"
+        }
+      ]
+    },
+    {
+      "id": "A10",
+      "scenario": "全联合物理池为空",
+      "requirement": "明确物理停止，非业务失败/非全局无解证明",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A09_A10_another_box_can_be_selected_when_one_has_no_physical_pose"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A09_A10_another_box_can_be_selected_when_one_has_no_physical_pose",
+          "time": "0.134"
+        }
+      ]
+    },
+    {
+      "id": "A11",
+      "scenario": "模型输入",
+      "requirement": "无allowed=true假标记、私有答案、原始来源ID、未来箱/数量/序列",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A01_A11_A12_full_physical_pool_and_no_business_answer_features"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A01_A11_A12_full_physical_pool_and_no_business_answer_features",
+          "time": "0.065"
+        }
+      ]
+    },
+    {
+      "id": "A12",
+      "scenario": "主特征与增强特征",
+      "requirement": "版本/提示/Schema不同，主事实版不含程序业务答案",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A01_A11_A12_full_physical_pool_and_no_business_answer_features"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A01_A11_A12_full_physical_pool_and_no_business_answer_features",
+          "time": "0.065"
+        }
+      ]
+    },
+    {
+      "id": "A13",
+      "scenario": "物理提交与编号",
+      "requirement": "实际箱体/位置等于Cxx对应动作，不调用旧choose覆盖",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_A13_A27_A29_native_v2_mixed_methods_no_double_and_usage",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A13_last_model_option_is_exactly_executed"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A13_last_model_option_is_exactly_executed",
+          "time": "0.449"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A13_A27_A29_native_v2_mixed_methods_no_double_and_usage[False]",
+          "time": "110.832"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A13_A27_A29_native_v2_mixed_methods_no_double_and_usage[True]",
+          "time": "110.156"
+        }
+      ]
+    },
+    {
+      "id": "A14",
+      "scenario": "无效回答、超时、429/529",
+      "requirement": "停止类别明确，账目保留，0自动改选/重试",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_A14_A26_A30_errors_preserve_all_jobs_no_fallback"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_response_rounding",
+          "name": "test_A14_rounded_unit_distribution_preserves_raw_and_choice[values0]",
+          "time": "0.158"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_response_rounding",
+          "name": "test_A14_rounded_unit_distribution_preserves_raw_and_choice[values1]",
+          "time": "0.103"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_response_rounding",
+          "name": "test_A14_rounded_unit_distribution_preserves_raw_and_choice[values2]",
+          "time": "0.102"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_response_rounding",
+          "name": "test_A14_rounded_unit_distribution_preserves_raw_and_choice[values3]",
+          "time": "0.102"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_response_rounding",
+          "name": "test_A14_rounded_unit_distribution_preserves_raw_and_choice[values4]",
+          "time": "0.103"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_response_rounding",
+          "name": "test_A14_impossible_or_undeclared_precision_sum_is_rejected[values0]",
+          "time": "0.103"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_response_rounding",
+          "name": "test_A14_impossible_or_undeclared_precision_sum_is_rejected[values1]",
+          "time": "0.111"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_response_rounding",
+          "name": "test_A14_impossible_or_undeclared_precision_sum_is_rejected[values2]",
+          "time": "0.102"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_response_rounding",
+          "name": "test_A14_impossible_or_undeclared_precision_sum_is_rejected[values3]",
+          "time": "0.102"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_response_rounding",
+          "name": "test_A14_impossible_or_undeclared_precision_sum_is_rejected[values4]",
+          "time": "0.103"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_response_rounding",
+          "name": "test_A14_rounding_does_not_relax_choice_maximum",
+          "time": "0.102"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A14_A26_A30_errors_preserve_all_jobs_no_fallback[invalid_choice-INVALID_RESPONSE]",
+          "time": "3.871"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A14_A26_A30_errors_preserve_all_jobs_no_fallback[timeout-UNKNOWN_IN_FLIGHT]",
+          "time": "3.876"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A14_A26_A30_errors_preserve_all_jobs_no_fallback[http_429-PROVIDER_FAILURE]",
+          "time": "3.848"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A14_A26_A30_errors_preserve_all_jobs_no_fallback[http_529-PROVIDER_FAILURE]",
+          "time": "3.843"
+        }
+      ]
+    },
+    {
+      "id": "A15",
+      "scenario": "下游参考政策改变",
+      "requirement": "同一公共观测的候选/模型体/动作提议不变，仅评价改变",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A15_reference_policy_changes_only_downstream_evaluation"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A15_reference_policy_changes_only_downstream_evaluation",
+          "time": "0.568"
+        }
+      ]
+    },
+    {
+      "id": "A16",
+      "scenario": "未到货订单后缀改变",
+      "requirement": "当前候选、公共事实和原生请求完全不变",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A16_future_order_suffix_does_not_change_request"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A16_future_order_suffix_does_not_change_request",
+          "time": "0.128"
+        }
+      ]
+    },
+    {
+      "id": "A17",
+      "scenario": "违规连续持续3步",
+      "requirement": "1个新增事件、1个唯一实例、3个违规步骤，而非3次新违规",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A17_A18_onsets_persistence_and_recurrence",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A17_preexisting_violation_is_not_a_new_onset"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A17_A18_onsets_persistence_and_recurrence[sequence0-expected0]",
+          "time": "0.000"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A17_A18_onsets_persistence_and_recurrence[sequence1-expected1]",
+          "time": "0.000"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A17_preexisting_violation_is_not_a_new_onset",
+          "time": "0.000"
+        }
+      ]
+    },
+    {
+      "id": "A18",
+      "scenario": "违规消失后再次出现",
+      "requirement": "新事件再次计数，唯一实例按身份去重",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A17_A18_onsets_persistence_and_recurrence"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A17_A18_onsets_persistence_and_recurrence[sequence0-expected0]",
+          "time": "0.000"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A17_A18_onsets_persistence_and_recurrence[sequence1-expected1]",
+          "time": "0.000"
+        }
+      ]
+    },
+    {
+      "id": "A19",
+      "scenario": "deferred/未到货/未完成",
+      "requirement": "不算已满足；明确coverage与missing，不伪造低违规成功",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A19_pending_relative_relation_is_deferred_not_satisfied",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A19_unarrived_targets_are_not_certified_not_applicable"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A19_pending_relative_relation_is_deferred_not_satisfied",
+          "time": "0.002"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A19_unarrived_targets_are_not_certified_not_applicable",
+          "time": "0.713"
+        }
+      ]
+    },
+    {
+      "id": "A20",
+      "scenario": "订单完成但有违规",
+      "requirement": "completed=true、clean_completed=false；不伪装执行错误",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_A20_A21_A22_three_methods_preserve_same_initial_facts",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A02_A04_A20_business_violations_do_not_stop_episode"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A02_A04_A20_business_violations_do_not_stop_episode[shared_geometry]",
+          "time": "0.539"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A02_A04_A20_business_violations_do_not_stop_episode[shared_business_lexicographic]",
+          "time": "0.494"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A20_A21_A22_three_methods_preserve_same_initial_facts",
+          "time": "73.817"
+        }
+      ]
+    },
+    {
+      "id": "A21",
+      "scenario": "三方法初始公共状态相同",
+      "requirement": "物理池/事实/排列相同；分叉后按各自状态重算",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_A20_A21_A22_three_methods_preserve_same_initial_facts"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A20_A21_A22_three_methods_preserve_same_initial_facts",
+          "time": "73.817"
+        }
+      ]
+    },
+    {
+      "id": "A22",
+      "scenario": "业务启发式全项违规",
+      "requirement": "仍返回动作，不变成硬屏障",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_A20_A21_A22_three_methods_preserve_same_initial_facts"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A20_A21_A22_three_methods_preserve_same_initial_facts",
+          "time": "73.817"
+        }
+      ]
+    },
+    {
+      "id": "A23",
+      "scenario": "数据来源、变体与切分",
+      "requirement": "同源组不跨train/test；语言/buffer变体不当独立样本",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_dataset.py::test_A23_grouped_sources_and_variants_have_honest_denominators"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_dataset",
+          "name": "test_A23_grouped_sources_and_variants_have_honest_denominators",
+          "time": "0.977"
+        }
+      ]
+    },
+    {
+      "id": "A24",
+      "scenario": "原V1作业单与受控派生任务",
+      "requirement": "公开来源标签不同，语义不兼容不静默转换私有GT",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_dataset.py::test_A24_private_ground_truth_rules_do_not_define_public_tasks"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_dataset",
+          "name": "test_A24_private_ground_truth_rules_do_not_define_public_tasks",
+          "time": "0.042"
+        }
+      ]
+    },
+    {
+      "id": "A25",
+      "scenario": "日志与检查点恢复",
+      "requirement": "回答后/提交前/提交后评价前/评价后中断，均不重复调用或放箱",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_A25_A30_commit_checkpoint_resume_and_initial_registry",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_A25_evaluation_error_is_durable_and_recoverable_without_new_first_call",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A25_recovery_across_response_commit_and_evaluation",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A25_evaluation_failure_preserves_committed_state_and_recovers"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A25_recovery_across_response_commit_and_evaluation[after_reserve]",
+          "time": "0.186"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A25_recovery_across_response_commit_and_evaluation[after_response]",
+          "time": "0.488"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A25_recovery_across_response_commit_and_evaluation[before_commit]",
+          "time": "0.518"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A25_recovery_across_response_commit_and_evaluation[after_commit_checkpoint]",
+          "time": "0.626"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A25_recovery_across_response_commit_and_evaluation[after_checkpoint]",
+          "time": "0.592"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A25_evaluation_failure_preserves_committed_state_and_recovers",
+          "time": "0.062"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A25_A30_commit_checkpoint_resume_and_initial_registry",
+          "time": "18.942"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A25_evaluation_error_is_durable_and_recoverable_without_new_first_call",
+          "time": "18.753"
+        }
+      ]
+    },
+    {
+      "id": "A26",
+      "scenario": "unknown发送与预算",
+      "requirement": "unlimited照样记账，unknown不重发；可选有限预算不被静默提高",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_A14_A26_A30_errors_preserve_all_jobs_no_fallback"
+      ],
+      "other_evidence_to_inspect": [
+        "tests/integration/test_j2_remote.py"
+      ],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A14_A26_A30_errors_preserve_all_jobs_no_fallback[invalid_choice-INVALID_RESPONSE]",
+          "time": "3.871"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A14_A26_A30_errors_preserve_all_jobs_no_fallback[timeout-UNKNOWN_IN_FLIGHT]",
+          "time": "3.876"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A14_A26_A30_errors_preserve_all_jobs_no_fallback[http_429-PROVIDER_FAILURE]",
+          "time": "3.848"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A14_A26_A30_errors_preserve_all_jobs_no_fallback[http_529-PROVIDER_FAILURE]",
+          "time": "3.843"
+        }
+      ]
+    },
+    {
+      "id": "A27",
+      "scenario": "无网络回放",
+      "requirement": "不读密钥、不调用API；远程实验回放不导入testing，离线实验可校验冻结替身；派生结果一致",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_A27_readonly_replay_does_not_use_key_or_live_model",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_A13_A27_A29_native_v2_mixed_methods_no_double_and_usage"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A27_readonly_replay_does_not_use_key_or_live_model",
+          "time": "35.026"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A13_A27_A29_native_v2_mixed_methods_no_double_and_usage[False]",
+          "time": "110.832"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A13_A27_A29_native_v2_mixed_methods_no_double_and_usage[True]",
+          "time": "110.156"
+        }
+      ]
+    },
+    {
+      "id": "A28",
+      "scenario": "篡改并重签清单",
+      "requirement": "模式、映射、响应、违规事件、汇总、registry、预算或检查点篡改被拒绝",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_A28_resigned_derived_artifact_tampering_is_rejected",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A28_renamed_or_reordered_physical_pool_cannot_be_resigned_as_business_subset"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A28_renamed_or_reordered_physical_pool_cannot_be_resigned_as_business_subset",
+          "time": "0.066"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A28_resigned_derived_artifact_tampering_is_rejected[mapping]",
+          "time": "21.716"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A28_resigned_derived_artifact_tampering_is_rejected[response]",
+          "time": "5.234"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A28_resigned_derived_artifact_tampering_is_rejected[business_metric]",
+          "time": "35.431"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A28_resigned_derived_artifact_tampering_is_rejected[rule_evaluation]",
+          "time": "34.256"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A28_resigned_derived_artifact_tampering_is_rejected[job_registry]",
+          "time": "35.199"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A28_resigned_derived_artifact_tampering_is_rejected[checkpoint]",
+          "time": "35.171"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A28_resigned_derived_artifact_tampering_is_rejected[timings]",
+          "time": "35.430"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A28_resigned_derived_artifact_tampering_is_rejected[budget]",
+          "time": "0.674"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A28_resigned_derived_artifact_tampering_is_rejected[plan_role]",
+          "time": "0.557"
+        }
+      ]
+    },
+    {
+      "id": "A29",
+      "scenario": "计时、usage、费用",
+      "requirement": "分清API/几何/特征/独立评价；缺失usage不填0；回放不新计费",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_A13_A27_A29_native_v2_mixed_methods_no_double_and_usage"
+      ],
+      "other_evidence_to_inspect": [
+        "tests/integration/test_j2_remote.py"
+      ],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A13_A27_A29_native_v2_mixed_methods_no_double_and_usage[False]",
+          "time": "110.832"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A13_A27_A29_native_v2_mixed_methods_no_double_and_usage[True]",
+          "time": "110.156"
+        }
+      ]
+    },
+    {
+      "id": "A30",
+      "scenario": "多方法任务分母",
+      "requirement": "失败/中断/NOT_RUN均保留，不能只统计成功订单",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_A14_A26_A30_errors_preserve_all_jobs_no_fallback",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_A25_A30_commit_checkpoint_resume_and_initial_registry"
+      ],
+      "other_evidence_to_inspect": [],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A14_A26_A30_errors_preserve_all_jobs_no_fallback[invalid_choice-INVALID_RESPONSE]",
+          "time": "3.871"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A14_A26_A30_errors_preserve_all_jobs_no_fallback[timeout-UNKNOWN_IN_FLIGHT]",
+          "time": "3.876"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A14_A26_A30_errors_preserve_all_jobs_no_fallback[http_429-PROVIDER_FAILURE]",
+          "time": "3.848"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A14_A26_A30_errors_preserve_all_jobs_no_fallback[http_529-PROVIDER_FAILURE]",
+          "time": "3.843"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.integration.test_j3_batch",
+          "name": "test_A25_A30_commit_checkpoint_resume_and_initial_registry",
+          "time": "18.942"
+        }
+      ]
+    },
+    {
+      "id": "A31",
+      "scenario": "v1/v2与历史产物",
+      "requirement": "旧硬业务实验保留；新模式不能读取旧回答继续提交",
+      "named_tests": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A31_incompatible_v2_combinations_rejected",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A31_v1_context_not_accepted_by_physical_commit"
+      ],
+      "other_evidence_to_inspect": [
+        "outputs/VERIFY_JEV_J3_20261029_01/legacy_replay.json"
+      ],
+      "gate_status": "PASS",
+      "executed_cases": [
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A31_incompatible_v2_combinations_rejected[selectable_pool-hard_business_feasible]",
+          "time": "0.001"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A31_incompatible_v2_combinations_rejected[feature_version-features_basic_v1]",
+          "time": "0.000"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A31_incompatible_v2_combinations_rejected[feature_version-features_public_predicates_v1]",
+          "time": "0.000"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A31_incompatible_v2_combinations_rejected[execution_version-legacy_business_commit]",
+          "time": "0.000"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A31_incompatible_v2_combinations_rejected[business_mode-hard]",
+          "time": "0.000"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A31_incompatible_v2_combinations_rejected[prompt_version-jev_direct_en_v1]",
+          "time": "0.001"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_core",
+          "name": "test_A31_v1_context_not_accepted_by_physical_commit",
+          "time": "0.117"
+        },
+        {
+          "classname": "src.semantic_pallet_planner.jev_select.tests.unit.test_j3_response_rounding",
+          "name": "test_A31_v1_keeps_its_original_strict_sum_policy",
+          "time": "0.063"
+        }
+      ]
+    },
+    {
+      "id": "A32",
+      "scenario": "打包与代码归属",
+      "requirement": "新代码/资源/测试均在jev_select；wheel带资源不带tests；非cwd运行通过",
+      "named_tests": [],
+      "other_evidence_to_inspect": [
+        "semantic_pallet_planner/outputs/VERIFY_JEV_J3_20261029_01/wheel_check_rc4.json"
+      ],
+      "gate_status": "PASS",
+      "executed_cases": []
+    }
+  ],
+  "current_affected_scope_test_count": 177,
+  "historical_full_RC3_test_count": 218,
+  "wheel": "wheel_check_rc4.json",
+  "changed_production_files": [
+    "jev_select/README.md",
+    "jev_select/__init__.py",
+    "jev_select/batch.py",
+    "jev_select/candidates.py",
+    "jev_select/cli.py",
+    "jev_select/config.py",
+    "jev_select/configs/business_spec_v1.json",
+    "jev_select/configs/jev_orders_business_eval_v2.json",
+    "jev_select/context.py",
+    "jev_select/contracts.py",
+    "jev_select/dataset.py",
+    "jev_select/episode.py",
+    "jev_select/evaluation.py",
+    "jev_select/execution.py",
+    "jev_select/experiment.py",
+    "jev_select/replay.py",
+    "jev_select/schemas/business_state.schema.json",
+    "jev_select/schemas/candidate_bundle_v2.schema.json",
+    "jev_select/schemas/checkpoint_v2.schema.json",
+    "jev_select/schemas/config_v2.schema.json",
+    "jev_select/schemas/decision_context_v2.schema.json",
+    "jev_select/schemas/metrics_v2.schema.json",
+    "jev_select/schemas/order_metrics_v2.schema.json",
+    "jev_select/schemas/plan_v2.schema.json",
+    "jev_select/schemas/selection_result_v2.schema.json",
+    "jev_select/selector.py",
+    "jev_select/tests/conftest.py",
+    "jev_select/tests/integration/test_j0_export.py",
+    "jev_select/tests/integration/test_j1_episode.py",
+    "jev_select/tests/integration/test_j2_remote.py",
+    "jev_select/tests/unit/test_candidates.py",
+    "jev_select/tests/unit/test_protocol.py",
+    "jev_select/tests/unit/test_selection.py"
+  ],
+  "all_production_changes_within_jev_select": true,
+  "sealed_formal_manifest_matches": true,
+  "production_source_still_frozen": true,
+  "all_80_initial_information_equal": true,
+  "credential_exclusion": {
+    "credential_file_git_ignored": true,
+    "decoded_responses_scanned": 730,
+    "files_scanned": 7669,
+    "status": "PASS"
+  },
+  "report": "docs/03_阶段产出分析/O4/Jev_J3开发验收与真实对照实验_20261029.md",
+  "unverified": [
+    "formal full replay explicitly waived",
+    "unknown-send billing and network root cause",
+    "controlled task complete business feasibility",
+    "LLM comparison, ReMe improvement, visual perception and real robot execution"
+  ],
+  "no_required_unwaived_work_remaining": true
+}

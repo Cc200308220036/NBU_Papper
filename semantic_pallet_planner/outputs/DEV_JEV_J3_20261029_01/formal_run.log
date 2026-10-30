@@ -1,0 +1,126 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/__main__.py", line 5, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/cli.py", line 72, in main
+    result = run_experiment(args.plan, args.output, offline=args.offline, remote=args.remote,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/experiment.py", line 353, in run_experiment
+    return run_experiment_v2(plan_root,output,offline=offline,remote=remote,api_budget=api_budget,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/batch.py", line 297, in run_experiment_v2
+    aggregate=aggregate_v2(rows,ledger.data['attempts'],plan=plan,experiment_root=root)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/evaluation.py", line 219, in aggregate_v2
+    for row in rows:validate_schema('order_metrics_v2',row)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 45, in validate_schema
+    errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 37, in schema_validator
+    Draft202012Validator.check_schema(schema)
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 315, in check_schema
+    for error in validator.iter_errors(schema):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 383, in iter_errors
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 334, in allOf
+    yield from validator.descend(instance, subschema, schema_path=index)
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 275, in ref
+    yield from validator._validate_reference(ref=ref, instance=instance)
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 296, in properties
+    yield from validator.descend(
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 44, in additionalProperties
+    yield from validator.descend(instance[extra], aP, path=extra)
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 279, in dynamicRef
+    yield from validator._validate_reference(ref=dynamicRef, instance=instance)
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 334, in allOf
+    yield from validator.descend(instance, subschema, schema_path=index)
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 275, in ref
+    yield from validator._validate_reference(ref=ref, instance=instance)
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 296, in properties
+    yield from validator.descend(
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 279, in dynamicRef
+    yield from validator._validate_reference(ref=dynamicRef, instance=instance)
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 334, in allOf
+    yield from validator.descend(instance, subschema, schema_path=index)
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 275, in ref
+    yield from validator._validate_reference(ref=ref, instance=instance)
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 296, in properties
+    yield from validator.descend(
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 44, in additionalProperties
+    yield from validator.descend(instance[extra], aP, path=extra)
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 279, in dynamicRef
+    yield from validator._validate_reference(ref=dynamicRef, instance=instance)
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 334, in allOf
+    yield from validator.descend(instance, subschema, schema_path=index)
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 431, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/_keywords.py", line 275, in ref
+    yield from validator._validate_reference(ref=ref, instance=instance)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/jsonschema/validators.py", line 462, in _validate_reference
+    resolved = self._resolver.lookup(ref)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cyw/Documents/ChatGPT/课题分析/.venvs/jev-select/lib/python3.12/site-packages/referencing/_core.py", line 680, in lookup
+    uri, fragment = urldefrag(urljoin(self._base_uri, ref))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cyw/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/parse.py", line 624, in urljoin
+    return _coerce_result(urlunparse((scheme, netloc, '/'.join(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cyw/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/parse.py", line 534, in urlunparse
+    return _coerce_result(urlunsplit((scheme, netloc, url, query, fragment)))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cyw/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/parse.py", line 543, in urlunsplit
+    _coerce_args(*components))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cyw/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/parse.py", line 129, in _coerce_args
+    if arg and isinstance(arg, str) != str_input:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

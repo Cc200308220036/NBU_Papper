@@ -71,11 +71,26 @@ Desktop.ini
 # ========================================
 # 可重新生成的实验产物和日志
 # ========================================
-# 仅保留本轮验证实验，其他历史运行产物继续忽略
+# 保留指定验证实验及全部 Jev 实验产出，其余历史产物继续忽略
 /semantic_pallet_planner/outputs/*
 !/semantic_pallet_planner/outputs/EXP_1C_DEEPSEEK_FLASH_VALIDATION/
 *.log
 *.tmp
+
+# Jev 实验的计划、实际订单轨迹、请求响应、评价、日志与可视化均纳入版本管理。
+!/semantic_pallet_planner/outputs/*JEV*/
+!/semantic_pallet_planner/outputs/*JEV*/**
+# 目录内的运行缓存与鉴权文件仍不提交。
+**/__pycache__/
+**/.pytest_cache/
+**/*.py[cod]
+**/.env
+**/.env.*
+!**/.env.example
+**/credentials.json
+**/secrets.json
+**/*.pem
+**/*.key
 
 # ========================================
 # 数据集中的可重新生成的大型可视化与演示运行产物

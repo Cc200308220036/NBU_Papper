@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_direct_choice_v2"
+    },
+    "provider": {
+      "const": "typesafe",
+      "type": "string"
+    },
+    "endpoint": {
+      "const": "https://api.typesafe.ai/v1/systemone",
+      "type": "string"
+    },
+    "model": {
+      "const": "jev-1.14.0",
+      "type": "string"
+    },
+    "api_key_env": {
+      "const": "TYPESAFE_API_KEY",
+      "type": "string"
+    },
+    "timeout_s": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "max_retries": {
+      "const": 0,
+      "type": "integer"
+    },
+    "response_max_bytes": {
+      "const": 1000000,
+      "type": "integer"
+    },
+    "max_request_bytes": {
+      "type": "integer",
+      "minimum": 1000,
+      "maximum": 96000
+    },
+    "buffer_capacity": {
+      "type": "integer",
+      "enum": [
+        1,
+        2,
+        3
+      ]
+    },
+    "candidate_backend": {
+      "const": "e2_original_v1",
+      "type": "string"
+    },
+    "per_object_top_k": {
+      "const": 16,
+      "type": "integer"
+    },
+    "joint_candidates_max": {
+      "const": 48,
+      "type": "integer"
+    },
+    "selectable_pool": {
+      "const": "physical_feasible"
+    },
+    "policy_source": {
+      "const": "public_parser",
+      "type": "string"
+    },
+    "selector": {
+      "enum": [
+        "jev_choice",
+        "shared_geometry",
+        "shared_business_lexicographic"
+      ]
+    },
+    "feature_version": {
+      "const": "features_facts_v2"
+    },
+    "prompt_version": {
+      "const": "jev_business_eval_en_v2"
+    },
+    "display_order_seed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "probability_tolerance": {
+      "const": 1e-05,
+      "type": "number"
+    },
+    "confidence_policy": {
+      "const": "record_only",
+      "type": "string"
+    },
+    "fallback": {
+      "const": "none",
+      "type": "string"
+    },
+    "memory_mode": {
+      "const": "none",
+      "type": "string"
+    },
+    "max_memory_cards": {
+      "const": 0,
+      "type": "integer"
+    },
+    "experiment_protocol": {
+      "const": "jev_j3_physical_business_eval_v1"
+    },
+    "business_mode": {
+      "const": "evaluate_only"
+    },
+    "execution_version": {
+      "const": "physical_commit_v1"
+    },
+    "evaluation_version": {
+      "const": "business_trajectory_v1"
+    },
+    "business_attribute_source": {
+      "const": "synthetic_controlled_v1"
+    },
+    "experiment_binding": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "provider",
+    "endpoint",
+    "model",
+    "api_key_env",
+    "timeout_s",
+    "max_retries",
+    "response_max_bytes",
+    "max_request_bytes",
+    "buffer_capacity",
+    "candidate_backend",
+    "per_object_top_k",
+    "joint_candidates_max",
+    "selectable_pool",
+    "policy_source",
+    "selector",
+    "feature_version",
+    "prompt_version",
+    "display_order_seed",
+    "probability_tolerance",
+    "confidence_policy",
+    "fallback",
+    "memory_mode",
+    "max_memory_cards",
+    "experiment_protocol",
+    "business_mode",
+    "execution_version",
+    "evaluation_version",
+    "business_attribute_source"
+  ],
+  "additionalProperties": false
+}

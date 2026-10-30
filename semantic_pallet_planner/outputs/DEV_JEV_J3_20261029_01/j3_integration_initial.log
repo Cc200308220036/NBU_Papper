@@ -1,0 +1,68 @@
+............................FF.........................F.                [100%]
+=================================== FAILURES ===================================
+____ test_A08_physical_stackability_and_capacity_remain_hard[non_stackable] ____
+
+physical_constraint = 'non_stackable'
+
+    @pytest.mark.parametrize('physical_constraint',['non_stackable','overload'])
+    def test_A08_physical_stackability_and_capacity_remain_hard(physical_constraint):
+>       base,attrs=object_at('base',stackable=physical_constraint!='non_stackable')
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py:210: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/o4/extensions/e2/data.py:20: in object_at
+    obj,attrs=make_item(identifier,category=category,x=x,z=z,**kwargs);obj['pose']['y_mm']=y
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+identifier = 'base'
+kwargs = {'category': 'general', 'x': 0.0, 'z': 0.0, 'stackable': False}
+
+    def make_item(identifier, **kwargs):
+>       obj = item(identifier, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: item() got an unexpected keyword argument 'stackable'
+
+semantic_pallet_planner/src/semantic_pallet_planner/o4/extensions/data.py:23: TypeError
+______ test_A08_physical_stackability_and_capacity_remain_hard[overload] _______
+
+physical_constraint = 'overload'
+
+    @pytest.mark.parametrize('physical_constraint',['non_stackable','overload'])
+    def test_A08_physical_stackability_and_capacity_remain_hard(physical_constraint):
+>       base,attrs=object_at('base',stackable=physical_constraint!='non_stackable')
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py:210: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/o4/extensions/e2/data.py:20: in object_at
+    obj,attrs=make_item(identifier,category=category,x=x,z=z,**kwargs);obj['pose']['y_mm']=y
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+identifier = 'base'
+kwargs = {'category': 'general', 'x': 0.0, 'z': 0.0, 'stackable': True}
+
+    def make_item(identifier, **kwargs):
+>       obj = item(identifier, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: item() got an unexpected keyword argument 'stackable'
+
+semantic_pallet_planner/src/semantic_pallet_planner/o4/extensions/data.py:23: TypeError
+____ test_formal_scope_contains_all_holdout_groups_and_no_development_rows _____
+
+tmp_path = PosixPath('/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/outputs/DEV_JEV_J3_20261029_01/tmp/pytest-of-cyw/pytest-2/test_formal_scope_contains_all0')
+
+    def test_formal_scope_contains_all_holdout_groups_and_no_development_rows(tmp_path):
+        report=prepare_plan_v2(tmp_path/'plan',profile='dataset-orders',dataset_root=DATASET)
+        tasks=read(tmp_path/'plan/private/input_snapshot.json')['tasks']
+>       assert report['planned_tasks']==80 and report['planned_jobs']==240 and report['source_orders']==40
+E       assert (80 == 80 and 240 == 240 and 39 == 40)
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py:123: AssertionError
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A08_physical_stackability_and_capacity_remain_hard[non_stackable]
+FAILED semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A08_physical_stackability_and_capacity_remain_hard[overload]
+FAILED semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/integration/test_j3_batch.py::test_formal_scope_contains_all_holdout_groups_and_no_development_rows
+3 failed, 54 passed in 346.21s (0:05:46)

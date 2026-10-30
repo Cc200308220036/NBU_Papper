@@ -1,0 +1,40 @@
+............FF..........                                                 [100%]
+=================================== FAILURES ===================================
+______ test_A05_A06_business_load_limit_is_not_a_physical_rejection[0.0] _______
+
+business_limit = 0.0
+
+    @pytest.mark.parametrize('business_limit',[0.,2.])
+    def test_A05_A06_business_load_limit_is_not_a_physical_rejection(business_limit):
+        ast=policy([rule('business',target={'object_ids':['base']},limit=business_limit)])
+        req,state=request(ast,placed=[object_at('base',no_top=True)],available=[object_at('top',mass=3.)])
+        cfg=dict(load_v2_config(),buffer_capacity=1)
+        guard=PublicBusinessGuard();p=guard.resolve(req)
+        b=guard.filter(req,p,CandidateProvider().build(state,req,generator_config(),config=cfg),cfg)
+        c=bind_decision(ContextBuilder(cfg).build(req,b,p),'J0','J0_D0000')
+        labels=[l for l,f in c.data['criteria'].items() if f['pose']['z_base_mm']==100 and f['pose']['x_mm']==0 and f['pose']['y_mm']==0]
+>       assert labels
+E       assert []
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py:112: AssertionError
+______ test_A05_A06_business_load_limit_is_not_a_physical_rejection[2.0] _______
+
+business_limit = 2.0
+
+    @pytest.mark.parametrize('business_limit',[0.,2.])
+    def test_A05_A06_business_load_limit_is_not_a_physical_rejection(business_limit):
+        ast=policy([rule('business',target={'object_ids':['base']},limit=business_limit)])
+        req,state=request(ast,placed=[object_at('base',no_top=True)],available=[object_at('top',mass=3.)])
+        cfg=dict(load_v2_config(),buffer_capacity=1)
+        guard=PublicBusinessGuard();p=guard.resolve(req)
+        b=guard.filter(req,p,CandidateProvider().build(state,req,generator_config(),config=cfg),cfg)
+        c=bind_decision(ContextBuilder(cfg).build(req,b,p),'J0','J0_D0000')
+        labels=[l for l,f in c.data['criteria'].items() if f['pose']['z_base_mm']==100 and f['pose']['x_mm']==0 and f['pose']['y_mm']==0]
+>       assert labels
+E       assert []
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py:112: AssertionError
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A05_A06_business_load_limit_is_not_a_physical_rejection[0.0]
+FAILED semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_j3_core.py::test_A05_A06_business_load_limit_is_not_a_physical_rejection[2.0]
+2 failed, 22 passed in 4.16s

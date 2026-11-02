@@ -28,9 +28,10 @@ def digest(value: object) -> str:
     return hashlib.sha256(canonical(value).encode("utf-8")).hexdigest()
 
 
-@lru_cache(maxsize=8)
+@lru_cache(maxsize=64)
 def schema_validator(name: str) -> Draft202012Validator:
-    if name not in {"config", "candidate_bundle", "decision_context", "selection_result", "transport_result", "config_v2", "candidate_bundle_v2", "decision_context_v2", "selection_result_v2", "business_state", "plan_v2", "checkpoint_v2", "order_metrics_v2", "metrics_v2"}:
+    if name not in {"business_spec_v2", "config", "candidate_bundle", "decision_context", "selection_result", "transport_result", "config_v2", "candidate_bundle_v2", "decision_context_v2", "selection_result_v2", "business_state", "plan_v2", "checkpoint_v2", "order_metrics_v2", "metrics_v2",
+                    "config_v3", "candidate_bundle_v3", "decision_context_v3", "selection_result_v3", "plan_v3", "checkpoint_v3", "order_metrics_v3", "metrics_v3", "memory_card", "memory_snapshot", "memory_episode_export", "memory_query", "memory_index", "memory_retrieval", "memory_generation_result", "memory_review", "memory_generator_config", "memory_review_authorization"}:
         raise JevSelectError("unknown_schema", name)
     resource = files("semantic_pallet_planner.jev_select").joinpath("schemas", f"{name}.schema.json")
     schema = json.loads(resource.read_text(encoding="utf-8"))
@@ -40,8 +41,11 @@ def schema_validator(name: str) -> Draft202012Validator:
 
 def validate_schema(name: str, value: dict) -> None:
     canonical(value)
-    if name in {"config", "candidate_bundle", "decision_context", "selection_result"} and str(value.get("version", "")).endswith("_v2"):
-        name += "_v2"
+    if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+        for suffix in ("_v2", "_v3"):
+            if str(value.get("version", "")).endswith(suffix):
+                name += suffix
+                break
     errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
     if errors:
         error = errors[0]
@@ -82,3 +86,11 @@ class MemorySnapshot(Snapshot):
     @classmethod
     def empty(cls):
         return cls.from_dict({"version": "memory_none_v1", "cards": []})
+
+
+class MemoryQuery(Snapshot):
+    pass
+
+
+class RetrievalResult(Snapshot):
+    pass

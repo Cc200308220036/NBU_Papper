@@ -9,14 +9,14 @@ from semantic_pallet_planner.o4.extensions.e2.protocol import observation
 from semantic_pallet_planner.o4.extensions.e2.planning import action_for, commit
 
 from .candidates import CandidateProvider, PublicBusinessGuard, decision_route
-from .config import generator_config, is_v2
+from .config import generator_config, is_v2, is_v3, business_evaluation_mode, protocol_suffix
 from .context import ContextBuilder, resolve_display_id
 from .contracts import JevSelectError, digest
 from .evaluation import feedback, summarize
 from .selector import bind_decision, result
 
 
-def decision_inputs(state, task, config, job_id, decision_id, *, timings=None):
+def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, memory_snapshot=None, saved_retrieval=None):
     started = time.perf_counter()
     req = observation(state, task["instruction_text"], task["regions"])
     guard = PublicBusinessGuard()
@@ -28,7 +28,13 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None):
     generated = time.perf_counter()
     after_cache = _cached_generation.cache_info()
     bundle = guard.filter(req, policy, bundle, config)
-    context = bind_decision(ContextBuilder(config).build(req, bundle, policy), job_id, decision_id)
+    try:
+        context = bind_decision(ContextBuilder(config).build(req, bundle, policy, memories=memory_snapshot, retrieval=saved_retrieval), job_id, decision_id)
+    except JevSelectError as exc:
+        if hasattr(exc,'context'):
+            exc.context=bind_decision(exc.context,job_id,decision_id)
+            exc.observation=req;exc.bundle=bundle
+        raise
     if timings is not None:
         timings.update(public_parse_s=parsed-started, physical_generation_s=generated-parsed,
                        facts_context_s=time.perf_counter()-generated,
@@ -38,11 +44,11 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None):
 
 
 def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
-                hook=None, event_limit=None, expected_events=None):
-    if is_v2(config):
+                hook=None, event_limit=None, expected_events=None, memory_snapshot=None):
+    if business_evaluation_mode(config):
         return _run_episode_v2(task, selector, config, job_id=job_id, method=method, resume=resume,
                                on_checkpoint=on_checkpoint, hook=hook, event_limit=event_limit,
-                               expected_events=expected_events)
+                               expected_events=expected_events, memory_snapshot=memory_snapshot)
     if resume is not None:
         # Rebuild the entire committed prefix using saved answers, never network.
         replay_selector = selector.for_replay() if hasattr(selector, "for_replay") else selector
@@ -149,7 +155,7 @@ def semantic_record(value):
 
 
 def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
-                    on_checkpoint=None, hook=None, event_limit=None, expected_events=None):
+                    on_checkpoint=None, hook=None, event_limit=None, expected_events=None, memory_snapshot=None):
     from .evaluation import evaluate_committed_state, summarize_v2
     from .execution import commit_physical
     from .selector import SelectionResult
@@ -159,14 +165,30 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
     replaying = expected_events is not None
     decision_started = None
 
+    suffix = protocol_suffix(config)
+    if is_v3(config):
+        from .memory_store import empty_snapshot, validate_snapshot
+        memory_snapshot = empty_snapshot() if memory_snapshot is None else memory_snapshot
+        validate_snapshot(memory_snapshot, config['memory_snapshot_digest'])
+        if config['selector']!=method:raise JevSelectError('episode_method_mismatch')
+        from .memory_retrieval import snapshot_index,mode_index
+        frozen_index=snapshot_index(memory_snapshot)
+        memory_identity={'corpus_digest':memory_snapshot.data['corpus_digest'],'index_digest':digest(frozen_index),
+            'mode_index_digest':digest(mode_index(frozen_index,config['memory_mode'])),
+            'retrieval_config_digest':frozen_index['config_digest'],'memory_mode':config['memory_mode'],
+            'retrieval_version':config['retrieval_version']}
+
     def checkpoint():
-        value = {'version': 'jev_checkpoint_v2', 'job_id': job_id, 'method': method,
+        value = {'version': 'jev_checkpoint_' + suffix, 'job_id': job_id, 'method': method,
                 'task_digest': digest(task), 'config_digest': digest(config),
                 'state': copy.deepcopy(state), 'cursor': cursor, 'decision': decision,
                 'events': copy.deepcopy(events), 'reason': reason, 'phase': phase,
                 'pending_event': copy.deepcopy(pending)}
         from .contracts import validate_schema
-        validate_schema('checkpoint_v2',value)
+        if is_v3(config):
+            value['memory_snapshot_digest'] = digest(memory_snapshot.data)
+            value['memory_identity']=memory_identity
+        validate_schema('checkpoint_' + suffix,value)
         return value
 
     def persist():
@@ -190,12 +212,16 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
 
     if resume is not None:
         from .contracts import validate_schema
-        validate_schema('checkpoint_v2',resume)
-        if resume.get('version') != 'jev_checkpoint_v2' or resume['job_id'] != job_id or resume['method'] != method or resume['config_digest'] != digest(config) or resume['task_digest'] != digest(task):
+        validate_schema('checkpoint_' + suffix,resume)
+        if is_v3(config) and resume['memory_snapshot_digest'] != digest(memory_snapshot.data):
+            raise JevSelectError('checkpoint_memory_changed')
+        if is_v3(config) and resume.get('memory_identity',memory_identity)!=memory_identity:
+            raise JevSelectError('checkpoint_memory_identity_changed')
+        if resume.get('version') != 'jev_checkpoint_' + suffix or resume['job_id'] != job_id or resume['method'] != method or resume['config_digest'] != digest(config) or resume['task_digest'] != digest(task):
             raise JevSelectError('checkpoint_identity_changed')
         replay_selector = selector.for_replay() if hasattr(selector, 'for_replay') else selector
         prefix = _run_episode_v2(task, replay_selector, config, job_id=job_id, method=method,
-                                 event_limit=len(resume['events']), expected_events=resume['events'])
+                                 event_limit=len(resume['events']), expected_events=resume['events'], memory_snapshot=memory_snapshot)
         rebuilt = prefix['checkpoint']
         if resume['phase'] == 'READY':
             normalized = copy.deepcopy(resume)
@@ -210,7 +236,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
             if resume['cursor'] != rebuilt['cursor'] or resume['decision'] != rebuilt['decision'] or resume['events'] != rebuilt['events']:
                 raise JevSelectError('committed_prefix_changed')
             did = f'{job_id}_D{rebuilt["decision"]:04d}'
-            req, policy, bundle, context = decision_inputs(rebuilt['state'],task,config,job_id,did)
+            req, policy, bundle, context = decision_inputs(rebuilt['state'],task,config,job_id,did,memory_snapshot=memory_snapshot,saved_retrieval=event['context'].get('retrieval'))
             if event['decision_id'] != did or event['observation'] != req or event['bundle'] != bundle.data or event['context'] != context.data:
                 raise JevSelectError('committed_decision_changed')
             if decision_route(bundle) == 'SINGLETON_BYPASS':
@@ -228,6 +254,17 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
             after = commit_physical(rebuilt['state'],task['regions'],req,bundle,context,selected,config)
             if after != resume['state']:
                 raise JevSelectError('committed_state_changed')
+        elif resume['phase']=='DECISION_READY' and is_v3(config):
+            event=resume['pending_event'];did=f'{job_id}_D{rebuilt["decision"]:04d}'
+            if (resume['cursor']!=rebuilt['cursor'] or resume['decision']!=rebuilt['decision'] or
+                resume['state']!=rebuilt['state'] or semantic_record(resume['events'])!=semantic_record(rebuilt['events']) or
+                event is None or event['event']!='STOP' or event['before']!=rebuilt['state'] or event['after']!=rebuilt['state'] or
+                any(event[k] is not None for k in ('selection','action','proposed_action','reason','error','business_after','reference_after'))):
+                raise JevSelectError('invalid_pending_decision')
+            req,policy,bundle,context=decision_inputs(rebuilt['state'],task,config,job_id,did,
+                memory_snapshot=memory_snapshot,saved_retrieval=event['context']['retrieval'])
+            if event['decision_id']!=did or event['observation']!=req or event['bundle']!=bundle.data or event['context']!=context.data:
+                raise JevSelectError('pending_decision_changed')
         else:
             raise JevSelectError('invalid_checkpoint_phase')
         state = copy.deepcopy(resume['state']); cursor = resume['cursor']; decision = resume['decision']
@@ -238,7 +275,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
 
     while (reason is None or pending is not None) and (event_limit is None or len(events) < event_limit):
         invariant(state)
-        if pending is not None:
+        if pending is not None and phase=='COMMITTED':
             started = time.perf_counter()
             try:
                 business = evaluate_committed_state(state,task['reference_policy'],task['regions'])
@@ -280,9 +317,14 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                  'observation':None,'bundle':None,'context':None,'selection':None,'proposed_action':None,'action':None,
                  'reason':None,'error':None,'reference_after':None,'business_after':None,'timings':times}
         try:
-            req,policy,bundle,context = decision_inputs(state,task,config,job_id,did,timings=times)
+            saved_context = (pending['context'] if pending is not None and phase=='DECISION_READY' else
+                expected_events[len(events)].get('context') if expected_events is not None and len(events)<len(expected_events) else None)
+            req,policy,bundle,context = decision_inputs(state,task,config,job_id,did,timings=times,memory_snapshot=memory_snapshot,
+                saved_retrieval=saved_context.get('retrieval') if saved_context else None)
             route = decision_route(bundle)
             event.update(route=route,observation=req,bundle=bundle.data,context=context.data)
+            if is_v3(config):
+                pending=copy.deepcopy(event);phase='DECISION_READY';persist()
             if hook: hook('decision_ready',event)
             if route == 'STOP_NO_PHYSICAL_CANDIDATE':
                 reason = route
@@ -316,6 +358,9 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
             # Reconstruction failures are evidence corruption, not a normal experiment outcome.
             if replaying: raise
             reason = getattr(exc,'code','DECISION_ERROR')
+            if hasattr(exc,'context'):
+                event.update(observation=exc.observation,bundle=exc.bundle.data,context=exc.context.data,route=decision_route(exc.bundle))
+                if hook:hook('decision_ready',event)
             event['event'] = 'COMMIT_FAILURE' if event['proposed_action'] else 'DECISION_FAILURE'
             event['error'] = {'code':reason,'detail':str(exc)[:240]}
             if state != before:
@@ -331,4 +376,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
     if reason is None and state['end_of_stream'] and not state['pending_items']:
         reason = 'ALL_ITEMS_PLACED'
     summary = summarize_v2(task,config,method,state,events,reason) if reason is not None else None
+    if summary is not None and is_v3(config):
+        from .memory_retrieval import memory_statistics
+        summary.update(version='jev_order_metrics_v3', memory_snapshot_digest=digest(memory_snapshot.data),memory_statistics=memory_statistics(events))
     return {'job_id':job_id,'events':events,'final_state':state,'summary':summary,'checkpoint':checkpoint()}

@@ -288,6 +288,11 @@ def prepare_plan(output, *, profile="constructed-smoke", config=None, input_snap
 
 
 def validate_plan(plan_root):
+    if _read(Path(plan_root)/'plan.json').get('version') == 'jev_plan_v3':
+        from .batch_j4 import validate_plan_j4
+        plan, config, tasks, memory = validate_plan_j4(plan_root)
+        return {'status':'PASS','scope':'J4_B1_FROZEN_PLAN','planned_tasks':len(tasks),
+                'planned_jobs':len(plan['jobs']),'model_api_calls':0}
     if _read(Path(plan_root)/'plan.json').get('version') == 'jev_plan_v2':
         from .batch import validate_plan_v2
         return validate_plan_v2(plan_root)
@@ -348,6 +353,11 @@ def _save_exact(path, value):
 
 
 def run_experiment(plan_root, output, *, offline=False, remote=False, api_budget=None, api_key_file=None, resume=False, hook=None):
+    if _read(Path(plan_root)/'plan.json').get('version') == 'jev_plan_v3':
+        from .batch_j4 import run_j4
+        if api_budget is not None and api_budget != _read(Path(plan_root)/'plan.json')['budget']['global_attempts']:
+            raise JevSelectError('runtime_budget_changed')
+        return run_j4(plan_root,output,offline=offline,remote=remote,api_key_file=api_key_file,resume=resume,hook=hook)
     if _read(Path(plan_root)/'plan.json').get('version') == 'jev_plan_v2':
         from .batch import run_experiment_v2
         return run_experiment_v2(plan_root,output,offline=offline,remote=remote,api_budget=api_budget,
@@ -425,6 +435,9 @@ def run_experiment(plan_root, output, *, offline=False, remote=False, api_budget
 
 
 def preflight(plan_root, *, api_key_file=None):
+    if _read(Path(plan_root)/'plan.json').get('version') == 'jev_plan_v3':
+        from .batch_j4 import preflight_j4
+        return preflight_j4(plan_root,api_key_file=api_key_file)
     if _read(Path(plan_root)/'plan.json').get('version') == 'jev_plan_v2':
         from .batch import preflight_v2
         return preflight_v2(plan_root,api_key_file=api_key_file)

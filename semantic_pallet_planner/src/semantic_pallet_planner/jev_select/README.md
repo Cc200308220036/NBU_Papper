@@ -1,6 +1,6 @@
 # jev_select
 
-2026-10-30后续开发：[J4公开业务要求经验增强开发与验收规范](../../../../docs/02_阶段实施方案/O4/Jev_J4公开业务要求经验增强开发与验收规范_20261030.md)。这是待实现合同，J4命令、v3协议和经验模块当前尚未实现。最新真实开发诊断与逐步轨迹见[本地报告](../../../../report/analysis/JEV_PUBLIC_DEV_20261030_01/README.md)。
+2026-10-30后续开发：[J4公开业务要求经验增强开发与验收规范](../../../../docs/02_阶段实施方案/O4/Jev_J4公开业务要求经验增强开发与验收规范_20261030.md)。A0/A1/B0命令、v3空经验协议、训练导出和证据快照已实现；非空检索、真实提炼及ReMe仍待后续开发。最新真实开发诊断与逐步轨迹见[本地报告](../../../../report/analysis/JEV_PUBLIC_DEV_20261030_01/README.md)。
 
 Jev直接候选选择的独立实现。**J0—J3已完成开发与当前交付。** J3正式80任务、240个方法运行全部结束；完整正式回放按用户要求免除。结果与使用入口见下方J3章节。ReMe经验学习尚未开发。
 
@@ -163,3 +163,132 @@ J3开发集发现服务概率以两位小数返回，可能出现0.99单位和�
 ### Jev真实案例3D可视化
 
 [打开独立页面](../../../outputs/JEV_J3_CASE_VIEWER_20261029_01/index.html)，或阅读[可视化源码与导出说明](viewer/README.md)。页面单独展示J0025订单的13次真实Jev选择，包含每步全部候选、3D状态、原始输入输出和独立业务评价。选择解释明确标为事后证据；只读已有记录，无新增模型调用或仿真执行。
+
+
+## J4首轮：A0/A1/B0
+
+已实现公开业务经验增强的基础工程：A0就绪/暴露审计、A1保存轨迹诊断与多方法过程页、v3空经验计划/执行/恢复、训练白名单导出和携带证据的不可变快照。B1非空检索、B2文本提炼、B3 ReMe及正式收益实验尚未实现。`prepare-j4`目前只允许G0/H0/D0；不接受非空记忆或将R0/M0伪装为已实现方法。
+
+实际使用与验收范围见[运行手册](../../../../docs/04_运行与复核手册/Jev_J4_A0_A1_B0运行与验收手册_20261030.md)。J4运行默认只核对保存记录，不自动执行末尾全轨迹回放；旧J3入口和历史免回放状态保持原意。新增产物写入已忽略的outputs目录。
+
+```bash
+python -m semantic_pallet_planner.jev_select audit-j4 --repo <工程根> --output <新审计目录>
+python -m semantic_pallet_planner.jev_select inspect-j4 --experiment <已封存实验> --output <新诊断目录>
+python -m semantic_pallet_planner.jev_select prepare-j4 --profile constructed-dev --output <新计划>
+python -m semantic_pallet_planner.jev_select preflight-j4 --plan <计划>
+python -m semantic_pallet_planner.jev_select run-j4 --plan <计划> --output <新实验> --offline
+python -m semantic_pallet_planner.jev_select export-memory --experiment <已封存真实训练实验> --output <新导出>
+python -m semantic_pallet_planner.jev_select freeze-memory --store <导出目录/store> --output <新快照>
+python -m semantic_pallet_planner.jev_select validate-memory --memory <快照>
+```
+
+当前没有`build-memory`命令；导出、冻结不会调用LLM或生成策略卡。旧计划可能因新增生产代码报source_changed，应使用原代码快照；不要重签历史清单。
+
+## J4 B1-B：当前离线工程路径
+
+B1-A 查询/门控/BM25 已接入现有 context、selector、episode 和 batch_j4。显式 `prepare-j4 --methods` 现在支持 G0/H0/D0/R0/M0 五个完整方法名；默认仍为原三方法。`--memory` 接收已冻结经验包，R0/M0 共享 corpus、分别使用其模式索引；D0/G0/H0 绑定空文本库。`--task-limit` 只选择确定性的诊断/开发任务前缀并冻结完整计划，不用于正式新源实验。
+
+```bash
+PYTHONPATH=src python -m semantic_pallet_planner.jev_select prepare-j4 \
+  --task-limit 1 --methods shared_geometry shared_business_lexicographic jev_no_memory jev_raw_history jev_memory_cards \
+  --memory <冻结经验包> --output outputs/<新计划>
+PYTHONPATH=src python -m semantic_pallet_planner.jev_select preflight-j4 --plan outputs/<新计划>
+PYTHONPATH=src python -m semantic_pallet_planner.jev_select run-j4 --plan outputs/<新计划> --output outputs/<新运行> --offline
+PYTHONPATH=src python -m semantic_pallet_planner.jev_select validate-j4 --experiment outputs/<新运行>
+```
+
+恢复使用同一 run-j4 命令并加 `--resume`。DECISION_READY 在请求前保存检索；重启验证并复用原结果，不重新检索旧决策。COMMITTED 只补未完成评价；原始回答已存不再发送，未知发送不重试。`retrievals/` 保存完整审计，`metrics/` 保存实际条数、字节、门控/预算排除和来源集中度，`process/index.html` 可离线查看。validate-j4 是 records 级核对，不是独立全轨迹回放。
+
+正式远程 prepare/预检/selector 拒绝 fixture。preflight 不读取凭证，只验证本地协议；它不宣称远程凭证就绪。源码内 `tests.demo_j4_b1b` 可生成明确标记的离线工程演示和六个硬重启案例；测试及演示模块不进入 wheel。当前真实两条训练轨迹仍为 0/24 可注入，未形成真实活跃卡；离线替身与 fixture 不证明经验收益。实际交付见仓库 `docs/03_阶段产出分析/O4/Jev_J4_B1_B开发与验收_20261030.md`。
+
+### J4 B2-A generation and review (2026-10-30)
+
+B2-A now provides `prepare-generation`, `generate-memory`, `prepare-memory-merge`,
+`inspect-memory-review`, `import-memory-review`, `validate-generation` and
+`freeze-generation`. These reuse MemoryStore, the shared ledger utilities and
+B1 snapshots/retrieval. `advice` is the claim; v2 cards retain comparison basis,
+exact request-scoped field evidence, hypotheses, limitations and independent
+human review. Schema/fact checks do not establish semantic support.
+
+```bash
+python -m semantic_pallet_planner.jev_select prepare-generation \
+  --store <verified-export-store> --experiment <sealed-real-training-run> \
+  --mode remote_text --output <new-prepared-directory>
+python -m semantic_pallet_planner.jev_select generate-memory \
+  --prepared <prepared-directory> --request <request-digest> --store <mutable-store> \
+  --mode remote_text --repo <repository-root>
+python -m semantic_pallet_planner.jev_select validate-generation --store <mutable-store>
+python -m semantic_pallet_planner.jev_select inspect-memory-review \
+  --store <mutable-store> --output <new-review-directory>
+python -m semantic_pallet_planner.jev_select import-memory-review \
+  --store <mutable-store> --review <independent-human-review.json>
+python -m semantic_pallet_planner.jev_select freeze-generation \
+  --store <mutable-store> --output <new-snapshot-directory>
+```
+
+Only explicit `remote_text` execution reads `deepseek_api.md` and contacts the
+DeepSeek official endpoint. Offline generation requires `fixture_only` exports
+and `--fixture <service-response.json>`; fixtures cannot enter formal remote
+plans. Preparation, validation, review and freezing never read credentials or
+contact a provider. The frozen configuration/prompt are packaged JSON resources.
+
+The fixed formal account is
+`semantic_pallet_planner/outputs/JEV_J4_GENERATION_ACCOUNTING_V1/` under the repo.
+B2-A/B2-B and different mutable stores share this account. One generation per
+original training episode, at most two proposals; one merge per four episodes;
+one structure-only repair per operation. Saved raw responses are reused and
+unknown sends are never automatically retried. A changed directory, run name or
+input digest does not authorize another generation for the same source episode.
+
+The B2-A real smoke used request
+`721a7052734be0bd519076d05451cbb56ab24afc453e0205bdd855e6baed8c2d`:
+one official `deepseek-flash` generation succeeded, with no repair. Its single
+raw proposal was rejected for historical decision identifiers in prose. Keep
+that original and rejection; B2-B must reuse the response, without rewriting
+or resending it to obtain a passing card. No real card is active. Two real
+independent source groups and independent semantic review remain necessary;
+ReMe and benefit experiments were not run. Full evidence and commands are in
+`docs/03_阶段产出分析/O4/Jev_J4_B2_A开发与验收_20261030.md` in the repository.
+
+### B2真实经验库后续（2026-10-31）
+
+真实小试采用显式 `--export-version v2`、`--protocol v2`：新增两个训练来源组、四个D0 episode、四次DeepSeek生成，5条原始建议中3条合法candidate、2条保留单位拒绝。独立人工审核尚未完成，active=0，不能将这批工程当作真实非空M0或收益验收。
+
+新增 `--protocol v3` 是离线修复合同：保留v2实际结果，另以 `context_units_v2` 解析数值severity的同级单位；本轮未发送任何v3真实请求。v1/v2/v3请求显式分派、旧请求摘要保持，正式账目仍按原episode身份限频；不能换协议重新生成已消费episode。
+
+`prepare-training-sources --repo <仓库> --readiness <审计目录> --output <新目录>` 从递归暴露与传递去重后的固定前两来源冻结完整训练订单。它复用既有V1属性规范与B1/B2适配，不按运行结果选择。`prepare-j4 --task-ids ...` 可冻结已预登记任务子集。
+
+新卡 `jev_memory_card_v3` 使用 `fact_links`、`memory_prose_v2` 渲染与 `jev_semantic_review_v2`；审核模板逐来源绑定卡、wire、raw和证据。`import-memory-review` 必须由实际具名独立人填写，不由开发代理接受。`prepare-memory-merge --additional-prepared <其他原准备目录>` 保留跨封存采集批次的原episode身份，仍须独立审核父卡及频次条件。
+
+新R0为可逆 `decision_event_columnar_v2`，新索引 `jev_memory_index_v2` 绑定渲染合同；Top3、1600/4800字节和64活跃卡上限不变。当前完整真实池R0为0/38，不得将M0相对空R0解释为组织收益。
+
+本批证据：`outputs/GEN_JEV_J4_B2_REAL_20261031_01/`，验证：`outputs/VERIFY_JEV_J4_B2_REAL_20261031_01/`。既有run须用其原源码快照或对应wheel复核，不修改旧source_manifest适配当前代码。
+
+### 用户变更：开发代理语义核验与纠正准入
+
+用户明确要求“取消独立审阅者这个角色，全权交给你开发即可”。新审核合同`jev_semantic_review_v3/developer_support_review_v1`记录`reviewer_kind=developer_agent`及`independent_review=false`，绑定原文、实际wire/raw和用户变更摘要；不把开发代理判断称为独立审核。两来源、非纯规则复述、冲突、范围、预算及原频次约束不变。旧审核和冻结包仍按原合同加载。
+
+`register-review-authorization --store <store> --authorization <JSON>`保存实际用户角色变更；`inspect-memory-review --reviewer-mode developer_agent --authorization-digest <摘要>`生成新模板，`import-memory-review`导入已实际执行的核验。开发代理父卡的合并还需`prepare-memory-merge --compatibility <成对兼容性文件>`，仅同角色或关键词相同不能替代声明兼容。
+
+`admit-unit-context-correction`只对原v2单位上下文假阴性进行离线纠正准入，生成显式`jev_memory_card_v4/jev_card_fact_validation_v2`并保留原raw、原拒绝及旧生成停止结论。它不能准入标识符拒绝，不能修改正文或放宽1600字节预算，也不增加生成机会。
+
+`inspect-generation-gate`区分解析成功与技术通过；`generate-memory-batch`冻结请求顺序并在首次技术拒绝/失败后持久停止，剩余episode不预约、不发送。`generate-memory`的CLI退出码现在以技术门槛为准，处理状态另保存在processing_status；解析为PARSED不再自动显示PASS。批次恢复复用既有raw及正式账目。
+
+本次实际核验4张卡，接受2、拒绝2；纠正准入1条，另一条1625字节继续拒绝。接受的两张分别是接触规则应用与载荷规则应用，尚无同一声明的两来源支持，active仍为0。新材料位于`outputs/GEN_JEV_J4_B2_DEV_REVIEW_20261031_01/`，不覆盖先前独立审核待办包。
+
+
+## J4业务数据集v2（2026-11-01）
+
+`build-dataset-v2 --repo REPO --output NEW_DIRECTORY`构建四个已暴露train来源×三难度×B1/B2的24任务快照；`validate-dataset-v2 --dataset DELIVERY`认证加载整包。两者均无凭证、无网络、无episode，不做候选枚举或效果试验。最终交付为`outputs/DATA_JEV_J4_V2_20261101_03`；现有目录拒绝覆盖。
+
+`DatasetOrderAdapter.load(root, spec_config=business_spec_v2_path, difficulty="moderate")`显式启用`public_generated_v2`，loose/strict同理。旧v1默认、未知版本失败；闭合Schema、v1基规范摘要、四来源摘要和重算校准统计共同绑定配置。`prepare-j4`现已接通`--business-spec`和`--difficulty`；本次只检查参数接入，不创建实验矩阵。完整配置及attribute_map为本地材料，不能发送给策略。
+
+实际命令和边界见仓库`docs/04_运行与复核手册/Jev_J4数据集v2构建与复核_20261101.md`，开发报告见`docs/03_阶段产出分析/O4/Jev_J4数据集限载与业务难度v2开发交付_20261101.md`。13项针对性检查通过，物理字段保持；未证明物理早停或实际违规率改善。
+
+生成协议v4可通过`prepare-generation --protocol v4`显式启用；复用v3公共事实投影，独立冻结v4提示，四字段值目标200/300/400/400 UTF-8字节，含74字节字段名/换行目标1374，硬上限仍1600。旧v1/v2/v3协议和原提示保留；语义错误不可通过结构修复改写。v4仍使用原共享账目及技术拒绝停止门槛。
+
+### 状态、动作、违规后果与前期替代方案案例
+
+`inspect-decision-cases --experiment <封存训练实验> --output <新目录> --job J0000 --fork-mode first_violation --max-branches 4`离线提取实际状态、支撑链累计载荷、真实反馈和保存物理池的单步替代后果。固定真实动作前缀，在最多4个早期分支后使用同一本地策略自然运行到终止，分别报告放置量、终态分规则数量/严重度、过程违规实例步数和曾出现的不同实例。少放箱、同规则严重度恶化或过程指标恶化均不能判为支配；不同规则和单位不混成总严重度。
+
+该入口不调用模型、不改经验库；模拟不能作为真实来源。输出结构化案例和文本预览，正式DeepSeek生成、卡片准入和Jev注入合同仍需后续接入。案例中同食品箱平移50mm使受控本地终态违规4→2，但载荷违规未改善。完整证据与命令见`docs/03_阶段产出分析/O4/Jev_J4状态动作与替代方案经验案例开发与验收_20261101.md`；交付目录`outputs/CASE_JEV_J4_STATE_ACTION_20261101_DELIVERY/`。

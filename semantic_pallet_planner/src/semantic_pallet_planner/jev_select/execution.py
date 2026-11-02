@@ -6,14 +6,14 @@ from semantic_pallet_planner.o4.extensions.e2.protocol import observation as reb
 from semantic_pallet_planner.evaluation.geometry_oracle import check_candidate
 
 from .candidates import validate_bundle
-from .config import is_v2
+from .config import business_evaluation_mode, protocol_suffix
 from .context import resolve_display_id, validate_context
 from .contracts import JevSelectError, digest, validate_schema
 
 
 def commit_physical(state, regions, observation, bundle, context, selection, config):
     validate_schema("config", config)
-    if not is_v2(config):
+    if not business_evaluation_mode(config):
         raise JevSelectError("physical_commit_requires_v2")
     if observation != rebuild_observation(state, observation["instruction_text"], regions):
         raise JevSelectError("stale_physical_commit")
@@ -21,7 +21,7 @@ def commit_physical(state, regions, observation, bundle, context, selection, con
     validate_context(context, observation, bundle, config)
     selected = selection.data
     validate_schema("selection_result", selected)
-    if selected["version"] != "jev_selection_result_v2" or selected["status"] not in ("selected", "singleton"):
+    if selected["version"] != f"jev_selection_result_{protocol_suffix(config)}" or selected["status"] not in ("selected", "singleton"):
         raise JevSelectError("invalid_physical_selection")
     if (context.data["route"] == "SINGLETON_BYPASS") != (selected["status"] == "singleton"):
         raise JevSelectError("selection_route_mismatch")

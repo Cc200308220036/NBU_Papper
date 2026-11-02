@@ -17,8 +17,11 @@ from semantic_pallet_planner.o4.extensions.e2.protocol import validate_policy
 from .contracts import JevSelectError, canonical, digest
 
 
-def business_spec():
-    return json.loads(files('semantic_pallet_planner.jev_select').joinpath('configs','business_spec_v1.json').read_text())
+def business_spec(version='public_generated_v1'):
+    if version not in ('public_generated_v1', 'public_generated_v2'):
+        raise JevSelectError('unknown_business_spec_version', str(version))
+    name = 'business_spec_v2.json' if version == 'public_generated_v2' else 'business_spec_v1.json'
+    return json.loads(files('semantic_pallet_planner.jev_select').joinpath('configs',name).read_text())
 
 
 def attribute_value(spec, article_id, attribute):
@@ -49,9 +52,16 @@ def build_business_policy(spec, group_id, configuration):
 
 
 class DatasetOrderAdapter:
-    def load(self, dataset_root, *, spec_config=None, split_manifest=None):
+    def load(self, dataset_root, *, spec_config=None, split_manifest=None, difficulty=None):
         root = Path(dataset_root).resolve()
         spec = business_spec() if spec_config is None else (json.loads(Path(spec_config).read_text()) if not isinstance(spec_config,dict) else copy.deepcopy(spec_config))
+        if not isinstance(spec, dict): raise JevSelectError('invalid_business_spec')
+        if spec.get('version') == 'public_generated_v2':
+            return self._load_v2(root, spec, split_manifest, difficulty if difficulty is not None else 'moderate')
+        if spec.get('version') != 'public_generated_v1':
+            raise JevSelectError('unknown_business_spec_version', str(spec.get('version')))
+        if difficulty is not None:
+            raise JevSelectError('difficulty_requires_v2')
         if spec != business_spec():
             raise JevSelectError('business_spec_not_frozen', 'first version accepts the complete declared public specification')
         groups_path = root/'splits/group_manifest.json'
@@ -163,3 +173,110 @@ class DatasetOrderAdapter:
                'source_file_manifest':source_files,'physical_attributes_changed':False,'arrival_order_truncated':False,
                'family_overlap_is_not_claimed_independent':True}
         return {'tasks':tasks,'business_spec':spec,'split_manifest':split,'input_audit':audit}
+
+    def _load_v2(self, root, spec, split_manifest, difficulty):
+        from .contracts import validate_schema
+        from semantic_pallet_planner.o4.extensions.e2.compiler import render_policy
+        validate_schema('business_spec_v2', spec)
+        if spec != business_spec('public_generated_v2'):
+            raise JevSelectError('business_spec_not_frozen')
+        if digest(business_spec()) != spec['base_spec_digest']:
+            raise JevSelectError('v2_base_spec_digest_mismatch')
+        if difficulty not in spec['difficulties']:
+            raise JevSelectError('unknown_business_difficulty', str(difficulty))
+        # Authenticate every input BEFORE the v1 reader can open scenario contents.
+        expected = spec['calibration']['source_file_manifest']
+        groups = json.loads((root/'splits/group_manifest.json').read_text())
+        wanted = {f'NEW_{key}' for key in spec['calibration']['source_keys']}
+        if {g['scenario_id'] for g in groups['groups']} != wanted:
+            raise JevSelectError('v2_source_scope_mismatch')
+        for name, sha in expected.items():
+            path = (root/name).resolve()
+            if not path.is_relative_to(root) or not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != sha:
+                raise JevSelectError('v2_source_digest_mismatch', name)
+        base = self.load(root, split_manifest=split_manifest)
+        calibration, identities = calibrate_v2(base['tasks'])
+        if calibration != spec['calibration']['statistics']:
+            raise JevSelectError('v2_calibration_mismatch')
+        setting = spec['difficulties'][difficulty]
+        for task in base['tasks']:
+            for oid, attrs in task['attributes'].items():
+                identity = identities[task['scenario_id']][oid]
+                attrs['labels'] = v2_labels(spec, identity, difficulty)
+            # Preserve v1 contact/region/direction semantics, replacing only the
+            # reinforced constant. no_top and reinforced selectors are disjoint.
+            policy_spec = business_spec()
+            policy_spec['reinforced_limit_kg'] = setting['reinforced_limit_kg']
+            ast = build_business_policy(policy_spec, task['source_group_id'], task['business_configuration'])
+            task.update(task_id=f"{task['scenario_id']}_public_generated_v2_{difficulty}_{task['business_configuration']}",
+                        business_spec_source=spec['version'], business_difficulty=difficulty,
+                        instruction_text=render_policy(ast), reference_policy=ast)
+            task['public_spec'] = {'version':spec['version'], 'difficulty':difficulty,
+                'configuration':task['business_configuration'], 'rules':copy.deepcopy(ast['rules']),
+                'attribute_generation_digest':digest(spec)}
+        base['business_spec'] = copy.deepcopy(spec)
+        counts = Counter()
+        for task in base['tasks']:
+            if task['business_configuration'] != 'B1': continue
+            for obj in task['items']:
+                a = task['attributes'][obj['item_id']]
+                counts['no_top'] += a['labels']['no_top_load']
+                counts['reinforced'] += a['packaging']['reinforced']
+                counts['business_no_top_physically_stackable'] += a['labels']['no_top_load'] and obj['stackable']
+                counts['business_limit_lower_than_physical'] += a['labels']['max_top_load_kg'] < a['physical_top_load_limit_kg']
+        base['input_audit'].update(version='jev_input_audit_v2',business_spec_digest=digest(spec),
+                                  business_difficulty=difficulty,synthetic_label_counts=dict(counts))
+        return base
+
+
+def calibrate_v2(tasks):
+    """Local-only dedup; Q75 uses sorted linear interpolation at (n-1)*.75.
+
+    Conflicting articles split by the complete physical item (excluding item_id).
+    No observed weight is selected in preference to another.
+    """
+    rows = []
+    for task in tasks:
+        if task['business_configuration'] != 'B1': continue
+        if task['partition'] != 'train': raise JevSelectError('v2_requires_exposed_train')
+        for obj in task['items']:
+            oid = obj['item_id']; article = task['provenance']['article_ids'][oid]
+            physical = {k:v for k,v in obj.items() if k != 'item_id'}
+            rows.append((task['scenario_id'], oid, article, physical))
+    variants = defaultdict(dict)
+    for _,_,article,physical in rows: variants[article][digest(physical)] = physical
+    identities = defaultdict(dict); members = {}
+    for sid,oid,article,physical in rows:
+        identity = article if len(variants[article]) == 1 else article+'@physical:'+digest(physical)
+        identities[sid][oid] = identity
+        members[identity] = {'article_id':article, 'physical':physical, 'mass_kg':physical['mass_kg']}
+    weights = sorted(m['mass_kg'] for m in members.values())
+    if not weights: raise JevSelectError('empty_v2_calibration')
+    position = (len(weights)-1)*.75; lower = int(position)
+    m_ref = weights[lower] + (weights[min(lower+1,len(weights)-1)]-weights[lower])*(position-lower)
+    return {'algorithm':'sorted_linear_interpolation_(n-1)*0.75', 'quantile':.75,
+        'm_ref_kg':m_ref, 'instance_count':len(rows), 'article_count':len(variants),
+        'physical_product_count':len(members), 'members':dict(sorted(members.items())),
+        'conflicts':{a:dict(sorted(v.items())) for a,v in sorted(variants.items()) if len(v)>1},
+        'instance_weight_q75_kg':linear_q75(sorted(p['mass_kg'] for _,_,_,p in rows))}, dict(identities)
+
+
+def linear_q75(weights):
+    p=(len(weights)-1)*.75; i=int(p)
+    return weights[i]+(weights[min(i+1,len(weights)-1)]-weights[i])*(p-i)
+
+
+def ceil_half(value):
+    # Decimal avoids a binary floating error producing an extra .5 kg at ties.
+    from decimal import Decimal, ROUND_CEILING
+    return float((Decimal(str(value))*2).to_integral_value(rounding=ROUND_CEILING)/2)
+
+
+def v2_labels(spec, identity, difficulty):
+    from decimal import Decimal
+    setting = spec['difficulties'][difficulty]
+    multipliers = spec['product_multipliers']
+    r = multipliers[int(attribute_value(spec,identity,'load_multiplier')*len(multipliers))]
+    limit = ceil_half(Decimal(str(setting['base_multiplier'])) * Decimal(str(spec['calibration']['statistics']['m_ref_kg'])) * Decimal(str(r)))
+    return {'max_top_load_kg':limit,
+            'no_top_load':attribute_value(spec,identity,'no_top_load') < setting['no_top_probability']}

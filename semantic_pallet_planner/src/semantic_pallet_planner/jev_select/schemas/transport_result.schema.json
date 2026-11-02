@@ -50,6 +50,23 @@
         "boolean",
         "null"
       ]
+    },
+    "error_stage": {
+      "enum": [
+        "credential",
+        "connection_and_headers",
+        "response_read"
+      ]
+    },
+    "error_code": {
+      "type": "string"
+    },
+    "stage_timings": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0
+      }
     }
   },
   "required": [

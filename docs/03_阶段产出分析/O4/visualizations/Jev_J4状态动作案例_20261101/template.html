@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jev 同案例：状态、选择与违规后果</title>
+<style>
+:root{color-scheme:light;--ink:#173247;--muted:#536a7c;--line:#d7e1e9;--red:#b24733;--green:#166b5a}*{box-sizing:border-box}body{margin:0;background:#f3f6fa;color:var(--ink);font:16px/1.65 system-ui,"Noto Sans CJK SC","Microsoft YaHei",sans-serif}main{max-width:1260px;margin:auto;padding:34px 24px 60px}h1{font-size:34px;line-height:1.3;margin:10px 0 14px}h2{font-size:23px;margin:0 0 16px}h3{font-size:18px;margin:0 0 10px}p{margin:8px 0 16px}.eyebrow{letter-spacing:2px;color:var(--green);font-size:13px;font-weight:700}.muted,small{color:var(--muted)}.notice{background:#e3edf5;border-radius:12px;padding:16px 20px;margin:22px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:23px;margin-bottom:20px;min-width:0}.controls{display:flex;align-items:center;gap:18px;flex-wrap:wrap}input{accent-color:var(--green);width:250px;max-width:100%}button,select{font:inherit;border:1px solid var(--line);padding:8px 14px;border-radius:8px;background:white;color:var(--ink);cursor:pointer}button:hover{border-color:var(--green)}.metric{font-size:38px;font-weight:750;line-height:1.2}.red{color:var(--red)}.green{color:var(--green)}.pill{font-size:13px;padding:4px 9px;border-radius:20px;background:#edf3f7;display:inline-block}.chart{width:100%;height:auto;display:block}svg text{font-family:inherit}table{border-collapse:collapse;width:100%;font-size:15px}td,th{text-align:left;padding:11px 9px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:600}.scroll{overflow:auto}.experience{border-left:4px solid var(--green);padding-left:18px;margin-top:20px}.loadchain{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.node{background:#eef4f8;padding:14px;border-radius:10px;flex:1;min-width:170px}.node strong{display:block}.bar{height:24px;display:flex;margin:12px 0;border-radius:5px;overflow:hidden}.safe{background:#70bfa6}.excess{background:#d5816c}.limit{font-size:14px}.big-note{padding:20px;background:#173e50;color:#edf5f8;border-radius:12px}.big-note p{margin:8px 0}details{margin:12px 0}summary{cursor:pointer}code{font-size:13px;overflow-wrap:anywhere}a{color:#126653}.legend{display:flex;gap:15px;flex-wrap:wrap;font-size:13px}.dot{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px}.foot{font-size:13px;color:var(--muted)}@media(max-width:780px){.grid{grid-template-columns:1fr}h1{font-size:27px}main{padding:22px 14px}.card{padding:16px}table{min-width:650px}}@media print{body{background:white}.card{break-inside:avoid}.controls{display:none}main{max-width:none}}
+</style></head><body><main><div data-status="superseded-face-contact" style="padding:20px;margin:0 0 24px;border:3px solid #b24733;border-radius:12px;background:#fff0df"><strong>旧业务语义：本页的业务改进结论已撤回。</strong>用户已明确食品与清洁品不能同托盘放置，平移50 mm不能解决这项要求。以下仅保留旧面接触协议的历史图示，不作为当前优化证据。请查看<a href="同箱候选排名对照.html">同一箱体第一名与并列第二名候选的实际离线分叉对照</a>。</div>
+<div class="eyebrow">JEV / 状态 · 动作 · 后果 · 替代</div>
+<h1>提前留出50 mm，为什么能减少后续违规？</h1>
+<p class="muted">同一来源00100153 · v2适中档 · 固定前两步 · 第三步只改食品箱的位置 · 同一本地策略继续放置</p>
+<div class="notice"><strong>先读证据边界：</strong>这里的“4 → 2”是受控离线分支比较，两边均放置6/15件；真实Jev历史终态为8个违规实例，后续策略不同，不能把“8 → 2”归因于这次换位。未新增模型调用或模拟，页面全部读取已保存证据。</div>
+<section class="card"><h2>01　一次前期选择，改变了什么？</h2>
+<p>规则要求食品与清洁品不直接接触，且食品在清洁品右侧，间距至少50 mm。第三步原动作的食品箱左边缘与底箱右边缘重合；把同一个食品箱沿x平移50 mm后，两条要求同时满足。</p>
+<div class="grid"><div><span class="pill">原动作＋本地后续策略</span><p class="metric red">4 个终态违规</p><p>接触1 ＋ 相对位置1 ＋ 限载2</p></div><div><span class="pill">同箱平移50 mm＋相同后续策略</span><p class="metric green">2 个终态违规</p><p>限载2；接触与相对位置违规均为0</p></div></div>
+<div class="controls"><label for="step">查看第 <strong id="stepLabel">3</strong> 次放置后</label><input id="step" type="range" min="1" max="6" value="3"><button id="play">逐步播放</button><label for="view">投影</label><select id="view"><option value="front">正视 x-z</option><option value="top">俯视 x-y</option></select></div>
+<p class="foot">投影按保存的箱体位置和尺寸绘制；叠放的箱体在俯视图中会互相遮挡。悬停箱体可查看数值。</p>
+<div class="grid"><div><h3>对照：原动作</h3><svg id="before" viewBox="0 0 580 345" class="chart" role="img" aria-label="原动作箱体投影"></svg><p id="beforeText"></p></div><div><h3>替代：同一食品箱平移50 mm</h3><svg id="after" viewBox="0 0 580 345" class="chart" role="img" aria-label="替代动作箱体投影"></svg><p id="afterText"></p></div></div>
+<div class="legend"><span><i class="dot" style="background:#bcd5e6"></i>清洁品</span><span><i class="dot" style="background:#d8e2ef"></i>玻璃箱</span><span><i class="dot" style="background:#addbc8"></i>食品</span><span><i class="dot" style="background:#ead4ab"></i>普通货物</span></div>
+<div id="gapNote" class="notice"></div>
+</section>
+<section class="card"><h2>02　沿着同一案例，看违规如何累积</h2><svg id="trend" viewBox="0 0 1080 260" class="chart" role="img" aria-label="两分支逐次放置违规实例数"></svg>
+<p>终态实例 <strong>4 → 2</strong>；过程违规实例步数 <strong>12 → 4</strong>；曾出现的不同违规实例 <strong>4 → 2</strong>。过程实例步数是每次放置后实例数之和，反映持续暴露；它不是违规严重度，也不是不同违规总数。</p>
+<div class="scroll"><table><thead><tr><th>终态规则</th><th>原动作对照</th><th>同箱换位</th><th>变化解释</th></tr></thead><tbody><tr><td>禁止食品/清洁品直接接触</td><td>1</td><td>0</td><td>食品箱与底箱不再面接触</td></tr><tr><td>食品在右侧，间距≥50 mm</td><td>1；缺口50 mm</td><td>0；缺口0 mm</td><td>留下了规定间距</td></tr><tr><td>业务限载</td><td>2；累计超限7.21 kg</td><td>2；累计超限7.21 kg</td><td class="red">未改善，不能称为限载修复</td></tr></tbody></table></div></section>
+<section class="card"><h2>03　为什么后来仍会超载？看完整支撑链</h2><p>这部分来自真实历史第5步（D0004），用于说明载荷机制；它与上面的第3步空间对照是同一案例的两组证据。空间分支没有降低载荷违规。</p>
+<div class="loadchain"><div class="node"><strong>新放普通货物箱</strong>8.01 kg，自重向下传递</div><span>↓</span><div class="node"><strong>直接支撑：强化玻璃箱</strong>有效限载23.5 kg，本步可承载</div><span>↓</span><div class="node"><strong>祖先底箱：清洁品箱</strong>自重9.8 kg；已有上载6.38 kg</div></div>
+<p style="margin-top:22px"><strong>底箱顶部累计载荷：6.38 + 8.01 = 14.39 kg</strong></p><div class="bar" aria-label="14.39kg中10.5kg业务允许，3.89kg超限"><div class="safe" style="width:72.97%"></div><div class="excess" style="width:27.03%"></div></div><div class="limit">绿色：业务允许10.5 kg　｜　红色：超出3.89 kg　｜　物理上限89.25 kg仍满足</div>
+<p>放置前业务余量只有 <strong>10.5 − 6.38 = 4.12 kg</strong>，小于新箱传入的8.01 kg。仅看“8.01 &lt; 10.5”、仅看直接支撑箱，或只查物理可行性，都会漏掉这次业务违规。底箱自重不计入其自身顶部载荷。</p></section>
+<section class="card"><h2>04　换另一只箱子会不会更好？</h2><div class="scroll"><table><thead><tr><th>第三步方案</th><th>放置量</th><th>终态实例</th><th>具体后果</th><th>结论</th></tr></thead><tbody><tr><td>原食品箱，原位置</td><td>6/15</td><td>4</td><td>接触1＋相对位置1＋限载2</td><td>受控对照</td></tr><tr><td>同食品箱，x增加50 mm</td><td>6/15</td><td>2</td><td>限载2，无其他终态违规</td><td class="green">本次受控比较更优</td></tr><tr><td>换清洁品箱A，10.81 kg</td><td>6/15</td><td>3</td><td>区域1＋限载1＋禁压1</td><td>出现规则间代价转移</td></tr><tr><td>换清洁品箱B，10.81 kg</td><td>6/15</td><td>3</td><td>区域1＋限载1＋禁压1</td><td>出现规则间代价转移</td></tr></tbody></table></div><p>更优判断要求放置件数不少、每条规则的数量与同单位严重度不恶化，过程违规指标也不恶化。不能把kg与mm相加，也不能把少放箱造成的违规变少当作收益。</p></section>
+<section class="card"><h2>05　最终沉淀什么经验？</h2>
+<div class="experience"><h3>经验A：为后续业务关系保留空间余量</h3><p><strong>触发状态：</strong>食品即将放在清洁品右侧，物理可行，但箱体边缘间距未达50 mm。</p><p><strong>动作建议：</strong>在当前保存物理候选中检查同箱其他位置。本案例将x从337.5改为387.5 mm，使边缘间距从0变为50 mm。</p><p><strong>结果证据：</strong>固定前两步和后续本地策略，放置量相同，终态接触/相对位置违规各少1；总实例4→2、过程实例步数12→4。</p><p><strong>边界：</strong>这是特定布局、规则和后续策略下的局部证据，不是“食品总要向右移50 mm”的通用指令。</p></div>
+<div class="experience"><h3>经验B：按整条支撑链的剩余承载余量判断新箱</h3><p><strong>触发状态：</strong>直接支撑箱可承载，但祖先底箱已有载荷，业务余量不足。</p><p><strong>动作检查：</strong>对每个受影响支撑箱，用生效业务限载减已有顶部载荷，再与实际分配到该箱的增量载荷比较；应用强化覆盖与禁压规则，独立检查物理承载。</p><p><strong>结果证据：</strong>历史第5步祖先底箱只有4.12 kg业务余量，却增加8.01 kg，因而超载3.89 kg。</p><p><strong>边界：</strong>当前分支没有找到降低限载违规的全面更优方案。这条是状态化的失败机制，不能写成已验证的限载优化收益。</p></div>
+<div class="big-note"><strong>给后续决策的核心内容</strong><p>先描述“当前哪些箱、位置、余量”，再说明“选这个候选会触发什么”，附上“当时可用的替代候选与对照后果”，并保留未改善项。经验的价值来自可追溯的状态与比较，而非把业务规则重新说一遍。</p></div>
+</section>
+<section class="card"><h2>证据与适用范围</h2><p>来源数为1，所有分支只放置6/15件后物理候选耗尽；未证明整单最优、真实Jev替代效果或经验泛化。当前为经验原型，未接入正式DeepSeek生成/准入/Jev注入，active仍为0。</p><details><summary>查看来源、指标定义与复核文件</summary><p>实际来源：EXP_JEV_J4_V2_MODERATE_REST3_20261101_01 / J0000。离线对照：CASE_JEV_J4_STATE_ACTION_20261101_DELIVERY，分支0与1；另外展示分支2、3。</p><p>每个时间点为一次PLACE后的状态。实例数按规则及对象身份计数；严重度保持单位，不合成为总严重度。仅比较相同后续策略的分支结果。</p><p><a href="../../../../../semantic_pallet_planner/outputs/CASE_JEV_J4_STATE_ACTION_20261101_DELIVERY/case_analysis.json">案例分析JSON</a> · <a href="../../../../../semantic_pallet_planner/outputs/CASE_JEV_J4_STATE_ACTION_20261101_DELIVERY/experience_prototype.json">结构化经验JSON</a> · <a href="evidence_binding.json">源文件摘要</a> · <a href="案例改进总览.svg">导出/分享矢量总览</a></p></details></section>
+<p class="foot">离线自包含页面，无外部脚本或网络请求。可拖动滑块、切换投影，或打印为PDF。</p>
+</main><script id="case-data" type="application/json">__CASE_DATA__</script><script>
+const DATA=JSON.parse(document.getElementById('case-data').textContent);
+const $=id=>document.getElementById(id), NS='http://www.w3.org/2000/svg';
+function el(svg,name,attrs,text){const n=document.createElementNS(NS,name);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(text!==undefined)n.textContent=text;svg.appendChild(n);return n;}
+const names={household_cleaner:'清洁品',glassware:'玻璃箱',food:'食品',general:'普通货物'};
+const colors={household_cleaner:'#bcd5e6',glassware:'#d8e2ef',food:'#addbc8',general:'#ead4ab'};
+function draw(svg,branch,step){svg.replaceChildren();const event=DATA.episodes[branch].events[step-1],s=event.after,front=$('view').value==='front',scale=.4;
+ el(svg,'rect',{x:25,y:15,width:530,height:front?300:310,rx:8,fill:'#f5f8fb'});
+ const px=x=>50+(x+600)*scale,py=y=>front?315-y*scale:165-y*.28;
+ el(svg,'line',{x1:50,y1:front?315:165,x2:530,y2:front?315:165,stroke:'#a1b1be'});
+ const boxes=[...s.placed_items].sort((a,b)=>a.pose.z_base_mm-b.pose.z_base_mm);
+ for(const b of boxes){const a=s.attributes[b.item_id],p=b.pose,[sx,sy,sz]=b.oriented_size_mm;const x=px(p.x_mm-sx/2),y=front?py(p.z_base_mm+sz):py(p.y_mm+sy/2),h=front?sz*scale:sy*.28;
+ const r=el(svg,'rect',{x,y,width:sx*scale,height:h,rx:3,fill:colors[a.cargo_category]||'#ddd',stroke:b.item_id==='item_03'?'#176d5a':'#718597','stroke-width':b.item_id==='item_03'?2:1});
+ el(r,'title',{},`${b.item_id} ${names[a.cargo_category]} ${b.mass_kg}kg；x=${p.x_mm} y=${p.y_mm} z=${p.z_base_mm} mm；朝向${p.yaw_deg}°`);
+ el(svg,'text',{x:x+6,y:y+Math.max(15,h/2+4),'font-size':12,fill:'#1f3f50'},`${names[a.cargo_category]} ${b.mass_kg}kg`);
+ }
+ if(step===3&&front){const a=px(147.5),b=px(branch===0?147.5:197.5);el(svg,'path',{d:`M${a} 316 V334 M${a} 326 H${b} M${b} 316 V334`,stroke:branch?'#166b5a':'#b24733','stroke-width':2,fill:'none'});el(svg,'text',{x:a-55,y:343,'font-size':12,fill:branch?'#166b5a':'#b24733'},`边缘间距 ${branch?50:0}mm`);}
+ el(svg,'text',{x:37,y:30,'font-size':12,fill:'#536a7c'},front?'z ↑ / x →，单位mm':'y ↑ / x →，单位mm');
+ return event.business_after.instances.length;
+}
+function trend(step){const s=$('trend');s.replaceChildren();const X=i=>80+i*182,Y=n=>208-n*40;
+ for(let n=0;n<=4;n++){el(s,'line',{x1:80,y1:Y(n),x2:990,y2:Y(n),stroke:'#dde5ed'});el(s,'text',{x:50,y:Y(n)+5,'font-size':14,fill:'#536a7c'},n);}
+ el(s,'text',{x:30,y:26,'font-size':14,fill:'#536a7c'},'放置后违规实例数');
+ el(s,'line',{x1:X(step-1),y1:40,x2:X(step-1),y2:213,stroke:'#819aaa','stroke-dasharray':'4 4'});
+ for(let b=0;b<2;b++){const a=DATA.episodes[b].events.map(e=>e.business_after.instances.length),c=b?'#166b5a':'#b24733';el(s,'polyline',{points:a.map((n,i)=>`${X(i)},${Y(n)}`).join(' '),fill:'none',stroke:c,'stroke-width':3});a.forEach((n,i)=>{el(s,'circle',{cx:X(i),cy:Y(n),r:5,fill:c});el(s,'text',{x:X(i)+9,y:Y(n)+(b?20:-11),'font-size':14,fill:c},n);});}
+ for(let i=0;i<6;i++)el(s,'text',{x:X(i)-25,y:244,'font-size':14,fill:'#536a7c'},`第${i+1}步`);
+ el(s,'text',{x:700,y:24,'font-size':14,fill:'#b24733'},'原动作对照');el(s,'text',{x:850,y:24,'font-size':14,fill:'#166b5a'},'同箱换位');
+}
+function render(){const n=+$('step').value;$('stepLabel').textContent=n;const a=draw($('before'),0,n),b=draw($('after'),1,n);$('beforeText').textContent=`已放${n}/15件；当前违规实例 ${a}`;$('afterText').textContent=`已放${n}/15件；当前违规实例 ${b}`;$('gapNote').textContent=n<3?'前两步完全相同，尚未执行分叉动作。':n===3?'分叉点：对照新增2个违规（面接触、间距不足）；同箱换位新增0个。后续策略完全相同。':'后续采用同一本地选择策略；更早的布局改变可能影响后续动作。请比较整条轨迹，不能把最终差异只解释为末步行为。';trend(n);}
+let timer=null;function stop(){clearInterval(timer);timer=null;$('play').textContent='逐步播放';}
+$('step').addEventListener('input',()=>{stop();render();});$('view').addEventListener('change',render);$('play').addEventListener('click',()=>{if(timer){stop();return;}if(+$('step').value===6)$('step').value=1;render();$('play').textContent='暂停';timer=setInterval(()=>{if(+$('step').value>=6){stop();return;}$('step').value=+$('step').value+1;render();},1100);});render();
+</script></body></html>

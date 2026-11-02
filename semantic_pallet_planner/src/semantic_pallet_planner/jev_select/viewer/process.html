@@ -1,0 +1,33 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Jev J4 · 订单过程</title>
+<style>body{font:15px system-ui;background:#f4f6fa;color:#172b42;margin:24px}main{max-width:1400px;margin:auto}h1{font-size:26px}section{background:white;border:1px solid #dce4ee;border-radius:12px;padding:18px;margin:14px 0}.grid{display:grid;grid-template-columns:2fr 1fr;gap:16px}select,button{padding:8px;margin:4px;border:1px solid #b6c6d8;border-radius:6px;background:white}input{width:95%}svg{width:100%;height:480px;background:#f8fafc}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;max-height:360px;overflow:auto}.note{color:#526679}.bad{color:#aa392c}table{border-collapse:collapse;width:100%}td,th{padding:7px;text-align:left;border-bottom:1px solid #e0e8ef}@media(max-width:800px){.grid{display:block}body{margin:10px}svg{height:340px}}</style>
+<main><h1>Jev · 已保存订单过程</h1><p class="note">逐步查看实际到货、候选、放置与业务反馈。备选只预览位姿；没有反事实后果或模型理由。</p>
+<section><label>任务／方法 <select id="job"></select></label><button id="prev">上一步</button><button id="next">下一步</button><label>状态 <select id="phase"><option value="after">事件之后</option><option value="before">事件之前</option></select></label><p id="summary"></p><input id="step" type="range" min="0" value="0"><p id="event"></p></section>
+<div class="grid"><section><h2>托盘与候选</h2><svg id="scene" viewBox="0 0 900 530" role="img" aria-label="当前布局和候选位置"></svg><label>候选 <select id="candidate"></select></label><pre id="candidateInfo"></pre></section><section><h2>当前缓冲区</h2><div id="buffer"></div><h2>该事件实际提交后的业务反馈</h2><pre id="violations"></pre><p id="reason" class="bad"></p></section></div>
+<section><h2>本步实际注入经验</h2><pre id="memories"></pre><details><summary>本地记忆绑定</summary><pre id="binding"></pre></details></section>
+<p class="note">页面只读保存事件，不调用API、不重新生成候选、不执行仿真。订单最终统计是离线审计信息，不代表模型当时知道未来到货。</p></main>
+<script id="data" type="application/json">/*__PROCESS_DATA__*/</script><script>
+'use strict';const data=JSON.parse(document.getElementById('data').textContent),el=id=>document.getElementById(id);let lastFrame=null;
+function option(parent,value,text){const x=document.createElement('option');x.value=value;x.textContent=text;parent.appendChild(x)}
+data.forEach((j,i)=>option(el('job'),i,j.summary.task_id+' / '+j.summary.selector_backend+' / '+j.job_id));
+function project(x,y,z){return [450+(x-y)*.27,330+(x+y)*.13-z*.34]}
+function polygon(points,fill,stroke='#788fa8',opacity=1){const p=document.createElementNS('http://www.w3.org/2000/svg','polygon');p.setAttribute('points',points.map(v=>project(...v).join(',')).join(' '));p.setAttribute('fill',fill);p.setAttribute('stroke',stroke);p.setAttribute('opacity',opacity);el('scene').appendChild(p)}
+function box(p,size,color,opacity=1){const x=p.x_mm-size[0]/2,y=p.y_mm-size[1]/2,z=p.z_base_mm,[a,b,c]=size;
+ polygon([[x,y,z],[x+a,y,z],[x+a,y,z+c],[x,y,z+c]],color,'#526f8f',opacity);
+ polygon([[x+a,y,z],[x+a,y+b,z],[x+a,y+b,z+c],[x+a,y,z+c]],color,'#526f8f',opacity);
+ polygon([[x,y,z+c],[x+a,y,z+c],[x+a,y+b,z+c],[x,y+b,z+c]],color,'#526f8f',opacity)}
+function scene(){const f=lastFrame;if(!f)return;const state=f[el('phase').value];el('scene').replaceChildren();const c=state.container,l=c.length_mm/2,w=c.width_mm/2;
+ polygon([[-l,-w,0],[l,-w,0],[l,w,0],[-l,w,0]],'#e0e9f3');
+ [...state.placed_items].sort((a,b)=>a.pose.z_base_mm-b.pose.z_base_mm||a.pose.x_mm+a.pose.y_mm-b.pose.x_mm-b.pose.y_mm).forEach((o,i)=>box(o.pose,o.oriented_size_mm,['#8cb6d9','#9ec9b6','#d4bd9a'][i%3]));
+ const label=el('candidate').value,candidate=f.criteria[label];if(candidate&&el('phase').value==='before')box(candidate.pose,candidate.oriented_size_mm,label===f.selected?'#df9b45':'#ab93cf',.65);
+ el('candidateInfo').textContent=candidate?JSON.stringify({candidate:label,actual_choice:f.selected,...candidate},null,2):'本事件没有候选';
+ const q=state.pending_items;el('buffer').textContent=q.length?q.map(p=>p.item.item_id+' · '+p.item.mass_kg+' kg · '+JSON.stringify(p.item.dimensions_mm)).join('\n'):'缓冲区为空';el('buffer').style.whiteSpace='pre-wrap'}
+function render(){const j=data[+el('job').value],i=+el('step').value;lastFrame=j.frames[i];if(!lastFrame)return;const s=j.summary,f=lastFrame;
+ el('summary').textContent='最终装入 '+s.placed_items+'/'+s.planned_items+'；新违规 '+s.new_violation_events+'；停止原因 '+s.termination_reason;
+ el('event').textContent='事件 '+(i+1)+'/'+j.frames.length+' · '+f.event+' · '+(f.decision_id||'环境到货事件')+(f.selected?' · 实际选择 '+f.selected:'');
+ el('candidate').replaceChildren();option(el('candidate'),'','不预览候选');Object.keys(f.criteria).forEach(k=>option(el('candidate'),k,k+' · '+f.criteria[k].pick_object+(k===f.selected?'（实际）':'')));el('candidate').value=f.selected||'';
+ el('violations').textContent=f.instances.length?JSON.stringify(f.instances,null,2):'本事件未记录业务违规反馈（到货事件不重新评价）';el('reason').textContent=f.reason||'';
+ el('memories').textContent=f.memories.length?f.memories.join('\n\n'):'空经验';el('binding').textContent=JSON.stringify({binding:f.memory_binding,retrieval:f.retrieval},null,2);scene()}
+function job(){const j=data[+el('job').value];el('step').max=Math.max(0,j.frames.length-1);el('step').value=0;render()}
+el('job').onchange=job;el('step').oninput=render;el('phase').onchange=scene;el('candidate').onchange=scene;
+el('prev').onclick=()=>{el('step').value=Math.max(0,+el('step').value-1);render()};el('next').onclick=()=>{el('step').value=Math.min(+el('step').max,+el('step').value+1);render()};job();
+</script></html>

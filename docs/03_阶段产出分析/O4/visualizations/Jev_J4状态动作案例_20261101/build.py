@@ -1,0 +1,75 @@
+"""Build a standalone evidence visualization from preserved case artifacts; no replay."""
+import json
+from pathlib import Path
+import hashlib
+
+HERE = Path(__file__).resolve().parent
+ROOT = next(p for p in HERE.parents if (p / 'semantic_pallet_planner/outputs').is_dir())
+SOURCE = ROOT / 'semantic_pallet_planner/outputs/CASE_JEV_J4_STATE_ACTION_20261101_DELIVERY'
+
+def load(name):
+    return json.loads((SOURCE / name).read_text())
+
+data = {'report': load('case_analysis.json'), 'prototype': load('experience_prototype.json'),
+        'episodes': [load(f'simulated_branches/{i}.json') for i in range(4)]}
+for ep in data['episodes']:
+    ep['events'] = [{k: e[k] for k in ('decision_id', 'after', 'business_after')}
+                    for e in ep['events'] if e['event'] == 'PLACE']
+template = (HERE / 'template.html').read_text()
+payload = json.dumps(data, ensure_ascii=False).replace('<', '\\u003c')
+(HERE / '案例交互对照.html').write_text(template.replace('__CASE_DATA__', payload))
+
+# Publication/share-friendly vector overview; positions use the actual saved geometry.
+svg = '''<svg xmlns="http://www.w3.org/2000/svg" width="1320" height="1080" viewBox="0 0 1320 1080">
+<style>text{font-family:Arial,'Noto Sans CJK SC','Microsoft YaHei',sans-serif;fill:#163047}.title{font-size:30px;font-weight:700}.h{font-size:22px;font-weight:700}.b{font-size:17px}.s{font-size:15px}.small{font-size:14px}.muted{fill:#51677a}.red{fill:#b64834}.green{fill:#126759}.num{font-size:38px;font-weight:700}</style>
+<rect width="1320" height="1080" fill="#f4f7fb"/>
+<text x="44" y="53" class="title">同一案例，如何通过前期选择减少违规？</text>
+<text x="44" y="85" class="b muted">00100153 · v2适中档 · 固定前两步 · 第三步改变一个位置 · 后续使用同一本地策略</text>
+<rect x="40" y="109" width="1240" height="43" rx="10" fill="#e3edf5"/>
+<text x="58" y="137" class="b">证据边界：下方4→2为受控离线模拟；真实Jev历史终态为8，不能用8→2归因于这次换位。</text>
+<rect x="40" y="174" width="604" height="323" rx="14" fill="white"/>
+<rect x="660" y="174" width="620" height="323" rx="14" fill="white"/>
+<text x="62" y="207" class="h">原动作：食品箱 x=337.5 mm</text>
+<text x="682" y="207" class="h">替代动作：同箱 x=387.5 mm</text>
+<text x="62" y="233" class="s muted">第3步正视投影 · mm · 图形按实际箱体比例绘制</text>
+<text x="682" y="233" class="s muted">沿x方向平移50 mm；重量、朝向、前两步均相同</text>
+__GEOMETRY__
+<text x="62" y="460" class="b red">间距 0 mm → 接触违规1 + 相对位置违规1</text>
+<text x="682" y="460" class="b green">间距 50 mm → 本步新增违规0</text>
+<rect x="40" y="515" width="1240" height="202" rx="14" fill="white"/>
+<text x="62" y="550" class="h">相同后续策略，两条轨迹都放置6/15件后物理候选耗尽</text>
+<text x="66" y="596" class="b">终态违规实例</text><text x="235" y="601" class="num red">4</text><text x="283" y="596" class="h">→</text><text x="330" y="601" class="num green">2</text>
+<text x="423" y="587" class="b">禁止接触 1→0　相对位置 1→0</text>
+<text x="423" y="616" class="b red">业务超载 2→2，累计超限仍为7.21 kg</text>
+<text x="66" y="656" class="b">过程违规实例步数：12→4</text><text x="423" y="656" class="b">逐步实例数：0,0,2,3,3,4 → 0,0,0,1,1,2</text>
+<text x="66" y="692" class="s muted">换成清洁品箱的两个分支终态均为3，但引入区域/禁压违规，不能仅凭总数较少认定全面更优。</text>
+<rect x="40" y="735" width="1240" height="183" rx="14" fill="white"/>
+<text x="62" y="771" class="h">另一条真实证据：为什么第5步仍然超载？</text>
+<text x="62" y="807" class="b">新箱8.01 kg → 强化玻璃支撑箱 → 清洁品祖先底箱（原有上载6.38 kg）</text>
+<text x="62" y="843" class="h red">6.38 + 8.01 = 14.39 kg ＞ 生效业务限载10.5 kg，超载3.89 kg</text>
+<text x="62" y="881" class="b muted">剩余业务余量仅4.12 kg；物理承载89.25 kg仍满足。只查直接支撑或新箱单重都会漏判。</text>
+<rect x="40" y="937" width="1240" height="111" rx="14" fill="#163d50"/>
+<text x="62" y="972" style="fill:white;font-size:22px;font-weight:700">沉淀的经验 = 触发状态 + 选择后果 + 替代证据 + 适用边界</text>
+<text x="62" y="1003" style="fill:#e3eef3;font-size:17px">先检查前期底面布局是否留下规定间距，再对整条支撑链核算剩余载荷；逐规则比较，避免转移违规。</text>
+<text x="62" y="1031" style="fill:#e3eef3;font-size:15px">单来源局部证据；未解决整单可码性与限载；未证明真实Jev收益；经验原型尚未激活。</text>
+</svg>'''
+pieces = []
+colors = {'item_02':'#c2d9e8', 'item_01':'#d8e4ee', 'item_03':'#b5dfcf'}
+names = {'item_02':'清洁品底箱 9.8kg', 'item_01':'强化玻璃箱 6.38kg', 'item_03':'食品箱 6.36kg'}
+for branch, offset in ((0,62),(1,682)):
+    state=data['episodes'][branch]['events'][2]['after']
+    scale=.40; floor=412
+    for box in state['placed_items']:
+        pose=box['pose']; sx,sy,sz=box['oriented_size_mm']
+        x=offset+20+(pose['x_mm']-sx/2+600)*scale
+        y=floor-(pose['z_base_mm']+sz)*scale
+        pieces.append(f'<rect x="{x}" y="{y}" width="{sx*scale}" height="{sz*scale}" rx="3" fill="{colors[box["item_id"]]}" stroke="#51677a"/><text x="{x+8}" y="{y+sz*scale/2+5}" class="small">{names[box["item_id"]]}</text>')
+    pieces.append(f'<line x1="{offset+20}" y1="{floor+1}" x2="{offset+500}" y2="{floor+1}" stroke="#51677a"/>')
+    a=offset+20+(147.5+600)*scale;b=offset+20+((147.5 if branch==0 else 197.5)+600)*scale
+    pieces.append(f'<path d="M{a} 416 V433 M{a} 426 H{b} M{b} 416 V433" fill="none" stroke="{("#b64834" if branch==0 else "#126759")}" stroke-width="2"/>')
+(HERE/'案例改进总览.svg').write_text(svg.replace('__GEOMETRY__',''.join(pieces)))
+used=['case_analysis.json','experience_prototype.json']+[f'simulated_branches/{i}.json' for i in range(4)]
+receipt={'source':str(SOURCE.relative_to(ROOT)),'kind':'visualization_of_saved_evidence','new_api_calls':0,'new_simulations':0,
+         'inputs':{f:hashlib.sha256((SOURCE/f).read_bytes()).hexdigest() for f in used}}
+(HERE/'evidence_binding.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
+print('Built standalone HTML, vector overview and evidence binding; no simulations.')

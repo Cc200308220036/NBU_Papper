@@ -13,7 +13,7 @@ from semantic_pallet_planner.o4.extensions.e2.protocol import (
 )
 from semantic_pallet_planner.o4.extensions.e2.runtime import evaluate_candidates
 
-from .config import is_v2
+from .config import business_evaluation_mode, is_v3, protocol_suffix
 
 from .contracts import (
     BusinessEvaluation, CandidateBundle, JevSelectError, PublicPolicyContext,
@@ -61,7 +61,7 @@ def validate_bundle(req: dict, bundle: CandidateBundle) -> dict:
     selected = value["selectable_candidates"]
     if len({c["candidate_id"] for c in selected}) != len(selected) or any(original.get(c["candidate_id"]) != c for c in selected):
         raise JevSelectError("invalid_candidate_subset")
-    if value["version"] == "jev_candidate_bundle_v2" and value["selectable_pool"] != "unfiltered":
+    if value["version"] in ("jev_candidate_bundle_v2", "jev_candidate_bundle_v3") and value["selectable_pool"] != "unfiltered":
         if value["selectable_candidates"] != candidates or value["selectable_digest"] != value["physical_digest"]:
             raise JevSelectError("business_filtered_physical_pool")
     return value
@@ -87,9 +87,9 @@ class CandidateProvider:
         validate_candidates(observation, candidates)
         if config is not None:
             validate_schema("config", config)
-        version_two = config is not None and is_v2(config)
+        version_two = config is not None and business_evaluation_mode(config)
         value = {
-            "version": "jev_candidate_bundle_v2" if version_two else "jev_candidate_bundle_v1", "observation_digest": observation["observation_digest"],
+            "version": f"jev_candidate_bundle_{protocol_suffix(config)}" if config else "jev_candidate_bundle_v1", "observation_digest": observation["observation_digest"],
             "candidate_backend": "e2_original_v1", "generator_config_digest": digest(generator_config),
             "physical_candidates": candidates, "physical_digest": digest(candidates),
             "generation_counts": counts, "selectable_pool": "unfiltered",
@@ -128,8 +128,8 @@ class PublicBusinessGuard:
         validate_schema("config", config)
         value = validate_bundle(req, bundle)
         candidates = value["physical_candidates"]
-        if is_v2(config):
-            if value["version"] != "jev_candidate_bundle_v2":
+        if business_evaluation_mode(config):
+            if value["version"] != f"jev_candidate_bundle_{protocol_suffix(config)}":
                 raise JevSelectError("candidate_protocol_mismatch")
             self.validate_policy_context(req, policy)
             value.update(selectable_pool="physical_feasible", selectable_candidates=copy.deepcopy(candidates),

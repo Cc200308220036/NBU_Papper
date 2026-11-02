@@ -10,7 +10,7 @@ from semantic_pallet_planner.o4.online.planner_adapter import soft_quality
 from semantic_pallet_planner.planner.scoring import geometry_score
 
 from .candidates import PublicBusinessGuard, decision_route, validate_bundle
-from .config import is_v2
+from .config import business_evaluation_mode, is_v3, protocol_suffix
 from semantic_pallet_planner.o4.executor import reconstruct, transition
 from .contracts import (CandidateBundle, DecisionContext, JevSelectError, MemorySnapshot,
                         PublicPolicyContext, canonical, digest, validate_schema)
@@ -34,6 +34,9 @@ QUESTION_V2 = ("Select one complete box-and-placement action. Every option is ph
 OBJECTIVE_V2 = ("Aim to place the entire order while avoiding business violations and preserving useful "
                 "space. Business requirements remain goals, but violations do not block execution or end "
                 "the episode. Physical checks remain mandatory. Only currently observed boxes are known.")
+
+QUESTION_V3 = (QUESTION_V2 + " Historical observations, if provided, may not apply. "
+               "Current public business requirements and physical constraints take precedence.")
 
 
 def _selector_text(selector: dict, aliases: dict) -> str:
@@ -88,14 +91,20 @@ class ContextBuilder:
 
     def build(self, observation: dict, bundle: CandidateBundle,
               public_policy: PublicPolicyContext,
-              memories: MemorySnapshot | None = None) -> DecisionContext:
+              memories: MemorySnapshot | None = None, retrieval: dict | None = None) -> DecisionContext:
         validate_observation(observation)
         value = validate_bundle(observation, bundle)
         guard = PublicBusinessGuard()
         if value != guard.filter(observation, public_policy, bundle, self.config).data:
             raise JevSelectError("candidate_filter_mismatch")
-        memory = MemorySnapshot.empty() if memories is None else memories
-        if memory.data != MemorySnapshot.empty().data:
+        if is_v3(self.config):
+            from .memory_store import empty_snapshot, validate_snapshot
+            memory = empty_snapshot() if memories is None else memories
+            memory_value = validate_snapshot(memory, self.config["memory_snapshot_digest"])
+
+        else:
+            memory = MemorySnapshot.empty() if memories is None else memories
+        if not is_v3(self.config) and memory.data != MemorySnapshot.empty().data:
             raise JevSelectError("memory_not_implemented", "J0 accepts only the frozen empty memory")
         if observation["buffer_context"]["capacity"] != self.config["buffer_capacity"]:
             raise JevSelectError("config_capacity_mismatch")
@@ -107,7 +116,7 @@ class ContextBuilder:
         # Identity and state, not private order provenance, drive deterministic display order.
         seed = digest([self.config["display_order_seed"], observation["request_id"], observation["state_hash"]])
         random.Random(int(seed[:16], 16)).shuffle(ordered)
-        version_two = is_v2(self.config)
+        version_two = business_evaluation_mode(self.config)
         if version_two:
             before_loads = reconstruct(observation["placed_objects"])[0]
             evaluations = {}
@@ -177,12 +186,21 @@ class ContextBuilder:
             for obj in state["placed_objects"]:
                 original = next(k for k, alias in aliases.items() if alias == obj["object_id"])
                 obj["current_top_load_kg"] = before_loads[original]
+        if is_v3(self.config):
+            from .memory_query import build_query
+            from .memory_retrieval import retrieve, validate_saved_retrieval
+            from .config import memory_retrieval_limits, memory_mode_for_method
+            if self.config['memory_mode'] != memory_mode_for_method(self.config['selector']):
+                raise JevSelectError('method_memory_mode_mismatch')
+            query=build_query(state, {'english_descriptions':state['business_requirements']['english_descriptions']}, criteria)
+            limits=memory_retrieval_limits(self.config)
+            retrieval=(retrieve(query,memory,self.config['memory_mode'],limits) if retrieval is None else
+                       validate_saved_retrieval(retrieval,query,memory,self.config['memory_mode'],limits))
+            state['memories']=list(retrieval['memories'])
         route = decision_route(bundle)
         body = None if route != "CHOICE_REQUIRED" else {
             "model": self.config["model"], "state": state,
-            "questions": {"next_action": {"type": "choice", "instructions": QUESTION_V2 if version_two else QUESTION, "criteria": criteria}}}
-        if body is not None and len(canonical(body).encode("utf-8")) > self.config["max_request_bytes"]:
-            raise JevSelectError("request_too_large", "No candidate or fact was silently dropped")
+            "questions": {"next_action": {"type": "choice", "instructions": QUESTION_V3 if is_v3(self.config) else QUESTION_V2 if version_two else QUESTION, "criteria": criteria}}}
         binding = {**{k: observation[k] for k in BINDINGS}, "event_index": buffer["event_index"],
                    "physical_digest": value["physical_digest"], "selectable_digest": value["selectable_digest"],
                    "mapping_digest": digest(mapping), "memory_digest": digest(memory.data),
@@ -196,11 +214,22 @@ class ContextBuilder:
             binding["public_spec_digest"] = digest(public_policy.data["response"]["policy_ast"])
             if "experiment_binding" in self.config:
                 binding["experiment_binding"] = self.config["experiment_binding"]
-        result = DecisionContext.from_dict({"version": "jev_decision_context_v2" if version_two else "jev_decision_context_v1", "route": route,
+        if is_v3(self.config):
+            binding.update(memory_snapshot_digest=digest(memory.data),corpus_digest=memory.data['corpus_digest'],
+                query_digest=retrieval['query_digest'],retrieval_digest=retrieval['retrieval_digest'],
+                injected_text_digest=retrieval['injected_text_digest'],memory_mode=self.config['memory_mode'],
+                retrieval_version=retrieval['retrieval_version'],index_digest=retrieval['index_digest'],
+                mode_index_digest=retrieval['mode_index_digest'],retrieval_config_digest=retrieval['config_digest'],
+                fixture_only=memory.data['fixture_only'],method=self.config['selector'])
+        result = DecisionContext.from_dict({"version": "jev_decision_context_" + protocol_suffix(self.config), "route": route,
                                             "model_state": state, "criteria": criteria,
                                             "request_body": body, "display_mapping": mapping,
-                                            "local_binding": binding})
+                                            "local_binding": binding, **({"retrieval":retrieval} if is_v3(self.config) else {})})
         validate_context(result, observation, bundle, self.config)
+        if body is not None and len(canonical(body).encode('utf-8'))>self.config['max_request_bytes']:
+            exc=JevSelectError('MEMORY_CONTEXT_TOO_LARGE' if is_v3(self.config) else 'request_too_large', 'No candidate or fact was silently dropped')
+            exc.context=result
+            raise exc
         return result
 
 
@@ -214,20 +243,42 @@ def validate_context(context: DecisionContext, observation: dict | None = None,
         raise JevSelectError("invalid_display_mapping")
     expected = {"mapping_digest": digest(value["display_mapping"]), "model_state_digest": digest(state),
                 "criteria_digest": digest(criteria), "request_body_digest": digest(value["request_body"]),
-                "memory_digest": digest(MemorySnapshot.empty().data)}
+                "memory_digest": binding["memory_snapshot_digest"] if value["version"] == "jev_decision_context_v3" else digest(MemorySnapshot.empty().data)}
+    if value['version'] == 'jev_decision_context_v3':
+        if 'retrieval' in value:
+            from .memory_query import build_query
+            from .memory_retrieval import validate_saved_retrieval
+            public_state=copy.deepcopy(state);public_state['memories']=[]
+            query=build_query(public_state,{'english_descriptions':state['business_requirements']['english_descriptions']},criteria)
+            r=validate_saved_retrieval(value['retrieval'],query,mode=binding['memory_mode'])
+            fields={'memory_snapshot_digest':'snapshot_digest','corpus_digest':'corpus_digest','query_digest':'query_digest',
+                'retrieval_digest':'retrieval_digest','injected_text_digest':'injected_text_digest',
+                'index_digest':'index_digest','mode_index_digest':'mode_index_digest','retrieval_config_digest':'config_digest','retrieval_version':'retrieval_version'}
+            if state['memories']!=r['memories'] or any(binding[k]!=r[v] for k,v in fields.items()):
+                raise JevSelectError('retrieval_binding_changed')
+        elif state['memories'] or binding['injected_text_digest'] != digest([]):
+            raise JevSelectError('nonempty_memory_requires_j4_b1')
+        if 'retrieval' not in value and (binding['query_digest'] != digest({}) or binding['retrieval_digest'] != digest({'status': 'EMPTY_SNAPSHOT'})):
+            raise JevSelectError('empty_memory_binding_changed')
     if any(binding[k] != v for k, v in expected.items()):
         raise JevSelectError("context_digest_mismatch")
     body = value["request_body"]
     if value["route"] == "CHOICE_REQUIRED":
         if len(labels) < 2 or body is None or body["state"] != state or body["questions"]["next_action"] != {
-                "type": "choice", "instructions": QUESTION_V2 if value["version"] == "jev_decision_context_v2" else QUESTION, "criteria": criteria}:
+                "type": "choice", "instructions": QUESTION_V3 if value["version"] == "jev_decision_context_v3" else QUESTION_V2 if value["version"] == "jev_decision_context_v2" else QUESTION, "criteria": criteria}:
             raise JevSelectError("request_context_mismatch")
     elif body is not None or (value["route"] == "SINGLETON_BYPASS") != (len(labels) == 1):
         raise JevSelectError("invalid_decision_route")
     if config is not None:
         validate_schema("config", config)
-        if (value["version"] == "jev_decision_context_v2") != is_v2(config):
+        if value["version"] != "jev_decision_context_" + protocol_suffix(config):
             raise JevSelectError("context_protocol_mismatch")
+        if is_v3(config) and (binding['memory_snapshot_digest'] != config['memory_snapshot_digest'] or binding['memory_mode'] != config['memory_mode'] or binding['corpus_digest'] != config['memory_corpus_digest']):
+            raise JevSelectError('memory_config_binding_mismatch')
+        if is_v3(config) and 'retrieval' in value:
+            from .config import memory_mode_for_method, memory_retrieval_limits
+            if binding['method']!=config['selector'] or binding['memory_mode']!=memory_mode_for_method(config['selector']) or value['retrieval']['limits']!=memory_retrieval_limits(config):
+                raise JevSelectError('memory_method_changed')
         if binding.get("experiment_binding") != config.get("experiment_binding"):
             raise JevSelectError("experiment_binding_mismatch")
         if binding["config_digest"] != digest(config) or (body is not None and body["model"] != config["model"]):
@@ -251,7 +302,7 @@ def validate_context(context: DecisionContext, observation: dict | None = None,
                 observation["placed_objects"] + observation["available_objects"], 1)}
             if entry["candidate_digest"] != digest(c) or entry["pick_item_id"] != c["pick_item_id"] or criteria[label]["pose"] != c["pose"] or criteria[label]["oriented_size_mm"] != c["oriented_size_mm"] or criteria[label]["pick_object"] != aliases[c["pick_item_id"]]:
                 raise JevSelectError("changed_candidate_mapping")
-        if value["version"] == "jev_decision_context_v2":
+        if value["version"] in ("jev_decision_context_v2", "jev_decision_context_v3"):
             public_policy = PublicBusinessGuard().resolve(observation)
             if binding["public_spec_digest"] != digest(public_policy.data["response"]["policy_ast"]):
                 raise JevSelectError("public_spec_mismatch")

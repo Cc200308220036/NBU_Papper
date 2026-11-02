@@ -22,7 +22,7 @@ def result(context, *, status, source, label=None, attempt=None, payload=None, e
     metadata = payload or {}
     answer = metadata.get("answers", {}).get("next_action", {})
     saved = attempt["transport"] if attempt else None
-    selection = {"version": "jev_selection_result_v2" if value["version"] == "jev_decision_context_v2" else "jev_selection_result_v1", "status": status,
+    selection = {"version": "jev_selection_result_" + value["version"].rsplit("_", 1)[1], "status": status,
                  "selected_display_id": label,
                  "selected_candidate_id": None if label is None else value["display_mapping"][label]["candidate_id"],
                  "source": source, "requested_model": value["request_body"]["model"] if value["request_body"] and source in ("jev", "test_double") else None,
@@ -31,6 +31,9 @@ def result(context, *, status, source, label=None, attempt=None, payload=None, e
                  "usage": metadata.get("usage"), "latency_s": saved["latency_s"] if saved else None,
                  "local_binding_digest": digest(value["local_binding"]),
                  "raw_response_digest": saved["raw_sha256"] if saved else None, "error": error}
+    if value['version'] == 'jev_decision_context_v3' and error is not None:
+        selection['error_stage'] = 'response_validation' if status == 'invalid_response' else (saved or {}).get('error_stage', 'selection')
+        selection['error_code'] = error
     validate_schema("selection_result", selection)
     return SelectionResult.from_dict(selection)
 
@@ -170,6 +173,8 @@ class JevSelector:
         validate_context(context, config=self.config)
         if context.data["local_binding"].get("decision_id") != decision_id or context.data["local_binding"].get("job_id") != self.job_id:
             raise JevSelectError("selector_identity_mismatch")
+        if context.data['local_binding'].get('fixture_only') and self.transport is not None and self.transport.origin=='jev':
+            raise JevSelectError('fixture_memory_in_remote_selector')
         attempt = self.ledger.request(context, self.job_id, decision_id, self.transport)
         if attempt is None:
             return result(context, status="budget_exhausted", source=self.ledger.origin if self.transport is None else self.transport.origin,

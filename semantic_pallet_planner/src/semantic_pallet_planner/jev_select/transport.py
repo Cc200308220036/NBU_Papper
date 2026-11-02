@@ -16,10 +16,16 @@ from .contracts import JevSelectError, canonical
 from .context import validate_context
 
 
-def outcome(status, raw=b"", *, http_status=None, latency_s=0., error=None, network_attempted=False):
-    return {"version": "jev_transport_v1", "status": status, "http_status": http_status,
+def outcome(status, raw=b"", *, http_status=None, latency_s=0., error=None, network_attempted=False,
+            error_stage=None, error_code=None, stage_timings=None):
+    value = {"version": "jev_transport_v1", "status": status, "http_status": http_status,
             "raw_body_b64": base64.b64encode(raw).decode("ascii"),
             "raw_sha256": hashlib.sha256(raw).hexdigest(), "latency_s": latency_s, "error": error, "network_attempted": network_attempted}
+    if error_stage is not None:
+        value.update(error_stage=error_stage, error_code=error_code)
+    if stage_timings is not None:
+        value['stage_timings'] = stage_timings
+    return value
 
 
 def validate_transport(value):
@@ -101,22 +107,37 @@ class JevTransport:
         try:
             key = credential(self.config["api_key_env"], self.api_key_file)
         except (OSError, JevSelectError):
-            return outcome("PROVIDER_FAILURE", error="MISSING_OR_INVALID_API_KEY")
+            return outcome("PROVIDER_FAILURE", error="MISSING_OR_INVALID_API_KEY",
+                           error_stage="credential", error_code="MISSING_OR_INVALID_API_KEY")
         request = urllib.request.Request(self.config["endpoint"], data=encoded,
                     headers={"Authorization": "Bearer " + key, "Content-Type": "application/json"}, method="POST")
         start = time.perf_counter()
+        stage = 'connection_and_headers'
+        timings = {}
         try:
             with urllib.request.build_opener(NoRedirect()).open(request, timeout=self.config["timeout_s"]) as response:
+                timings['connection_and_headers_s'] = time.perf_counter()-start
+                stage = 'response_read'
+                read_started = time.perf_counter()
                 raw = response.read(self.config["response_max_bytes"] + 1)
+                timings['response_read_s'] = time.perf_counter()-read_started
                 code = response.status
             if len(raw) > self.config["response_max_bytes"]:
                 return outcome("PROVIDER_FAILURE", raw[:self.config["response_max_bytes"]], http_status=code,
-                               latency_s=time.perf_counter()-start, error="RESPONSE_TOO_LARGE", network_attempted=True)
-            return outcome("OK", raw, http_status=code, latency_s=time.perf_counter()-start, network_attempted=True)
+                               latency_s=time.perf_counter()-start, error="RESPONSE_TOO_LARGE", network_attempted=True,
+                               error_stage=stage, error_code="RESPONSE_TOO_LARGE", stage_timings=timings)
+            return outcome("OK", raw, http_status=code, latency_s=time.perf_counter()-start, network_attempted=True, stage_timings=timings)
         except urllib.error.HTTPError as exc:
             # Do not persist error bodies: a provider/proxy might echo authentication.
             return outcome("PROVIDER_FAILURE", http_status=exc.code, latency_s=time.perf_counter()-start,
-                           error=f"HTTP_{exc.code}", network_attempted=True)
-        except (TimeoutError, socket.timeout, urllib.error.URLError, OSError):
+                           error=f"HTTP_{exc.code}", network_attempted=True,
+                           error_stage=stage, error_code=f"HTTP_{exc.code}", stage_timings=timings)
+        except (TimeoutError, socket.timeout, urllib.error.URLError, OSError) as exc:
             # No exception text or headers enter logs. Delivery may already have happened.
-            return outcome("UNKNOWN_IN_FLIGHT", latency_s=time.perf_counter()-start, error="NETWORK_OUTCOME_UNKNOWN", network_attempted=True)
+            cause = exc.reason if isinstance(exc, urllib.error.URLError) else exc
+            safe_code = ('TIMEOUT' if isinstance(cause, (TimeoutError, socket.timeout)) else
+                         'DNS_FAILURE' if isinstance(cause, socket.gaierror) else
+                         'CONNECTION_FAILURE' if isinstance(cause, ConnectionError) else 'NETWORK_ERROR')
+            timings[stage + '_elapsed_s'] = time.perf_counter() - (read_started if stage == 'response_read' else start)
+            return outcome("UNKNOWN_IN_FLIGHT", latency_s=time.perf_counter()-start, error="NETWORK_OUTCOME_UNKNOWN", network_attempted=True,
+                           error_stage=stage, error_code=safe_code, stage_timings=timings)

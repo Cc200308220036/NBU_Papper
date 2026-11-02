@@ -192,7 +192,7 @@ def summarize_v2(task, config, method, state, events, reason):
                final_clean_completed=row['completed'] and not final['instances'],
                final_rule_coverage=final['coverage'], unobserved_rule_objects=len(row['unarrived_ids']),
                feasibility_status=task.get('feasibility_status','unknown'),
-               synthetic_business_attributes=task.get('business_spec_source')=='public_generated_v1')
+               synthetic_business_attributes=task.get('business_spec_source') in ('public_generated_v1','public_generated_v2'))
     placed = state['placed_items']
     if placed:
         mins = [min(o['pose'][axis]-o['oriented_size_mm'][i]/2 for o in placed) for i,axis in enumerate(('x_mm','y_mm'))]

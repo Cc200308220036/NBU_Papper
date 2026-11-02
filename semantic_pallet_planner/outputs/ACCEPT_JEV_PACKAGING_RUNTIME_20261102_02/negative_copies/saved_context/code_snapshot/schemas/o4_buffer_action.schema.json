@@ -1,0 +1,53 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "o4_buffer_action_v1"
+    },
+    "kind": {
+      "enum": [
+        "WAIT_NEXT",
+        "PLACE"
+      ]
+    },
+    "buffer_state_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "instruction_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "event_index": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "pick_item_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "candidate_label": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "candidate_set_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "buffer_state_hash",
+    "instruction_digest",
+    "event_index",
+    "pick_item_id",
+    "candidate_label",
+    "candidate_set_digest"
+  ]
+}

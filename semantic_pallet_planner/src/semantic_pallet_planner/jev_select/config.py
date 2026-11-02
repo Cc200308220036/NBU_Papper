@@ -35,12 +35,14 @@ def is_v3(config: dict) -> bool:
 
 
 def business_evaluation_mode(config: dict) -> bool:
-    return is_v2(config) or is_v3(config)
+    from .packaging_runtime import is_packaging
+    return is_v2(config) or is_v3(config) or is_packaging(config)
 
 
 def protocol_suffix(config: dict) -> str:
     validate_schema("config", config)
-    return "v3" if is_v3(config) else "v2" if is_v2(config) else "v1"
+    from .packaging_runtime import is_packaging
+    return "v4" if is_packaging(config) else "v3" if is_v3(config) else "v2" if is_v2(config) else "v1"
 
 
 def load_v3_config() -> dict:

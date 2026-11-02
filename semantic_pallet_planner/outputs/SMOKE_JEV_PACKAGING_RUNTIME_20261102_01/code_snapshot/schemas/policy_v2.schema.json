@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "hard_constraints", "soft_priorities"],
+  "properties": {
+    "schema_version": {"const": "pallet_policy_v2_pilot"},
+    "hard_constraints": {"type": "array", "maxItems": 8, "items": {"oneOf": [
+      {"type": "object", "additionalProperties": false, "required": ["type", "selector", "threshold_kg"], "properties": {
+        "type": {"const": "fragile_load_limit"}, "selector": {"type": "object", "additionalProperties": false, "required": ["fragile"], "properties": {"fragile": {"const": true}}},
+        "threshold_kg": {"type": "number", "minimum": 0, "maximum": 1000}}},
+      {"type": "object", "additionalProperties": false, "required": ["type", "left", "right"], "properties": {
+        "type": {"const": "forbidden_contact"}, "left": {"$ref": "#/$defs/selector"}, "right": {"$ref": "#/$defs/selector"}}}
+    ]}},
+    "soft_priorities": {"type": "array", "minItems": 1, "maxItems": 2, "items": {
+      "type": "object", "additionalProperties": false, "required": ["priority", "metric"], "properties": {
+        "priority": {"type": "integer", "minimum": 1, "maximum": 2}, "metric": {"enum": ["heavy_low", "heavy_center"]}}}}
+  },
+  "$defs": {"selector": {"type": "object", "minProperties": 1, "maxProperties": 1, "additionalProperties": false, "properties": {
+    "fragile": {"type": "boolean"}, "weight_class": {"enum": ["light", "medium", "heavy"]},
+    "product_category": {"type": "string", "pattern": "^[A-Za-z0-9_]+$", "maxLength": 64}}}}
+}

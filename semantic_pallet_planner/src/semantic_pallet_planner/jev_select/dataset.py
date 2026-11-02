@@ -54,7 +54,19 @@ def build_business_policy(spec, group_id, configuration):
 class DatasetOrderAdapter:
     def load(self, dataset_root, *, spec_config=None, split_manifest=None, difficulty=None):
         root = Path(dataset_root).resolve()
+        # Data/static entry only. Runtime adapters remain a separate goal.
+        from .dataset_packaging import VERSION as packaging_version
+        if spec_config == packaging_version:
+            from .dataset_packaging import packaging_spec
+            spec_config = packaging_spec()
         spec = business_spec() if spec_config is None else (json.loads(Path(spec_config).read_text()) if not isinstance(spec_config,dict) else copy.deepcopy(spec_config))
+        if isinstance(spec, dict) and spec.get('version') == packaging_version:
+            from .dataset_packaging import packaging_spec, load_packaging_delivery
+            if difficulty is not None or split_manifest is not None:
+                raise JevSelectError('packaging_delivery_no_runtime_overrides')
+            if spec != packaging_spec():
+                raise JevSelectError('packaging_config_not_frozen')
+            return load_packaging_delivery(root)
         if not isinstance(spec, dict): raise JevSelectError('invalid_business_spec')
         if spec.get('version') == 'public_generated_v2':
             return self._load_v2(root, spec, split_manifest, difficulty if difficulty is not None else 'moderate')

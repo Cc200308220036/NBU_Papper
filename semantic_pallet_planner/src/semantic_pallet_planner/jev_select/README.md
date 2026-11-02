@@ -292,3 +292,41 @@ ReMe and benefit experiments were not run. Full evidence and commands are in
 `inspect-decision-cases --experiment <封存训练实验> --output <新目录> --job J0000 --fork-mode first_violation --max-branches 4`离线提取实际状态、支撑链累计载荷、真实反馈和保存物理池的单步替代后果。固定真实动作前缀，在最多4个早期分支后使用同一本地策略自然运行到终止，分别报告放置量、终态分规则数量/严重度、过程违规实例步数和曾出现的不同实例。少放箱、同规则严重度恶化或过程指标恶化均不能判为支配；不同规则和单位不混成总严重度。
 
 该入口不调用模型、不改经验库；模拟不能作为真实来源。输出结构化案例和文本预览，正式DeepSeek生成、卡片准入和Jev注入合同仍需后续接入。案例中同食品箱平移50mm使受控本地终态违规4→2，但载荷违规未改善。完整证据与命令见`docs/03_阶段产出分析/O4/Jev_J4状态动作与替代方案经验案例开发与验收_20261101.md`；交付目录`outputs/CASE_JEV_J4_STATE_ACTION_20261101_DELIVERY/`。
+
+### J4 packaging/load 数据合同（目标一，静态交付）
+
+显式版本 `jev_packaging_load_dataset_v1`，配置 `configs/packaging_load_v1.json`，
+封闭Schema为 `packaging_load_config_v1` / `packaging_load_task_v1`。
+复用 `DatasetOrderAdapter().load(DELIVERY, spec_config="jev_packaging_load_dataset_v1")`；
+也可传冻结配置路径或字典。仅提供数据加载，运行链路适配是后续目标。
+
+从工程根目录设置 `PYTHONPATH=semantic_pallet_planner/src` 后：
+
+```bash
+python -m semantic_pallet_planner.jev_select build-packaging-dataset --repo "$PWD" --output "$PWD/semantic_pallet_planner/outputs/DATA_JEV_PACKAGING_LOAD_NEW_ID"
+python -m semantic_pallet_planner.jev_select validate-packaging-dataset --dataset semantic_pallet_planner/outputs/DATA_JEV_PACKAGING_LOAD_20261102_02
+```
+
+构建拒绝覆盖现有目录或向未忽略目录写数据。冻结四个既有训练来源，
+source_preserving保留原包装；controlled_packaging披露合成包装修改。
+无区域/相容性/类别方向规则，无见证任务保持UNKNOWN。配置容量是实验假设，
+没有工业实测依据。正式交付、D01—D20范围与NOT_RUN见
+`docs/03_阶段产出分析/O4/Jev_J4新数据构建与静态验收_20261102.md`；
+数据包内含geometry_contract、审计、验收和目标二handoff。
+
+### Packaging v4 本地运行验收（目标二）
+
+`packaging_runtime.load_runtime_dataset()`认证目标一包并生成运行视图；
+`load_runtime_config(data_identity=..., task_digest=digest(task))`绑定独立数据、物理、
+策略和任务身份，再使用现有 `run_episode` / `commit_physical` / 检查点流程。
+新协议公共上下文只含当前匿名物理事实，无旧区域/类别业务规则；
+`LOCAL_TEST_DOUBLE_NOT_JEV`明确标记本地替身，v4远程和旧经验入口拒绝使用。
+
+```bash
+PYTHONPATH=semantic_pallet_planner/src python -m semantic_pallet_planner.jev_select smoke-packaging-runtime --dataset semantic_pallet_planner/outputs/DATA_JEV_PACKAGING_LOAD_20261102_02 --output semantic_pallet_planner/outputs/NEW_RUNTIME_OUTPUT
+PYTHONPATH=semantic_pallet_planner/src python -m semantic_pallet_planner.jev_select validate-packaging-runtime --artifact semantic_pallet_planner/outputs/SMOKE_JEV_PACKAGING_RUNTIME_20261102_02
+```
+
+smoke仅固定两个任务各8事件以内，含4事件前缀恢复；不是全单/模型效果实验。
+记录校验不回放订单。实际验收、D01—D20范围及第三方算法UNVERIFIED清单见
+`docs/03_阶段产出分析/O4/Jev_J4新数据运行链路与稳定性接入就绪_20261102.md`。

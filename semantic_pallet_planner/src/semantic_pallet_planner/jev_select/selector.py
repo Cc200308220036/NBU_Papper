@@ -170,6 +170,9 @@ class JevSelector:
         return JevSelector(self.config, self.ledger, self.job_id)
 
     def select(self, context, *, decision_id):
+        from .packaging_runtime import is_packaging
+        if is_packaging(self.config):
+            raise JevSelectError('packaging_remote_and_old_memory_protocol_disabled')
         validate_context(context, config=self.config)
         if context.data["local_binding"].get("decision_id") != decision_id or context.data["local_binding"].get("job_id") != self.job_id:
             raise JevSelectError("selector_identity_mismatch")

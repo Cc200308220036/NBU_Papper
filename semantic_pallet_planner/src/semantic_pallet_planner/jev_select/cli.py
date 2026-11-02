@@ -54,6 +54,14 @@ def main(argv=None) -> int:
     dv2.add_argument('--repo',required=True); dv2.add_argument('--output',required=True)
     vv2 = commands.add_parser('validate-dataset-v2',help='authenticate and load v2 delivery; no simulation')
     vv2.add_argument('--dataset',required=True)
+    pack = commands.add_parser('build-packaging-dataset', help='build frozen packaging/load data; static only')
+    pack.add_argument('--repo', required=True); pack.add_argument('--output', required=True)
+    packcheck = commands.add_parser('validate-packaging-dataset', help='independently load and validate packaging/load delivery')
+    packcheck.add_argument('--dataset', required=True)
+    prs = commands.add_parser('smoke-packaging-runtime', help='two bounded source prefixes using explicit local test substitute only')
+    prs.add_argument('--dataset', required=True); prs.add_argument('--output', required=True)
+    prv = commands.add_parser('validate-packaging-runtime', help='validate saved bindings and physical records without replay')
+    prv.add_argument('--artifact', required=True)
     inspect = commands.add_parser('inspect-j4', help='saved-state diagnostic and offline process page')
     inspect.add_argument('--experiment', required=True); inspect.add_argument('--output', required=True)
     inspect.add_argument('--jobs', nargs='+')
@@ -140,6 +148,18 @@ def main(argv=None) -> int:
         elif args.command == 'inspect-decision-cases':
             from .diagnostics import inspect_decision_cases
             result = inspect_decision_cases(args.experiment,args.output,job_id=args.job,max_branches=args.max_branches,fork_mode=args.fork_mode)
+        elif args.command == 'smoke-packaging-runtime':
+            from .packaging_runtime import smoke_runtime
+            result = smoke_runtime(args.dataset, args.output)
+        elif args.command == 'validate-packaging-runtime':
+            from .packaging_runtime import verify_runtime_output
+            result = verify_runtime_output(args.artifact)
+        elif args.command == 'build-packaging-dataset':
+            from .dataset_packaging import build_packaging_dataset
+            result = build_packaging_dataset(args.repo, args.output)
+        elif args.command == 'validate-packaging-dataset':
+            from .dataset_packaging import validate_packaging_dataset
+            result = validate_packaging_dataset(args.dataset)
         elif args.command == 'build-dataset-v2':
             from .dataset_j4 import build_dataset_v2
             result = build_dataset_v2(args.repo,args.output)
@@ -258,4 +278,6 @@ def main(argv=None) -> int:
         print(json.dumps({"status": "FAIL", "error": str(exc)}, ensure_ascii=False))
         return 1
     print(json.dumps(result, ensure_ascii=False, indent=2))
+    if args.command in ('build-packaging-dataset', 'validate-packaging-dataset'):
+        return 0 if result['status'] == 'STATIC_CHECKS_COMPLETE' else 1
     return 0 if result["status"] == "PASS" else 1

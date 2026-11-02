@@ -91,6 +91,12 @@ def aggregate(rows, attempts, *, mode="offline", pricing=None):
 
 def evaluate_committed_state(state, reference_spec, regions):
     """Independent downstream audit, with rule/object identities and coverage."""
+    from .packaging_runtime import DATA_VERSION, evaluate_state
+    if reference_spec.get('version') == DATA_VERSION:
+        if reference_spec['rules'] or regions:
+            from .contracts import JevSelectError
+            raise JevSelectError('packaging_old_rules_rejected')
+        return evaluate_state(state)
     from itertools import combinations
     from semantic_pallet_planner.o4.observation import public_object
     from semantic_pallet_planner.o4.evaluator import _accept
@@ -176,6 +182,9 @@ def summarize_business_trajectory(events, *, planned_items, rule_registry, initi
 
 
 def summarize_v2(task, config, method, state, events, reason):
+    from .packaging_runtime import is_packaging, summary
+    if is_packaging(config):
+        return summary(task, config, method, state, events, reason)
     from .contracts import digest
     # Legacy order/space fields stay available, with independent reference recomputation.
     row = summarize(task, config, method, state, events, reason)

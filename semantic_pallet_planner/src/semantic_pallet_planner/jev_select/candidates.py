@@ -61,7 +61,7 @@ def validate_bundle(req: dict, bundle: CandidateBundle) -> dict:
     selected = value["selectable_candidates"]
     if len({c["candidate_id"] for c in selected}) != len(selected) or any(original.get(c["candidate_id"]) != c for c in selected):
         raise JevSelectError("invalid_candidate_subset")
-    if value["version"] in ("jev_candidate_bundle_v2", "jev_candidate_bundle_v3") and value["selectable_pool"] != "unfiltered":
+    if value["version"] in ("jev_candidate_bundle_v2", "jev_candidate_bundle_v3", "jev_candidate_bundle_v4") and value["selectable_pool"] != "unfiltered":
         if value["selectable_candidates"] != candidates or value["selectable_digest"] != value["physical_digest"]:
             raise JevSelectError("business_filtered_physical_pool")
     return value
@@ -82,8 +82,12 @@ class CandidateProvider:
                 if errors:
                     raise JevSelectError("physical_candidate_error", str(errors))
             candidates.extend(generated)
-            counts.append({"pick_item_id": pick, "returned": len(generated),
-                           "sampled_physical": audit["public_enriched_physical_count"]})
+            row = {"pick_item_id": pick, "returned": len(generated),
+                   "sampled_physical": audit["public_enriched_physical_count"]}
+            from .packaging_runtime import is_packaging
+            if config is not None and is_packaging(config):
+                row.update(rejections=audit['rejections'], enumeration_attempts=audit['public_enumeration_attempts'])
+            counts.append(row)
         validate_candidates(observation, candidates)
         if config is not None:
             validate_schema("config", config)
@@ -105,6 +109,9 @@ class CandidateProvider:
 class PublicBusinessGuard:
     def resolve(self, observation: dict) -> PublicPolicyContext:
         validate_observation(observation)
+        from .packaging_runtime import INSTRUCTION, no_policy
+        if observation['instruction_text'] == INSTRUCTION:
+            return no_policy(observation)
         response = compile_policy(copy.deepcopy(observation))
         return PublicPolicyContext.from_dict({"source": "public_parser",
                                              "observation_digest": observation["observation_digest"],

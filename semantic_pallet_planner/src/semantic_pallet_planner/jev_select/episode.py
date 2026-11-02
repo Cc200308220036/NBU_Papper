@@ -45,6 +45,13 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
 
 def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
                 hook=None, event_limit=None, expected_events=None, memory_snapshot=None):
+    from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
+    if is_packaging(config):
+        if (memory_snapshot is not None or task.get('version') != DATA_VERSION or
+            task.get('reference_policy') != {'version':DATA_VERSION,'rules':[]} or
+            task.get('regions') != [] or method != config['selector'] or method not in METHODS or
+            config['runtime_identity']['task_identity'] != digest(task)):
+            raise JevSelectError('packaging_episode_binding_or_memory_mismatch')
     if business_evaluation_mode(config):
         return _run_episode_v2(task, selector, config, job_id=job_id, method=method, resume=resume,
                                on_checkpoint=on_checkpoint, hook=hook, event_limit=event_limit,
@@ -185,6 +192,9 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                 'events': copy.deepcopy(events), 'reason': reason, 'phase': phase,
                 'pending_event': copy.deepcopy(pending)}
         from .contracts import validate_schema
+        from .packaging_runtime import is_packaging
+        if is_packaging(config):
+            value['runtime_identity'] = copy.deepcopy(config['runtime_identity'])
         if is_v3(config):
             value['memory_snapshot_digest'] = digest(memory_snapshot.data)
             value['memory_identity']=memory_identity
@@ -213,6 +223,9 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
     if resume is not None:
         from .contracts import validate_schema
         validate_schema('checkpoint_' + suffix,resume)
+        from .packaging_runtime import is_packaging
+        if is_packaging(config) and resume['runtime_identity'] != config['runtime_identity']:
+            raise JevSelectError('packaging_checkpoint_identity_changed')
         if is_v3(config) and resume['memory_snapshot_digest'] != digest(memory_snapshot.data):
             raise JevSelectError('checkpoint_memory_changed')
         if is_v3(config) and resume.get('memory_identity',memory_identity)!=memory_identity:

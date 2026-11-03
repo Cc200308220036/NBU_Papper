@@ -1,0 +1,327 @@
+{
+  "fixture": "height_mismatch",
+  "origin": "CONSTRUCTED_NOT_ORDER",
+  "expected_status": "UNASSESSABLE",
+  "independent_basis": "drop height100 differs from original120; never move candidate",
+  "state": {
+    "container_mm": [
+      1000,
+      800,
+      1000
+    ],
+    "placed": [
+      {
+        "item_id": "ground",
+        "dimensions_mm": [
+          100,
+          100,
+          100
+        ],
+        "mass_kg": 1,
+        "bottom_center_mm": [
+          0,
+          0,
+          0
+        ],
+        "yaw_deg": 0
+      }
+    ]
+  },
+  "candidate": {
+    "item_id": "top",
+    "dimensions_mm": [
+      100,
+      100,
+      100
+    ],
+    "mass_kg": 1,
+    "bottom_center_mm": [
+      0,
+      0,
+      120
+    ],
+    "yaw_deg": 0
+  },
+  "result": {
+    "status": "UNASSESSABLE",
+    "reason_code": "POSE_HEIGHT_MISMATCH",
+    "state_digest": "91007bf9284d4a757d2c9501422cf0b64a38541ed4fadedc297d5e9f5d956f46",
+    "candidate_digest": "f324f0833f30a5578b70a9669059cdd89af89c84b09cb27809b009c7bbe108ac",
+    "candidate_id": "top",
+    "config_digest": "f86681769d10d4b1b277a2c9c4b226d49231a38c2506367d16a37364bdd1fb82",
+    "algorithm_identity": {
+      "algorithm": "pct_contact_network_v2",
+      "upstream_commit": "5e7b4238b18310af4529e0f85157d17de605850c",
+      "semantic_revision": "project_global_contact_reaction_equilibrium",
+      "files_sha256": {
+        "balance_contracts.py": "3337a88ec4ffccacba29bf47efd5c3989fec45d9ec0b01bd4c533d39459b9d85",
+        "balance_network.py": "9bb4b95601d9b8ab88e08ac2d3dda83e2b828d8bb8523801d988af29b8a82d15",
+        "balance_adapter.py": "f021c7dbe661dc9d3cc4cb948b911d991d84185d895357693466fdb9d3e0eca0",
+        "contracts.py": "997a33ecec9672b9c2134b128203cc6c64c61811cc56b8f25f532337353d37e5",
+        "geometry.py": "e0c7a631f4c301e72bad11b1dc58c3eb180df2e2e972d066b2adbe849a60dc00",
+        "__init__.py": "8d7d6133025039e06c347b4f7c7fa7b7324ad0a329b74c9296c5288ea3e974f4",
+        "vendor/__init__.py": "cbdac086937385282bead97cf5202ad7d2b4e3a0649bf9d9fdd7812020782ec8",
+        "vendor/pct/__init__.py": "37b74d6bc0ea7c33a76f02bf5bfa48ef5ecd6999441b437cf40a1b714fb8e8e8",
+        "vendor/pct/space.py": "ba0d5268463eb280006582b43cff83d935bdeb33950e5f8161c1a46e12f2fef7",
+        "vendor/pct/convex_hull.py": "b86f2726fec797814db3e785ce00b4e7ebe9376b389226bb843c1a9599eeb1d8",
+        "vendor/pct/PctTools.py": "e23d4bbb7e4997734212c9f0bd902bd06b18ac964a0e7fd6585bc040febc0ea8",
+        "vendor/pct/LICENSE": "064dff533bd13cc3e33b6ff3bf1639ba1d74d116e1955e9bfd94329fa083787a",
+        "vendor/pct/upstream_manifest.json": "56c8046d76dc639da843b1e936ddef8ebc529adfd31f6c8eac891d80a03765b8",
+        "vendor/pct/compatibility.patch": "46d0adfc32c35b509565c6bc9dfb94a4236f912e80c19b295963e9921d855ff4",
+        "vendor/pct/UPSTREAM.md": "6afdcd0adc7f92e845871d6095ada5b17cb24886407ae38d73b439e49fc9b037",
+        "BALANCE_DESIGN.md": "03ba8f54e3a4abe0f1695e7e25ea56a4c759a6c3ac9bb593d54a717ebe812bfc",
+        "BALANCE_CHANGES.md": "8b2837174a51d08a3e0364c47951f2e6dfa2da3c92392f868bbfe4ff7853abe6",
+        "configs/pct_contact_network_v2.json": "2649cf80610c86dbc07b939c45f0575cc4329afb93cdd83ae38d859b2e353c52",
+        "schemas/stability_config_v2.schema.json": "df4936256679122f902d9985f8123984e3e23584747a6446a740361fd5fcec80",
+        "schemas/stability_result_v2.schema.json": "e5b57386ba603f126cb6ece48e3a21903b7c225bafb972c615db3bda9da09631"
+      },
+      "source_digest": "ef0a1e44b228fba0040c7687aaf4f2908f18396a12590f83f9f3117cab526c1d",
+      "dependencies": {
+        "numpy": "2.1.3",
+        "scipy": "1.15.3",
+        "highs_version": "1.8.0",
+        "highs_core_sha256": "bf298874d77c9ac39960de27ef9ec1759ee475c7bd276619fcbffc26cd4a2978",
+        "scipy_python_sha256": {
+          "_linprog.py": "4c697d93d22887e8601d882d9dd37904d714e2fa9fa599bcc2144ad9fe1e8504",
+          "_linprog_highs.py": "c8df70ef51eceaa15804d836d4bea0cfad7eb339662cf51a7db95912bcb2cf2d"
+        }
+      },
+      "dependency_digest": "33903b5d5c6045142d8613cf019d3a3fecf1afcaa5072fa29322c89ffe6eed6c",
+      "units": {
+        "length": "mm",
+        "mass": "kg",
+        "moment": "kg*mm"
+      }
+    },
+    "baseline_status": "STABLE",
+    "first_bad_prefix": null,
+    "failed_item_id": null,
+    "height_delta_mm": -20.0,
+    "evaluated_pose": {
+      "item_id": "top",
+      "kernel_corner_mm": [
+        450.0,
+        350.0,
+        100.0
+      ],
+      "original_bottom_center_mm": [
+        0,
+        0,
+        120
+      ],
+      "oriented_size_mm": [
+        100,
+        100,
+        100
+      ],
+      "density_kg_mm3": 1e-06
+    },
+    "kernel_calls": 1,
+    "diagnostics": {
+      "solver_phases": [
+        {
+          "phase": "physical_feasibility",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 2
+        },
+        {
+          "phase": "max_network_interior",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 5
+        },
+        {
+          "phase": "lex_force_0",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 5
+        },
+        {
+          "phase": "lex_force_1",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 5
+        },
+        {
+          "phase": "lex_force_2",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 5
+        },
+        {
+          "phase": "lex_force_3",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 5
+        }
+      ],
+      "length_scale_mm": 1000.0,
+      "mass_scale_kg": 1.0,
+      "config": {
+        "algorithm": "pct_contact_network_v2",
+        "setting": 1,
+        "height_tolerance_mm": 1e-06,
+        "mass_atol_kg": 1e-09,
+        "mass_rtol": 1e-09,
+        "moment_atol_kg_mm": 1e-06,
+        "moment_rtol": 1e-09,
+        "solver_tolerance": 1e-10,
+        "scaled_residual_tolerance": 1e-09,
+        "strict_interior_slack": 1e-10,
+        "certificate_gap": 1e-08,
+        "presolve": false,
+        "solver": "highs-ds",
+        "selection": "max_network_interior_then_lexicographic_forces"
+      },
+      "model": "global_vertical_contact_vertices_with_retained_pct_hull",
+      "physical_feasibility_witness": {
+        "status": "FEASIBLE",
+        "reactions": [
+          {
+            "upper": "ground",
+            "lower": null,
+            "point_mm": [
+              450.0,
+              350.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "ground",
+            "lower": null,
+            "point_mm": [
+              450.0,
+              450.0
+            ],
+            "mass_kg": 0.5
+          },
+          {
+            "upper": "ground",
+            "lower": null,
+            "point_mm": [
+              550.0,
+              350.0
+            ],
+            "mass_kg": 0.5
+          },
+          {
+            "upper": "ground",
+            "lower": null,
+            "point_mm": [
+              550.0,
+              450.0
+            ],
+            "mass_kg": 0.0
+          }
+        ],
+        "scaled_equality_residual_max": 0.0
+      },
+      "max_network_interior_slack_scaled": 0.25,
+      "reactions": [
+        {
+          "upper": "ground",
+          "lower": null,
+          "point_mm": [
+            450.0,
+            350.0
+          ],
+          "mass_kg": 0.25
+        },
+        {
+          "upper": "ground",
+          "lower": null,
+          "point_mm": [
+            450.0,
+            450.0
+          ],
+          "mass_kg": 0.25
+        },
+        {
+          "upper": "ground",
+          "lower": null,
+          "point_mm": [
+            550.0,
+            350.0
+          ],
+          "mass_kg": 0.25
+        },
+        {
+          "upper": "ground",
+          "lower": null,
+          "point_mm": [
+            550.0,
+            450.0
+          ],
+          "mass_kg": 0.25
+        }
+      ],
+      "nodes": [
+        {
+          "item_id": "ground",
+          "own_mass_kg": 1.0,
+          "own_center_mm": [
+            500.0,
+            400.0,
+            50.0
+          ],
+          "incoming_mass_kg": 0.0,
+          "outgoing_mass_kg": 1.0,
+          "equivalent_mass_kg": 1.0,
+          "equivalent_center_xy_mm": [
+            500.0,
+            400.0
+          ],
+          "mass_residual_kg": 0.0,
+          "moment_residual_kg_mm": [
+            0.0,
+            0.0
+          ],
+          "mass_tolerance_kg": 2e-09,
+          "moment_tolerance_kg_mm": 2.0000000000000003e-06,
+          "retained_support_hull_mm": null
+        }
+      ],
+      "input_total_mass_kg": 1.0,
+      "ground_mass_kg": 1.0,
+      "global_mass_residual_kg": 0.0,
+      "global_moment_residual_kg_mm": [
+        0.0,
+        0.0
+      ],
+      "scaled_equality_residual_max": 0.0,
+      "minimum_reaction_kg": 0.25,
+      "global_conservation_checked": true,
+      "restored_order": [
+        "ground"
+      ],
+      "kernel_geometry_calls": 1,
+      "baseline_network_digest": null,
+      "boxes": [
+        {
+          "item_id": "ground",
+          "mass_kg": 1.0,
+          "center_mm": [
+            500.0,
+            400.0,
+            50.0
+          ],
+          "corner_mm": [
+            450.0,
+            350.0,
+            0.0
+          ],
+          "vertex_high_mm": [
+            550.0,
+            450.0,
+            100.0
+          ]
+        }
+      ]
+    },
+    "duration_s": 0.017347082000924274,
+    "version": "pct_stability_result_v2"
+  },
+  "independent_physical_checks_passed": false,
+  "expectation_matched": true
+}

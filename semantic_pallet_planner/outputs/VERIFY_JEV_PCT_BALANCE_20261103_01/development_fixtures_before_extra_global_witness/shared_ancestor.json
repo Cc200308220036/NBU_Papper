@@ -1,0 +1,1097 @@
+{
+  "fixture": "shared_ancestor",
+  "origin": "CONSTRUCTED_NOT_ORDER",
+  "expected_status": "STABLE",
+  "independent_basis": "symmetric upper loads: shelf+two pillars+top total26kg at x0; one-branch temporary update would cross narrow base",
+  "state": {
+    "container_mm": [
+      1000,
+      800,
+      1000
+    ],
+    "placed": [
+      {
+        "item_id": "base",
+        "dimensions_mm": [
+          60,
+          200,
+          100
+        ],
+        "mass_kg": 1,
+        "bottom_center_mm": [
+          0,
+          0,
+          0
+        ],
+        "yaw_deg": 0
+      },
+      {
+        "item_id": "shelf",
+        "dimensions_mm": [
+          240,
+          200,
+          100
+        ],
+        "mass_kg": 4,
+        "bottom_center_mm": [
+          0,
+          0,
+          100
+        ],
+        "yaw_deg": 0
+      },
+      {
+        "item_id": "left",
+        "dimensions_mm": [
+          40,
+          100,
+          100
+        ],
+        "mass_kg": 1,
+        "bottom_center_mm": [
+          -80,
+          0,
+          200
+        ],
+        "yaw_deg": 0
+      },
+      {
+        "item_id": "right",
+        "dimensions_mm": [
+          40,
+          100,
+          100
+        ],
+        "mass_kg": 1,
+        "bottom_center_mm": [
+          80,
+          0,
+          200
+        ],
+        "yaw_deg": 0
+      }
+    ]
+  },
+  "candidate": {
+    "item_id": "top",
+    "dimensions_mm": [
+      240,
+      100,
+      100
+    ],
+    "mass_kg": 20,
+    "bottom_center_mm": [
+      0,
+      0,
+      300
+    ],
+    "yaw_deg": 0
+  },
+  "result": {
+    "status": "STABLE",
+    "reason_code": "CONTACT_NETWORK_BALANCED",
+    "state_digest": "20a68f9c2b1924228f4b64ccb7959029bfc302c5c9a883d507def4c75240cb3f",
+    "candidate_digest": "67a245c1decf5f90551c3673f741395f2950d731bf4d58ff5519bca492f787bf",
+    "candidate_id": "top",
+    "config_digest": "f86681769d10d4b1b277a2c9c4b226d49231a38c2506367d16a37364bdd1fb82",
+    "algorithm_identity": {
+      "algorithm": "pct_contact_network_v2",
+      "upstream_commit": "5e7b4238b18310af4529e0f85157d17de605850c",
+      "semantic_revision": "project_global_contact_reaction_equilibrium",
+      "files_sha256": {
+        "balance_contracts.py": "3337a88ec4ffccacba29bf47efd5c3989fec45d9ec0b01bd4c533d39459b9d85",
+        "balance_network.py": "9bb4b95601d9b8ab88e08ac2d3dda83e2b828d8bb8523801d988af29b8a82d15",
+        "balance_adapter.py": "34295011c5eaebfdbd723a3de7510fccc858abf3bc7b6e742fb48b818276c4bc",
+        "contracts.py": "997a33ecec9672b9c2134b128203cc6c64c61811cc56b8f25f532337353d37e5",
+        "geometry.py": "e0c7a631f4c301e72bad11b1dc58c3eb180df2e2e972d066b2adbe849a60dc00",
+        "__init__.py": "8d7d6133025039e06c347b4f7c7fa7b7324ad0a329b74c9296c5288ea3e974f4",
+        "vendor/__init__.py": "cbdac086937385282bead97cf5202ad7d2b4e3a0649bf9d9fdd7812020782ec8",
+        "vendor/pct/__init__.py": "37b74d6bc0ea7c33a76f02bf5bfa48ef5ecd6999441b437cf40a1b714fb8e8e8",
+        "vendor/pct/space.py": "ba0d5268463eb280006582b43cff83d935bdeb33950e5f8161c1a46e12f2fef7",
+        "vendor/pct/convex_hull.py": "b86f2726fec797814db3e785ce00b4e7ebe9376b389226bb843c1a9599eeb1d8",
+        "vendor/pct/PctTools.py": "e23d4bbb7e4997734212c9f0bd902bd06b18ac964a0e7fd6585bc040febc0ea8",
+        "vendor/pct/LICENSE": "064dff533bd13cc3e33b6ff3bf1639ba1d74d116e1955e9bfd94329fa083787a",
+        "vendor/pct/upstream_manifest.json": "56c8046d76dc639da843b1e936ddef8ebc529adfd31f6c8eac891d80a03765b8",
+        "vendor/pct/compatibility.patch": "46d0adfc32c35b509565c6bc9dfb94a4236f912e80c19b295963e9921d855ff4",
+        "vendor/pct/UPSTREAM.md": "6afdcd0adc7f92e845871d6095ada5b17cb24886407ae38d73b439e49fc9b037",
+        "BALANCE_DESIGN.md": "03ba8f54e3a4abe0f1695e7e25ea56a4c759a6c3ac9bb593d54a717ebe812bfc",
+        "BALANCE_CHANGES.md": "8b2837174a51d08a3e0364c47951f2e6dfa2da3c92392f868bbfe4ff7853abe6",
+        "configs/pct_contact_network_v2.json": "2649cf80610c86dbc07b939c45f0575cc4329afb93cdd83ae38d859b2e353c52",
+        "schemas/stability_config_v2.schema.json": "df4936256679122f902d9985f8123984e3e23584747a6446a740361fd5fcec80",
+        "schemas/stability_result_v2.schema.json": "e5b57386ba603f126cb6ece48e3a21903b7c225bafb972c615db3bda9da09631"
+      },
+      "source_digest": "bee722b08625a107a2bb0b763ce05c62973f62629268138741726ebfbbff948a",
+      "dependencies": {
+        "numpy": "2.1.3",
+        "scipy": "1.15.3",
+        "highs_version": "1.8.0",
+        "highs_core_sha256": "bf298874d77c9ac39960de27ef9ec1759ee475c7bd276619fcbffc26cd4a2978",
+        "scipy_python_sha256": {
+          "_linprog.py": "4c697d93d22887e8601d882d9dd37904d714e2fa9fa599bcc2144ad9fe1e8504",
+          "_linprog_highs.py": "c8df70ef51eceaa15804d836d4bea0cfad7eb339662cf51a7db95912bcb2cf2d"
+        }
+      },
+      "dependency_digest": "33903b5d5c6045142d8613cf019d3a3fecf1afcaa5072fa29322c89ffe6eed6c",
+      "units": {
+        "length": "mm",
+        "mass": "kg",
+        "moment": "kg*mm"
+      }
+    },
+    "baseline_status": "STABLE",
+    "first_bad_prefix": null,
+    "failed_item_id": null,
+    "height_delta_mm": 0.0,
+    "evaluated_pose": {
+      "item_id": "top",
+      "kernel_corner_mm": [
+        380.0,
+        350.0,
+        300.0
+      ],
+      "original_bottom_center_mm": [
+        0,
+        0,
+        300
+      ],
+      "oriented_size_mm": [
+        240,
+        100,
+        100
+      ],
+      "density_kg_mm3": 8.333333333333334e-06
+    },
+    "kernel_calls": 5,
+    "diagnostics": {
+      "solver_phases": [
+        {
+          "phase": "physical_feasibility",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 18
+        },
+        {
+          "phase": "max_network_interior",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 34
+        },
+        {
+          "phase": "lex_force_0",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 31
+        },
+        {
+          "phase": "lex_force_1",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 35
+        },
+        {
+          "phase": "lex_force_2",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 29
+        },
+        {
+          "phase": "lex_force_3",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 27
+        },
+        {
+          "phase": "lex_force_4",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 29
+        },
+        {
+          "phase": "lex_force_5",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 31
+        },
+        {
+          "phase": "lex_force_6",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 28
+        },
+        {
+          "phase": "lex_force_7",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 25
+        },
+        {
+          "phase": "lex_force_8",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 28
+        },
+        {
+          "phase": "lex_force_9",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 27
+        },
+        {
+          "phase": "lex_force_10",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 27
+        },
+        {
+          "phase": "lex_force_11",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 25
+        },
+        {
+          "phase": "lex_force_12",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 25
+        },
+        {
+          "phase": "lex_force_13",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 25
+        },
+        {
+          "phase": "lex_force_14",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 25
+        },
+        {
+          "phase": "lex_force_15",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 26
+        },
+        {
+          "phase": "lex_force_16",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 25
+        },
+        {
+          "phase": "lex_force_17",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 25
+        },
+        {
+          "phase": "lex_force_18",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 25
+        },
+        {
+          "phase": "lex_force_19",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 25
+        },
+        {
+          "phase": "lex_force_20",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 26
+        },
+        {
+          "phase": "lex_force_21",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 26
+        },
+        {
+          "phase": "lex_force_22",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 25
+        },
+        {
+          "phase": "lex_force_23",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 25
+        }
+      ],
+      "length_scale_mm": 1000.0,
+      "mass_scale_kg": 27.0,
+      "config": {
+        "algorithm": "pct_contact_network_v2",
+        "setting": 1,
+        "height_tolerance_mm": 1e-06,
+        "mass_atol_kg": 1e-09,
+        "mass_rtol": 1e-09,
+        "moment_atol_kg_mm": 1e-06,
+        "moment_rtol": 1e-09,
+        "solver_tolerance": 1e-10,
+        "scaled_residual_tolerance": 1e-09,
+        "strict_interior_slack": 1e-10,
+        "certificate_gap": 1e-08,
+        "presolve": false,
+        "solver": "highs-ds",
+        "selection": "max_network_interior_then_lexicographic_forces"
+      },
+      "model": "global_vertical_contact_vertices_with_retained_pct_hull",
+      "physical_feasibility_witness": {
+        "status": "FEASIBLE",
+        "reactions": [
+          {
+            "upper": "base",
+            "lower": null,
+            "point_mm": [
+              470.0,
+              300.0
+            ],
+            "mass_kg": 13.499999999999996
+          },
+          {
+            "upper": "base",
+            "lower": null,
+            "point_mm": [
+              470.0,
+              500.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "base",
+            "lower": null,
+            "point_mm": [
+              530.0,
+              300.0
+            ],
+            "mass_kg": -0.0
+          },
+          {
+            "upper": "base",
+            "lower": null,
+            "point_mm": [
+              530.0,
+              500.0
+            ],
+            "mass_kg": 13.499999999999996
+          },
+          {
+            "upper": "left",
+            "lower": "shelf",
+            "point_mm": [
+              400.0,
+              350.0
+            ],
+            "mass_kg": 0.5000000000000004
+          },
+          {
+            "upper": "left",
+            "lower": "shelf",
+            "point_mm": [
+              400.0,
+              450.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "left",
+            "lower": "shelf",
+            "point_mm": [
+              440.0,
+              350.0
+            ],
+            "mass_kg": 9.999999999999998
+          },
+          {
+            "upper": "left",
+            "lower": "shelf",
+            "point_mm": [
+              440.0,
+              450.0
+            ],
+            "mass_kg": 0.5000000000000007
+          },
+          {
+            "upper": "right",
+            "lower": "shelf",
+            "point_mm": [
+              560.0,
+              350.0
+            ],
+            "mass_kg": -0.0
+          },
+          {
+            "upper": "right",
+            "lower": "shelf",
+            "point_mm": [
+              560.0,
+              450.0
+            ],
+            "mass_kg": 10.500000000000002
+          },
+          {
+            "upper": "right",
+            "lower": "shelf",
+            "point_mm": [
+              600.0,
+              350.0
+            ],
+            "mass_kg": 0.499999999999997
+          },
+          {
+            "upper": "right",
+            "lower": "shelf",
+            "point_mm": [
+              600.0,
+              450.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "shelf",
+            "lower": "base",
+            "point_mm": [
+              470.0,
+              300.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "shelf",
+            "lower": "base",
+            "point_mm": [
+              470.0,
+              500.0
+            ],
+            "mass_kg": 12.999999999999996
+          },
+          {
+            "upper": "shelf",
+            "lower": "base",
+            "point_mm": [
+              530.0,
+              300.0
+            ],
+            "mass_kg": 12.999999999999996
+          },
+          {
+            "upper": "shelf",
+            "lower": "base",
+            "point_mm": [
+              530.0,
+              500.0
+            ],
+            "mass_kg": -0.0
+          },
+          {
+            "upper": "top",
+            "lower": "left",
+            "point_mm": [
+              400.0,
+              350.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "top",
+            "lower": "left",
+            "point_mm": [
+              400.0,
+              450.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "top",
+            "lower": "left",
+            "point_mm": [
+              440.0,
+              350.0
+            ],
+            "mass_kg": 10.0
+          },
+          {
+            "upper": "top",
+            "lower": "left",
+            "point_mm": [
+              440.0,
+              450.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "top",
+            "lower": "right",
+            "point_mm": [
+              560.0,
+              350.0
+            ],
+            "mass_kg": -0.0
+          },
+          {
+            "upper": "top",
+            "lower": "right",
+            "point_mm": [
+              560.0,
+              450.0
+            ],
+            "mass_kg": 10.0
+          },
+          {
+            "upper": "top",
+            "lower": "right",
+            "point_mm": [
+              600.0,
+              350.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "top",
+            "lower": "right",
+            "point_mm": [
+              600.0,
+              450.0
+            ],
+            "mass_kg": 0.0
+          }
+        ],
+        "scaled_equality_residual_max": 1.6653345369377348e-16
+      },
+      "max_network_interior_slack_scaled": 0.0073333034013568785,
+      "reactions": [
+        {
+          "upper": "base",
+          "lower": null,
+          "point_mm": [
+            470.0,
+            300.0
+          ],
+          "mass_kg": 0.19799919183663572
+        },
+        {
+          "upper": "base",
+          "lower": null,
+          "point_mm": [
+            470.0,
+            500.0
+          ],
+          "mass_kg": 13.302000808163378
+        },
+        {
+          "upper": "base",
+          "lower": null,
+          "point_mm": [
+            530.0,
+            300.0
+          ],
+          "mass_kg": 13.302000808163374
+        },
+        {
+          "upper": "base",
+          "lower": null,
+          "point_mm": [
+            530.0,
+            500.0
+          ],
+          "mass_kg": 0.19799919183663572
+        },
+        {
+          "upper": "left",
+          "lower": "shelf",
+          "point_mm": [
+            400.0,
+            350.0
+          ],
+          "mass_kg": 0.1979991918366207
+        },
+        {
+          "upper": "left",
+          "lower": "shelf",
+          "point_mm": [
+            400.0,
+            450.0
+          ],
+          "mass_kg": 5.301946239887568
+        },
+        {
+          "upper": "left",
+          "lower": "shelf",
+          "point_mm": [
+            440.0,
+            350.0
+          ],
+          "mass_kg": 2.3320353795909408
+        },
+        {
+          "upper": "left",
+          "lower": "shelf",
+          "point_mm": [
+            440.0,
+            450.0
+          ],
+          "mass_kg": 3.1680640866440624
+        },
+        {
+          "upper": "right",
+          "lower": "shelf",
+          "point_mm": [
+            560.0,
+            350.0
+          ],
+          "mass_kg": 3.167884494807333
+        },
+        {
+          "upper": "right",
+          "lower": "shelf",
+          "point_mm": [
+            560.0,
+            450.0
+          ],
+          "mass_kg": 2.3319904816317454
+        },
+        {
+          "upper": "right",
+          "lower": "shelf",
+          "point_mm": [
+            600.0,
+            350.0
+          ],
+          "mass_kg": 5.302080933765113
+        },
+        {
+          "upper": "right",
+          "lower": "shelf",
+          "point_mm": [
+            600.0,
+            450.0
+          ],
+          "mass_kg": 0.19799919183663572
+        },
+        {
+          "upper": "shelf",
+          "lower": "base",
+          "point_mm": [
+            470.0,
+            300.0
+          ],
+          "mass_kg": 0.19799919183663572
+        },
+        {
+          "upper": "shelf",
+          "lower": "base",
+          "point_mm": [
+            470.0,
+            500.0
+          ],
+          "mass_kg": 12.802000808163374
+        },
+        {
+          "upper": "shelf",
+          "lower": "base",
+          "point_mm": [
+            530.0,
+            300.0
+          ],
+          "mass_kg": 12.802000808163372
+        },
+        {
+          "upper": "shelf",
+          "lower": "base",
+          "point_mm": [
+            530.0,
+            500.0
+          ],
+          "mass_kg": 0.1979991918366385
+        },
+        {
+          "upper": "top",
+          "lower": "left",
+          "point_mm": [
+            400.0,
+            350.0
+          ],
+          "mass_kg": 0.19799919183663572
+        },
+        {
+          "upper": "top",
+          "lower": "left",
+          "point_mm": [
+            400.0,
+            450.0
+          ],
+          "mass_kg": 4.801946239887549
+        },
+        {
+          "upper": "top",
+          "lower": "left",
+          "point_mm": [
+            440.0,
+            350.0
+          ],
+          "mass_kg": 1.8320353795909259
+        },
+        {
+          "upper": "top",
+          "lower": "left",
+          "point_mm": [
+            440.0,
+            450.0
+          ],
+          "mass_kg": 3.1680640866440735
+        },
+        {
+          "upper": "top",
+          "lower": "right",
+          "point_mm": [
+            560.0,
+            350.0
+          ],
+          "mass_kg": 3.167884494807333
+        },
+        {
+          "upper": "top",
+          "lower": "right",
+          "point_mm": [
+            560.0,
+            450.0
+          ],
+          "mass_kg": 1.83199048163174
+        },
+        {
+          "upper": "top",
+          "lower": "right",
+          "point_mm": [
+            600.0,
+            350.0
+          ],
+          "mass_kg": 4.802080933765105
+        },
+        {
+          "upper": "top",
+          "lower": "right",
+          "point_mm": [
+            600.0,
+            450.0
+          ],
+          "mass_kg": 0.19799919183663572
+        }
+      ],
+      "nodes": [
+        {
+          "item_id": "base",
+          "own_mass_kg": 1.0,
+          "own_center_mm": [
+            500.0,
+            400.0,
+            50.0
+          ],
+          "incoming_mass_kg": 26.00000000000002,
+          "outgoing_mass_kg": 27.00000000000002,
+          "equivalent_mass_kg": 27.00000000000002,
+          "equivalent_center_xy_mm": [
+            500.0,
+            399.99999999999994
+          ],
+          "mass_residual_kg": 0.0,
+          "moment_residual_kg_mm": [
+            -1.4033219031261979e-13,
+            -2.7711166694643907e-13
+          ],
+          "mass_tolerance_kg": 2.8000000000000022e-08,
+          "moment_tolerance_kg_mm": 2.8000000000000023e-05,
+          "retained_support_hull_mm": null
+        },
+        {
+          "item_id": "left",
+          "own_mass_kg": 1.0,
+          "own_center_mm": [
+            420.0,
+            400.0,
+            250.0
+          ],
+          "incoming_mass_kg": 10.000044897959183,
+          "outgoing_mass_kg": 11.000044897959192,
+          "equivalent_mass_kg": 11.000044897959183,
+          "equivalent_center_xy_mm": [
+            420.0002800616038,
+            426.99977959274554
+          ],
+          "mass_residual_kg": 8.881784197001252e-15,
+          "moment_residual_kg_mm": [
+            8.881784197001252e-15,
+            4.547473508864641e-13
+          ],
+          "mass_tolerance_kg": 1.2000044897959184e-08,
+          "moment_tolerance_kg_mm": 1.2000044897959184e-05,
+          "retained_support_hull_mm": [
+            [
+              402.000355,
+              355.0
+            ],
+            [
+              438.000355,
+              355.0
+            ],
+            [
+              438.000445,
+              445.0
+            ],
+            [
+              402.000445,
+              445.0
+            ]
+          ]
+        },
+        {
+          "item_id": "right",
+          "own_mass_kg": 1.0,
+          "own_center_mm": [
+            580.0,
+            400.0,
+            250.0
+          ],
+          "incoming_mass_kg": 9.999955102040815,
+          "outgoing_mass_kg": 10.999955102040827,
+          "equivalent_mass_kg": 10.999955102040815,
+          "equivalent_center_xy_mm": [
+            580.000373,
+            372.99999999999073
+          ],
+          "mass_residual_kg": 1.2434497875801753e-14,
+          "moment_residual_kg_mm": [
+            4.973799150320701e-14,
+            -1.1368683772161603e-13
+          ],
+          "mass_tolerance_kg": 1.1999955102040816e-08,
+          "moment_tolerance_kg_mm": 1.1999955102040816e-05,
+          "retained_support_hull_mm": [
+            [
+              562.000355,
+              355.0
+            ],
+            [
+              598.000355,
+              355.0
+            ],
+            [
+              598.000445,
+              445.0
+            ],
+            [
+              562.000445,
+              445.0
+            ]
+          ]
+        },
+        {
+          "item_id": "shelf",
+          "own_mass_kg": 4.0,
+          "own_center_mm": [
+            500.0,
+            400.0,
+            150.0
+          ],
+          "incoming_mass_kg": 22.000000000000018,
+          "outgoing_mass_kg": 26.00000000000002,
+          "equivalent_mass_kg": 26.000000000000018,
+          "equivalent_center_xy_mm": [
+            500.00000000000006,
+            400.0
+          ],
+          "mass_residual_kg": 3.552713678800501e-15,
+          "moment_residual_kg_mm": [
+            -5.098144129078719e-13,
+            2.788880237858393e-13
+          ],
+          "mass_tolerance_kg": 2.7000000000000017e-08,
+          "moment_tolerance_kg_mm": 2.700000000000002e-05,
+          "retained_support_hull_mm": [
+            [
+              473.00031,
+              310.0
+            ],
+            [
+              527.00031,
+              310.0
+            ],
+            [
+              527.00049,
+              490.0
+            ],
+            [
+              473.00049,
+              490.0
+            ]
+          ]
+        },
+        {
+          "item_id": "top",
+          "own_mass_kg": 20.0,
+          "own_center_mm": [
+            500.0,
+            400.0,
+            350.0
+          ],
+          "incoming_mass_kg": 0.0,
+          "outgoing_mass_kg": 19.999999999999996,
+          "equivalent_mass_kg": 20.0,
+          "equivalent_center_xy_mm": [
+            500.0,
+            400.0
+          ],
+          "mass_residual_kg": -3.552713678800501e-15,
+          "moment_residual_kg_mm": [
+            7.105427357601002e-14,
+            -8.526512829121202e-14
+          ],
+          "mass_tolerance_kg": 2.1e-08,
+          "moment_tolerance_kg_mm": 2.1000000000000002e-05,
+          "retained_support_hull_mm": [
+            [
+              410.000355,
+              355.0
+            ],
+            [
+              590.000355,
+              355.0
+            ],
+            [
+              590.000445,
+              445.0
+            ],
+            [
+              410.000445,
+              445.0
+            ]
+          ]
+        }
+      ],
+      "input_total_mass_kg": 27.0,
+      "ground_mass_kg": 27.00000000000002,
+      "global_mass_residual_kg": 2.1316282072803006e-14,
+      "global_moment_residual_kg_mm": [
+        1.0913936421275139e-11,
+        9.094947017729282e-12
+      ],
+      "scaled_equality_residual_max": 4.718447854656915e-16,
+      "minimum_reaction_kg": 0.1979991918366207,
+      "global_conservation_checked": true,
+      "restored_order": [
+        "base",
+        "shelf",
+        "left",
+        "right",
+        "top"
+      ],
+      "kernel_geometry_calls": 5,
+      "evaluated_scope": "post_drop_network",
+      "baseline_network_digest": "0e98e3b6a57e44f14129bc5ea10385ff0baaafad40a20a4a16f61d38ad96e627",
+      "boxes": [
+        {
+          "item_id": "base",
+          "mass_kg": 1.0,
+          "center_mm": [
+            500.0,
+            400.0,
+            50.0
+          ],
+          "corner_mm": [
+            470.0,
+            300.0,
+            0.0
+          ],
+          "vertex_high_mm": [
+            530.0,
+            500.0,
+            100.0
+          ]
+        },
+        {
+          "item_id": "shelf",
+          "mass_kg": 4.0,
+          "center_mm": [
+            500.0,
+            400.0,
+            150.0
+          ],
+          "corner_mm": [
+            380.0,
+            300.0,
+            100.0
+          ],
+          "vertex_high_mm": [
+            620.0,
+            500.0,
+            200.0
+          ]
+        },
+        {
+          "item_id": "left",
+          "mass_kg": 1.0,
+          "center_mm": [
+            420.0,
+            400.0,
+            250.0
+          ],
+          "corner_mm": [
+            400.0,
+            350.0,
+            200.0
+          ],
+          "vertex_high_mm": [
+            440.0,
+            450.0,
+            300.0
+          ]
+        },
+        {
+          "item_id": "right",
+          "mass_kg": 1.0,
+          "center_mm": [
+            580.0,
+            400.0,
+            250.0
+          ],
+          "corner_mm": [
+            560.0,
+            350.0,
+            200.0
+          ],
+          "vertex_high_mm": [
+            600.0,
+            450.0,
+            300.0
+          ]
+        },
+        {
+          "item_id": "top",
+          "mass_kg": 20.0,
+          "center_mm": [
+            500.0,
+            400.0,
+            350.0
+          ],
+          "corner_mm": [
+            380.0,
+            350.0,
+            300.0
+          ],
+          "vertex_high_mm": [
+            620.0,
+            450.0,
+            400.0
+          ]
+        }
+      ]
+    },
+    "duration_s": 0.2048155729935388,
+    "version": "pct_stability_result_v2"
+  },
+  "independent_physical_checks_passed": true,
+  "expectation_matched": true
+}

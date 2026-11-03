@@ -1,0 +1,994 @@
+{
+  "fixture": "asymmetric_three",
+  "origin": "CONSTRUCTED_NOT_ORDER",
+  "expected_status": "STABLE",
+  "independent_basis": "unique positive center barycentric witness from independent 3x3 equilibrium equations",
+  "state": {
+    "container_mm": [
+      1000,
+      800,
+      1000
+    ],
+    "placed": [
+      {
+        "item_id": "support_0",
+        "dimensions_mm": [
+          40,
+          40,
+          100
+        ],
+        "mass_kg": 1,
+        "bottom_center_mm": [
+          -120,
+          -60,
+          0
+        ],
+        "yaw_deg": 0
+      },
+      {
+        "item_id": "support_1",
+        "dimensions_mm": [
+          40,
+          40,
+          100
+        ],
+        "mass_kg": 1,
+        "bottom_center_mm": [
+          100,
+          -60,
+          0
+        ],
+        "yaw_deg": 0
+      },
+      {
+        "item_id": "support_2",
+        "dimensions_mm": [
+          40,
+          40,
+          100
+        ],
+        "mass_kg": 1,
+        "bottom_center_mm": [
+          20,
+          120,
+          0
+        ],
+        "yaw_deg": 0
+      }
+    ]
+  },
+  "candidate": {
+    "item_id": "bridge",
+    "dimensions_mm": [
+      300,
+      260,
+      100
+    ],
+    "mass_kg": 7,
+    "bottom_center_mm": [
+      10,
+      10,
+      100
+    ],
+    "yaw_deg": 0
+  },
+  "result": {
+    "status": "STABLE",
+    "reason_code": "CONTACT_NETWORK_BALANCED",
+    "state_digest": "4d27d94a66b4c815a894fff4eac028b6e5cda33ef1be7f60a2226e6754588b62",
+    "candidate_digest": "c4fb4fa3ad8daff78006db988ce1092d4cd74b143f20c6461ff554c5f92c1174",
+    "candidate_id": "bridge",
+    "config_digest": "f86681769d10d4b1b277a2c9c4b226d49231a38c2506367d16a37364bdd1fb82",
+    "algorithm_identity": {
+      "algorithm": "pct_contact_network_v2",
+      "upstream_commit": "5e7b4238b18310af4529e0f85157d17de605850c",
+      "semantic_revision": "project_global_contact_reaction_equilibrium",
+      "files_sha256": {
+        "balance_contracts.py": "3337a88ec4ffccacba29bf47efd5c3989fec45d9ec0b01bd4c533d39459b9d85",
+        "balance_network.py": "9bb4b95601d9b8ab88e08ac2d3dda83e2b828d8bb8523801d988af29b8a82d15",
+        "balance_adapter.py": "f021c7dbe661dc9d3cc4cb948b911d991d84185d895357693466fdb9d3e0eca0",
+        "contracts.py": "997a33ecec9672b9c2134b128203cc6c64c61811cc56b8f25f532337353d37e5",
+        "geometry.py": "e0c7a631f4c301e72bad11b1dc58c3eb180df2e2e972d066b2adbe849a60dc00",
+        "__init__.py": "8d7d6133025039e06c347b4f7c7fa7b7324ad0a329b74c9296c5288ea3e974f4",
+        "vendor/__init__.py": "cbdac086937385282bead97cf5202ad7d2b4e3a0649bf9d9fdd7812020782ec8",
+        "vendor/pct/__init__.py": "37b74d6bc0ea7c33a76f02bf5bfa48ef5ecd6999441b437cf40a1b714fb8e8e8",
+        "vendor/pct/space.py": "ba0d5268463eb280006582b43cff83d935bdeb33950e5f8161c1a46e12f2fef7",
+        "vendor/pct/convex_hull.py": "b86f2726fec797814db3e785ce00b4e7ebe9376b389226bb843c1a9599eeb1d8",
+        "vendor/pct/PctTools.py": "e23d4bbb7e4997734212c9f0bd902bd06b18ac964a0e7fd6585bc040febc0ea8",
+        "vendor/pct/LICENSE": "064dff533bd13cc3e33b6ff3bf1639ba1d74d116e1955e9bfd94329fa083787a",
+        "vendor/pct/upstream_manifest.json": "56c8046d76dc639da843b1e936ddef8ebc529adfd31f6c8eac891d80a03765b8",
+        "vendor/pct/compatibility.patch": "46d0adfc32c35b509565c6bc9dfb94a4236f912e80c19b295963e9921d855ff4",
+        "vendor/pct/UPSTREAM.md": "6afdcd0adc7f92e845871d6095ada5b17cb24886407ae38d73b439e49fc9b037",
+        "BALANCE_DESIGN.md": "03ba8f54e3a4abe0f1695e7e25ea56a4c759a6c3ac9bb593d54a717ebe812bfc",
+        "BALANCE_CHANGES.md": "8b2837174a51d08a3e0364c47951f2e6dfa2da3c92392f868bbfe4ff7853abe6",
+        "configs/pct_contact_network_v2.json": "2649cf80610c86dbc07b939c45f0575cc4329afb93cdd83ae38d859b2e353c52",
+        "schemas/stability_config_v2.schema.json": "df4936256679122f902d9985f8123984e3e23584747a6446a740361fd5fcec80",
+        "schemas/stability_result_v2.schema.json": "e5b57386ba603f126cb6ece48e3a21903b7c225bafb972c615db3bda9da09631"
+      },
+      "source_digest": "ef0a1e44b228fba0040c7687aaf4f2908f18396a12590f83f9f3117cab526c1d",
+      "dependencies": {
+        "numpy": "2.1.3",
+        "scipy": "1.15.3",
+        "highs_version": "1.8.0",
+        "highs_core_sha256": "bf298874d77c9ac39960de27ef9ec1759ee475c7bd276619fcbffc26cd4a2978",
+        "scipy_python_sha256": {
+          "_linprog.py": "4c697d93d22887e8601d882d9dd37904d714e2fa9fa599bcc2144ad9fe1e8504",
+          "_linprog_highs.py": "c8df70ef51eceaa15804d836d4bea0cfad7eb339662cf51a7db95912bcb2cf2d"
+        }
+      },
+      "dependency_digest": "33903b5d5c6045142d8613cf019d3a3fecf1afcaa5072fa29322c89ffe6eed6c",
+      "units": {
+        "length": "mm",
+        "mass": "kg",
+        "moment": "kg*mm"
+      }
+    },
+    "baseline_status": "STABLE",
+    "first_bad_prefix": null,
+    "failed_item_id": null,
+    "height_delta_mm": 0.0,
+    "evaluated_pose": {
+      "item_id": "bridge",
+      "kernel_corner_mm": [
+        360.0,
+        280.0,
+        100.0
+      ],
+      "original_bottom_center_mm": [
+        10,
+        10,
+        100
+      ],
+      "oriented_size_mm": [
+        300,
+        260,
+        100
+      ],
+      "density_kg_mm3": 8.974358974358974e-07
+    },
+    "kernel_calls": 4,
+    "diagnostics": {
+      "solver_phases": [
+        {
+          "phase": "physical_feasibility",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 12
+        },
+        {
+          "phase": "max_network_interior",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 33
+        },
+        {
+          "phase": "lex_force_0",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 29
+        },
+        {
+          "phase": "lex_force_1",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 31
+        },
+        {
+          "phase": "lex_force_2",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 30
+        },
+        {
+          "phase": "lex_force_3",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 33
+        },
+        {
+          "phase": "lex_force_4",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 30
+        },
+        {
+          "phase": "lex_force_5",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 32
+        },
+        {
+          "phase": "lex_force_6",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 29
+        },
+        {
+          "phase": "lex_force_7",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 33
+        },
+        {
+          "phase": "lex_force_8",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 36
+        },
+        {
+          "phase": "lex_force_9",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 30
+        },
+        {
+          "phase": "lex_force_10",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 34
+        },
+        {
+          "phase": "lex_force_11",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 32
+        },
+        {
+          "phase": "lex_force_12",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 30
+        },
+        {
+          "phase": "lex_force_13",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 31
+        },
+        {
+          "phase": "lex_force_14",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 30
+        },
+        {
+          "phase": "lex_force_15",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 31
+        },
+        {
+          "phase": "lex_force_16",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 34
+        },
+        {
+          "phase": "lex_force_17",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 30
+        },
+        {
+          "phase": "lex_force_18",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 31
+        },
+        {
+          "phase": "lex_force_19",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 29
+        },
+        {
+          "phase": "lex_force_20",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 28
+        },
+        {
+          "phase": "lex_force_21",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 28
+        },
+        {
+          "phase": "lex_force_22",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 31
+        },
+        {
+          "phase": "lex_force_23",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 30
+        }
+      ],
+      "length_scale_mm": 1000.0,
+      "mass_scale_kg": 10.0,
+      "config": {
+        "algorithm": "pct_contact_network_v2",
+        "setting": 1,
+        "height_tolerance_mm": 1e-06,
+        "mass_atol_kg": 1e-09,
+        "mass_rtol": 1e-09,
+        "moment_atol_kg_mm": 1e-06,
+        "moment_rtol": 1e-09,
+        "solver_tolerance": 1e-10,
+        "scaled_residual_tolerance": 1e-09,
+        "strict_interior_slack": 1e-10,
+        "certificate_gap": 1e-08,
+        "presolve": false,
+        "solver": "highs-ds",
+        "selection": "max_network_interior_then_lexicographic_forces"
+      },
+      "model": "global_vertical_contact_vertices_with_retained_pct_hull",
+      "physical_feasibility_witness": {
+        "status": "FEASIBLE",
+        "reactions": [
+          {
+            "upper": "bridge",
+            "lower": "support_0",
+            "point_mm": [
+              360.0,
+              320.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "bridge",
+            "lower": "support_0",
+            "point_mm": [
+              360.0,
+              360.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "bridge",
+            "lower": "support_0",
+            "point_mm": [
+              400.0,
+              320.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "bridge",
+            "lower": "support_0",
+            "point_mm": [
+              400.0,
+              360.0
+            ],
+            "mass_kg": 2.026315789473684
+          },
+          {
+            "upper": "bridge",
+            "lower": "support_1",
+            "point_mm": [
+              580.0,
+              320.0
+            ],
+            "mass_kg": 1.3631578947368426
+          },
+          {
+            "upper": "bridge",
+            "lower": "support_1",
+            "point_mm": [
+              580.0,
+              360.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "bridge",
+            "lower": "support_1",
+            "point_mm": [
+              620.0,
+              320.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "bridge",
+            "lower": "support_1",
+            "point_mm": [
+              620.0,
+              360.0
+            ],
+            "mass_kg": 1.3631578947368417
+          },
+          {
+            "upper": "bridge",
+            "lower": "support_2",
+            "point_mm": [
+              500.0,
+              500.0
+            ],
+            "mass_kg": -0.0
+          },
+          {
+            "upper": "bridge",
+            "lower": "support_2",
+            "point_mm": [
+              500.0,
+              540.0
+            ],
+            "mass_kg": 2.2473684210526317
+          },
+          {
+            "upper": "bridge",
+            "lower": "support_2",
+            "point_mm": [
+              540.0,
+              500.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "bridge",
+            "lower": "support_2",
+            "point_mm": [
+              540.0,
+              540.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "support_0",
+            "lower": null,
+            "point_mm": [
+              360.0,
+              320.0
+            ],
+            "mass_kg": 0.5
+          },
+          {
+            "upper": "support_0",
+            "lower": null,
+            "point_mm": [
+              360.0,
+              360.0
+            ],
+            "mass_kg": -0.0
+          },
+          {
+            "upper": "support_0",
+            "lower": null,
+            "point_mm": [
+              400.0,
+              320.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "support_0",
+            "lower": null,
+            "point_mm": [
+              400.0,
+              360.0
+            ],
+            "mass_kg": 2.5263157894736836
+          },
+          {
+            "upper": "support_1",
+            "lower": null,
+            "point_mm": [
+              580.0,
+              320.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "support_1",
+            "lower": null,
+            "point_mm": [
+              580.0,
+              360.0
+            ],
+            "mass_kg": 1.8631578947368421
+          },
+          {
+            "upper": "support_1",
+            "lower": null,
+            "point_mm": [
+              620.0,
+              320.0
+            ],
+            "mass_kg": 1.8631578947368421
+          },
+          {
+            "upper": "support_1",
+            "lower": null,
+            "point_mm": [
+              620.0,
+              360.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "support_2",
+            "lower": null,
+            "point_mm": [
+              500.0,
+              500.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "support_2",
+            "lower": null,
+            "point_mm": [
+              500.0,
+              540.0
+            ],
+            "mass_kg": 2.7473684210526312
+          },
+          {
+            "upper": "support_2",
+            "lower": null,
+            "point_mm": [
+              540.0,
+              500.0
+            ],
+            "mass_kg": 0.5000000000000004
+          },
+          {
+            "upper": "support_2",
+            "lower": null,
+            "point_mm": [
+              540.0,
+              540.0
+            ],
+            "mass_kg": 0.0
+          }
+        ],
+        "scaled_equality_residual_max": 1.3877787807814457e-17
+      },
+      "max_network_interior_slack_scaled": 0.04979962565881925,
+      "reactions": [
+        {
+          "upper": "bridge",
+          "lower": "support_0",
+          "point_mm": [
+            360.0,
+            320.0
+          ],
+          "mass_kg": 0.4979962565881929
+        },
+        {
+          "upper": "bridge",
+          "lower": "support_0",
+          "point_mm": [
+            360.0,
+            360.0
+          ],
+          "mass_kg": 0.49799625658819247
+        },
+        {
+          "upper": "bridge",
+          "lower": "support_0",
+          "point_mm": [
+            400.0,
+            320.0
+          ],
+          "mass_kg": 0.49799625658819285
+        },
+        {
+          "upper": "bridge",
+          "lower": "support_0",
+          "point_mm": [
+            400.0,
+            360.0
+          ],
+          "mass_kg": 0.4979962565881928
+        },
+        {
+          "upper": "bridge",
+          "lower": "support_1",
+          "point_mm": [
+            580.0,
+            320.0
+          ],
+          "mass_kg": 0.497996256588192
+        },
+        {
+          "upper": "bridge",
+          "lower": "support_1",
+          "point_mm": [
+            580.0,
+            360.0
+          ],
+          "mass_kg": 0.49799625658819247
+        },
+        {
+          "upper": "bridge",
+          "lower": "support_1",
+          "point_mm": [
+            620.0,
+            320.0
+          ],
+          "mass_kg": 0.4979962565881941
+        },
+        {
+          "upper": "bridge",
+          "lower": "support_1",
+          "point_mm": [
+            620.0,
+            360.0
+          ],
+          "mass_kg": 0.860973796117348
+        },
+        {
+          "upper": "bridge",
+          "lower": "support_2",
+          "point_mm": [
+            500.0,
+            500.0
+          ],
+          "mass_kg": 0.49799625658819247
+        },
+        {
+          "upper": "bridge",
+          "lower": "support_2",
+          "point_mm": [
+            500.0,
+            540.0
+          ],
+          "mass_kg": 0.4979962565881927
+        },
+        {
+          "upper": "bridge",
+          "lower": "support_2",
+          "point_mm": [
+            540.0,
+            500.0
+          ],
+          "mass_kg": 0.698754552002885
+        },
+        {
+          "upper": "bridge",
+          "lower": "support_2",
+          "point_mm": [
+            540.0,
+            540.0
+          ],
+          "mass_kg": 0.958305342586032
+        },
+        {
+          "upper": "support_0",
+          "lower": null,
+          "point_mm": [
+            360.0,
+            320.0
+          ],
+          "mass_kg": 0.49799625658819335
+        },
+        {
+          "upper": "support_0",
+          "lower": null,
+          "point_mm": [
+            360.0,
+            360.0
+          ],
+          "mass_kg": 0.9979962565881927
+        },
+        {
+          "upper": "support_0",
+          "lower": null,
+          "point_mm": [
+            400.0,
+            320.0
+          ],
+          "mass_kg": 0.997996256588193
+        },
+        {
+          "upper": "support_0",
+          "lower": null,
+          "point_mm": [
+            400.0,
+            360.0
+          ],
+          "mass_kg": 0.497996256588192
+        },
+        {
+          "upper": "support_1",
+          "lower": null,
+          "point_mm": [
+            580.0,
+            320.0
+          ],
+          "mass_kg": 0.49799625658819247
+        },
+        {
+          "upper": "support_1",
+          "lower": null,
+          "point_mm": [
+            580.0,
+            360.0
+          ],
+          "mass_kg": 0.9979962565881922
+        },
+        {
+          "upper": "support_1",
+          "lower": null,
+          "point_mm": [
+            620.0,
+            320.0
+          ],
+          "mass_kg": 0.9979962565881946
+        },
+        {
+          "upper": "support_1",
+          "lower": null,
+          "point_mm": [
+            620.0,
+            360.0
+          ],
+          "mass_kg": 0.860973796117347
+        },
+        {
+          "upper": "support_2",
+          "lower": null,
+          "point_mm": [
+            500.0,
+            500.0
+          ],
+          "mass_kg": 0.49799625658819247
+        },
+        {
+          "upper": "support_2",
+          "lower": null,
+          "point_mm": [
+            500.0,
+            540.0
+          ],
+          "mass_kg": 0.997996256588191
+        },
+        {
+          "upper": "support_2",
+          "lower": null,
+          "point_mm": [
+            540.0,
+            500.0
+          ],
+          "mass_kg": 1.1987545520028857
+        },
+        {
+          "upper": "support_2",
+          "lower": null,
+          "point_mm": [
+            540.0,
+            540.0
+          ],
+          "mass_kg": 0.958305342586032
+        }
+      ],
+      "nodes": [
+        {
+          "item_id": "bridge",
+          "own_mass_kg": 7.0,
+          "own_center_mm": [
+            510.0,
+            410.0,
+            150.0
+          ],
+          "incoming_mass_kg": 0.0,
+          "outgoing_mass_kg": 7.0,
+          "equivalent_mass_kg": 7.0,
+          "equivalent_center_xy_mm": [
+            510.0,
+            410.0
+          ],
+          "mass_residual_kg": 0.0,
+          "moment_residual_kg_mm": [
+            -8.881784197001252e-15,
+            4.192202140984591e-13
+          ],
+          "mass_tolerance_kg": 8e-09,
+          "moment_tolerance_kg_mm": 8.000000000000001e-06,
+          "retained_support_hull_mm": [
+            [
+              374.00032866666663,
+              328.6666666666667
+            ],
+            [
+              608.0003286666666,
+              328.6666666666667
+            ],
+            [
+              608.0003646666667,
+              364.6666666666667
+            ],
+            [
+              536.0005266666667,
+              526.6666666666666
+            ],
+            [
+              500.0005266666667,
+              526.6666666666666
+            ],
+            [
+              374.00036466666666,
+              364.6666666666667
+            ]
+          ]
+        },
+        {
+          "item_id": "support_0",
+          "own_mass_kg": 1.0,
+          "own_center_mm": [
+            380.0,
+            340.0,
+            50.0
+          ],
+          "incoming_mass_kg": 1.991985026352771,
+          "outgoing_mass_kg": 2.991985026352771,
+          "equivalent_mass_kg": 2.991985026352771,
+          "equivalent_center_xy_mm": [
+            380.0,
+            340.0
+          ],
+          "mass_residual_kg": 2.220446049250313e-16,
+          "moment_residual_kg_mm": [
+            -2.4868995751603507e-14,
+            -2.4868995751603507e-14
+          ],
+          "mass_tolerance_kg": 3.991985026352771e-09,
+          "moment_tolerance_kg_mm": 3.991985026352771e-06,
+          "retained_support_hull_mm": null
+        },
+        {
+          "item_id": "support_1",
+          "own_mass_kg": 1.0,
+          "own_center_mm": [
+            600.0,
+            340.0,
+            50.0
+          ],
+          "incoming_mass_kg": 2.3549625658819267,
+          "outgoing_mass_kg": 3.354962565881926,
+          "equivalent_mass_kg": 3.3549625658819267,
+          "equivalent_center_xy_mm": [
+            602.1638246770348,
+            342.16382467703477
+          ],
+          "mass_residual_kg": -4.440892098500626e-16,
+          "moment_residual_kg_mm": [
+            -1.2434497875801753e-14,
+            -4.085620730620576e-14
+          ],
+          "mass_tolerance_kg": 4.354962565881927e-09,
+          "moment_tolerance_kg_mm": 4.354962565881927e-06,
+          "retained_support_hull_mm": null
+        },
+        {
+          "item_id": "support_2",
+          "own_mass_kg": 1.0,
+          "own_center_mm": [
+            520.0,
+            520.0,
+            50.0
+          ],
+          "incoming_mass_kg": 2.653052407765302,
+          "outgoing_mass_kg": 3.6530524077653013,
+          "equivalent_mass_kg": 3.653052407765302,
+          "equivalent_center_xy_mm": [
+            523.6192603205325,
+            521.4210077579584
+          ],
+          "mass_residual_kg": -8.881784197001252e-16,
+          "moment_residual_kg_mm": [
+            4.263256414560601e-14,
+            -4.263256414560601e-14
+          ],
+          "mass_tolerance_kg": 4.6530524077653025e-09,
+          "moment_tolerance_kg_mm": 4.653052407765302e-06,
+          "retained_support_hull_mm": null
+        }
+      ],
+      "input_total_mass_kg": 10.0,
+      "ground_mass_kg": 9.999999999999998,
+      "global_mass_residual_kg": -1.7763568394002505e-15,
+      "global_moment_residual_kg_mm": [
+        -9.094947017729282e-13,
+        -4.547473508864641e-13
+      ],
+      "scaled_equality_residual_max": 1.1102230246251565e-16,
+      "minimum_reaction_kg": 0.497996256588192,
+      "global_conservation_checked": true,
+      "restored_order": [
+        "support_0",
+        "support_1",
+        "support_2",
+        "bridge"
+      ],
+      "kernel_geometry_calls": 4,
+      "baseline_network_digest": "98e33a85b94461e94ba1e113cf20de56f308b77574ad24f37d13c6813cf034e6",
+      "boxes": [
+        {
+          "item_id": "support_0",
+          "mass_kg": 1.0,
+          "center_mm": [
+            380.0,
+            340.0,
+            50.0
+          ],
+          "corner_mm": [
+            360.0,
+            320.0,
+            0.0
+          ],
+          "vertex_high_mm": [
+            400.0,
+            360.0,
+            100.0
+          ]
+        },
+        {
+          "item_id": "support_1",
+          "mass_kg": 1.0,
+          "center_mm": [
+            600.0,
+            340.0,
+            50.0
+          ],
+          "corner_mm": [
+            580.0,
+            320.0,
+            0.0
+          ],
+          "vertex_high_mm": [
+            620.0,
+            360.0,
+            100.0
+          ]
+        },
+        {
+          "item_id": "support_2",
+          "mass_kg": 1.0,
+          "center_mm": [
+            520.0,
+            520.0,
+            50.0
+          ],
+          "corner_mm": [
+            500.0,
+            500.0,
+            0.0
+          ],
+          "vertex_high_mm": [
+            540.0,
+            540.0,
+            100.0
+          ]
+        },
+        {
+          "item_id": "bridge",
+          "mass_kg": 7.0,
+          "center_mm": [
+            510.0,
+            410.0,
+            150.0
+          ],
+          "corner_mm": [
+            360.0,
+            280.0,
+            100.0
+          ],
+          "vertex_high_mm": [
+            660.0,
+            540.0,
+            200.0
+          ]
+        }
+      ]
+    },
+    "duration_s": 0.09172056900570169,
+    "version": "pct_stability_result_v2"
+  },
+  "independent_physical_checks_passed": true,
+  "expectation_matched": true
+}

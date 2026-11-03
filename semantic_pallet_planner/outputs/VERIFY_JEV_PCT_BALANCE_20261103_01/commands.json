@@ -1,0 +1,18 @@
+{
+  "final_tests": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONPATH=semantic_pallet_planner/src python -m pytest -q semantic_pallet_planner/tests/unit/test_stability_kernel.py semantic_pallet_planner/tests/unit/test_stability_balance.py --junitxml=<new ignored output>/final_all_tests.xml",
+  "corrected_fixtures": "PYTHONPATH=semantic_pallet_planner/src python semantic_pallet_planner/tests/unit/test_stability_balance.py --output <new ignored output>/fixtures_v2",
+  "original_defect": "PYTHONPATH=semantic_pallet_planner/src python semantic_pallet_planner/tests/unit/pct_ls_reproducer.py --output <new ignored output>/upstream_reproduction",
+  "saved_force_audit": "python /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/VERIFY_JEV_PCT_BALANCE_20261103_01/audit_saved_forces.py /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/VERIFY_JEV_PCT_BALANCE_20261103_01",
+  "build_source_preparation": "copy pyproject.toml, README.md and src to outputs/build_source, excluding egg-info and pycache; never build against original source metadata",
+  "wheel_build": "python -m pip wheel --no-deps --no-build-isolation --no-index --wheel-dir /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/VERIFY_JEV_PCT_BALANCE_20261103_01/wheels /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/VERIFY_JEV_PCT_BALANCE_20261103_01/build_source",
+  "wheel_install": "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/VERIFY_JEV_PCT_BALANCE_20261103_01/install_venv/bin/python -m pip install --no-deps --no-index --force-reinstall /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/VERIFY_JEV_PCT_BALANCE_20261103_01/wheels/semantic_pallet_planner-0.1.0-py3-none-any.whl",
+  "installed_probe": {
+    "argv": [
+      "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/VERIFY_JEV_PCT_BALANCE_20261103_01/install_venv/bin/python",
+      "-I",
+      "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/VERIFY_JEV_PCT_BALANCE_20261103_01/install_probe.py"
+    ],
+    "cwd": "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/VERIFY_JEV_PCT_BALANCE_20261103_01/non_source_cwd"
+  },
+  "saved_certificate_audit": "python /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/VERIFY_JEV_PCT_BALANCE_20261103_01/audit_saved_certificates.py /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/VERIFY_JEV_PCT_BALANCE_20261103_01"
+}

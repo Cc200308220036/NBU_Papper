@@ -1,0 +1,79 @@
+{
+  "engineering_status": "PASS_R01_R10_IN_DECLARED_V2_SCOPE",
+  "p1_closed_in_declared_scope": true,
+  "p2_admission": "ALLOWED_AS_SEPARATE_TARGET_WITH_EXACT_V2_IDENTITY",
+  "monitor_integration_status": "NOT_RUN",
+  "real_order_coverage": "NOT_RUN",
+  "policy_effect": "NOT_RUN",
+  "candidate_filtering": "NOT_IMPLEMENTED_BY_DESIGN",
+  "checks": [
+    {
+      "id": "R01",
+      "status": "PASS",
+      "evidence": "upstream_reproduction/、fixtures_v2/original_three.json、independent_physical_audit.json；旧反例仍失败，v2真实反力独立守恒"
+    },
+    {
+      "id": "R02",
+      "status": "PASS",
+      "evidence": "asymmetric_three、four、six；独立解析/双线性见证，规范排序和冻结词典序多解规则"
+    },
+    {
+      "id": "R03",
+      "status": "PASS",
+      "evidence": "outside_center_hull、physical_edge、hull_edge及其物理见证；明确区分接触区域、保守凸包和边界"
+    },
+    {
+      "id": "R04",
+      "status": "PASS",
+      "evidence": "退化/重复/共线/重合/非法拓扑测试、strict_reaction_boundary.json、数值故障注入及不可行证书检查；分类不混淆"
+    },
+    {
+      "id": "R05",
+      "status": "PASS",
+      "evidence": "shared_ancestor、heterogeneous_shared、global_redistribution、ancestor_heavy/light；共享祖先/全网络守恒及局部与全局区别"
+    },
+    {
+      "id": "R06",
+      "status": "PASS",
+      "evidence": "每反力、每节点质量与两个力矩残差、全局地面残差、求解状态/配置；12组独立反力复算；无裁剪/归一化"
+    },
+    {
+      "id": "R07",
+      "status": "PASS",
+      "evidence": "重复、接触枚举置换、候选逆序、输入摘要与真实顺序检查"
+    },
+    {
+      "id": "R08",
+      "status": "PASS",
+      "evidence": "原38项与v2 42项共80项；旧反例测试保留；真实路径统一，虚拟/绕过/自动旋转显式拒绝"
+    },
+    {
+      "id": "R09",
+      "status": "PASS",
+      "evidence": "新设计/语义说明/源与求解依赖摘要；离线wheel非源码cwd实际调用、配置/Schema/许可/补丁随包"
+    },
+    {
+      "id": "R10",
+      "status": "PASS",
+      "evidence": "本报告、engineering_acceptance.json、commands.json、summary.json、handoff.json及明确P1关闭/P2准入范围"
+    }
+  ],
+  "test_counts": {
+    "status": "PASS",
+    "total_tests": 80,
+    "v1_legacy_regression": 38,
+    "v2_physical_and_contract": 42,
+    "authoritative_run": "final_all_tests.xml",
+    "subsets": "derived from same final run, not extra executions"
+  },
+  "fixture_status_counts": {
+    "STABLE": 10,
+    "UNSTABLE": 2,
+    "UNASSESSABLE": 3,
+    "ERROR": 0
+  },
+  "independent_audit": "independent_physical_audit.json",
+  "installed_validation": "installed_probe.json",
+  "protection": "protection_after.json",
+  "independent_infeasibility_certificates_verified": 2
+}

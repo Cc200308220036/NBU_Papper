@@ -1,0 +1,86 @@
+{
+  "origin": "ABSTRACT_CONTACT_NETWORK_SELECTOR_BOUNDARY_NOT_UNIFORM_BOX_GEOMETRY_FIXTURE",
+  "analytic_basis": "load at x0 on rectangle[0,2] requires zero reactions at x2 vertices",
+  "result": {
+    "status": "UNASSESSABLE",
+    "reason_code": "NETWORK_INTERIOR_BOUNDARY",
+    "diagnostics": {
+      "solver_phases": [
+        {
+          "phase": "physical_feasibility",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 3
+        },
+        {
+          "phase": "max_network_interior",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 7
+        }
+      ],
+      "length_scale_mm": 100,
+      "mass_scale_kg": 1.0,
+      "config": {
+        "algorithm": "pct_contact_network_v2",
+        "setting": 1,
+        "height_tolerance_mm": 1e-06,
+        "mass_atol_kg": 1e-09,
+        "mass_rtol": 1e-09,
+        "moment_atol_kg_mm": 1e-06,
+        "moment_rtol": 1e-09,
+        "solver_tolerance": 1e-10,
+        "scaled_residual_tolerance": 1e-09,
+        "strict_interior_slack": 1e-10,
+        "certificate_gap": 1e-08,
+        "presolve": false,
+        "solver": "highs-ds",
+        "selection": "max_network_interior_then_lexicographic_forces"
+      },
+      "model": "global_vertical_contact_vertices_with_retained_pct_hull",
+      "physical_feasibility_witness": {
+        "status": "FEASIBLE",
+        "reactions": [
+          {
+            "upper": "edge_load",
+            "lower": null,
+            "point_mm": [
+              0.0,
+              -1.0
+            ],
+            "mass_kg": 0.5
+          },
+          {
+            "upper": "edge_load",
+            "lower": null,
+            "point_mm": [
+              0.0,
+              1.0
+            ],
+            "mass_kg": 0.5
+          },
+          {
+            "upper": "edge_load",
+            "lower": null,
+            "point_mm": [
+              2.0,
+              -1.0
+            ],
+            "mass_kg": -0.0
+          },
+          {
+            "upper": "edge_load",
+            "lower": null,
+            "point_mm": [
+              2.0,
+              1.0
+            ],
+            "mass_kg": 0.0
+          }
+        ],
+        "scaled_equality_residual_max": 0.0
+      },
+      "max_network_interior_slack_scaled": -0.0
+    }
+  }
+}

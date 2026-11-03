@@ -39,3 +39,12 @@ three-support counterexample returns upstream True but violates conservation;
 adapter returns ERROR, never clips/renormalizes or calls the old oracle.
 No semantic fix is included; general least-squares multisupport reliability
 remains unestablished. See the independent acceptance report and fixture.
+
+## Project P1.1 opt-in semantic revision (2026-11-03)
+
+The preceding statements describe legacy pct_static_v1, retained for honest
+reproduction. Project algorithm pct_contact_network_v2 now replaces impact
+splitting through separate balance_adapter/balance_network modules; none of
+these upstream source files is edited. See ../../BALANCE_DESIGN.md and
+../../BALANCE_CHANGES.md for the explicit physical/solver contract and diff
+scope. P2 must use the v2 entry/config and may not fall back to legacy v1.

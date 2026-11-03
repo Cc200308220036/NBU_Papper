@@ -97,3 +97,39 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONPATH=semantic_pallet_planner/src \
 
 No runtime monitor, checkpoints, order smoke, historical replay, candidate
 filtering, physical admission changes, remote model, keys, training or weights.
+
+## P1.1 opt-in corrected kernel (2026-11-03)
+
+The preceding v1 API remains the reproducible legacy adapter, including its
+known upstream failure. For the corrected project semantic revision use:
+
+```python
+from semantic_pallet_planner.jev_select.stability.balance_adapter import assess_candidate
+from semantic_pallet_planner.jev_select.stability.balance_contracts import load_config
+result = assess_candidate(state, candidate, load_config())
+assert result.algorithm_identity['algorithm'] == 'pct_contact_network_v2'
+```
+
+Input BoxInput/PlacedState and runtime geometry bridges are unchanged. New
+BalancedResult has version pct_stability_result_v2 and the same four statuses.
+The configuration resource is configs/pct_contact_network_v2.json, schemas
+are stability_config_v2/stability_result_v2. Optional dependency extra
+`stability` pins NumPy2.1.3/SciPy1.15.3; runtime identity hashes solver code and
+compiled HiGHS core. Package import alone remains lazy and does not load SciPy.
+
+See [BALANCE_DESIGN.md](BALANCE_DESIGN.md) and
+[BALANCE_CHANGES.md](BALANCE_CHANGES.md). All support counts share one global
+reaction system; no original impact split or virtual path is used. Stable
+results include reactions, local/global mass and horizontal-moment residuals,
+physical feasibility witness, solver phases, retained hulls and frozen
+tolerances. Infeasibility requires a checked separation witness before
+UNSTABLE; conservative hull or strict-interior boundary failure is
+UNASSESSABLE, solver/nonfinite/negative/residual failure is ERROR.
+
+The selector requires a positive common reaction/hull interior margin. Exact
+zero-reaction boundary equilibria and extremely small normalized margins may
+therefore be UNASSESSABLE; this is not physical instability. No real-order
+coverage or performance claim is established. Actual masses and positions,
+setting=2 rejection, fresh per-candidate state and independent capacity/area
+ledger remain unchanged. P2 must explicitly freeze/select v2 and refuse any
+fallback to v1; no monitor, scheduling, stop, CLI or recovery is added here.

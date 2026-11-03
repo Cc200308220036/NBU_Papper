@@ -133,3 +133,56 @@ coverage or performance claim is established. Actual masses and positions,
 setting=2 rejection, fresh per-candidate state and independent capacity/area
 ledger remain unchanged. P2 must explicitly freeze/select v2 and refuse any
 fallback to v1; no monitor, scheduling, stop, CLI or recovery is added here.
+
+## P2/P3 selected-action monitoring (2026-11-03)
+
+Use the distinct `jev_packaging_monitored_v5` runtime. `monitor.py` explicitly
+imports the corrected v2 entry and `balance_contracts.load_config` only when
+`stability_monitor.enabled` is true. The outer option resource
+`configs/monitor_v1.json` defaults to false. CLI on/off and this boolean are the
+same option; an explicit conflict is rejected. Enabled runs freeze the kernel,
+configuration, source, SciPy/HiGHS and NumPy binary/platform identities before
+selection. Remote models and nonempty memory remain unavailable.
+
+The shared `episode.py` persists SELECTED with the exact action, then MONITORED
+with a state/action/config credential. STABLE (or DISABLED) passes that
+credential to the original `commit_physical`. UNSTABLE ends the order as
+PREDICTED_STATIC_INSTABILITY without placing the attempted box. UNASSESSABLE
+and ERROR stop separately. Single-candidate bypass uses the same monitor.
+There is no PCT candidate filtering, alternative choice or retry.
+
+The original atomic checkpoint owns state and commit status together.
+SELECTED resumes the saved action; MONITORED resumes the saved result;
+COMMITTED only finishes downstream evaluation. Recovery validates historical
+transitions on private copies using the original physical checks, without
+calling a selector, generating candidates or solving PCT again. An interruption
+before an atomic COMMITTED write leaves no durable placement; interruption
+after it restores the committed state. `actions` and `stages` retain the saved
+records. The monitor credential itself always has `committed=false`; actual
+commit is represented by PLACE/action/after and the COMMITTED checkpoint.
+
+From the repository root, with Python >=3.11 and the `stability` extra for on:
+
+```bash
+export PYTHONPATH="$PWD/semantic_pallet_planner/src"
+python -m semantic_pallet_planner.jev_select smoke-packaging-monitor \
+  --dataset semantic_pallet_planner/outputs/DATA_JEV_PACKAGING_LOAD_20261102_02 \
+  --stability-monitor off --output semantic_pallet_planner/outputs/NEW_MONITOR_OFF
+python -m semantic_pallet_planner.jev_select smoke-packaging-monitor \
+  --dataset semantic_pallet_planner/outputs/DATA_JEV_PACKAGING_LOAD_20261102_02 \
+  --stability-monitor on --output semantic_pallet_planner/outputs/NEW_MONITOR_ON
+python -m semantic_pallet_planner.jev_select validate-stability-report \
+  --report semantic_pallet_planner/outputs/NEW_MONITOR_ON
+```
+
+Each smoke command runs only the same two preregistered tasks, at most eight
+events per task. The validator reads saved records and checks identities,
+credentials, original physical transitions, stages and metrics; it does not
+reassess stability. A changed production source requires using the saved code
+snapshot. A monitor result reused on recovery increments `saved_result_reuses`;
+`actual_assessments` counts unique persisted assessments over the run lifetime.
+`monitor_wall_s` measures assessment including reconstruction and LP phases,
+not isolated solver CPU time. All tasks retain their loading denominators;
+technical and empty-pool stops do not establish zero instability risk. Disabled
+stable-completion rate is NOT_APPLICABLE. No historical posthoc analysis or
+real strategy-effect experiment is performed by these commands.

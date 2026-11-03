@@ -330,3 +330,7 @@ PYTHONPATH=semantic_pallet_planner/src python -m semantic_pallet_planner.jev_sel
 smoke仅固定两个任务各8事件以内，含4事件前缀恢复；不是全单/模型效果实验。
 记录校验不回放订单。实际验收、D01—D20范围及第三方算法UNVERIFIED清单见
 `docs/03_阶段产出分析/O4/Jev_J4新数据运行链路与稳定性接入就绪_20261102.md`。
+
+P2/P3 包装选后静态监测使用独立 v5 协议，默认关闭。入口、恢复语义、
+开/关受限命令及记录校验见 [stability/README.md](stability/README.md#p2p3-selected-action-monitoring-2026-11-03)。
+旧 v4 配置与 Schema 不接受监测字段；真实模型、非空经验与候选预过滤未开放。

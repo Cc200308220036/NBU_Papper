@@ -1,0 +1,1348 @@
+{
+  "fixture": "heterogeneous_shared",
+  "origin": "CONSTRUCTED_NOT_ORDER",
+  "expected_status": "STABLE",
+  "independent_basis": "total16kg, world moment x=220kg*mm; shared slab carries14kg, never double-counts top4kg",
+  "state": {
+    "container_mm": [
+      1000,
+      800,
+      1000
+    ],
+    "placed": [
+      {
+        "item_id": "gleft",
+        "dimensions_mm": [
+          60,
+          160,
+          60
+        ],
+        "mass_kg": 1,
+        "bottom_center_mm": [
+          -80,
+          0,
+          0
+        ],
+        "yaw_deg": 0
+      },
+      {
+        "item_id": "gright",
+        "dimensions_mm": [
+          60,
+          160,
+          60
+        ],
+        "mass_kg": 1,
+        "bottom_center_mm": [
+          80,
+          0,
+          0
+        ],
+        "yaw_deg": 0
+      },
+      {
+        "item_id": "slab",
+        "dimensions_mm": [
+          240,
+          160,
+          40
+        ],
+        "mass_kg": 2,
+        "bottom_center_mm": [
+          0,
+          0,
+          60
+        ],
+        "yaw_deg": 0
+      },
+      {
+        "item_id": "cleft",
+        "dimensions_mm": [
+          50,
+          60,
+          50
+        ],
+        "mass_kg": 3,
+        "bottom_center_mm": [
+          -70,
+          0,
+          100
+        ],
+        "yaw_deg": 0
+      },
+      {
+        "item_id": "cright",
+        "dimensions_mm": [
+          50,
+          60,
+          50
+        ],
+        "mass_kg": 5,
+        "bottom_center_mm": [
+          70,
+          0,
+          100
+        ],
+        "yaw_deg": 0
+      }
+    ]
+  },
+  "candidate": {
+    "item_id": "top",
+    "dimensions_mm": [
+      200,
+      100,
+      40
+    ],
+    "mass_kg": 4,
+    "bottom_center_mm": [
+      20,
+      0,
+      150
+    ],
+    "yaw_deg": 0
+  },
+  "result": {
+    "status": "STABLE",
+    "reason_code": "CONTACT_NETWORK_BALANCED",
+    "state_digest": "b007b61a6a187abdc7ceabeb176b5e7cf9f3e0dc13184aef3b1bdc486e227be2",
+    "candidate_digest": "d2abad4d33e7c668ff111d5cfd705503d42daed4c216024d793d6d23d6d0dab8",
+    "candidate_id": "top",
+    "config_digest": "f86681769d10d4b1b277a2c9c4b226d49231a38c2506367d16a37364bdd1fb82",
+    "algorithm_identity": {
+      "algorithm": "pct_contact_network_v2",
+      "upstream_commit": "5e7b4238b18310af4529e0f85157d17de605850c",
+      "semantic_revision": "project_global_contact_reaction_equilibrium",
+      "files_sha256": {
+        "balance_contracts.py": "3337a88ec4ffccacba29bf47efd5c3989fec45d9ec0b01bd4c533d39459b9d85",
+        "balance_network.py": "f792d46136fb6f7d94dc26da6816912cf20361f8e893a9c13155207148aec96a",
+        "balance_adapter.py": "34295011c5eaebfdbd723a3de7510fccc858abf3bc7b6e742fb48b818276c4bc",
+        "contracts.py": "997a33ecec9672b9c2134b128203cc6c64c61811cc56b8f25f532337353d37e5",
+        "geometry.py": "e0c7a631f4c301e72bad11b1dc58c3eb180df2e2e972d066b2adbe849a60dc00",
+        "__init__.py": "8d7d6133025039e06c347b4f7c7fa7b7324ad0a329b74c9296c5288ea3e974f4",
+        "vendor/__init__.py": "cbdac086937385282bead97cf5202ad7d2b4e3a0649bf9d9fdd7812020782ec8",
+        "vendor/pct/__init__.py": "37b74d6bc0ea7c33a76f02bf5bfa48ef5ecd6999441b437cf40a1b714fb8e8e8",
+        "vendor/pct/space.py": "ba0d5268463eb280006582b43cff83d935bdeb33950e5f8161c1a46e12f2fef7",
+        "vendor/pct/convex_hull.py": "b86f2726fec797814db3e785ce00b4e7ebe9376b389226bb843c1a9599eeb1d8",
+        "vendor/pct/PctTools.py": "e23d4bbb7e4997734212c9f0bd902bd06b18ac964a0e7fd6585bc040febc0ea8",
+        "vendor/pct/LICENSE": "064dff533bd13cc3e33b6ff3bf1639ba1d74d116e1955e9bfd94329fa083787a",
+        "vendor/pct/upstream_manifest.json": "56c8046d76dc639da843b1e936ddef8ebc529adfd31f6c8eac891d80a03765b8",
+        "vendor/pct/compatibility.patch": "46d0adfc32c35b509565c6bc9dfb94a4236f912e80c19b295963e9921d855ff4",
+        "vendor/pct/UPSTREAM.md": "6afdcd0adc7f92e845871d6095ada5b17cb24886407ae38d73b439e49fc9b037",
+        "BALANCE_DESIGN.md": "03ba8f54e3a4abe0f1695e7e25ea56a4c759a6c3ac9bb593d54a717ebe812bfc",
+        "BALANCE_CHANGES.md": "8b2837174a51d08a3e0364c47951f2e6dfa2da3c92392f868bbfe4ff7853abe6",
+        "configs/pct_contact_network_v2.json": "2649cf80610c86dbc07b939c45f0575cc4329afb93cdd83ae38d859b2e353c52",
+        "schemas/stability_config_v2.schema.json": "df4936256679122f902d9985f8123984e3e23584747a6446a740361fd5fcec80",
+        "schemas/stability_result_v2.schema.json": "e5b57386ba603f126cb6ece48e3a21903b7c225bafb972c615db3bda9da09631"
+      },
+      "source_digest": "dd94a149db0b7e8b85a96302e449c5d110b0a2e1e506ea865cc629d02c0d055c",
+      "dependencies": {
+        "numpy": "2.1.3",
+        "scipy": "1.15.3",
+        "highs_version": "1.8.0",
+        "highs_core_sha256": "bf298874d77c9ac39960de27ef9ec1759ee475c7bd276619fcbffc26cd4a2978",
+        "scipy_python_sha256": {
+          "_linprog.py": "4c697d93d22887e8601d882d9dd37904d714e2fa9fa599bcc2144ad9fe1e8504",
+          "_linprog_highs.py": "c8df70ef51eceaa15804d836d4bea0cfad7eb339662cf51a7db95912bcb2cf2d"
+        }
+      },
+      "dependency_digest": "33903b5d5c6045142d8613cf019d3a3fecf1afcaa5072fa29322c89ffe6eed6c",
+      "units": {
+        "length": "mm",
+        "mass": "kg",
+        "moment": "kg*mm"
+      }
+    },
+    "baseline_status": "STABLE",
+    "first_bad_prefix": null,
+    "failed_item_id": null,
+    "height_delta_mm": 0.0,
+    "evaluated_pose": {
+      "item_id": "top",
+      "kernel_corner_mm": [
+        420.0,
+        350.0,
+        150.0
+      ],
+      "original_bottom_center_mm": [
+        20,
+        0,
+        150
+      ],
+      "oriented_size_mm": [
+        200,
+        100,
+        40
+      ],
+      "density_kg_mm3": 5e-06
+    },
+    "kernel_calls": 6,
+    "diagnostics": {
+      "solver_phases": [
+        {
+          "phase": "physical_feasibility",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 16
+        },
+        {
+          "phase": "max_network_interior",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 48
+        },
+        {
+          "phase": "lex_force_0",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 39
+        },
+        {
+          "phase": "lex_force_1",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 44
+        },
+        {
+          "phase": "lex_force_2",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 36
+        },
+        {
+          "phase": "lex_force_3",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 39
+        },
+        {
+          "phase": "lex_force_4",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 34
+        },
+        {
+          "phase": "lex_force_5",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 35
+        },
+        {
+          "phase": "lex_force_6",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 37
+        },
+        {
+          "phase": "lex_force_7",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 40
+        },
+        {
+          "phase": "lex_force_8",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 37
+        },
+        {
+          "phase": "lex_force_9",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 36
+        },
+        {
+          "phase": "lex_force_10",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 37
+        },
+        {
+          "phase": "lex_force_11",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 41
+        },
+        {
+          "phase": "lex_force_12",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 37
+        },
+        {
+          "phase": "lex_force_13",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 36
+        },
+        {
+          "phase": "lex_force_14",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 37
+        },
+        {
+          "phase": "lex_force_15",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 34
+        },
+        {
+          "phase": "lex_force_16",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 34
+        },
+        {
+          "phase": "lex_force_17",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 35
+        },
+        {
+          "phase": "lex_force_18",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 34
+        },
+        {
+          "phase": "lex_force_19",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 36
+        },
+        {
+          "phase": "lex_force_20",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 35
+        },
+        {
+          "phase": "lex_force_21",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 34
+        },
+        {
+          "phase": "lex_force_22",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 33
+        },
+        {
+          "phase": "lex_force_23",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 34
+        },
+        {
+          "phase": "lex_force_24",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 39
+        },
+        {
+          "phase": "lex_force_25",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 36
+        },
+        {
+          "phase": "lex_force_26",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 39
+        },
+        {
+          "phase": "lex_force_27",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 33
+        },
+        {
+          "phase": "lex_force_28",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 35
+        },
+        {
+          "phase": "lex_force_29",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 35
+        },
+        {
+          "phase": "lex_force_30",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 36
+        },
+        {
+          "phase": "lex_force_31",
+          "status": 0,
+          "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "iterations": 35
+        }
+      ],
+      "length_scale_mm": 1000.0,
+      "mass_scale_kg": 16.0,
+      "config": {
+        "algorithm": "pct_contact_network_v2",
+        "setting": 1,
+        "height_tolerance_mm": 1e-06,
+        "mass_atol_kg": 1e-09,
+        "mass_rtol": 1e-09,
+        "moment_atol_kg_mm": 1e-06,
+        "moment_rtol": 1e-09,
+        "solver_tolerance": 1e-10,
+        "scaled_residual_tolerance": 1e-09,
+        "strict_interior_slack": 1e-10,
+        "certificate_gap": 1e-08,
+        "presolve": false,
+        "solver": "highs-ds",
+        "selection": "max_network_interior_then_lexicographic_forces"
+      },
+      "model": "global_vertical_contact_vertices_with_retained_pct_hull",
+      "physical_feasibility_witness": {
+        "status": "FEASIBLE",
+        "reactions": [
+          {
+            "upper": "cleft",
+            "lower": "slab",
+            "point_mm": [
+              405.0,
+              370.0
+            ],
+            "mass_kg": 2.3
+          },
+          {
+            "upper": "cleft",
+            "lower": "slab",
+            "point_mm": [
+              405.0,
+              430.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "cleft",
+            "lower": "slab",
+            "point_mm": [
+              455.0,
+              370.0
+            ],
+            "mass_kg": 0.3428571428571425
+          },
+          {
+            "upper": "cleft",
+            "lower": "slab",
+            "point_mm": [
+              455.0,
+              430.0
+            ],
+            "mass_kg": 1.5000000000000002
+          },
+          {
+            "upper": "cright",
+            "lower": "slab",
+            "point_mm": [
+              545.0,
+              370.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "cright",
+            "lower": "slab",
+            "point_mm": [
+              545.0,
+              430.0
+            ],
+            "mass_kg": 4.499999999999999
+          },
+          {
+            "upper": "cright",
+            "lower": "slab",
+            "point_mm": [
+              595.0,
+              370.0
+            ],
+            "mass_kg": 3.3571428571428577
+          },
+          {
+            "upper": "cright",
+            "lower": "slab",
+            "point_mm": [
+              595.0,
+              430.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "gleft",
+            "lower": null,
+            "point_mm": [
+              390.0,
+              320.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "gleft",
+            "lower": null,
+            "point_mm": [
+              390.0,
+              480.0
+            ],
+            "mass_kg": 6.5000000000000036
+          },
+          {
+            "upper": "gleft",
+            "lower": null,
+            "point_mm": [
+              450.0,
+              320.0
+            ],
+            "mass_kg": 0.4999999999999982
+          },
+          {
+            "upper": "gleft",
+            "lower": null,
+            "point_mm": [
+              450.0,
+              480.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "gright",
+            "lower": null,
+            "point_mm": [
+              550.0,
+              320.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "gright",
+            "lower": null,
+            "point_mm": [
+              550.0,
+              480.0
+            ],
+            "mass_kg": 0.5000000000000002
+          },
+          {
+            "upper": "gright",
+            "lower": null,
+            "point_mm": [
+              610.0,
+              320.0
+            ],
+            "mass_kg": 7.499999999999998
+          },
+          {
+            "upper": "gright",
+            "lower": null,
+            "point_mm": [
+              610.0,
+              480.0
+            ],
+            "mass_kg": 0.9999999999999994
+          },
+          {
+            "upper": "slab",
+            "lower": "gleft",
+            "point_mm": [
+              390.0,
+              320.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "slab",
+            "lower": "gleft",
+            "point_mm": [
+              390.0,
+              480.0
+            ],
+            "mass_kg": 6.000000000000002
+          },
+          {
+            "upper": "slab",
+            "lower": "gleft",
+            "point_mm": [
+              450.0,
+              320.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "slab",
+            "lower": "gleft",
+            "point_mm": [
+              450.0,
+              480.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "slab",
+            "lower": "gright",
+            "point_mm": [
+              550.0,
+              320.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "slab",
+            "lower": "gright",
+            "point_mm": [
+              550.0,
+              480.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "slab",
+            "lower": "gright",
+            "point_mm": [
+              610.0,
+              320.0
+            ],
+            "mass_kg": 7.000000000000001
+          },
+          {
+            "upper": "slab",
+            "lower": "gright",
+            "point_mm": [
+              610.0,
+              480.0
+            ],
+            "mass_kg": 0.9999999999999973
+          },
+          {
+            "upper": "top",
+            "lower": "cleft",
+            "point_mm": [
+              420.0,
+              370.0
+            ],
+            "mass_kg": 1.1428571428571432
+          },
+          {
+            "upper": "top",
+            "lower": "cleft",
+            "point_mm": [
+              420.0,
+              430.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "top",
+            "lower": "cleft",
+            "point_mm": [
+              455.0,
+              370.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "top",
+            "lower": "cleft",
+            "point_mm": [
+              455.0,
+              430.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "top",
+            "lower": "cright",
+            "point_mm": [
+              545.0,
+              370.0
+            ],
+            "mass_kg": 0.0
+          },
+          {
+            "upper": "top",
+            "lower": "cright",
+            "point_mm": [
+              545.0,
+              430.0
+            ],
+            "mass_kg": 1.9999999999999991
+          },
+          {
+            "upper": "top",
+            "lower": "cright",
+            "point_mm": [
+              595.0,
+              370.0
+            ],
+            "mass_kg": 0.8571428571428578
+          },
+          {
+            "upper": "top",
+            "lower": "cright",
+            "point_mm": [
+              595.0,
+              430.0
+            ],
+            "mass_kg": 0.0
+          }
+        ],
+        "scaled_equality_residual_max": 8.326672684688674e-17
+      },
+      "max_network_interior_slack_scaled": 0.006684433206891959,
+      "reactions": [
+        {
+          "upper": "cleft",
+          "lower": "slab",
+          "point_mm": [
+            405.0,
+            370.0
+          ],
+          "mass_kg": 0.10695093131026978
+        },
+        {
+          "upper": "cleft",
+          "lower": "slab",
+          "point_mm": [
+            405.0,
+            430.0
+          ],
+          "mass_kg": 2.269697976339868
+        },
+        {
+          "upper": "cleft",
+          "lower": "slab",
+          "point_mm": [
+            455.0,
+            370.0
+          ],
+          "mass_kg": 1.9132333267727497
+        },
+        {
+          "upper": "cleft",
+          "lower": "slab",
+          "point_mm": [
+            455.0,
+            430.0
+          ],
+          "mass_kg": 0.46349249048044056
+        },
+        {
+          "upper": "cright",
+          "lower": "slab",
+          "point_mm": [
+            545.0,
+            370.0
+          ],
+          "mass_kg": 0.10695093131026928
+        },
+        {
+          "upper": "cright",
+          "lower": "slab",
+          "point_mm": [
+            545.0,
+            430.0
+          ],
+          "mass_kg": 2.606950931310265
+        },
+        {
+          "upper": "cright",
+          "lower": "slab",
+          "point_mm": [
+            595.0,
+            370.0
+          ],
+          "mass_kg": 3.872864810606707
+        },
+        {
+          "upper": "cright",
+          "lower": "slab",
+          "point_mm": [
+            595.0,
+            430.0
+          ],
+          "mass_kg": 0.6598586018694208
+        },
+        {
+          "upper": "gleft",
+          "lower": null,
+          "point_mm": [
+            390.0,
+            320.0
+          ],
+          "mass_kg": 0.10695093131027135
+        },
+        {
+          "upper": "gleft",
+          "lower": null,
+          "point_mm": [
+            390.0,
+            480.0
+          ],
+          "mass_kg": 0.6069509313102682
+        },
+        {
+          "upper": "gleft",
+          "lower": null,
+          "point_mm": [
+            450.0,
+            320.0
+          ],
+          "mass_kg": 0.6069509313102718
+        },
+        {
+          "upper": "gleft",
+          "lower": null,
+          "point_mm": [
+            450.0,
+            480.0
+          ],
+          "mass_kg": 4.479147206069195
+        },
+        {
+          "upper": "gright",
+          "lower": null,
+          "point_mm": [
+            550.0,
+            320.0
+          ],
+          "mass_kg": 6.679147206069186
+        },
+        {
+          "upper": "gright",
+          "lower": null,
+          "point_mm": [
+            550.0,
+            480.0
+          ],
+          "mass_kg": 2.806950931310257
+        },
+        {
+          "upper": "gright",
+          "lower": null,
+          "point_mm": [
+            610.0,
+            320.0
+          ],
+          "mass_kg": 0.6069509313102667
+        },
+        {
+          "upper": "gright",
+          "lower": null,
+          "point_mm": [
+            610.0,
+            480.0
+          ],
+          "mass_kg": 0.10695093131027344
+        },
+        {
+          "upper": "slab",
+          "lower": "gleft",
+          "point_mm": [
+            390.0,
+            320.0
+          ],
+          "mass_kg": 0.10695093131026971
+        },
+        {
+          "upper": "slab",
+          "lower": "gleft",
+          "point_mm": [
+            390.0,
+            480.0
+          ],
+          "mass_kg": 0.10695093131027135
+        },
+        {
+          "upper": "slab",
+          "lower": "gleft",
+          "point_mm": [
+            450.0,
+            320.0
+          ],
+          "mass_kg": 0.10695093131027135
+        },
+        {
+          "upper": "slab",
+          "lower": "gleft",
+          "point_mm": [
+            450.0,
+            480.0
+          ],
+          "mass_kg": 4.47914720606919
+        },
+        {
+          "upper": "slab",
+          "lower": "gright",
+          "point_mm": [
+            550.0,
+            320.0
+          ],
+          "mass_kg": 6.679147206069184
+        },
+        {
+          "upper": "slab",
+          "lower": "gright",
+          "point_mm": [
+            550.0,
+            480.0
+          ],
+          "mass_kg": 2.306950931310263
+        },
+        {
+          "upper": "slab",
+          "lower": "gright",
+          "point_mm": [
+            610.0,
+            320.0
+          ],
+          "mass_kg": 0.10695093131027135
+        },
+        {
+          "upper": "slab",
+          "lower": "gright",
+          "point_mm": [
+            610.0,
+            480.0
+          ],
+          "mass_kg": 0.10695093131027135
+        },
+        {
+          "upper": "top",
+          "lower": "cleft",
+          "point_mm": [
+            420.0,
+            370.0
+          ],
+          "mass_kg": 0.12611604684730562
+        },
+        {
+          "upper": "top",
+          "lower": "cleft",
+          "point_mm": [
+            420.0,
+            430.0
+          ],
+          "mass_kg": 1.1262395355100354
+        },
+        {
+          "upper": "top",
+          "lower": "cleft",
+          "point_mm": [
+            455.0,
+            370.0
+          ],
+          "mass_kg": 0.3940682112357149
+        },
+        {
+          "upper": "top",
+          "lower": "cleft",
+          "point_mm": [
+            455.0,
+            430.0
+          ],
+          "mass_kg": 0.10695093131027121
+        },
+        {
+          "upper": "top",
+          "lower": "cright",
+          "point_mm": [
+            545.0,
+            370.0
+          ],
+          "mass_kg": 0.10695093131027135
+        },
+        {
+          "upper": "top",
+          "lower": "cright",
+          "point_mm": [
+            545.0,
+            430.0
+          ],
+          "mass_kg": 0.10695093131027175
+        },
+        {
+          "upper": "top",
+          "lower": "cright",
+          "point_mm": [
+            595.0,
+            370.0
+          ],
+          "mass_kg": 1.372864810606708
+        },
+        {
+          "upper": "top",
+          "lower": "cright",
+          "point_mm": [
+            595.0,
+            430.0
+          ],
+          "mass_kg": 0.6598586018694218
+        }
+      ],
+      "nodes": [
+        {
+          "item_id": "cleft",
+          "own_mass_kg": 3.0000000000000004,
+          "own_center_mm": [
+            430.0,
+            400.0,
+            125.0
+          ],
+          "incoming_mass_kg": 1.7533747249033271,
+          "outgoing_mass_kg": 4.753374724903328,
+          "equivalent_mass_kg": 4.753374724903328,
+          "equivalent_center_xy_mm": [
+            430.0004045,
+            404.5000000000113
+          ],
+          "mass_residual_kg": 0.0,
+          "moment_residual_kg_mm": [
+            7.505107646466058e-14,
+            8.171241461241152e-14
+          ],
+          "mass_tolerance_kg": 5.753374724903328e-09,
+          "moment_tolerance_kg_mm": 5.753374724903328e-06,
+          "retained_support_hull_mm": [
+            [
+              407.50037299999997,
+              373.0
+            ],
+            [
+              452.50037299999997,
+              373.0
+            ],
+            [
+              452.500427,
+              427.0
+            ],
+            [
+              407.500427,
+              427.0
+            ]
+          ]
+        },
+        {
+          "item_id": "cright",
+          "own_mass_kg": 5.0,
+          "own_center_mm": [
+            570.0,
+            400.0,
+            125.0
+          ],
+          "incoming_mass_kg": 2.246625275096673,
+          "outgoing_mass_kg": 7.246625275096662,
+          "equivalent_mass_kg": 7.246625275096672,
+          "equivalent_center_xy_mm": [
+            576.2747191996599,
+            397.0482555051347
+          ],
+          "mass_residual_kg": -1.1102230246251565e-14,
+          "moment_residual_kg_mm": [
+            1.7053025658242404e-13,
+            -1.4210854715202004e-13
+          ],
+          "mass_tolerance_kg": 8.246625275096673e-09,
+          "moment_tolerance_kg_mm": 8.246625275096674e-06,
+          "retained_support_hull_mm": [
+            [
+              547.500373,
+              373.0
+            ],
+            [
+              592.500373,
+              373.0
+            ],
+            [
+              592.5004270000001,
+              427.0
+            ],
+            [
+              547.5004270000001,
+              427.0
+            ]
+          ]
+        },
+        {
+          "item_id": "gleft",
+          "own_mass_kg": 1.0,
+          "own_center_mm": [
+            420.0,
+            400.0,
+            30.0
+          ],
+          "incoming_mass_kg": 4.8000000000000025,
+          "outgoing_mass_kg": 5.800000000000006,
+          "equivalent_mass_kg": 5.8000000000000025,
+          "equivalent_center_xy_mm": [
+            442.61480831771854,
+            460.30615551391617
+          ],
+          "mass_residual_kg": 3.552713678800501e-15,
+          "moment_residual_kg_mm": [
+            1.7053025658242404e-13,
+            -5.684341886080802e-14
+          ],
+          "mass_tolerance_kg": 6.800000000000003e-09,
+          "moment_tolerance_kg_mm": 6.800000000000003e-06,
+          "retained_support_hull_mm": null
+        },
+        {
+          "item_id": "gright",
+          "own_mass_kg": 1.0,
+          "own_center_mm": [
+            580.0,
+            400.0,
+            30.0
+          ],
+          "incoming_mass_kg": 9.19999999999999,
+          "outgoing_mass_kg": 10.199999999999983,
+          "equivalent_mass_kg": 10.19999999999999,
+          "equivalent_center_xy_mm": [
+            554.1994227212973,
+            365.70826451169467
+          ],
+          "mass_residual_kg": -7.105427357601002e-15,
+          "moment_residual_kg_mm": [
+            5.684341886080802e-14,
+            0.0
+          ],
+          "mass_tolerance_kg": 1.1199999999999991e-08,
+          "moment_tolerance_kg_mm": 1.1199999999999991e-05,
+          "retained_support_hull_mm": null
+        },
+        {
+          "item_id": "slab",
+          "own_mass_kg": 2.0,
+          "own_center_mm": [
+            500.0,
+            400.0,
+            80.0
+          ],
+          "incoming_mass_kg": 11.99999999999999,
+          "outgoing_mass_kg": 13.999999999999993,
+          "equivalent_mass_kg": 13.99999999999999,
+          "equivalent_center_xy_mm": [
+            515.7142857142857,
+            400.0
+          ],
+          "mass_residual_kg": 3.552713678800501e-15,
+          "moment_residual_kg_mm": [
+            -5.684341886080802e-14,
+            -1.509903313490213e-14
+          ],
+          "mass_tolerance_kg": 1.499999999999999e-08,
+          "moment_tolerance_kg_mm": 1.499999999999999e-05,
+          "retained_support_hull_mm": [
+            [
+              401.00032799999997,
+              328.0
+            ],
+            [
+              599.000328,
+              328.0
+            ],
+            [
+              599.0004720000001,
+              472.0
+            ],
+            [
+              401.000472,
+              472.0
+            ]
+          ]
+        },
+        {
+          "item_id": "top",
+          "own_mass_kg": 4.0,
+          "own_center_mm": [
+            520.0,
+            400.0,
+            170.0
+          ],
+          "incoming_mass_kg": 0.0,
+          "outgoing_mass_kg": 4.0,
+          "equivalent_mass_kg": 4.0,
+          "equivalent_center_xy_mm": [
+            520.0,
+            400.0
+          ],
+          "mass_residual_kg": 0.0,
+          "moment_residual_kg_mm": [
+            1.1191048088221578e-13,
+            7.993605777301127e-15
+          ],
+          "mass_tolerance_kg": 5e-09,
+          "moment_tolerance_kg_mm": 5e-06,
+          "retained_support_hull_mm": [
+            [
+              428.75037299999997,
+              373.0
+            ],
+            [
+              586.250373,
+              373.0
+            ],
+            [
+              586.2504270000001,
+              427.0
+            ],
+            [
+              428.750427,
+              427.0
+            ]
+          ]
+        }
+      ],
+      "input_total_mass_kg": 16.0,
+      "ground_mass_kg": 15.99999999999999,
+      "global_mass_residual_kg": -1.0658141036401503e-14,
+      "global_moment_residual_kg_mm": [
+        -5.4569682106375694e-12,
+        -4.547473508864641e-12
+      ],
+      "scaled_equality_residual_max": 7.216449660063518e-16,
+      "minimum_reaction_kg": 0.10695093131026928,
+      "global_conservation_checked": true,
+      "restored_order": [
+        "gleft",
+        "gright",
+        "slab",
+        "cleft",
+        "cright",
+        "top"
+      ],
+      "kernel_geometry_calls": 6,
+      "evaluated_scope": "post_drop_network",
+      "baseline_network_digest": "3d008980f690e6c5ba694a07852c9d4d05d4129fe690c2ffe73de43e3c5065bd",
+      "boxes": [
+        {
+          "item_id": "gleft",
+          "mass_kg": 1.0,
+          "center_mm": [
+            420.0,
+            400.0,
+            30.0
+          ],
+          "corner_mm": [
+            390.0,
+            320.0,
+            0.0
+          ],
+          "vertex_high_mm": [
+            450.0,
+            480.0,
+            60.0
+          ]
+        },
+        {
+          "item_id": "gright",
+          "mass_kg": 1.0,
+          "center_mm": [
+            580.0,
+            400.0,
+            30.0
+          ],
+          "corner_mm": [
+            550.0,
+            320.0,
+            0.0
+          ],
+          "vertex_high_mm": [
+            610.0,
+            480.0,
+            60.0
+          ]
+        },
+        {
+          "item_id": "slab",
+          "mass_kg": 2.0,
+          "center_mm": [
+            500.0,
+            400.0,
+            80.0
+          ],
+          "corner_mm": [
+            380.0,
+            320.0,
+            60.0
+          ],
+          "vertex_high_mm": [
+            620.0,
+            480.0,
+            100.0
+          ]
+        },
+        {
+          "item_id": "cleft",
+          "mass_kg": 3.0000000000000004,
+          "center_mm": [
+            430.0,
+            400.0,
+            125.0
+          ],
+          "corner_mm": [
+            405.0,
+            370.0,
+            100.0
+          ],
+          "vertex_high_mm": [
+            455.0,
+            430.0,
+            150.0
+          ]
+        },
+        {
+          "item_id": "cright",
+          "mass_kg": 5.0,
+          "center_mm": [
+            570.0,
+            400.0,
+            125.0
+          ],
+          "corner_mm": [
+            545.0,
+            370.0,
+            100.0
+          ],
+          "vertex_high_mm": [
+            595.0,
+            430.0,
+            150.0
+          ]
+        },
+        {
+          "item_id": "top",
+          "mass_kg": 4.0,
+          "center_mm": [
+            520.0,
+            400.0,
+            170.0
+          ],
+          "corner_mm": [
+            420.0,
+            350.0,
+            150.0
+          ],
+          "vertex_high_mm": [
+            620.0,
+            450.0,
+            190.0
+          ]
+        }
+      ]
+    },
+    "duration_s": 0.22808879599324428,
+    "version": "pct_stability_result_v2"
+  },
+  "independent_physical_checks_passed": true,
+  "expectation_matched": true
+}

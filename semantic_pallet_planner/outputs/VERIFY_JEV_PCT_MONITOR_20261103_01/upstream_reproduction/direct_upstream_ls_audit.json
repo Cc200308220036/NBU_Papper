@@ -1,0 +1,160 @@
+{
+  "status": "DEFECT_CONFIRMED_WITHOUT_ADAPTER",
+  "upstream_source_sha256": {
+    "Online-3D-BPP-PCT/pct_envs/PctContinuous0/convex_hull.py": "5e52f36dd912a10b470515f92db1077b5dd0fdb61df55e691ac41268a760f02a",
+    "Online-3D-BPP-PCT/pct_envs/PctContinuous0/PctTools.py": "e23d4bbb7e4997734212c9f0bd902bd06b18ac964a0e7fd6585bc040febc0ea8",
+    "Online-3D-BPP-PCT/pct_envs/PctContinuous0/space.py": "ba0d5268463eb280006582b43cff83d935bdeb33950e5f8161c1a46e12f2fef7"
+  },
+  "in_memory_compatibility_only": "np.float -> float in convex_hull; no original files edited",
+  "raw_upstream": {
+    "upstream_return": true,
+    "input_mass_kg": 3.0,
+    "support_centers_kernel_mm": [
+      [
+        400.0,
+        320.0
+      ],
+      [
+        600.0,
+        320.0
+      ],
+      [
+        500.0,
+        500.0
+      ]
+    ],
+    "flows_kg": [
+      0.23896722212049054,
+      0.2389672221204907,
+      1.0388207288042486
+    ],
+    "flow_sum_kg": 1.5167551730452298,
+    "mass_deficit_kg": 1.4832448269547702,
+    "coefficient": [
+      [
+        1.0,
+        1.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.7377049180327869
+      ],
+      [
+        0.0,
+        1.0,
+        0.7377049180327869
+      ],
+      [
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "rhs": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "fractions": [
+      0.07965574070683018,
+      0.07965574070683024,
+      0.34627357626808286
+    ],
+    "fraction_sum": 0.5055850576817433,
+    "residual": [
+      0.15931148141366042,
+      0.33510346090459625,
+      0.3351034609045963,
+      -0.49441494231825667
+    ]
+  },
+  "vendored": {
+    "upstream_return": true,
+    "input_mass_kg": 3.0,
+    "support_centers_kernel_mm": [
+      [
+        400.0,
+        320.0
+      ],
+      [
+        600.0,
+        320.0
+      ],
+      [
+        500.0,
+        500.0
+      ]
+    ],
+    "flows_kg": [
+      0.23896722212049054,
+      0.2389672221204907,
+      1.0388207288042486
+    ],
+    "flow_sum_kg": 1.5167551730452298,
+    "mass_deficit_kg": 1.4832448269547702,
+    "coefficient": [
+      [
+        1.0,
+        1.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.7377049180327869
+      ],
+      [
+        0.0,
+        1.0,
+        0.7377049180327869
+      ],
+      [
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "rhs": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "fractions": [
+      0.07965574070683018,
+      0.07965574070683024,
+      0.34627357626808286
+    ],
+    "fraction_sum": 0.5055850576817433,
+    "residual": [
+      0.15931148141366042,
+      0.33510346090459625,
+      0.3351034609045963,
+      -0.49441494231825667
+    ]
+  },
+  "exact_raw_vendor_agreement": true,
+  "analytic_reference_not_runtime_algorithm": {
+    "fractions": [
+      0.2777777777777778,
+      0.2777777777777778,
+      0.4444444444444444
+    ],
+    "flows_kg": [
+      0.8333333333333334,
+      0.8333333333333334,
+      1.3333333333333333
+    ],
+    "sum_fraction": 1.0,
+    "world_xy_moment_per_kg": [
+      0.0,
+      0.0
+    ]
+  },
+  "cause": "First pair constraint requires positive fractions f0+f1=0. Inconsistent constraints and soft least-squares sum row permit fraction sum !=1.",
+  "semantic_fix_in_scope": false,
+  "resolution": "P1 general multisupport remains incomplete; no sign correction, hard-constrained solver or normalization applied."
+}

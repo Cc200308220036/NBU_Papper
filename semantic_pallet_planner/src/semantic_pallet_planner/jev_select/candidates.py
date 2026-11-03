@@ -61,7 +61,7 @@ def validate_bundle(req: dict, bundle: CandidateBundle) -> dict:
     selected = value["selectable_candidates"]
     if len({c["candidate_id"] for c in selected}) != len(selected) or any(original.get(c["candidate_id"]) != c for c in selected):
         raise JevSelectError("invalid_candidate_subset")
-    if value["version"] in ("jev_candidate_bundle_v2", "jev_candidate_bundle_v3", "jev_candidate_bundle_v4") and value["selectable_pool"] != "unfiltered":
+    if value["version"] in ("jev_candidate_bundle_v2", "jev_candidate_bundle_v3", "jev_candidate_bundle_v4", "jev_candidate_bundle_v5") and value["selectable_pool"] != "unfiltered":
         if value["selectable_candidates"] != candidates or value["selectable_digest"] != value["physical_digest"]:
             raise JevSelectError("business_filtered_physical_pool")
     return value

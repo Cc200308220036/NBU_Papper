@@ -46,6 +46,8 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
 def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
                 hook=None, event_limit=None, expected_events=None, memory_snapshot=None):
     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
+    if config.get('version') == 'jev_packaging_monitored_v5':
+        config = copy.deepcopy(config)
     if is_packaging(config):
         if (memory_snapshot is not None or task.get('version') != DATA_VERSION or
             task.get('reference_policy') != {'version':DATA_VERSION,'rules':[]} or
@@ -172,6 +174,10 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
     replaying = expected_events is not None
     decision_started = None
 
+    from .stability.monitor import is_monitored, preflight, seal_checkpoint, validate_checkpoint
+    monitored = is_monitored(config)
+    if monitored:
+        preflight(config)
     suffix = protocol_suffix(config)
     if is_v3(config):
         from .memory_store import empty_snapshot, validate_snapshot
@@ -198,6 +204,8 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         if is_v3(config):
             value['memory_snapshot_digest'] = digest(memory_snapshot.data)
             value['memory_identity']=memory_identity
+        if monitored:
+            seal_checkpoint(value)
         validate_schema('checkpoint_' + suffix,value)
         return value
 
@@ -212,7 +220,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
             if len(events) >= len(expected_events) or semantic_record(event) != semantic_record(expected_events[len(events)]):
                 raise JevSelectError('event_reconstruction_mismatch', f'{job_id}: event {len(events)}')
             event['timings'] = copy.deepcopy(expected_events[len(events)]['timings'])
-        events.append(event); pending = None; phase = 'READY'
+        events.append(event); pending = None; phase = 'TERMINATED' if monitored and reason is not None else 'READY'
         cp = persist()
         if hook: hook('after_checkpoint', cp)
 
@@ -232,58 +240,61 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
             raise JevSelectError('checkpoint_memory_identity_changed')
         if resume.get('version') != 'jev_checkpoint_' + suffix or resume['job_id'] != job_id or resume['method'] != method or resume['config_digest'] != digest(config) or resume['task_digest'] != digest(task):
             raise JevSelectError('checkpoint_identity_changed')
-        replay_selector = selector.for_replay() if hasattr(selector, 'for_replay') else selector
-        prefix = _run_episode_v2(task, replay_selector, config, job_id=job_id, method=method,
-                                 event_limit=len(resume['events']), expected_events=resume['events'], memory_snapshot=memory_snapshot)
-        rebuilt = prefix['checkpoint']
-        if resume['phase'] == 'READY':
-            normalized = copy.deepcopy(resume)
-            if normalized['reason'] is None and rebuilt['reason'] == 'ALL_ITEMS_PLACED' and normalized['state']['end_of_stream'] and not normalized['state']['pending_items']:
-                normalized['reason'] = 'ALL_ITEMS_PLACED'
-            if semantic_record(rebuilt) != semantic_record(normalized):
-                raise JevSelectError('checkpoint_changed')
-        elif resume['phase'] == 'COMMITTED':
-            event = resume['pending_event']
-            if event is None or event['event'] != 'PLACE' or event['before'] != rebuilt['state'] or event['after'] != resume['state'] or event['business_after'] is not None or event['reference_after'] is not None:
-                raise JevSelectError('invalid_committed_checkpoint')
-            if resume['cursor'] != rebuilt['cursor'] or resume['decision'] != rebuilt['decision'] or resume['events'] != rebuilt['events']:
-                raise JevSelectError('committed_prefix_changed')
-            did = f'{job_id}_D{rebuilt["decision"]:04d}'
-            req, policy, bundle, context = decision_inputs(rebuilt['state'],task,config,job_id,did,memory_snapshot=memory_snapshot,saved_retrieval=event['context'].get('retrieval'))
-            if event['decision_id'] != did or event['observation'] != req or event['bundle'] != bundle.data or event['context'] != context.data:
-                raise JevSelectError('committed_decision_changed')
-            if decision_route(bundle) == 'SINGLETON_BYPASS':
-                selected = result(context,status='singleton',source='singleton',label='C01')
-            else:
-                if hasattr(replay_selector,'bind_public'): replay_selector.bind_public(req,policy,bundle)
-                selected = replay_selector.select(context,decision_id=did)
-            if selected.data != event['selection']:
-                raise JevSelectError('committed_selection_changed')
-            original = resolve_display_id(context,selected.data['selected_display_id'],req,bundle,config)
-            expected_action = action_for(req,bundle.data['physical_candidates'],original)
-            if event['action'] != expected_action or event['proposed_action'] != expected_action:
-                raise JevSelectError('committed_action_changed')
-            # Pure reconstruction on the prefix copy; the durable state below is not submitted again.
-            after = commit_physical(rebuilt['state'],task['regions'],req,bundle,context,selected,config)
-            if after != resume['state']:
-                raise JevSelectError('committed_state_changed')
-        elif resume['phase']=='DECISION_READY' and is_v3(config):
-            event=resume['pending_event'];did=f'{job_id}_D{rebuilt["decision"]:04d}'
-            if (resume['cursor']!=rebuilt['cursor'] or resume['decision']!=rebuilt['decision'] or
-                resume['state']!=rebuilt['state'] or semantic_record(resume['events'])!=semantic_record(rebuilt['events']) or
-                event is None or event['event']!='STOP' or event['before']!=rebuilt['state'] or event['after']!=rebuilt['state'] or
-                any(event[k] is not None for k in ('selection','action','proposed_action','reason','error','business_after','reference_after'))):
-                raise JevSelectError('invalid_pending_decision')
-            req,policy,bundle,context=decision_inputs(rebuilt['state'],task,config,job_id,did,
-                memory_snapshot=memory_snapshot,saved_retrieval=event['context']['retrieval'])
-            if event['decision_id']!=did or event['observation']!=req or event['bundle']!=bundle.data or event['context']!=context.data:
-                raise JevSelectError('pending_decision_changed')
+        if monitored:
+            validate_checkpoint(resume,task,config,job_id,method)
         else:
-            raise JevSelectError('invalid_checkpoint_phase')
+            replay_selector = selector.for_replay() if hasattr(selector, 'for_replay') else selector
+            prefix = _run_episode_v2(task, replay_selector, config, job_id=job_id, method=method,
+                                     event_limit=len(resume['events']), expected_events=resume['events'], memory_snapshot=memory_snapshot)
+            rebuilt = prefix['checkpoint']
+            if resume['phase'] == 'READY':
+                normalized = copy.deepcopy(resume)
+                if normalized['reason'] is None and rebuilt['reason'] == 'ALL_ITEMS_PLACED' and normalized['state']['end_of_stream'] and not normalized['state']['pending_items']:
+                    normalized['reason'] = 'ALL_ITEMS_PLACED'
+                if semantic_record(rebuilt) != semantic_record(normalized):
+                    raise JevSelectError('checkpoint_changed')
+            elif resume['phase'] == 'COMMITTED':
+                event = resume['pending_event']
+                if event is None or event['event'] != 'PLACE' or event['before'] != rebuilt['state'] or event['after'] != resume['state'] or event['business_after'] is not None or event['reference_after'] is not None:
+                    raise JevSelectError('invalid_committed_checkpoint')
+                if resume['cursor'] != rebuilt['cursor'] or resume['decision'] != rebuilt['decision'] or resume['events'] != rebuilt['events']:
+                    raise JevSelectError('committed_prefix_changed')
+                did = f'{job_id}_D{rebuilt["decision"]:04d}'
+                req, policy, bundle, context = decision_inputs(rebuilt['state'],task,config,job_id,did,memory_snapshot=memory_snapshot,saved_retrieval=event['context'].get('retrieval'))
+                if event['decision_id'] != did or event['observation'] != req or event['bundle'] != bundle.data or event['context'] != context.data:
+                    raise JevSelectError('committed_decision_changed')
+                if decision_route(bundle) == 'SINGLETON_BYPASS':
+                    selected = result(context,status='singleton',source='singleton',label='C01')
+                else:
+                    if hasattr(replay_selector,'bind_public'): replay_selector.bind_public(req,policy,bundle)
+                    selected = replay_selector.select(context,decision_id=did)
+                if selected.data != event['selection']:
+                    raise JevSelectError('committed_selection_changed')
+                original = resolve_display_id(context,selected.data['selected_display_id'],req,bundle,config)
+                expected_action = action_for(req,bundle.data['physical_candidates'],original)
+                if event['action'] != expected_action or event['proposed_action'] != expected_action:
+                    raise JevSelectError('committed_action_changed')
+                # Pure reconstruction on the prefix copy; the durable state below is not submitted again.
+                after = commit_physical(rebuilt['state'],task['regions'],req,bundle,context,selected,config)
+                if after != resume['state']:
+                    raise JevSelectError('committed_state_changed')
+            elif resume['phase']=='DECISION_READY' and is_v3(config):
+                event=resume['pending_event'];did=f'{job_id}_D{rebuilt["decision"]:04d}'
+                if (resume['cursor']!=rebuilt['cursor'] or resume['decision']!=rebuilt['decision'] or
+                    resume['state']!=rebuilt['state'] or semantic_record(resume['events'])!=semantic_record(rebuilt['events']) or
+                    event is None or event['event']!='STOP' or event['before']!=rebuilt['state'] or event['after']!=rebuilt['state'] or
+                    any(event[k] is not None for k in ('selection','action','proposed_action','reason','error','business_after','reference_after'))):
+                    raise JevSelectError('invalid_pending_decision')
+                req,policy,bundle,context=decision_inputs(rebuilt['state'],task,config,job_id,did,
+                    memory_snapshot=memory_snapshot,saved_retrieval=event['context']['retrieval'])
+                if event['decision_id']!=did or event['observation']!=req or event['bundle']!=bundle.data or event['context']!=context.data:
+                    raise JevSelectError('pending_decision_changed')
+            else:
+                raise JevSelectError('invalid_checkpoint_phase')
         state = copy.deepcopy(resume['state']); cursor = resume['cursor']; decision = resume['decision']
         events = copy.deepcopy(resume['events']); reason = resume['reason']
         phase = resume['phase']; pending = copy.deepcopy(resume['pending_event'])
-        if pending is not None:
+        if pending is not None and (not monitored or phase == 'COMMITTED'):
             reason = None  # Re-evaluate already committed state after a recoverable evaluation failure.
 
     while (reason is None or pending is not None) and (event_limit is None or len(events) < event_limit):
@@ -329,11 +340,22 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         event = {'event':'STOP','decision_id':did,'before':before,'after':before,'route':None,
                  'observation':None,'bundle':None,'context':None,'selection':None,'proposed_action':None,'action':None,
                  'reason':None,'error':None,'reference_after':None,'business_after':None,'timings':times}
+        if monitored:
+            event['monitor'] = None
+            event['monitor_result_reuses'] = 0
         try:
             saved_context = (pending['context'] if pending is not None and phase=='DECISION_READY' else
                 expected_events[len(events)].get('context') if expected_events is not None and len(events)<len(expected_events) else None)
-            req,policy,bundle,context = decision_inputs(state,task,config,job_id,did,timings=times,memory_snapshot=memory_snapshot,
-                saved_retrieval=saved_context.get('retrieval') if saved_context else None)
+            if monitored and pending is not None and phase in ('SELECTED','MONITORED'):
+                from .contracts import CandidateBundle, DecisionContext
+                from .packaging_runtime import no_policy
+                req = copy.deepcopy(pending['observation'])
+                policy = no_policy(req)
+                bundle = CandidateBundle.from_dict(pending['bundle'])
+                context = DecisionContext.from_dict(pending['context'])
+            else:
+                req,policy,bundle,context = decision_inputs(state,task,config,job_id,did,timings=times,memory_snapshot=memory_snapshot,
+                    saved_retrieval=saved_context.get('retrieval') if saved_context else None)
             route = decision_route(bundle)
             event.update(route=route,observation=req,bundle=bundle.data,context=context.data)
             if is_v3(config):
@@ -343,14 +365,20 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                 reason = route
             else:
                 start = time.perf_counter()
-                if route == 'SINGLETON_BYPASS':
+                recovering = monitored and pending is not None and phase in ('SELECTED','MONITORED')
+                if recovering:
+                    event = copy.deepcopy(pending)
+                    times = event['timings']
+                    selection = SelectionResult.from_dict(event['selection'])
+                elif route == 'SINGLETON_BYPASS':
                     selection = result(context,status='singleton',source='singleton',label='C01')
                 else:
                     public_bind(req,policy,bundle)
                     selection = selector.select(context,decision_id=did)
                 elapsed = time.perf_counter()-start
-                if method == 'shared_business_lexicographic': times['public_business_s'] = elapsed
-                else: times['selection_s'] = elapsed
+                if not recovering:
+                    if method == 'shared_business_lexicographic': times['public_business_s'] = elapsed
+                    else: times['selection_s'] = elapsed
                 event['selection'] = selection.data
                 if selection.data['status'] not in ('selected','singleton'):
                     reason = selection.data['status'].upper()
@@ -358,15 +386,35 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                     chosen = resolve_display_id(context,selection.data['selected_display_id'],req,bundle,config)
                     action = action_for(req,bundle.data['physical_candidates'],chosen)
                     event['proposed_action'] = action
-                    if hook: hook('before_commit',event)
-                    start = time.perf_counter()
-                    state = commit_physical(state,task['regions'],req,bundle,context,selection,config)
-                    times['physical_commit_s'] = time.perf_counter()-start
-                    event.update(event='PLACE',action=action,after=copy.deepcopy(state))
-                    pending = event; phase = 'COMMITTED'
-                    start = time.perf_counter(); persist(); times['checkpoint_io_s'] = time.perf_counter()-start
-                    if hook: hook('after_commit_checkpoint',checkpoint())
-                    continue
+                    if monitored:
+                        from .stability.monitor import monitor_selected_action, validate_monitor, TERMINATIONS
+                        if not recovering:
+                            pending = copy.deepcopy(event); phase = 'SELECTED'; persist()
+                            if hook: hook('after_selected_checkpoint',checkpoint())
+                        if event['monitor'] is None:
+                            event['monitor'] = monitor_selected_action(state,chosen,event,config)
+                            pending = copy.deepcopy(event); phase = 'MONITORED'; persist()
+                            if hook: hook('after_monitored_checkpoint',checkpoint())
+                        else:
+                            validate_monitor(event['monitor'],state,chosen,event,config)
+                            event['monitor_result_reuses'] += 1
+                        reason = TERMINATIONS.get(event['monitor']['status'])
+                    if reason is None:
+                        if hook: hook('before_commit',event)
+                        start = time.perf_counter()
+                        state = commit_physical(state,task['regions'],req,bundle,context,selection,config,
+                            **({'monitor':event['monitor'],'monitor_event':event} if monitored else {}))
+                    else:
+                        # The selected attempted action remains in the buffer.
+                        event['reason'] = reason
+
+                    if reason is None:
+                        times['physical_commit_s'] = time.perf_counter()-start
+                        event.update(event='PLACE',action=action,after=copy.deepcopy(state))
+                        pending = event; phase = 'COMMITTED'
+                        start = time.perf_counter(); committed_cp = persist(); times['checkpoint_io_s'] = time.perf_counter()-start
+                        if hook: hook('after_commit_checkpoint',committed_cp)
+                        continue
         except (ValueError,KeyError,TypeError) as exc:
             # Reconstruction failures are evidence corruption, not a normal experiment outcome.
             if replaying: raise
@@ -388,6 +436,9 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         decision += 1; append(event)
     if reason is None and state['end_of_stream'] and not state['pending_items']:
         reason = 'ALL_ITEMS_PLACED'
+    if monitored and reason is not None:
+        phase = 'TERMINATED'
+        persist()
     summary = summarize_v2(task,config,method,state,events,reason) if reason is not None else None
     if summary is not None and is_v3(config):
         from .memory_retrieval import memory_statistics

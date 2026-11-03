@@ -11,7 +11,7 @@ from .context import resolve_display_id, validate_context
 from .contracts import JevSelectError, digest, validate_schema
 
 
-def commit_physical(state, regions, observation, bundle, context, selection, config):
+def commit_physical(state, regions, observation, bundle, context, selection, config, *, monitor=None, monitor_event=None):
     validate_schema("config", config)
     if not business_evaluation_mode(config):
         raise JevSelectError("physical_commit_requires_v2")
@@ -30,6 +30,11 @@ def commit_physical(state, regions, observation, bundle, context, selection, con
     candidate = resolve_display_id(context, selected["selected_display_id"], observation, bundle, config)
     if candidate["candidate_id"] != selected["selected_candidate_id"]:
         raise JevSelectError("selection_candidate_mismatch")
+    from .stability.monitor import is_monitored, validate_monitor
+    if is_monitored(config):
+        if monitor is None or monitor_event is None:
+            raise JevSelectError('missing_monitor_credential')
+        validate_monitor(monitor,state,candidate,monitor_event,config,require_stable=True)
     errors = check_candidate(physical(state, candidate["pick_item_id"]), {"container": state["container"]}, candidate)
     if errors:
         raise JevSelectError("physical_rejection", ",".join(errors))

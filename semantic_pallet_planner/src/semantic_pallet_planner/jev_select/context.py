@@ -241,7 +241,7 @@ class ContextBuilder:
 def validate_context(context: DecisionContext, observation: dict | None = None,
                      bundle: CandidateBundle | None = None, config: dict | None = None) -> dict:
     from .packaging_runtime import is_packaging, validate_runtime_context
-    if context.data.get('version') == 'jev_decision_context_v4' or (config is not None and is_packaging(config)):
+    if context.data.get('version') in ('jev_decision_context_v4','jev_decision_context_v5') or (config is not None and is_packaging(config)):
         return validate_runtime_context(context, observation, bundle, config)
     value = context.data
     validate_schema("decision_context", value)

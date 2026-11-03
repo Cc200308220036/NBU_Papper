@@ -1,0 +1,40 @@
+{
+  "type": "object",
+  "properties": {
+    "experiment_id": {
+      "type": "string"
+    },
+    "track": {
+      "enum": [
+        "fixed",
+        "episode"
+      ]
+    },
+    "method": {
+      "type": "string"
+    },
+    "scenario_id": {
+      "type": "string"
+    },
+    "split": {
+      "type": "string"
+    },
+    "privileged_input": {
+      "type": "boolean"
+    },
+    "future_visible": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "experiment_id",
+    "track",
+    "method",
+    "scenario_id",
+    "split",
+    "privileged_input",
+    "future_visible"
+  ],
+  "additionalProperties": true,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="22" time="3.995" timestamp="2026-11-03T11:11:20.974344+08:00" hostname="cyw-R7000P"><testcase classname="tests.unit.test_stability_monitor" name="test_off_no_kernel_import_and_same_old_behavior" time="0.709" /><testcase classname="tests.unit.test_stability_monitor" name="test_on_off_pool_order_numbering_and_body_equal" time="0.292" /><testcase classname="tests.unit.test_stability_monitor" name="test_recovery_no_reselection_no_reassessment_and_repeat[SELECTED]" time="0.175"><failure message="AssertionError: assert (1 == 1 and 3 == 4)&#10; +  where 3 = len([{'after': {'arrival_count': 1, 'arrived_ids': ['a'], 'attributes': {'a': {'cargo_category': 'general', 'labels': {'ma...neration_counts': [{'enumeration_attempts': 8, 'pick_item_id': 'a', 'rejections': {}, 'returned': 8, ...}], ...}, ...}])">phase = 'SELECTED'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x704718acab10&gt;
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-3/test_recovery_no_reselection_n0')
+
+    @pytest.mark.parametrize('phase',['SELECTED','MONITORED','COMMITTED','READY','TERMINATED'])
+    def test_recovery_no_reselection_no_reassessment_and_repeat(phase,monkeypatch,tmp_path):
+        from semantic_pallet_planner.jev_select.ledger import write,read
+        task=mechanism_task([item('a')]);cfg=config(task);saved=[];path=tmp_path/'checkpoint.json'
+        class Cut(RuntimeError):pass
+        def hook(name,cp):
+            target={'SELECTED':'after_selected_checkpoint','MONITORED':'after_monitored_checkpoint',
+                    'COMMITTED':'after_commit_checkpoint','READY':'after_checkpoint','TERMINATED':'never'}[phase]
+            if name==target and (phase!='READY' or cp['decision']&gt;0):
+                saved.append(copy.deepcopy(cp));raise Cut()
+        if phase=='TERMINATED':cp=run(task,cfg,on_checkpoint=lambda cp:write(path,cp))['checkpoint']
+        else:
+            with pytest.raises(Cut):run(task,cfg,hook=hook,on_checkpoint=lambda cp:write(path,cp))
+            cp=saved[0]
+        assert read(path)==cp
+        # Interrupted atomic leftovers have no part in selecting a valid checkpoint.
+        (tmp_path/'.atomic-debris').write_text('{invalid')
+        def forbidden(*a,**kw):raise AssertionError('reselected or reassessed')
+        monkeypatch.setattr(LocalPackagingDouble,'select',forbidden)
+        if phase!='SELECTED':
+            import semantic_pallet_planner.jev_select.stability.balance_adapter as ba
+            monkeypatch.setattr(ba,'assess_candidate',forbidden)
+        resumed=run(task,cfg,resume=cp)
+&gt;       assert resumed['final_state']['placed_count']==1 and len(resumed['events'])==4
+E       AssertionError: assert (1 == 1 and 3 == 4)
+E        +  where 3 = len([{'after': {'arrival_count': 1, 'arrived_ids': ['a'], 'attributes': {'a': {'cargo_category': 'general', 'labels': {'ma...neration_counts': [{'enumeration_attempts': 8, 'pick_item_id': 'a', 'rejections': {}, 'returned': 8, ...}], ...}, ...}])
+
+semantic_pallet_planner/tests/unit/test_stability_monitor.py:90: AssertionError</failure></testcase><testcase classname="tests.unit.test_stability_monitor" name="test_recovery_no_reselection_no_reassessment_and_repeat[MONITORED]" time="0.148"><failure message="AssertionError: assert (1 == 1 and 3 == 4)&#10; +  where 3 = len([{'after': {'arrival_count': 1, 'arrived_ids': ['a'], 'attributes': {'a': {'cargo_category': 'general', 'labels': {'ma...neration_counts': [{'enumeration_attempts': 8, 'pick_item_id': 'a', 'rejections': {}, 'returned': 8, ...}], ...}, ...}])">phase = 'MONITORED'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7047180863f0&gt;
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-3/test_recovery_no_reselection_n1')
+
+    @pytest.mark.parametrize('phase',['SELECTED','MONITORED','COMMITTED','READY','TERMINATED'])
+    def test_recovery_no_reselection_no_reassessment_and_repeat(phase,monkeypatch,tmp_path):
+        from semantic_pallet_planner.jev_select.ledger import write,read
+        task=mechanism_task([item('a')]);cfg=config(task);saved=[];path=tmp_path/'checkpoint.json'
+        class Cut(RuntimeError):pass
+        def hook(name,cp):
+            target={'SELECTED':'after_selected_checkpoint','MONITORED':'after_monitored_checkpoint',
+                    'COMMITTED':'after_commit_checkpoint','READY':'after_checkpoint','TERMINATED':'never'}[phase]
+            if name==target and (phase!='READY' or cp['decision']&gt;0):
+                saved.append(copy.deepcopy(cp));raise Cut()
+        if phase=='TERMINATED':cp=run(task,cfg,on_checkpoint=lambda cp:write(path,cp))['checkpoint']
+        else:
+            with pytest.raises(Cut):run(task,cfg,hook=hook,on_checkpoint=lambda cp:write(path,cp))
+            cp=saved[0]
+        assert read(path)==cp
+        # Interrupted atomic leftovers have no part in selecting a valid checkpoint.
+        (tmp_path/'.atomic-debris').write_text('{invalid')
+        def forbidden(*a,**kw):raise AssertionError('reselected or reassessed')
+        monkeypatch.setattr(LocalPackagingDouble,'select',forbidden)
+        if phase!='SELECTED':
+            import semantic_pallet_planner.jev_select.stability.balance_adapter as ba
+            monkeypatch.setattr(ba,'assess_candidate',forbidden)
+        resumed=run(task,cfg,resume=cp)
+&gt;       assert resumed['final_state']['placed_count']==1 and len(resumed['events'])==4
+E       AssertionError: assert (1 == 1 and 3 == 4)
+E        +  where 3 = len([{'after': {'arrival_count': 1, 'arrived_ids': ['a'], 'attributes': {'a': {'cargo_category': 'general', 'labels': {'ma...neration_counts': [{'enumeration_attempts': 8, 'pick_item_id': 'a', 'rejections': {}, 'returned': 8, ...}], ...}, ...}])
+
+semantic_pallet_planner/tests/unit/test_stability_monitor.py:90: AssertionError</failure></testcase><testcase classname="tests.unit.test_stability_monitor" name="test_recovery_no_reselection_no_reassessment_and_repeat[COMMITTED]" time="0.101"><failure message="AssertionError: assert {'config_dige...s': {}}], ...} == {'config_dige...s': {}}], ...}&#10;  &#10;  Omitting 12 identical items, use -vv to show&#10;  Differing items:&#10;  {'pending_event': {'action': {'candidate_id': 'E2_4c10cb40465cdc19', 'candidate_set_digest': '8d78d7f3ca66b14900ccb94c...neration_counts': [{'enumeration_attempts': 8, 'pick_item_id': 'a', 'rejections': {}, 'returned': 8, ...}], ...}, ...}} != {'pending_event': {'action': {'candidate_id': 'E2_4c10cb40465cdc19', 'candidate_set_digest': '8d78d7f3ca66b14900ccb94c...neration_counts': [{'enumeration_attempts': 8, 'pick_item_id': 'a', 'rejections': {}, 'returned': 8, ...}], ...}, ...}}&#10;  {'record_digest': 'cdf1d2a519032...&#10;  &#10;  ...Full output truncated (2 lines hidden), use '-vv' to show">phase = 'COMMITTED'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7046d09cf410&gt;
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-3/test_recovery_no_reselection_n2')
+
+    @pytest.mark.parametrize('phase',['SELECTED','MONITORED','COMMITTED','READY','TERMINATED'])
+    def test_recovery_no_reselection_no_reassessment_and_repeat(phase,monkeypatch,tmp_path):
+        from semantic_pallet_planner.jev_select.ledger import write,read
+        task=mechanism_task([item('a')]);cfg=config(task);saved=[];path=tmp_path/'checkpoint.json'
+        class Cut(RuntimeError):pass
+        def hook(name,cp):
+            target={'SELECTED':'after_selected_checkpoint','MONITORED':'after_monitored_checkpoint',
+                    'COMMITTED':'after_commit_checkpoint','READY':'after_checkpoint','TERMINATED':'never'}[phase]
+            if name==target and (phase!='READY' or cp['decision']&gt;0):
+                saved.append(copy.deepcopy(cp));raise Cut()
+        if phase=='TERMINATED':cp=run(task,cfg,on_checkpoint=lambda cp:write(path,cp))['checkpoint']
+        else:
+            with pytest.raises(Cut):run(task,cfg,hook=hook,on_checkpoint=lambda cp:write(path,cp))
+            cp=saved[0]
+&gt;       assert read(path)==cp
+E       AssertionError: assert {'config_dige...s': {}}], ...} == {'config_dige...s': {}}], ...}
+E         
+E         Omitting 12 identical items, use -vv to show
+E         Differing items:
+E         {'pending_event': {'action': {'candidate_id': 'E2_4c10cb40465cdc19', 'candidate_set_digest': '8d78d7f3ca66b14900ccb94c...neration_counts': [{'enumeration_attempts': 8, 'pick_item_id': 'a', 'rejections': {}, 'returned': 8, ...}], ...}, ...}} != {'pending_event': {'action': {'candidate_id': 'E2_4c10cb40465cdc19', 'candidate_set_digest': '8d78d7f3ca66b14900ccb94c...neration_counts': [{'enumeration_attempts': 8, 'pick_item_id': 'a', 'rejections': {}, 'returned': 8, ...}], ...}, ...}}
+E         {'record_digest': 'cdf1d2a519032...
+E         
+E         ...Full output truncated (2 lines hidden), use '-vv' to show
+
+semantic_pallet_planner/tests/unit/test_stability_monitor.py:81: AssertionError</failure></testcase><testcase classname="tests.unit.test_stability_monitor" name="test_recovery_no_reselection_no_reassessment_and_repeat[READY]" time="0.152"><failure message="AssertionError: assert (1 == 1 and 3 == 4)&#10; +  where 3 = len([{'after': {'arrival_count': 1, 'arrived_ids': ['a'], 'attributes': {'a': {'cargo_category': 'general', 'labels': {'ma...neration_counts': [{'enumeration_attempts': 8, 'pick_item_id': 'a', 'rejections': {}, 'returned': 8, ...}], ...}, ...}])">phase = 'READY'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7046d05b2470&gt;
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-3/test_recovery_no_reselection_n3')
+
+    @pytest.mark.parametrize('phase',['SELECTED','MONITORED','COMMITTED','READY','TERMINATED'])
+    def test_recovery_no_reselection_no_reassessment_and_repeat(phase,monkeypatch,tmp_path):
+        from semantic_pallet_planner.jev_select.ledger import write,read
+        task=mechanism_task([item('a')]);cfg=config(task);saved=[];path=tmp_path/'checkpoint.json'
+        class Cut(RuntimeError):pass
+        def hook(name,cp):
+            target={'SELECTED':'after_selected_checkpoint','MONITORED':'after_monitored_checkpoint',
+                    'COMMITTED':'after_commit_checkpoint','READY':'after_checkpoint','TERMINATED':'never'}[phase]
+            if name==target and (phase!='READY' or cp['decision']&gt;0):
+                saved.append(copy.deepcopy(cp));raise Cut()
+        if phase=='TERMINATED':cp=run(task,cfg,on_checkpoint=lambda cp:write(path,cp))['checkpoint']
+        else:
+            with pytest.raises(Cut):run(task,cfg,hook=hook,on_checkpoint=lambda cp:write(path,cp))
+            cp=saved[0]
+        assert read(path)==cp
+        # Interrupted atomic leftovers have no part in selecting a valid checkpoint.
+        (tmp_path/'.atomic-debris').write_text('{invalid')
+        def forbidden(*a,**kw):raise AssertionError('reselected or reassessed')
+        monkeypatch.setattr(LocalPackagingDouble,'select',forbidden)
+        if phase!='SELECTED':
+            import semantic_pallet_planner.jev_select.stability.balance_adapter as ba
+            monkeypatch.setattr(ba,'assess_candidate',forbidden)
+        resumed=run(task,cfg,resume=cp)
+&gt;       assert resumed['final_state']['placed_count']==1 and len(resumed['events'])==4
+E       AssertionError: assert (1 == 1 and 3 == 4)
+E        +  where 3 = len([{'after': {'arrival_count': 1, 'arrived_ids': ['a'], 'attributes': {'a': {'cargo_category': 'general', 'labels': {'ma...neration_counts': [{'enumeration_attempts': 8, 'pick_item_id': 'a', 'rejections': {}, 'returned': 8, ...}], ...}, ...}])
+
+semantic_pallet_planner/tests/unit/test_stability_monitor.py:90: AssertionError</failure></testcase><testcase classname="tests.unit.test_stability_monitor" name="test_recovery_no_reselection_no_reassessment_and_repeat[TERMINATED]" time="0.150"><failure message="AssertionError: assert (1 == 1 and 3 == 4)&#10; +  where 3 = len([{'after': {'arrival_count': 1, 'arrived_ids': ['a'], 'attributes': {'a': {'cargo_category': 'general', 'labels': {'ma...neration_counts': [{'enumeration_attempts': 8, 'pick_item_id': 'a', 'rejections': {}, 'returned': 8, ...}], ...}, ...}])">phase = 'TERMINATED'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7046d05b2f10&gt;
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-3/test_recovery_no_reselection_n4')
+
+    @pytest.mark.parametrize('phase',['SELECTED','MONITORED','COMMITTED','READY','TERMINATED'])
+    def test_recovery_no_reselection_no_reassessment_and_repeat(phase,monkeypatch,tmp_path):
+        from semantic_pallet_planner.jev_select.ledger import write,read
+        task=mechanism_task([item('a')]);cfg=config(task);saved=[];path=tmp_path/'checkpoint.json'
+        class Cut(RuntimeError):pass
+        def hook(name,cp):
+            target={'SELECTED':'after_selected_checkpoint','MONITORED':'after_monitored_checkpoint',
+                    'COMMITTED':'after_commit_checkpoint','READY':'after_checkpoint','TERMINATED':'never'}[phase]
+            if name==target and (phase!='READY' or cp['decision']&gt;0):
+                saved.append(copy.deepcopy(cp));raise Cut()
+        if phase=='TERMINATED':cp=run(task,cfg,on_checkpoint=lambda cp:write(path,cp))['checkpoint']
+        else:
+            with pytest.raises(Cut):run(task,cfg,hook=hook,on_checkpoint=lambda cp:write(path,cp))
+            cp=saved[0]
+        assert read(path)==cp
+        # Interrupted atomic leftovers have no part in selecting a valid checkpoint.
+        (tmp_path/'.atomic-debris').write_text('{invalid')
+        def forbidden(*a,**kw):raise AssertionError('reselected or reassessed')
+        monkeypatch.setattr(LocalPackagingDouble,'select',forbidden)
+        if phase!='SELECTED':
+            import semantic_pallet_planner.jev_select.stability.balance_adapter as ba
+            monkeypatch.setattr(ba,'assess_candidate',forbidden)
+        resumed=run(task,cfg,resume=cp)
+&gt;       assert resumed['final_state']['placed_count']==1 and len(resumed['events'])==4
+E       AssertionError: assert (1 == 1 and 3 == 4)
+E        +  where 3 = len([{'after': {'arrival_count': 1, 'arrived_ids': ['a'], 'attributes': {'a': {'cargo_category': 'general', 'labels': {'ma...neration_counts': [{'enumeration_attempts': 8, 'pick_item_id': 'a', 'rejections': {}, 'returned': 8, ...}], ...}, ...}])
+
+semantic_pallet_planner/tests/unit/test_stability_monitor.py:90: AssertionError</failure></testcase><testcase classname="tests.unit.test_stability_monitor" name="test_real_ancestor_instability_stops_without_place_or_alternative[False]" time="0.381" /><testcase classname="tests.unit.test_stability_monitor" name="test_real_ancestor_instability_stops_without_place_or_alternative[True]" time="0.374" /><testcase classname="tests.unit.test_stability_monitor" name="test_explicit_fault_injection_technical_branches[UNASSESSABLE-STABILITY_UNASSESSABLE]" time="0.124" /><testcase classname="tests.unit.test_stability_monitor" name="test_explicit_fault_injection_technical_branches[ERROR-STABILITY_MONITOR_ERROR]" time="0.123" /><testcase classname="tests.unit.test_stability_monitor" name="test_missing_dependency_and_config_conflict" time="0.000" /><testcase classname="tests.unit.test_stability_monitor" name="test_tampering_rejected_even_with_outer_checkpoint_resealed[state]" time="0.131" /><testcase classname="tests.unit.test_stability_monitor" name="test_tampering_rejected_even_with_outer_checkpoint_resealed[candidate]" time="0.102" /><testcase classname="tests.unit.test_stability_monitor" name="test_tampering_rejected_even_with_outer_checkpoint_resealed[task]" time="0.135"><failure message="Failed: DID NOT RAISE (&lt;class 'ValueError'&gt;, &lt;class 'KeyError'&gt;)">target = 'task'
+
+    @pytest.mark.parametrize('target',['state','candidate','task','config','enabled','algorithm','result','selection','phase','reason'])
+    def test_tampering_rejected_even_with_outer_checkpoint_resealed(target):
+        task=mechanism_task([item('a')]);cfg=config(task);cp=run(task,cfg)['checkpoint']
+        bad=copy.deepcopy(cp);tc=copy.deepcopy(task);cc=copy.deepcopy(cfg)
+        e=next(e for e in bad['events'] if e.get('monitor'))
+        if target=='state':bad['state']['placed_count']+=1
+        elif target=='candidate':e['bundle']['physical_candidates'][0]['pose']['x_mm']+=1
+        elif target=='task':tc['items'][0]['mass_kg']+=1
+        elif target=='config':cc['display_order_seed']+=1
+        elif target=='enabled':cc['stability_monitor']['enabled']=False
+        elif target=='algorithm':cc['stability_monitor']['algorithm']='pct_static_v1'
+        elif target=='result':e['monitor']['result']['status']='UNSTABLE'
+        elif target=='selection':e['selection']['selected_candidate_id']='fake'
+        elif target=='phase':bad['phase']='READY'
+        else:bad['reason']='PREDICTED_STATIC_INSTABILITY'
+        seal_checkpoint(bad)
+&gt;       with pytest.raises((ValueError,KeyError)):
+E       Failed: DID NOT RAISE (&lt;class 'ValueError'&gt;, &lt;class 'KeyError'&gt;)
+
+semantic_pallet_planner/tests/unit/test_stability_monitor.py:195: Failed</failure></testcase><testcase classname="tests.unit.test_stability_monitor" name="test_tampering_rejected_even_with_outer_checkpoint_resealed[config]" time="0.093" /><testcase classname="tests.unit.test_stability_monitor" name="test_tampering_rejected_even_with_outer_checkpoint_resealed[enabled]" time="0.095" /><testcase classname="tests.unit.test_stability_monitor" name="test_tampering_rejected_even_with_outer_checkpoint_resealed[algorithm]" time="0.092" /><testcase classname="tests.unit.test_stability_monitor" name="test_tampering_rejected_even_with_outer_checkpoint_resealed[result]" time="0.114" /><testcase classname="tests.unit.test_stability_monitor" name="test_tampering_rejected_even_with_outer_checkpoint_resealed[selection]" time="0.113" /><testcase classname="tests.unit.test_stability_monitor" name="test_tampering_rejected_even_with_outer_checkpoint_resealed[phase]" time="0.131" /><testcase classname="tests.unit.test_stability_monitor" name="test_tampering_rejected_even_with_outer_checkpoint_resealed[reason]" time="0.133" /></testsuite></testsuites>

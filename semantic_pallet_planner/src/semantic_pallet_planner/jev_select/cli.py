@@ -58,6 +58,13 @@ def main(argv=None) -> int:
     pack.add_argument('--repo', required=True); pack.add_argument('--output', required=True)
     packcheck = commands.add_parser('validate-packaging-dataset', help='independently load and validate packaging/load delivery')
     packcheck.add_argument('--dataset', required=True)
+    pmon = commands.add_parser('smoke-packaging-monitor', help='two fixed local task prefixes, at most eight events each')
+    pmon.add_argument('--dataset',required=True); pmon.add_argument('--output',required=True)
+    pmon.add_argument('--stability-monitor',choices=('on','off'),default=None)
+    pmon.add_argument('--monitor-config',help='JSON object with the sole option enabled (boolean)')
+    pmon.add_argument('--event-limit',type=int,default=8)
+    pmv = commands.add_parser('validate-stability-report',help='validate saved monitored records without reassessment')
+    pmv.add_argument('--report',required=True)
     prs = commands.add_parser('smoke-packaging-runtime', help='two bounded source prefixes using explicit local test substitute only')
     prs.add_argument('--dataset', required=True); prs.add_argument('--output', required=True)
     prv = commands.add_parser('validate-packaging-runtime', help='validate saved bindings and physical records without replay')
@@ -148,6 +155,15 @@ def main(argv=None) -> int:
         elif args.command == 'inspect-decision-cases':
             from .diagnostics import inspect_decision_cases
             result = inspect_decision_cases(args.experiment,args.output,job_id=args.job,max_branches=args.max_branches,fork_mode=args.fork_mode)
+        elif args.command == 'smoke-packaging-monitor':
+            from .stability.runtime import smoke
+            from .ledger import read
+            result = smoke(args.dataset,args.output,
+                enabled=None if args.stability_monitor is None else args.stability_monitor=='on',
+                options=None if args.monitor_config is None else read(args.monitor_config),event_limit=args.event_limit)
+        elif args.command == 'validate-stability-report':
+            from .stability.runtime import validate
+            result = validate(args.report)
         elif args.command == 'smoke-packaging-runtime':
             from .packaging_runtime import smoke_runtime
             result = smoke_runtime(args.dataset, args.output)

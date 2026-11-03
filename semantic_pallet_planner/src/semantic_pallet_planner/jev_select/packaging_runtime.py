@@ -24,7 +24,7 @@ METHODS = ('local_geometry_test_double','local_first_test_double')
 
 
 def is_packaging(config):
-    return config.get('version') == VERSION
+    return config.get('version') in (VERSION, 'jev_packaging_monitored_v5')
 
 
 def no_policy(observation):
@@ -227,7 +227,7 @@ def build_context(config,observation,bundle,policy):
         'generator_config_digest':value['generator_config_digest'],'prompt_version':config['prompt_version'],
         'feature_version':config['feature_version'],'model_state_digest':digest(state),'criteria_digest':digest(criteria),
         'request_body_digest':digest(body),'runtime_identity':copy.deepcopy(config['runtime_identity'])}
-    context=DecisionContext.from_dict({'version':'jev_decision_context_v4','route':route,'model_state':state,
+    context=DecisionContext.from_dict({'version':'jev_decision_context_' + ('v5' if config.get('version') == 'jev_packaging_monitored_v5' else 'v4'),'route':route,'model_state':state,
         'criteria':criteria,'request_body':body,'display_mapping':mapping,'local_binding':binding})
     validate_runtime_context(context,config=config)
     require(body is None or len(canonical(body).encode())<=config['max_request_bytes'],'runtime_request_too_large')
@@ -236,7 +236,7 @@ def build_context(config,observation,bundle,policy):
 
 def validate_runtime_context(context,observation=None,bundle=None,config=None):
     from .candidates import validate_bundle,decision_route
-    value=context.data;validate_schema('decision_context_v4',value)
+    value=context.data;validate_schema('decision_context',value)
     binding=value['local_binding'];labels=list(value['display_mapping'])
     require(set(labels)==set(value['criteria']) and sorted(labels)==[f'C{i:02d}' for i in range(1,len(labels)+1)],'runtime_display_mapping')
     for field,key in [('mapping_digest','display_mapping'),('model_state_digest','model_state'),
@@ -338,7 +338,15 @@ def summary(task,config,method,state,events,reason):
         'cost':{'model_calls':0,'model_cost_usd':0,'memory_cost_usd':0,
             'decision_segment_wall_s':sum(e.get('timings',{}).get('decision_segments_s',0) for e in events)},
         'policy_effect':'NOT_MEASURED','stability_algorithm':'NOT_RUN'}
-    validate_schema('packaging_order_metrics_v1',row)
+    from .stability.monitor import is_monitored
+    if is_monitored(config):
+        from .stability.metrics import statistics
+        row.update(version='jev_packaging_monitored_metrics_v1',
+            stability_algorithm='pct_contact_network_v2' if config['stability_monitor']['enabled'] else 'DISABLED',
+            monitor_statistics=statistics(config,events,row))
+        validate_schema('monitored_order_metrics_v1',row)
+    else:
+        validate_schema('packaging_order_metrics_v1',row)
     return row
 
 

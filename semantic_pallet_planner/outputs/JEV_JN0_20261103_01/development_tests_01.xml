@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="11" time="32.562" timestamp="2026-11-03T14:56:39.355849+08:00" hostname="cyw-R7000P"><testcase classname="tests.unit.test_packaging_full_order" name="test_full_order_exceeds_smoke_and_metrics" time="3.562"><failure message="KeyError: 'source_group_id'">tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-9/test_full_order_exceeds_smoke_0')
+
+    def test_full_order_exceeds_smoke_and_metrics(tmp_path):
+        t,c,j=fixture();start(tmp_path)
+&gt;       s=_run_job(t,j,tmp_path,{'max_events':1000,'max_active_wall_s':60})
+
+semantic_pallet_planner/tests/unit/test_packaging_full_order.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experiment.py:193: in _run_job
+    write(job/'metrics.json',job_metrics(task,cfg,cp,status))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+task = {'attributes': {'0': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 100, 'no_top_load': False}, 'object_i...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+config = {'buffer_capacity': 3, 'business_mode': 'physical_only', 'candidate_backend': 'e2_original_v1', 'display_order_seed': 20261102, ...}
+cp = {'config_digest': '8488799f856acba39278794fdf44d45024528dac0901f97f50c10adad5da6428', 'cursor': 6, 'decision': 6, 'eve..., {'enumeration_attempts': 112, 'pick_item_id': '3', 'rejections': {...}, 'returned': 16, ...}], ...}, ...}, ...], ...}
+status = {'active_wall_s': 3.2471811269933823, 'category': 'COMPLETE', 'error': None, 'state': 'FINISHED'}
+
+    def job_metrics(task, config, cp, status):
+        state = cp['state']; events = cp['events']
+        # A COMMITTED checkpoint owns a successful physical placement even before
+        # downstream evaluation completes. Include it exactly once in diagnostics.
+        if cp['phase'] == 'COMMITTED':
+            events = [*events, cp['pending_event']]
+        reason = cp['reason'] or status['category']
+        base = summary(task, config, config['selector'], state, events, reason)
+        volume = sum(prod(o['oriented_size_mm']) for o in state['placed_items'])
+        container = state['container']; area = container['length_mm']*container['width_mm']
+        height = base['max_height_mm']; stats = base['monitor_statistics']
+        monitors = [e['monitor'] for e in events if e.get('monitor')]
+        selected = stats['selected_actions']
+        if cp['pending_event'] and cp['phase'] != 'COMMITTED' and cp['pending_event'].get('selection'):
+            selected += 1
+            if cp['pending_event'].get('monitor'):
+                monitors = [*monitors, cp['pending_event']['monitor']]
+        statuses = Counter(m['status'] for m in monitors)
+        last = (cp['pending_event'] or (events[-1] if events else {}))
+        pending = state['pending_items']
+        audit = evaluate_state(state)
+        return {'version': METRICS_CONTRACT['version'], 'task_id': task['task_id'],
+&gt;           'method_id': config['selector'], 'source_group_id': task['source_group_id'], 'layer': task['layer'],
+            'origin': 'LOCAL_TEST_DOUBLE_NOT_JEV', 'category': status['category'],
+            'termination_reason': reason, 'completed': base['completed'] and status['category']=='COMPLETE',
+            'stable_complete': bool(base['completed'] and status['category']=='COMPLETE' and
+                config['stability_monitor']['enabled'] and statuses['STABLE']==len(task['items'])),
+            'loading': {k: base[k] for k in ('planned_items','arrived_items','placed_items','placed_item_ratio',
+                'placed_volume_ratio','placed_mass_kg','planned_mass_kg','placed_mass_ratio')},
+            'fixed_container_utilization': volume/(area*container['max_height_mm']),
+            'actual_height_mm': height if height else 'NA',
+            'envelope_utilization': volume/(area*height) if height else 'NA',
+            'selected_actions': selected, 'monitor_statuses': {k: statuses[k] for k in ('STABLE','UNSTABLE','UNASSESSABLE','ERROR','DISABLED')},
+            'assessable_coverage': (statuses['STABLE']+statuses['UNSTABLE'])/selected if selected else 'NA',
+            'monitor_reasons': dict(Counter(m['result']['reason_code'] for m in monitors if m['result'])),
+            'first_predicted_instability_progress': stats['first_predicted_instability_progress'],
+            'area_load_ledger': {'maximum_utilization': base['maximum_capacity_utilization'],
+                'remaining_capacity_kg': base['remaining_capacity_kg'], 'remaining_distribution': distribution(base['remaining_capacity_kg']),
+                'facts': audit['runtime_facts'], 'interpretation': 'area shares; not PCT reactions or future packing capacity'},
+            'physical_evaluation': audit,
+            'latency_s': {**{name: distribution([e.get('timings',{})[key] for e in events if key in e.get('timings',{})])
+                for name,key in [('candidate','physical_generation_s'),('selection','selection_s'),('decision','decision_segments_s')]},
+                'monitor': distribution([m['result']['duration_s'] for m in monitors if m['result']]),
+                'order': distribution([status['active_wall_s']])},
+            'failure_location': {'event_count':len(cp['events']), 'decision':cp['decision'], 'phase':cp['phase'],
+                'arrival_cursor':cp['cursor'], 'end_of_stream':state['end_of_stream'],
+                'buffer': [p['item'] for p in pending],
+                'empty_pool_class': ('SAVED_SAMPLED_POOL_EMPTY_NO_GLOBAL_INFEASIBILITY_CLAIM' if status['category']=='EMPTY_POOL' else 'NA'),
+                'generation_counts': (last.get('bundle') or {}).get('generation_counts',[]),
+                'monitor_reason': (last.get('monitor') or {}).get('result'),
+                'technical_error':status['error'], 'active_wall_s':status['active_wall_s']},
+            'cost': {'model_calls':0,'failed_requests':0,'unknown_sends':0,'model_cost_usd':0,'memory_cost_usd':0},
+            'feasibility_status':task['feasibility_status'], 'global_infeasibility_proven':False,
+            'branch_metrics':'NOT_RUN','memory_metrics':'NOT_RUN','research_benefit':'NOT_ESTABLISHED'}
+E       KeyError: 'source_group_id'
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_metrics.py:41: KeyError</failure></testcase><testcase classname="tests.unit.test_packaging_full_order" name="test_full_order_stage_resume_no_double_load[SELECTED]" time="4.921" /><testcase classname="tests.unit.test_packaging_full_order" name="test_full_order_stage_resume_no_double_load[MONITORED]" time="4.824" /><testcase classname="tests.unit.test_packaging_full_order" name="test_full_order_stage_resume_no_double_load[COMMITTED]" time="4.967" /><testcase classname="tests.unit.test_packaging_full_order" name="test_full_order_stage_resume_no_double_load[READY]" time="4.607" /><testcase classname="tests.unit.test_packaging_full_order" name="test_full_order_stage_resume_no_double_load[TERMINATED]" time="5.888" /><testcase classname="tests.unit.test_packaging_full_order" name="test_technical_limit_full_denominator[watchdog0]" time="0.110"><failure message="KeyError: 'source_group_id'">watchdog = {'max_active_wall_s': 60, 'max_events': 2}
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-9/test_technical_limit_full_deno0')
+
+    @pytest.mark.parametrize('watchdog',[{'max_events':2,'max_active_wall_s':60},{'max_events':1000,'max_active_wall_s':1e-9}])
+    def test_technical_limit_full_denominator(watchdog,tmp_path):
+        t,c,j=fixture();start(tmp_path)
+&gt;       s=_run_job(t,j,tmp_path,watchdog);m=read(tmp_path/'metrics.json')
+
+semantic_pallet_planner/tests/unit/test_packaging_full_order.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experiment.py:193: in _run_job
+    write(job/'metrics.json',job_metrics(task,cfg,cp,status))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+task = {'attributes': {'0': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 100, 'no_top_load': False}, 'object_i...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+config = {'buffer_capacity': 3, 'business_mode': 'physical_only', 'candidate_backend': 'e2_original_v1', 'display_order_seed': 20261102, ...}
+cp = {'config_digest': '8488799f856acba39278794fdf44d45024528dac0901f97f50c10adad5da6428', 'cursor': 2, 'decision': 0, 'eve...'object_id': '0', 'packaging': {...}, ...}}, 'buffer_capacity': 3, ...}, 'event': 'WAIT_RECEIVE', 'timings': {}}], ...}
+status = {'active_wall_s': 0.05621931899804622, 'category': 'TECHNICAL_LIMIT', 'error': None, 'state': 'FINISHED'}
+
+    def job_metrics(task, config, cp, status):
+        state = cp['state']; events = cp['events']
+        # A COMMITTED checkpoint owns a successful physical placement even before
+        # downstream evaluation completes. Include it exactly once in diagnostics.
+        if cp['phase'] == 'COMMITTED':
+            events = [*events, cp['pending_event']]
+        reason = cp['reason'] or status['category']
+        base = summary(task, config, config['selector'], state, events, reason)
+        volume = sum(prod(o['oriented_size_mm']) for o in state['placed_items'])
+        container = state['container']; area = container['length_mm']*container['width_mm']
+        height = base['max_height_mm']; stats = base['monitor_statistics']
+        monitors = [e['monitor'] for e in events if e.get('monitor')]
+        selected = stats['selected_actions']
+        if cp['pending_event'] and cp['phase'] != 'COMMITTED' and cp['pending_event'].get('selection'):
+            selected += 1
+            if cp['pending_event'].get('monitor'):
+                monitors = [*monitors, cp['pending_event']['monitor']]
+        statuses = Counter(m['status'] for m in monitors)
+        last = (cp['pending_event'] or (events[-1] if events else {}))
+        pending = state['pending_items']
+        audit = evaluate_state(state)
+        return {'version': METRICS_CONTRACT['version'], 'task_id': task['task_id'],
+&gt;           'method_id': config['selector'], 'source_group_id': task['source_group_id'], 'layer': task['layer'],
+            'origin': 'LOCAL_TEST_DOUBLE_NOT_JEV', 'category': status['category'],
+            'termination_reason': reason, 'completed': base['completed'] and status['category']=='COMPLETE',
+            'stable_complete': bool(base['completed'] and status['category']=='COMPLETE' and
+                config['stability_monitor']['enabled'] and statuses['STABLE']==len(task['items'])),
+            'loading': {k: base[k] for k in ('planned_items','arrived_items','placed_items','placed_item_ratio',
+                'placed_volume_ratio','placed_mass_kg','planned_mass_kg','placed_mass_ratio')},
+            'fixed_container_utilization': volume/(area*container['max_height_mm']),
+            'actual_height_mm': height if height else 'NA',
+            'envelope_utilization': volume/(area*height) if height else 'NA',
+            'selected_actions': selected, 'monitor_statuses': {k: statuses[k] for k in ('STABLE','UNSTABLE','UNASSESSABLE','ERROR','DISABLED')},
+            'assessable_coverage': (statuses['STABLE']+statuses['UNSTABLE'])/selected if selected else 'NA',
+            'monitor_reasons': dict(Counter(m['result']['reason_code'] for m in monitors if m['result'])),
+            'first_predicted_instability_progress': stats['first_predicted_instability_progress'],
+            'area_load_ledger': {'maximum_utilization': base['maximum_capacity_utilization'],
+                'remaining_capacity_kg': base['remaining_capacity_kg'], 'remaining_distribution': distribution(base['remaining_capacity_kg']),
+                'facts': audit['runtime_facts'], 'interpretation': 'area shares; not PCT reactions or future packing capacity'},
+            'physical_evaluation': audit,
+            'latency_s': {**{name: distribution([e.get('timings',{})[key] for e in events if key in e.get('timings',{})])
+                for name,key in [('candidate','physical_generation_s'),('selection','selection_s'),('decision','decision_segments_s')]},
+                'monitor': distribution([m['result']['duration_s'] for m in monitors if m['result']]),
+                'order': distribution([status['active_wall_s']])},
+            'failure_location': {'event_count':len(cp['events']), 'decision':cp['decision'], 'phase':cp['phase'],
+                'arrival_cursor':cp['cursor'], 'end_of_stream':state['end_of_stream'],
+                'buffer': [p['item'] for p in pending],
+                'empty_pool_class': ('SAVED_SAMPLED_POOL_EMPTY_NO_GLOBAL_INFEASIBILITY_CLAIM' if status['category']=='EMPTY_POOL' else 'NA'),
+                'generation_counts': (last.get('bundle') or {}).get('generation_counts',[]),
+                'monitor_reason': (last.get('monitor') or {}).get('result'),
+                'technical_error':status['error'], 'active_wall_s':status['active_wall_s']},
+            'cost': {'model_calls':0,'failed_requests':0,'unknown_sends':0,'model_cost_usd':0,'memory_cost_usd':0},
+            'feasibility_status':task['feasibility_status'], 'global_infeasibility_proven':False,
+            'branch_metrics':'NOT_RUN','memory_metrics':'NOT_RUN','research_benefit':'NOT_ESTABLISHED'}
+E       KeyError: 'source_group_id'
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_metrics.py:41: KeyError</failure></testcase><testcase classname="tests.unit.test_packaging_full_order" name="test_technical_limit_full_denominator[watchdog1]" time="0.113"><failure message="KeyError: 'source_group_id'">watchdog = {'max_active_wall_s': 1e-09, 'max_events': 1000}
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-9/test_technical_limit_full_deno1')
+
+    @pytest.mark.parametrize('watchdog',[{'max_events':2,'max_active_wall_s':60},{'max_events':1000,'max_active_wall_s':1e-9}])
+    def test_technical_limit_full_denominator(watchdog,tmp_path):
+        t,c,j=fixture();start(tmp_path)
+&gt;       s=_run_job(t,j,tmp_path,watchdog);m=read(tmp_path/'metrics.json')
+
+semantic_pallet_planner/tests/unit/test_packaging_full_order.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experiment.py:193: in _run_job
+    write(job/'metrics.json',job_metrics(task,cfg,cp,status))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+task = {'attributes': {'0': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 100, 'no_top_load': False}, 'object_i...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+config = {'buffer_capacity': 3, 'business_mode': 'physical_only', 'candidate_backend': 'e2_original_v1', 'display_order_seed': 20261102, ...}
+cp = {'config_digest': '8488799f856acba39278794fdf44d45024528dac0901f97f50c10adad5da6428', 'cursor': 1, 'decision': 0, 'eve...nt': 0, 'arrived_ids': [], 'attributes': {}, 'buffer_capacity': 3, ...}, 'event': 'WAIT_RECEIVE', 'timings': {}}], ...}
+status = {'active_wall_s': 0.05843627300055232, 'category': 'TECHNICAL_LIMIT', 'error': None, 'state': 'FINISHED'}
+
+    def job_metrics(task, config, cp, status):
+        state = cp['state']; events = cp['events']
+        # A COMMITTED checkpoint owns a successful physical placement even before
+        # downstream evaluation completes. Include it exactly once in diagnostics.
+        if cp['phase'] == 'COMMITTED':
+            events = [*events, cp['pending_event']]
+        reason = cp['reason'] or status['category']
+        base = summary(task, config, config['selector'], state, events, reason)
+        volume = sum(prod(o['oriented_size_mm']) for o in state['placed_items'])
+        container = state['container']; area = container['length_mm']*container['width_mm']
+        height = base['max_height_mm']; stats = base['monitor_statistics']
+        monitors = [e['monitor'] for e in events if e.get('monitor')]
+        selected = stats['selected_actions']
+        if cp['pending_event'] and cp['phase'] != 'COMMITTED' and cp['pending_event'].get('selection'):
+            selected += 1
+            if cp['pending_event'].get('monitor'):
+                monitors = [*monitors, cp['pending_event']['monitor']]
+        statuses = Counter(m['status'] for m in monitors)
+        last = (cp['pending_event'] or (events[-1] if events else {}))
+        pending = state['pending_items']
+        audit = evaluate_state(state)
+        return {'version': METRICS_CONTRACT['version'], 'task_id': task['task_id'],
+&gt;           'method_id': config['selector'], 'source_group_id': task['source_group_id'], 'layer': task['layer'],
+            'origin': 'LOCAL_TEST_DOUBLE_NOT_JEV', 'category': status['category'],
+            'termination_reason': reason, 'completed': base['completed'] and status['category']=='COMPLETE',
+            'stable_complete': bool(base['completed'] and status['category']=='COMPLETE' and
+                config['stability_monitor']['enabled'] and statuses['STABLE']==len(task['items'])),
+            'loading': {k: base[k] for k in ('planned_items','arrived_items','placed_items','placed_item_ratio',
+                'placed_volume_ratio','placed_mass_kg','planned_mass_kg','placed_mass_ratio')},
+            'fixed_container_utilization': volume/(area*container['max_height_mm']),
+            'actual_height_mm': height if height else 'NA',
+            'envelope_utilization': volume/(area*height) if height else 'NA',
+            'selected_actions': selected, 'monitor_statuses': {k: statuses[k] for k in ('STABLE','UNSTABLE','UNASSESSABLE','ERROR','DISABLED')},
+            'assessable_coverage': (statuses['STABLE']+statuses['UNSTABLE'])/selected if selected else 'NA',
+            'monitor_reasons': dict(Counter(m['result']['reason_code'] for m in monitors if m['result'])),
+            'first_predicted_instability_progress': stats['first_predicted_instability_progress'],
+            'area_load_ledger': {'maximum_utilization': base['maximum_capacity_utilization'],
+                'remaining_capacity_kg': base['remaining_capacity_kg'], 'remaining_distribution': distribution(base['remaining_capacity_kg']),
+                'facts': audit['runtime_facts'], 'interpretation': 'area shares; not PCT reactions or future packing capacity'},
+            'physical_evaluation': audit,
+            'latency_s': {**{name: distribution([e.get('timings',{})[key] for e in events if key in e.get('timings',{})])
+                for name,key in [('candidate','physical_generation_s'),('selection','selection_s'),('decision','decision_segments_s')]},
+                'monitor': distribution([m['result']['duration_s'] for m in monitors if m['result']]),
+                'order': distribution([status['active_wall_s']])},
+            'failure_location': {'event_count':len(cp['events']), 'decision':cp['decision'], 'phase':cp['phase'],
+                'arrival_cursor':cp['cursor'], 'end_of_stream':state['end_of_stream'],
+                'buffer': [p['item'] for p in pending],
+                'empty_pool_class': ('SAVED_SAMPLED_POOL_EMPTY_NO_GLOBAL_INFEASIBILITY_CLAIM' if status['category']=='EMPTY_POOL' else 'NA'),
+                'generation_counts': (last.get('bundle') or {}).get('generation_counts',[]),
+                'monitor_reason': (last.get('monitor') or {}).get('result'),
+                'technical_error':status['error'], 'active_wall_s':status['active_wall_s']},
+            'cost': {'model_calls':0,'failed_requests':0,'unknown_sends':0,'model_cost_usd':0,'memory_cost_usd':0},
+            'feasibility_status':task['feasibility_status'], 'global_infeasibility_proven':False,
+            'branch_metrics':'NOT_RUN','memory_metrics':'NOT_RUN','research_benefit':'NOT_ESTABLISHED'}
+E       KeyError: 'source_group_id'
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_metrics.py:41: KeyError</failure></testcase><testcase classname="tests.unit.test_packaging_full_order" name="test_cancel_and_technical_error" time="0.061" /><testcase classname="tests.unit.test_packaging_full_order" name="test_saved_validation_does_not_dispatch_and_rejects_resigned_tamper" time="3.298" /><testcase classname="tests.unit.test_packaging_full_order" name="test_registry_and_unchanged_smoke_limit" time="0.001"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'monitor_smoke_event_limit'&#10; Input: 'monitor_output_directory'">tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-9/test_registry_and_unchanged_sm0')
+
+    def test_registry_and_unchanged_smoke_limit(tmp_path):
+        for m in ('jev_choice','jev_no_memory','shared_geometry'):
+            with pytest.raises(JevSelectError):selector_factory(m)
+        from semantic_pallet_planner.jev_select.stability.runtime import smoke
+        with pytest.raises(JevSelectError,match='monitor_smoke_event_limit'):
+&gt;           smoke('NOT_READ',tmp_path/'x',event_limit=9)
+
+semantic_pallet_planner/tests/unit/test_packaging_full_order.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/runtime.py:34: in smoke
+    require(root.is_relative_to(allowed) and root!=allowed,'monitor_output_directory')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, code = 'monitor_output_directory'
+
+    def require(ok,code):
+&gt;       if not ok:raise JevSelectError(code)
+E       semantic_pallet_planner.jev_select.contracts.JevSelectError: monitor_output_directory
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/runtime.py:18: JevSelectError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-9/test_registry_and_unchanged_sm0')
+
+    def test_registry_and_unchanged_smoke_limit(tmp_path):
+        for m in ('jev_choice','jev_no_memory','shared_geometry'):
+            with pytest.raises(JevSelectError):selector_factory(m)
+        from semantic_pallet_planner.jev_select.stability.runtime import smoke
+&gt;       with pytest.raises(JevSelectError,match='monitor_smoke_event_limit'):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'monitor_smoke_event_limit'
+E        Input: 'monitor_output_directory'
+
+semantic_pallet_planner/tests/unit/test_packaging_full_order.py:111: AssertionError</failure></testcase></testsuite></testsuites>

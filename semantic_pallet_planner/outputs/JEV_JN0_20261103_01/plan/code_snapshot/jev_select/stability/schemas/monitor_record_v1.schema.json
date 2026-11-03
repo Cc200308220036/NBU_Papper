@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "selected_action_monitor_v1"
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "state_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "candidate_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "action_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "selection_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "context_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bundle_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "config_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "decision_id": {
+          "type": "string"
+        },
+        "runtime_identity": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "state_digest",
+        "candidate_digest",
+        "action_digest",
+        "selection_digest",
+        "context_digest",
+        "bundle_digest",
+        "config_digest",
+        "decision_id",
+        "runtime_identity"
+      ]
+    },
+    "status": {
+      "enum": [
+        "DISABLED",
+        "STABLE",
+        "UNSTABLE",
+        "UNASSESSABLE",
+        "ERROR"
+      ]
+    },
+    "result": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "attempted": {
+      "const": true
+    },
+    "committed": {
+      "const": false
+    },
+    "result_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "credential_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "binding",
+    "status",
+    "result",
+    "attempted",
+    "committed",
+    "result_digest",
+    "credential_digest"
+  ]
+}

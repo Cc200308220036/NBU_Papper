@@ -122,3 +122,10 @@ Desktop.ini
 !/semantic_pallet_planner/outputs/VERIFY_JEV_PCT_MONITOR_20261103_01/
 !/semantic_pallet_planner/outputs/VERIFY_JEV_PCT_MONITOR_20261103_01/install/*.log
 # venv、__pycache__、build、egg-info 等可重建中间目录仍按通用规则忽略。
+
+# 2026-11-03 用户要求：本次及后续所有 JN 阶段交付持续纳入 Git。
+# 放行 JEV_JN0_*、JEV_JN1_* 等阶段目录及其运行/测试日志。
+# 源码、文档和测试沿用正常跟踪；凭证、缓存、虚拟环境及构建中间目录
+# 继续受上方通用规则保护。
+!/semantic_pallet_planner/outputs/JEV_JN[0-9]*/
+!/semantic_pallet_planner/outputs/JEV_JN[0-9]*/**/*.log

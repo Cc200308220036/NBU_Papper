@@ -1,0 +1,32 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/__main__.py", line 5, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/cli.py", line 165, in main
+    result = dict(run_packaging_plan(args.plan, args.output, resume=args.resume), status='PASS')
+                  ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experiment.py", line 230, in run_packaging_plan
+    result=_run_job(task,j,job,plan['watchdog'])
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experiment.py", line 193, in _run_job
+    write(job/'metrics.json',job_metrics(task,cfg,cp,status))
+                             ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_metrics.py", line 26, in job_metrics
+    base = summary(task, config, config['selector'], state, events, reason)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py", line 346, in summary
+    monitor_statistics=statistics(config,events,row))
+                       ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/metrics.py", line 25, in statistics
+    'first_predicted_instability_progress':next(({'committed_items':len(e['before']['placed_items']),
+                                           ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        'committed_mass_kg':sum(o['mass_kg'] for o in e['before']['placed_items']),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        'committed_volume_mm3':sum(prod(o['oriented_size_mm']) for o in e['before']['placed_items'])}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        for e in events if e.get('monitor',{}).get('status')=='UNSTABLE'),None),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/metrics.py", line 28, in <genexpr>
+    for e in events if e.get('monitor',{}).get('status')=='UNSTABLE'),None),
+                       ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'

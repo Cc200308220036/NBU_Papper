@@ -144,11 +144,31 @@ def main(argv=None) -> int:
     gv.add_argument('--store', required=True)
     gf = commands.add_parser('freeze-generation', help='freeze B1-compatible snapshot with full B2 artifacts')
     gf.add_argument('--store', required=True); gf.add_argument('--output', required=True)
+    fp = commands.add_parser('plan-packaging-orders', help='freeze JN0 complete-order local pair; no API')
+    fp.add_argument('--dataset', required=True); fp.add_argument('--output', required=True)
+    fp.add_argument('--spec', help='optional frozen task_ids/method_ids/watchdog JSON')
+    fr = commands.add_parser('run-packaging-orders', help='execute only the frozen JN0 local matrix')
+    fr.add_argument('--plan', required=True); fr.add_argument('--output', required=True)
+    fr.add_argument('--resume', action='store_true')
+    fs = commands.add_parser('summarize-packaging-orders', help='verify saved records and return frozen metrics')
+    fs.add_argument('--run', required=True)
     args = parser.parse_args(argv)
     from .config import load_config,load_v2_config,is_v2
     from .experiment import export_j0, validate_j0, prepare_plan, validate_plan, run_experiment, preflight, METHODS
     try:
-        if args.command == 'compare-same-box-candidates':
+        if args.command == 'plan-packaging-orders':
+            from .packaging_experiment import prepare_packaging_plan
+            from .ledger import read
+            result = dict(prepare_packaging_plan(args.dataset, {} if args.spec is None else read(args.spec), args.output), status='PASS')
+        elif args.command == 'run-packaging-orders':
+            from .packaging_experiment import run_packaging_plan
+            result = dict(run_packaging_plan(args.plan, args.output, resume=args.resume), status='PASS')
+        elif args.command == 'summarize-packaging-orders':
+            from .packaging_experiment import validate_packaging_run
+            from .ledger import read
+            from pathlib import Path
+            result = dict(validate_packaging_run(args.run), summary=read(Path(args.run)/'summary.json'))
+        elif args.command == 'compare-same-box-candidates':
             from .candidate_branch import compare_same_box
             result = compare_same_box(args.experiment,args.output,job_id=args.job,decision_id=args.decision,top_k=args.top_k)
             result = dict(result, status='PASS')

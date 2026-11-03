@@ -25,7 +25,7 @@ def statistics(config,events,loading):
         'first_predicted_instability_progress':next(({'committed_items':len(e['before']['placed_items']),
             'committed_mass_kg':sum(o['mass_kg'] for o in e['before']['placed_items']),
             'committed_volume_mm3':sum(prod(o['oriented_size_mm']) for o in e['before']['placed_items'])}
-            for e in events if e.get('monitor',{}).get('status')=='UNSTABLE'),None),
+            for e in events if (e.get('monitor') or {}).get('status')=='UNSTABLE'),None),
         'selection_wall_s':sum(e.get('timings',{}).get('selection_s',0) for e in events),
         'monitor_wall_s':sum(r['result'].get('duration_s',0) for r in rows if r['result']),
         'kernel_geometry_calls':sum(r['result'].get('kernel_calls',0) for r in rows if r['result']),

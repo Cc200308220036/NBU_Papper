@@ -1,0 +1,56 @@
+.....F........                                                           [100%]
+=================================== FAILURES ===================================
+___________ test_full_order_stage_resume_no_double_load[TERMINATED] ____________
+
+phase = 'TERMINATED'
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-10/test_full_order_stage_resume_n4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x71b3848c1590>
+
+    @pytest.mark.parametrize('phase',['SELECTED','MONITORED','COMMITTED','READY','TERMINATED'])
+    def test_full_order_stage_resume_no_double_load(phase,tmp_path,monkeypatch):
+        t,c,j=fixture();saved=[]
+        class Cut(RuntimeError):pass
+        def checkpoint(cp):
+            if cp['phase']==phase and (cp['decision']>=2 or phase=='TERMINATED'):
+                saved.append(copy.deepcopy(cp));raise Cut()
+        if phase=='TERMINATED':
+            saved.append(run_episode(t,selector_factory(c['selector']),c,job_id='J',method=c['selector'])['checkpoint'])
+        else:
+            with pytest.raises(Cut):
+                run_episode(t,selector_factory(c['selector']),c,job_id='J',method=c['selector'],on_checkpoint=checkpoint)
+        cp=saved[0];validate_saved_checkpoint(cp,t,c,'J')
+        # Stored decisions may not re-enter selector; future decisions still may.
+        from semantic_pallet_planner.jev_select.packaging_runtime import LocalPackagingDouble
+        original=LocalPackagingDouble.select;seen=[]
+        def select(self,context,*,decision_id):
+            assert decision_id not in {e['decision_id'] for e in cp['events'] if e.get('decision_id')}
+            if phase in ('SELECTED','MONITORED','COMMITTED'):
+                assert decision_id!=cp['pending_event']['decision_id']
+            seen.append(decision_id);return original(self,context,decision_id=decision_id)
+        monkeypatch.setattr(LocalPackagingDouble,'select',select)
+>       ep=run_episode(t,selector_factory(c['selector']),c,job_id='J',method=c['selector'],resume=cp)
+
+semantic_pallet_planner/tests/unit/test_packaging_full_order.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py:58: in run_episode
+    return _run_episode_v2(task, selector, config, job_id=job_id, method=method, resume=resume,
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py:180: in _run_episode_v2
+    preflight(config)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+config = {'buffer_capacity': 3, 'business_mode': 'physical_only', 'candidate_backend': 'e2_original_v1', 'display_order_seed': 20261102, ...}
+
+    def preflight(config):
+        validate_schema('config', config)
+        from ..packaging_runtime import load_runtime_config
+        ids=config['runtime_identity']
+        original=load_runtime_config(data_identity=ids['data_identity'],task_digest=ids['task_identity'],method=config['selector'])
+        if any(ids[k]!=v for k,v in original['runtime_identity'].items()):
+>           raise JevSelectError('stability_runtime_source_or_strategy_changed')
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: stability_runtime_source_or_strategy_changed
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py:67: JevSelectError
+- generated xml file: /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JN0_20261103_01/development_tests_02.xml -
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/tests/unit/test_packaging_full_order.py::test_full_order_stage_resume_no_double_load[TERMINATED]
+1 failed, 13 passed in 35.45s

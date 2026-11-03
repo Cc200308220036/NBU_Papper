@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_review_authorization_v1"
+    },
+    "instruction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewer_mode": {
+      "const": "developer_agent"
+    },
+    "independent_review_required": {
+      "const": false
+    },
+    "retained_constraints": {
+      "const": [
+        "two_independent_source_groups",
+        "non_rule_restatement",
+        "no_unresolved_conflict",
+        "compatible_scope",
+        "original_prose_unchanged",
+        "existing_budgets",
+        "existing_frequency_limits"
+      ]
+    },
+    "scope": {
+      "const": "semantic_review_role_only"
+    }
+  },
+  "required": [
+    "version",
+    "instruction",
+    "reviewer_mode",
+    "independent_review_required",
+    "retained_constraints",
+    "scope"
+  ],
+  "additionalProperties": false
+}

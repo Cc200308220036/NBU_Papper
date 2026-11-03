@@ -3,7 +3,6 @@ from __future__ import annotations
 import copy
 import hashlib
 import shutil
-import subprocess
 import time
 from pathlib import Path
 
@@ -16,7 +15,10 @@ from .packaging_protocol import (PLAN_VERSION, RUN_VERSION, EXECUTION_VERSION, M
 from .packaging_metrics import job_metrics, aggregate, paired
 from .stability.monitor import load_monitor_config, preflight
 
+# Source-checkout runner: module lives at <repo>/semantic_pallet_planner/src/
+# semantic_pallet_planner/jev_select/. Resolve the module, never the caller cwd.
 REPO = Path(__file__).resolve().parents[4]
+STOP_CATEGORIES = frozenset(('ERROR','COMMIT_FAILURE','SELECTION_FAILURE','TECHNICAL_LIMIT','CANCELED'))
 
 
 def require(ok, code):
@@ -29,12 +31,13 @@ def relative(path):
 
 
 def new_output(path):
+    require(not Path(path).is_symlink(), 'full_order_output_exists')
     path = Path(path).resolve()
     allowed = REPO/'semantic_pallet_planner/outputs'
     require(path.is_relative_to(allowed) and path != allowed, 'full_order_output_directory')
-    require(not path.exists(), 'full_order_output_exists')
-    require(subprocess.run(['git','check-ignore','-q',str(path)],cwd=REPO).returncode==0,
-            'full_order_output_must_follow_ignore_policy')
+    require(not path.exists() and not path.is_symlink(), 'full_order_output_exists')
+    # Archive policy is independent of filesystem safety. Resolve parent symlinks
+    # before checking containment; mkdir without exist_ok also refuses races.
     path.mkdir(parents=True)
     return path
 
@@ -184,29 +187,66 @@ def _run_job(task, entry, job, watchdog):
     finally:
         status.update(active_wall_s=elapsed());write(job/'status.json',status)
     if cp is not None:
-        write(job/'checkpoint.json',cp)
-        write(job/'final_layout.json',cp['state']['placed_items'])
-        write(job/'physical_evaluation.json',evaluate_state(cp['state']))
-        for e in cp['events']:
-            if e.get('decision_id'):
-                write(job/'actions'/f"{e['decision_id']}.json",e)
-        write(job/'metrics.json',job_metrics(task,cfg,cp,status))
+        try:
+            write(job/'checkpoint.json',cp)
+            write(job/'final_layout.json',cp['state']['placed_items'])
+            write(job/'physical_evaluation.json',evaluate_state(cp['state']))
+            for e in cp['events']:
+                if e.get('decision_id'):
+                    write(job/'actions'/f"{e['decision_id']}.json",e)
+            write(job/'metrics.json',job_metrics(task,cfg,cp,status))
+        except Exception as exc:
+            failure=technical_failure('JOB_FINALIZATION',exc,checkpoint=cp,prior_status=status)
+            write(job/'technical_failure.json',failure)
+            status.update(state='FINISHED',category='ERROR',error=failure['error'])
+            write(job/'status.json',status)
     return status
 
 
-def run_packaging_plan(plan_root, output, *, resume=False, task_ids=None, method_ids=None):
-    """No transport parameter: JN0 cannot accidentally route a paid request."""
+def technical_failure(phase, exc, *, checkpoint=None, prior_status=None):
+    """Independent receipt: never calls the failed derivation again."""
+    return {'version':'jev_packaging_technical_failure_v1','phase':phase,
+        'error':{'type':type(exc).__name__,'code':getattr(exc,'code','DERIVATION_ERROR'),'detail':str(exc)[:240]},
+        'checkpoint_digest':digest(checkpoint) if checkpoint is not None else None,
+        'prior_status':copy.deepcopy(prior_status)}
+
+
+def job_derivation_failed(job, status, cp):
+    path=job/'technical_failure.json'
+    if not path.exists():
+        return False
+    failure=read(path)
+    require(set(failure)=={'version','phase','error','checkpoint_digest','prior_status'} and
+        failure['version']=='jev_packaging_technical_failure_v1' and failure['phase']=='JOB_FINALIZATION' and
+        failure['checkpoint_digest']==digest(cp) and status['category']=='ERROR' and
+        status['error']==failure['error'],'full_order_technical_receipt_changed')
+    return True
+
+
+def run_packaging_plan(plan_root, output, *, resume=False, task_ids=None, method_ids=None,
+                       stop_after_jobs=None, continue_pending=False):
+    """Bounded pauses retain the complete matrix; continuation needs an explicit flag.
+
+    No transport parameter: JN0 cannot accidentally route a paid request.
+    """
     plan=validate_packaging_plan(plan_root)
     require(task_ids is None or task_ids==plan['task_ids'],'full_order_unplanned_task')
     require(method_ids is None or method_ids==plan['method_ids'],'full_order_unplanned_method')
+    require(stop_after_jobs is None or (type(stop_after_jobs) is int and
+        1<=stop_after_jobs<=len(plan['jobs'])),'full_order_invalid_batch_boundary')
+    require(not continue_pending or resume,'full_order_continuation_requires_resume')
     root=Path(output).resolve()
     if resume:
         require(root.is_dir(),'full_order_missing_run')
         receipt=read(root/'run_receipt.json')
         require(receipt=={'version':RUN_VERSION,'plan':relative(plan_root),'plan_digest':digest(plan)},'full_order_run_plan_changed')
+        if (root/'technical_failure.json').exists():
+            return {'status':'ERROR','planned_jobs':len(plan['jobs']),'technical_failure':read(root/'technical_failure.json')}
         if (root/'delivery_manifest.json').exists():
             validate_packaging_run(root)
-            return read(root/'summary.json')
+            summary=read(root/'summary.json')
+            if not continue_pending or not summary['categories']['NOT_RUN'] or any(summary['categories'][c] for c in STOP_CATEGORIES):
+                return summary
     else:
         root=new_output(root)
         write(root/'run_receipt.json',{'version':RUN_VERSION,'plan':relative(plan_root),'plan_digest':digest(plan)})
@@ -219,41 +259,84 @@ def run_packaging_plan(plan_root, output, *, resume=False, task_ids=None, method
             write(job/'status.json',{'state':'NOT_RUN','category':'NOT_RUN','active_wall_s':0.,'error':None})
     from .dataset_j4 import offline_dataset_guard
     with exclusive(root), offline_dataset_guard() as counters:
-        for j in plan['jobs']:
-            job=root/'jobs'/j['job_id'];status=read(job/'status.json')
-            if status['state']=='FINISHED':
-                if status['category'] in ('ERROR','COMMIT_FAILURE','SELECTION_FAILURE','TECHNICAL_LIMIT','CANCELED'):
+        if (root/'delivery_manifest.json').exists():
+            # Preserve the already-validated pilot closure before continuing.
+            history=root/'batch_history'/f"B{len(list((root/'batch_history').glob('B*')))+1:04d}"
+            for name in ('delivery_manifest.json','summary.json','job_ledger.json','paired_differences.json'):
+                write(history/(name+'.snapshot.json'),read(root/name))
+            (root/'delivery_manifest.json').unlink()
+        try:
+            for index,j in enumerate(plan['jobs']):
+                if stop_after_jobs is not None and index>=stop_after_jobs:
                     break
-                continue
-            task=read(job/'task.snapshot.json')
-            require(digest(task)==j['task_digest'] and read(job/'config.snapshot.json')==j['config'],'full_order_job_snapshot_changed')
-            result=_run_job(task,j,job,plan['watchdog'])
-            if result['category'] in ('ERROR','COMMIT_FAILURE','SELECTION_FAILURE','TECHNICAL_LIMIT','CANCELED'):
-                break
-        write(root/'offline_guards.json',dict(counters))
-        result=summarize_packaging_run(root)
-    write(root/'delivery_manifest.json',file_manifest(root))
-    validate_packaging_run(root)
-    return result
+                job=root/'jobs'/j['job_id'];status=read(job/'status.json')
+                if status['state']=='FINISHED':
+                    if status['category'] in STOP_CATEGORIES:
+                        break
+                    continue
+                task=read(job/'task.snapshot.json')
+                require(digest(task)==j['task_digest'] and read(job/'config.snapshot.json')==j['config'],'full_order_job_snapshot_changed')
+                result=_run_job(task,j,job,plan['watchdog'])
+                if result['category'] in STOP_CATEGORIES:
+                    break
+            write(root/'offline_guards.json',dict(counters))
+            try:
+                result=summarize_packaging_run(root)
+            except Exception as exc:
+                failure=technical_failure('BATCH_SUMMARY',exc)
+                write(root/'technical_failure.json',failure)
+                return {'status':'ERROR','planned_jobs':len(plan['jobs']),'technical_failure':failure}
+            write(root/'delivery_manifest.json',file_manifest(root))
+            try:
+                validate_packaging_run(root)
+            except Exception as exc:
+                failure=technical_failure('BATCH_VALIDATION',exc)
+                write(root/'technical_failure.json',failure)
+                return {'status':'ERROR','planned_jobs':len(plan['jobs']),'technical_failure':failure}
+            return result
+        finally:
+            # Persist guard evidence even if a derivation fails. Do not dispatch
+            # another job or retry the failed derivation from this handler.
+            if (root/'technical_failure.json').exists():
+                write(root/'offline_guards.json',dict(counters))
+                write(root/'delivery_manifest.json',file_manifest(root))
 
 
 def summarize_packaging_run(run_root):
-    root=Path(run_root);receipt=read(root/'run_receipt.json');plan=validate_packaging_plan(REPO/receipt['plan'])
+    root=Path(run_root)
+    if (root/'delivery_manifest.json').exists():
+        validate_packaging_run(root)
+        return read(root/'summary.json')
+    receipt=read(root/'run_receipt.json');plan=validate_packaging_plan(REPO/receipt['plan'])
     require(receipt['plan_digest']==digest(plan),'full_order_run_plan_changed')
     rows=[];ledger=[]
     for j in plan['jobs']:
         job=root/'jobs'/j['job_id'];s=read(job/'status.json')
         ledger.append({'job_id':j['job_id'],'task_id':j['task_id'],'method_id':j['method_id'],**s})
         if (job/'checkpoint.json').exists():
-            metrics=job_metrics(read(job/'task.snapshot.json'),j['config'],read(job/'checkpoint.json'),s)
-            write(job/'metrics.json',metrics);rows.append(metrics)
+            cp=read(job/'checkpoint.json')
+            if job_derivation_failed(job,s,cp):
+                ledger[-1]['metrics']='NOT_AVAILABLE_DERIVATION_ERROR'
+                continue
+            # Finalize each job once. Summarization reads the durable metric;
+            # standard validation independently derives and compares it later.
+            rows.append(read(job/'metrics.json'))
         elif s['category']!='NOT_RUN':
-            # An early technical failure owns a denominator slot even without a checkpoint.
             ledger[-1]['metrics']='NOT_AVAILABLE_NO_CHECKPOINT'
-    summary=aggregate(rows,len(plan['jobs']))
-    summary['categories']={k:sum(s['category']==k for s in ledger) for k in summary['categories']}
+    summary=aggregate_saved_metrics(rows,ledger)
     write(root/'job_ledger.json',ledger);write(root/'summary.json',summary)
     write(root/'paired_differences.json',paired(rows))
+    return summary
+
+
+def aggregate_saved_metrics(rows, ledger):
+    summary=aggregate(rows,len(ledger))
+    summary['categories']={k:sum(s['category']==k for s in ledger) for k in summary['categories']}
+    if any('metrics' in row for row in ledger):
+        # Missing technical-failure metrics must not masquerade as zero selected
+        # actions or zero coverage. Per-job status and receipt explain the gap.
+        summary['selected_actions']='UNKNOWN'
+        summary['assessable_coverage']='UNKNOWN'
     return summary
 
 
@@ -380,10 +463,12 @@ def validate_packaging_run(run_root):
         if (job/'episode.json').exists():
             ep=read(job/'episode.json')
             require(ep['checkpoint']==cp and ep['events']==cp['events'] and ep['final_state']==cp['state'],'full_order_episode_changed')
+        if job_derivation_failed(job,status,cp):
+            ledger[-1]['metrics']='NOT_AVAILABLE_DERIVATION_ERROR'
+            continue
         metrics=job_metrics(task,cfg,cp,status)
         require(read(job/'metrics.json')==metrics,'full_order_metrics_changed');rows.append(metrics)
-    expected=aggregate(rows,len(plan['jobs']))
-    expected['categories']={k:sum(s['category']==k for s in ledger) for k in expected['categories']}
+    expected=aggregate_saved_metrics(rows,ledger)
     require(read(root/'job_ledger.json')==ledger and read(root/'summary.json')==expected
         and read(root/'paired_differences.json')==paired(rows),'full_order_summary_changed')
     return {'status':'PASS','jobs':len(plan['jobs']),'verification':'saved records only; no dispatch, candidate generation, selection, physical commit or LP'}

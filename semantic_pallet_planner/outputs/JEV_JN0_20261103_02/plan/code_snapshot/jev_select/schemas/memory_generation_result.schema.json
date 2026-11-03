@@ -1,0 +1,261 @@
+{
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "jev_generation_output_v1"
+        },
+        "cards": {
+          "type": "array",
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "properties": {
+              "applicability": {
+                "type": "string",
+                "minLength": 1
+              },
+              "advice": {
+                "type": "string",
+                "minLength": 1
+              },
+              "observed_evidence": {
+                "type": "string",
+                "minLength": 1
+              },
+              "comparison_basis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "limitations_counterexamples": {
+                "type": "string",
+                "minLength": 1
+              },
+              "expected_effect_hypothesis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "knowledge_role_basis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "knowledge_role": {
+                "enum": [
+                  "rule_restatement",
+                  "current_rule_application",
+                  "sequential_resource_strategy"
+                ]
+              },
+              "evidence_links": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "request_digest": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "episode_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "decision_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "value": {},
+                    "relation": {
+                      "enum": [
+                        "support",
+                        "counterexample",
+                        "unknown"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "request_digest",
+                    "episode_id",
+                    "decision_id",
+                    "path",
+                    "value",
+                    "relation"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "parent_card_ids": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "applicability",
+              "advice",
+              "observed_evidence",
+              "comparison_basis",
+              "limitations_counterexamples",
+              "expected_effect_hypothesis",
+              "knowledge_role_basis",
+              "knowledge_role",
+              "evidence_links",
+              "parent_card_ids"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "version",
+        "cards"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "jev_generation_output_v2"
+        },
+        "cards": {
+          "type": "array",
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "properties": {
+              "applicability": {
+                "type": "string",
+                "minLength": 1
+              },
+              "advice": {
+                "type": "string",
+                "minLength": 1
+              },
+              "observed_evidence": {
+                "type": "string",
+                "minLength": 1
+              },
+              "comparison_basis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "limitations_counterexamples": {
+                "type": "string",
+                "minLength": 1
+              },
+              "expected_effect_hypothesis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "knowledge_role_basis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "knowledge_role": {
+                "enum": [
+                  "rule_restatement",
+                  "current_rule_application",
+                  "sequential_resource_strategy"
+                ]
+              },
+              "parent_card_ids": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "fact_links": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "fact_id": {
+                      "type": "string",
+                      "pattern": "^F[0-9]{4,}$"
+                    },
+                    "path": {
+                      "type": "string",
+                      "pattern": "^/"
+                    },
+                    "value": {},
+                    "value_type": {
+                      "enum": [
+                        "object",
+                        "array",
+                        "string",
+                        "number",
+                        "integer",
+                        "boolean",
+                        "null"
+                      ]
+                    },
+                    "unit": {
+                      "enum": [
+                        "mm",
+                        "kg",
+                        "deg",
+                        "ratio",
+                        "count",
+                        "context"
+                      ]
+                    },
+                    "relation": {
+                      "enum": [
+                        "support",
+                        "counterexample",
+                        "unknown"
+                      ]
+                    },
+                    "request_alias": {
+                      "type": "string",
+                      "pattern": "^P[0-9]{4}$"
+                    }
+                  },
+                  "required": [
+                    "fact_id",
+                    "path",
+                    "value",
+                    "value_type",
+                    "unit",
+                    "relation"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "applicability",
+              "advice",
+              "observed_evidence",
+              "comparison_basis",
+              "limitations_counterexamples",
+              "expected_effect_hypothesis",
+              "knowledge_role_basis",
+              "knowledge_role",
+              "fact_links",
+              "parent_card_ids"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "version",
+        "cards"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

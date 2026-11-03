@@ -98,6 +98,7 @@ def paired(rows):
         result.append({'task_id':task, 'source_group_id':(a or b)['source_group_id'],
             'direction':'geometry minus fixed order; descriptive only',
             'categories':{m:r['category'] for m,r in methods.items()},
+            'comparison_valid':bool(a and b and all(r['category'] in ('COMPLETE','EMPTY_POOL','PREDICTED_STATIC_INSTABILITY') for r in (a,b))),
             'delta':({**{k:a['loading'][k]-b['loading'][k] for k in ('placed_items','placed_item_ratio','placed_volume_ratio','placed_mass_ratio')},
                 'fixed_container_utilization':a['fixed_container_utilization']-b['fixed_container_utilization'],
                 'height_mm':a['actual_height_mm']-b['actual_height_mm'] if 'NA' not in (a['actual_height_mm'],b['actual_height_mm']) else 'NA',

@@ -150,6 +150,8 @@ def main(argv=None) -> int:
     fr = commands.add_parser('run-packaging-orders', help='execute only the frozen JN0 local matrix')
     fr.add_argument('--plan', required=True); fr.add_argument('--output', required=True)
     fr.add_argument('--resume', action='store_true')
+    fr.add_argument('--stop-after-jobs', type=int, help='pause after this frozen job boundary; full denominator retained')
+    fr.add_argument('--continue-pending', action='store_true', help='explicitly continue a validated paused run; requires --resume')
     fs = commands.add_parser('summarize-packaging-orders', help='verify saved records and return frozen metrics')
     fs.add_argument('--run', required=True)
     args = parser.parse_args(argv)
@@ -162,7 +164,11 @@ def main(argv=None) -> int:
             result = dict(prepare_packaging_plan(args.dataset, {} if args.spec is None else read(args.spec), args.output), status='PASS')
         elif args.command == 'run-packaging-orders':
             from .packaging_experiment import run_packaging_plan
-            result = dict(run_packaging_plan(args.plan, args.output, resume=args.resume), status='PASS')
+            result = run_packaging_plan(args.plan, args.output, resume=args.resume,
+                stop_after_jobs=args.stop_after_jobs, continue_pending=args.continue_pending)
+            from .packaging_experiment import STOP_CATEGORIES
+            result = dict(result, status=result.get('status', 'ERROR' if any(
+                result.get('categories',{}).get(c,0) for c in STOP_CATEGORIES) else 'PASS'))
         elif args.command == 'summarize-packaging-orders':
             from .packaging_experiment import validate_packaging_run
             from .ledger import read

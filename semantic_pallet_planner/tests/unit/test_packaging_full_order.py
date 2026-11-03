@@ -209,3 +209,116 @@ def test_empty_pool_null_monitor_is_natural_stop_with_full_denominator(tmp_path)
     assert m['loading']['placed_items']==0 and m['actual_height_mm']=='NA'
     assert m['selected_actions']==0 and m['assessable_coverage']=='NA'
     assert aggregate([m],8)['categories']['EMPTY_POOL']==1
+
+
+@pytest.mark.parametrize('name,ignored',[('OTHER_LOCAL',True),('JEV_JN0_TEST',False)])
+def test_output_policy_independent_of_git_archive(name,ignored,tmp_path,monkeypatch):
+    import subprocess
+    import semantic_pallet_planner.jev_select.packaging_experiment as pe
+    monkeypatch.setattr(pe,'REPO',tmp_path)
+    subprocess.run(['git','init','-q',str(tmp_path)],check=True)
+    (tmp_path/'.gitignore').write_text('/semantic_pallet_planner/outputs/*\n!/semantic_pallet_planner/outputs/JEV_JN[0-9]*/\n')
+    parent=tmp_path/'semantic_pallet_planner/outputs'/name;parent.mkdir(parents=True)
+    assert (subprocess.run(['git','check-ignore','-q',str(parent)],cwd=tmp_path).returncode==0)==ignored
+    created=pe.new_output(parent/'plan');(created/'receipt.json').write_text('{}')
+    assert (subprocess.run(['git','check-ignore','-q',str(created/'receipt.json')],cwd=tmp_path).returncode==0)==ignored
+
+
+def test_output_containment_and_symlinks(tmp_path,monkeypatch):
+    import semantic_pallet_planner.jev_select.packaging_experiment as pe
+    monkeypatch.setattr(pe,'REPO',tmp_path)
+    allowed=tmp_path/'semantic_pallet_planner/outputs';allowed.mkdir(parents=True)
+    existing=allowed/'existing';existing.mkdir()
+    outside=tmp_path/'outside';outside.mkdir()
+    (allowed/'escape').symlink_to(outside,target_is_directory=True)
+    (allowed/'dangling').symlink_to(allowed/'not_created')
+    for path in (allowed,existing,outside/'new',allowed/'../new',allowed/'escape/new',allowed/'dangling'):
+        with pytest.raises(JevSelectError):pe.new_output(path)
+    assert not (outside/'new').exists() and not (allowed/'not_created').exists()
+
+
+def test_natural_empty_pair_closes_and_validates(tmp_path,monkeypatch):
+    pe,t=constructed_plan(tmp_path,monkeypatch)
+    # Replace the constructed loader and rebuild a second, explicit constructed
+    # plan: oversize boxes make the first job empty without invoking a monitor.
+    for obj in t['items']:obj['dimensions_mm']=dict(length=2000,width=2000,height=2000)
+    monkeypatch.setattr(pe,'load_runtime_dataset',lambda _: {'data_identity':digest('CONSTRUCTED_ONLY'),'tasks':[copy.deepcopy(t)]})
+    pe.prepare_packaging_plan(tmp_path/'dataset',{},tmp_path/'empty_plan')
+    result=pe.run_packaging_plan(tmp_path/'empty_plan',tmp_path/'run')
+    assert result['categories']['EMPTY_POOL']==2 and result['categories']['ERROR']==0
+    assert pe.validate_packaging_run(tmp_path/'run')['status']=='PASS'
+    assert all(read(p)['monitor_statuses']['STABLE']==0 for p in (tmp_path/'run/jobs').glob('*/metrics.json'))
+
+
+def test_job_derivation_failure_once_stops_batch(tmp_path,monkeypatch):
+    pe,t=constructed_plan(tmp_path,monkeypatch);calls=[]
+    def fail(*a,**k):calls.append(1);raise RuntimeError('injected metric derivation fault')
+    monkeypatch.setattr(pe,'job_metrics',fail)
+    result=pe.run_packaging_plan(tmp_path/'plan',tmp_path/'run')
+    assert len(calls)==1
+    assert result['selected_actions']=='UNKNOWN' and result['assessable_coverage']=='UNKNOWN'
+    assert result['categories']['ERROR']==1 and result['categories']['NOT_RUN']==1
+    job=tmp_path/'run/jobs/J0000'
+    assert read(job/'technical_failure.json')['phase']=='JOB_FINALIZATION'
+    assert (job/'checkpoint.json').exists() and not (job/'metrics.json').exists()
+    assert pe.validate_packaging_run(tmp_path/'run')['status']=='PASS'
+    assert len(calls)==1
+
+
+def test_summary_derivation_failure_once_has_receipt(tmp_path,monkeypatch):
+    pe,t=constructed_plan(tmp_path,monkeypatch);calls=[]
+    def fail(*a,**k):calls.append(1);raise RuntimeError('injected aggregate fault')
+    monkeypatch.setattr(pe,'aggregate',fail)
+    result=pe.run_packaging_plan(tmp_path/'plan',tmp_path/'run',stop_after_jobs=1)
+    assert result['status']=='ERROR' and len(calls)==1
+    assert read(tmp_path/'run/technical_failure.json')['phase']=='BATCH_SUMMARY'
+    assert read(tmp_path/'run/jobs/J0001/status.json')['category']=='NOT_RUN'
+    assert (tmp_path/'run/jobs/J0000/checkpoint.json').exists()
+    assert (tmp_path/'run/offline_guards.json').exists()
+    assert pe.file_manifest(tmp_path/'run')==read(tmp_path/'run/delivery_manifest.json')
+    assert pe.run_packaging_plan(tmp_path/'plan',tmp_path/'run',resume=True)['status']=='ERROR'
+    assert len(calls)==1
+
+
+def test_pilot_explicit_continuation_and_idempotent_audit(tmp_path,monkeypatch):
+    pe,t=constructed_plan(tmp_path,monkeypatch);calls=[];original=pe._run_job
+    def counting(*a,**k):calls.append(a[1]['job_id']);return original(*a,**k)
+    monkeypatch.setattr(pe,'_run_job',counting)
+    first=pe.run_packaging_plan(tmp_path/'plan',tmp_path/'run',stop_after_jobs=1)
+    assert first['categories']['COMPLETE']==1 and first['categories']['NOT_RUN']==1
+    cp=read(tmp_path/'run/jobs/J0000/checkpoint.json')
+    assert pe.run_packaging_plan(tmp_path/'plan',tmp_path/'run',resume=True)==first
+    final=pe.run_packaging_plan(tmp_path/'plan',tmp_path/'run',resume=True,continue_pending=True)
+    assert calls==['J0000','J0001'] and final['categories']['COMPLETE']==2
+    assert read(tmp_path/'run/jobs/J0000/checkpoint.json')==cp
+    assert (tmp_path/'run/batch_history/B0001/delivery_manifest.json.snapshot.json').exists()
+    def forbidden(*a,**k):raise AssertionError('read-only operation executed a decision')
+    import semantic_pallet_planner.jev_select.execution as ex
+    import semantic_pallet_planner.jev_select.stability.balance_adapter as ba
+    from semantic_pallet_planner.jev_select.candidates import CandidateProvider
+    from semantic_pallet_planner.jev_select.packaging_runtime import LocalPackagingDouble
+    monkeypatch.setattr(pe,'_run_job',forbidden);monkeypatch.setattr(ex,'commit_physical',forbidden)
+    monkeypatch.setattr(ba,'assess_candidate',forbidden);monkeypatch.setattr(CandidateProvider,'build',forbidden)
+    monkeypatch.setattr(LocalPackagingDouble,'select',forbidden)
+    manifest=pe.file_manifest(tmp_path/'run')
+    for _ in range(2):
+        assert pe.summarize_packaging_run(tmp_path/'run')==final
+        assert pe.validate_packaging_run(tmp_path/'run')['status']=='PASS'
+        assert pe.run_packaging_plan(tmp_path/'plan',tmp_path/'run',resume=True)==final
+    assert pe.file_manifest(tmp_path/'run')==manifest
+
+
+def test_source_identity_change_refuses_old_plan(tmp_path,monkeypatch):
+    pe,t=constructed_plan(tmp_path,monkeypatch);current=pe.source_manifest()
+    changed=dict(current);changed['jev_select/packaging_experiment.py']='changed'
+    monkeypatch.setattr(pe,'source_manifest',lambda:changed)
+    with pytest.raises(JevSelectError,match='source_or_physics_changed'):pe.validate_packaging_plan(tmp_path/'plan')
+
+
+@pytest.mark.parametrize('receipt',[{'status':'ERROR'},{'categories':{'ERROR':1}}])
+def test_cli_technical_failure_is_nonzero(receipt,monkeypatch,capsys):
+    import semantic_pallet_planner.jev_select.packaging_experiment as pe
+    from semantic_pallet_planner.jev_select.cli import main
+    monkeypatch.setattr(pe,'run_packaging_plan',lambda *a,**k:receipt)
+    assert main(['run-packaging-orders','--plan','NOT_READ','--output','NOT_WRITTEN'])==1
+    assert 'ERROR' in capsys.readouterr().out

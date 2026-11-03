@@ -1,0 +1,73 @@
+{
+  "type": "object",
+  "properties": {
+    "dataset": {
+      "type": "string"
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "top_k": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "topk_mode": {
+      "enum": [
+        "legacy_v01",
+        "diverse_v1"
+      ]
+    },
+    "fallback_policy": {
+      "enum": [
+        "geometry_greedy",
+        "abort"
+      ]
+    },
+    "output_root": {
+      "type": "string"
+    },
+    "max_steps": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "render": {
+      "type": "boolean"
+    },
+    "vlm": {
+      "type": "object",
+      "properties": {
+        "provider": {"type": "string"},
+        "model": {"type": "string"},
+        "api_key_env": {"type": "string"},
+        "base_url": {"type": "string"},
+        "temperature": {"type": "number", "minimum": 0, "maximum": 2},
+        "max_output_tokens": {"type": "integer", "minimum": 1},
+        "timeout_s": {"type": "number", "exclusiveMinimum": 0},
+        "max_format_repairs": {"type": "integer", "minimum": 0, "maximum": 1},
+        "cache_mode": {"enum": ["off", "read_only", "read_write"]},
+        "thinking": {"enum": ["enabled", "disabled"]},
+        "input_cost_per_million": {"type": ["number", "null"], "minimum": 0},
+        "output_cost_per_million": {"type": ["number", "null"], "minimum": 0}
+      },
+      "required": ["provider", "model", "api_key_env", "base_url", "temperature",
+                   "max_output_tokens", "timeout_s", "max_format_repairs", "cache_mode", "thinking"],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "dataset",
+    "seed",
+    "top_k",
+    "topk_mode",
+    "fallback_policy",
+    "output_root",
+    "max_steps",
+    "render"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

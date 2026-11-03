@@ -28,7 +28,10 @@ METRICS_CONTRACT = {
 }
 
 
-def selector_factory(method, *, execution_version=EXECUTION_VERSION):
+def selector_factory(method, *, execution_version=EXECUTION_VERSION, config=None, transport=None, ledger=None, job_id=None):
+    if execution_version == "jev_packaging_remote_v6":
+        from .packaging_remote import remote_selector_factory
+        return remote_selector_factory(method, config=config, transport=transport, ledger=ledger, job_id=job_id)
     if execution_version != EXECUTION_VERSION or method not in METHOD_REGISTRY:
         raise JevSelectError('full_order_unregistered_method_or_protocol')
     return LocalPackagingDouble(method)

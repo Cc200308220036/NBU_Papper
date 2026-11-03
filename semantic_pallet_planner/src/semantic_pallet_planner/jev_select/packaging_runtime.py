@@ -24,7 +24,7 @@ METHODS = ('local_geometry_test_double','local_first_test_double')
 
 
 def is_packaging(config):
-    return config.get('version') in (VERSION, 'jev_packaging_monitored_v5')
+    return config.get('version') in (VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6')
 
 
 def no_policy(observation):
@@ -159,6 +159,7 @@ def build_context(config,observation,bundle,policy):
     from semantic_pallet_planner.evaluation.state import apply_candidate
     from semantic_pallet_planner.planner.scoring import geometry_score
     from .candidates import validate_bundle,PublicBusinessGuard,decision_route
+    from .config import protocol_suffix
     validate_observation(observation)
     require(policy.data==no_policy(observation).data,'runtime_policy')
     require(bundle.data==PublicBusinessGuard().filter(observation,policy,bundle,config).data,'runtime_candidate_filter')
@@ -227,7 +228,7 @@ def build_context(config,observation,bundle,policy):
         'generator_config_digest':value['generator_config_digest'],'prompt_version':config['prompt_version'],
         'feature_version':config['feature_version'],'model_state_digest':digest(state),'criteria_digest':digest(criteria),
         'request_body_digest':digest(body),'runtime_identity':copy.deepcopy(config['runtime_identity'])}
-    context=DecisionContext.from_dict({'version':'jev_decision_context_' + ('v5' if config.get('version') == 'jev_packaging_monitored_v5' else 'v4'),'route':route,'model_state':state,
+    context=DecisionContext.from_dict({'version':'jev_decision_context_' + protocol_suffix(config),'route':route,'model_state':state,
         'criteria':criteria,'request_body':body,'display_mapping':mapping,'local_binding':binding})
     validate_runtime_context(context,config=config)
     require(body is None or len(canonical(body).encode())<=config['max_request_bytes'],'runtime_request_too_large')
@@ -245,7 +246,7 @@ def validate_runtime_context(context,observation=None,bundle=None,config=None):
     body=value['request_body'];route=value['route']
     if route=='CHOICE_REQUIRED':
         require(len(labels)>=2 and body is not None and body['state']==value['model_state'] and
-            body['questions']=={'next_action':{'type':'choice','instructions':QUESTION,'criteria':value['criteria']}},'runtime_request_binding')
+            body['model']==(config['model'] if config else body['model']) and body['questions']=={'next_action':{'type':'choice','instructions':QUESTION,'criteria':value['criteria']}},'runtime_request_binding')
     else:require(body is None and ((route=='SINGLETON_BYPASS' and len(labels)==1) or
         (route=='STOP_NO_PHYSICAL_CANDIDATE' and not labels)),'runtime_route')
     if config is not None:
@@ -344,7 +345,13 @@ def summary(task,config,method,state,events,reason):
         row.update(version='jev_packaging_monitored_metrics_v1',
             stability_algorithm='pct_contact_network_v2' if config['stability_monitor']['enabled'] else 'DISABLED',
             monitor_statistics=statistics(config,events,row))
-        validate_schema('monitored_order_metrics_v1',row)
+        if config['version'] == 'jev_packaging_remote_v6':
+            from .packaging_remote import event_cost
+            row.update(version='jev_packaging_remote_metrics_v1', origin='jev' if method=='jev_no_memory' else 'LOCAL_TEST_DOUBLE_NOT_JEV')
+            row['cost'].update(event_cost(events))
+            validate_schema('remote_order_metrics_v1',row)
+        else:
+            validate_schema('monitored_order_metrics_v1',row)
     else:
         validate_schema('packaging_order_metrics_v1',row)
     return row

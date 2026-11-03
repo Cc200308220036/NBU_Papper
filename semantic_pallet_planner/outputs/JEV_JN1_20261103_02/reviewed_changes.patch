@@ -1,0 +1,191 @@
+--- before/jev_select/candidates.py
++++ accepted/jev_select/candidates.py
+@@ -61,7 +61,7 @@
+     selected = value["selectable_candidates"]
+     if len({c["candidate_id"] for c in selected}) != len(selected) or any(original.get(c["candidate_id"]) != c for c in selected):
+         raise JevSelectError("invalid_candidate_subset")
+-    if value["version"] in ("jev_candidate_bundle_v2", "jev_candidate_bundle_v3", "jev_candidate_bundle_v4", "jev_candidate_bundle_v5") and value["selectable_pool"] != "unfiltered":
++    if value["version"] in ("jev_candidate_bundle_v2", "jev_candidate_bundle_v3", "jev_candidate_bundle_v4", "jev_candidate_bundle_v5", "jev_candidate_bundle_v6") and value["selectable_pool"] != "unfiltered":
+         if value["selectable_candidates"] != candidates or value["selectable_digest"] != value["physical_digest"]:
+             raise JevSelectError("business_filtered_physical_pool")
+     return value
+--- before/jev_select/config.py
++++ accepted/jev_select/config.py
+@@ -42,7 +42,7 @@
+ def protocol_suffix(config: dict) -> str:
+     validate_schema("config", config)
+     from .packaging_runtime import is_packaging
+-    return "v5" if config.get("version") == "jev_packaging_monitored_v5" else "v4" if is_packaging(config) else "v3" if is_v3(config) else "v2" if is_v2(config) else "v1"
++    return "v6" if config.get("version") == "jev_packaging_remote_v6" else "v5" if config.get("version") == "jev_packaging_monitored_v5" else "v4" if is_packaging(config) else "v3" if is_v3(config) else "v2" if is_v2(config) else "v1"
+ 
+ 
+ def load_v3_config() -> dict:
+--- before/jev_select/context.py
++++ accepted/jev_select/context.py
+@@ -241,7 +241,7 @@
+ def validate_context(context: DecisionContext, observation: dict | None = None,
+                      bundle: CandidateBundle | None = None, config: dict | None = None) -> dict:
+     from .packaging_runtime import is_packaging, validate_runtime_context
+-    if context.data.get('version') in ('jev_decision_context_v4','jev_decision_context_v5') or (config is not None and is_packaging(config)):
++    if context.data.get('version') in ('jev_decision_context_v4','jev_decision_context_v5','jev_decision_context_v6') or (config is not None and is_packaging(config)):
+         return validate_runtime_context(context, observation, bundle, config)
+     value = context.data
+     validate_schema("decision_context", value)
+--- before/jev_select/contracts.py
++++ accepted/jev_select/contracts.py
+@@ -30,7 +30,7 @@
+ 
+ @lru_cache(maxsize=64)
+ def schema_validator(name: str) -> Draft202012Validator:
+-    if name not in {"packaging_full_order_plan_v1", "monitored_order_metrics_v1", "config_v5", "candidate_bundle_v5", "decision_context_v5", "selection_result_v5", "checkpoint_v5", "config_v4", "candidate_bundle_v4", "decision_context_v4", "selection_result_v4", "checkpoint_v4", "packaging_order_metrics_v1", "packaging_load_config_v1", "packaging_load_task_v1", "business_spec_v2", "config", "candidate_bundle", "decision_context", "selection_result", "transport_result", "config_v2", "candidate_bundle_v2", "decision_context_v2", "selection_result_v2", "business_state", "plan_v2", "checkpoint_v2", "order_metrics_v2", "metrics_v2",
++    if name not in {"config_v6", "candidate_bundle_v6", "decision_context_v6", "selection_result_v6", "checkpoint_v6", "remote_order_metrics_v1", "packaging_full_order_plan_v1", "monitored_order_metrics_v1", "config_v5", "candidate_bundle_v5", "decision_context_v5", "selection_result_v5", "checkpoint_v5", "config_v4", "candidate_bundle_v4", "decision_context_v4", "selection_result_v4", "checkpoint_v4", "packaging_order_metrics_v1", "packaging_load_config_v1", "packaging_load_task_v1", "business_spec_v2", "config", "candidate_bundle", "decision_context", "selection_result", "transport_result", "config_v2", "candidate_bundle_v2", "decision_context_v2", "selection_result_v2", "business_state", "plan_v2", "checkpoint_v2", "order_metrics_v2", "metrics_v2",
+                     "config_v3", "candidate_bundle_v3", "decision_context_v3", "selection_result_v3", "plan_v3", "checkpoint_v3", "order_metrics_v3", "metrics_v3", "memory_card", "memory_snapshot", "memory_episode_export", "memory_query", "memory_index", "memory_retrieval", "memory_generation_result", "memory_review", "memory_generator_config", "memory_review_authorization"}:
+         raise JevSelectError("unknown_schema", name)
+     resource = files("semantic_pallet_planner.jev_select").joinpath("schemas", f"{name}.schema.json")
+@@ -42,7 +42,7 @@
+ def validate_schema(name: str, value: dict) -> None:
+     canonical(value)
+     if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+-        for suffix in ("_v2", "_v3", "_v4", "_v5"):
++        for suffix in ("_v2", "_v3", "_v4", "_v5", "_v6"):
+             if str(value.get("version", "")).endswith(suffix):
+                 name += suffix
+                 break
+--- before/jev_select/episode.py
++++ accepted/jev_select/episode.py
+@@ -46,9 +46,12 @@
+ def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
+                 hook=None, event_limit=None, expected_events=None, memory_snapshot=None):
+     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
+-    if config.get('version') == 'jev_packaging_monitored_v5':
++    if config.get('version') in ('jev_packaging_monitored_v5','jev_packaging_remote_v6'):
+         config = copy.deepcopy(config)
+     if is_packaging(config):
++        if config.get('version') == 'jev_packaging_remote_v6':
++            from .packaging_remote import REGISTRY
++            METHODS = tuple(REGISTRY)
+         if (memory_snapshot is not None or task.get('version') != DATA_VERSION or
+             task.get('reference_policy') != {'version':DATA_VERSION,'rules':[]} or
+             task.get('regions') != [] or method != config['selector'] or method not in METHODS or
+--- before/jev_select/packaging_experiment.py
++++ accepted/jev_select/packaging_experiment.py
+@@ -351,7 +351,7 @@
+     from .stability.monitor import validate_monitor
+     from semantic_pallet_planner.o4.extensions.e2.protocol import observation
+     from semantic_pallet_planner.o4.buffer.buffer_state import initial,receive
+-    validate_schema('checkpoint_v5',cp)
++    validate_schema('checkpoint_v6' if cfg['version']=='jev_packaging_remote_v6' else 'checkpoint_v5',cp)
+     require(cp['record_digest']==digest({k:v for k,v in cp.items() if k!='record_digest'}), 'full_order_checkpoint_digest_changed')
+     require(cp['job_id']==jid and cp['method']==cfg['selector'] and cp['config_digest']==digest(cfg)
+         and cp['task_digest']==digest(task) and cp['runtime_identity']==cfg['runtime_identity'],'full_order_checkpoint_binding_changed')
+--- before/jev_select/packaging_protocol.py
++++ accepted/jev_select/packaging_protocol.py
+@@ -28,7 +28,10 @@
+ }
+ 
+ 
+-def selector_factory(method, *, execution_version=EXECUTION_VERSION):
++def selector_factory(method, *, execution_version=EXECUTION_VERSION, config=None, transport=None, ledger=None, job_id=None):
++    if execution_version == "jev_packaging_remote_v6":
++        from .packaging_remote import remote_selector_factory
++        return remote_selector_factory(method, config=config, transport=transport, ledger=ledger, job_id=job_id)
+     if execution_version != EXECUTION_VERSION or method not in METHOD_REGISTRY:
+         raise JevSelectError('full_order_unregistered_method_or_protocol')
+     return LocalPackagingDouble(method)
+--- before/jev_select/packaging_runtime.py
++++ accepted/jev_select/packaging_runtime.py
+@@ -24,7 +24,7 @@
+ 
+ 
+ def is_packaging(config):
+-    return config.get('version') in (VERSION, 'jev_packaging_monitored_v5')
++    return config.get('version') in (VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6')
+ 
+ 
+ def no_policy(observation):
+@@ -159,6 +159,7 @@
+     from semantic_pallet_planner.evaluation.state import apply_candidate
+     from semantic_pallet_planner.planner.scoring import geometry_score
+     from .candidates import validate_bundle,PublicBusinessGuard,decision_route
++    from .config import protocol_suffix
+     validate_observation(observation)
+     require(policy.data==no_policy(observation).data,'runtime_policy')
+     require(bundle.data==PublicBusinessGuard().filter(observation,policy,bundle,config).data,'runtime_candidate_filter')
+@@ -227,7 +228,7 @@
+         'generator_config_digest':value['generator_config_digest'],'prompt_version':config['prompt_version'],
+         'feature_version':config['feature_version'],'model_state_digest':digest(state),'criteria_digest':digest(criteria),
+         'request_body_digest':digest(body),'runtime_identity':copy.deepcopy(config['runtime_identity'])}
+-    context=DecisionContext.from_dict({'version':'jev_decision_context_' + ('v5' if config.get('version') == 'jev_packaging_monitored_v5' else 'v4'),'route':route,'model_state':state,
++    context=DecisionContext.from_dict({'version':'jev_decision_context_' + protocol_suffix(config),'route':route,'model_state':state,
+         'criteria':criteria,'request_body':body,'display_mapping':mapping,'local_binding':binding})
+     validate_runtime_context(context,config=config)
+     require(body is None or len(canonical(body).encode())<=config['max_request_bytes'],'runtime_request_too_large')
+@@ -245,7 +246,7 @@
+     body=value['request_body'];route=value['route']
+     if route=='CHOICE_REQUIRED':
+         require(len(labels)>=2 and body is not None and body['state']==value['model_state'] and
+-            body['questions']=={'next_action':{'type':'choice','instructions':QUESTION,'criteria':value['criteria']}},'runtime_request_binding')
++            body['model']==(config['model'] if config else body['model']) and body['questions']=={'next_action':{'type':'choice','instructions':QUESTION,'criteria':value['criteria']}},'runtime_request_binding')
+     else:require(body is None and ((route=='SINGLETON_BYPASS' and len(labels)==1) or
+         (route=='STOP_NO_PHYSICAL_CANDIDATE' and not labels)),'runtime_route')
+     if config is not None:
+@@ -344,7 +345,13 @@
+         row.update(version='jev_packaging_monitored_metrics_v1',
+             stability_algorithm='pct_contact_network_v2' if config['stability_monitor']['enabled'] else 'DISABLED',
+             monitor_statistics=statistics(config,events,row))
+-        validate_schema('monitored_order_metrics_v1',row)
++        if config['version'] == 'jev_packaging_remote_v6':
++            from .packaging_remote import event_cost
++            row.update(version='jev_packaging_remote_metrics_v1', origin='jev' if method=='jev_no_memory' else 'LOCAL_TEST_DOUBLE_NOT_JEV')
++            row['cost'].update(event_cost(events))
++            validate_schema('remote_order_metrics_v1',row)
++        else:
++            validate_schema('monitored_order_metrics_v1',row)
+     else:
+         validate_schema('packaging_order_metrics_v1',row)
+     return row
+--- before/jev_select/selector.py
++++ accepted/jev_select/selector.py
+@@ -31,6 +31,10 @@
+                  "usage": metadata.get("usage"), "latency_s": saved["latency_s"] if saved else None,
+                  "local_binding_digest": digest(value["local_binding"]),
+                  "raw_response_digest": saved["raw_sha256"] if saved else None, "error": error}
++    if value['version'] == 'jev_decision_context_v6':
++        selection.update(network_attempted=saved['network_attempted'] if saved else False,
++                         error_stage=('response_validation' if status=='invalid_response' else (saved or {}).get('error_stage')) if error else None,
++                         error_code=error)
+     if value['version'] == 'jev_decision_context_v3' and error is not None:
+         selection['error_stage'] = 'response_validation' if status == 'invalid_response' else (saved or {}).get('error_stage', 'selection')
+         selection['error_code'] = error
+--- before/jev_select/stability/monitor.py
++++ accepted/jev_select/stability/monitor.py
+@@ -17,7 +17,7 @@
+ 
+ 
+ def is_monitored(config):
+-    return config.get('version') == VERSION
++    return config.get('version') in (VERSION, 'jev_packaging_remote_v6')
+ 
+ 
+ def freeze(enabled=False):
+@@ -60,6 +60,10 @@
+ 
+ def preflight(config):
+     validate_schema('config', config)
++    if config['version'] == 'jev_packaging_remote_v6':
++        from ..packaging_remote import preflight_remote
++        preflight_remote(config)
++        return
+     from ..packaging_runtime import load_runtime_config
+     ids=config['runtime_identity']
+     original=load_runtime_config(data_identity=ids['data_identity'],task_digest=ids['task_identity'],method=config['selector'])
+@@ -171,6 +175,9 @@
+     from ..selector import SelectionResult
+     from ..execution import commit_physical
+     from ..packaging_runtime import validate_runtime_context,evaluate_state
++    if config['version'] == 'jev_packaging_remote_v6':
++        from ..packaging_experiment import validate_saved_checkpoint
++        return validate_saved_checkpoint(cp, task, config, job_id)
+     validate_schema('checkpoint_v5',cp)
+     if (cp['record_digest']!=digest({k:v for k,v in cp.items() if k!='record_digest'}) or
+         cp['job_id']!=job_id or cp['method']!=method or cp['task_digest']!=digest(task) or

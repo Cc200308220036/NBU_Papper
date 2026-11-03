@@ -17,7 +17,7 @@ TERMINATIONS = {'UNSTABLE':'PREDICTED_STATIC_INSTABILITY',
 
 
 def is_monitored(config):
-    return config.get('version') == VERSION
+    return config.get('version') in (VERSION, 'jev_packaging_remote_v6')
 
 
 def freeze(enabled=False):
@@ -60,6 +60,10 @@ def load_monitor_config(*, data_identity, task_digest, method='local_geometry_te
 
 def preflight(config):
     validate_schema('config', config)
+    if config['version'] == 'jev_packaging_remote_v6':
+        from ..packaging_remote import preflight_remote
+        preflight_remote(config)
+        return
     from ..packaging_runtime import load_runtime_config
     ids=config['runtime_identity']
     original=load_runtime_config(data_identity=ids['data_identity'],task_digest=ids['task_identity'],method=config['selector'])
@@ -171,6 +175,9 @@ def validate_checkpoint(cp, task, config, job_id, method):
     from ..selector import SelectionResult
     from ..execution import commit_physical
     from ..packaging_runtime import validate_runtime_context,evaluate_state
+    if config['version'] == 'jev_packaging_remote_v6':
+        from ..packaging_experiment import validate_saved_checkpoint
+        return validate_saved_checkpoint(cp, task, config, job_id)
     validate_schema('checkpoint_v5',cp)
     if (cp['record_digest']!=digest({k:v for k,v in cp.items() if k!='record_digest'}) or
         cp['job_id']!=job_id or cp['method']!=method or cp['task_digest']!=digest(task) or

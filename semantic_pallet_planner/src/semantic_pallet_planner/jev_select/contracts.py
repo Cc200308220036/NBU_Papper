@@ -30,7 +30,7 @@ def digest(value: object) -> str:
 
 @lru_cache(maxsize=64)
 def schema_validator(name: str) -> Draft202012Validator:
-    if name not in {"packaging_full_order_plan_v1", "monitored_order_metrics_v1", "config_v5", "candidate_bundle_v5", "decision_context_v5", "selection_result_v5", "checkpoint_v5", "config_v4", "candidate_bundle_v4", "decision_context_v4", "selection_result_v4", "checkpoint_v4", "packaging_order_metrics_v1", "packaging_load_config_v1", "packaging_load_task_v1", "business_spec_v2", "config", "candidate_bundle", "decision_context", "selection_result", "transport_result", "config_v2", "candidate_bundle_v2", "decision_context_v2", "selection_result_v2", "business_state", "plan_v2", "checkpoint_v2", "order_metrics_v2", "metrics_v2",
+    if name not in {"config_v6", "candidate_bundle_v6", "decision_context_v6", "selection_result_v6", "checkpoint_v6", "remote_order_metrics_v1", "packaging_full_order_plan_v1", "monitored_order_metrics_v1", "config_v5", "candidate_bundle_v5", "decision_context_v5", "selection_result_v5", "checkpoint_v5", "config_v4", "candidate_bundle_v4", "decision_context_v4", "selection_result_v4", "checkpoint_v4", "packaging_order_metrics_v1", "packaging_load_config_v1", "packaging_load_task_v1", "business_spec_v2", "config", "candidate_bundle", "decision_context", "selection_result", "transport_result", "config_v2", "candidate_bundle_v2", "decision_context_v2", "selection_result_v2", "business_state", "plan_v2", "checkpoint_v2", "order_metrics_v2", "metrics_v2",
                     "config_v3", "candidate_bundle_v3", "decision_context_v3", "selection_result_v3", "plan_v3", "checkpoint_v3", "order_metrics_v3", "metrics_v3", "memory_card", "memory_snapshot", "memory_episode_export", "memory_query", "memory_index", "memory_retrieval", "memory_generation_result", "memory_review", "memory_generator_config", "memory_review_authorization"}:
         raise JevSelectError("unknown_schema", name)
     resource = files("semantic_pallet_planner.jev_select").joinpath("schemas", f"{name}.schema.json")
@@ -42,7 +42,7 @@ def schema_validator(name: str) -> Draft202012Validator:
 def validate_schema(name: str, value: dict) -> None:
     canonical(value)
     if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
-        for suffix in ("_v2", "_v3", "_v4", "_v5"):
+        for suffix in ("_v2", "_v3", "_v4", "_v5", "_v6"):
             if str(value.get("version", "")).endswith(suffix):
                 name += suffix
                 break

@@ -46,9 +46,12 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
 def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
                 hook=None, event_limit=None, expected_events=None, memory_snapshot=None):
     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
-    if config.get('version') == 'jev_packaging_monitored_v5':
+    if config.get('version') in ('jev_packaging_monitored_v5','jev_packaging_remote_v6'):
         config = copy.deepcopy(config)
     if is_packaging(config):
+        if config.get('version') == 'jev_packaging_remote_v6':
+            from .packaging_remote import REGISTRY
+            METHODS = tuple(REGISTRY)
         if (memory_snapshot is not None or task.get('version') != DATA_VERSION or
             task.get('reference_policy') != {'version':DATA_VERSION,'rules':[]} or
             task.get('regions') != [] or method != config['selector'] or method not in METHODS or

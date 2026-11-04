@@ -154,11 +154,33 @@ def main(argv=None) -> int:
     fr.add_argument('--continue-pending', action='store_true', help='explicitly continue a validated paused run; requires --resume')
     fs = commands.add_parser('summarize-packaging-orders', help='verify saved records and return frozen metrics')
     fs.add_argument('--run', required=True)
+    bp = commands.add_parser('plan-packaging-remote-orders', help='JN1-B frozen v6 three-method complete-order plan')
+    bp.add_argument('--dataset',required=True);bp.add_argument('--output',required=True);bp.add_argument('--spec')
+    br = commands.add_parser('run-packaging-remote-orders', help='JN1-B pilot three jobs, explicit continuation only')
+    br.add_argument('--plan',required=True);br.add_argument('--output',required=True);br.add_argument('--resume',action='store_true')
+    br.add_argument('--continue-pending',action='store_true');br.add_argument('--api-key-file')
+    bv = commands.add_parser('validate-packaging-remote-orders', help='read-only JN1-B record validation and summary')
+    bv.add_argument('--run',required=True)
     args = parser.parse_args(argv)
     from .config import load_config,load_v2_config,is_v2
     from .experiment import export_j0, validate_j0, prepare_plan, validate_plan, run_experiment, preflight, METHODS
     try:
-        if args.command == 'plan-packaging-orders':
+        if args.command == 'plan-packaging-remote-orders':
+            from .packaging_orders import prepare
+            from .contracts import digest
+            from .ledger import read
+            plan=prepare(args.dataset, {} if args.spec is None else read(args.spec), args.output)
+            result={'status':'PASS','plan_digest':digest(plan),'jobs':len(plan['jobs'])}
+        elif args.command == 'run-packaging-remote-orders':
+            from .packaging_orders import run
+            result=run(args.plan,args.output,resume=args.resume,continue_pending=args.continue_pending,api_key_file=args.api_key_file)
+            if result.get('status')=='PASS_IN_EXECUTED_SCOPE':result=dict(result,status='PASS')
+            if result.get('status')=='ERROR':
+                print(json.dumps(result,ensure_ascii=False));return 1
+        elif args.command == 'validate-packaging-remote-orders':
+            from .packaging_orders import validate_run
+            result=validate_run(args.run)
+        elif args.command == 'plan-packaging-orders':
             from .packaging_experiment import prepare_packaging_plan
             from .ledger import read
             result = dict(prepare_packaging_plan(args.dataset, {} if args.spec is None else read(args.spec), args.output), status='PASS')

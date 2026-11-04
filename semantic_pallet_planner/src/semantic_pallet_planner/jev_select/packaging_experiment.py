@@ -155,7 +155,7 @@ class _BoundaryStop(Exception):
     pass
 
 
-def _run_job(task, entry, job, watchdog):
+def _run_job(task, entry, job, watchdog, *, selector=None, metrics_builder=None, hook=None):
     from .episode import run_episode
     cfg=entry['config'];jid=entry['job_id'];status=read(job/'status.json')
     cp=read(job/'checkpoint.json') if (job/'checkpoint.json').exists() else None
@@ -173,8 +173,8 @@ def _run_job(task, entry, job, watchdog):
             raise _BoundaryStop()
     try:
         status.update(state='RUNNING',category='NOT_RUN');write(job/'status.json',status)
-        ep=run_episode(task,selector_factory(entry['method_id']),cfg,job_id=jid,method=entry['method_id'],
-            resume=cp,on_checkpoint=checkpoint)
+        ep=run_episode(task,selector_factory(entry['method_id']) if selector is None else selector,cfg,job_id=jid,method=entry['method_id'],
+            resume=cp,on_checkpoint=checkpoint,hook=hook)
         cp=ep['checkpoint']
         status.update(state='FINISHED', category=termination_category(cp['reason'],cp['events']))
         write(job/'episode.json',ep)
@@ -194,7 +194,7 @@ def _run_job(task, entry, job, watchdog):
             for e in cp['events']:
                 if e.get('decision_id'):
                     write(job/'actions'/f"{e['decision_id']}.json",e)
-            write(job/'metrics.json',job_metrics(task,cfg,cp,status))
+            write(job/'metrics.json',(metrics_builder or job_metrics)(task,cfg,cp,status))
         except Exception as exc:
             failure=technical_failure('JOB_FINALIZATION',exc,checkpoint=cp,prior_status=status)
             write(job/'technical_failure.json',failure)

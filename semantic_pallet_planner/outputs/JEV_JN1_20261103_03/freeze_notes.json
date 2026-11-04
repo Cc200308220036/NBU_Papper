@@ -1,0 +1,18 @@
+{
+  "version": "jev_jn1_b_freeze_notes_v1",
+  "selection_rule": "First two different-source tasks in admitted JN0 frozen plan; no outcome selection",
+  "tasks": ["NEW_00100153_source_difficult", "NEW_00100150_source_difficult"],
+  "planned_items": [15, 18],
+  "method_order": ["jev_no_memory", "local_geometry_test_double", "local_first_test_double"],
+  "request_limits": {"per_remote_job": [15, 18], "batch": 33, "local": 0},
+  "historical_A_calls": 1,
+  "historical_A_calls_not_counted_as_B_job": true,
+  "watchdog": {"max_events": 10000, "max_active_wall_s": 1800},
+  "watchdog_reason": "Unchanged 30-second transport timeout permits at most 18*30=540 seconds waiting in a remote job; 1800 seconds adds margin for checkpoint IO and solver work. Same thresholds for all methods, only checked at durable boundaries; no hard real-time claim.",
+  "retry_policy": "No automatic/manual retry, no extra probes, unknown send stops batch",
+  "pilot": "First task all three jobs; standard validation and explicit continuation before task two",
+  "stop_policy": "On interface/unknown/commit/metric/recovery/watchdog/cancel error preserve all remaining NOT_RUN; no source edits or new plan rerun during frozen batch",
+  "execution_version": "jev_packaging_remote_v6",
+  "plan_version": "jev_packaging_full_order_plan_v2",
+  "run_version": "jev_packaging_full_order_run_v2"
+}

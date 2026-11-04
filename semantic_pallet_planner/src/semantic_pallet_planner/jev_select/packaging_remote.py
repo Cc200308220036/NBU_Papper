@@ -113,6 +113,15 @@ class RequestLedger:
                 'binding_digest':digest(b),'state_digest':digest(v['model_state']),
                 'mapping_digest':digest(v['display_mapping'])}
 
+    def admit_request(self, job_id, decision_id):
+        """Extension gate called under the request lock before a new intent."""
+
+    def record_reuse(self, row):
+        """Optional append-only reuse receipt; original request remains immutable."""
+
+    def admit_send(self, row):
+        """Extension gate also covers recovery of a persisted unsent intent."""
+
     def request(self, context, job_id, decision_id, transport):
         identity=self.identity(context,job_id,decision_id)
         with exclusive(self.root):
@@ -125,8 +134,11 @@ class RequestLedger:
                     row['transport']=outcome('UNKNOWN_IN_FLIGHT',error='UNKNOWN_SEND',network_attempted=None)
                     row['transport_digest']=digest(row['transport'])
                     self._transition(row,'UNKNOWN_SEND')
-                if row['state']!='INTENT':return copy.deepcopy(row)
+                if row['state']!='INTENT':
+                    self.record_reuse(row)
+                    return copy.deepcopy(row)
             else:
+                self.admit_request(job_id, decision_id)
                 if transport is None:raise JevSelectError('missing_transport')
                 if transport.origin not in ('jev','test_double'):raise JevSelectError('invalid_remote_origin')
                 if sum(r['send_started'] for r in self.data['requests'])>=self.max_sends:raise JevSelectError('request_budget_exhausted')
@@ -138,6 +150,7 @@ class RequestLedger:
             if transport is None:raise JevSelectError('missing_transport')
             if transport.origin!=row['origin']:raise JevSelectError('transport_origin_changed')
             if sum(r['send_started'] for r in self.data['requests'])>=self.max_sends:raise JevSelectError('request_budget_exhausted')
+            self.admit_send(row)
             row['send_started']=True;self._transition(row,'SENDING')
             try:
                 saved=transport.complete(context.data['request_body'])

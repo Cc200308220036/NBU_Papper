@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_training_fork_v1"
+    },
+    "parent_identity": {
+      "type": "object"
+    },
+    "fork_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_group": {
+      "type": "string"
+    },
+    "decision_id": {
+      "type": "string"
+    },
+    "task_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "config": {
+      "type": "object"
+    },
+    "selection": {
+      "type": "object"
+    },
+    "scanned": {
+      "type": "array"
+    },
+    "continuation": {
+      "type": "object"
+    },
+    "source_manifest": {
+      "type": "object"
+    },
+    "physical_manifest": {
+      "type": "object"
+    },
+    "metrics_contract": {
+      "type": "object"
+    },
+    "watchdog": {
+      "type": "object"
+    },
+    "watchdog_boundary": {
+      "type": "string"
+    },
+    "budget": {
+      "type": "object"
+    },
+    "branch_order": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^B0[0-2]$"
+      }
+    },
+    "rules": {
+      "type": "object"
+    },
+    "stop_rule": {
+      "type": "string"
+    },
+    "record_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "parent_identity",
+    "fork_digest",
+    "source_group",
+    "decision_id",
+    "task_digest",
+    "config",
+    "selection",
+    "scanned",
+    "continuation",
+    "source_manifest",
+    "physical_manifest",
+    "metrics_contract",
+    "watchdog",
+    "watchdog_boundary",
+    "budget",
+    "branch_order",
+    "rules",
+    "stop_rule",
+    "record_digest"
+  ],
+  "additionalProperties": false
+}

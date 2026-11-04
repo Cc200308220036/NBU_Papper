@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_training_fork_v1"
+    },
+    "job_id": {
+      "type": "string"
+    },
+    "snapshot": {
+      "type": "object"
+    },
+    "first": {
+      "type": "object"
+    },
+    "config_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "record_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "job_id",
+    "snapshot",
+    "first",
+    "config_digest",
+    "plan_digest",
+    "record_digest"
+  ],
+  "additionalProperties": false
+}

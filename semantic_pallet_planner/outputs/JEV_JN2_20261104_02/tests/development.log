@@ -1,0 +1,25 @@
+........F.......................                                         [100%]
+=================================== FAILURES ===================================
+_______________ test_frozen_label_boundaries[change8-trade_off] ________________
+
+change = {'complete': True, 'volume': 0.4}, label = 'trade_off'
+
+    @pytest.mark.parametrize('change,label',[
+     ({},'neutral'),({'volume':.6},'improved'),({'volume':.4},'degraded'),
+     ({'volume':.6,'height':210},'trade_off'),({'volume':.4,'height':190},'trade_off'),
+     ({'envelope':.7,'height':190},'improved'),({'envelope':.5,'height':210},'degraded'),
+     ({'volume':.5+1e-10},'neutral'),({'complete':True,'volume':.4},'trade_off'),
+     ({'height':190,'envelope':.5},'trade_off')])
+    def test_frozen_label_boundaries(change,label):
+        valid,actual,reasons,delta=c.classify(receipt(),receipt(metric(**change)))
+>       assert valid and not reasons and actual==label
+E       AssertionError: assert (True and not [] and 'improved' == 'trade_off'
+E         
+E         - trade_off
+E         + improved)
+
+semantic_pallet_planner/tests/unit/test_packaging_comparisons.py:34: AssertionError
+- generated xml file: /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/VERIFY_JN2_B_OFFLINE_20261104_01/development.xml -
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/tests/unit/test_packaging_comparisons.py::test_frozen_label_boundaries[change8-trade_off]
+1 failed, 31 passed in 15.62s

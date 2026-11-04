@@ -16,7 +16,7 @@ from .evaluation import feedback, summarize
 from .selector import bind_decision, result
 
 
-def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, memory_snapshot=None, saved_retrieval=None):
+def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, memory_snapshot=None, saved_retrieval=None, memory_view=None):
     started = time.perf_counter()
     req = observation(state, task["instruction_text"], task["regions"])
     guard = PublicBusinessGuard()
@@ -29,7 +29,7 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
     after_cache = _cached_generation.cache_info()
     bundle = guard.filter(req, policy, bundle, config)
     try:
-        context = bind_decision(ContextBuilder(config).build(req, bundle, policy, memories=memory_snapshot, retrieval=saved_retrieval), job_id, decision_id)
+        context = bind_decision(ContextBuilder(config).build(req, bundle, policy, memories=memory_snapshot, retrieval=saved_retrieval, memory_view=memory_view), job_id, decision_id)
     except JevSelectError as exc:
         if hasattr(exc,'context'):
             exc.context=bind_decision(exc.context,job_id,decision_id)
@@ -44,14 +44,20 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
 
 
 def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
-                hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None):
+                hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None):
     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
-    if config.get('version') in ('jev_packaging_monitored_v5','jev_packaging_remote_v6'):
+    if config.get('version') in ('jev_packaging_monitored_v5','jev_packaging_remote_v6','jev_packaging_memory_v7'):
         config = copy.deepcopy(config)
     if is_packaging(config):
         if config.get('version') == 'jev_packaging_remote_v6':
             from .packaging_remote import REGISTRY
             METHODS = tuple(REGISTRY)
+        if config.get('version')=='jev_packaging_memory_v7':
+            from .packaging_experience import METHOD,validate_view
+            METHODS=(METHOD,)
+            if memory_view is not None:validate_view(memory_view,config['memory_snapshot_digest'])
+        elif memory_view is not None:
+            raise JevSelectError('packaging_memory_protocol_incompatible')
         if (memory_snapshot is not None or task.get('version') != DATA_VERSION or
             task.get('reference_policy') != {'version':DATA_VERSION,'rules':[]} or
             task.get('regions') != [] or method != config['selector'] or method not in METHODS or
@@ -60,7 +66,7 @@ def run_episode(task, selector, config, *, job_id, method, resume=None, on_check
     if business_evaluation_mode(config):
         return _run_episode_v2(task, selector, config, job_id=job_id, method=method, resume=resume,
                                on_checkpoint=on_checkpoint, hook=hook, event_limit=event_limit,
-                               expected_events=expected_events, memory_snapshot=memory_snapshot, training_fork=training_fork)
+                               expected_events=expected_events, memory_snapshot=memory_snapshot, training_fork=training_fork, memory_view=memory_view)
     if training_fork is not None:
         raise JevSelectError('training_fork_requires_monitored_packaging')
     if resume is not None:
@@ -169,7 +175,7 @@ def semantic_record(value):
 
 
 def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
-                    on_checkpoint=None, hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None):
+                    on_checkpoint=None, hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None):
     from .evaluation import evaluate_committed_state, summarize_v2
     from .execution import commit_physical
     from .selector import SelectionResult
@@ -368,7 +374,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                 context = DecisionContext.from_dict(pending['context'])
             else:
                 req,policy,bundle,context = decision_inputs(state,task,config,job_id,did,timings=times,memory_snapshot=memory_snapshot,
-                    saved_retrieval=saved_context.get('retrieval') if saved_context else None)
+                    saved_retrieval=saved_context.get('retrieval') if saved_context else None,memory_view=memory_view)
             route = decision_route(bundle)
             event.update(route=route,observation=req,bundle=bundle.data,context=context.data)
             if is_v3(config):

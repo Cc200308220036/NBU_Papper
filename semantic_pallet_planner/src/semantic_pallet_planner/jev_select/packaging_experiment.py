@@ -351,7 +351,8 @@ def validate_saved_checkpoint(cp, task, cfg, jid, *, fork_origin=None):
     from .stability.monitor import validate_monitor
     from semantic_pallet_planner.o4.extensions.e2.protocol import observation
     from semantic_pallet_planner.o4.buffer.buffer_state import initial,receive
-    validate_schema('checkpoint_v6' if cfg['version']=='jev_packaging_remote_v6' else 'checkpoint_v5',cp)
+    from .config import protocol_suffix
+    validate_schema('checkpoint_'+protocol_suffix(cfg),cp)
     require(cp['record_digest']==digest({k:v for k,v in cp.items() if k!='record_digest'}), 'full_order_checkpoint_digest_changed')
     require(cp['job_id']==jid and cp['method']==cfg['selector'] and cp['config_digest']==digest(cfg)
         and cp['task_digest']==digest(task) and cp['runtime_identity']==cfg['runtime_identity'],'full_order_checkpoint_binding_changed')

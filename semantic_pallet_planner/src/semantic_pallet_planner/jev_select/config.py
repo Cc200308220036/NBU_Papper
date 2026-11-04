@@ -42,7 +42,7 @@ def business_evaluation_mode(config: dict) -> bool:
 def protocol_suffix(config: dict) -> str:
     validate_schema("config", config)
     from .packaging_runtime import is_packaging
-    return "v6" if config.get("version") == "jev_packaging_remote_v6" else "v5" if config.get("version") == "jev_packaging_monitored_v5" else "v4" if is_packaging(config) else "v3" if is_v3(config) else "v2" if is_v2(config) else "v1"
+    return "v7" if config.get("version") == "jev_packaging_memory_v7" else "v6" if config.get("version") == "jev_packaging_remote_v6" else "v5" if config.get("version") == "jev_packaging_monitored_v5" else "v4" if is_packaging(config) else "v3" if is_v3(config) else "v2" if is_v2(config) else "v1"
 
 
 def load_v3_config() -> dict:

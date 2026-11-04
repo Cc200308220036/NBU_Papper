@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "current": {
+    "guard": "offline+credential+historical-readonly+execution-dispatch",
+    "status": "PASS",
+    "counts": {
+      "network": 0,
+      "credential": 0,
+      "historical_write": 0,
+      "execution_dispatch": 0
+    }
+  },
+  "archived": {
+    "guard": "offline+credential+historical-readonly+execution-dispatch",
+    "status": "PASS",
+    "counts": {
+      "network": 0,
+      "credential": 0,
+      "historical_write": 0,
+      "execution_dispatch": 0
+    }
+  },
+  "result": {
+    "dispatch": "saved facts only; no network, selection, generation, commit or PCT",
+    "event": "PLACE",
+    "monitor_status": "STABLE",
+    "real_T_entries": 2,
+    "request_body_nonempty": true,
+    "status": "PASS"
+  },
+  "archive_result": {
+    "dispatch": "saved facts only; no network, selection, generation, commit or PCT",
+    "event": "PLACE",
+    "monitor_status": "STABLE",
+    "real_T_entries": 2,
+    "request_body_nonempty": true,
+    "status": "PASS"
+  },
+  "initial_wrapper_failure": {
+    "status": "ERROR_PRESERVED",
+    "logs": [
+      "initial_saved_validation.log",
+      "initial_archived_validation.log"
+    ],
+    "reason": "validated facts PASS, then guard refused mkdir for receipt under protected delivery root; no parent writes or extra execution",
+    "resolution": "same read-only validators, receipt directed to separate VERIFY directory; no production source or frozen identity changed"
+  },
+  "post_real_model_calls": 0,
+  "full_historical_replay": "NOT_RUN"
+}

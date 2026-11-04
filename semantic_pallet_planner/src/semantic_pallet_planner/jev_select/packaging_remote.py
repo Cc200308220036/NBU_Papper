@@ -60,6 +60,9 @@ class RequestLedger:
     removed or retried, including explicit failures. Disk is reloaded under an
     exclusive writer lock, so stale instances cannot spend the same slot twice.
     """
+    ledger_version = VERSIONS['request_ledger']
+    context_version = VERSIONS['context']
+
     def __init__(self, root, *, max_sends=1, hook=None):
         self.root = Path(root)
         self.root.mkdir(parents=True, exist_ok=True)
@@ -67,7 +70,7 @@ class RequestLedger:
         self.max_sends, self.hook = max_sends, hook
         with exclusive(self.root):
             if not self.path.exists():
-                self._save({'version': VERSIONS['request_ledger'], 'max_sends': max_sends, 'requests': []})
+                self._save({'version': self.ledger_version, 'max_sends': max_sends, 'requests': []})
             self._load()
 
     def _save(self, data):
@@ -76,7 +79,7 @@ class RequestLedger:
 
     def _load(self):
         d = read(self.path)
-        if (d['version'] != VERSIONS['request_ledger'] or d['max_sends'] != self.max_sends or
+        if (d['version'] != self.ledger_version or d['max_sends'] != self.max_sends or
             d['record_digest'] != digest({k:v for k,v in d.items() if k!='record_digest'})):
             raise JevSelectError('request_ledger_changed')
         keys=set()
@@ -102,12 +105,12 @@ class RequestLedger:
         self._save(self.data)
         if self.hook:self.hook(state, copy.deepcopy(row))
 
-    @staticmethod
-    def identity(context, job_id, decision_id):
+    @classmethod
+    def identity(cls, context, job_id, decision_id):
         from .context import validate_context
         validate_context(context)
         v=context.data;b=v['local_binding']
-        if v['version']!=VERSIONS['context'] or b.get('job_id')!=job_id or b.get('decision_id')!=decision_id or v['route']!='CHOICE_REQUIRED':
+        if v['version']!=cls.context_version or b.get('job_id')!=job_id or b.get('decision_id')!=decision_id or v['route']!='CHOICE_REQUIRED':
             raise JevSelectError('request_identity_mismatch')
         return {'context_digest':digest(v),'body_digest':digest(v['request_body']),
                 'binding_digest':digest(b),'state_digest':digest(v['model_state']),

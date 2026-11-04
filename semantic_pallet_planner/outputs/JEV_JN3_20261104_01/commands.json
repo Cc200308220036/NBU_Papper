@@ -1,0 +1,30 @@
+[
+  {
+    "purpose": "final core tests before real request",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python -m pytest -q semantic_pallet_planner/tests/unit/test_packaging_experience.py semantic_pallet_planner/tests/unit/test_packaging_remote.py semantic_pallet_planner/tests/unit/test_packaging_full_order.py semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_packaging_runtime.py --disable-warnings --maxfail=1 --junitxml=semantic_pallet_planner/outputs/JEV_JN3_20261104_01/tests/final.xml",
+    "result": "99 passed"
+  },
+  {
+    "purpose": "shared monitor tests before real request",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python -m pytest -q semantic_pallet_planner/tests/unit/test_stability_monitor.py --disable-warnings --maxfail=1 --junitxml=semantic_pallet_planner/outputs/JEV_JN3_20261104_01/tests/monitor.xml",
+    "result": "28 passed"
+  },
+  {
+    "purpose": "freeze fixed query and real snapshot",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python -m semantic_pallet_planner.jev_select.packaging_trajectory_validation prepare --output semantic_pallet_planner/outputs/JEV_JN3_20261104_01",
+    "result": "ready_to_send=true"
+  },
+  {
+    "purpose": "unique authorized real request",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python -m semantic_pallet_planner.jev_select.packaging_trajectory_validation run --output semantic_pallet_planner/outputs/JEV_JN3_20261104_01 --api-key-file typesafe_api_key.md",
+    "result": "1 Jev call; STABLE; PLACE"
+  },
+  {
+    "purpose": "current saved record validation",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python semantic_pallet_planner/outputs/JEV_JN3_20261104_01/readonly_guard.py semantic_pallet_planner/outputs/VERIFY_JN3_T_20261104_01/current_guard.json semantic_pallet_planner.jev_select.packaging_trajectory_validation validate --output semantic_pallet_planner/outputs/JEV_JN3_20261104_01"
+  },
+  {
+    "purpose": "archived saved record validation",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python semantic_pallet_planner/outputs/JEV_JN3_20261104_01/readonly_guard.py semantic_pallet_planner/outputs/VERIFY_JN3_T_20261104_01/archived_guard.json script semantic_pallet_planner/outputs/JEV_JN3_20261104_01/verify_frozen.py --output semantic_pallet_planner/outputs/JEV_JN3_20261104_01 --repo ."
+  }
+]

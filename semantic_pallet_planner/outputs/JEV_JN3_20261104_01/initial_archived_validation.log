@@ -1,0 +1,15 @@
+{"dispatch":"saved facts only; no network, selection, generation, commit or PCT","event":"PLACE","monitor_status":"STABLE","real_T_entries":2,"request_body_nonempty":true,"status":"PASS"}
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JN3_20261104_01/readonly_guard.py", line 68, in <module>
+    if __name__ == '__main__': main()
+                               ~~~~^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JN3_20261104_01/readonly_guard.py", line 63, in main
+    receipt.parent.mkdir(parents=True, exist_ok=True)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/anaconda3/lib/python3.13/pathlib/_local.py", line 722, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JN3_20261104_01/readonly_guard.py", line 33, in audit
+    counts['historical_write'] += 1; raise RuntimeError('READONLY_PARENT_MUTATION_FORBIDDEN')
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: READONLY_PARENT_MUTATION_FORBIDDEN

@@ -1,0 +1,48 @@
+{
+  "access_date": "2026-11-04",
+  "auth_persistence": "credential reference only; no header persisted",
+  "cost_policy": "usage saved; billed monetary amount UNKNOWN; no inferred bill from public rate",
+  "endpoint": "https://api.typesafe.ai/v1/systemone",
+  "model": "jev-1.14.0",
+  "physical_confidence": "NOT_CLAIMED",
+  "provider_explicit_rank": "not documented; probabilities only",
+  "provider_tie_rule": "UNKNOWN",
+  "request_example": "request.json",
+  "response_expected": {
+    "answers": {
+      "next_action": {
+        "choice": "Cxx",
+        "confidence": "native number in [0,1]",
+        "probabilities": "map for every current Cxx; original values retained",
+        "type": "choice"
+      }
+    },
+    "model": "jev-1.14.0",
+    "usage": {
+      "input_tokens": "integer",
+      "output_tokens": "integer"
+    }
+  },
+  "retry_policy": "zero automatic or manual retry; failed/unknown closes scope",
+  "sources": [
+    {
+      "url": "https://docs.typesafe.ai/api/system-one",
+      "verified": "POST /v1/systemone; Bearer authentication; model/state/questions; resolved model and usage in response"
+    },
+    {
+      "url": "https://docs.typesafe.ai/primitives/choice",
+      "verified": "Choice accepts structured criteria. Response contains type, choice, probabilities for all options, confidence; chosen option has maximal probability."
+    },
+    {
+      "url": "https://docs.typesafe.ai/models",
+      "verified": "jev-1.14.0 is a documented pinned model; aliases can move; input token billing and free output tokens"
+    },
+    {
+      "url": "https://docs.typesafe.ai/api/errors",
+      "verified": "400/401/413/415/422 validation/auth errors; 429 rate limit; 529 overloaded. SDK retries by default; this experiment forbids all retry."
+    }
+  ],
+  "validation": "strict JSON, reject duplicates/nonfinite, exact current label keys, pinned served model, unit sum or inherited 2dp rounding intervals, selected maximum; byte bound 1000000; no fallback",
+  "version": "jev_official_choice_review_jn3_v1",
+  "current_document_check": "all four official pages re-opened; pinned model remains documented; no API discovery/test request"
+}

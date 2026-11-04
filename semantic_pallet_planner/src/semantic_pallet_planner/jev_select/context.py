@@ -91,12 +91,14 @@ class ContextBuilder:
 
     def build(self, observation: dict, bundle: CandidateBundle,
               public_policy: PublicPolicyContext,
-              memories: MemorySnapshot | None = None, retrieval: dict | None = None) -> DecisionContext:
+              memories: MemorySnapshot | None = None, retrieval: dict | None = None, *, memory_view=None) -> DecisionContext:
         from .packaging_runtime import is_packaging, build_context
         if is_packaging(self.config):
             if memories is not None or retrieval is not None:
                 raise JevSelectError('packaging_memory_protocol_incompatible')
-            return build_context(self.config, observation, bundle, public_policy)
+            return build_context(self.config, observation, bundle, public_policy, memory_view=memory_view)
+        if memory_view is not None:
+            raise JevSelectError('packaging_memory_protocol_incompatible')
         validate_observation(observation)
         value = validate_bundle(observation, bundle)
         guard = PublicBusinessGuard()
@@ -241,7 +243,7 @@ class ContextBuilder:
 def validate_context(context: DecisionContext, observation: dict | None = None,
                      bundle: CandidateBundle | None = None, config: dict | None = None) -> dict:
     from .packaging_runtime import is_packaging, validate_runtime_context
-    if context.data.get('version') in ('jev_decision_context_v4','jev_decision_context_v5','jev_decision_context_v6') or (config is not None and is_packaging(config)):
+    if context.data.get('version') in ('jev_decision_context_v4','jev_decision_context_v5','jev_decision_context_v6','jev_decision_context_v7') or (config is not None and is_packaging(config)):
         return validate_runtime_context(context, observation, bundle, config)
     value = context.data
     validate_schema("decision_context", value)

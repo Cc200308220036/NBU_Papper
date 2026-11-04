@@ -1,0 +1,88 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "packaging_memory_snapshot_v1"
+    },
+    "mode": {
+      "enum": [
+        "T",
+        "E"
+      ]
+    },
+    "case_schema": {
+      "type": "string"
+    },
+    "build_version": {
+      "type": "string"
+    },
+    "build_method": {
+      "type": "string"
+    },
+    "generation_model": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "generation_cost_usd": {
+      "type": "number"
+    },
+    "review_status": {
+      "enum": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED"
+      ]
+    },
+    "source_groups": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "parent": {
+      "type": "object"
+    },
+    "retrieval_rule": {
+      "type": "object"
+    },
+    "frozen_at": {
+      "type": "string"
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "snapshot_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "mode",
+    "case_schema",
+    "build_version",
+    "build_method",
+    "generation_model",
+    "generation_cost_usd",
+    "review_status",
+    "source_groups",
+    "parent",
+    "retrieval_rule",
+    "frozen_at",
+    "cases",
+    "limitations",
+    "snapshot_digest"
+  ],
+  "additionalProperties": false
+}

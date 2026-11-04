@@ -1,0 +1,4786 @@
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py
+index 92fcc241..2f26e16d 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py
+@@ -61,7 +61,7 @@ def validate_bundle(req: dict, bundle: CandidateBundle) -> dict:
+     selected = value["selectable_candidates"]
+     if len({c["candidate_id"] for c in selected}) != len(selected) or any(original.get(c["candidate_id"]) != c for c in selected):
+         raise JevSelectError("invalid_candidate_subset")
+-    if value["version"] in ("jev_candidate_bundle_v2", "jev_candidate_bundle_v3", "jev_candidate_bundle_v4", "jev_candidate_bundle_v5", "jev_candidate_bundle_v6") and value["selectable_pool"] != "unfiltered":
++    if value["version"] in ("jev_candidate_bundle_v2", "jev_candidate_bundle_v3", "jev_candidate_bundle_v4", "jev_candidate_bundle_v5", "jev_candidate_bundle_v6", "jev_candidate_bundle_v7") and value["selectable_pool"] != "unfiltered":
+         if value["selectable_candidates"] != candidates or value["selectable_digest"] != value["physical_digest"]:
+             raise JevSelectError("business_filtered_physical_pool")
+     return value
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py
+index 97559fc8..2aae2e2a 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py
+@@ -42,7 +42,7 @@ def business_evaluation_mode(config: dict) -> bool:
+ def protocol_suffix(config: dict) -> str:
+     validate_schema("config", config)
+     from .packaging_runtime import is_packaging
+-    return "v6" if config.get("version") == "jev_packaging_remote_v6" else "v5" if config.get("version") == "jev_packaging_monitored_v5" else "v4" if is_packaging(config) else "v3" if is_v3(config) else "v2" if is_v2(config) else "v1"
++    return "v7" if config.get("version") == "jev_packaging_memory_v7" else "v6" if config.get("version") == "jev_packaging_remote_v6" else "v5" if config.get("version") == "jev_packaging_monitored_v5" else "v4" if is_packaging(config) else "v3" if is_v3(config) else "v2" if is_v2(config) else "v1"
+ 
+ 
+ def load_v3_config() -> dict:
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py
+index 9f3c62ec..9b131549 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py
+@@ -91,12 +91,14 @@ class ContextBuilder:
+ 
+     def build(self, observation: dict, bundle: CandidateBundle,
+               public_policy: PublicPolicyContext,
+-              memories: MemorySnapshot | None = None, retrieval: dict | None = None) -> DecisionContext:
++              memories: MemorySnapshot | None = None, retrieval: dict | None = None, *, memory_view=None) -> DecisionContext:
+         from .packaging_runtime import is_packaging, build_context
+         if is_packaging(self.config):
+             if memories is not None or retrieval is not None:
+                 raise JevSelectError('packaging_memory_protocol_incompatible')
+-            return build_context(self.config, observation, bundle, public_policy)
++            return build_context(self.config, observation, bundle, public_policy, memory_view=memory_view)
++        if memory_view is not None:
++            raise JevSelectError('packaging_memory_protocol_incompatible')
+         validate_observation(observation)
+         value = validate_bundle(observation, bundle)
+         guard = PublicBusinessGuard()
+@@ -241,7 +243,7 @@ class ContextBuilder:
+ def validate_context(context: DecisionContext, observation: dict | None = None,
+                      bundle: CandidateBundle | None = None, config: dict | None = None) -> dict:
+     from .packaging_runtime import is_packaging, validate_runtime_context
+-    if context.data.get('version') in ('jev_decision_context_v4','jev_decision_context_v5','jev_decision_context_v6') or (config is not None and is_packaging(config)):
++    if context.data.get('version') in ('jev_decision_context_v4','jev_decision_context_v5','jev_decision_context_v6','jev_decision_context_v7') or (config is not None and is_packaging(config)):
+         return validate_runtime_context(context, observation, bundle, config)
+     value = context.data
+     validate_schema("decision_context", value)
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py
+index c3e7bd86..473cd5ea 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py
+@@ -30,7 +30,7 @@ def digest(value: object) -> str:
+ 
+ @lru_cache(maxsize=64)
+ def schema_validator(name: str) -> Draft202012Validator:
+-    if name not in {"packaging_reanalysis_plan_v2", "packaging_comparison_record_v2", "packaging_comparison_plan_v1", "packaging_comparison_record_v1", "packaging_fork_snapshot_v1", "packaging_fork_binding_v1", "packaging_fork_plan_v1", "packaging_branch_receipt_v1", "packaging_full_order_decision_v1", "packaging_full_order_plan_v2", "packaging_full_order_run_v2", "config_v6", "candidate_bundle_v6", "decision_context_v6", "selection_result_v6", "checkpoint_v6", "remote_order_metrics_v1", "packaging_full_order_plan_v1", "monitored_order_metrics_v1", "config_v5", "candidate_bundle_v5", "decision_context_v5", "selection_result_v5", "checkpoint_v5", "config_v4", "candidate_bundle_v4", "decision_context_v4", "selection_result_v4", "checkpoint_v4", "packaging_order_metrics_v1", "packaging_load_config_v1", "packaging_load_task_v1", "business_spec_v2", "config", "candidate_bundle", "decision_context", "selection_result", "transport_result", "config_v2", "candidate_bundle_v2", "decision_context_v2", "selection_result_v2", "business_state", "plan_v2", "checkpoint_v2", "order_metrics_v2", "metrics_v2",
++    if name not in {"memory_order_metrics_v1", "packaging_public_fragment_v1", "config_v7", "candidate_bundle_v7", "decision_context_v7", "selection_result_v7", "checkpoint_v7", "packaging_evidence_v1", "packaging_trajectory_v1", "packaging_memory_snapshot_v1", "packaging_memory_view_v1", "packaging_memory_query_v1", "packaging_reanalysis_plan_v2", "packaging_comparison_record_v2", "packaging_comparison_plan_v1", "packaging_comparison_record_v1", "packaging_fork_snapshot_v1", "packaging_fork_binding_v1", "packaging_fork_plan_v1", "packaging_branch_receipt_v1", "packaging_full_order_decision_v1", "packaging_full_order_plan_v2", "packaging_full_order_run_v2", "config_v6", "candidate_bundle_v6", "decision_context_v6", "selection_result_v6", "checkpoint_v6", "remote_order_metrics_v1", "packaging_full_order_plan_v1", "monitored_order_metrics_v1", "config_v5", "candidate_bundle_v5", "decision_context_v5", "selection_result_v5", "checkpoint_v5", "config_v4", "candidate_bundle_v4", "decision_context_v4", "selection_result_v4", "checkpoint_v4", "packaging_order_metrics_v1", "packaging_load_config_v1", "packaging_load_task_v1", "business_spec_v2", "config", "candidate_bundle", "decision_context", "selection_result", "transport_result", "config_v2", "candidate_bundle_v2", "decision_context_v2", "selection_result_v2", "business_state", "plan_v2", "checkpoint_v2", "order_metrics_v2", "metrics_v2",
+                     "config_v3", "candidate_bundle_v3", "decision_context_v3", "selection_result_v3", "plan_v3", "checkpoint_v3", "order_metrics_v3", "metrics_v3", "memory_card", "memory_snapshot", "memory_episode_export", "memory_query", "memory_index", "memory_retrieval", "memory_generation_result", "memory_review", "memory_generator_config", "memory_review_authorization"}:
+         raise JevSelectError("unknown_schema", name)
+     resource = files("semantic_pallet_planner.jev_select").joinpath("schemas", f"{name}.schema.json")
+@@ -42,7 +42,7 @@ def schema_validator(name: str) -> Draft202012Validator:
+ def validate_schema(name: str, value: dict) -> None:
+     canonical(value)
+     if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+-        for suffix in ("_v2", "_v3", "_v4", "_v5", "_v6"):
++        for suffix in ("_v2", "_v3", "_v4", "_v5", "_v6", "_v7"):
+             if str(value.get("version", "")).endswith(suffix):
+                 name += suffix
+                 break
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
+index 97d2cd51..ba7c58f1 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
+@@ -16,7 +16,7 @@ from .evaluation import feedback, summarize
+ from .selector import bind_decision, result
+ 
+ 
+-def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, memory_snapshot=None, saved_retrieval=None):
++def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, memory_snapshot=None, saved_retrieval=None, memory_view=None):
+     started = time.perf_counter()
+     req = observation(state, task["instruction_text"], task["regions"])
+     guard = PublicBusinessGuard()
+@@ -29,7 +29,7 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
+     after_cache = _cached_generation.cache_info()
+     bundle = guard.filter(req, policy, bundle, config)
+     try:
+-        context = bind_decision(ContextBuilder(config).build(req, bundle, policy, memories=memory_snapshot, retrieval=saved_retrieval), job_id, decision_id)
++        context = bind_decision(ContextBuilder(config).build(req, bundle, policy, memories=memory_snapshot, retrieval=saved_retrieval, memory_view=memory_view), job_id, decision_id)
+     except JevSelectError as exc:
+         if hasattr(exc,'context'):
+             exc.context=bind_decision(exc.context,job_id,decision_id)
+@@ -44,14 +44,20 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
+ 
+ 
+ def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
+-                hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None):
++                hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None):
+     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
+-    if config.get('version') in ('jev_packaging_monitored_v5','jev_packaging_remote_v6'):
++    if config.get('version') in ('jev_packaging_monitored_v5','jev_packaging_remote_v6','jev_packaging_memory_v7'):
+         config = copy.deepcopy(config)
+     if is_packaging(config):
+         if config.get('version') == 'jev_packaging_remote_v6':
+             from .packaging_remote import REGISTRY
+             METHODS = tuple(REGISTRY)
++        if config.get('version')=='jev_packaging_memory_v7':
++            from .packaging_experience import METHOD,validate_view
++            METHODS=(METHOD,)
++            if memory_view is not None:validate_view(memory_view,config['memory_snapshot_digest'])
++        elif memory_view is not None:
++            raise JevSelectError('packaging_memory_protocol_incompatible')
+         if (memory_snapshot is not None or task.get('version') != DATA_VERSION or
+             task.get('reference_policy') != {'version':DATA_VERSION,'rules':[]} or
+             task.get('regions') != [] or method != config['selector'] or method not in METHODS or
+@@ -60,7 +66,7 @@ def run_episode(task, selector, config, *, job_id, method, resume=None, on_check
+     if business_evaluation_mode(config):
+         return _run_episode_v2(task, selector, config, job_id=job_id, method=method, resume=resume,
+                                on_checkpoint=on_checkpoint, hook=hook, event_limit=event_limit,
+-                               expected_events=expected_events, memory_snapshot=memory_snapshot, training_fork=training_fork)
++                               expected_events=expected_events, memory_snapshot=memory_snapshot, training_fork=training_fork, memory_view=memory_view)
+     if training_fork is not None:
+         raise JevSelectError('training_fork_requires_monitored_packaging')
+     if resume is not None:
+@@ -169,7 +175,7 @@ def semantic_record(value):
+ 
+ 
+ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+-                    on_checkpoint=None, hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None):
++                    on_checkpoint=None, hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None):
+     from .evaluation import evaluate_committed_state, summarize_v2
+     from .execution import commit_physical
+     from .selector import SelectionResult
+@@ -368,7 +374,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+                 context = DecisionContext.from_dict(pending['context'])
+             else:
+                 req,policy,bundle,context = decision_inputs(state,task,config,job_id,did,timings=times,memory_snapshot=memory_snapshot,
+-                    saved_retrieval=saved_context.get('retrieval') if saved_context else None)
++                    saved_retrieval=saved_context.get('retrieval') if saved_context else None,memory_view=memory_view)
+             route = decision_route(bundle)
+             event.update(route=route,observation=req,bundle=bundle.data,context=context.data)
+             if is_v3(config):
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experiment.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experiment.py
+index a5d6ca23..43efc0aa 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experiment.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experiment.py
+@@ -351,7 +351,8 @@ def validate_saved_checkpoint(cp, task, cfg, jid, *, fork_origin=None):
+     from .stability.monitor import validate_monitor
+     from semantic_pallet_planner.o4.extensions.e2.protocol import observation
+     from semantic_pallet_planner.o4.buffer.buffer_state import initial,receive
+-    validate_schema('checkpoint_v6' if cfg['version']=='jev_packaging_remote_v6' else 'checkpoint_v5',cp)
++    from .config import protocol_suffix
++    validate_schema('checkpoint_'+protocol_suffix(cfg),cp)
+     require(cp['record_digest']==digest({k:v for k,v in cp.items() if k!='record_digest'}), 'full_order_checkpoint_digest_changed')
+     require(cp['job_id']==jid and cp['method']==cfg['selector'] and cp['config_digest']==digest(cfg)
+         and cp['task_digest']==digest(task) and cp['runtime_identity']==cfg['runtime_identity'],'full_order_checkpoint_binding_changed')
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_protocol.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_protocol.py
+index 08f7bd1c..dfd0481a 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_protocol.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_protocol.py
+@@ -29,6 +29,9 @@ METRICS_CONTRACT = {
+ 
+ 
+ def selector_factory(method, *, execution_version=EXECUTION_VERSION, config=None, transport=None, ledger=None, job_id=None):
++    if execution_version == 'jev_packaging_memory_v7':
++        from .packaging_memory_protocol import memory_selector_factory
++        return memory_selector_factory(method,config=config,transport=transport,ledger=ledger,job_id=job_id)
+     if execution_version == "jev_packaging_remote_v6":
+         from .packaging_remote import remote_selector_factory
+         return remote_selector_factory(method, config=config, transport=transport, ledger=ledger, job_id=job_id)
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_remote.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_remote.py
+index 292b244c..665b41f0 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_remote.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_remote.py
+@@ -60,6 +60,9 @@ class RequestLedger:
+     removed or retried, including explicit failures. Disk is reloaded under an
+     exclusive writer lock, so stale instances cannot spend the same slot twice.
+     """
++    ledger_version = VERSIONS['request_ledger']
++    context_version = VERSIONS['context']
++
+     def __init__(self, root, *, max_sends=1, hook=None):
+         self.root = Path(root)
+         self.root.mkdir(parents=True, exist_ok=True)
+@@ -67,7 +70,7 @@ class RequestLedger:
+         self.max_sends, self.hook = max_sends, hook
+         with exclusive(self.root):
+             if not self.path.exists():
+-                self._save({'version': VERSIONS['request_ledger'], 'max_sends': max_sends, 'requests': []})
++                self._save({'version': self.ledger_version, 'max_sends': max_sends, 'requests': []})
+             self._load()
+ 
+     def _save(self, data):
+@@ -76,7 +79,7 @@ class RequestLedger:
+ 
+     def _load(self):
+         d = read(self.path)
+-        if (d['version'] != VERSIONS['request_ledger'] or d['max_sends'] != self.max_sends or
++        if (d['version'] != self.ledger_version or d['max_sends'] != self.max_sends or
+             d['record_digest'] != digest({k:v for k,v in d.items() if k!='record_digest'})):
+             raise JevSelectError('request_ledger_changed')
+         keys=set()
+@@ -102,12 +105,12 @@ class RequestLedger:
+         self._save(self.data)
+         if self.hook:self.hook(state, copy.deepcopy(row))
+ 
+-    @staticmethod
+-    def identity(context, job_id, decision_id):
++    @classmethod
++    def identity(cls, context, job_id, decision_id):
+         from .context import validate_context
+         validate_context(context)
+         v=context.data;b=v['local_binding']
+-        if v['version']!=VERSIONS['context'] or b.get('job_id')!=job_id or b.get('decision_id')!=decision_id or v['route']!='CHOICE_REQUIRED':
++        if v['version']!=cls.context_version or b.get('job_id')!=job_id or b.get('decision_id')!=decision_id or v['route']!='CHOICE_REQUIRED':
+             raise JevSelectError('request_identity_mismatch')
+         return {'context_digest':digest(v),'body_digest':digest(v['request_body']),
+                 'binding_digest':digest(b),'state_digest':digest(v['model_state']),
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py
+index 4c800c75..e89f06e1 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py
+@@ -24,7 +24,7 @@ METHODS = ('local_geometry_test_double','local_first_test_double')
+ 
+ 
+ def is_packaging(config):
+-    return config.get('version') in (VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6')
++    return config.get('version') in (VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7')
+ 
+ 
+ def no_policy(observation):
+@@ -154,7 +154,7 @@ def length_unit(values,source,target):
+     return [v*factor for v in values]
+ 
+ 
+-def build_context(config,observation,bundle,policy):
++def build_context(config,observation,bundle,policy,*,memory_view=None):
+     from semantic_pallet_planner.o4.extensions.e2.protocol import BINDINGS,validate_observation
+     from semantic_pallet_planner.evaluation.state import apply_candidate
+     from semantic_pallet_planner.planner.scoring import geometry_score
+@@ -192,6 +192,15 @@ def build_context(config,observation,bundle,policy):
+         'buffer':{'capacity':3,'end_of_stream':buffer['end_of_stream'],
+             'pending':[{**p,'object_id':aliases[p['object_id']]} for p in buffer['pending']]},
+         'objective':OBJECTIVE,'memories':[]}
++    memory_fields={}
++    if config['version']=='jev_packaging_memory_v7':
++        from .packaging_experience import empty_view, validate_view
++        view=empty_view(config['memory_snapshot_digest']) if memory_view is None else memory_view
++        mv=validate_view(view,config['memory_snapshot_digest'])
++        require(all(digest(e) in config['memory_entry_digests'] for e in mv['entries']),'memory_entry_not_in_frozen_config')
++        state['memories']=mv['entries'];memory_fields={'memory_view':mv}
++    elif memory_view is not None:
++        raise JevSelectError('packaging_memory_protocol_incompatible')
+     ordered=sorted(value['selectable_candidates'],key=lambda c:(c['pose']['x_mm'],c['pose']['y_mm'],
+         c['pose']['z_base_mm'],c['pose']['yaw_deg'],aliases[c['pick_item_id']]))
+     seed=digest([config['display_order_seed'],observation['request_id'],observation['state_hash']])
+@@ -228,7 +237,9 @@ def build_context(config,observation,bundle,policy):
+         'generator_config_digest':value['generator_config_digest'],'prompt_version':config['prompt_version'],
+         'feature_version':config['feature_version'],'model_state_digest':digest(state),'criteria_digest':digest(criteria),
+         'request_body_digest':digest(body),'runtime_identity':copy.deepcopy(config['runtime_identity'])}
+-    context=DecisionContext.from_dict({'version':'jev_decision_context_' + protocol_suffix(config),'route':route,'model_state':state,
++    if memory_fields:
++        binding.update(memory_snapshot_digest=config['memory_snapshot_digest'],memory_view_digest=mv['view_digest'])
++    context=DecisionContext.from_dict({**memory_fields,'version':'jev_decision_context_' + protocol_suffix(config),'route':route,'model_state':state,
+         'criteria':criteria,'request_body':body,'display_mapping':mapping,'local_binding':binding})
+     validate_runtime_context(context,config=config)
+     require(body is None or len(canonical(body).encode())<=config['max_request_bytes'],'runtime_request_too_large')
+@@ -238,6 +249,14 @@ def build_context(config,observation,bundle,policy):
+ def validate_runtime_context(context,observation=None,bundle=None,config=None):
+     from .candidates import validate_bundle,decision_route
+     value=context.data;validate_schema('decision_context',value)
++    if value['version']=='jev_decision_context_v7':
++        from .packaging_experience import MemoryView,validate_view,public_query
++        mv=validate_view(MemoryView.from_dict(value['memory_view']),config['memory_snapshot_digest'] if config else None)
++        require(value['model_state']['memories']==mv['entries'] and value['local_binding']['memory_view_digest']==mv['view_digest'] and value['local_binding']['memory_snapshot_digest']==mv['snapshot_digest'],'memory_context_changed')
++        if config is not None:
++            require(all(digest(e) in config['memory_entry_digests'] for e in mv['entries']),'memory_entry_not_in_frozen_config')
++        if mv['entries']:
++            require(mv['query_digest']==digest(public_query(context)),'memory_query_context_changed')
+     binding=value['local_binding'];labels=list(value['display_mapping'])
+     require(set(labels)==set(value['criteria']) and sorted(labels)==[f'C{i:02d}' for i in range(1,len(labels)+1)],'runtime_display_mapping')
+     for field,key in [('mapping_digest','display_mapping'),('model_state_digest','model_state'),
+@@ -263,7 +282,7 @@ def validate_runtime_context(context,observation=None,bundle=None,config=None):
+         require(binding['physical_digest']==b['physical_digest'] and binding['selectable_digest']==b['selectable_digest'] and
+             route==decision_route(bundle),'runtime_stale_pool')
+         # Deterministic reconstruction checks all public facts, deltas and private mapping.
+-        rebuilt=build_context(config,observation,bundle,no_policy(observation)).data
++        rebuilt=build_context(config,observation,bundle,no_policy(observation),**({'memory_view':MemoryView.from_dict(value['memory_view'])} if value['version']=='jev_decision_context_v7' else {})).data
+         for key in ('job_id','decision_id'):
+             if key in binding:rebuilt['local_binding'][key]=binding[key]
+         require(value==rebuilt,'runtime_context_reconstruction')
+@@ -345,7 +364,12 @@ def summary(task,config,method,state,events,reason):
+         row.update(version='jev_packaging_monitored_metrics_v1',
+             stability_algorithm='pct_contact_network_v2' if config['stability_monitor']['enabled'] else 'DISABLED',
+             monitor_statistics=statistics(config,events,row))
+-        if config['version'] == 'jev_packaging_remote_v6':
++        if config['version']=='jev_packaging_memory_v7':
++            from .packaging_remote import event_cost
++            row.update(version='jev_packaging_memory_metrics_v1',origin='jev',memory_snapshot_digest=config['memory_snapshot_digest'])
++            row['cost'].update(event_cost(events))
++            validate_schema('memory_order_metrics_v1',row)
++        elif config['version'] == 'jev_packaging_remote_v6':
+             from .packaging_remote import event_cost
+             row.update(version='jev_packaging_remote_metrics_v1', origin='jev' if method=='jev_no_memory' else 'LOCAL_TEST_DOUBLE_NOT_JEV')
+             row['cost'].update(event_cost(events))
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py
+index 14d47574..80b2d0dc 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py
+@@ -31,7 +31,7 @@ def result(context, *, status, source, label=None, attempt=None, payload=None, e
+                  "usage": metadata.get("usage"), "latency_s": saved["latency_s"] if saved else None,
+                  "local_binding_digest": digest(value["local_binding"]),
+                  "raw_response_digest": saved["raw_sha256"] if saved else None, "error": error}
+-    if value['version'] == 'jev_decision_context_v6':
++    if value['version'] in ('jev_decision_context_v6','jev_decision_context_v7'):
+         selection.update(network_attempted=saved['network_attempted'] if saved else False,
+                          error_stage=('response_validation' if status=='invalid_response' else (saved or {}).get('error_stage')) if error else None,
+                          error_code=error)
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py
+index 759a27fa..0a767147 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py
+@@ -17,7 +17,7 @@ TERMINATIONS = {'UNSTABLE':'PREDICTED_STATIC_INSTABILITY',
+ 
+ 
+ def is_monitored(config):
+-    return config.get('version') in (VERSION, 'jev_packaging_remote_v6')
++    return config.get('version') in (VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7')
+ 
+ 
+ def freeze(enabled=False):
+@@ -60,6 +60,10 @@ def load_monitor_config(*, data_identity, task_digest, method='local_geometry_te
+ 
+ def preflight(config):
+     validate_schema('config', config)
++    if config['version']=='jev_packaging_memory_v7':
++        from ..packaging_memory_protocol import preflight_memory
++        preflight_memory(config)
++        return
+     if config['version'] == 'jev_packaging_remote_v6':
+         from ..packaging_remote import preflight_remote
+         preflight_remote(config)
+@@ -175,7 +179,7 @@ def validate_checkpoint(cp, task, config, job_id, method):
+     from ..selector import SelectionResult
+     from ..execution import commit_physical
+     from ..packaging_runtime import validate_runtime_context,evaluate_state
+-    if config['version'] == 'jev_packaging_remote_v6':
++    if config['version'] in ('jev_packaging_remote_v6','jev_packaging_memory_v7'):
+         from ..packaging_experiment import validate_saved_checkpoint
+         return validate_saved_checkpoint(cp, task, config, job_id)
+     validate_schema('checkpoint_v5',cp)
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py
+new file mode 100644
+index 00000000..976cbc95
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py
+@@ -0,0 +1,243 @@
++"""JN3-A evidence-backed trajectory memory. No credentials, LLM or episode dispatch.
++
++Evidence loading is private. Retrieval accepts a closed public feature vector;
++only MemoryView crosses the context boundary. Legacy business cards are excluded.
++"""
++from __future__ import annotations
++import copy
++import hashlib
++import math
++from datetime import datetime, timezone
++from pathlib import Path
++from .contracts import Snapshot, JevSelectError, canonical, digest, validate_schema
++from .ledger import read
++
++VERSION = 'jev_packaging_memory_v7'
++METHOD = 'jev_with_trajectory'
++SCHEMA = 'packaging_trajectory_v1'
++RULE = {'version':'packaging_public_distance_v1',
++        'features':['buffer_fill','placed_fill','mean_length','mean_width','mean_height','mean_mass','mean_capacity','stackable_fraction','candidate_height'],
++        'scales':'container dimensions, payload; capacity uses max(payload,1); placed volume/container volume',
++        'distance':'mean absolute normalized feature distance; score=1/(1+distance)',
++        'minimum_score':0.5,'tie':'ascending public fragment digest','max_entries':1,
++        'max_chars':12000,'max_utf8_bytes':16000,'item_max_chars':12000,'item_max_utf8_bytes':16000,
++        'truncation':'whole entries only; never remove conditions, costs or limitations',
++        'historical_result_budget':{'max_comparisons_per_entry':1,'metrics':['placed_items','placed_volume_ratio','placed_mass_kg','actual_height_mm','envelope_utilization'],
++                                    'interpretation':'same observed outcome fields for future T/E; equal bytes do not establish fairness'}}
++LIMITATIONS = ['POST_HOC_USER_REVISED_OBJECTIVE',
++ 'two previously exposed training sources; no unseen-source validation',
++ 'fixed local_geometry_test_double continuation; finite intervention, no causal or global optimum claim',
++ 'synthetic packaging load parameters; feasibility UNKNOWN',
++ 'historical observation only, not a recommendation or an action for the current task',
++ 'not a universal cross-box or rank rule; external memory is not weight updating']
++
++class MemoryView(Snapshot):
++    pass
++
++class MemorySnapshotReceipt(Snapshot):
++    pass
++
++
++def require(ok, code):
++    if not ok: raise JevSelectError(code)
++
++
++def sha(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
++
++
++def sealed(value, key):
++    value=copy.deepcopy(value);value[key]=digest(value);return value
++
++
++def verify_seal(value,key):
++    require(value.get(key)==digest({k:v for k,v in value.items() if k!=key}), 'memory_digest_changed')
++
++
++def evidence_reference(repo,path,pointer):
++    p=Path(repo)/path; value=read(p)
++    for key in pointer.strip('/').split('/') if pointer else []:
++        value=value[int(key)] if isinstance(value,list) else value[key]
++    return {'path':str(path),'file_sha256':sha(p),'json_pointer':pointer,'value_digest':digest(value)}
++
++
++def validate_evidence(repo,ref):
++    validate_schema('packaging_evidence_v1',ref)
++    root=Path(repo).resolve();p=(root/ref['path']).resolve()
++    require(p.is_relative_to(root),'memory_evidence_path')
++    require(evidence_reference(root,ref['path'],ref['json_pointer'])==ref,'memory_evidence_changed')
++
++
++def attributes(obj):
++    return {k:copy.deepcopy(obj[k]) for k in ('dimensions_mm','mass_kg','stackable','top_load_limit_kg_synthetic')}
++
++
++def historical_fragment(row):
++    """Whitelisted projection, with case-local roles and normalized historical geometry."""
++    o=row['observable_conditions'];c=o['container'];axes=[c['length_mm'],c['width_mm'],c['max_height_mm']]
++    def action(a):
++        return {'box':attributes(a['item_attributes']),
++                'size_over_container':[x/y for x,y in zip(a['oriented_size_mm'],axes)],
++                'historical_center_over_container':[a['pose'][k]/v for k,v in zip(('x_mm','y_mm','z_base_mm'),axes)],
++                'yaw_deg':a['pose']['yaw_deg']}
++    fragment={'kind':'T','notice':LIMITATIONS[4],
++              'condition':{'container':c,'buffer_capacity':o['buffer_capacity'],
++                           'observed_buffer':[{'role':f'history_box_{i}',**attributes(b)} for i,b in enumerate(o['buffer'],1)],
++                           'placed_count':len(o['placed'])},
++              'historical_interventions':{'original':action(o['reference_action']),'alternative':action(o['alternative_action']),
++                                           'relationship':'same box different position' if o['reference_action']['item_attributes']==o['alternative_action']['item_attributes'] else 'different boxes'},
++              'geometry_convention':'historical center x/L,y/W and base z/H; normalized historical descriptions are not current hard actions',
++              'fixed_followup':'local_geometry_test_double',
++              'historical_result':{'reference':{k:row['facts_reference'][k] for k in RULE['historical_result_budget']['metrics']},
++                                   'alternative':{k:row['facts_alternative'][k] for k in RULE['historical_result_budget']['metrics']},
++                                   'delta':{k:row['facts_delta'][k] for k in RULE['historical_result_budget']['metrics']}},
++              'evaluation_rule':'jev_branch_comparison_rule_v2','limitations':LIMITATIONS}
++    require(not o['placed'],'memory_nonempty_history_projection_not_supported')
++    return fragment
++
++
++def query_from_facts(container, boxes, placed_volume, capacity, candidate_heights):
++    require(boxes and capacity>0 and candidate_heights,'memory_query_empty')
++    vals=[len(boxes)/capacity,placed_volume/(container['length_mm']*container['width_mm']*container['max_height_mm'])]
++    n=len(boxes)
++    vals += [sum(b['dimensions_mm'][k] for b in boxes)/n/container[axis] for k,axis in
++             [('length','length_mm'),('width','width_mm'),('height','max_height_mm')]]
++    vals += [sum(b['mass_kg'] for b in boxes)/n/max(container['max_payload_kg'],1),
++             sum(b.get('effective_top_permission_kg',b.get('top_load_limit_kg_synthetic',0) if b['stackable'] else 0) for b in boxes)/n/max(container['max_payload_kg'],1),
++             sum(b['stackable'] for b in boxes)/n,sum(candidate_heights)/len(candidate_heights)/container['max_height_mm']]
++    q={'version':'packaging_public_query_v1','features':dict(zip(RULE['features'],vals))}
++    validate_query(q);return q
++
++
++def public_query(context):
++    """Only an already restricted public model state and public criteria are read."""
++    s=context.data['model_state'];cs=context.data['criteria']
++    return query_from_facts(s['container'],s['available_objects'],
++         sum(math.prod(o['oriented_size_mm']) for o in s['placed_objects']),s['buffer']['capacity'],
++         [c['features']['resulting_max_height_mm'] for c in cs.values()])
++
++
++def validate_query(q):
++    validate_schema('packaging_memory_query_v1',q)
++    require(all(type(x) in (int,float) and math.isfinite(x) and x>=0 for x in q['features'].values()),'memory_query_number')
++
++
++def build_snapshot(repo,parent,*,frozen_at=None):
++    root=Path(repo);parent=Path(parent)
++    from .packaging_comparisons import checked_manifest
++    binding=checked_manifest(parent)
++    receipt=read(parent/'comparison_dataset_receipt_v2.json');review=read(parent/'experience_candidate_review.json')
++    require(receipt['JN3_A_input_ready'] and receipt['experience_input_status']=='READY_IN_DECLARED_SCOPE','memory_parent_not_ready')
++    require(receipt['review_digest']==digest(review),'memory_review_binding')
++    require(receipt['approved_input_ids']==['F00_B02','F02_B02'],'memory_input_scope_changed')
++    cases=[]
++    for approved in review['records']:
++        if not approved['approved']:continue
++        cid=approved['comparison_id'];require(cid in receipt['approved_input_ids'],'memory_unapproved_input')
++        record_path=(parent/'comparisons_v2'/f'{cid}.json').relative_to(root)
++        r=read(root/record_path)
++        verify_seal(r,'record_digest')
++        require(digest(r)==approved['record_digest'] and all(approved['checks'].values()),'memory_review_changed')
++        require(r['label_v1']=='trade_off' and r['evaluation']['label_v2']=='improved','memory_label_changed')
++        facts=approved['facts']
++        require(facts['observable_conditions']==r['observable_conditions'],'memory_observation_changed')
++        for name,loc in r['provenance']['receipts'].items():
++            rec=read(root/loc['path']);require(digest(rec)==loc['digest'],'memory_branch_binding')
++            verify_seal(rec,'record_digest')
++        data={'observable_conditions':r['observable_conditions'],**{'facts_'+k:facts[k] for k in ('reference','alternative','delta')}}
++        fragment=historical_fragment(data);o=r['observable_conditions']
++        query=query_from_facts(o['container'],o['buffer'],0,o['buffer_capacity'],
++                              [a['oriented_size_mm'][2]+a['pose']['z_base_mm'] for a in (o['reference_action'],o['alternative_action'])])
++        # Every leaf fact is separately addressable; full raw historical originals remain private.
++        refs={}
++        def leaves(value,prefix):
++            if isinstance(value,dict):
++                for k,v in value.items():yield from leaves(v,prefix+'/'+k)
++            elif isinstance(value,list):
++                for i,v in enumerate(value):yield from leaves(v,prefix+'/'+str(i))
++            else:yield prefix
++        review_path=(parent/'experience_candidate_review.json').relative_to(root)
++        idx=review['records'].index(approved)
++        for pointer in leaves(facts,'/records/'+str(idx)+'/facts'):
++            refs[pointer]=evidence_reference(root,review_path,pointer)
++        case=sealed({'version':SCHEMA,'kind':'T','review_status':'APPROVED','fixture_only':False,
++           'public_fragment':fragment,'public_digest':digest(fragment),'retrieval_query':query,
++           'provenance':{'comparison_id':cid,'source_group':r['source_group'],**r['provenance']},
++           'private_original':facts,'evidence':refs},'case_digest')
++        cases.append(case)
++    require(len(cases)==2,'memory_case_count')
++    result=sealed({'version':'packaging_memory_snapshot_v1','mode':'T','case_schema':SCHEMA,
++        'build_version':'packaging_programmatic_builder_v1','build_method':'deterministic evidence projection; no LLM',
++        'generation_model':None,'generation_cost_usd':0,'review_status':'APPROVED',
++        'source_groups':sorted({c['provenance']['source_group'] for c in cases}),
++        'parent':binding,'retrieval_rule':RULE,'frozen_at':frozen_at or datetime.now(timezone.utc).isoformat(),
++        'cases':cases,'limitations':LIMITATIONS},'snapshot_digest')
++    validate_snapshot(result);return MemorySnapshotReceipt.from_dict(result)
++
++
++def validate_snapshot(s,expected=None):
++    if isinstance(s,Snapshot):s=s.data
++    validate_schema('packaging_memory_snapshot_v1',s);verify_seal(s,'snapshot_digest')
++    require(expected is None or expected==s['snapshot_digest'],'memory_snapshot_changed')
++    require(s['mode']=='T','memory_E_execution_not_supported')
++    require(s['retrieval_rule']==RULE and s['review_status']=='APPROVED','memory_rule_or_review_changed')
++    for c in s['cases']:
++        validate_schema('packaging_trajectory_v1',c);verify_seal(c,'case_digest')
++        require(c['review_status']=='APPROVED' and c['kind']=='T','memory_unapproved_entry')
++        validate_schema('packaging_public_fragment_v1',c['public_fragment'])
++        require(c['public_digest']==digest(c['public_fragment']),'memory_public_changed')
++        # Reconstruct the public whitelist from preserved private facts.
++        p=c['private_original'];require(c['public_fragment']==historical_fragment({'observable_conditions':p['observable_conditions'],**{'facts_'+k:p[k] for k in ('reference','alternative','delta')}}),'memory_projection_changed')
++        validate_query(c['retrieval_query'])
++        o=p['observable_conditions']
++        expected_query=query_from_facts(o['container'],o['buffer'],0,o['buffer_capacity'],
++            [a['oriented_size_mm'][2]+a['pose']['z_base_mm'] for a in (o['reference_action'],o['alternative_action'])])
++        require(c['retrieval_query']==expected_query,'memory_index_features_changed')
++    require(s['source_groups']==sorted({c['provenance']['source_group'] for c in s['cases']}),'memory_source_groups_changed')
++    return s
++
++
++def empty_view(snapshot_digest,query_digest=None):
++    return MemoryView.from_dict(sealed({'version':'packaging_memory_view_v1','mode':'T','snapshot_digest':snapshot_digest,
++        'query_digest':query_digest,'entries':[],'reason':'EMPTY','injected_chars':2,'injected_utf8_bytes':2},'view_digest'))
++
++
++def validate_view(view,expected=None):
++    require(isinstance(view,MemoryView),'memory_explicit_view_required')
++    v=view.data;validate_schema('packaging_memory_view_v1',v);verify_seal(v,'view_digest')
++    require(v['mode']=='T','memory_E_execution_not_supported')
++    require(expected is None or expected==v['snapshot_digest'],'memory_snapshot_changed')
++    for entry in v['entries']:validate_schema('packaging_public_fragment_v1',entry)
++    rendered=canonical(v['entries'])
++    require(len(rendered)==v['injected_chars'] and len(rendered.encode())==v['injected_utf8_bytes'],'memory_length_changed')
++    require(len(v['entries'])<=RULE['max_entries'] and len(rendered)<=RULE['max_chars'] and len(rendered.encode())<=RULE['max_utf8_bytes'],'memory_budget_exceeded')
++    return v
++
++
++def retrieve(query,snapshot,*,excluded_source_groups=(),excluded_fork_digests=(),rule=None):
++    validate_query(query);s=validate_snapshot(snapshot)
++    rule=RULE if rule is None else rule
++    require(rule==RULE,'memory_unregistered_retrieval_rule')
++    rows=[]
++    for c in s['cases']:
++        excluded=c['provenance']['source_group'] in excluded_source_groups or c['provenance']['fork_digest'] in excluded_fork_digests
++        distance=sum(abs(query['features'][k]-c['retrieval_query']['features'][k]) for k in RULE['features'])/len(RULE['features'])
++        rows.append({'public_digest':c['public_digest'],'case_digest':c['case_digest'],'score':1/(1+distance),
++                     'excluded':excluded,'qualified':not excluded and 1/(1+distance)>=rule['minimum_score']})
++    rows.sort(key=lambda r:(-r['score'],r['public_digest']))
++    entries=[];lengths=[]
++    for r in rows:
++        if not r['qualified']:continue
++        c=next(c for c in s['cases'] if c['case_digest']==r['case_digest']);entry=c['public_fragment']
++        text=canonical(entry);full=canonical(entries+[entry])
++        accept=(len(entries)<rule['max_entries'] and len(text)<=rule['item_max_chars'] and len(text.encode())<=rule['item_max_utf8_bytes'] and len(full)<=rule['max_chars'] and len(full.encode())<=rule['max_utf8_bytes'])
++        lengths.append({'public_digest':r['public_digest'],'chars':len(text),'utf8_bytes':len(text.encode()),'accepted':accept})
++        if accept:entries.append(entry)
++    rendered=canonical(entries)
++    v=sealed({'version':'packaging_memory_view_v1','mode':'T','snapshot_digest':s['snapshot_digest'],
++       'query_digest':digest(query),'entries':entries,'reason':'HIT' if entries else 'NO_QUALIFIED_COMPLETE_ENTRY',
++       'injected_chars':len(rendered),'injected_utf8_bytes':len(rendered.encode())},'view_digest')
++    view=MemoryView.from_dict(v);validate_view(view)
++    return view,{'query':query,'query_digest':digest(query),'rule':rule,'snapshot_digest':s['snapshot_digest'],
++       'exclusions':{'source_groups':list(excluded_source_groups),'fork_digests':list(excluded_fork_digests)},
++       'candidates':rows,'length_handling':lengths,'view':v,'library_nonempty':bool(s['cases']),
++       'retrieval_nonempty':bool(lengths),'injection_nonempty':bool(entries)}
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_memory_protocol.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_memory_protocol.py
+new file mode 100644
+index 00000000..89a61745
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_memory_protocol.py
+@@ -0,0 +1,64 @@
++"""Explicit v7 method route. Reuses durable v6 ledger and strict native parsing."""
++from .contracts import JevSelectError, digest, validate_schema
++from .packaging_experience import VERSION, METHOD, validate_view, MemoryView
++from .packaging_remote import RequestLedger, load_remote_config
++from .selector import result, parse_response, SelectionResult
++
++VERSIONS={'execution':VERSION,'config':VERSION,'context':'jev_decision_context_v7',
++          'candidate_bundle':'jev_candidate_bundle_v7','selection':'jev_selection_result_v7',
++          'checkpoint':'jev_checkpoint_v7','metrics':'jev_packaging_memory_metrics_v1',
++          'request_ledger':'jev_packaging_memory_requests_v1','run':'JN3-A_single_decision_v1'}
++REGISTRY={METHOD:{'origin':'jev','model':'jev-1.14.0','mode':'T'}}
++
++
++def load_memory_config(*,data_identity,task_digest,snapshot_digest,entry_digests,enabled=False):
++    from .experiment import source_manifest
++    c=load_remote_config(data_identity=data_identity,task_digest=task_digest,enabled=enabled)
++    c.update(version=VERSION,selector=METHOD,memory_mode='T',memory_snapshot_digest=snapshot_digest,memory_entry_digests=sorted(entry_digests))
++    c['runtime_identity']['strategy_identity']=digest({'config':{k:v for k,v in c.items() if k!='runtime_identity'},
++                                                     'source':source_manifest(),'versions':VERSIONS})
++    validate_schema('config',c);return c
++
++
++def preflight_memory(config):
++    i=config['runtime_identity']
++    expected=load_memory_config(data_identity=i['data_identity'],task_digest=i['task_identity'],
++                               snapshot_digest=config['memory_snapshot_digest'],entry_digests=config['memory_entry_digests'],enabled=config['stability_monitor']['enabled'])
++    if config!=expected:raise JevSelectError('memory_frozen_identity_changed')
++
++
++class MemoryRequestLedger(RequestLedger):
++    ledger_version=VERSIONS['request_ledger']
++    context_version=VERSIONS['context']
++
++    @classmethod
++    def identity(cls,context,job_id,decision_id):
++        identity=super().identity(context,job_id,decision_id)
++        v=validate_view(MemoryView.from_dict(context.data['memory_view']))
++        if not v['entries']:raise JevSelectError('memory_request_empty')
++        return {**identity,'snapshot_digest':v['snapshot_digest'],'memory_view_digest':v['view_digest'],
++                'injected_digest':digest(v['entries'])}
++
++
++class PackagingMemorySelector:
++    def __init__(self,config,ledger,job_id,transport):
++        self.config,self.ledger,self.job_id,self.transport=config,ledger,job_id,transport
++
++    def select(self,context,*,decision_id):
++        from .context import validate_context
++        validate_context(context,config=self.config)
++        b=context.data['local_binding']
++        if b.get('job_id')!=self.job_id or b.get('decision_id')!=decision_id:raise JevSelectError('selector_identity_mismatch')
++        if context.data['route']=='SINGLETON_BYPASS':return result(context,status='singleton',source='singleton',label='C01')
++        attempt=self.ledger.request(context,self.job_id,decision_id,self.transport)
++        if attempt['selection'] is not None:return SelectionResult.from_dict(attempt['selection'])
++        selected=parse_response(context,attempt,self.config);self.ledger.save_selection(attempt,selected)
++        return selected
++
++
++def memory_selector_factory(method,*,config,transport,ledger,job_id):
++    if method not in REGISTRY or config is None or config['version']!=VERSION or config['selector']!=method:
++        raise JevSelectError('memory_unregistered_method_or_protocol')
++    validate_schema('config',config)
++    if not isinstance(ledger,MemoryRequestLedger) or not job_id:raise JevSelectError('memory_dependencies_required')
++    return PackagingMemorySelector(config,ledger,job_id,transport)
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_trajectory_validation.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_trajectory_validation.py
+new file mode 100644
+index 00000000..b894b81f
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_trajectory_validation.py
+@@ -0,0 +1,152 @@
++"""JN3-A frozen one-decision workflow. Prepare is offline; run is explicitly bounded."""
++from __future__ import annotations
++import argparse
++import copy
++from pathlib import Path
++import shutil
++from .contracts import digest,canonical,JevSelectError,DecisionContext,CandidateBundle
++from .ledger import read,write,exclusive
++from .experiment import source_manifest
++from .packaging_experience import (build_snapshot,validate_snapshot,validate_evidence,retrieve,public_query,
++    MemoryView,MemorySnapshotReceipt,VERSION,METHOD,RULE,LIMITATIONS,require,sha)
++from .packaging_memory_protocol import load_memory_config,MemoryRequestLedger,memory_selector_factory,VERSIONS
++
++REPO=Path(__file__).resolve().parents[4]
++PARENT=REPO/'semantic_pallet_planner/outputs/JEV_JN2_20261104_03'
++
++
++def prior_requests(output):
++    rows=[]
++    for f in (REPO/'semantic_pallet_planner/outputs').glob('JEV_JN3_*/request_ledger/requests.json'):
++        d=read(f)
++        for r in d['requests']:
++            rows.append({'path':str(f.relative_to(REPO)),'attempt_id':r['attempt_id'],'send_started':r['send_started'],'state':r['state']})
++    return rows
++
++
++def prepare(output):
++    from .packaging_runtime import load_runtime_dataset,build_context
++    from .episode import decision_inputs
++    from .selector import bind_decision
++    from semantic_pallet_planner.o4.buffer.buffer_state import initial,receive
++    root=Path(output);root.mkdir(parents=True,exist_ok=True)
++    require(not (root/'preregistration.json').exists(),'trajectory_already_registered')
++    prior=prior_requests(root);require(not prior,'trajectory_previous_attempt_exists')
++    parent_plan=read(REPO/'semantic_pallet_planner/outputs/JEV_JN1_20261103_03/plan/plan.json')
++    j=next(j for j in parent_plan['jobs'] if j['method_id']=='jev_no_memory')
++    dataset=load_runtime_dataset(REPO/parent_plan['dataset']);task=next(t for t in dataset['tasks'] if t['task_id']==j['task_id'])
++    require(digest(task)==j['task_digest'],'trajectory_parent_task_changed')
++    pre={'version':'JN3-A_query_preregistration_v1','selection_rule':'first real-Jev job in parent JN1-B frozen order; earliest decision after initial buffer fill; no outcome-based search',
++         'state_preparation':'new deterministic receive-only prefix; zero model/commit/PCT; not historical Jev prefix or whole-order replay',
++         'task_id':j['task_id'],'source_group':j['source_group_id'],'excluded_source_groups':[j['source_group_id']],
++         'isolation':'exclude entire source group including same fork, variants and equivalent copies; source never a score feature',
++         'max_Jev_sends_A':1,'JN3_B_sends':0,'JN3_C_sends':0,'prior_requests':prior,
++         'stop':'one decision closed loop or first failure/unknown; no retry or replacement query',
++         'retrieval_rule':RULE,'parent_plan_digest':digest(parent_plan),'limitations':LIMITATIONS}
++    write(root/'query_preregistration.json',pre)  # before inspecting the prepared query or its hits
++    snapshot=build_snapshot(REPO,PARENT);s=snapshot.data
++    require(not any(c['fixture_only'] for c in s['cases']),'trajectory_fixture_not_real')
++    for c in s['cases']:
++        for ref in c['evidence'].values():validate_evidence(REPO,ref)
++    cfg=load_memory_config(data_identity=dataset['data_identity'],task_digest=digest(task),snapshot_digest=s['snapshot_digest'],
++                           entry_digests=[c['public_digest'] for c in s['cases']],enabled=True)
++    state=initial(task['container'],3)
++    for o in task['items'][:3]:state=receive(state,o,task['attributes'][o['item_id']])
++    req,pol,b,empty=decision_inputs(state,task,cfg,'JN3A','JN3A_D0000')
++    require(empty.data['route']=='CHOICE_REQUIRED','trajectory_fixed_query_not_choice')
++    view,audit=retrieve(public_query(empty),snapshot,excluded_source_groups=pre['excluded_source_groups'])
++    context=bind_decision(build_context(cfg,req,b,pol,memory_view=view),'JN3A','JN3A_D0000')
++    for name,data in [('trajectory_snapshot.json',s),('memory_view.json',view.data),('retrieval.json',audit),('task.snapshot.json',task),
++                      ('config.snapshot.json',cfg),('state.json',state),('observation.json',req),('bundle.json',b.data),('context.json',context.data),
++                      ('request.json',context.data['request_body']),('source_manifest.json',source_manifest())]:write(root/name,data)
++    package=Path(__file__).resolve().parents[1]
++    for n in source_manifest():
++        target=root/'code_snapshot'/n;target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(package/n,target)
++    freeze={'version':'JN3-A_preregistration_v1','query_preregistration_digest':digest(pre),'context_digest':digest(context.data),
++            'snapshot_digest':s['snapshot_digest'],'view_digest':view.data['view_digest'],'source_digest':digest(source_manifest()),
++            'config_digest':digest(cfg),'request_digest':digest(context.data['request_body']),'retrieval_digest':digest(audit),
++            'versions':VERSIONS,'max_sends':1,'ready_to_send':bool(view.data['entries']),
++            'scope':'interface injection only; research benefit NOT_ESTABLISHED'}
++    write(root/'preregistration.json',freeze)
++    return freeze
++
++
++def validate_frozen(root,*,current_source=True):
++    root=Path(root);p=read(root/'preregistration.json');pre=read(root/'query_preregistration.json')
++    s=read(root/'trajectory_snapshot.json');validate_snapshot(s,p['snapshot_digest'])
++    # Rebuild from verified parent evidence, rather than trusting resealed private/public content.
++    require(build_snapshot(REPO,PARENT,frozen_at=s['frozen_at']).data==s,'trajectory_evidence_projection_changed')
++    require(digest(pre)==p['query_preregistration_digest'],'trajectory_query_registration_changed')
++    manifest=read(root/'source_manifest.json')
++    require(digest(manifest)==p['source_digest'],'trajectory_source_manifest_changed')
++    require(all(sha(root/'code_snapshot'/n)==h for n,h in manifest.items()),'trajectory_archive_changed')
++    if current_source:require(source_manifest()==manifest,'trajectory_current_source_changed')
++    cfg=read(root/'config.snapshot.json');ctx=DecisionContext.from_dict(read(root/'context.json'));a=read(root/'retrieval.json')
++    require(digest(cfg)==p['config_digest'] and digest(ctx.data)==p['context_digest'] and digest(a)==p['retrieval_digest'],'trajectory_binding_changed')
++    require(digest(read(root/'task.snapshot.json'))==cfg['runtime_identity']['task_identity'],'trajectory_task_changed')
++    from .packaging_runtime import validate_runtime_context
++    validate_runtime_context(ctx,read(root/'observation.json'),CandidateBundle.from_dict(read(root/'bundle.json')),cfg)
++    v,expected=retrieve(public_query(ctx),MemorySnapshotReceipt.from_dict(s),excluded_source_groups=pre['excluded_source_groups'])
++    require(v.data==read(root/'memory_view.json')==ctx.data['memory_view'] and expected==a,'trajectory_retrieval_changed')
++    require(read(root/'request.json')==ctx.data['request_body'] and digest(ctx.data['request_body'])==p['request_digest'],'trajectory_request_changed')
++    return p
++
++
++def run(output,*,api_key_file=None,transport=None):
++    from .episode import run_episode
++    from .transport import JevTransport
++    root=Path(output)
++    with exclusive(root):
++        p=validate_frozen(root);require(p['ready_to_send'],'trajectory_NOT_READY')
++        elsewhere=[r for r in prior_requests(root) if r['path']!=str((root/'request_ledger/requests.json').resolve().relative_to(REPO))]
++        require(not elsewhere,'trajectory_other_attempt_exists')
++        cfg=read(root/'config.snapshot.json');task=read(root/'task.snapshot.json');view=MemoryView.from_dict(read(root/'memory_view.json'))
++        ledger=MemoryRequestLedger(root/'request_ledger',max_sends=1)
++        selector=memory_selector_factory(METHOD,config=cfg,ledger=ledger,job_id='JN3A',transport=transport or JevTransport(cfg,api_key_file=api_key_file))
++        def checkpoint(cp):
++            write(root/'checkpoint.json',cp)
++            if cp['phase'] in ('SELECTED','MONITORED','COMMITTED'):write(root/'stages'/f"{cp['phase']}.json",cp)
++        resume=read(root/'checkpoint.json') if (root/'checkpoint.json').exists() else None
++        ep=run_episode(task,selector,cfg,job_id='JN3A',method=METHOD,memory_view=view,resume=resume,on_checkpoint=checkpoint,event_limit=4)
++        write(root/'episode.json',ep);write(root/'request_statistics.json',ledger.statistics())
++        decisions=[e for e in ep['events'] if e.get('decision_id')]
++        require(len(decisions)==1,'trajectory_decision_scope_changed')
++        e=decisions[0]
++        for n,v in [('decision.json',e),('selection.json',e['selection']),('monitor.json',e['monitor']),
++                    ('execution.json',{'event':e['event'],'reason':e['reason'],'action':e['action'],'before_digest':digest(e['before']),'after_digest':digest(e['after'])}),
++                    ('scope_stop.json',{'reason':'REGISTERED_SINGLE_DECISION_COMPLETE','order_continued':False,'natural_order_termination':ep['checkpoint']['reason']})]:write(root/n,v)
++        rows=read(root/'request_ledger/requests.json')['requests']
++        if rows:
++            write(root/'transport.json',rows[0]['transport'])
++        return {'event':e['event'],'monitor':e['monitor']['status'] if e['monitor'] else None,'statistics':ledger.statistics()}
++
++
++def validate_saved(root):
++    from .packaging_experiment import validate_saved_checkpoint
++    from .selector import parse_response
++    root=Path(root);p=validate_frozen(root);cfg=read(root/'config.snapshot.json');task=read(root/'task.snapshot.json')
++    cp=read(root/'checkpoint.json');validate_saved_checkpoint(cp,task,cfg,'JN3A')
++    for path in (root/'stages').glob('*.json'):validate_saved_checkpoint(read(path),task,cfg,'JN3A')
++    obj=MemoryRequestLedger.__new__(MemoryRequestLedger);obj.root=root/'request_ledger';obj.path=obj.root/'requests.json';obj.max_sends=1
++    rows=obj._load()['requests'];require(len(rows)==1 and rows[0]['send_started'],'trajectory_request_count_changed')
++    ctx=DecisionContext.from_dict(read(root/'context.json'));r=rows[0]
++    require(all(r[k]==v for k,v in obj.identity(ctx,'JN3A','JN3A_D0000').items()),'trajectory_request_binding_changed')
++    require(parse_response(ctx,r,cfg).data==r['selection']==read(root/'selection.json'),'trajectory_response_selection_changed')
++    e=read(root/'decision.json');require(e==next(e for e in cp['events'] if e.get('decision_id')),'trajectory_decision_changed')
++    require(e['context']==ctx.data and e['selection']==r['selection'] and e['monitor']==read(root/'monitor.json'),'trajectory_stage_changed')
++    require(read(root/'request_statistics.json')==obj.statistics(),'trajectory_statistics_changed')
++    return {'status':'PASS','dispatch':'saved facts only; no network, selection, generation, commit or PCT',
++            'real_T_entries':len(read(root/'trajectory_snapshot.json')['cases']),
++            'request_body_nonempty':bool(ctx.data['request_body']['state']['memories']),
++            'monitor_status':e['monitor']['status'] if e['monitor'] else None,'event':e['event']}
++
++
++def main():
++    parser=argparse.ArgumentParser();parser.add_argument('command',choices=['prepare','run','validate']);parser.add_argument('--output',required=True);parser.add_argument('--api-key-file')
++    args=parser.parse_args()
++    if args.command=='prepare':r=prepare(args.output)
++    elif args.command=='run':r=run(args.output,api_key_file=args.api_key_file)
++    else:r=validate_saved(args.output)
++    print(canonical(r))
++
++if __name__=='__main__':main()
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v7.schema.json b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v7.schema.json
+new file mode 100644
+index 00000000..76b2c5c7
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v7.schema.json
+@@ -0,0 +1,121 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "type": "object",
++  "properties": {
++    "version": {
++      "const": "jev_candidate_bundle_v7"
++    },
++    "observation_digest": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    },
++    "candidate_backend": {
++      "const": "e2_original_v1"
++    },
++    "generator_config_digest": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    },
++    "physical_candidates": {
++      "type": "array",
++      "items": {
++        "type": "object"
++      },
++      "maxItems": 48
++    },
++    "physical_digest": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    },
++    "generation_counts": {
++      "type": "array",
++      "items": {
++        "type": "object",
++        "properties": {
++          "pick_item_id": {
++            "type": "string"
++          },
++          "returned": {
++            "type": "integer",
++            "minimum": 0,
++            "maximum": 16
++          },
++          "sampled_physical": {
++            "type": "integer",
++            "minimum": 0
++          },
++          "rejections": {
++            "type": "object",
++            "additionalProperties": {
++              "type": "integer",
++              "minimum": 0
++            }
++          },
++          "enumeration_attempts": {
++            "type": "integer",
++            "minimum": 0
++          }
++        },
++        "required": [
++          "pick_item_id",
++          "returned",
++          "sampled_physical",
++          "rejections",
++          "enumeration_attempts"
++        ],
++        "additionalProperties": false
++      },
++      "maxItems": 3
++    },
++    "selectable_pool": {
++      "enum": [
++        "unfiltered",
++        "physical_feasible"
++      ]
++    },
++    "selectable_candidates": {
++      "type": "array",
++      "items": {
++        "type": "object"
++      },
++      "maxItems": 48
++    },
++    "selectable_digest": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    },
++    "policy_digest": {
++      "anyOf": [
++        {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        {
++          "type": "null"
++        }
++      ]
++    },
++    "experiment_protocol": {
++      "const": "jev_packaging_runtime_v1"
++    },
++    "business_mode": {
++      "const": "physical_only"
++    }
++  },
++  "required": [
++    "version",
++    "observation_digest",
++    "candidate_backend",
++    "generator_config_digest",
++    "physical_candidates",
++    "physical_digest",
++    "generation_counts",
++    "selectable_pool",
++    "selectable_candidates",
++    "selectable_digest",
++    "policy_digest",
++    "experiment_protocol",
++    "business_mode"
++  ],
++  "additionalProperties": false
++}
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v7.schema.json b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v7.schema.json
+new file mode 100644
+index 00000000..622f7908
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v7.schema.json
+@@ -0,0 +1,970 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "type": "object",
++  "properties": {
++    "version": {
++      "const": "jev_checkpoint_v7"
++    },
++    "job_id": {
++      "type": "string"
++    },
++    "method": {
++      "const": "jev_with_trajectory"
++    },
++    "task_digest": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    },
++    "config_digest": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    },
++    "state": {
++      "type": "object",
++      "properties": {
++        "container": {
++          "type": "object"
++        },
++        "buffer_capacity": {
++          "enum": [
++            1,
++            2,
++            3
++          ]
++        },
++        "pending_items": {
++          "type": "array",
++          "items": {
++            "type": "object"
++          }
++        },
++        "placed_items": {
++          "type": "array",
++          "items": {
++            "type": "object"
++          }
++        },
++        "arrived_ids": {
++          "type": "array",
++          "items": {
++            "type": "string"
++          },
++          "uniqueItems": true
++        },
++        "attributes": {
++          "type": "object"
++        },
++        "event_index": {
++          "type": "integer",
++          "minimum": 0
++        },
++        "arrival_count": {
++          "type": "integer",
++          "minimum": 0
++        },
++        "placed_count": {
++          "type": "integer",
++          "minimum": 0
++        },
++        "end_of_stream": {
++          "type": "boolean"
++        }
++      },
++      "required": [
++        "container",
++        "buffer_capacity",
++        "pending_items",
++        "placed_items",
++        "arrived_ids",
++        "attributes",
++        "event_index",
++        "arrival_count",
++        "placed_count",
++        "end_of_stream"
++      ],
++      "additionalProperties": false
++    },
++    "cursor": {
++      "type": "integer",
++      "minimum": 0
++    },
++    "decision": {
++      "type": "integer",
++      "minimum": 0
++    },
++    "events": {
++      "type": "array",
++      "items": {
++        "oneOf": [
++          {
++            "type": "object",
++            "properties": {
++              "event": {
++                "enum": [
++                  "WAIT_RECEIVE",
++                  "EOS"
++                ]
++              },
++              "before": {
++                "type": "object"
++              },
++              "after": {
++                "type": "object"
++              },
++              "timings": {
++                "type": "object",
++                "maxProperties": 0
++              }
++            },
++            "required": [
++              "event",
++              "before",
++              "after",
++              "timings"
++            ],
++            "additionalProperties": false
++          },
++          {
++            "type": "object",
++            "properties": {
++              "event": {
++                "enum": [
++                  "PLACE",
++                  "STOP",
++                  "DECISION_FAILURE",
++                  "COMMIT_FAILURE"
++                ]
++              },
++              "decision_id": {
++                "type": "string"
++              },
++              "before": {
++                "type": "object"
++              },
++              "after": {
++                "type": "object"
++              },
++              "route": {
++                "anyOf": [
++                  {
++                    "type": "null"
++                  },
++                  {
++                    "enum": [
++                      "STOP_NO_PHYSICAL_CANDIDATE",
++                      "SINGLETON_BYPASS",
++                      "CHOICE_REQUIRED"
++                    ]
++                  }
++                ]
++              },
++              "observation": {
++                "anyOf": [
++                  {
++                    "type": "null"
++                  },
++                  {
++                    "type": "object"
++                  }
++                ]
++              },
++              "bundle": {
++                "anyOf": [
++                  {
++                    "type": "null"
++                  },
++                  {
++                    "type": "object"
++                  }
++                ]
++              },
++              "context": {
++                "anyOf": [
++                  {
++                    "type": "null"
++                  },
++                  {
++                    "type": "object"
++                  }
++                ]
++              },
++              "selection": {
++                "anyOf": [
++                  {
++                    "type": "null"
++                  },
++                  {
++                    "type": "object"
++                  }
++                ]
++              },
++              "proposed_action": {
++                "anyOf": [
++                  {
++                    "type": "null"
++                  },
++                  {
++                    "type": "object"
++                  }
++                ]
++              },
++              "action": {
++                "anyOf": [
++                  {
++                    "type": "null"
++                  },
++                  {
++                    "type": "object"
++                  }
++                ]
++              },
++              "reason": {
++                "anyOf": [
++                  {
++                    "type": "null"
++                  },
++                  {
++                    "type": "string"
++                  }
++                ]
++              },
++              "error": {
++                "anyOf": [
++                  {
++                    "type": "null"
++                  },
++                  {
++                    "type": "object",
++                    "properties": {
++                      "code": {
++                        "type": "string"
++                      },
++                      "detail": {
++                        "type": "string"
++                      }
++                    },
++                    "required": [
++                      "code",
++                      "detail"
++                    ],
++                    "additionalProperties": false
++                  }
++                ]
++              },
++              "reference_after": {
++                "anyOf": [
++                  {
++                    "type": "null"
++                  },
++                  {
++                    "type": "object"
++                  }
++                ]
++              },
++              "business_after": {
++                "anyOf": [
++                  {
++                    "type": "null"
++                  },
++                  {
++                    "type": "object",
++                    "properties": {
++                      "version": {
++                        "const": "jev_packaging_physical_state_v1"
++                      },
++                      "raw": {
++                        "type": "object"
++                      },
++                      "violations": {
++                        "type": "array",
++                        "items": {
++                          "type": "object",
++                          "properties": {
++                            "item_id": {
++                              "type": "string"
++                            },
++                            "reason": {
++                              "type": "string"
++                            }
++                          },
++                          "required": [
++                            "item_id",
++                            "reason"
++                          ],
++                          "additionalProperties": false
++                        }
++                      },
++                      "runtime_facts": {
++                        "type": "object"
++                      }
++                    },
++                    "required": [
++                      "version",
++                      "raw",
++                      "violations",
++                      "runtime_facts"
++                    ],
++                    "additionalProperties": false
++                  }
++                ]
++              },
++              "timings": {
++                "type": "object",
++                "properties": {
++                  "public_parse_s": {
++                    "type": "number",
++                    "minimum": 0
++                  },
++                  "physical_generation_s": {
++                    "type": "number",
++                    "minimum": 0
++                  },
++                  "facts_context_s": {
++                    "type": "number",
++                    "minimum": 0
++                  },
++                  "public_business_s": {
++                    "type": "number",
++                    "minimum": 0
++                  },
++                  "selection_s": {
++                    "type": "number",
++                    "minimum": 0
++                  },
++                  "physical_commit_s": {
++                    "type": "number",
++                    "minimum": 0
++                  },
++                  "independent_evaluation_s": {
++                    "type": "number",
++                    "minimum": 0
++                  },
++                  "checkpoint_io_s": {
++                    "type": "number",
++                    "minimum": 0
++                  },
++                  "decision_wall_s": {
++                    "anyOf": [
++                      {
++                        "type": "null"
++                      },
++                      {
++                        "type": "number",
++                        "minimum": 0
++                      }
++                    ]
++                  },
++                  "decision_segments_s": {
++                    "type": "number",
++                    "minimum": 0
++                  },
++                  "generation_cache_hits": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "generation_cache_misses": {
++                    "type": "integer",
++                    "minimum": 0
++                  }
++                },
++                "required": [],
++                "additionalProperties": false
++              },
++              "monitor": {
++                "oneOf": [
++                  {
++                    "type": "null"
++                  },
++                  {
++                    "$schema": "https://json-schema.org/draft/2020-12/schema",
++                    "type": "object",
++                    "additionalProperties": false,
++                    "properties": {
++                      "version": {
++                        "const": "selected_action_monitor_v1"
++                      },
++                      "binding": {
++                        "type": "object",
++                        "additionalProperties": false,
++                        "properties": {
++                          "state_digest": {
++                            "type": "string",
++                            "pattern": "^[0-9a-f]{64}$"
++                          },
++                          "candidate_digest": {
++                            "type": "string",
++                            "pattern": "^[0-9a-f]{64}$"
++                          },
++                          "action_digest": {
++                            "type": "string",
++                            "pattern": "^[0-9a-f]{64}$"
++                          },
++                          "selection_digest": {
++                            "type": "string",
++                            "pattern": "^[0-9a-f]{64}$"
++                          },
++                          "context_digest": {
++                            "type": "string",
++                            "pattern": "^[0-9a-f]{64}$"
++                          },
++                          "bundle_digest": {
++                            "type": "string",
++                            "pattern": "^[0-9a-f]{64}$"
++                          },
++                          "config_digest": {
++                            "type": "string",
++                            "pattern": "^[0-9a-f]{64}$"
++                          },
++                          "decision_id": {
++                            "type": "string"
++                          },
++                          "runtime_identity": {
++                            "type": "object"
++                          }
++                        },
++                        "required": [
++                          "state_digest",
++                          "candidate_digest",
++                          "action_digest",
++                          "selection_digest",
++                          "context_digest",
++                          "bundle_digest",
++                          "config_digest",
++                          "decision_id",
++                          "runtime_identity"
++                        ]
++                      },
++                      "status": {
++                        "enum": [
++                          "DISABLED",
++                          "STABLE",
++                          "UNSTABLE",
++                          "UNASSESSABLE",
++                          "ERROR"
++                        ]
++                      },
++                      "result": {
++                        "type": [
++                          "object",
++                          "null"
++                        ]
++                      },
++                      "attempted": {
++                        "const": true
++                      },
++                      "committed": {
++                        "const": false
++                      },
++                      "result_digest": {
++                        "type": "string",
++                        "pattern": "^[0-9a-f]{64}$"
++                      },
++                      "credential_digest": {
++                        "type": "string",
++                        "pattern": "^[0-9a-f]{64}$"
++                      }
++                    },
++                    "required": [
++                      "version",
++                      "binding",
++                      "status",
++                      "result",
++                      "attempted",
++                      "committed",
++                      "result_digest",
++                      "credential_digest"
++                    ]
++                  }
++                ]
++              },
++              "monitor_result_reuses": {
++                "type": "integer",
++                "minimum": 0
++              }
++            },
++            "required": [
++              "event",
++              "decision_id",
++              "before",
++              "after",
++              "route",
++              "observation",
++              "bundle",
++              "context",
++              "selection",
++              "proposed_action",
++              "action",
++              "reason",
++              "error",
++              "reference_after",
++              "business_after",
++              "timings",
++              "monitor",
++              "monitor_result_reuses"
++            ],
++            "additionalProperties": false
++          }
++        ]
++      }
++    },
++    "reason": {
++      "anyOf": [
++        {
++          "type": "null"
++        },
++        {
++          "type": "string"
++        }
++      ]
++    },
++    "phase": {
++      "enum": [
++        "READY",
++        "SELECTED",
++        "MONITORED",
++        "COMMITTED",
++        "TERMINATED"
++      ]
++    },
++    "pending_event": {
++      "oneOf": [
++        {
++          "type": "null"
++        },
++        {
++          "type": "object",
++          "properties": {
++            "event": {
++              "enum": [
++                "PLACE",
++                "STOP",
++                "DECISION_FAILURE",
++                "COMMIT_FAILURE"
++              ]
++            },
++            "decision_id": {
++              "type": "string"
++            },
++            "before": {
++              "type": "object"
++            },
++            "after": {
++              "type": "object"
++            },
++            "route": {
++              "anyOf": [
++                {
++                  "type": "null"
++                },
++                {
++                  "enum": [
++                    "STOP_NO_PHYSICAL_CANDIDATE",
++                    "SINGLETON_BYPASS",
++                    "CHOICE_REQUIRED"
++                  ]
++                }
++              ]
++            },
++            "observation": {
++              "anyOf": [
++                {
++                  "type": "null"
++                },
++                {
++                  "type": "object"
++                }
++              ]
++            },
++            "bundle": {
++              "anyOf": [
++                {
++                  "type": "null"
++                },
++                {
++                  "type": "object"
++                }
++              ]
++            },
++            "context": {
++              "anyOf": [
++                {
++                  "type": "null"
++                },
++                {
++                  "type": "object"
++                }
++              ]
++            },
++            "selection": {
++              "anyOf": [
++                {
++                  "type": "null"
++                },
++                {
++                  "type": "object"
++                }
++              ]
++            },
++            "proposed_action": {
++              "anyOf": [
++                {
++                  "type": "null"
++                },
++                {
++                  "type": "object"
++                }
++              ]
++            },
++            "action": {
++              "anyOf": [
++                {
++                  "type": "null"
++                },
++                {
++                  "type": "object"
++                }
++              ]
++            },
++            "reason": {
++              "anyOf": [
++                {
++                  "type": "null"
++                },
++                {
++                  "type": "string"
++                }
++              ]
++            },
++            "error": {
++              "anyOf": [
++                {
++                  "type": "null"
++                },
++                {
++                  "type": "object",
++                  "properties": {
++                    "code": {
++                      "type": "string"
++                    },
++                    "detail": {
++                      "type": "string"
++                    }
++                  },
++                  "required": [
++                    "code",
++                    "detail"
++                  ],
++                  "additionalProperties": false
++                }
++              ]
++            },
++            "reference_after": {
++              "anyOf": [
++                {
++                  "type": "null"
++                },
++                {
++                  "type": "object"
++                }
++              ]
++            },
++            "business_after": {
++              "anyOf": [
++                {
++                  "type": "null"
++                },
++                {
++                  "type": "object",
++                  "properties": {
++                    "version": {
++                      "const": "jev_packaging_physical_state_v1"
++                    },
++                    "raw": {
++                      "type": "object"
++                    },
++                    "violations": {
++                      "type": "array",
++                      "items": {
++                        "type": "object",
++                        "properties": {
++                          "item_id": {
++                            "type": "string"
++                          },
++                          "reason": {
++                            "type": "string"
++                          }
++                        },
++                        "required": [
++                          "item_id",
++                          "reason"
++                        ],
++                        "additionalProperties": false
++                      }
++                    },
++                    "runtime_facts": {
++                      "type": "object"
++                    }
++                  },
++                  "required": [
++                    "version",
++                    "raw",
++                    "violations",
++                    "runtime_facts"
++                  ],
++                  "additionalProperties": false
++                }
++              ]
++            },
++            "timings": {
++              "type": "object",
++              "properties": {
++                "public_parse_s": {
++                  "type": "number",
++                  "minimum": 0
++                },
++                "physical_generation_s": {
++                  "type": "number",
++                  "minimum": 0
++                },
++                "facts_context_s": {
++                  "type": "number",
++                  "minimum": 0
++                },
++                "public_business_s": {
++                  "type": "number",
++                  "minimum": 0
++                },
++                "selection_s": {
++                  "type": "number",
++                  "minimum": 0
++                },
++                "physical_commit_s": {
++                  "type": "number",
++                  "minimum": 0
++                },
++                "independent_evaluation_s": {
++                  "type": "number",
++                  "minimum": 0
++                },
++                "checkpoint_io_s": {
++                  "type": "number",
++                  "minimum": 0
++                },
++                "decision_wall_s": {
++                  "anyOf": [
++                    {
++                      "type": "null"
++                    },
++                    {
++                      "type": "number",
++                      "minimum": 0
++                    }
++                  ]
++                },
++                "decision_segments_s": {
++                  "type": "number",
++                  "minimum": 0
++                },
++                "generation_cache_hits": {
++                  "type": "integer",
++                  "minimum": 0
++                },
++                "generation_cache_misses": {
++                  "type": "integer",
++                  "minimum": 0
++                }
++              },
++              "required": [],
++              "additionalProperties": false
++            },
++            "monitor": {
++              "oneOf": [
++                {
++                  "type": "null"
++                },
++                {
++                  "$schema": "https://json-schema.org/draft/2020-12/schema",
++                  "type": "object",
++                  "additionalProperties": false,
++                  "properties": {
++                    "version": {
++                      "const": "selected_action_monitor_v1"
++                    },
++                    "binding": {
++                      "type": "object",
++                      "additionalProperties": false,
++                      "properties": {
++                        "state_digest": {
++                          "type": "string",
++                          "pattern": "^[0-9a-f]{64}$"
++                        },
++                        "candidate_digest": {
++                          "type": "string",
++                          "pattern": "^[0-9a-f]{64}$"
++                        },
++                        "action_digest": {
++                          "type": "string",
++                          "pattern": "^[0-9a-f]{64}$"
++                        },
++                        "selection_digest": {
++                          "type": "string",
++                          "pattern": "^[0-9a-f]{64}$"
++                        },
++                        "context_digest": {
++                          "type": "string",
++                          "pattern": "^[0-9a-f]{64}$"
++                        },
++                        "bundle_digest": {
++                          "type": "string",
++                          "pattern": "^[0-9a-f]{64}$"
++                        },
++                        "config_digest": {
++                          "type": "string",
++                          "pattern": "^[0-9a-f]{64}$"
++                        },
++                        "decision_id": {
++                          "type": "string"
++                        },
++                        "runtime_identity": {
++                          "type": "object"
++                        }
++                      },
++                      "required": [
++                        "state_digest",
++                        "candidate_digest",
++                        "action_digest",
++                        "selection_digest",
++                        "context_digest",
++                        "bundle_digest",
++                        "config_digest",
++                        "decision_id",
++                        "runtime_identity"
++                      ]
++                    },
++                    "status": {
++                      "enum": [
++                        "DISABLED",
++                        "STABLE",
++                        "UNSTABLE",
++                        "UNASSESSABLE",
++                        "ERROR"
++                      ]
++                    },
++                    "result": {
++                      "type": [
++                        "object",
++                        "null"
++                      ]
++                    },
++                    "attempted": {
++                      "const": true
++                    },
++                    "committed": {
++                      "const": false
++                    },
++                    "result_digest": {
++                      "type": "string",
++                      "pattern": "^[0-9a-f]{64}$"
++                    },
++                    "credential_digest": {
++                      "type": "string",
++                      "pattern": "^[0-9a-f]{64}$"
++                    }
++                  },
++                  "required": [
++                    "version",
++                    "binding",
++                    "status",
++                    "result",
++                    "attempted",
++                    "committed",
++                    "result_digest",
++                    "credential_digest"
++                  ]
++                }
++              ]
++            },
++            "monitor_result_reuses": {
++              "type": "integer",
++              "minimum": 0
++            }
++          },
++          "required": [
++            "event",
++            "decision_id",
++            "before",
++            "after",
++            "route",
++            "observation",
++            "bundle",
++            "context",
++            "selection",
++            "proposed_action",
++            "action",
++            "reason",
++            "error",
++            "reference_after",
++            "business_after",
++            "timings",
++            "monitor",
++            "monitor_result_reuses"
++          ],
++          "additionalProperties": false
++        }
++      ]
++    },
++    "runtime_identity": {
++      "type": "object",
++      "properties": {
++        "data_identity": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "physical_identity": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "strategy_identity": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "task_identity": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "monitor_identity": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        }
++      },
++      "required": [
++        "data_identity",
++        "physical_identity",
++        "strategy_identity",
++        "task_identity",
++        "monitor_identity"
++      ],
++      "additionalProperties": false
++    },
++    "record_digest": {
++      "type": "string"
++    }
++  },
++  "required": [
++    "version",
++    "job_id",
++    "method",
++    "task_digest",
++    "config_digest",
++    "state",
++    "cursor",
++    "decision",
++    "events",
++    "reason",
++    "phase",
++    "pending_event",
++    "runtime_identity",
++    "record_digest"
++  ],
++  "additionalProperties": false
++}
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v7.schema.json b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v7.schema.json
+new file mode 100644
+index 00000000..5b7a64d3
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v7.schema.json
+@@ -0,0 +1,308 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "type": "object",
++  "properties": {
++    "version": {
++      "const": "jev_packaging_memory_v7"
++    },
++    "model": {
++      "const": "jev-1.14.0"
++    },
++    "buffer_capacity": {
++      "const": 3
++    },
++    "candidate_backend": {
++      "const": "e2_original_v1"
++    },
++    "per_object_top_k": {
++      "const": 16
++    },
++    "joint_candidates_max": {
++      "const": 48
++    },
++    "selectable_pool": {
++      "const": "physical_feasible"
++    },
++    "policy_source": {
++      "const": "packaging_physical_only"
++    },
++    "selector": {
++      "const": "jev_with_trajectory"
++    },
++    "feature_version": {
++      "const": "packaging_physical_facts_v1"
++    },
++    "prompt_version": {
++      "const": "packaging_load_en_v1"
++    },
++    "display_order_seed": {
++      "const": 20261102
++    },
++    "max_request_bytes": {
++      "const": 96000
++    },
++    "memory_mode": {
++      "const": "T"
++    },
++    "experiment_protocol": {
++      "const": "jev_packaging_runtime_v1"
++    },
++    "business_mode": {
++      "const": "physical_only"
++    },
++    "execution_version": {
++      "const": "physical_commit_v1"
++    },
++    "evaluation_version": {
++      "const": "packaging_loading_metrics_v1"
++    },
++    "runtime_identity": {
++      "type": "object",
++      "properties": {
++        "data_identity": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "physical_identity": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "strategy_identity": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "task_identity": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "monitor_identity": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        }
++      },
++      "required": [
++        "data_identity",
++        "physical_identity",
++        "strategy_identity",
++        "task_identity",
++        "monitor_identity"
++      ],
++      "additionalProperties": false
++    },
++    "stability_monitor": {
++      "type": "object",
++      "additionalProperties": false,
++      "required": [
++        "enabled",
++        "algorithm",
++        "kernel_config",
++        "algorithm_identity",
++        "execution_environment"
++      ],
++      "properties": {
++        "enabled": {
++          "type": "boolean"
++        },
++        "algorithm": {
++          "enum": [
++            "pct_contact_network_v2",
++            null
++          ]
++        },
++        "kernel_config": {
++          "type": [
++            "object",
++            "null"
++          ]
++        },
++        "algorithm_identity": {
++          "type": [
++            "object",
++            "null"
++          ]
++        },
++        "execution_environment": {
++          "type": [
++            "object",
++            "null"
++          ]
++        }
++      },
++      "allOf": [
++        {
++          "if": {
++            "properties": {
++              "enabled": {
++                "const": true
++              }
++            }
++          },
++          "then": {
++            "properties": {
++              "algorithm": {
++                "const": "pct_contact_network_v2"
++              },
++              "kernel_config": {
++                "$schema": "https://json-schema.org/draft/2020-12/schema",
++                "type": "object",
++                "additionalProperties": false,
++                "required": [
++                  "algorithm",
++                  "setting",
++                  "height_tolerance_mm",
++                  "mass_atol_kg",
++                  "mass_rtol",
++                  "moment_atol_kg_mm",
++                  "moment_rtol",
++                  "solver_tolerance",
++                  "scaled_residual_tolerance",
++                  "strict_interior_slack",
++                  "certificate_gap",
++                  "presolve",
++                  "solver",
++                  "selection"
++                ],
++                "properties": {
++                  "algorithm": {
++                    "const": "pct_contact_network_v2"
++                  },
++                  "setting": {
++                    "const": 1
++                  },
++                  "height_tolerance_mm": {
++                    "const": 1e-06
++                  },
++                  "mass_atol_kg": {
++                    "const": 1e-09
++                  },
++                  "mass_rtol": {
++                    "const": 1e-09
++                  },
++                  "moment_atol_kg_mm": {
++                    "const": 1e-06
++                  },
++                  "moment_rtol": {
++                    "const": 1e-09
++                  },
++                  "solver_tolerance": {
++                    "const": 1e-10
++                  },
++                  "scaled_residual_tolerance": {
++                    "const": 1e-09
++                  },
++                  "strict_interior_slack": {
++                    "const": 1e-10
++                  },
++                  "certificate_gap": {
++                    "const": 1e-08
++                  },
++                  "presolve": {
++                    "const": false
++                  },
++                  "solver": {
++                    "const": "highs-ds"
++                  },
++                  "selection": {
++                    "const": "max_network_interior_then_lexicographic_forces"
++                  }
++                }
++              },
++              "algorithm_identity": {
++                "type": "object"
++              },
++              "execution_environment": {
++                "type": "object"
++              }
++            }
++          },
++          "else": {
++            "properties": {
++              "algorithm": {
++                "type": "null"
++              },
++              "kernel_config": {
++                "type": "null"
++              },
++              "algorithm_identity": {
++                "type": "null"
++              },
++              "execution_environment": {
++                "type": "null"
++              }
++            }
++          }
++        }
++      ]
++    },
++    "endpoint": {
++      "const": "https://api.typesafe.ai/v1/systemone"
++    },
++    "api_key_env": {
++      "const": "TYPESAFE_API_KEY"
++    },
++    "timeout_s": {
++      "type": "number",
++      "exclusiveMinimum": 0,
++      "maximum": 60
++    },
++    "max_retries": {
++      "const": 0
++    },
++    "response_max_bytes": {
++      "type": "integer",
++      "minimum": 1,
++      "maximum": 1000000
++    },
++    "probability_tolerance": {
++      "const": 1e-05
++    },
++    "probability_sum_validation": {
++      "const": "strict_or_2dp_rounding_interval_v1"
++    },
++    "memory_snapshot_digest": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    },
++    "memory_entry_digests": {
++      "type": "array",
++      "minItems": 1,
++      "uniqueItems": true,
++      "items": {
++        "type": "string",
++        "pattern": "^[0-9a-f]{64}$"
++      }
++    }
++  },
++  "required": [
++    "version",
++    "model",
++    "buffer_capacity",
++    "candidate_backend",
++    "per_object_top_k",
++    "joint_candidates_max",
++    "selectable_pool",
++    "policy_source",
++    "selector",
++    "feature_version",
++    "prompt_version",
++    "display_order_seed",
++    "max_request_bytes",
++    "memory_mode",
++    "experiment_protocol",
++    "business_mode",
++    "execution_version",
++    "evaluation_version",
++    "runtime_identity",
++    "stability_monitor",
++    "endpoint",
++    "api_key_env",
++    "timeout_s",
++    "max_retries",
++    "response_max_bytes",
++    "probability_tolerance",
++    "probability_sum_validation",
++    "memory_snapshot_digest",
++    "memory_entry_digests"
++  ],
++  "additionalProperties": false
++}
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v7.schema.json b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v7.schema.json
+new file mode 100644
+index 00000000..12dfe423
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v7.schema.json
+@@ -0,0 +1,1281 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "type": "object",
++  "properties": {
++    "version": {
++      "const": "jev_decision_context_v7"
++    },
++    "route": {
++      "enum": [
++        "STOP_NO_PHYSICAL_CANDIDATE",
++        "SINGLETON_BYPASS",
++        "CHOICE_REQUIRED"
++      ]
++    },
++    "model_state": {
++      "type": "object",
++      "properties": {
++        "units": {
++          "const": {
++            "length": "mm",
++            "mass": "kg"
++          }
++        },
++        "coordinate_convention": {
++          "type": "string"
++        },
++        "container": {
++          "type": "object",
++          "properties": {
++            "length_mm": {
++              "type": "number",
++              "minimum": 0
++            },
++            "width_mm": {
++              "type": "number",
++              "minimum": 0
++            },
++            "max_height_mm": {
++              "type": "number",
++              "minimum": 0
++            },
++            "max_payload_kg": {
++              "type": "number",
++              "minimum": 0
++            }
++          },
++          "required": [
++            "length_mm",
++            "width_mm",
++            "max_height_mm",
++            "max_payload_kg"
++          ],
++          "additionalProperties": false
++        },
++        "assumptions": {
++          "const": {
++            "mass_distribution": "uniform",
++            "centroid_model": "geometric_center",
++            "support_model": "70% area plus local center in actual contact rectangle; area-proportional load sharing"
++          }
++        },
++        "placed_objects": {
++          "type": "array",
++          "items": {
++            "type": "object",
++            "properties": {
++              "object_id": {
++                "type": "string"
++              },
++              "mass_kg": {
++                "type": "number",
++                "exclusiveMinimum": 0
++              },
++              "dimensions_mm": {
++                "type": "object",
++                "properties": {
++                  "length": {
++                    "type": "number",
++                    "exclusiveMinimum": 0
++                  },
++                  "width": {
++                    "type": "number",
++                    "exclusiveMinimum": 0
++                  },
++                  "height": {
++                    "type": "number",
++                    "exclusiveMinimum": 0
++                  }
++                },
++                "required": [
++                  "length",
++                  "width",
++                  "height"
++                ],
++                "additionalProperties": false
++              },
++              "stackable": {
++                "type": "boolean"
++              },
++              "max_top_load_kg": {
++                "type": "number",
++                "minimum": 0
++              },
++              "effective_top_permission_kg": {
++                "type": "number",
++                "minimum": 0
++              },
++              "current_top_load_kg": {
++                "type": "number",
++                "minimum": 0
++              },
++              "remaining_top_load_kg": {
++                "type": "number"
++              },
++              "capacity_utilization": {
++                "anyOf": [
++                  {
++                    "type": "null"
++                  },
++                  {
++                    "type": "number",
++                    "minimum": 0
++                  }
++                ]
++              },
++              "utilization_status": {
++                "enum": [
++                  "APPLICABLE",
++                  "NOT_APPLICABLE"
++                ]
++              },
++              "pose": {
++                "type": "object",
++                "properties": {
++                  "x_mm": {
++                    "type": "number"
++                  },
++                  "y_mm": {
++                    "type": "number"
++                  },
++                  "z_base_mm": {
++                    "type": "number",
++                    "minimum": 0
++                  },
++                  "yaw_deg": {
++                    "enum": [
++                      0,
++                      90
++                    ]
++                  }
++                },
++                "required": [
++                  "x_mm",
++                  "y_mm",
++                  "z_base_mm",
++                  "yaw_deg"
++                ],
++                "additionalProperties": false
++              },
++              "oriented_size_mm": {
++                "type": "array",
++                "items": {
++                  "type": "number"
++                },
++                "minItems": 3,
++                "maxItems": 3
++              },
++              "centroid_mm": {
++                "type": "array",
++                "items": {
++                  "type": "number"
++                },
++                "minItems": 3,
++                "maxItems": 3
++              },
++              "support_fractions": {
++                "type": "array",
++                "items": {
++                  "type": "object",
++                  "properties": {
++                    "object_id": {
++                      "type": "string"
++                    },
++                    "fraction": {
++                      "type": "number",
++                      "minimum": 0,
++                      "maximum": 1
++                    }
++                  },
++                  "required": [
++                    "object_id",
++                    "fraction"
++                  ],
++                  "additionalProperties": false
++                }
++              }
++            },
++            "required": [
++              "object_id",
++              "mass_kg",
++              "dimensions_mm",
++              "stackable",
++              "max_top_load_kg",
++              "effective_top_permission_kg",
++              "current_top_load_kg",
++              "remaining_top_load_kg",
++              "capacity_utilization",
++              "utilization_status",
++              "pose",
++              "oriented_size_mm",
++              "centroid_mm",
++              "support_fractions"
++            ],
++            "additionalProperties": false
++          }
++        },
++        "available_objects": {
++          "type": "array",
++          "items": {
++            "type": "object",
++            "properties": {
++              "object_id": {
++                "type": "string"
++              },
++              "mass_kg": {
++                "type": "number",
++                "exclusiveMinimum": 0
++              },
++              "dimensions_mm": {
++                "type": "object",
++                "properties": {
++                  "length": {
++                    "type": "number",
++                    "exclusiveMinimum": 0
++                  },
++                  "width": {
++                    "type": "number",
++                    "exclusiveMinimum": 0
++                  },
++                  "height": {
++                    "type": "number",
++                    "exclusiveMinimum": 0
++                  }
++                },
++                "required": [
++                  "length",
++                  "width",
++                  "height"
++                ],
++                "additionalProperties": false
++              },
++              "stackable": {
++                "type": "boolean"
++              },
++              "max_top_load_kg": {
++                "type": "number",
++                "minimum": 0
++              },
++              "effective_top_permission_kg": {
++                "type": "number",
++                "minimum": 0
++              },
++              "current_top_load_kg": {
++                "type": "number",
++                "minimum": 0
++              },
++              "remaining_top_load_kg": {
++                "type": "number"
++              },
++              "capacity_utilization": {
++                "anyOf": [
++                  {
++                    "type": "null"
++                  },
++                  {
++                    "type": "number",
++                    "minimum": 0
++                  }
++                ]
++              },
++              "utilization_status": {
++                "enum": [
++                  "APPLICABLE",
++                  "NOT_APPLICABLE"
++                ]
++              }
++            },
++            "required": [
++              "object_id",
++              "mass_kg",
++              "dimensions_mm",
++              "stackable",
++              "max_top_load_kg",
++              "effective_top_permission_kg",
++              "current_top_load_kg",
++              "remaining_top_load_kg",
++              "capacity_utilization",
++              "utilization_status"
++            ],
++            "additionalProperties": false
++          }
++        },
++        "buffer": {
++          "type": "object",
++          "properties": {
++            "capacity": {
++              "type": "integer",
++              "enum": [
++                1,
++                2,
++                3
++              ]
++            },
++            "end_of_stream": {
++              "type": "boolean"
++            },
++            "pending": {
++              "type": "array",
++              "items": {
++                "type": "object",
++                "properties": {
++                  "object_id": {
++                    "type": "string"
++                  },
++                  "slot": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "arrival_index": {
++                    "type": "integer",
++                    "minimum": 0
++                  }
++                },
++                "required": [
++                  "object_id",
++                  "slot",
++                  "arrival_index"
++                ],
++                "additionalProperties": false
++              },
++              "maxItems": 3
++            }
++          },
++          "required": [
++            "capacity",
++            "end_of_stream",
++            "pending"
++          ],
++          "additionalProperties": false
++        },
++        "objective": {
++          "const": "Complete loading while preserving useful space and capacity using observed facts; physical constraints are mandatory."
++        },
++        "memories": {
++          "type": "array",
++          "items": {
++            "type": "object"
++          }
++        }
++      },
++      "required": [
++        "units",
++        "coordinate_convention",
++        "container",
++        "assumptions",
++        "placed_objects",
++        "available_objects",
++        "buffer",
++        "objective",
++        "memories"
++      ],
++      "additionalProperties": false
++    },
++    "criteria": {
++      "type": "object",
++      "patternProperties": {
++        "^C[0-9]{2}$": {
++          "type": "object",
++          "properties": {
++            "pick_object": {
++              "type": "string"
++            },
++            "pose": {
++              "type": "object",
++              "properties": {
++                "x_mm": {
++                  "type": "number"
++                },
++                "y_mm": {
++                  "type": "number"
++                },
++                "z_base_mm": {
++                  "type": "number",
++                  "minimum": 0
++                },
++                "yaw_deg": {
++                  "enum": [
++                    0,
++                    90
++                  ]
++                }
++              },
++              "required": [
++                "x_mm",
++                "y_mm",
++                "z_base_mm",
++                "yaw_deg"
++              ],
++              "additionalProperties": false
++            },
++            "oriented_size_mm": {
++              "type": "array",
++              "items": {
++                "type": "number"
++              },
++              "minItems": 3,
++              "maxItems": 3
++            },
++            "features": {
++              "type": "object",
++              "properties": {
++                "geometry_score": {
++                  "type": "number"
++                },
++                "support_ratio": {
++                  "type": "number",
++                  "minimum": 0
++                },
++                "com_margin_mm": {
++                  "type": "number",
++                  "minimum": 0
++                },
++                "supported_by": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  }
++                },
++                "support_fractions": {
++                  "type": "array",
++                  "items": {
++                    "type": "object",
++                    "properties": {
++                      "object_id": {
++                        "type": "string"
++                      },
++                      "fraction": {
++                        "type": "number",
++                        "minimum": 0,
++                        "maximum": 1
++                      }
++                    },
++                    "required": [
++                      "object_id",
++                      "fraction"
++                    ],
++                    "additionalProperties": false
++                  }
++                },
++                "resulting_max_height_mm": {
++                  "type": "number",
++                  "minimum": 0
++                },
++                "resulting_volume_utilization": {
++                  "type": "number",
++                  "minimum": 0
++                }
++              },
++              "required": [
++                "geometry_score",
++                "support_ratio",
++                "com_margin_mm",
++                "supported_by",
++                "support_fractions",
++                "resulting_max_height_mm",
++                "resulting_volume_utilization"
++              ],
++              "additionalProperties": false
++            },
++            "load_changes": {
++              "type": "array",
++              "items": {
++                "type": "object",
++                "properties": {
++                  "object_id": {
++                    "type": "string"
++                  },
++                  "before_top_load_kg": {
++                    "type": "number",
++                    "minimum": 0
++                  },
++                  "increment_top_load_kg": {
++                    "type": "number",
++                    "minimum": 0
++                  },
++                  "after_top_load_kg": {
++                    "type": "number",
++                    "minimum": 0
++                  },
++                  "max_top_load_kg": {
++                    "type": "number",
++                    "minimum": 0
++                  },
++                  "remaining_top_load_kg": {
++                    "type": "number"
++                  }
++                },
++                "required": [
++                  "object_id",
++                  "before_top_load_kg",
++                  "increment_top_load_kg",
++                  "after_top_load_kg",
++                  "max_top_load_kg",
++                  "remaining_top_load_kg"
++                ],
++                "additionalProperties": false
++              }
++            }
++          },
++          "required": [
++            "pick_object",
++            "pose",
++            "oriented_size_mm",
++            "features",
++            "load_changes"
++          ],
++          "additionalProperties": false
++        }
++      },
++      "additionalProperties": false,
++      "maxProperties": 48
++    },
++    "request_body": {
++      "anyOf": [
++        {
++          "type": "null"
++        },
++        {
++          "type": "object",
++          "properties": {
++            "model": {
++              "enum": [
++                "LOCAL_TEST_DOUBLE_NOT_JEV",
++                "jev-1.14.0"
++              ]
++            },
++            "state": {
++              "type": "object",
++              "properties": {
++                "units": {
++                  "const": {
++                    "length": "mm",
++                    "mass": "kg"
++                  }
++                },
++                "coordinate_convention": {
++                  "type": "string"
++                },
++                "container": {
++                  "type": "object",
++                  "properties": {
++                    "length_mm": {
++                      "type": "number",
++                      "minimum": 0
++                    },
++                    "width_mm": {
++                      "type": "number",
++                      "minimum": 0
++                    },
++                    "max_height_mm": {
++                      "type": "number",
++                      "minimum": 0
++                    },
++                    "max_payload_kg": {
++                      "type": "number",
++                      "minimum": 0
++                    }
++                  },
++                  "required": [
++                    "length_mm",
++                    "width_mm",
++                    "max_height_mm",
++                    "max_payload_kg"
++                  ],
++                  "additionalProperties": false
++                },
++                "assumptions": {
++                  "const": {
++                    "mass_distribution": "uniform",
++                    "centroid_model": "geometric_center",
++                    "support_model": "70% area plus local center in actual contact rectangle; area-proportional load sharing"
++                  }
++                },
++                "placed_objects": {
++                  "type": "array",
++                  "items": {
++                    "type": "object",
++                    "properties": {
++                      "object_id": {
++                        "type": "string"
++                      },
++                      "mass_kg": {
++                        "type": "number",
++                        "exclusiveMinimum": 0
++                      },
++                      "dimensions_mm": {
++                        "type": "object",
++                        "properties": {
++                          "length": {
++                            "type": "number",
++                            "exclusiveMinimum": 0
++                          },
++                          "width": {
++                            "type": "number",
++                            "exclusiveMinimum": 0
++                          },
++                          "height": {
++                            "type": "number",
++                            "exclusiveMinimum": 0
++                          }
++                        },
++                        "required": [
++                          "length",
++                          "width",
++                          "height"
++                        ],
++                        "additionalProperties": false
++                      },
++                      "stackable": {
++                        "type": "boolean"
++                      },
++                      "max_top_load_kg": {
++                        "type": "number",
++                        "minimum": 0
++                      },
++                      "effective_top_permission_kg": {
++                        "type": "number",
++                        "minimum": 0
++                      },
++                      "current_top_load_kg": {
++                        "type": "number",
++                        "minimum": 0
++                      },
++                      "remaining_top_load_kg": {
++                        "type": "number"
++                      },
++                      "capacity_utilization": {
++                        "anyOf": [
++                          {
++                            "type": "null"
++                          },
++                          {
++                            "type": "number",
++                            "minimum": 0
++                          }
++                        ]
++                      },
++                      "utilization_status": {
++                        "enum": [
++                          "APPLICABLE",
++                          "NOT_APPLICABLE"
++                        ]
++                      },
++                      "pose": {
++                        "type": "object",
++                        "properties": {
++                          "x_mm": {
++                            "type": "number"
++                          },
++                          "y_mm": {
++                            "type": "number"
++                          },
++                          "z_base_mm": {
++                            "type": "number",
++                            "minimum": 0
++                          },
++                          "yaw_deg": {
++                            "enum": [
++                              0,
++                              90
++                            ]
++                          }
++                        },
++                        "required": [
++                          "x_mm",
++                          "y_mm",
++                          "z_base_mm",
++                          "yaw_deg"
++                        ],
++                        "additionalProperties": false
++                      },
++                      "oriented_size_mm": {
++                        "type": "array",
++                        "items": {
++                          "type": "number"
++                        },
++                        "minItems": 3,
++                        "maxItems": 3
++                      },
++                      "centroid_mm": {
++                        "type": "array",
++                        "items": {
++                          "type": "number"
++                        },
++                        "minItems": 3,
++                        "maxItems": 3
++                      },
++                      "support_fractions": {
++                        "type": "array",
++                        "items": {
++                          "type": "object",
++                          "properties": {
++                            "object_id": {
++                              "type": "string"
++                            },
++                            "fraction": {
++                              "type": "number",
++                              "minimum": 0,
++                              "maximum": 1
++                            }
++                          },
++                          "required": [
++                            "object_id",
++                            "fraction"
++                          ],
++                          "additionalProperties": false
++                        }
++                      }
++                    },
++                    "required": [
++                      "object_id",
++                      "mass_kg",
++                      "dimensions_mm",
++                      "stackable",
++                      "max_top_load_kg",
++                      "effective_top_permission_kg",
++                      "current_top_load_kg",
++                      "remaining_top_load_kg",
++                      "capacity_utilization",
++                      "utilization_status",
++                      "pose",
++                      "oriented_size_mm",
++                      "centroid_mm",
++                      "support_fractions"
++                    ],
++                    "additionalProperties": false
++                  }
++                },
++                "available_objects": {
++                  "type": "array",
++                  "items": {
++                    "type": "object",
++                    "properties": {
++                      "object_id": {
++                        "type": "string"
++                      },
++                      "mass_kg": {
++                        "type": "number",
++                        "exclusiveMinimum": 0
++                      },
++                      "dimensions_mm": {
++                        "type": "object",
++                        "properties": {
++                          "length": {
++                            "type": "number",
++                            "exclusiveMinimum": 0
++                          },
++                          "width": {
++                            "type": "number",
++                            "exclusiveMinimum": 0
++                          },
++                          "height": {
++                            "type": "number",
++                            "exclusiveMinimum": 0
++                          }
++                        },
++                        "required": [
++                          "length",
++                          "width",
++                          "height"
++                        ],
++                        "additionalProperties": false
++                      },
++                      "stackable": {
++                        "type": "boolean"
++                      },
++                      "max_top_load_kg": {
++                        "type": "number",
++                        "minimum": 0
++                      },
++                      "effective_top_permission_kg": {
++                        "type": "number",
++                        "minimum": 0
++                      },
++                      "current_top_load_kg": {
++                        "type": "number",
++                        "minimum": 0
++                      },
++                      "remaining_top_load_kg": {
++                        "type": "number"
++                      },
++                      "capacity_utilization": {
++                        "anyOf": [
++                          {
++                            "type": "null"
++                          },
++                          {
++                            "type": "number",
++                            "minimum": 0
++                          }
++                        ]
++                      },
++                      "utilization_status": {
++                        "enum": [
++                          "APPLICABLE",
++                          "NOT_APPLICABLE"
++                        ]
++                      }
++                    },
++                    "required": [
++                      "object_id",
++                      "mass_kg",
++                      "dimensions_mm",
++                      "stackable",
++                      "max_top_load_kg",
++                      "effective_top_permission_kg",
++                      "current_top_load_kg",
++                      "remaining_top_load_kg",
++                      "capacity_utilization",
++                      "utilization_status"
++                    ],
++                    "additionalProperties": false
++                  }
++                },
++                "buffer": {
++                  "type": "object",
++                  "properties": {
++                    "capacity": {
++                      "type": "integer",
++                      "enum": [
++                        1,
++                        2,
++                        3
++                      ]
++                    },
++                    "end_of_stream": {
++                      "type": "boolean"
++                    },
++                    "pending": {
++                      "type": "array",
++                      "items": {
++                        "type": "object",
++                        "properties": {
++                          "object_id": {
++                            "type": "string"
++                          },
++                          "slot": {
++                            "type": "integer",
++                            "minimum": 0
++                          },
++                          "arrival_index": {
++                            "type": "integer",
++                            "minimum": 0
++                          }
++                        },
++                        "required": [
++                          "object_id",
++                          "slot",
++                          "arrival_index"
++                        ],
++                        "additionalProperties": false
++                      },
++                      "maxItems": 3
++                    }
++                  },
++                  "required": [
++                    "capacity",
++                    "end_of_stream",
++                    "pending"
++                  ],
++                  "additionalProperties": false
++                },
++                "objective": {
++                  "const": "Complete loading while preserving useful space and capacity using observed facts; physical constraints are mandatory."
++                },
++                "memories": {
++                  "type": "array",
++                  "items": {
++                    "type": "object"
++                  }
++                }
++              },
++              "required": [
++                "units",
++                "coordinate_convention",
++                "container",
++                "assumptions",
++                "placed_objects",
++                "available_objects",
++                "buffer",
++                "objective",
++                "memories"
++              ],
++              "additionalProperties": false
++            },
++            "questions": {
++              "type": "object",
++              "properties": {
++                "next_action": {
++                  "type": "object",
++                  "properties": {
++                    "type": {
++                      "const": "choice"
++                    },
++                    "instructions": {
++                      "type": "string"
++                    },
++                    "criteria": {
++                      "type": "object",
++                      "patternProperties": {
++                        "^C[0-9]{2}$": {
++                          "type": "object",
++                          "properties": {
++                            "pick_object": {
++                              "type": "string"
++                            },
++                            "pose": {
++                              "type": "object",
++                              "properties": {
++                                "x_mm": {
++                                  "type": "number"
++                                },
++                                "y_mm": {
++                                  "type": "number"
++                                },
++                                "z_base_mm": {
++                                  "type": "number",
++                                  "minimum": 0
++                                },
++                                "yaw_deg": {
++                                  "enum": [
++                                    0,
++                                    90
++                                  ]
++                                }
++                              },
++                              "required": [
++                                "x_mm",
++                                "y_mm",
++                                "z_base_mm",
++                                "yaw_deg"
++                              ],
++                              "additionalProperties": false
++                            },
++                            "oriented_size_mm": {
++                              "type": "array",
++                              "items": {
++                                "type": "number"
++                              },
++                              "minItems": 3,
++                              "maxItems": 3
++                            },
++                            "features": {
++                              "type": "object",
++                              "properties": {
++                                "geometry_score": {
++                                  "type": "number"
++                                },
++                                "support_ratio": {
++                                  "type": "number",
++                                  "minimum": 0
++                                },
++                                "com_margin_mm": {
++                                  "type": "number",
++                                  "minimum": 0
++                                },
++                                "supported_by": {
++                                  "type": "array",
++                                  "items": {
++                                    "type": "string"
++                                  }
++                                },
++                                "support_fractions": {
++                                  "type": "array",
++                                  "items": {
++                                    "type": "object",
++                                    "properties": {
++                                      "object_id": {
++                                        "type": "string"
++                                      },
++                                      "fraction": {
++                                        "type": "number",
++                                        "minimum": 0,
++                                        "maximum": 1
++                                      }
++                                    },
++                                    "required": [
++                                      "object_id",
++                                      "fraction"
++                                    ],
++                                    "additionalProperties": false
++                                  }
++                                },
++                                "resulting_max_height_mm": {
++                                  "type": "number",
++                                  "minimum": 0
++                                },
++                                "resulting_volume_utilization": {
++                                  "type": "number",
++                                  "minimum": 0
++                                }
++                              },
++                              "required": [
++                                "geometry_score",
++                                "support_ratio",
++                                "com_margin_mm",
++                                "supported_by",
++                                "support_fractions",
++                                "resulting_max_height_mm",
++                                "resulting_volume_utilization"
++                              ],
++                              "additionalProperties": false
++                            },
++                            "load_changes": {
++                              "type": "array",
++                              "items": {
++                                "type": "object",
++                                "properties": {
++                                  "object_id": {
++                                    "type": "string"
++                                  },
++                                  "before_top_load_kg": {
++                                    "type": "number",
++                                    "minimum": 0
++                                  },
++                                  "increment_top_load_kg": {
++                                    "type": "number",
++                                    "minimum": 0
++                                  },
++                                  "after_top_load_kg": {
++                                    "type": "number",
++                                    "minimum": 0
++                                  },
++                                  "max_top_load_kg": {
++                                    "type": "number",
++                                    "minimum": 0
++                                  },
++                                  "remaining_top_load_kg": {
++                                    "type": "number"
++                                  }
++                                },
++                                "required": [
++                                  "object_id",
++                                  "before_top_load_kg",
++                                  "increment_top_load_kg",
++                                  "after_top_load_kg",
++                                  "max_top_load_kg",
++                                  "remaining_top_load_kg"
++                                ],
++                                "additionalProperties": false
++                              }
++                            }
++                          },
++                          "required": [
++                            "pick_object",
++                            "pose",
++                            "oriented_size_mm",
++                            "features",
++                            "load_changes"
++                          ],
++                          "additionalProperties": false
++                        }
++                      },
++                      "additionalProperties": false,
++                      "maxProperties": 48
++                    }
++                  },
++                  "required": [
++                    "type",
++                    "instructions",
++                    "criteria"
++                  ],
++                  "additionalProperties": false
++                }
++              },
++              "required": [
++                "next_action"
++              ],
++              "additionalProperties": false
++            }
++          },
++          "required": [
++            "model",
++            "state",
++            "questions"
++          ],
++          "additionalProperties": false
++        }
++      ]
++    },
++    "display_mapping": {
++      "type": "object",
++      "maxProperties": 48,
++      "patternProperties": {
++        "^C(?:0[1-9]|[1-3][0-9]|4[0-8])$": {
++          "type": "object",
++          "properties": {
++            "candidate_id": {
++              "type": "string"
++            },
++            "pick_item_id": {
++              "type": "string"
++            },
++            "candidate_digest": {
++              "type": "string",
++              "pattern": "^[0-9a-f]{64}$"
++            }
++          },
++          "required": [
++            "candidate_id",
++            "pick_item_id",
++            "candidate_digest"
++          ],
++          "additionalProperties": false
++        }
++      },
++      "additionalProperties": false
++    },
++    "local_binding": {
++      "type": "object",
++      "properties": {
++        "state_hash": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "observation_digest": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "instruction_digest": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "physical_digest": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "selectable_digest": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "mapping_digest": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "policy_digest": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "config_digest": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "generator_config_digest": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "model_state_digest": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "criteria_digest": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "request_body_digest": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "request_id": {
++          "type": "string"
++        },
++        "event_index": {
++          "type": "integer",
++          "minimum": 0
++        },
++        "prompt_version": {
++          "const": "packaging_load_en_v1"
++        },
++        "feature_version": {
++          "const": "packaging_physical_facts_v1"
++        },
++        "job_id": {
++          "type": "string",
++          "minLength": 1
++        },
++        "decision_id": {
++          "type": "string",
++          "minLength": 1
++        },
++        "runtime_identity": {
++          "type": "object",
++          "properties": {
++            "data_identity": {
++              "type": "string",
++              "pattern": "^[0-9a-f]{64}$"
++            },
++            "physical_identity": {
++              "type": "string",
++              "pattern": "^[0-9a-f]{64}$"
++            },
++            "strategy_identity": {
++              "type": "string",
++              "pattern": "^[0-9a-f]{64}$"
++            },
++            "task_identity": {
++              "type": "string",
++              "pattern": "^[0-9a-f]{64}$"
++            },
++            "monitor_identity": {
++              "type": "string",
++              "pattern": "^[0-9a-f]{64}$"
++            }
++          },
++          "required": [
++            "data_identity",
++            "physical_identity",
++            "strategy_identity",
++            "task_identity",
++            "monitor_identity"
++          ],
++          "additionalProperties": false
++        },
++        "memory_snapshot_digest": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "memory_view_digest": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        }
++      },
++      "required": [
++        "state_hash",
++        "observation_digest",
++        "instruction_digest",
++        "physical_digest",
++        "selectable_digest",
++        "mapping_digest",
++        "policy_digest",
++        "config_digest",
++        "generator_config_digest",
++        "model_state_digest",
++        "criteria_digest",
++        "request_body_digest",
++        "request_id",
++        "event_index",
++        "prompt_version",
++        "feature_version",
++        "runtime_identity",
++        "memory_snapshot_digest",
++        "memory_view_digest"
++      ],
++      "additionalProperties": false
++    },
++    "memory_view": {
++      "type": "object"
++    }
++  },
++  "required": [
++    "version",
++    "route",
++    "model_state",
++    "criteria",
++    "request_body",
++    "display_mapping",
++    "local_binding",
++    "memory_view"
++  ],
++  "additionalProperties": false
++}
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/memory_order_metrics_v1.schema.json b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/memory_order_metrics_v1.schema.json
+new file mode 100644
+index 00000000..d0621747
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/memory_order_metrics_v1.schema.json
+@@ -0,0 +1,250 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "type": "object",
++  "properties": {
++    "version": {
++      "const": "jev_packaging_memory_metrics_v1"
++    },
++    "task_id": {
++      "type": "string"
++    },
++    "mode": {
++      "enum": [
++        "source_preserving",
++        "controlled_packaging"
++      ]
++    },
++    "layer": {
++      "type": "string"
++    },
++    "selector_backend": {
++      "const": "jev_with_trajectory"
++    },
++    "origin": {
++      "enum": [
++        "jev",
++        "LOCAL_TEST_DOUBLE_NOT_JEV"
++      ]
++    },
++    "runtime_identity": {
++      "type": "object",
++      "properties": {
++        "data_identity": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "physical_identity": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "strategy_identity": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "task_identity": {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        "monitor_identity": {
++          "type": "string"
++        }
++      },
++      "required": [
++        "data_identity",
++        "physical_identity",
++        "strategy_identity",
++        "task_identity",
++        "monitor_identity"
++      ],
++      "additionalProperties": false
++    },
++    "planned_items": {
++      "type": "number",
++      "minimum": 0
++    },
++    "arrived_items": {
++      "type": "number",
++      "minimum": 0
++    },
++    "placed_items": {
++      "type": "number",
++      "minimum": 0
++    },
++    "placed_item_ratio": {
++      "type": "number",
++      "minimum": 0
++    },
++    "placed_volume_ratio": {
++      "type": "number",
++      "minimum": 0
++    },
++    "placed_mass_kg": {
++      "type": "number",
++      "minimum": 0
++    },
++    "planned_mass_kg": {
++      "type": "number",
++      "minimum": 0
++    },
++    "placed_mass_ratio": {
++      "type": "number",
++      "minimum": 0
++    },
++    "completed": {
++      "type": "boolean"
++    },
++    "termination_reason": {
++      "type": "string"
++    },
++    "feasibility_status": {
++      "const": "UNKNOWN"
++    },
++    "global_infeasibility_proven": {
++      "const": false
++    },
++    "physical_violation_instances": {
++      "type": "array",
++      "items": {
++        "type": "object",
++        "properties": {
++          "item_id": {
++            "type": "string"
++          },
++          "reason": {
++            "type": "string"
++          }
++        },
++        "required": [
++          "item_id",
++          "reason"
++        ],
++        "additionalProperties": false
++      }
++    },
++    "physical_valid": {
++      "type": "boolean"
++    },
++    "physical_zero_violation_interpretation": {
++      "type": "string"
++    },
++    "max_height_mm": {
++      "type": "number",
++      "minimum": 0
++    },
++    "combined_centroid_mm": {
++      "anyOf": [
++        {
++          "type": "null"
++        },
++        {
++          "type": "array",
++          "items": {
++            "type": "number"
++          },
++          "minItems": 3,
++          "maxItems": 3
++        }
++      ]
++    },
++    "maximum_capacity_utilization": {
++      "anyOf": [
++        {
++          "type": "null"
++        },
++        {
++          "type": "number",
++          "minimum": 0
++        }
++      ]
++    },
++    "remaining_capacity_kg": {
++      "type": "array",
++      "items": {
++        "type": "number"
++      }
++    },
++    "cost": {
++      "type": "object",
++      "properties": {
++        "model_calls": {
++          "type": "integer",
++          "minimum": 0
++        },
++        "model_cost_usd": {
++          "anyOf": [
++            {
++              "type": "number",
++              "minimum": 0
++            },
++            {
++              "const": "UNKNOWN"
++            }
++          ]
++        },
++        "memory_cost_usd": {
++          "const": 0
++        },
++        "decision_segment_wall_s": {
++          "type": "number",
++          "minimum": 0
++        }
++      },
++      "required": [
++        "model_calls",
++        "model_cost_usd",
++        "memory_cost_usd",
++        "decision_segment_wall_s"
++      ],
++      "additionalProperties": false
++    },
++    "policy_effect": {
++      "const": "NOT_MEASURED"
++    },
++    "stability_algorithm": {
++      "enum": [
++        "pct_contact_network_v2",
++        "DISABLED"
++      ]
++    },
++    "monitor_statistics": {
++      "type": "object"
++    },
++    "memory_snapshot_digest": {
++      "type": "string"
++    }
++  },
++  "required": [
++    "version",
++    "task_id",
++    "mode",
++    "layer",
++    "selector_backend",
++    "origin",
++    "runtime_identity",
++    "planned_items",
++    "arrived_items",
++    "placed_items",
++    "placed_item_ratio",
++    "placed_volume_ratio",
++    "placed_mass_kg",
++    "planned_mass_kg",
++    "placed_mass_ratio",
++    "completed",
++    "termination_reason",
++    "feasibility_status",
++    "global_infeasibility_proven",
++    "physical_violation_instances",
++    "physical_valid",
++    "physical_zero_violation_interpretation",
++    "max_height_mm",
++    "combined_centroid_mm",
++    "maximum_capacity_utilization",
++    "remaining_capacity_kg",
++    "cost",
++    "policy_effect",
++    "stability_algorithm",
++    "monitor_statistics",
++    "memory_snapshot_digest"
++  ],
++  "additionalProperties": false
++}
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_evidence_v1.schema.json b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_evidence_v1.schema.json
+new file mode 100644
+index 00000000..a91a0221
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_evidence_v1.schema.json
+@@ -0,0 +1,26 @@
++{
++  "type": "object",
++  "properties": {
++    "path": {
++      "type": "string"
++    },
++    "file_sha256": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    },
++    "json_pointer": {
++      "type": "string"
++    },
++    "value_digest": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    }
++  },
++  "required": [
++    "path",
++    "file_sha256",
++    "json_pointer",
++    "value_digest"
++  ],
++  "additionalProperties": false
++}
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_memory_query_v1.schema.json b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_memory_query_v1.schema.json
+new file mode 100644
+index 00000000..2a59bfc5
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_memory_query_v1.schema.json
+@@ -0,0 +1,57 @@
++{
++  "type": "object",
++  "properties": {
++    "version": {
++      "const": "packaging_public_query_v1"
++    },
++    "features": {
++      "type": "object",
++      "properties": {
++        "buffer_fill": {
++          "type": "number"
++        },
++        "placed_fill": {
++          "type": "number"
++        },
++        "mean_length": {
++          "type": "number"
++        },
++        "mean_width": {
++          "type": "number"
++        },
++        "mean_height": {
++          "type": "number"
++        },
++        "mean_mass": {
++          "type": "number"
++        },
++        "mean_capacity": {
++          "type": "number"
++        },
++        "stackable_fraction": {
++          "type": "number"
++        },
++        "candidate_height": {
++          "type": "number"
++        }
++      },
++      "required": [
++        "buffer_fill",
++        "placed_fill",
++        "mean_length",
++        "mean_width",
++        "mean_height",
++        "mean_mass",
++        "mean_capacity",
++        "stackable_fraction",
++        "candidate_height"
++      ],
++      "additionalProperties": false
++    }
++  },
++  "required": [
++    "version",
++    "features"
++  ],
++  "additionalProperties": false
++}
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_memory_snapshot_v1.schema.json b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_memory_snapshot_v1.schema.json
+new file mode 100644
+index 00000000..6f4bec75
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_memory_snapshot_v1.schema.json
+@@ -0,0 +1,88 @@
++{
++  "type": "object",
++  "properties": {
++    "version": {
++      "const": "packaging_memory_snapshot_v1"
++    },
++    "mode": {
++      "enum": [
++        "T",
++        "E"
++      ]
++    },
++    "case_schema": {
++      "type": "string"
++    },
++    "build_version": {
++      "type": "string"
++    },
++    "build_method": {
++      "type": "string"
++    },
++    "generation_model": {
++      "type": [
++        "string",
++        "null"
++      ]
++    },
++    "generation_cost_usd": {
++      "type": "number"
++    },
++    "review_status": {
++      "enum": [
++        "PENDING",
++        "APPROVED",
++        "REJECTED"
++      ]
++    },
++    "source_groups": {
++      "type": "array",
++      "items": {
++        "type": "string"
++      }
++    },
++    "parent": {
++      "type": "object"
++    },
++    "retrieval_rule": {
++      "type": "object"
++    },
++    "frozen_at": {
++      "type": "string"
++    },
++    "cases": {
++      "type": "array",
++      "items": {
++        "type": "object"
++      }
++    },
++    "limitations": {
++      "type": "array",
++      "items": {
++        "type": "string"
++      }
++    },
++    "snapshot_digest": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    }
++  },
++  "required": [
++    "version",
++    "mode",
++    "case_schema",
++    "build_version",
++    "build_method",
++    "generation_model",
++    "generation_cost_usd",
++    "review_status",
++    "source_groups",
++    "parent",
++    "retrieval_rule",
++    "frozen_at",
++    "cases",
++    "limitations",
++    "snapshot_digest"
++  ],
++  "additionalProperties": false
++}
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_memory_view_v1.schema.json b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_memory_view_v1.schema.json
+new file mode 100644
+index 00000000..ad8046e1
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_memory_view_v1.schema.json
+@@ -0,0 +1,57 @@
++{
++  "type": "object",
++  "properties": {
++    "version": {
++      "const": "packaging_memory_view_v1"
++    },
++    "mode": {
++      "enum": [
++        "T",
++        "E"
++      ]
++    },
++    "snapshot_digest": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    },
++    "query_digest": {
++      "type": [
++        "string",
++        "null"
++      ]
++    },
++    "entries": {
++      "type": "array",
++      "items": {
++        "type": "object"
++      }
++    },
++    "reason": {
++      "type": "string"
++    },
++    "injected_chars": {
++      "type": "integer",
++      "minimum": 0
++    },
++    "injected_utf8_bytes": {
++      "type": "integer",
++      "minimum": 0
++    },
++    "view_digest": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    }
++  },
++  "required": [
++    "version",
++    "mode",
++    "snapshot_digest",
++    "query_digest",
++    "entries",
++    "reason",
++    "injected_chars",
++    "injected_utf8_bytes",
++    "view_digest"
++  ],
++  "additionalProperties": false
++}
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_public_fragment_v1.schema.json b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_public_fragment_v1.schema.json
+new file mode 100644
+index 00000000..cc96aee4
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_public_fragment_v1.schema.json
+@@ -0,0 +1,395 @@
++{
++  "type": "object",
++  "properties": {
++    "condition": {
++      "type": "object",
++      "properties": {
++        "buffer_capacity": {
++          "type": "number"
++        },
++        "container": {
++          "type": "object",
++          "properties": {
++            "coordinate_frame": {
++              "const": "container_bottom_center"
++            },
++            "length_mm": {
++              "type": "number"
++            },
++            "max_height_mm": {
++              "type": "number"
++            },
++            "max_payload_kg": {
++              "type": "number"
++            },
++            "width_mm": {
++              "type": "number"
++            }
++          },
++          "required": [
++            "coordinate_frame",
++            "length_mm",
++            "max_height_mm",
++            "max_payload_kg",
++            "width_mm"
++          ],
++          "additionalProperties": false
++        },
++        "observed_buffer": {
++          "type": "array",
++          "items": {
++            "type": "object",
++            "properties": {
++              "dimensions_mm": {
++                "type": "object",
++                "properties": {
++                  "height": {
++                    "type": "number"
++                  },
++                  "length": {
++                    "type": "number"
++                  },
++                  "width": {
++                    "type": "number"
++                  }
++                },
++                "required": [
++                  "height",
++                  "length",
++                  "width"
++                ],
++                "additionalProperties": false
++              },
++              "mass_kg": {
++                "type": "number"
++              },
++              "role": {
++                "type": "string",
++                "pattern": "^history_box_[1-3]$"
++              },
++              "stackable": {
++                "type": "boolean"
++              },
++              "top_load_limit_kg_synthetic": {
++                "type": "number"
++              }
++            },
++            "required": [
++              "dimensions_mm",
++              "mass_kg",
++              "role",
++              "stackable",
++              "top_load_limit_kg_synthetic"
++            ],
++            "additionalProperties": false
++          },
++          "minItems": 1,
++          "maxItems": 3
++        },
++        "placed_count": {
++          "type": "number"
++        }
++      },
++      "required": [
++        "buffer_capacity",
++        "container",
++        "observed_buffer",
++        "placed_count"
++      ],
++      "additionalProperties": false
++    },
++    "evaluation_rule": {
++      "const": "jev_branch_comparison_rule_v2"
++    },
++    "fixed_followup": {
++      "const": "local_geometry_test_double"
++    },
++    "geometry_convention": {
++      "const": "historical center x/L,y/W and base z/H; normalized historical descriptions are not current hard actions"
++    },
++    "historical_interventions": {
++      "type": "object",
++      "properties": {
++        "alternative": {
++          "type": "object",
++          "properties": {
++            "box": {
++              "type": "object",
++              "properties": {
++                "dimensions_mm": {
++                  "type": "object",
++                  "properties": {
++                    "height": {
++                      "type": "number"
++                    },
++                    "length": {
++                      "type": "number"
++                    },
++                    "width": {
++                      "type": "number"
++                    }
++                  },
++                  "required": [
++                    "height",
++                    "length",
++                    "width"
++                  ],
++                  "additionalProperties": false
++                },
++                "mass_kg": {
++                  "type": "number"
++                },
++                "stackable": {
++                  "type": "boolean"
++                },
++                "top_load_limit_kg_synthetic": {
++                  "type": "number"
++                }
++              },
++              "required": [
++                "dimensions_mm",
++                "mass_kg",
++                "stackable",
++                "top_load_limit_kg_synthetic"
++              ],
++              "additionalProperties": false
++            },
++            "historical_center_over_container": {
++              "type": "array",
++              "items": {
++                "type": "number"
++              },
++              "minItems": 3,
++              "maxItems": 3
++            },
++            "size_over_container": {
++              "type": "array",
++              "items": {
++                "type": "number"
++              },
++              "minItems": 3,
++              "maxItems": 3
++            },
++            "yaw_deg": {
++              "type": "number"
++            }
++          },
++          "required": [
++            "box",
++            "historical_center_over_container",
++            "size_over_container",
++            "yaw_deg"
++          ],
++          "additionalProperties": false
++        },
++        "original": {
++          "type": "object",
++          "properties": {
++            "box": {
++              "type": "object",
++              "properties": {
++                "dimensions_mm": {
++                  "type": "object",
++                  "properties": {
++                    "height": {
++                      "type": "number"
++                    },
++                    "length": {
++                      "type": "number"
++                    },
++                    "width": {
++                      "type": "number"
++                    }
++                  },
++                  "required": [
++                    "height",
++                    "length",
++                    "width"
++                  ],
++                  "additionalProperties": false
++                },
++                "mass_kg": {
++                  "type": "number"
++                },
++                "stackable": {
++                  "type": "boolean"
++                },
++                "top_load_limit_kg_synthetic": {
++                  "type": "number"
++                }
++              },
++              "required": [
++                "dimensions_mm",
++                "mass_kg",
++                "stackable",
++                "top_load_limit_kg_synthetic"
++              ],
++              "additionalProperties": false
++            },
++            "historical_center_over_container": {
++              "type": "array",
++              "items": {
++                "type": "number"
++              },
++              "minItems": 3,
++              "maxItems": 3
++            },
++            "size_over_container": {
++              "type": "array",
++              "items": {
++                "type": "number"
++              },
++              "minItems": 3,
++              "maxItems": 3
++            },
++            "yaw_deg": {
++              "type": "number"
++            }
++          },
++          "required": [
++            "box",
++            "historical_center_over_container",
++            "size_over_container",
++            "yaw_deg"
++          ],
++          "additionalProperties": false
++        },
++        "relationship": {
++          "enum": [
++            "same box different position",
++            "different boxes"
++          ]
++        }
++      },
++      "required": [
++        "alternative",
++        "original",
++        "relationship"
++      ],
++      "additionalProperties": false
++    },
++    "historical_result": {
++      "type": "object",
++      "properties": {
++        "alternative": {
++          "type": "object",
++          "properties": {
++            "actual_height_mm": {
++              "type": "number"
++            },
++            "envelope_utilization": {
++              "type": "number"
++            },
++            "placed_items": {
++              "type": "number"
++            },
++            "placed_mass_kg": {
++              "type": "number"
++            },
++            "placed_volume_ratio": {
++              "type": "number"
++            }
++          },
++          "required": [
++            "actual_height_mm",
++            "envelope_utilization",
++            "placed_items",
++            "placed_mass_kg",
++            "placed_volume_ratio"
++          ],
++          "additionalProperties": false
++        },
++        "delta": {
++          "type": "object",
++          "properties": {
++            "actual_height_mm": {
++              "type": "number"
++            },
++            "envelope_utilization": {
++              "type": "number"
++            },
++            "placed_items": {
++              "type": "number"
++            },
++            "placed_mass_kg": {
++              "type": "number"
++            },
++            "placed_volume_ratio": {
++              "type": "number"
++            }
++          },
++          "required": [
++            "actual_height_mm",
++            "envelope_utilization",
++            "placed_items",
++            "placed_mass_kg",
++            "placed_volume_ratio"
++          ],
++          "additionalProperties": false
++        },
++        "reference": {
++          "type": "object",
++          "properties": {
++            "actual_height_mm": {
++              "type": "number"
++            },
++            "envelope_utilization": {
++              "type": "number"
++            },
++            "placed_items": {
++              "type": "number"
++            },
++            "placed_mass_kg": {
++              "type": "number"
++            },
++            "placed_volume_ratio": {
++              "type": "number"
++            }
++          },
++          "required": [
++            "actual_height_mm",
++            "envelope_utilization",
++            "placed_items",
++            "placed_mass_kg",
++            "placed_volume_ratio"
++          ],
++          "additionalProperties": false
++        }
++      },
++      "required": [
++        "alternative",
++        "delta",
++        "reference"
++      ],
++      "additionalProperties": false
++    },
++    "kind": {
++      "const": "T"
++    },
++    "limitations": {
++      "const": [
++        "POST_HOC_USER_REVISED_OBJECTIVE",
++        "two previously exposed training sources; no unseen-source validation",
++        "fixed local_geometry_test_double continuation; finite intervention, no causal or global optimum claim",
++        "synthetic packaging load parameters; feasibility UNKNOWN",
++        "historical observation only, not a recommendation or an action for the current task",
++        "not a universal cross-box or rank rule; external memory is not weight updating"
++      ]
++    },
++    "notice": {
++      "const": "historical observation only, not a recommendation or an action for the current task"
++    }
++  },
++  "required": [
++    "condition",
++    "evaluation_rule",
++    "fixed_followup",
++    "geometry_convention",
++    "historical_interventions",
++    "historical_result",
++    "kind",
++    "limitations",
++    "notice"
++  ],
++  "additionalProperties": false
++}
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_trajectory_v1.schema.json b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_trajectory_v1.schema.json
+new file mode 100644
+index 00000000..bdd11f3a
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_trajectory_v1.schema.json
+@@ -0,0 +1,87 @@
++{
++  "type": "object",
++  "properties": {
++    "version": {
++      "const": "packaging_trajectory_v1"
++    },
++    "kind": {
++      "enum": [
++        "T",
++        "E"
++      ]
++    },
++    "review_status": {
++      "enum": [
++        "PENDING",
++        "APPROVED",
++        "REJECTED"
++      ]
++    },
++    "fixture_only": {
++      "type": "boolean"
++    },
++    "public_fragment": {
++      "type": "object"
++    },
++    "public_digest": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    },
++    "retrieval_query": {
++      "type": "object"
++    },
++    "provenance": {
++      "type": "object"
++    },
++    "private_original": {
++      "type": "object"
++    },
++    "evidence": {
++      "type": "object",
++      "additionalProperties": {
++        "type": "object",
++        "properties": {
++          "path": {
++            "type": "string"
++          },
++          "file_sha256": {
++            "type": "string",
++            "pattern": "^[0-9a-f]{64}$"
++          },
++          "json_pointer": {
++            "type": "string"
++          },
++          "value_digest": {
++            "type": "string",
++            "pattern": "^[0-9a-f]{64}$"
++          }
++        },
++        "required": [
++          "path",
++          "file_sha256",
++          "json_pointer",
++          "value_digest"
++        ],
++        "additionalProperties": false
++      }
++    },
++    "case_digest": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    }
++  },
++  "required": [
++    "version",
++    "kind",
++    "review_status",
++    "fixture_only",
++    "public_fragment",
++    "public_digest",
++    "retrieval_query",
++    "provenance",
++    "private_original",
++    "evidence",
++    "case_digest"
++  ],
++  "additionalProperties": false
++}
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v7.schema.json b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v7.schema.json
+new file mode 100644
+index 00000000..ab0bead0
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v7.schema.json
+@@ -0,0 +1,238 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "type": "object",
++  "properties": {
++    "version": {
++      "const": "jev_selection_result_v7"
++    },
++    "status": {
++      "enum": [
++        "selected",
++        "singleton",
++        "provider_failure",
++        "invalid_response",
++        "budget_exhausted",
++        "unknown_in_flight"
++      ]
++    },
++    "selected_display_id": {
++      "anyOf": [
++        {
++          "type": "string",
++          "pattern": "^C[0-9]{2}$"
++        },
++        {
++          "type": "null"
++        }
++      ]
++    },
++    "selected_candidate_id": {
++      "anyOf": [
++        {
++          "type": "string"
++        },
++        {
++          "type": "null"
++        }
++      ]
++    },
++    "source": {
++      "enum": [
++        "test_double",
++        "singleton",
++        "jev"
++      ]
++    },
++    "requested_model": {
++      "anyOf": [
++        {
++          "type": "string"
++        },
++        {
++          "type": "null"
++        }
++      ]
++    },
++    "served_model": {
++      "anyOf": [
++        {
++          "type": "string"
++        },
++        {
++          "type": "null"
++        }
++      ]
++    },
++    "probabilities": {
++      "anyOf": [
++        {
++          "type": "object",
++          "additionalProperties": {
++            "type": "number",
++            "minimum": 0,
++            "maximum": 1
++          }
++        },
++        {
++          "type": "null"
++        }
++      ]
++    },
++    "confidence": {
++      "anyOf": [
++        {
++          "type": "number",
++          "minimum": 0,
++          "maximum": 1
++        },
++        {
++          "type": "null"
++        }
++      ]
++    },
++    "attempt_ids": {
++      "type": "array",
++      "items": {
++        "type": "string"
++      },
++      "maxItems": 1,
++      "uniqueItems": true
++    },
++    "usage": {
++      "anyOf": [
++        {
++          "type": "object",
++          "properties": {
++            "input_tokens": {
++              "type": "integer",
++              "minimum": 0
++            },
++            "output_tokens": {
++              "type": "integer",
++              "minimum": 0
++            }
++          },
++          "required": [
++            "input_tokens",
++            "output_tokens"
++          ],
++          "additionalProperties": false
++        },
++        {
++          "type": "null"
++        }
++      ]
++    },
++    "latency_s": {
++      "anyOf": [
++        {
++          "type": "number",
++          "minimum": 0
++        },
++        {
++          "type": "null"
++        }
++      ]
++    },
++    "local_binding_digest": {
++      "type": "string",
++      "pattern": "^[0-9a-f]{64}$"
++    },
++    "raw_response_digest": {
++      "anyOf": [
++        {
++          "type": "string",
++          "pattern": "^[0-9a-f]{64}$"
++        },
++        {
++          "type": "null"
++        }
++      ]
++    },
++    "error": {
++      "anyOf": [
++        {
++          "type": "string"
++        },
++        {
++          "type": "null"
++        }
++      ]
++    },
++    "network_attempted": {
++      "type": [
++        "boolean",
++        "null"
++      ]
++    },
++    "error_stage": {
++      "type": [
++        "string",
++        "null"
++      ]
++    },
++    "error_code": {
++      "type": [
++        "string",
++        "null"
++      ]
++    }
++  },
++  "required": [
++    "version",
++    "status",
++    "selected_display_id",
++    "selected_candidate_id",
++    "source",
++    "requested_model",
++    "served_model",
++    "probabilities",
++    "confidence",
++    "attempt_ids",
++    "usage",
++    "latency_s",
++    "local_binding_digest",
++    "raw_response_digest",
++    "error",
++    "network_attempted",
++    "error_stage",
++    "error_code"
++  ],
++  "additionalProperties": false,
++  "allOf": [
++    {
++      "if": {
++        "properties": {
++          "status": {
++            "enum": [
++              "selected",
++              "singleton"
++            ]
++          }
++        }
++      },
++      "then": {
++        "properties": {
++          "selected_display_id": {
++            "type": "string",
++            "pattern": "^C[0-9]{2}$"
++          },
++          "selected_candidate_id": {
++            "type": "string",
++            "minLength": 1
++          }
++        }
++      },
++      "else": {
++        "properties": {
++          "selected_display_id": {
++            "type": "null"
++          },
++          "selected_candidate_id": {
++            "type": "null"
++          }
++        }
++      }
++    }
++  ]
++}

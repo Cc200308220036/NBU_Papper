@@ -1,0 +1,76 @@
+{
+  "stage": "JN3-A",
+  "version": "jev_T_engineering_acceptance_v1",
+  "criteria": {
+    "T01": {
+      "status": "PASS",
+      "evidence": [
+        "parent_verification.json",
+        "trajectory_evidence_mapping.json",
+        "trajectory_snapshot.json",
+        "snapshot_review_receipt.json"
+      ],
+      "scope": "2 reviewed training comparisons only; 166 leaf fact references; public projection contains no source/test/future identities"
+    },
+    "T02": {
+      "status": "PASS",
+      "evidence": [
+        "interface_contract.json",
+        "tests/final.xml",
+        "context.json"
+      ],
+      "scope": "explicit MemoryView; v6 empty guards and old schemas retained; model builder does not load private task"
+    },
+    "T03": {
+      "status": "PASS",
+      "evidence": [
+        "retrieval_config.json",
+        "retrieval.json",
+        "memory_view.json",
+        "preregistration.json",
+        "request.json",
+        "request_ledger/requests.json"
+      ],
+      "scope": "deterministic score/threshold/tie, complete-entry character/byte budgets, frozen snapshot; library=2, qualified retrieval=1, actual injected request=1"
+    },
+    "T04": {
+      "status": "PASS",
+      "evidence": [
+        "public_private_contract.json",
+        "schemas/packaging_public_fragment_v1.schema.json",
+        "request.json"
+      ],
+      "scope": "anonymous case roles, normalized historical geometry, 5-metric historical result budget, costs and restrictions retained; no historical Cxx/order matching"
+    },
+    "T05": {
+      "status": "PASS",
+      "evidence": [
+        "query_preregistration.json",
+        "retrieval.json",
+        "request_ledger/requests.json",
+        "response.raw.json",
+        "selection.json",
+        "stages/",
+        "monitor.json",
+        "execution.json",
+        "saved_record_validation.json"
+      ],
+      "scope": "whole-source exclusion; 1 real native Choice -> current C14 -> STABLE -> one original commit -> stop"
+    },
+    "T06": {
+      "status": "PASS",
+      "evidence": [
+        "trajectory_memory_readiness.json",
+        "trajectory_snapshot.json",
+        "interface_contract.json",
+        "code_snapshot/",
+        "verify_frozen.py",
+        "readonly_guard.py"
+      ],
+      "scope": "T interfaces/snapshot/verification delivered; E type/review/snapshot slots reserved, E execution rejects; no E cards"
+    }
+  },
+  "full_JN3": "NOT_COMPLETED",
+  "N10_N11_full": "NOT_CLAIMED",
+  "research_benefit": "NOT_ESTABLISHED"
+}

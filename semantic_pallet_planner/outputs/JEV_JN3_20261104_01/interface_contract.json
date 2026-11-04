@@ -1,0 +1,37 @@
+{
+  "version": "packaging_T_interface_contract_v1",
+  "method": "jev_with_trajectory",
+  "versions": {
+    "candidate_bundle": "jev_candidate_bundle_v7",
+    "checkpoint": "jev_checkpoint_v7",
+    "config": "jev_packaging_memory_v7",
+    "context": "jev_decision_context_v7",
+    "execution": "jev_packaging_memory_v7",
+    "metrics": "jev_packaging_memory_metrics_v1",
+    "request_ledger": "jev_packaging_memory_requests_v1",
+    "run": "JN3-A_single_decision_v1",
+    "selection": "jev_selection_result_v7"
+  },
+  "unchanged_contracts": [
+    "v4/v5/v6 schemas and methods",
+    "JN0 full-order v1 plan/run",
+    "JN1 no-memory v6",
+    "shared monitor result v2 and physical_commit_v1",
+    "native transport v1"
+  ],
+  "public_interfaces": [
+    "build_snapshot(repo,parent) -> MemorySnapshotReceipt",
+    "public_query(context) -> closed numeric public query",
+    "retrieve(query,snapshot,excluded_source_groups=...,excluded_fork_digests=...) -> (MemoryView, private audit)",
+    "build_context(config,observation,bundle,policy,*,memory_view=None)",
+    "ContextBuilder.build(...,*,memory_view=None)",
+    "run_episode(...,memory_view=None)",
+    "selector_factory(method,execution_version=jev_packaging_memory_v7,config,transport,ledger,job_id)"
+  ],
+  "request_ledger": "MemoryRequestLedger subclasses unchanged durable single-send state machine; new ledger version and binds snapshot/view/injected digest plus body/state/mapping",
+  "checkpoint": "v7 config digest binds snapshot and entry allowlist; saved contexts bind explicit MemoryView. No new free checkpoint fields; shared phases and read-only saved validation reused",
+  "prompt": "existing packaging_load_en_v1 instructions remain; historical warnings/limitations live in complete T entries. Changed input protocol v7 explicit",
+  "episode_scope": "fixed MemoryView per explicit decision; stale query rejects. Multi-decision driver must retrieve from each new public context; no implicit private-task retrieval",
+  "E": "kind/mode/source provenance/review status/snapshot reference reserved; E runtime rejects. No generated cards",
+  "workflow": "prepare/run/validate via packaging_trajectory_validation. run limited to 3 receive events + one decision; validator dispatches none of network/selector/generator/commit/PCT"
+}

@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "properties": {
+    "path": {
+      "type": "string"
+    },
+    "file_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "json_pointer": {
+      "type": "string"
+    },
+    "value_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "path",
+    "file_sha256",
+    "json_pointer",
+    "value_digest"
+  ],
+  "additionalProperties": false
+}

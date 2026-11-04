@@ -1,0 +1,70 @@
+{
+  "version": "jev_JN3_A_handoff_v1",
+  "stage": "JN3-A",
+  "status": "READY_IN_DECLARED_SCOPE",
+  "parent": "semantic_pallet_planner/outputs/JEV_JN2_20261104_03",
+  "parent_manifest_sha256": "b3f5b025d60171b9062063b446c52a64fde77dc6a912ddb31de9bcfe9039dc4e",
+  "parent_receipt_sha256": "6f170bf1d6f4fe1a5660e84a1d105222ca8f364af7fa989422814d0ba2831602",
+  "snapshot_digest": "0d118ca9df56169330c0c5f5d5ed6b2c046489769dcba201e945a8e32aaa1af6",
+  "source_digest": "1fc69917a274ff9bc2618d2ae52c5d37c9433622b0cef2f66061af8ec4fb44a5",
+  "source_files": 390,
+  "config_digest": "6f01b9b8529662efd13527d7ee2cdee7b2373eb7bd6a6e2211a4c15fd6b7d4da",
+  "runtime_identity": {
+    "data_identity": "9cf6d039543df402d04d406f45cd8cff00ee0a5ab49540190662e7f0d18f21de",
+    "monitor_identity": "bd6f4eb343b698debce2579d1a97f9a9800a19c28e7d3c57d49650d2bfd052a1",
+    "physical_identity": "5dba6225adb6e75b52efe28af23abfdb8632307c33390fc361e9ca1839b159b2",
+    "strategy_identity": "3bdf5cee6103784e0333f20618fcfcb6fbb4d47c4f3ea1fcb8f8be92472ef95e",
+    "task_identity": "d975fad5607d95c7f79b1fff3822c73f0c6a6e6b3e86900a034cd1762261060d"
+  },
+  "protocol": {
+    "candidate_bundle": "jev_candidate_bundle_v7",
+    "checkpoint": "jev_checkpoint_v7",
+    "config": "jev_packaging_memory_v7",
+    "context": "jev_decision_context_v7",
+    "execution": "jev_packaging_memory_v7",
+    "metrics": "jev_packaging_memory_metrics_v1",
+    "request_ledger": "jev_packaging_memory_requests_v1",
+    "run": "JN3-A_single_decision_v1",
+    "selection": "jev_selection_result_v7"
+  },
+  "criteria": {
+    "T01": "PASS",
+    "T02": "PASS",
+    "T03": "PASS",
+    "T04": "PASS",
+    "T05": "PASS",
+    "T06": "PASS"
+  },
+  "real_cases": 2,
+  "real_Jev_calls": 1,
+  "real_path": "C14 -> current exact candidate -> STABLE -> original commit once -> scope stop",
+  "cost_usd": "UNKNOWN",
+  "readiness": "trajectory_memory_readiness.json",
+  "evidence": "trajectory_evidence_mapping.json",
+  "validation": "saved_record_validation.json",
+  "documentation": "docs/03_阶段产出分析/Jev/Jev_JN3-A案例库公共检索与真实注入验收_20261104.md",
+  "next_stage": "JN3-B input ready in declared scope; E execution unsupported until separate implementation and authorization",
+  "limitations": [
+    "POST_HOC_USER_REVISED_OBJECTIVE",
+    "two previously exposed training sources; no unseen-source validation",
+    "fixed local_geometry_test_double continuation; finite intervention, no causal or global optimum claim",
+    "synthetic packaging load parameters; feasibility UNKNOWN",
+    "historical observation only, not a recommendation or an action for the current task",
+    "not a universal cross-box or rank rule; external memory is not weight updating",
+    "only initial empty-pallet historical fragments supported; nonempty placed history rejects",
+    "fixed explicit MemoryView per decision; new public query required for subsequent decisions; no whole-order T driver claim",
+    "nine-feature distance is an initial engineering rule, not evidence of optimal relevance",
+    "source-isolated examples are still exposed training data"
+  ],
+  "research_benefit": "NOT_ESTABLISHED",
+  "not_run": [
+    "real UNSTABLE/UNASSESSABLE/ERROR/UNKNOWN_SEND paths",
+    "T versus no-memory whole orders",
+    "LLM experience extraction",
+    "JN3-B",
+    "JN3-C",
+    "unseen-source validation",
+    "training"
+  ],
+  "stop": "complete JN3-A only; no commit/push"
+}

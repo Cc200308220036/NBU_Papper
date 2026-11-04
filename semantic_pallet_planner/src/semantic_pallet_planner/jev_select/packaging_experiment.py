@@ -340,7 +340,7 @@ def aggregate_saved_metrics(rows, ledger):
     return summary
 
 
-def validate_saved_checkpoint(cp, task, cfg, jid):
+def validate_saved_checkpoint(cp, task, cfg, jid, *, fork_origin=None):
     """Saved bindings, state deltas and independent static area facts only.
 
     No CandidateProvider, selector, run_episode, commit_physical or PCT solver.
@@ -356,6 +356,8 @@ def validate_saved_checkpoint(cp, task, cfg, jid):
     require(cp['job_id']==jid and cp['method']==cfg['selector'] and cp['config_digest']==digest(cfg)
         and cp['task_digest']==digest(task) and cp['runtime_identity']==cfg['runtime_identity'],'full_order_checkpoint_binding_changed')
     state=initial(task['container'],cfg['buffer_capacity']);cursor=decision=0;stopped=None
+    if fork_origin is not None:
+        state=copy.deepcopy(fork_origin['state']);cursor=fork_origin['cursor']
     require((cp['pending_event'] is None and cp['phase'] in ('READY','TERMINATED')) or
         (cp['pending_event'] is not None and cp['phase'] in ('SELECTED','MONITORED','COMMITTED')),
         'full_order_invalid_phase')

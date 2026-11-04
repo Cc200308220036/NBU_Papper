@@ -44,7 +44,7 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
 
 
 def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
-                hook=None, event_limit=None, expected_events=None, memory_snapshot=None):
+                hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None):
     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
     if config.get('version') in ('jev_packaging_monitored_v5','jev_packaging_remote_v6'):
         config = copy.deepcopy(config)
@@ -60,7 +60,9 @@ def run_episode(task, selector, config, *, job_id, method, resume=None, on_check
     if business_evaluation_mode(config):
         return _run_episode_v2(task, selector, config, job_id=job_id, method=method, resume=resume,
                                on_checkpoint=on_checkpoint, hook=hook, event_limit=event_limit,
-                               expected_events=expected_events, memory_snapshot=memory_snapshot)
+                               expected_events=expected_events, memory_snapshot=memory_snapshot, training_fork=training_fork)
+    if training_fork is not None:
+        raise JevSelectError('training_fork_requires_monitored_packaging')
     if resume is not None:
         # Rebuild the entire committed prefix using saved answers, never network.
         replay_selector = selector.for_replay() if hasattr(selector, "for_replay") else selector
@@ -167,7 +169,7 @@ def semantic_record(value):
 
 
 def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
-                    on_checkpoint=None, hook=None, event_limit=None, expected_events=None, memory_snapshot=None):
+                    on_checkpoint=None, hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None):
     from .evaluation import evaluate_committed_state, summarize_v2
     from .execution import commit_physical
     from .selector import SelectionResult
@@ -231,6 +233,13 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         if hasattr(selector, 'bind_public'):
             selector.bind_public(req, policy, bundle)
 
+    if training_fork is not None:
+        from .packaging_counterfactual import bootstrap, validate_branch_checkpoint
+        seed = bootstrap(training_fork, task, config, job_id)
+        if resume is None:
+            resume = seed
+        validate_branch_checkpoint(resume, task, config, job_id, training_fork)
+
     if resume is not None:
         from .contracts import validate_schema
         validate_schema('checkpoint_' + suffix,resume)
@@ -244,7 +253,8 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         if resume.get('version') != 'jev_checkpoint_' + suffix or resume['job_id'] != job_id or resume['method'] != method or resume['config_digest'] != digest(config) or resume['task_digest'] != digest(task):
             raise JevSelectError('checkpoint_identity_changed')
         if monitored:
-            validate_checkpoint(resume,task,config,job_id,method)
+            if training_fork is None:
+                validate_checkpoint(resume,task,config,job_id,method)
         else:
             replay_selector = selector.for_replay() if hasattr(selector, 'for_replay') else selector
             prefix = _run_episode_v2(task, replay_selector, config, job_id=job_id, method=method,

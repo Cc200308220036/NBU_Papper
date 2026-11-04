@@ -1,0 +1,26 @@
+{
+  "cwd": "repository root",
+  "environment": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src",
+  "note": "prepare also executed through guarded.py, staged before destination creation; all tests local/constructed, actual suffix budget only3; no API keys read",
+  "operations": [
+    "python -m semantic_pallet_planner.jev_select.packaging_counterfactual prepare --parent semantic_pallet_planner/outputs/JEV_JN1_20261103_03 --output semantic_pallet_planner/outputs/JEV_JN2_20261104_01",
+    "python semantic_pallet_planner/outputs/JEV_JN2_20261104_01/guarded.py semantic_pallet_planner/outputs/JEV_JN2_20261104_01/run_guard.json semantic_pallet_planner.jev_select.packaging_counterfactual run --output semantic_pallet_planner/outputs/JEV_JN2_20261104_01",
+    "python semantic_pallet_planner/outputs/JEV_JN2_20261104_01/guarded.py semantic_pallet_planner/outputs/JEV_JN2_20261104_01/audit_guard.json script semantic_pallet_planner/outputs/JEV_JN2_20261104_01/audit_saved.py semantic_pallet_planner/outputs/JEV_JN2_20261104_01 semantic_pallet_planner/outputs/JEV_JN2_20261104_01/saved_record_validation.json"
+  ],
+  "test_command": "python -m pytest <verification_inputs in listed order> -q --disable-warnings; exact temporary JUnit log destinations are retained in tests/*.log",
+  "verification_inputs": [
+    "semantic_pallet_planner/tests/unit/test_packaging_counterfactual.py",
+    "semantic_pallet_planner/tests/unit/test_packaging_orders.py",
+    "semantic_pallet_planner/tests/unit/test_packaging_full_order.py",
+    "semantic_pallet_planner/tests/unit/test_packaging_remote.py",
+    "semantic_pallet_planner/tests/unit/test_stability_monitor.py",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_packaging_runtime.py",
+    "semantic_pallet_planner/tests/unit/test_stability_balance.py"
+  ],
+  "actual_test_commands": [
+    "python -m pytest semantic_pallet_planner/tests/unit/test_packaging_counterfactual.py semantic_pallet_planner/tests/unit/test_packaging_orders.py semantic_pallet_planner/tests/unit/test_packaging_full_order.py semantic_pallet_planner/tests/unit/test_packaging_remote.py semantic_pallet_planner/tests/unit/test_stability_monitor.py semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_packaging_runtime.py semantic_pallet_planner/tests/unit/test_stability_balance.py -q --disable-warnings --junitxml=/tmp/jev_jn2_a_verification_20261104/regression.xml",
+    "python /tmp/jev_jn2_a_verification_20261104/guarded.py /tmp/jev_jn2_a_verification_20261104/targeted_guard.json pytest semantic_pallet_planner/tests/unit/test_packaging_counterfactual.py -q --disable-warnings --junitxml=/tmp/jev_jn2_a_verification_20261104/mechanism.xml",
+    "python /tmp/jev_jn2_a_verification_20261104/guarded.py /tmp/jev_jn2_a_verification_20261104/final_metrics_guard.json pytest semantic_pallet_planner/tests/unit/test_packaging_counterfactual.py -q --disable-warnings -k 'registered_batch or nonempty or batch_interruption or exact_first' --junitxml=/tmp/jev_jn2_a_verification_20261104/final_metrics.xml"
+  ],
+  "temporary_capture_note": "temporary verification logs and guards were copied into tests/ before the3 suffix runs; repository inputs and interpreter command are relative"
+}

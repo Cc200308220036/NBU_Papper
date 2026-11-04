@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="JN1两订单三方法码垛对照、17次Jev真实输入输出及PCT静态监测计算复盘。"><title>JN1 · 混合码垛实验观察台</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="topbar"><a class="brand" href="#"><span class="brandmark">▥</span><span>PALLET <b>LAB</b><small>混合码垛实验观察台</small></span></a><div class="header-note"><span class="dot"></span> JN1-B · 2026.11.03 <span class="divider">/</span> 保存记录复盘</div><button class="quiet" id="overviewBtn">六次运行数据 ↗</button></header>
+<section class="intro"><div><div class="eyebrow">EXPERIMENT / JN1-B · OFFLINE EVIDENCE</div><h1>同一订单，三种选择。<span>从码垛结果追到每次判断。</span></h1><p>对照 Jev 无经验、几何基线与固定顺序；逐步查看真实请求、精确位置与静态监测。数据来自已归档的 JN1-B 完整订单入口运行。</p></div><div class="summary-strip"><div><strong>6</strong><span>正式运行 · 2 来源 × 3 方法</span></div><div><strong>49<span class="unit">/50</span></strong><span>已选动作可评价</span></div><div><strong>5<span class="unit">+1</span></strong><span>空池 / 不可评价</span></div><div><strong>17</strong><span>历史真实请求 · 本页新增 0</span></div></div></section>
+<section class="compare-section"><div class="compare-head"><div><div class="eyebrow">SIDE BY SIDE / FINAL COMMITTED LAYOUT</div><h2>三种方法的最终码垛</h2><p>统一容器、视角与尺度；仅显示已提交箱体。点击卡片进入逐步复盘。</p></div><select id="compareTask" aria-label="对照订单"><option value="0">订单 00100153 · 15 箱</option><option value="1">订单 00100150 · 18 箱</option></select></div><div id="compareCards" class="compare-cards"></div><p id="comparisonNote" class="comparison-note"></p></section>
+<div class="workspace">
+<aside class="sidebar"><div class="section-label">运行记录 <span>2 来源 × 3 方法</span></div><div id="jobList" class="job-list"></div><div class="side-note"><b>完整订单入口运行 ≠ 全部装完。</b><br>本轮完整完成 0/6，技术错误 0。三种方法共用公共候选器、监测与物理提交协议。空池不能证明全局无解；不可评价不是失稳。</div><button id="scopeBtn" class="scope-link">为何一次不可评价？ →</button></aside>
+<main>
+<div class="run-heading"><div><span id="jobTag" class="eyebrow"></span><h2 id="jobTitle"></h2></div><div id="jobBadges" class="badges"></div></div>
+<div class="run-metrics" id="runMetrics"></div>
+<div class="analysis-grid">
+<section class="scene-card"><div class="card-header"><div><span class="eyebrow">SPATIAL REPLAY</span><h3>箱体与放置过程</h3></div><div class="segmented" id="views"><button data-view="iso" class="active">三维</button><button data-view="top">俯视</button><button data-view="front">正视</button></div></div>
+<div class="canvas-wrap" id="canvasWrap"><canvas id="scene" aria-label="可旋转的码垛场景，点击箱体可查看属性"></canvas><div class="canvas-hint">拖动旋转 · 滚轮缩放 · 点击箱体</div><div id="sceneLegend" class="scene-legend"></div><div class="zoom-controls"><button id="zoomIn" aria-label="放大">＋</button><button id="zoomOut" aria-label="缩小">−</button><button id="resetCamera" aria-label="重置视角">↺</button></div></div>
+<div class="scene-options"><label><input type="checkbox" id="labels" checked> 箱号</label><label><input type="checkbox" id="forces" checked> 选中箱体反力</label><label class="slice">高度切片 <input id="slice" type="range" min="0" max="850" value="850" step="10"><span id="sliceValue">850mm</span></label></div>
+<div class="phase-control" id="phases"><button data-phase="before">① 选择前</button><button data-phase="selected">② 已选动作</button><button data-phase="monitored">③ 监测后</button><button data-phase="after">④ 提交 / 停止后</button></div>
+<div class="transport"><button class="play" id="play" aria-label="播放过程">▶</button><button class="quiet icon" id="prev" aria-label="上一步">‹</button><input id="stepSlider" aria-label="事件进度" type="range" min="0" value="0"><button class="quiet icon" id="next" aria-label="下一步">›</button><select id="speed" aria-label="播放速度"><option value="1400">1×</option><option value="700">2×</option><option value="400">3×</option></select></div>
+<div class="step-title"><strong id="stepTitle"></strong><button id="lastEvent" class="text-btn">跳到停单 →</button></div><div class="event-track" id="events" aria-label="逐事件时间线"></div>
+<div class="box-inspector" id="boxInspector"></div>
+</section>
+<section class="monitor-card"><div class="tabs" id="tabs"><button class="active" data-tab="monitor">监测过程</button><button data-tab="jev">Jev 输入 / 输出</button><button data-tab="formula">计算公式</button><button data-tab="evidence">原始证据</button></div><div class="monitor-content" id="monitorPanel"></div></section>
+</div>
+<section class="inventory-card"><div class="card-header"><div><span class="eyebrow">BOX INVENTORY</span><h3>每个箱体的信息</h3><p>整单表仅供事后复盘；原选择器只能看到已到货箱体。</p></div><div class="table-controls"><input id="boxSearch" type="search" placeholder="搜索箱号 / 规格" aria-label="搜索箱体"><select id="boxFilter" aria-label="箱体状态筛选"><option value="all">全部状态</option><option value="placed">已提交</option><option value="pending">缓冲中</option><option value="future">未到货</option></select></div></div><div class="table-scroll"><table><thead><tr><th>箱体</th><th>规格 L×W×H · mm</th><th>质量 kg</th><th>可堆叠</th><th>承载上限 kg</th><th>面积账本已载 kg</th><th>剩余承载 kg</th><th>状态</th></tr></thead><tbody id="boxTable"></tbody></table></div></section>
+<footer>只读展示保存的动作与解算结果 · 不重新选择、提交或运行 LP · 所有反力以等效 kg 表示，重力加速度约去。<br><span>轴对齐刚性箱 / 竖直准静态模型；合成包装承载；不是实际坍塌预测。</span></footer>
+</main></div>
+<dialog id="overview"><div class="modal-header"><div><span class="eyebrow">RUN COMPARISON</span><h2>六次运行，同一公共协议。</h2></div><button id="closeOverview" class="quiet" aria-label="关闭对照">✕</button></div><div id="overviewContent"></div></dialog>
+<div id="tooltip" class="tooltip" hidden></div>
+<script src="data.js"></script><script src="app.js"></script>
+</body></html>

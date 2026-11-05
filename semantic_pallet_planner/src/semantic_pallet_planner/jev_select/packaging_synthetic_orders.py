@@ -74,19 +74,73 @@ def validate_plan(root):
     return p
 
 
+class ConstructedTransport:
+    """Explicit offline injection. Never accepted by the production entry point.
+
+    The delegate must be a test double. A simulated jev origin only exercises
+    durable accounting/gates; execution_evidence.json always marks this fixture.
+    """
+    def __init__(self,delegate,*,simulated_origin='test_double'):
+        require(delegate.origin=='test_double' and simulated_origin in ('jev','test_double'),'synthetic_constructed_transport')
+        self.delegate=delegate;self.origin=simulated_origin
+
+    def complete(self,body):return self.delegate.complete(body)
+
+
+def check_execution_transport(transport,config,mode):
+    from .transport import JevTransport
+    if not REGISTRY[config['selector']]['remote']:
+        require(transport is None,'synthetic_local_transport');return
+    if mode=='JEV_TRANSPORT':
+        require(type(transport) is JevTransport and transport.config==config,'synthetic_native_transport_required')
+    else:
+        require(mode=='CONSTRUCTED_TRANSPORT_ONLY' and type(transport) is ConstructedTransport,'synthetic_constructed_transport_required')
+
+
+def native_transport(config,job):
+    # Construction only validates config. Credentials remain lazy in complete().
+    from .transport import JevTransport
+    return JevTransport(config)
+
+
+def run_formal(plan_root,output=None,*,resume=False,continue_pending=False):
+    """Future explicitly authorized first block/continuation; no service probing."""
+    p=validate_plan(plan_root)
+    require(p['purpose']==PURPOSE and not p['data']['fixture_only'],'synthetic_formal_plan_only')
+    return base._run_plan(p,plan_root,output or base.resolve(p['run_location']),
+       transport_factory=native_transport,resume=resume,continue_pending=continue_pending,execution_mode='JEV_TRANSPORT')
+
+
+def run_constructed(plan_root,output,*,transport_factory,resume=False,continue_pending=False):
+    """Offline test injection only. Does not accept frozen formal tasks/plans."""
+    p=validate_plan(plan_root)
+    require(p['purpose']=='SYNTHETIC_ENGINEERING','synthetic_constructed_plan_only')
+    return base._run_plan(p,plan_root,output,transport_factory=transport_factory,
+       resume=resume,continue_pending=continue_pending,execution_mode='CONSTRUCTED_TRANSPORT_ONLY')
+
+
 def main():
     import argparse
-    parser=argparse.ArgumentParser(description='Synthetic static build/plan/verify only. No model or formal run entry.')
-    parser.add_argument('command',choices=['freeze','build','validate-data','plan','validate-plan','validate-run'])
-    parser.add_argument('--repo',default=str(base.REPO));parser.add_argument('--dataset');parser.add_argument('--output')
+    from .contracts import canonical
+    parser=argparse.ArgumentParser(description='Synthetic static preparation and explicit first-block/continue/resume execution.')
+    parser.add_argument('command',choices=['freeze','build','validate-data','plan','validate-plan','validate-run','run-first-block','continue','resume'])
+    parser.add_argument('--repo',default=str(base.REPO));parser.add_argument('--dataset');parser.add_argument('--output');parser.add_argument('--plan')
     a=parser.parse_args()
+    if a.command in ('run-first-block','continue','resume'):
+        if not a.plan:parser.error('--plan is required for execution')
+        result=run_formal(a.plan,a.output,resume=a.command!='run-first-block',continue_pending=a.command=='continue')
+        print(canonical(result))
+        if result['status']=='ERROR':raise SystemExit(1)
+        return
     from . import packaging_synthetic_data as data
     if a.command=='freeze':data.freeze(a.repo,a.output)
     elif a.command=='build':data.build(a.repo,a.dataset)
     elif a.command=='validate-data':data.load_dataset(a.dataset,repo=a.repo)
     elif a.command=='plan':prepare(data.load_dataset(a.dataset,repo=a.repo),a.output)
     elif a.command=='validate-plan':validate_plan(a.output)
-    else:base.validate_run(a.output)
+    else:
+        base.validate_run(a.output)
+        if read(Path(a.output)/'summary.json')['status']=='ERROR':raise SystemExit(1)
     print('PASS_STATIC_ONLY_NO_FORMAL_DISPATCH')
 
 if __name__=='__main__':main()

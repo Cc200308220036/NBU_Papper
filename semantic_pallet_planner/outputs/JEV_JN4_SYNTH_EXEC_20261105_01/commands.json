@@ -1,0 +1,18 @@
+{
+  "closure_tests": "PYTHONPATH=semantic_pallet_planner/src python3 -m pytest semantic_pallet_planner/tests/unit/test_packaging_synthetic_execution.py::test_continuation_marker_crash_has_no_stale_closure semantic_pallet_planner/tests/unit/test_packaging_synthetic_execution.py::test_saved_response_reuse_existing_shared_ledger semantic_pallet_planner/tests/unit/test_packaging_synthetic_execution.py::test_committed_restore_existing_v11 -q --disable-warnings --maxfail=1 --junitxml=semantic_pallet_planner/outputs/JEV_JN4_SYNTH_EXEC_20261105_01/closure_tests.xml",
+  "cwd": "repository root",
+  "help": "PYTHONPATH=semantic_pallet_planner/src python3 -m semantic_pallet_planner.jev_select.packaging_synthetic_orders --help",
+  "integration_collection": "initial test source had7 cases; final test source adds3 targeted closure cases",
+  "integration_tests": "PYTHONPATH=semantic_pallet_planner/src python3 -m pytest semantic_pallet_planner/tests/unit/test_packaging_synthetic_execution.py -q --disable-warnings --maxfail=1 --junitxml=semantic_pallet_planner/outputs/JEV_JN4_SYNTH_EXEC_20261105_01/tests.xml",
+  "lint": "git diff --check",
+  "not_run": [
+    "run-first-block formal",
+    "continue formal",
+    "resume formal",
+    "credential probe",
+    "model service probe",
+    "data freeze/build/generation",
+    "full historical regressions"
+  ],
+  "plan": "PYTHONPATH=semantic_pallet_planner/src python3 -m semantic_pallet_planner.jev_select.packaging_synthetic_orders plan --dataset semantic_pallet_planner/outputs/JEV_JN4_SYNTH_20261105_01/data --output semantic_pallet_planner/outputs/JEV_JN4_SYNTH_EXEC_20261105_01/plan"
+}

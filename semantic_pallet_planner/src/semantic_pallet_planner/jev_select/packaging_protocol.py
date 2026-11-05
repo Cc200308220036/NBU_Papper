@@ -29,6 +29,9 @@ METRICS_CONTRACT = {
 
 
 def selector_factory(method, *, execution_version=EXECUTION_VERSION, config=None, transport=None, ledger=None, job_id=None):
+    if execution_version == 'jev_packaging_evaluation_v10':
+        from .packaging_evaluation_protocol import selector_factory as evaluation_factory
+        return evaluation_factory(method,config=config,transport=transport,ledger=ledger,job_id=job_id)
     if execution_version == 'jev_packaging_memory_orders_v9':
         from .packaging_pilot_protocol import pilot_selector_factory
         return pilot_selector_factory(method,config=config,transport=transport,ledger=ledger,job_id=job_id)

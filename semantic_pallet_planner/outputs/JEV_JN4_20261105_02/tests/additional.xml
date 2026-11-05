@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="7" time="22.637" timestamp="2026-11-05T15:39:04.648072+08:00" hostname="cyw-R7000P"><testcase classname="tests.unit.test_packaging_source_provenance" name="test_batch_auditor_can_return_positive_count" time="0.023" /><testcase classname="tests.unit.test_packaging_evaluation_v10" name="test_saved_response_and_budget_resume_no_resend[jev_no_memory]" time="3.847" /><testcase classname="tests.unit.test_packaging_evaluation_v10" name="test_saved_response_and_budget_resume_no_resend[jev_with_trajectory]" time="3.339" /><testcase classname="tests.unit.test_packaging_evaluation_v10" name="test_saved_response_and_budget_resume_no_resend[jev_with_contrast_experience]" time="3.327" /><testcase classname="tests.unit.test_packaging_evaluation_v10" name="test_saved_response_and_budget_resume_no_resend[jev_with_unrelated_E_control]" time="3.352" /><testcase classname="tests.unit.test_packaging_evaluation_v10" name="test_all_memory_modes_public_query_exclusion_and_empty_hit" time="3.157" /><testcase classname="tests.unit.test_packaging_evaluation_v10" name="test_singleton_all_six_has_no_transport_send" time="5.309"><failure message="assert (0 == 6)">tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-64/test_singleton_all_six_has_no_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x79e0183db240&gt;
+
+    def test_singleton_all_six_has_no_transport_send(tmp_path,monkeypatch):
+        plan,f=setup(tmp_path,n=1)
+        from semantic_pallet_planner.jev_select.candidates import CandidateProvider
+        from semantic_pallet_planner.jev_select.contracts import CandidateBundle
+        original=CandidateProvider.build
+        def one(self,*args,**kwargs):
+            b=original(self,*args,**kwargs).data
+            b['physical_candidates']=b['physical_candidates'][:1];b['selectable_candidates']=b['selectable_candidates'][:1]
+            b['physical_digest']=digest(b['physical_candidates']);b['selectable_digest']=digest(b['selectable_candidates'])
+            return CandidateBundle.from_dict(b)
+        monkeypatch.setattr(CandidateProvider,'build',one)
+        s=p.run_validation(tmp_path/'plan',tmp_path/'run',transport_factory=lambda *a:f)
+&gt;       assert s['categories']['COMPLETE']==6 and f.calls==0
+E       assert (0 == 6)
+
+semantic_pallet_planner/tests/unit/test_packaging_evaluation_v10.py:162: AssertionError</failure></testcase></testsuite></testsuites>

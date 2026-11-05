@@ -1,0 +1,83 @@
+{
+  "data": "packaging_evaluation_data.build/load_dataset; explicit new test task schema; old loader guard intact",
+  "dependencies": {
+    "cryptography": "44.0.1",
+    "jsonschema": "4.23.0",
+    "numpy": "2.1.3",
+    "python": "3.13.5",
+    "scipy": "1.15.3"
+  },
+  "ledger": "EvaluationLedger, per-job + shared budget/config identity; local/singleton zero; UNKNOWN_SEND stops, no retries",
+  "memory": "explicit v10 per-decision MemoryView and private genuine reference receipt; model sees only registered actual view",
+  "method_order": [
+    "local_geometry_test_double",
+    "local_first_test_double",
+    "jev_no_memory",
+    "jev_with_trajectory",
+    "jev_with_contrast_experience",
+    "jev_with_unrelated_E_control"
+  ],
+  "method_registry": {
+    "jev_no_memory": {
+      "mode": "none",
+      "model": "jev-1.14.0",
+      "origin": "jev",
+      "remote": true
+    },
+    "jev_with_contrast_experience": {
+      "mode": "E",
+      "model": "jev-1.14.0",
+      "origin": "jev",
+      "remote": true
+    },
+    "jev_with_trajectory": {
+      "mode": "T",
+      "model": "jev-1.14.0",
+      "origin": "jev",
+      "remote": true
+    },
+    "jev_with_unrelated_E_control": {
+      "mode": "E_unrelated_control",
+      "model": "jev-1.14.0",
+      "origin": "jev",
+      "remote": true
+    },
+    "local_first_test_double": {
+      "mode": "none",
+      "model": "jev-1.14.0",
+      "origin": "local_test_double",
+      "remote": false
+    },
+    "local_geometry_test_double": {
+      "mode": "none",
+      "model": "jev-1.14.0",
+      "origin": "local_test_double",
+      "remote": false
+    }
+  },
+  "model_availability": "UNKNOWN_NOT_PROBED",
+  "no_implicit_credentials_or_network": true,
+  "persistence": [
+    "DECISION_READY",
+    "SELECTED",
+    "MONITORED",
+    "COMMITTED",
+    "TERMINATED"
+  ],
+  "plan": "packaging_evaluation_orders.prepare/validate_plan; fixture, exact exposed development, signed real dataset scopes distinct",
+  "readonly_validation": "validate_run and CLI validate-run; ERROR receipt causes nonzero exit; no dispatch",
+  "run": "run_validation -> common._run_job -> run_episode; explicit Fake; formal purpose rejected for all six methods",
+  "source_admission": "packaging_source_provenance.adjudicate/audit_admissions + pinned CLI policy/audit identities",
+  "version": "jev_evaluation_interface_v1",
+  "versions": {
+    "candidate_bundle": "jev_candidate_bundle_v10",
+    "checkpoint": "jev_checkpoint_v10",
+    "context": "jev_decision_context_v10",
+    "execution": "jev_packaging_evaluation_v10",
+    "ledger": "jev_evaluation_requests_v1",
+    "metrics": "jev_evaluation_order_metrics_v1",
+    "plan": "jev_evaluation_orders_plan_v1",
+    "run": "jev_evaluation_orders_run_v1",
+    "selection": "jev_selection_result_v10"
+  }
+}

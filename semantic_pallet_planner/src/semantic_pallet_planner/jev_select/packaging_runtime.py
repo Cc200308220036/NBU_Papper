@@ -11,6 +11,7 @@ from pathlib import Path
 
 from .contracts import (JevSelectError, CandidateBundle, DecisionContext,
                         PublicPolicyContext, digest, canonical, validate_schema)
+from .packaging_driven import is_driven,memory_interface as driven_memory
 from .dataset_packaging import VERSION as DATA_VERSION, require, geometry_contract, readiness
 
 VERSION = 'jev_packaging_choice_v4'
@@ -24,7 +25,7 @@ METHODS = ('local_geometry_test_double','local_first_test_double')
 
 
 def is_packaging(config):
-    return config.get('version') in (VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9')
+    return config.get('version') in (VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10')
 
 
 def no_policy(observation):
@@ -35,7 +36,7 @@ def no_policy(observation):
 
 
 def runtime_task(frozen):
-    validate_schema('packaging_load_task_v1',frozen)
+    validate_schema('evaluation_packaging_task_v1' if frozen.get('version')=='jev_evaluation_packaging_task_v1' else 'packaging_load_task_v1',frozen)
     task = copy.deepcopy(frozen)
     task['frozen_task_digest'] = digest(frozen)
     task['instruction_text'] = INSTRUCTION
@@ -229,7 +230,7 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
     require(memory_driver is None,'context_builder_requires_explicit_view')
     value,state,criteria,mapping,buffer=public_facts(config,observation,bundle,policy)
     memory_fields={}
-    if config['version']!='jev_packaging_memory_orders_v9' and (memory_driver is not None or retrieval_receipt is not None):
+    if not is_driven(config) and (memory_driver is not None or retrieval_receipt is not None):
         raise JevSelectError('pilot_memory_protocol_incompatible')
     if config['version'] in ('jev_packaging_memory_v7','jev_packaging_contrast_v8'):
         from .packaging_memory_protocol import memory_interface
@@ -239,10 +240,10 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
         mv=validate_view(view,config['memory_snapshot_digest'])
         require(all(digest(e) in config['memory_entry_digests'] for e in mv['entries']),'memory_entry_not_in_frozen_config')
         state['memories']=mv['entries'];memory_fields={'memory_view':mv}
-    elif memory_view is not None and config['version']!='jev_packaging_memory_orders_v9':
+    elif memory_view is not None and not is_driven(config):
         raise JevSelectError('packaging_memory_protocol_incompatible')
-    if config['version']=='jev_packaging_memory_orders_v9':
-        from .packaging_pilot_memory import validate_view,validate_receipt
+    if is_driven(config):
+        interface=driven_memory(config['version']);validate_view,validate_receipt=interface.validate_view,interface.validate_receipt
         require(memory_view is not None and retrieval_receipt is not None,'pilot_missing_saved_view_or_receipt')
         mv=validate_view(memory_view,config)
         state['memories']=mv['entries']
@@ -259,7 +260,7 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
         'request_body_digest':digest(body),'runtime_identity':copy.deepcopy(config['runtime_identity'])}
     if memory_fields:
         binding.update(memory_snapshot_digest=config['memory_snapshot_digest'],memory_view_digest=mv['view_digest'])
-        if config['version']=='jev_packaging_memory_orders_v9':
+        if is_driven(config):
             binding.update(query_digest=retrieval_receipt['query_digest'],retrieval_digest=retrieval_receipt['receipt_digest'])
     context=DecisionContext.from_dict({**memory_fields,'version':'jev_decision_context_' + protocol_suffix(config),'route':route,'model_state':state,
         'criteria':criteria,'request_body':body,'display_mapping':mapping,'local_binding':binding})
@@ -271,8 +272,8 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
 def validate_runtime_context(context,observation=None,bundle=None,config=None):
     from .candidates import validate_bundle,decision_route
     value=context.data;validate_schema('decision_context',value)
-    if value['version']=='jev_decision_context_v9':
-        from .packaging_pilot_memory import PilotMemoryView as MemoryView,validate_receipt
+    if value['version'] in ('jev_decision_context_v9','jev_decision_context_v10'):
+        interface=driven_memory(config['version']);MemoryView,validate_receipt=interface.PilotMemoryView,interface.validate_receipt
         require(config is not None,'pilot_config_required_for_context_validation')
         saved=value['retrieval_receipt'];view=MemoryView.from_dict(value['memory_view'])
         validate_receipt(saved,view,config,value['model_state'],value['criteria'])
@@ -315,7 +316,7 @@ def validate_runtime_context(context,observation=None,bundle=None,config=None):
         require(binding['physical_digest']==b['physical_digest'] and binding['selectable_digest']==b['selectable_digest'] and
             route==decision_route(bundle),'runtime_stale_pool')
         # Deterministic reconstruction checks all public facts, deltas and private mapping.
-        extras=({'memory_view':MemoryView.from_dict(value['memory_view']),'retrieval_receipt':value['retrieval_receipt']} if value['version']=='jev_decision_context_v9' else {'memory_view':MemoryView.from_dict(value['memory_view'])} if value['version'] in ('jev_decision_context_v7','jev_decision_context_v8') else {})
+        extras=({'memory_view':MemoryView.from_dict(value['memory_view']),'retrieval_receipt':value['retrieval_receipt']} if value['version'] in ('jev_decision_context_v9','jev_decision_context_v10') else {'memory_view':MemoryView.from_dict(value['memory_view'])} if value['version'] in ('jev_decision_context_v7','jev_decision_context_v8') else {})
         rebuilt=build_context(config,observation,bundle,no_policy(observation),**extras).data
         for key in ('job_id','decision_id'):
             if key in binding:rebuilt['local_binding'][key]=binding[key]
@@ -398,11 +399,11 @@ def summary(task,config,method,state,events,reason):
         row.update(version='jev_packaging_monitored_metrics_v1',
             stability_algorithm='pct_contact_network_v2' if config['stability_monitor']['enabled'] else 'DISABLED',
             monitor_statistics=statistics(config,events,row))
-        if config['version']=='jev_packaging_memory_orders_v9':
+        if is_driven(config):
             from .packaging_remote import event_cost
-            row.update(version='jev_packaging_memory_order_metrics_v1',origin='jev',memory_snapshot_digest=config['memory_snapshot_digest'])
+            row.update(version='jev_packaging_evaluation_metrics_v1' if config['version']=='jev_packaging_evaluation_v10' else 'jev_packaging_memory_order_metrics_v1',origin='LOCAL_TEST_DOUBLE_NOT_JEV' if method in METHODS else 'jev',memory_snapshot_digest=config['memory_snapshot_digest'])
             row['cost'].update(event_cost(events))
-            validate_schema('pilot_order_metrics_v1',row)
+            validate_schema('evaluation_episode_metrics_v1' if config['version']=='jev_packaging_evaluation_v10' else 'pilot_order_metrics_v1',row)
         elif config['version']=='jev_packaging_contrast_v8':
             from .packaging_remote import event_cost
             row.update(version='jev_packaging_contrast_metrics_v1',origin='jev',memory_snapshot_digest=config['memory_snapshot_digest'])

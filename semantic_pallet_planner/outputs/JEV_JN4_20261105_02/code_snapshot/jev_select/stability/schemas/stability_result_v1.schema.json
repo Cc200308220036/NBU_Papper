@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "reason_code",
+    "state_digest",
+    "candidate_digest",
+    "candidate_id",
+    "config_digest",
+    "algorithm_identity",
+    "baseline_status",
+    "first_bad_prefix",
+    "failed_item_id",
+    "height_delta_mm",
+    "evaluated_pose",
+    "kernel_calls",
+    "diagnostics",
+    "duration_s",
+    "status",
+    "version"
+  ],
+  "properties": {
+    "reason_code": {
+      "type": "string"
+    },
+    "state_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "candidate_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "candidate_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "config_digest": {
+      "type": "string"
+    },
+    "algorithm_identity": {
+      "type": "object"
+    },
+    "baseline_status": {
+      "type": "string"
+    },
+    "first_bad_prefix": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "failed_item_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "height_delta_mm": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "evaluated_pose": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "kernel_calls": {
+      "type": "integer"
+    },
+    "diagnostics": {
+      "type": "object"
+    },
+    "duration_s": {
+      "type": "number"
+    },
+    "status": {
+      "enum": [
+        "STABLE",
+        "UNSTABLE",
+        "UNASSESSABLE",
+        "ERROR"
+      ]
+    },
+    "version": {
+      "const": "pct_stability_result_v1"
+    }
+  }
+}

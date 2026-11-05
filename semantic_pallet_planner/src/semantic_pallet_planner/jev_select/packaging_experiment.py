@@ -360,7 +360,7 @@ def validate_saved_checkpoint(cp, task, cfg, jid, *, fork_origin=None):
     if fork_origin is not None:
         state=copy.deepcopy(fork_origin['state']);cursor=fork_origin['cursor']
     require((cp['pending_event'] is None and cp['phase'] in ('READY','TERMINATED')) or
-        (cp['pending_event'] is not None and cp['phase'] in (('DECISION_READY','SELECTED','MONITORED','COMMITTED') if cfg['version']=='jev_packaging_memory_orders_v9' else ('SELECTED','MONITORED','COMMITTED'))),
+        (cp['pending_event'] is not None and cp['phase'] in (('DECISION_READY','SELECTED','MONITORED','COMMITTED') if cfg['version'] in ('jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10') else ('SELECTED','MONITORED','COMMITTED'))),
         'full_order_invalid_phase')
     if cp['pending_event']:
         require((cp['phase'] in ('SELECTED','DECISION_READY')) == (cp['pending_event']['monitor'] is None), 'full_order_monitor_phase_changed')

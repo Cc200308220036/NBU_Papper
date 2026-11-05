@@ -1,0 +1,458 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "fixture_only",
+    "tasks",
+    "admissions",
+    "raw_manifest_sha256",
+    "as_of",
+    "policy_digest",
+    "calibration",
+    "packaging_config_digest",
+    "normalizer_sha256",
+    "data_identity"
+  ],
+  "properties": {
+    "version": {
+      "const": "jev_evaluation_dataset_v1"
+    },
+    "fixture_only": {
+      "type": "boolean"
+    },
+    "tasks": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "version": {
+            "const": "jev_evaluation_packaging_task_v1"
+          },
+          "task_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scenario_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_group_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_order_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_order_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "partition": {
+            "const": "test"
+          },
+          "mode": {
+            "enum": [
+              "source_preserving",
+              "controlled_packaging"
+            ]
+          },
+          "layer": {
+            "const": "controlled_heterogeneous"
+          },
+          "buffer_capacity": {
+            "const": 3
+          },
+          "candidate_limits": {
+            "const": {
+              "per_box": 16,
+              "joint": 48
+            }
+          },
+          "container": {
+            "type": "object",
+            "properties": {
+              "container_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "coordinate_frame": {
+                "const": "container_bottom_center"
+              },
+              "length_mm": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "width_mm": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "max_height_mm": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "max_payload_kg": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              }
+            },
+            "required": [
+              "container_id",
+              "coordinate_frame",
+              "length_mm",
+              "width_mm",
+              "max_height_mm",
+              "max_payload_kg"
+            ],
+            "additionalProperties": false
+          },
+          "arrival_order": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "mass_distribution": {
+            "const": "uniform"
+          },
+          "centroid_model": {
+            "const": "geometric_center"
+          },
+          "geometry_contract_version": {
+            "const": "jev_packaging_geometry_v1"
+          },
+          "regions": {
+            "const": []
+          },
+          "rules": {
+            "const": []
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "item_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "geometry_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "dimensions_mm": {
+                  "type": "object",
+                  "properties": {
+                    "length": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "width": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "height": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    }
+                  },
+                  "required": [
+                    "length",
+                    "width",
+                    "height"
+                  ],
+                  "additionalProperties": false
+                },
+                "mass_kg": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "weight_class": {
+                  "enum": [
+                    "light",
+                    "medium",
+                    "heavy"
+                  ]
+                },
+                "material": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "fragile": {
+                  "type": "boolean"
+                },
+                "stackable": {
+                  "type": "boolean"
+                },
+                "top_load_limit_kg_synthetic": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "product_category": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sku_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "packaging_profile_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "max_top_load_kg": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "effective_top_permission_kg": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "physical_provenance": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "capacity_provenance": {
+                  "enum": [
+                    "source_synthetic",
+                    "controlled_synthetic_experimental"
+                  ]
+                },
+                "original_physical": {
+                  "type": "object",
+                  "properties": {
+                    "item_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "geometry_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "dimensions_mm": {
+                      "type": "object",
+                      "properties": {
+                        "length": {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        },
+                        "width": {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        },
+                        "height": {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        }
+                      },
+                      "required": [
+                        "length",
+                        "width",
+                        "height"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "weight_class": {
+                      "enum": [
+                        "light",
+                        "medium",
+                        "heavy"
+                      ]
+                    },
+                    "material": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "fragile": {
+                      "type": "boolean"
+                    },
+                    "stackable": {
+                      "type": "boolean"
+                    },
+                    "top_load_limit_kg_synthetic": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "product_category": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "item_id",
+                    "geometry_id",
+                    "dimensions_mm",
+                    "mass_kg",
+                    "weight_class",
+                    "material",
+                    "fragile",
+                    "stackable",
+                    "top_load_limit_kg_synthetic",
+                    "product_category"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "item_id",
+                "geometry_id",
+                "dimensions_mm",
+                "mass_kg",
+                "weight_class",
+                "material",
+                "fragile",
+                "stackable",
+                "top_load_limit_kg_synthetic",
+                "product_category",
+                "sku_id",
+                "packaging_profile_id",
+                "max_top_load_kg",
+                "effective_top_permission_kg",
+                "physical_provenance",
+                "capacity_provenance",
+                "original_physical"
+              ],
+              "additionalProperties": false,
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "stackable": {
+                        "const": false
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "effective_top_permission_kg": {
+                        "const": 0
+                      }
+                    }
+                  },
+                  "else": {
+                    "properties": {
+                      "max_top_load_kg": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "top_load_limit_kg_synthetic": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "effective_top_permission_kg": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "minItems": 1
+          },
+          "feasibility_status": {
+            "const": "UNKNOWN"
+          },
+          "static_screen_status": {
+            "enum": [
+              "STATIC_SCREEN_PASSED",
+              "STATIC_SCREEN_FAILED"
+            ]
+          },
+          "witness": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "NOT_AVAILABLE"
+              },
+              "candidate_reachability": {
+                "const": "NOT_RUN"
+              },
+              "online_solvability": {
+                "const": "NOT_RUN"
+              }
+            },
+            "required": [
+              "status",
+              "candidate_reachability",
+              "online_solvability"
+            ],
+            "additionalProperties": false
+          },
+          "runtime_compatibility": {
+            "const": "NOT_RUN_TARGET_TWO_REQUIRED"
+          }
+        },
+        "required": [
+          "version",
+          "task_id",
+          "scenario_id",
+          "source_group_id",
+          "source_order_key",
+          "source_order_id",
+          "partition",
+          "mode",
+          "layer",
+          "buffer_capacity",
+          "candidate_limits",
+          "container",
+          "arrival_order",
+          "mass_distribution",
+          "centroid_model",
+          "geometry_contract_version",
+          "regions",
+          "rules",
+          "items",
+          "feasibility_status",
+          "static_screen_status",
+          "witness",
+          "runtime_compatibility"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "admissions": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object"
+      }
+    },
+    "raw_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "as_of": {
+      "type": "string"
+    },
+    "policy_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "calibration": {
+      "type": "object"
+    },
+    "packaging_config_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "normalizer_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "data_identity": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

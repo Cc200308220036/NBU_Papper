@@ -12,6 +12,7 @@ from .candidates import CandidateProvider, PublicBusinessGuard, decision_route
 from .config import generator_config, is_v2, is_v3, business_evaluation_mode, protocol_suffix
 from .context import ContextBuilder, resolve_display_id
 from .contracts import JevSelectError, digest
+from .packaging_driven import is_driven
 from .evaluation import feedback, summarize
 from .selector import bind_decision, result
 
@@ -30,7 +31,7 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
     bundle = guard.filter(req, policy, bundle, config)
     try:
         pilot_receipt=None
-        if config.get('version')=='jev_packaging_memory_orders_v9':
+        if is_driven(config):
             from .packaging_runtime import public_facts
             if memory_driver is None or memory_driver.config!=config or memory_view is not None:
                 raise JevSelectError('pilot_missing_or_changed_public_driver')
@@ -53,16 +54,18 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
 def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
                 hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None):
     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
-    if memory_driver is not None and config.get('version')!='jev_packaging_memory_orders_v9':
+    if memory_driver is not None and not is_driven(config):
         raise JevSelectError('pilot_driver_protocol_incompatible')
-    if config.get('version') in ('jev_packaging_monitored_v5','jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9'):
+    if config.get('version') in ('jev_packaging_monitored_v5','jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10'):
         config = copy.deepcopy(config)
     if is_packaging(config):
         if config.get('version') == 'jev_packaging_remote_v6':
             from .packaging_remote import REGISTRY
             METHODS = tuple(REGISTRY)
-        if config.get('version')=='jev_packaging_memory_orders_v9':
+        if is_driven(config):
             from .packaging_pilot_protocol import METHODS
+            if config['version']=='jev_packaging_evaluation_v10':
+                from .packaging_evaluation_protocol import METHODS
             if memory_view is not None:raise JevSelectError('pilot_requires_per_decision_driver')
         elif config.get('version') in ('jev_packaging_memory_v7','jev_packaging_contrast_v8'):
             from .packaging_memory_protocol import memory_interface
@@ -71,7 +74,7 @@ def run_episode(task, selector, config, *, job_id, method, resume=None, on_check
             if memory_view is not None:interface.validate_view(memory_view,config['memory_snapshot_digest'])
         elif memory_view is not None:
             raise JevSelectError('packaging_memory_protocol_incompatible')
-        if (memory_snapshot is not None or task.get('version') != DATA_VERSION or
+        if (memory_snapshot is not None or task.get('version') not in ((DATA_VERSION,'jev_evaluation_packaging_task_v1') if config['version']=='jev_packaging_evaluation_v10' else (DATA_VERSION,)) or
             task.get('reference_policy') != {'version':DATA_VERSION,'rules':[]} or
             task.get('regions') != [] or method != config['selector'] or method not in METHODS or
             config['runtime_identity']['task_identity'] != digest(task)):
@@ -132,7 +135,7 @@ def run_episode(task, selector, config, *, job_id, method, resume=None, on_check
                  "selection": None, "proposed_action": None, "action": None, "reason": None, "error": None}
         try:
             req, policy, bundle, context = decision_inputs(state, task, config, job_id, identifier)
-            if config.get('version')=='jev_packaging_memory_orders_v9' and pending is not None and phase=='DECISION_READY':
+            if is_driven(config) and pending is not None and phase=='DECISION_READY':
                 event=copy.deepcopy(pending);times=event['timings']
             route = decision_route(bundle)
             event.update(route=route, observation=req, bundle=bundle.data, context=context.data)
@@ -380,7 +383,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         try:
             saved_context = (pending['context'] if pending is not None and phase=='DECISION_READY' else
                 expected_events[len(events)].get('context') if expected_events is not None and len(events)<len(expected_events) else None)
-            if monitored and pending is not None and phase in (('DECISION_READY','SELECTED','MONITORED') if config.get('version')=='jev_packaging_memory_orders_v9' else ('SELECTED','MONITORED')):
+            if monitored and pending is not None and phase in (('DECISION_READY','SELECTED','MONITORED') if is_driven(config) else ('SELECTED','MONITORED')):
                 from .contracts import CandidateBundle, DecisionContext
                 from .packaging_runtime import no_policy
                 req = copy.deepcopy(pending['observation'])
@@ -390,11 +393,11 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
             else:
                 req,policy,bundle,context = decision_inputs(state,task,config,job_id,did,timings=times,memory_snapshot=memory_snapshot,
                     saved_retrieval=saved_context.get('retrieval') if saved_context else None,memory_view=memory_view,memory_driver=memory_driver)
-            if config.get('version')=='jev_packaging_memory_orders_v9' and pending is not None and phase=='DECISION_READY':
+            if is_driven(config) and pending is not None and phase=='DECISION_READY':
                 event=copy.deepcopy(pending);times=event['timings']
             route = decision_route(bundle)
             event.update(route=route,observation=req,bundle=bundle.data,context=context.data)
-            if is_v3(config) or (config.get('version')=='jev_packaging_memory_orders_v9' and (pending is None or phase=='DECISION_READY')):
+            if is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
                 pending=copy.deepcopy(event);phase='DECISION_READY';persist()
             if hook: hook('decision_ready',event)
             if route == 'STOP_NO_PHYSICAL_CANDIDATE':

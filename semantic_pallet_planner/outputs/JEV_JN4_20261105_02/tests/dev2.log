@@ -1,0 +1,36 @@
+.................F
+=================================== FAILURES ===================================
+____ test_six_methods_same_protocol_control_length_and_paused_continuation _____
+
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-62/test_six_methods_same_protocol0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7b1ab31ec180>
+
+    def test_six_methods_same_protocol_control_length_and_paused_continuation(tmp_path,monkeypatch):
+        plan,f=setup(tmp_path,tasks=2)
+>       s=p.run_validation(tmp_path/'plan',tmp_path/'run',transport_factory=lambda *a:f)
+
+semantic_pallet_planner/tests/unit/test_packaging_evaluation_v10.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:175: in run_validation
+    selector=selector_factory(j['method_id'],execution_version=VERSION,config=cfg,transport=transport,ledger=ledger,job_id=j['job_id'])
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_protocol.py:34: in selector_factory
+    return evaluation_factory(method,config=config,transport=transport,ledger=ledger,job_id=job_id)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_protocol.py:88: in selector_factory
+    preflight_evaluation(config)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_protocol.py:64: in preflight_evaluation
+    require(all(config[k]==v for k,v in base.items() if k not in ('version','selector','runtime_identity')),'evaluation_base_changed')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, reason = 'evaluation_base_changed'
+
+    def require(ok, reason):
+        if not ok:
+>           raise JevSelectError('source_admission_' + reason)
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: source_admission_evaluation_base_changed
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py:38: JevSelectError
+- generated xml file: /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JN4_20261105_02/tests/dev2.xml -
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/tests/unit/test_packaging_evaluation_v10.py::test_six_methods_same_protocol_control_length_and_paused_continuation
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 17 passed in 12.93s

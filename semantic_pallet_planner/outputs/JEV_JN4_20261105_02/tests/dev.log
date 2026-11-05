@@ -1,0 +1,33 @@
+.F
+=================================== FAILURES ===================================
+________________ test_pollution_cannot_be_signed_away[training] ________________
+
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-61/test_pollution_cannot_be_signe0')
+kind = 'training'
+
+    @pytest.mark.parametrize('kind',['training','policy_development','model_requests','memory_build','historical_testing'])
+    def test_pollution_cannot_be_signed_away(tmp_path,kind):
+        ident,s,policy,seal=evidence(tmp_path);b=s['body'];b['uses'].append({'id':'contamination','kind':kind,'at':ASOF,'evidence_file':'lifecycle.json'})
+        result=p.adjudicate(ident,seal(b),policy,evidence_root=tmp_path,as_of=ASOF)
+        assert not result['strict_test_eligible'] and result['status']==('HISTORICAL_TEST' if kind=='historical_testing' else 'CONTAMINATED')
+>       assert not p.adjudicate(ident,s,policy,evidence_root=tmp_path,as_of=ASOF,observed_uses=['training'])['strict_test_eligible']
+
+semantic_pallet_planner/tests/unit/test_packaging_source_provenance.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_provenance.py:33: in adjudicate
+    require(body['body_digest']==digest({k:v for k,v in body.items() if k!='body_digest'}),'provenance_body_tampered')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, reason = 'provenance_body_tampered'
+
+    def require(ok, reason):
+        if not ok:
+>           raise JevSelectError('source_admission_' + reason)
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: source_admission_provenance_body_tampered
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py:38: JevSelectError
+- generated xml file: /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JN4_20261105_02/tests/dev.xml -
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/tests/unit/test_packaging_source_provenance.py::test_pollution_cannot_be_signed_away[training]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 passed in 0.43s

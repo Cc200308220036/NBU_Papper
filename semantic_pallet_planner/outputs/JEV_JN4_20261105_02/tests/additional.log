@@ -1,0 +1,28 @@
+......F
+=================================== FAILURES ===================================
+_________________ test_singleton_all_six_has_no_transport_send _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-64/test_singleton_all_six_has_no_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x79e0183db240>
+
+    def test_singleton_all_six_has_no_transport_send(tmp_path,monkeypatch):
+        plan,f=setup(tmp_path,n=1)
+        from semantic_pallet_planner.jev_select.candidates import CandidateProvider
+        from semantic_pallet_planner.jev_select.contracts import CandidateBundle
+        original=CandidateProvider.build
+        def one(self,*args,**kwargs):
+            b=original(self,*args,**kwargs).data
+            b['physical_candidates']=b['physical_candidates'][:1];b['selectable_candidates']=b['selectable_candidates'][:1]
+            b['physical_digest']=digest(b['physical_candidates']);b['selectable_digest']=digest(b['selectable_candidates'])
+            return CandidateBundle.from_dict(b)
+        monkeypatch.setattr(CandidateProvider,'build',one)
+        s=p.run_validation(tmp_path/'plan',tmp_path/'run',transport_factory=lambda *a:f)
+>       assert s['categories']['COMPLETE']==6 and f.calls==0
+E       assert (0 == 6)
+
+semantic_pallet_planner/tests/unit/test_packaging_evaluation_v10.py:162: AssertionError
+- generated xml file: /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JN4_20261105_02/tests/additional.xml -
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/tests/unit/test_packaging_evaluation_v10.py::test_singleton_all_six_has_no_transport_send
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 6 passed in 22.64s

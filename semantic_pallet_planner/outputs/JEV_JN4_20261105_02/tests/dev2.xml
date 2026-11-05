@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="18" time="12.931" timestamp="2026-11-05T15:30:30.069944+08:00" hostname="cyw-R7000P"><testcase classname="tests.unit.test_packaging_source_provenance" name="test_positive_and_no_attestation_unknown" time="0.023" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_pollution_cannot_be_signed_away[training]" time="0.005" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_pollution_cannot_be_signed_away[policy_development]" time="0.007" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_pollution_cannot_be_signed_away[model_requests]" time="0.006" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_pollution_cannot_be_signed_away[memory_build]" time="0.005" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_pollution_cannot_be_signed_away[historical_testing]" time="0.008" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_incomplete_remains_unknown[scope]" time="0.004" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_incomplete_remains_unknown[dates]" time="0.008" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_incomplete_remains_unknown[unknown]" time="0.006" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_incomplete_remains_unknown[review]" time="0.005" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_incomplete_remains_unknown[coverage_file]" time="0.008" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_incomplete_remains_unknown[authority]" time="0.005" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_tamper_rejected[signature]" time="0.005" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_tamper_rejected[file]" time="0.010" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_tamper_rejected[identity]" time="0.005" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_tamper_rejected[extra]" time="0.006" /><testcase classname="tests.unit.test_packaging_source_provenance" name="test_tamper_rejected[fixture_as_real]" time="0.004" /><testcase classname="tests.unit.test_packaging_evaluation_v10" name="test_six_methods_same_protocol_control_length_and_paused_continuation" time="12.511"><failure message="semantic_pallet_planner.jev_select.contracts.JevSelectError: source_admission_evaluation_base_changed">tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-62/test_six_methods_same_protocol0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7b1ab31ec180&gt;
+
+    def test_six_methods_same_protocol_control_length_and_paused_continuation(tmp_path,monkeypatch):
+        plan,f=setup(tmp_path,tasks=2)
+&gt;       s=p.run_validation(tmp_path/'plan',tmp_path/'run',transport_factory=lambda *a:f)
+
+semantic_pallet_planner/tests/unit/test_packaging_evaluation_v10.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:175: in run_validation
+    selector=selector_factory(j['method_id'],execution_version=VERSION,config=cfg,transport=transport,ledger=ledger,job_id=j['job_id'])
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_protocol.py:34: in selector_factory
+    return evaluation_factory(method,config=config,transport=transport,ledger=ledger,job_id=job_id)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_protocol.py:88: in selector_factory
+    preflight_evaluation(config)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_protocol.py:64: in preflight_evaluation
+    require(all(config[k]==v for k,v in base.items() if k not in ('version','selector','runtime_identity')),'evaluation_base_changed')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, reason = 'evaluation_base_changed'
+
+    def require(ok, reason):
+        if not ok:
+&gt;           raise JevSelectError('source_admission_' + reason)
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: source_admission_evaluation_base_changed
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py:38: JevSelectError</failure></testcase></testsuite></testsuites>

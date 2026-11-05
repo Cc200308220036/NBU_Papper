@@ -31,7 +31,7 @@ def result(context, *, status, source, label=None, attempt=None, payload=None, e
                  "usage": metadata.get("usage"), "latency_s": saved["latency_s"] if saved else None,
                  "local_binding_digest": digest(value["local_binding"]),
                  "raw_response_digest": saved["raw_sha256"] if saved else None, "error": error}
-    if value['version'] in ('jev_decision_context_v6','jev_decision_context_v7','jev_decision_context_v8'):
+    if value['version'] in ('jev_decision_context_v6','jev_decision_context_v7','jev_decision_context_v8','jev_decision_context_v9'):
         selection.update(network_attempted=saved['network_attempted'] if saved else False,
                          error_stage=('response_validation' if status=='invalid_response' else (saved or {}).get('error_stage')) if error else None,
                          error_code=error)
@@ -112,11 +112,11 @@ def parse_response(context, attempt, config):
                       error=exc.code if isinstance(exc, JevSelectError) else "INVALID_JSON_OR_STRUCTURE")
 
 
-def bind_decision(context, job_id, decision_id):
+def bind_decision(context, job_id, decision_id, *, config=None):
     value = context.data
     value["local_binding"].update(job_id=job_id, decision_id=decision_id)
     bound = DecisionContext.from_dict(value)
-    validate_context(bound)
+    validate_context(bound,config=config)
     return bound
 
 

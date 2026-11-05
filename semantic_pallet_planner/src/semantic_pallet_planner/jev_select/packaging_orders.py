@@ -226,7 +226,7 @@ def record(event,task,cfg,plan,requests):
     return base
 
 
-def export_decisions(job,task,cfg,cp,plan,rows,reuses=()):
+def export_decisions(job,task,cfg,cp,plan,rows,reuses=(),*,record_builder=None):
     for r in rows:
         if r['transport'] is not None:
             path=job/'responses'/f"{r['decision_id']}.raw.json";path.parent.mkdir(parents=True,exist_ok=True)
@@ -234,7 +234,7 @@ def export_decisions(job,task,cfg,cp,plan,rows,reuses=()):
             write(job/'transports'/f"{r['decision_id']}.json",r['transport'])
     for event in cp['events']+([cp['pending_event']] if cp['pending_event'] else []):
         if event.get('decision_id'):
-            write(job/'decisions'/f"{event['decision_id']}.json",record(event,task,cfg,plan,rows))
+            write(job/'decisions'/f"{event['decision_id']}.json",(record_builder or record)(event,task,cfg,plan,rows))
             write(job/'actions'/f"{event['decision_id']}.json",event)
     write(job/'request_ledger.json',{'version':'jev_job_request_view_v1','job_id':cp['job_id'],
                                    'requests':rows,'shared_ledger':'../../request_ledger/requests.json','statistics':request_statistics(rows,reuses)})

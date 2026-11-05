@@ -1,0 +1,28 @@
+.................F
+=================================== FAILURES ===================================
+_____________ test_saved_response_restore_no_network_or_retrieval ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-48/test_saved_response_restore_no0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x799d47cf4550>
+
+    def test_saved_response_restore_no_network_or_retrieval(tmp_path,monkeypatch):
+        plan,fake,_=setup(tmp_path,monkeypatch,tasks=1);j=plan['jobs'][1];task=read(tmp_path/'plan/tasks'/f"{j['task_id']}.json");cfg=j['config']
+        driver=mem.MemoryDriver(cfg,snapshot=read(tmp_path/'plan/memories'/p.FILES['T']));ledger=PilotLedger(tmp_path/'ledger',plan['request_budget'],{x['job_id']:x['config'] for x in plan['jobs']})
+        selector=pilot_selector_factory(j['method_id'],config=cfg,ledger=ledger,transport=fake,job_id=j['job_id']);saved=[]
+        class Cut(BaseException):pass
+        def cp(x):
+            if x['phase']=='DECISION_READY':saved.append(x);raise Cut()
+        with pytest.raises(Cut):run_episode(task,selector,cfg,job_id=j['job_id'],method=j['method_id'],memory_driver=driver,on_checkpoint=cp)
+        c=DecisionContext.from_dict(saved[0]['pending_event']['context']);ledger.request(c,j['job_id'],c.data['local_binding']['decision_id'],fake)
+        selector.transport=None
+        monkeypatch.setattr(driver,'resolve',lambda *a:(_ for _ in ()).throw(AssertionError('re-retrieval')))
+        ep=run_episode(task,selector,cfg,job_id=j['job_id'],method=j['method_id'],memory_driver=driver,resume=saved[0],event_limit=4)
+        assert fake.calls==1 and ep['events'][-1]['event']=='PLACE'
+>       assert p.orders.saved_reuses(tmp_path)[0]['has_response']
+E       IndexError: list index out of range
+
+semantic_pallet_planner/tests/unit/test_packaging_memory_pilot.py:117: IndexError
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/tests/unit/test_packaging_memory_pilot.py::test_saved_response_restore_no_network_or_retrieval
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 17 passed, 144 warnings in 185.51s (0:03:05)

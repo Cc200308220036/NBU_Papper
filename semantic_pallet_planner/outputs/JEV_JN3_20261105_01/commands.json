@@ -1,0 +1,47 @@
+[
+  {
+    "scope": "actual second task continuation; once only, already finished",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python -m semantic_pallet_planner.jev_select.packaging_memory_pilot run --plan semantic_pallet_planner/outputs/JEV_JN3_20261105_01/plan --output semantic_pallet_planner/outputs/JEV_JN3_20261105_01/run --api-key-file typesafe_api_key.md --resume --continue-pending",
+    "result": "exit 0, 18 new sends; do not rerun as experiment"
+  },
+  {
+    "scope": "first_task saved-record verification (first_task ran before continuation)",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python semantic_pallet_planner/outputs/JEV_JN3_20261105_01/readonly_guard.py semantic_pallet_planner/outputs/VERIFY_JN3_C_20261105_01/first_task_guard.json semantic_pallet_planner.jev_select.packaging_memory_pilot validate --output semantic_pallet_planner/outputs/JEV_JN3_20261105_01/run",
+    "result": "PASS",
+    "evidence": "semantic_pallet_planner/outputs/VERIFY_JN3_C_20261105_01/first_task.log"
+  },
+  {
+    "scope": "final_current saved-record verification (first_task ran before continuation)",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python semantic_pallet_planner/outputs/JEV_JN3_20261105_01/readonly_guard.py semantic_pallet_planner/outputs/VERIFY_JN3_C_20261105_01/final_current_guard.json semantic_pallet_planner.jev_select.packaging_memory_pilot validate --output semantic_pallet_planner/outputs/JEV_JN3_20261105_01/run",
+    "result": "PASS",
+    "evidence": "semantic_pallet_planner/outputs/VERIFY_JN3_C_20261105_01/final_current.log"
+  },
+  {
+    "scope": "final_archived saved-record verification (first_task ran before continuation)",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python semantic_pallet_planner/outputs/JEV_JN3_20261105_01/readonly_guard.py semantic_pallet_planner/outputs/VERIFY_JN3_C_20261105_01/final_archived_guard.json script semantic_pallet_planner/outputs/JEV_JN3_20261105_01/verify_frozen.py --output semantic_pallet_planner/outputs/JEV_JN3_20261105_01 --repo .",
+    "result": "PASS",
+    "evidence": "semantic_pallet_planner/outputs/VERIFY_JN3_C_20261105_01/final_archived.log"
+  },
+  {
+    "scope": "analysis saved-record verification (first_task ran before continuation)",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python semantic_pallet_planner/outputs/JEV_JN3_20261105_01/readonly_guard.py semantic_pallet_planner/outputs/VERIFY_JN3_C_20261105_01/analysis_guard.json script semantic_pallet_planner/outputs/JEV_JN3_20261105_01/build_evidence_analysis.py --output semantic_pallet_planner/outputs/JEV_JN3_20261105_01 --destination semantic_pallet_planner/outputs/VERIFY_JN3_C_20261105_01/analysis",
+    "result": "PASS",
+    "evidence": "semantic_pallet_planner/outputs/VERIFY_JN3_C_20261105_01/analysis.log"
+  },
+  {
+    "scope": "static final delivery verification; no application imports",
+    "command": "python semantic_pallet_planner/outputs/JEV_JN3_20261105_01/verify_delivery.py --output semantic_pallet_planner/outputs/JEV_JN3_20261105_01 --repo .",
+    "evidence": "semantic_pallet_planner/outputs/VERIFY_JN3_C_20261105_01/final_delivery.json"
+  },
+  {
+    "scope": "earlier stage-local tests; not rerun after actual requests",
+    "evidence": [
+      "tests/final2.xml",
+      "tests/final2.log",
+      "tests/final_archive.xml",
+      "tests/final_archive.log"
+    ],
+    "command_note": "Exact earlier shell invocation was not separately persisted; XML identifies test classes and logs identify count/time. The 222 integration and 39 final C executions are not summed. Re-executable test paths are in test_source_manifest.json.",
+    "no_new_behavior_test_execution_in_continuation": true
+  }
+]

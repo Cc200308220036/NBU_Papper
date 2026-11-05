@@ -29,6 +29,9 @@ METRICS_CONTRACT = {
 
 
 def selector_factory(method, *, execution_version=EXECUTION_VERSION, config=None, transport=None, ledger=None, job_id=None):
+    if execution_version == 'jev_packaging_memory_orders_v9':
+        from .packaging_pilot_protocol import pilot_selector_factory
+        return pilot_selector_factory(method,config=config,transport=transport,ledger=ledger,job_id=job_id)
     if execution_version == 'jev_packaging_contrast_v8':
         from .packaging_contrast_protocol import contrast_selector_factory
         return contrast_selector_factory(method,config=config,transport=transport,ledger=ledger,job_id=job_id)

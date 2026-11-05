@@ -1,0 +1,101 @@
+{
+  "request_statistics": {
+    "failed_requests": 0,
+    "memory_cost_usd": 0,
+    "model_calls": 55,
+    "model_cost_usd": "UNKNOWN",
+    "models": [
+      "jev-1.14.0"
+    ],
+    "network_attempts": 55,
+    "origins": [
+      "jev"
+    ],
+    "request_latency_s": {
+      "n": 55,
+      "p50": 0.8776319379976485,
+      "p95": 2.1859495154960302,
+      "sum": 63.597462888923474
+    },
+    "send_reservations": 55,
+    "stored_request_reuses": 0,
+    "stored_response_reuses": 0,
+    "stored_selection_reuses": 0,
+    "unknown_sends": 0,
+    "usage": {
+      "input_tokens": 696883,
+      "known_request_count": 55,
+      "missing_request_count": 0,
+      "output_tokens": 19739
+    },
+    "valid_responses": 55
+  },
+  "registered_request_budget": {
+    "derivation": "one send reservation per planned box at most; failure ends order; no retry; unused sends do not permit extra jobs",
+    "global": 99,
+    "per_job": {
+      "J0000": 15,
+      "J0001": 15,
+      "J0002": 15,
+      "J0003": 18,
+      "J0004": 18,
+      "J0005": 18
+    }
+  },
+  "retrieval_rule": {
+    "distance": "mean absolute normalized feature distance; score=1/(1+distance)",
+    "features": [
+      "buffer_fill",
+      "placed_fill",
+      "mean_length",
+      "mean_width",
+      "mean_height",
+      "mean_mass",
+      "mean_capacity",
+      "stackable_fraction",
+      "candidate_height"
+    ],
+    "historical_result_budget": {
+      "interpretation": "same observed outcome fields for future T/E; equal bytes do not establish fairness",
+      "max_comparisons_per_entry": 1,
+      "metrics": [
+        "placed_items",
+        "placed_volume_ratio",
+        "placed_mass_kg",
+        "actual_height_mm",
+        "envelope_utilization"
+      ]
+    },
+    "item_max_chars": 12000,
+    "item_max_utf8_bytes": 16000,
+    "max_chars": 12000,
+    "max_entries": 1,
+    "max_utf8_bytes": 16000,
+    "minimum_score": 0.5,
+    "scales": "container dimensions, payload; capacity uses max(payload,1); placed volume/container volume",
+    "tie": "ascending public fragment digest",
+    "truncation": "whole entries only; never remove conditions, costs or limitations",
+    "version": "packaging_public_distance_v1"
+  },
+  "information_budget": {
+    "differences": "T normalized historical location detail; E hypotheses and evidence counts; equal caps do not establish information equivalence",
+    "historical_result": {
+      "interpretation": "same observed outcome fields for future T/E; equal bytes do not establish fairness",
+      "max_comparisons_per_entry": 1,
+      "metrics": [
+        "placed_items",
+        "placed_volume_ratio",
+        "placed_mass_kg",
+        "actual_height_mm",
+        "envelope_utilization"
+      ]
+    },
+    "same_limits": true
+  },
+  "current_DeepSeek_calls": 0,
+  "current_reviewer_model_calls": 0,
+  "historical_T_single_decision_calls": 1,
+  "historical_E_single_decision_calls": 1,
+  "historical_DeepSeek_extractions": 2,
+  "cost_accounting": "current native request ledger only; historical calls not counted as C jobs; billed USD UNKNOWN; no inferred bill"
+}

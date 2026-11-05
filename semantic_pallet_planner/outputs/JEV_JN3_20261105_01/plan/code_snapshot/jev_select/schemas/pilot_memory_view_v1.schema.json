@@ -1,0 +1,58 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_pilot_memory_view_v1"
+    },
+    "mode": {
+      "enum": [
+        "none",
+        "T",
+        "E"
+      ]
+    },
+    "snapshot_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "query_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "reason": {
+      "type": "string"
+    },
+    "injected_chars": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "injected_utf8_bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "view_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "mode",
+    "snapshot_digest",
+    "query_digest",
+    "entries",
+    "reason",
+    "injected_chars",
+    "injected_utf8_bytes",
+    "view_digest"
+  ],
+  "additionalProperties": false
+}

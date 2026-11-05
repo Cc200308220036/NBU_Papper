@@ -166,7 +166,9 @@ def test_E_episode_restore(snapshot,tmp_path,phase,monkeypatch):
     with pytest.raises(JevSelectError):run_episode(task,selector,bad,job_id='J',method=e.METHOD,memory_view=v,resume=cp)
 
 
-def test_full_constructed_stage_workflow():
+def test_full_constructed_stage_workflow(monkeypatch):
+    # Isolate only this constructed workflow from the archived real B allowance.
+    monkeypatch.setattr(w,'other_E_requests',lambda root:[])
     with tempfile.TemporaryDirectory(prefix='CONSTRUCTED_JN3B_',dir=REPO/'semantic_pallet_planner/outputs') as d:
         root=Path(d);plan=g.prepare(root,fixture_only=True);paths={}
         for j in plan['jobs']:

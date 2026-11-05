@@ -1,0 +1,70 @@
+{
+  "historical_parent": "semantic_pallet_planner/outputs/JEV_JN3_20261104_02/T_E_information_budget.json",
+  "parent_sha256": "8ca65116ace073cd86643458bf08df7548b841f431be32e6deda36b47b4bac59",
+  "shared_retrieval_rule": {
+    "distance": "mean absolute normalized feature distance; score=1/(1+distance)",
+    "features": [
+      "buffer_fill",
+      "placed_fill",
+      "mean_length",
+      "mean_width",
+      "mean_height",
+      "mean_mass",
+      "mean_capacity",
+      "stackable_fraction",
+      "candidate_height"
+    ],
+    "historical_result_budget": {
+      "interpretation": "same observed outcome fields for future T/E; equal bytes do not establish fairness",
+      "max_comparisons_per_entry": 1,
+      "metrics": [
+        "placed_items",
+        "placed_volume_ratio",
+        "placed_mass_kg",
+        "actual_height_mm",
+        "envelope_utilization"
+      ]
+    },
+    "item_max_chars": 12000,
+    "item_max_utf8_bytes": 16000,
+    "max_chars": 12000,
+    "max_entries": 1,
+    "max_utf8_bytes": 16000,
+    "minimum_score": 0.5,
+    "scales": "container dimensions, payload; capacity uses max(payload,1); placed volume/container volume",
+    "tie": "ascending public fragment digest",
+    "truncation": "whole entries only; never remove conditions, costs or limitations",
+    "version": "packaging_public_distance_v1"
+  },
+  "shared_caps_and_fields": {
+    "differences": "T normalized historical location detail; E hypotheses and evidence counts; equal caps do not establish information equivalence",
+    "historical_result": {
+      "interpretation": "same observed outcome fields for future T/E; equal bytes do not establish fairness",
+      "max_comparisons_per_entry": 1,
+      "metrics": [
+        "placed_items",
+        "placed_volume_ratio",
+        "placed_mass_kg",
+        "actual_height_mm",
+        "envelope_utilization"
+      ]
+    },
+    "same_limits": true
+  },
+  "per_decision_actual": "memory_exposure_diagnostics.json and run/jobs/J*/metrics.json /memory_metrics/decisions",
+  "current_actual_lengths_including_list": {
+    "00153": {
+      "T": 2595,
+      "E": 3773,
+      "requests_each": 13
+    },
+    "00150": {
+      "T": 2621,
+      "E": 3786,
+      "requests_each": 6
+    }
+  },
+  "length_unit": "characters and UTF-8 bytes (equal for actual ASCII-rendered views)",
+  "content_difference": "T normalized historical positions; E bounded hypotheses, evidence counts and fewer historical position details",
+  "fairness": "Same current public facts, candidate and prompt contract; same entry/result caps do not establish information equivalence. No filler/truncating conditions or costs."
+}

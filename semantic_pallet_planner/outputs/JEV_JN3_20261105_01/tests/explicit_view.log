@@ -1,0 +1,66 @@
+F
+=================================== FAILURES ===================================
+__________ test_singleton_view_is_not_actual_injection[jev_no_memory] __________
+
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-53/test_singleton_view_is_not_act0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x782ab3fa9350>
+method = 'jev_no_memory'
+
+    @pytest.mark.parametrize('method',METHODS)
+    def test_singleton_view_is_not_actual_injection(tmp_path,monkeypatch,method):
+        from semantic_pallet_planner.jev_select.contracts import CandidateBundle
+        from semantic_pallet_planner.jev_select.packaging_runtime import build_context
+        from semantic_pallet_planner.jev_select.selector import bind_decision
+        from semantic_pallet_planner.jev_select.candidates import PublicBusinessGuard
+        plan,fake,_=setup(tmp_path,monkeypatch,tasks=1);j=next(j for j in plan['jobs'] if j['method_id']==method);cfg=j['config'];task=read(tmp_path/'plan/tasks'/f"{j['task_id']}.json")
+        mode=cfg['memory_mode'];snapshot=None if mode=='none' else read(tmp_path/'plan/memories'/p.FILES[mode]);driver=mem.MemoryDriver(cfg,snapshot=snapshot)
+        state=initial(task['container'],3)
+        for o in task['items'][:3]:state=receive(state,o,task['attributes'][o['item_id']])
+>       req,pol,b,_=decision_inputs(state,task,cfg,j['job_id'],j['job_id']+'_D0000',memory_driver=driver)
+
+semantic_pallet_planner/tests/unit/test_packaging_memory_pilot.py:144: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py:39: in decision_inputs
+    context = bind_decision(ContextBuilder(config).build(req, bundle, policy, memories=memory_snapshot, retrieval=saved_retrieval, memory_view=memory_view, retrieval_receipt=pilot_receipt), job_id, decision_id, config=config)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py:99: in build
+    return build_context(self.config, observation, bundle, public_policy, memory_view=memory_view, memory_driver=memory_driver, retrieval_receipt=retrieval_receipt)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+config = {'api_key_env': 'TYPESAFE_API_KEY', 'buffer_capacity': 3, 'business_mode': 'physical_only', 'candidate_backend': 'e2_original_v1', ...}
+observation = {'available_objects': [{'cargo_category': 'general', 'dimensions_mm': {'height': 20, 'length': 20, 'width': 20}, 'frag...ner_id': 'fixture', 'coordinate_frame': 'container_bottom_center', 'length_mm': 1000, 'max_height_mm': 1000, ...}, ...}
+bundle = CandidateBundle(_json='{"business_mode":"physical_only","candidate_backend":"e2_original_v1","experiment_protocol":"je...761326a0691afd597f7245b6d2455a68a6a2d3f4a","selectable_pool":"physical_feasible","version":"jev_candidate_bundle_v9"}')
+policy = PublicPolicyContext(_json='{"observation_digest":"4724b7152596d677cf561691ce047ddfa44e8a11cbbcb901d3ff20645fe8b422","response":{"policy_ast":{"rules":[],"version":"jev_packaging_load_dataset_v1"}},"source":"packaging_physical_only"}')
+
+    def build_context(config,observation,bundle,policy,*,memory_view=None,memory_driver=None,retrieval_receipt=None):
+        from semantic_pallet_planner.o4.extensions.e2.protocol import BINDINGS
+        from .config import protocol_suffix
+        require(memory_driver is None,'context_builder_requires_explicit_view')
+        value,state,criteria,mapping,buffer=public_facts(config,observation,bundle,policy)
+        memory_fields={}
+        if config['version']!='jev_packaging_memory_orders_v9' and (memory_driver is not None or retrieval_receipt is not None):
+            raise JevSelectError('pilot_memory_protocol_incompatible')
+        if config['version'] in ('jev_packaging_memory_v7','jev_packaging_contrast_v8'):
+            from .packaging_memory_protocol import memory_interface
+            interface=memory_interface(config['version'])
+            empty_view,validate_view=interface.empty_view,interface.validate_view
+            view=empty_view(config['memory_snapshot_digest']) if memory_view is None else memory_view
+            mv=validate_view(view,config['memory_snapshot_digest'])
+            require(all(digest(e) in config['memory_entry_digests'] for e in mv['entries']),'memory_entry_not_in_frozen_config')
+            state['memories']=mv['entries'];memory_fields={'memory_view':mv}
+        elif memory_view is not None and config['version']!='jev_packaging_memory_orders_v9':
+            raise JevSelectError('packaging_memory_protocol_incompatible')
+        if config['version']=='jev_packaging_memory_orders_v9':
+            from .packaging_pilot_memory import validate_view,validate_receipt
+            require(memory_view is not None and retrieval_receipt is not None,'pilot_missing_saved_view_or_receipt')
+            mv=validate_view(memory_view,config)
+            state['memories']=mv['entries']
+            validate_receipt(retrieval_receipt,memory_view,config,state,criteria)
+            memory_fields={'memory_view':mv,'retrieval_receipt':retrieval_receipt}
+>       route=decision_route(bundle)
+E       NameError: name 'decision_route' is not defined
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py:250: NameError
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/tests/unit/test_packaging_memory_pilot.py::test_singleton_view_is_not_actual_injection[jev_no_memory]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 33 deselected in 1.81s

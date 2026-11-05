@@ -1,0 +1,113 @@
+{
+  "stage": "JN3-C",
+  "versions": {
+    "execution": "jev_packaging_memory_orders_v9",
+    "config": "jev_packaging_memory_orders_v9",
+    "context": "jev_decision_context_v9",
+    "candidate_bundle": "jev_candidate_bundle_v9",
+    "selection": "jev_selection_result_v9",
+    "checkpoint": "jev_checkpoint_v9",
+    "request_ledger": "jev_pilot_requests_v1",
+    "metrics": "jev_packaging_memory_order_metrics_v1",
+    "plan": "jev_memory_order_plan_v1",
+    "run": "jev_memory_order_run_v1"
+  },
+  "method_registry": {
+    "jev_no_memory": {
+      "mode": "none",
+      "model": "jev-1.14.0",
+      "origin": "jev"
+    },
+    "jev_with_contrast_experience": {
+      "mode": "E",
+      "model": "jev-1.14.0",
+      "origin": "jev"
+    },
+    "jev_with_trajectory": {
+      "mode": "T",
+      "model": "jev-1.14.0",
+      "origin": "jev"
+    }
+  },
+  "public_driver": "MemoryDriver.resolve(public_state, public_criteria) -> (PilotMemoryView, retrieval_receipt); no full task argument",
+  "explicit_context": "ContextBuilder.build(memory_view=..., retrieval_receipt=...)",
+  "common_execution": "packaging_memory_pilot.run -> packaging_experiment._run_job -> episode.run_episode -> original selected monitor and commit_physical",
+  "persistence": "DECISION_READY saves complete query/view/body/receipt before send; authoritative checkpoint mirrored in memory_decisions, contexts, requests",
+  "bindings": [
+    "job",
+    "decision",
+    "config",
+    "budget",
+    "source",
+    "before_state",
+    "original_candidate_pool",
+    "display_mapping",
+    "query",
+    "snapshot",
+    "retrieval",
+    "view",
+    "body",
+    "response",
+    "selection",
+    "monitor",
+    "physical_commit"
+  ],
+  "recovery": "Saved context/response/selection/monitor/commit reused without retrieval overwrite, resend, reselect, remonitor or duplicate commit. Missing or modified saved identities reject. UNKNOWN_SEND stops batch.",
+  "no_memory": "Explicit empty view with none mode, same current observable base prompt as T/E.",
+  "empty_T_E": "Retain assigned method, explicit empty view and reason; no query replacement.",
+  "singleton": "No API request; view nonempty and actual sent nonempty separately counted.",
+  "previous_versions": "v6/v7/v8 closed schemas and parent memory bytes unchanged; no historical re-signing.",
+  "monitor": "pct_contact_network_v2 / pct_stability_result_v2; common selected-action-only monitor, enabled=true in plan, unchanged default false",
+  "source_archive": "plan/code_snapshot/; 421 production .py/.json plus original algorithm auxiliary files bound in plan/algorithm_archive_manifest.json",
+  "frozen_retrieval": {
+    "distance": "mean absolute normalized feature distance; score=1/(1+distance)",
+    "features": [
+      "buffer_fill",
+      "placed_fill",
+      "mean_length",
+      "mean_width",
+      "mean_height",
+      "mean_mass",
+      "mean_capacity",
+      "stackable_fraction",
+      "candidate_height"
+    ],
+    "historical_result_budget": {
+      "interpretation": "same observed outcome fields for future T/E; equal bytes do not establish fairness",
+      "max_comparisons_per_entry": 1,
+      "metrics": [
+        "placed_items",
+        "placed_volume_ratio",
+        "placed_mass_kg",
+        "actual_height_mm",
+        "envelope_utilization"
+      ]
+    },
+    "item_max_chars": 12000,
+    "item_max_utf8_bytes": 16000,
+    "max_chars": 12000,
+    "max_entries": 1,
+    "max_utf8_bytes": 16000,
+    "minimum_score": 0.5,
+    "scales": "container dimensions, payload; capacity uses max(payload,1); placed volume/container volume",
+    "tie": "ascending public fragment digest",
+    "truncation": "whole entries only; never remove conditions, costs or limitations",
+    "version": "packaging_public_distance_v1"
+  },
+  "information_budget": {
+    "differences": "T normalized historical location detail; E hypotheses and evidence counts; equal caps do not establish information equivalence",
+    "historical_result": {
+      "interpretation": "same observed outcome fields for future T/E; equal bytes do not establish fairness",
+      "max_comparisons_per_entry": 1,
+      "metrics": [
+        "placed_items",
+        "placed_volume_ratio",
+        "placed_mass_kg",
+        "actual_height_mm",
+        "envelope_utilization"
+      ]
+    },
+    "same_limits": true
+  },
+  "T_E_information_difference": "T retains more historical normalized position detail; E adds bounded hypotheses and evidence counts. Equal caps and result fields do not establish complete information equivalence."
+}

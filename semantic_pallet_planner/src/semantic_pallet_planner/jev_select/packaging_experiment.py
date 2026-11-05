@@ -155,7 +155,7 @@ class _BoundaryStop(Exception):
     pass
 
 
-def _run_job(task, entry, job, watchdog, *, selector=None, metrics_builder=None, hook=None):
+def _run_job(task, entry, job, watchdog, *, selector=None, metrics_builder=None, hook=None, memory_driver=None):
     from .episode import run_episode
     cfg=entry['config'];jid=entry['job_id'];status=read(job/'status.json')
     cp=read(job/'checkpoint.json') if (job/'checkpoint.json').exists() else None
@@ -174,7 +174,7 @@ def _run_job(task, entry, job, watchdog, *, selector=None, metrics_builder=None,
     try:
         status.update(state='RUNNING',category='NOT_RUN');write(job/'status.json',status)
         ep=run_episode(task,selector_factory(entry['method_id']) if selector is None else selector,cfg,job_id=jid,method=entry['method_id'],
-            resume=cp,on_checkpoint=checkpoint,hook=hook)
+            resume=cp,on_checkpoint=checkpoint,hook=hook,memory_driver=memory_driver)
         cp=ep['checkpoint']
         status.update(state='FINISHED', category=termination_category(cp['reason'],cp['events']))
         write(job/'episode.json',ep)
@@ -360,10 +360,10 @@ def validate_saved_checkpoint(cp, task, cfg, jid, *, fork_origin=None):
     if fork_origin is not None:
         state=copy.deepcopy(fork_origin['state']);cursor=fork_origin['cursor']
     require((cp['pending_event'] is None and cp['phase'] in ('READY','TERMINATED')) or
-        (cp['pending_event'] is not None and cp['phase'] in ('SELECTED','MONITORED','COMMITTED')),
+        (cp['pending_event'] is not None and cp['phase'] in (('DECISION_READY','SELECTED','MONITORED','COMMITTED') if cfg['version']=='jev_packaging_memory_orders_v9' else ('SELECTED','MONITORED','COMMITTED'))),
         'full_order_invalid_phase')
     if cp['pending_event']:
-        require((cp['phase']=='SELECTED') == (cp['pending_event']['monitor'] is None), 'full_order_monitor_phase_changed')
+        require((cp['phase'] in ('SELECTED','DECISION_READY')) == (cp['pending_event']['monitor'] is None), 'full_order_monitor_phase_changed')
     rows=[*cp['events']]
     if cp['pending_event'] is not None:
         rows.append(cp['pending_event'])

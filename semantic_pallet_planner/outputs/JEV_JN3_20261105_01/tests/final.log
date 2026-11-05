@@ -1,0 +1,34 @@
+......................................................................F
+=================================== FAILURES ===================================
+_____________________ test_full_constructed_stage_workflow _____________________
+
+    def test_full_constructed_stage_workflow():
+        with tempfile.TemporaryDirectory(prefix='CONSTRUCTED_JN3B_',dir=REPO/'semantic_pallet_planner/outputs') as d:
+            root=Path(d);plan=g.prepare(root,fixture_only=True);paths={}
+            for j in plan['jobs']:
+                pack=read(root/'facts'/f"{j['job_id']}.json");f=root/f"fixture_{j['job_id']}.json";write(f,response(e.proposed_example(pack)));paths[j['job_id']]=f
+            ledger=g.run(root,fixture_paths=paths);assert ledger['approved']==2
+            assert g.validate_saved(root)['status']=='PASS'
+            # Recovery must reuse durable raw responses even if fixtures disappear.
+            for f in paths.values():f.unlink()
+            g.run(root,fixture_paths=paths);assert g.validate_saved(root)['status']=='PASS'
+>           assert w.prepare(root)['status']=='READY'
+
+semantic_pallet_planner/tests/unit/test_packaging_contrast.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_contrast_validation.py:42: in prepare
+    require(not other_E_requests(root),'contrast_previous_E_attempt_exists')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, code = 'contrast_previous_E_attempt_exists'
+
+    def require(ok, code):
+>       if not ok: raise JevSelectError(code)
+E       semantic_pallet_planner.jev_select.contracts.JevSelectError: contrast_previous_E_attempt_exists
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py:42: JevSelectError
+- generated xml file: /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JN3_20261105_01/tests/final.xml -
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/tests/unit/test_packaging_contrast.py::test_full_constructed_stage_workflow
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 70 passed, 152 warnings in 194.67s (0:03:14)

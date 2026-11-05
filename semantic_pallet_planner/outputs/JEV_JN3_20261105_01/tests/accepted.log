@@ -1,0 +1,31 @@
+....................................F
+=================================== FAILURES ===================================
+______________ test_changed_budget_or_missing_ledger_cannot_reset ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-cyw/pytest-52/test_changed_budget_or_missing0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x734dfcc80c20>
+
+>   ???
+
+semantic_pallet_planner/tests/unit/test_packaging_memory_pilot.py:267: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/tests/unit/test_packaging_memory_pilot.py:34: in setup
+    plan=p.prepare(tmp_path/'dataset',spec,tmp_path/'plan');fake=Fake()
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_memory_pilot.py:95: in prepare
+    write(root/'delivery_manifest.json',file_manifest(root));validate_plan(root);return p
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_memory_pilot.py:120: in validate_plan
+    T.require(j['job_id']==f'J{i:04d}' and j['task_digest']==digest(task) and read(root/'tasks'/f"{j['task_id']}.json")==task and task['partition']=='train' and j['source_group_id']==task['source_group_id'] and j['planned_items']==len(task['items']) and j['config']==expected,'pilot_job_binding_changed')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, code = 'pilot_job_binding_changed'
+
+    def require(ok, code):
+>       if not ok: raise JevSelectError(code)
+E       semantic_pallet_planner.jev_select.contracts.JevSelectError: pilot_job_binding_changed
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py:42: JevSelectError
+- generated xml file: /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JN3_20261105_01/tests/accepted.xml -
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/tests/unit/test_packaging_memory_pilot.py::test_changed_budget_or_missing_ledger_cannot_reset
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 36 passed, 152 warnings in 178.55s (0:02:58)

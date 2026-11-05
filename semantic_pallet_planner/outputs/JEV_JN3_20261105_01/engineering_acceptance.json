@@ -1,0 +1,60 @@
+{
+  "version": "jev_JN3_C_engineering_acceptance_v1",
+  "stage": "JN3-C",
+  "criteria": {
+    "C01": {
+      "status": "PASS_IN_DECLARED_SCOPE",
+      "scope": "任务/三方法/模型/提示/来源/顺序/快照/预算/停止规则冻结；两个暴露训练来源，无未见测试",
+      "evidence": [
+        "plan/plan.json",
+        "plan/plan_receipt.json",
+        "data_parent_binding.json",
+        "authorization_scope.json"
+      ]
+    },
+    "C02": {
+      "status": "PASS_IN_DECLARED_SCOPE",
+      "scope": "61个公开决策记录；38次真实非空T/E请求；31组精确同状态同候选比较，分化后不按步号配对",
+      "evidence": [
+        "memory_exposure_diagnostics.json",
+        "run/behavior_analysis.json",
+        "run/request_ledger/requests.json",
+        "behavior_outcome_axes.json"
+      ]
+    },
+    "C03": {
+      "status": "PASS_IN_DECLARED_SCOPE",
+      "scope": "6/6自然EMPTY_POOL、55请求、0失败/发送不明；完整件/体积/质量分母、终止/监测/时间/token及UNKNOWN费用",
+      "evidence": [
+        "job_outcomes.json",
+        "run/summary.json",
+        "run/job_ledger.json",
+        "run/paired_differences.json",
+        "cost_and_information_budget.json"
+      ]
+    },
+    "C04": {
+      "status": "PASS_IN_DECLARED_SCOPE",
+      "scope": "分开暴露/行为/结果；保留同选、动作变但装载中性、E/T中性及token/耗时增加；未观察类别不虚构",
+      "evidence": [
+        "negative_and_uncertain_results.json",
+        "behavior_outcome_axes.json",
+        "run/behavior_analysis.json",
+        "C04_coverage.json"
+      ]
+    },
+    "C05": {
+      "status": "PASS_IN_DECLARED_SCOPE",
+      "scope": "按冻结规则PROCEED；完整JN3/N10/N11声明范围覆盖与下一阶段缺口明确，收益未建立，不自动JN4",
+      "evidence": [
+        "memory_pilot_receipt.json",
+        "saved_record_validation.json",
+        "handoff.json"
+      ]
+    }
+  },
+  "research_benefit": "NOT_ESTABLISHED",
+  "actual_runtime_errors": 0,
+  "all_orders_complete": false,
+  "scope_limits": "two exposed development sources only; no E superiority, statistical significance, causal-use or unseen generalization claim"
+}

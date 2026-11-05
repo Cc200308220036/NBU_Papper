@@ -1,0 +1,22 @@
+{
+  "stage": "JN3-C",
+  "execution_version": "jev_packaging_memory_orders_v9",
+  "plan": "jev_memory_order_plan_v1",
+  "run": "jev_memory_order_run_v1",
+  "methods": {
+    "jev_no_memory": "none",
+    "jev_with_trajectory": "T",
+    "jev_with_contrast_experience": "E"
+  },
+  "data_flow": "common episode -> observation/public original candidates -> public_facts -> explicit MemoryDriver.resolve(public_state, public_criteria) -> PilotMemoryView and receipt -> ContextBuilder.build(memory_view=..., retrieval_receipt=...) -> durable DECISION_READY context -> request ledger/native Choice -> SELECTED -> MONITORED -> original commit or stop",
+  "privacy": "driver never receives full task, arrival stream, witness, current future boxes, PCT diagnostics or evaluation metrics; source group is a private exclusion dependency, not a score feature",
+  "recovery": "complete query/view/body/receipt persisted in authoritative checkpoint before sending; saved DECISION_READY/SELECTED/MONITORED/COMMITTED is reused without driver/candidate dispatch; malformed/missing core saved fields or changed snapshot/config refuse. Separate trace files are exact copies of durable context.",
+  "standard_validation": "final checkpoint reconstructs each saved public event once; every phase is proven as a prefix and correctly restricted projection of already validated final events. No numerical reassessment or commit; source/rule/snapshot/read-only algebra checked.",
+  "identity": "context/binding/body/mapping/query/retrieval/view/snapshot/ledger/selection/monitor freeze together; ledger binds the complete per-job/global budget and config identities",
+  "empty_and_singleton": "T/E empty hits remain assigned methods with explicit empty views; singleton may have a hit but has no model body/send and no actual request injection",
+  "limits": "same parent retrieval features, score/threshold/tie, whole-source exclusion, 1 complete entry, char/UTF8 limits and 5-metric result budget; no update to parent memory, history projection or physical algorithm",
+  "architecture": "reuse common _run_job, episode, native parser, RequestLedger/OrderLedger and export_decisions optional record builder; no A/B script concatenation or second order engine",
+  "previous_versions": "v6 no-memory, v7 T, v8 E and their closed schemas are retained; new config/context/bundle/selection/checkpoint/schema routes only for v9",
+  "first_task_gate": "close and standard-validate all three methods; stop on technical/identity/recovery/metrics/UNKNOWN_SEND/watchdog/cancel; continue on natural or declared range outcomes; at least one confirmed nonempty memory response needed; benefit never determines continuation",
+  "final_recommendation": "frozen DEFER/REVISE/PROCEED rule; all positive/neutral/degraded/invalid and cost/height effects retained; never require E to win"
+}

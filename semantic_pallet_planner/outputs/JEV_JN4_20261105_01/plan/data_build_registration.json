@@ -1,0 +1,80 @@
+{
+  "calibration": {
+    "basis": "synthetic experimental scale, not compression formula or industrial measurement",
+    "m_ref_kg": 8.586,
+    "partition": "train",
+    "rounding": "ceil(q75) to whole kg",
+    "scale_kg": 9,
+    "statistic": "unique physical SKU mass linear q75"
+  },
+  "feasibility": "UNKNOWN; no new witness; no filtering by method outcomes, packing difficulty, hits or monitor results",
+  "materialized": false,
+  "new_package_receipt": {
+    "independent_sources": 0,
+    "status": "NOT_MATERIALIZED",
+    "tasks": 0,
+    "variants": 0
+  },
+  "packaging_config_sha256": "c08ad9194d29b2d08b58db71a024ce6f2fcba77b17de20ed9f2f8a65c9fd3da8",
+  "profiles": [
+    {
+      "capacity_kg": 0,
+      "id": "no_support",
+      "probability": 0.1,
+      "stackable": false
+    },
+    {
+      "capacity_kg": 9,
+      "id": "low",
+      "probability": 0.25,
+      "stackable": true
+    },
+    {
+      "capacity_kg": 27,
+      "id": "ordinary",
+      "probability": 0.45,
+      "stackable": true
+    },
+    {
+      "capacity_kg": 54,
+      "id": "reinforced",
+      "probability": 0.2,
+      "stackable": true
+    }
+  ],
+  "representative": "lexicographically smallest raw key in admitted component; full arrival sequence, no truncation",
+  "rule": "reuse profile_for and runtime_task; new explicitly versioned derived loader needed, do not bypass old four-source guard; source mass/dimensions unchanged; no category/region/AST",
+  "scope": "existing BED-BPP raw corpus only; no further collection; VERIFIED_UNSEEN components only",
+  "seed": 20261105,
+  "size": {
+    "basis": "descriptive 3 fixed length strata, 2 sources each; no estimated model variance or power claim",
+    "maximum": 6,
+    "minimum": 6,
+    "repeats": 1,
+    "variants_per_source": 1
+  },
+  "static_invalid": "record malformed units/source gaps separately; no silent replacement or easier substitution; quota shortage => NOT_READY",
+  "status": "BLOCKED_NO_ADMITTED_SOURCE",
+  "strata": {
+    "allocation": "in each length bin sort verified components by sha256([20261105,component]); choose first two; report mass/size/capacity diversity without replacing low diversity sources",
+    "length_bins": [
+      [
+        14,
+        20
+      ],
+      [
+        21,
+        30
+      ],
+      [
+        31,
+        40
+      ]
+    ],
+    "mass_heterogeneity": "CV <= .25 vs > .25",
+    "per_bin": 2,
+    "size_heterogeneity": "rotation-normalized distinct box sizes / count <= .5 vs > .5"
+  },
+  "variant": "controlled_heterogeneous only, frozen packaging seed 20261102 and profile hash/profile capacities",
+  "version": "jev_evaluation_data_registration_v1"
+}

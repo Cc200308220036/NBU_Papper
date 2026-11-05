@@ -1,0 +1,99 @@
+{
+  "aggregation": "per-source equal-weight paired differences; mean, median, min/max, valid source count and full registered source/job denominators; no best-seed selection",
+  "estimands": [
+    "stable complete rate difference",
+    "paired loaded-volume proportion difference",
+    "loaded count/mass difference",
+    "height/envelope differences including loading wins and reverse costs"
+  ],
+  "evaluation_rule": {
+    "compactness": "height lower, envelope higher; both empty NOT_APPLICABLE; missing nonempty metrics invalidate compactness layer and reject experience",
+    "delta_direction": "alternative_minus_reference",
+    "excluded_diagnostics": [
+      "fixed_container_utilization",
+      "remaining_capacity_sum",
+      "cost",
+      "latency_s"
+    ],
+    "hierarchy": "first unequal stable completion or volume decides; otherwise count/mass Pareto; only equal loading permits height/envelope Pareto",
+    "levels": [
+      "STABLE_COMPLETION",
+      "LOADED_VOLUME",
+      "COUNT_MASS",
+      "COMPACTNESS"
+    ],
+    "neutral": "registered metric equivalence only; not action, box-set or layout identity",
+    "secondary_regressions": [
+      "placed_items",
+      "placed_mass_kg",
+      "actual_height_mm",
+      "envelope_utilization"
+    ],
+    "tolerances": {
+      "height_mm": 1e-06,
+      "items": 0,
+      "mass_kg": 1e-09,
+      "ratio": 1e-09
+    },
+    "valid_categories": [
+      "COMPLETE",
+      "EMPTY_POOL",
+      "PREDICTED_STATIC_INSTABILITY"
+    ],
+    "version": "jev_branch_comparison_rule_v2"
+  },
+  "failures": "all monitor reason/coverage, first stop progress, timeout, cost/usage, latency p50/p95 with n, injection/query/view/body nonempty rates and singleton counts",
+  "interpretation": [
+    "EMPTY_POOL is sampled-pool stop, not infeasibility proof",
+    "prediction is static instability, not real collapse",
+    "hard-filter zero violations is not selector benefit",
+    "equal loaded volume does not prove equal layouts",
+    "remaining capacity sum not future loadability",
+    "observational trajectory differences not single-choice causal proof"
+  ],
+  "invalid_policy": "retain all jobs/categories and reasons in full denominator; no strategy winner label for invalid pair; valid-pair descriptions may be biased, report counts and full-cohort volume delta bounds [-1,1] per missing pair",
+  "local_baselines": "both fully tabulated for every source; no historical v5/v6 scores mixed into common-protocol pairs",
+  "pair_invalid": [
+    "ERROR",
+    "UNKNOWN_SEND",
+    "TECHNICAL_LIMIT",
+    "CANCELLED",
+    "NOT_RUN",
+    "UNASSESSABLE or missing monitor coverage/metric/identity"
+  ],
+  "primary_comparisons": [
+    [
+      "jev_with_trajectory",
+      "jev_no_memory"
+    ],
+    [
+      "jev_with_contrast_experience",
+      "jev_no_memory"
+    ],
+    [
+      "jev_with_contrast_experience",
+      "jev_with_trajectory"
+    ],
+    [
+      "jev_with_contrast_experience",
+      "jev_with_unrelated_E_control"
+    ]
+  ],
+  "research_question": "conditional loading effects of frozen T/E on independent unseen sources; E superiority not required",
+  "statistical_unit": "connected source component; variants and repeated trajectories nested, never inflate N; single variant/repeat selected",
+  "uncertainty": {
+    "binary_completion": "report per-source pairs and rates, no small-N significance claims",
+    "draws": 10000,
+    "implementation_spec": "Python random.Random(seed); sorted valid source IDs; choices(ids,k=N) once per draw shared across metrics; quantiles linear at (B-1)*p; N<6 => descriptive range only, CI NOT_ESTIMABLE",
+    "limitation": "bootstrap exploratory conditional on admitted finite sample, no model stochastic variance estimate; one repeat cannot estimate it",
+    "method": "95% percentile bootstrap of independent source means for paired volume/count/mass/height/envelope deltas",
+    "seed": 20261105
+  },
+  "valid_natural": [
+    "COMPLETE",
+    "EMPTY_POOL",
+    "PREDICTED_STATIC_INSTABILITY with certificate"
+  ],
+  "version": "jev_source_paired_analysis_v1",
+  "whole_order_interpretation": "pair same task/dataset/denominators/common contract; different trajectories allowed, no identical per-step pool claim; stable complete first then volume, count/mass then equal-loading compactness"
+}

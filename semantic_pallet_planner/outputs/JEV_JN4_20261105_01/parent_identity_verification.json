@@ -1,0 +1,180 @@
+{
+  "added": [
+    "jev_select/packaging_evaluation_plan.py",
+    "jev_select/packaging_source_audit.py",
+    "jev_select/schemas/evaluation_control_v1.schema.json",
+    "jev_select/schemas/evaluation_plan_blocked_v1.schema.json"
+  ],
+  "applicable_agents": [
+    "AGENTS.md"
+  ],
+  "baseline_production_files": 421,
+  "head": "ee060c8d",
+  "initial_worktree": "clean",
+  "modified_existing": [
+    "jev_select/contracts.py"
+  ],
+  "parent_claims_vs_evidence": {
+    "pilot_suggestion": {
+      "C01_C05": {
+        "C01": "PASS_IN_DECLARED_SCOPE",
+        "C02": "PASS_IN_DECLARED_SCOPE",
+        "C03": "PASS_IN_DECLARED_SCOPE",
+        "C04": "PASS_IN_DECLARED_SCOPE",
+        "C05": "PASS_IN_DECLARED_SCOPE"
+      },
+      "DeepSeek_calls": 0,
+      "JN4_execution": "NOT_AUTHORIZED_BY_THIS_RECEIPT",
+      "actual_nonempty_memory_requests": 38,
+      "all_registered_engineering_closed": true,
+      "closed_jobs": 6,
+      "cost_usd": "UNKNOWN",
+      "coverage": [
+        {
+          "actual_nonempty": 0,
+          "category": "EMPTY_POOL",
+          "job_id": "J0000",
+          "method": "jev_no_memory",
+          "view_nonempty": 0
+        },
+        {
+          "actual_nonempty": 13,
+          "category": "EMPTY_POOL",
+          "job_id": "J0001",
+          "method": "jev_with_trajectory",
+          "view_nonempty": 13
+        },
+        {
+          "actual_nonempty": 13,
+          "category": "EMPTY_POOL",
+          "job_id": "J0002",
+          "method": "jev_with_contrast_experience",
+          "view_nonempty": 13
+        },
+        {
+          "actual_nonempty": 0,
+          "category": "EMPTY_POOL",
+          "job_id": "J0003",
+          "method": "jev_no_memory",
+          "view_nonempty": 0
+        },
+        {
+          "actual_nonempty": 6,
+          "category": "EMPTY_POOL",
+          "job_id": "J0004",
+          "method": "jev_with_trajectory",
+          "view_nonempty": 6
+        },
+        {
+          "actual_nonempty": 6,
+          "category": "EMPTY_POOL",
+          "job_id": "J0005",
+          "method": "jev_with_contrast_experience",
+          "view_nonempty": 6
+        }
+      ],
+      "evidence": {
+        "acceptance": "engineering_acceptance.json",
+        "behavior": "run/behavior_analysis.json",
+        "cost": "cost_and_information_budget.json",
+        "exposure": "memory_exposure_diagnostics.json",
+        "jobs": "job_outcomes.json",
+        "negative_and_uncertain": "negative_and_uncertain_results.json",
+        "paired_v2": "run/paired_differences.json",
+        "plan": "plan/plan.json",
+        "requests": "run/request_ledger/requests.json",
+        "validation": "saved_record_validation.json"
+      },
+      "experience_updates": 0,
+      "extra_same_state_model_probes": 0,
+      "full_JN3": {
+        "C01_C05": "PASS_IN_DECLARED_SCOPE",
+        "E01_E06": "parent B PASS_IN_DECLARED_SCOPE, immutable evidence consumed",
+        "N10": "PASS_IN_DECLARED_SCOPE",
+        "N11": "PASS_IN_DECLARED_SCOPE",
+        "T01_T06": "parent A PASS_IN_DECLARED_SCOPE, immutable evidence consumed",
+        "engineering_complete_in_declared_scope": true,
+        "not_implied": [
+          "arbitrary free-text semantic review",
+          "optimal retrieval",
+          "statistical or causal memory benefit",
+          "E superiority",
+          "unseen-source validation",
+          "all-order completion"
+        ],
+        "research_benefit": "NOT_ESTABLISHED"
+      },
+      "improved_memory_vs_none_pairs": 2,
+      "memory_vs_none_pairs": 4,
+      "next_stage_conditions": [
+        "Independently authorize/register JN4 scope before any execution.",
+        "Audit independently unseen source groups and exposure records before test freeze; current two sources are exposed training/dev.",
+        "Freeze source split, candidate/monitor/model/prompt/retrieval and original T/E snapshots before testing, no test-driven memory edits.",
+        "Keep full denominators, runtime/usage/UNKNOWN fees and T/E information content differences; retain same/neutral/degraded/invalid outcomes.",
+        "Do not claim E superiority or significant/causal benefit from this two-source pilot."
+      ],
+      "reason": "all jobs closed, engineering validation clean and at least one valid T/E-vs-none v2 improvement; exploratory only, not E superiority",
+      "recommendation": "PROCEED",
+      "registered_jobs": 6,
+      "remaining_gaps": [
+        "No independent unseen source has been verified here.",
+        "No significance or causal-use validation; 14 selected decision records have no exact matched state/pool.",
+        "All six jobs stop on sampled empty pool; no stable complete order demonstrated.",
+        "Only empty-pallet historical fragments and bounded E claim grammar; arbitrary history compression and unrestricted explanations unvalidated.",
+        "Real singleton, empty-hit-choice, predicted instability, UNASSESSABLE, ERROR and UNKNOWN_SEND paths were not encountered; local constructed tests cover applicable behavior."
+      ],
+      "research_benefit": "NOT_ESTABLISHED",
+      "rule": {
+        "DEFER": "technical stop/incomplete registered jobs/no actual memory exposure/no valid memory-vs-none comparison",
+        "PROCEED": "all jobs closed, engineering validation clean and at least one valid T/E-vs-none v2 improvement; exploratory only, not E superiority",
+        "REVISE": "engineering closed with exposure and valid comparisons, but no registered memory-vs-none improvement; retain zero/negative results and review research design without changing frozen experience",
+        "version": "jev_memory_pilot_recommendation_v1"
+      },
+      "scope": "two exposed development sources, finite exploratory trajectories; no significance, causal use or unseen generalization",
+      "stop": "JN3-C delivery and recommendation only; no JN4, new data, memory edits or extra paid runs",
+      "valid_memory_vs_none_pairs": 4,
+      "version": "jev_memory_pilot_recommendation_v1"
+    },
+    "verification_scope": "saved file hashes and contracts; no historical physical replay or model call"
+  },
+  "parent_packages": {
+    "JEV_JN2_20261104_03": {
+      "files_verified": 437,
+      "historical_document_reference_drift": [
+        "docs/02_阶段实施方案/Jev/README.md",
+        "docs/03_阶段产出分析/Jev/README.md"
+      ],
+      "manifest_sha256": "b3f5b025d60171b9062063b446c52a64fde77dc6a912ddb31de9bcfe9039dc4e",
+      "scope": "saved hashes, no replay",
+      "status": "PASS"
+    },
+    "JEV_JN3_20261104_01": {
+      "files_verified": 476,
+      "historical_document_reference_drift": [
+        "docs/03_阶段产出分析/Jev/README.md",
+        "docs/02_阶段实施方案/Jev/README.md"
+      ],
+      "manifest_sha256": "b085e47133d87148857e470f5dfe0f768993d283926272983026af74ee91c5c9",
+      "scope": "saved hashes, no replay",
+      "status": "PASS"
+    },
+    "JEV_JN3_20261104_02": {
+      "files_verified": 518,
+      "historical_document_reference_drift": [
+        "docs/03_阶段产出分析/Jev/README.md",
+        "docs/02_阶段实施方案/Jev/README.md"
+      ],
+      "manifest_sha256": "23a75f204fdec56bc0f626267b939ccff9400ca054e2654217ceeec002189f3d",
+      "scope": "saved hashes, no replay",
+      "status": "PASS"
+    },
+    "JEV_JN3_20261105_01": {
+      "files_verified": 1217,
+      "historical_document_reference_drift": [],
+      "manifest_sha256": "59b029a766c69273793483dcbc5e9e408afadd96274d7cddfdce9a1a905eaea1",
+      "scope": "saved hashes, no replay",
+      "status": "PASS"
+    }
+  },
+  "production_files": 425
+}

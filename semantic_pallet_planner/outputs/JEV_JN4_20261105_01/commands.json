@@ -1,0 +1,22 @@
+{
+  "cwd": "NBU_Papper repository root",
+  "environment": "existing python; PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src",
+  "executed": [
+    "git status --short; git log -6 --oneline; rg --files -g AGENTS.md",
+    "source audit executed as inline Python using historical_metadata/exposure_records/audit_sources; frozen rules saved first; equivalent entry: run_source_audit.py --repo . --output NEW_DIRECTORY",
+    "python semantic_pallet_planner/outputs/JEV_JN4_20261105_01/build_delivery.py",
+    "python semantic_pallet_planner/outputs/JEV_JN4_20261105_01/offline_test_guard.py semantic_pallet_planner/outputs/JEV_JN4_20261105_01/tests/final_guard.json -q semantic_pallet_planner/tests/unit/test_packaging_evaluation_plan.py semantic_pallet_planner/tests/unit/test_packaging_memory_pilot.py semantic_pallet_planner/tests/unit/test_packaging_orders.py semantic_pallet_planner/tests/unit/test_packaging_remote.py semantic_pallet_planner/tests/unit/test_packaging_experience.py semantic_pallet_planner/tests/unit/test_packaging_contrast.py semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_packaging_load.py --junitxml=semantic_pallet_planner/outputs/JEV_JN4_20261105_01/tests/final.xml",
+    "python semantic_pallet_planner/outputs/JEV_JN3_20261105_01/readonly_guard.py semantic_pallet_planner/outputs/VERIFY_JN4_A_20261105_01/plan_guard.json semantic_pallet_planner.jev_select.packaging_evaluation_plan validate --output semantic_pallet_planner/outputs/JEV_JN4_20261105_01 --repo .",
+    "python semantic_pallet_planner/outputs/JEV_JN3_20261105_01/readonly_guard.py semantic_pallet_planner/outputs/VERIFY_JN4_A_20261105_01/parent_saved_guard.json script semantic_pallet_planner/outputs/JEV_JN3_20261105_01/verify_frozen.py --output semantic_pallet_planner/outputs/JEV_JN3_20261105_01 --repo .",
+    "python semantic_pallet_planner/outputs/JEV_JN4_20261105_01/finish_delivery.py",
+    "python semantic_pallet_planner/outputs/JEV_JN4_20261105_01/verify_delivery.py --output semantic_pallet_planner/outputs/JEV_JN4_20261105_01 --repo ."
+  ],
+  "initial_runs": "tests/offline.* is failed/interrupted pre-registration-fix run, retained; tests/final.* is completed final-source run",
+  "not_executed": [
+    "model API",
+    "formal test full orders including local baselines",
+    "JN4-B",
+    "new data build",
+    "new training forks or experience generation"
+  ]
+}

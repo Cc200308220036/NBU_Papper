@@ -1,0 +1,15 @@
+{
+  "version": "jev_source_admission_rule_v1",
+  "registered_before_candidate_audit": true,
+  "raw_scope": "raw/bed_bpp/bed-bpp_v1.json, resolved from semantic_pallet_dataset_v1/provenance/manifest.json and dataset_packaging.source_bundle",
+  "identity_edges": ["raw key", "properties.id", "properties.order_nr", "annotation aliases", "archived connected_source_evidence"],
+  "mechanical_edges": "unordered upright 0/90-normalized box multiset; dimensions rounded to 1mm and actual mass to .01kg; exact ordered arrival signature also recorded",
+  "near_duplicate": "multiset intersection/min cardinality >= .90 AND min/max cardinality >= .90; mass included; ignore arrival ordering conservatively; transitive union; no outcome fields",
+  "exposure_precedence": ["TRAIN_DEV_OR_REAL_RUN", "HISTORICAL_TEST", "UNKNOWN_EXPOSURE", "STATIC_AUDIT_ONLY"],
+  "admission": "UNSEEN requires positive closed exposure provenance covering policy/model/selection use. Missing local hit alone is insufficient. Any contaminated component is excluded. Current static access recorded separately.",
+  "history_scope": "allowlisted source/plan/input/split/exposure metadata in both outputs roots; v1 annotation source mappings; skip snapshots, requests, responses, code and candidate-only exposure lists",
+  "unknown_history": "No claim to audit external/deleted/unrecorded runs. Unattested remaining components stay UNKNOWN_EXPOSURE.",
+  "test_minimum_sources": 6,
+  "minimum_basis": "small descriptive validation across 3 length strata, 2 sources per stratum, not a power calculation; no pilot variance estimates exist",
+  "static_access": "JN4-A metadata/geometry/mass access, no policy/model tuning or formal trajectory"
+}

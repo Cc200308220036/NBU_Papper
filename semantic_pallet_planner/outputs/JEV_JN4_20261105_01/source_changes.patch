@@ -1,0 +1,761 @@
+diff --git "a/docs/02_\351\230\266\346\256\265\345\256\236\346\226\275\346\226\271\346\241\210/Jev/README.md" "b/docs/02_\351\230\266\346\256\265\345\256\236\346\226\275\346\226\271\346\241\210/Jev/README.md"
+index bc1a5b00..8cb07bf8 100644
+--- "a/docs/02_\351\230\266\346\256\265\345\256\236\346\226\275\346\226\271\346\241\210/Jev/README.md"
++++ "b/docs/02_\351\230\266\346\256\265\345\256\236\346\226\275\346\226\271\346\241\210/Jev/README.md"
+@@ -4,6 +4,7 @@
+ 
+ | 入口 | 内容与状态 |
+ |---|---|
++| [JN4-A审计与冻结准入实际交付](../../03_阶段产出分析/Jev/Jev_JN4-A独立来源审计与正式实验冻结准入验收_20261105.md) | NOT_READY；独立来源证明不足，统一六方法执行协议待实现；阻断计划可校验，真实调用/正式测试0，未进入JN4-B。 |
+ | [JN3-C实际验收与完整JN3交接](../../03_阶段产出分析/Jev/Jev_JN3-C逐决策记忆检索整单驱动与行为收益先导验收_20261105.md) | 同一v9协议逐决策检索；6job/55请求/38非空注入，C01—C05声明范围完成，结合T/E支撑N10—N11；PROCEED为后续验证建议，收益未建立，未执行JN4。 |
+ | [JN3-B实际验收与E交接](../../03_阶段产出分析/Jev/Jev_JN3-B真实对比经验提炼证据审核与非空注入验收_20261104.md) | E01—E06声明范围通过；2真实生成/审核E、独立v8、1次真实E注入STABLE提交；C材料就绪，整单执行仍需独立合同。 |
+ | [JN3-A实际验收与T接口交接](../../03_阶段产出分析/Jev/Jev_JN3-A案例库公共检索与真实注入验收_20261104.md) | T01—T06声明范围通过；2审核真实T、公共检索与独立v7注入；1次真实STABLE提交；JN3-B仅输入就绪，未实施。 |
+diff --git "a/docs/03_\351\230\266\346\256\265\344\272\247\345\207\272\345\210\206\346\236\220/Jev/README.md" "b/docs/03_\351\230\266\346\256\265\344\272\247\345\207\272\345\210\206\346\236\220/Jev/README.md"
+index f6132c0c..806a8306 100644
+--- "a/docs/03_\351\230\266\346\256\265\344\272\247\345\207\272\345\210\206\346\236\220/Jev/README.md"
++++ "b/docs/03_\351\230\266\346\256\265\344\272\247\345\207\272\345\210\206\346\236\220/Jev/README.md"
+@@ -2,6 +2,7 @@
+ 
+ | 报告 | 状态与边界 |
+ |---|---|
++| [JN4-A独立来源审计与正式实验冻结准入](Jev_JN4-A独立来源审计与正式实验冻结准入验收_20261105.md) | NOT_READY；3648来源组件审计，严格未见0；六方法设计/E等长度无关对照与阻断计划交付，API/正式job均0，JN4-B不准入。 |
+ | [JN3-C逐决策检索整单驱动与行为收益先导](Jev_JN3-C逐决策记忆检索整单驱动与行为收益先导验收_20261105.md) | C01—C05声明范围完成；6自然空池job、55请求、38真实非空注入；2 improved、4 neutral，建议PROCEED仅供后续立项；收益未建立，未执行JN4。 |
+ | [JN3-B真实对比经验提炼、审核与E注入](Jev_JN3-B真实对比经验提炼证据审核与非空注入验收_20261104.md) | E01—E06声明范围PASS；2次DeepSeek、2审核E、1次Jev E→STABLE→提交；研究收益未建立，未进入JN3-C。 |
+ | [JN3-A案例库、公共检索与真实注入](Jev_JN3-A案例库公共检索与真实注入验收_20261104.md) | T01—T06声明范围PASS；2真实T、跨来源检索1条、唯一1次Jev→STABLE→提交；研究收益未建立，未进入JN3-B/C。 |
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py
+index fb82f3a1..767dce54 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py
+@@ -30,7 +30,7 @@ def digest(value: object) -> str:
+ 
+ @lru_cache(maxsize=64)
+ def schema_validator(name: str) -> Draft202012Validator:
+-    if name not in {"config_v9", "candidate_bundle_v9", "decision_context_v9", "selection_result_v9", "checkpoint_v9", "pilot_memory_view_v1", "pilot_retrieval_v1", "pilot_order_metrics_v1", "pilot_plan_v1", "pilot_run_v1", "pilot_decision_v1", "config_v8", "candidate_bundle_v8", "decision_context_v8", "selection_result_v8", "checkpoint_v8", "contrast_order_metrics_v1", "packaging_contrast_generation_v1", "packaging_contrast_fact_pack_v1", "packaging_contrast_card_v1", "packaging_contrast_snapshot_v1", "packaging_contrast_view_v1", "packaging_contrast_public_v1", "memory_order_metrics_v1", "packaging_public_fragment_v1", "config_v7", "candidate_bundle_v7", "decision_context_v7", "selection_result_v7", "checkpoint_v7", "packaging_evidence_v1", "packaging_trajectory_v1", "packaging_memory_snapshot_v1", "packaging_memory_view_v1", "packaging_memory_query_v1", "packaging_reanalysis_plan_v2", "packaging_comparison_record_v2", "packaging_comparison_plan_v1", "packaging_comparison_record_v1", "packaging_fork_snapshot_v1", "packaging_fork_binding_v1", "packaging_fork_plan_v1", "packaging_branch_receipt_v1", "packaging_full_order_decision_v1", "packaging_full_order_plan_v2", "packaging_full_order_run_v2", "config_v6", "candidate_bundle_v6", "decision_context_v6", "selection_result_v6", "checkpoint_v6", "remote_order_metrics_v1", "packaging_full_order_plan_v1", "monitored_order_metrics_v1", "config_v5", "candidate_bundle_v5", "decision_context_v5", "selection_result_v5", "checkpoint_v5", "config_v4", "candidate_bundle_v4", "decision_context_v4", "selection_result_v4", "checkpoint_v4", "packaging_order_metrics_v1", "packaging_load_config_v1", "packaging_load_task_v1", "business_spec_v2", "config", "candidate_bundle", "decision_context", "selection_result", "transport_result", "config_v2", "candidate_bundle_v2", "decision_context_v2", "selection_result_v2", "business_state", "plan_v2", "checkpoint_v2", "order_metrics_v2", "metrics_v2",
++    if name not in {"evaluation_control_v1", "evaluation_plan_blocked_v1", "config_v9", "candidate_bundle_v9", "decision_context_v9", "selection_result_v9", "checkpoint_v9", "pilot_memory_view_v1", "pilot_retrieval_v1", "pilot_order_metrics_v1", "pilot_plan_v1", "pilot_run_v1", "pilot_decision_v1", "config_v8", "candidate_bundle_v8", "decision_context_v8", "selection_result_v8", "checkpoint_v8", "contrast_order_metrics_v1", "packaging_contrast_generation_v1", "packaging_contrast_fact_pack_v1", "packaging_contrast_card_v1", "packaging_contrast_snapshot_v1", "packaging_contrast_view_v1", "packaging_contrast_public_v1", "memory_order_metrics_v1", "packaging_public_fragment_v1", "config_v7", "candidate_bundle_v7", "decision_context_v7", "selection_result_v7", "checkpoint_v7", "packaging_evidence_v1", "packaging_trajectory_v1", "packaging_memory_snapshot_v1", "packaging_memory_view_v1", "packaging_memory_query_v1", "packaging_reanalysis_plan_v2", "packaging_comparison_record_v2", "packaging_comparison_plan_v1", "packaging_comparison_record_v1", "packaging_fork_snapshot_v1", "packaging_fork_binding_v1", "packaging_fork_plan_v1", "packaging_branch_receipt_v1", "packaging_full_order_decision_v1", "packaging_full_order_plan_v2", "packaging_full_order_run_v2", "config_v6", "candidate_bundle_v6", "decision_context_v6", "selection_result_v6", "checkpoint_v6", "remote_order_metrics_v1", "packaging_full_order_plan_v1", "monitored_order_metrics_v1", "config_v5", "candidate_bundle_v5", "decision_context_v5", "selection_result_v5", "checkpoint_v5", "config_v4", "candidate_bundle_v4", "decision_context_v4", "selection_result_v4", "checkpoint_v4", "packaging_order_metrics_v1", "packaging_load_config_v1", "packaging_load_task_v1", "business_spec_v2", "config", "candidate_bundle", "decision_context", "selection_result", "transport_result", "config_v2", "candidate_bundle_v2", "decision_context_v2", "selection_result_v2", "business_state", "plan_v2", "checkpoint_v2", "order_metrics_v2", "metrics_v2",
+                     "config_v3", "candidate_bundle_v3", "decision_context_v3", "selection_result_v3", "plan_v3", "checkpoint_v3", "order_metrics_v3", "metrics_v3", "memory_card", "memory_snapshot", "memory_episode_export", "memory_query", "memory_index", "memory_retrieval", "memory_generation_result", "memory_review", "memory_generator_config", "memory_review_authorization"}:
+         raise JevSelectError("unknown_schema", name)
+     resource = files("semantic_pallet_planner.jev_select").joinpath("schemas", f"{name}.schema.json")
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py
+new file mode 100644
+index 00000000..a35cc043
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py
+@@ -0,0 +1,193 @@
++"""JN4-A source admission. Metadata only; no model, candidate or episode imports.
++
++Absence from an incomplete historical register NEVER certifies unseen status.
++The rules must be persisted before audit_sources is called.
++"""
++from __future__ import annotations
++from collections import Counter, defaultdict
++from pathlib import Path
++import hashlib
++import json
++from .contracts import digest, JevSelectError
++from .dataset_j4 import raw_items
++
++VERSION = 'jev_source_admission_rule_v1'
++HISTORY_NAMES = {'plan.json', 'input_snapshot.json', 'input_manifest.json',
++                 'split_manifest.json', 'source_manifest.json', 'exposure_manifest.json',
++                 'protocol.json', 'manifest.json', 'handoff.json'}
++IDENTITY_FIELDS = {'source_order_key', 'original_source_order_key', 'source_order_id',
++                   'original_source_order_id', 'source_key', 'source_order_keys'}
++SKIP_FIELDS = {'candidate_new_sources', 'raw_source_identity_manifest', 'candidates',
++               'source_manifest', 'source_sha256', 'source_file_manifest', 'source_files',
++               'source', 'source_code', 'code_identity', 'code_sha256', 'files',
++               'forbidden_historical_artifacts'}
++SKIP_DIRS = {'code_snapshot', 'test_snapshot', '__pycache__', 'sources', 'jobs',
++             'requests', 'responses', 'request_ledger', 'generation_requests', 'stages'}
++
++
++def sha(path):
++    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
++
++
++def load(path):
++    return json.loads(Path(path).read_text())
++
++
++def require(ok, reason):
++    if not ok:
++        raise JevSelectError('source_admission_' + reason)
++
++
++def fingerprints(order):
++    ordered = []
++    for row in raw_items(order):
++        l,w,h = (round(float(row[k])) for k in ('length/mm','width/mm','height/mm'))
++        ordered.append((min(l,w),max(l,w),h,round(float(row['weight/kg']),2)))
++    return ordered, Counter(ordered)
++
++
++def components(raw, alias_groups=()):
++    """Conservative union of aliases, exact and 90% near duplicates.
++
++    Inverted mechanical tokens avoid comparing disjoint orders. Near duplicate
++    union is computed on original signatures, not on merged aggregate boxes.
++    """
++    parent = {k:k for k in raw}; edges=[]; first={}; rows={}; counts={}
++    def find(k):
++        while parent[k] != k:
++            parent[k] = parent[parent[k]]; k=parent[k]
++        return k
++    def union(a,b,reason):
++        x,y=find(a),find(b)
++        if x != y:
++            parent[max(x,y)] = min(x,y)
++            edges.append({'a':a,'b':b,'reason':reason})
++    def link(token,k,reason):
++        if token in first:union(k,first[token],reason)
++        else:first[token]=k
++    identity_owner={}
++    for k,order in sorted(raw.items()):
++        seq,cnt=fingerprints(order);rows[k]=seq;counts[k]=cnt
++        ids={str(k)} | {str(v) for n,v in order.get('properties',{}).items() if n in ('id','order_nr')}
++        for i in ids:
++            link(('id',i),k,'original_identity');identity_owner.setdefault(i,k)
++        link(('multiset',digest(sorted(seq))),k,'rotation_multiset')
++    for group in alias_groups:
++        members=sorted({identity_owner[x] for x in group if x in identity_owner})
++        for k in members[1:]:union(members[0],k,'archived_alias_component')
++    # Duplicate signatures can share one representative: all members already unioned.
++    representatives={}
++    for k in sorted(raw):representatives.setdefault(digest(sorted(rows[k])),k)
++    inverted=defaultdict(list)
++    for k in representatives.values():
++        overlaps=defaultdict(int);n=len(rows[k])
++        for token,count in counts[k].items():
++            for other,old_count in inverted[token]:
++                m=len(rows[other])
++                if min(n,m) >= .9*max(n,m):overlaps[other]+=min(count,old_count)
++        for other,intersection in overlaps.items():
++            if intersection >= .9*min(n,len(rows[other])):
++                union(k,other,'near_multiset_90pct')
++        for token,count in counts[k].items():inverted[token].append((k,count))
++    groups=defaultdict(list)
++    for k in raw:groups[find(k)].append(k)
++    descriptors={k:{'component':find(k),'item_count':len(rows[k]),
++        'ordered_rotation_mass_digest':digest(rows[k]),'multiset_rotation_mass_digest':digest(sorted(rows[k]))}
++        for k in sorted(raw)}
++    return {k:sorted(v) for k,v in sorted(groups.items())},edges,descriptors
++
++
++def historical_metadata(repo, exclude):
++    repo=Path(repo); exclude=Path(exclude).resolve(); files=[]
++    for base in (repo/'outputs',repo/'semantic_pallet_planner/outputs'):
++        if not base.exists():continue
++        for p in base.rglob('*.json'):
++            if (p.name in HISTORY_NAMES and not p.resolve().is_relative_to(exclude)
++                    and not SKIP_DIRS.intersection(p.relative_to(base).parts)):
++                files.append(p)
++    files += sorted((repo/'semantic_pallet_dataset_v1/annotations/ground_truth_rules').glob('*.json'))
++    groups=repo/'semantic_pallet_dataset_v1/splits/group_manifest.json'
++    if groups.is_file():files.append(groups)
++    return sorted(set(files))
++
++
++def exposure_records(files, repo):
++    evidence=defaultdict(list);aliases=[];inventory={};parse_errors=[]
++    def scan(v,path,loc='',inherited='UNKNOWN_EXPOSURE'):
++        if isinstance(v,list):
++            for i,x in enumerate(v):scan(x,path,f'{loc}/{i}',inherited)
++        elif isinstance(v,dict):
++            split=str(v.get('partition',v.get('split',''))).lower()
++            status=inherited
++            if split in ('train','dev','validation'):status='TRAIN_DEV_OR_REAL_RUN'
++            elif split.startswith('test'):status='HISTORICAL_TEST' if '/annotations/' not in path else 'UNKNOWN_EXPOSURE'
++            if v.get('exposed_training_only') is True:status='TRAIN_DEV_OR_REAL_RUN'
++            # Legacy exposure hits are not automatically classified as training.
++            ids=[]
++            for field,x in v.items():
++                if field in IDENTITY_FIELDS:
++                    for identity in x if isinstance(x,list) else [x]:
++                        if isinstance(identity,(str,int)) and str(identity).isdigit():
++                            key=str(identity);ids.append(key)
++                            evidence[key].append({'path':path,'pointer':f'{loc}/{field}','status':status,'declared_split':split,'usage_proof':'registered_metadata; not proof of actual model send'})
++            if ids:aliases.append(ids)
++            connected=v.get('connected_source_evidence',{})
++            if connected:
++                aliases.append(ids+connected.get('component_raw_keys',[])+connected.get('original_identities',[]))
++            for field,x in v.items():
++                if field not in IDENTITY_FIELDS and field not in SKIP_FIELDS:
++                    scan(x,path,f'{loc}/{field}',status)
++    for p in files:
++        path=p.relative_to(repo).as_posix();inventory[path]=sha(p)
++        try:scan(load(p),path)
++        except (ValueError,TypeError) as exc:parse_errors.append({'path':path,'error':type(exc).__name__})
++    # Explicit V1 physical/pair grouping also links transformed/subsequence variants.
++    annotations={}
++    for p in files:
++        if '/annotations/ground_truth_rules/' in p.as_posix():
++            value=load(p)
++            annotations[value.get('scenario_id')]=[str(value[k]) for k in ('source_order_key','source_order_id') if k in value]
++    manifest=Path(repo)/'semantic_pallet_dataset_v1/splits/group_manifest.json'
++    if manifest in files:
++        grouped=defaultdict(list)
++        for row in load(manifest).get('groups',[]):
++            for field in ('base_physical_id','pair_group_id'):
++                if row.get(field):grouped[(field,row[field])].extend(annotations.get(row.get('scenario_id'),[]))
++        aliases.extend(grouped.values())
++    return dict(evidence),aliases,inventory,parse_errors
++
++
++def audit_sources(raw, evidence, alias_groups=()):
++    groups,edges,descriptors=components(raw,alias_groups)
++    result=[]
++    for component,members in groups.items():
++        identities=set(members)
++        for k in members:
++            identities.update(str(v) for n,v in raw[k].get('properties',{}).items() if n in ('id','order_nr'))
++        hits=[e for i in sorted(identities) for e in evidence.get(i,[])]
++        statuses={e['status'] for e in hits}
++        status=('TRAIN_DEV_OR_REAL_RUN' if 'TRAIN_DEV_OR_REAL_RUN' in statuses else
++                'HISTORICAL_TEST' if 'HISTORICAL_TEST' in statuses else 'UNKNOWN_EXPOSURE')
++        result.append({'component':component,'raw_keys':members,'identities':sorted(identities),
++            'exposure_status':status,'evidence':hits,'strict_test_eligible':False,
++            'assigned_split':'train' if status=='TRAIN_DEV_OR_REAL_RUN' else 'excluded',
++            'reason':'component_has_training_or_development_exposure' if status=='TRAIN_DEV_OR_REAL_RUN' else
++                     'historical_test_cannot_be_reused_as_strict_unseen' if status=='HISTORICAL_TEST' else
++                     'no_closed_exposure_attestation; absence_of_hit_is_not_unseen',
++            'evidence_statuses':sorted(statuses),
++            'current_access':{'stage':'JN4-A','kind':'STATIC_SOURCE_AUDIT','model_or_policy_exposure':False}})
++    return {'components':result,'edges':edges,'descriptors':descriptors,
++            'counts':dict(Counter(x['exposure_status'] for x in result)),
++            'strict_test_source_count':0,'scope':'local metadata only; external/deleted/unrecorded histories UNKNOWN'}
++
++
++def validate_partition(rows):
++    seen={}
++    for row in rows:
++        split=row['split'];component=row['component']
++        require(component not in seen or seen[component]==split,'component_cross_split')
++        seen[component]=split
++        if split=='test':
++            require(row['exposure_status']=='VERIFIED_UNSEEN' and row.get('closed_exposure_attestation'),
++                    'unknown_or_exposed_test')
++    return True
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_plan.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_plan.py
+new file mode 100644
+index 00000000..336a3283
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_plan.py
+@@ -0,0 +1,116 @@
++"""JN4-A blocked-plan and placebo contracts. Deliberately has NO run command.
++
++An incomplete data admission is a deliverable, not permission to dispatch v9.
++A future executable protocol requires its own closed schema and integration.
++"""
++from __future__ import annotations
++import argparse
++from pathlib import Path
++from .contracts import canonical, digest, validate_schema
++from .packaging_source_audit import require, sha, load, validate_partition
++
++VERSION = 'jev_evaluation_plan_blocked_v1'
++REGISTRY = {
++    'local_geometry_test_double': {'origin':'local_test_double','memory':'none','remote':False},
++    'local_first_test_double': {'origin':'local_test_double','memory':'none','remote':False},
++    'jev_no_memory': {'origin':'jev','memory':'none','remote':True},
++    'jev_with_trajectory': {'origin':'jev','memory':'T','remote':True},
++    'jev_with_contrast_experience': {'origin':'jev','memory':'E','remote':True},
++    'jev_with_unrelated_E_control': {'origin':'jev','memory':'E_unrelated_control','remote':True},
++}
++CONTROL_RULE = {
++    'version':'jev_unrelated_E_placebo_v1','target':'E', 'seed':20261105,
++    'factor':'relevant evidence vs unrelated additional prompt content',
++    'selection':'same frozen E public query, source exclusions, ranking and whole-entry budgets; replace admitted E fragment by paired placebo',
++    'content':'predeclared ASCII text about typesetting punctuation; explicitly NON_EVIDENCE, no packing advice, measured numbers or invented claims',
++    'length':'canonical JSON entry chars AND UTF-8 bytes exactly equal paired E fragment; array overhead identical; tolerance zero',
++    'residual_difference':'different fields/meaning and repetitive filler; equal bytes do not equate tokens, attention or semantic information',
++    'mutability':'one deterministic version; no alternate seeds or result-dependent reconstruction',
++}
++
++
++def build_control(snapshot):
++    from .packaging_contrast import validate_snapshot
++    value=validate_snapshot(snapshot)
++    entries=[]
++    for card in value['cards']:
++        target=canonical(card['public_fragment'])
++        require(len(target)==len(target.encode()),'control_non_ascii_reference')
++        public={'kind':'UNRELATED_NON_EVIDENCE','topic':'typesetting',
++                'notice':'Placebo text. No packing evidence or recommendation.', 'text':''}
++        n=len(target)-len(canonical(public))
++        require(n>=0,'control_length_unachievable')
++        sentence='A comma separates clauses. A period ends a sentence. Spaces separate words. '
++        public['text']=(sentence*((n//len(sentence))+1))[:n]
++        require(len(canonical(public))==len(target),'control_length_mismatch')
++        entries.append({'reference_public_digest':card['public_digest'],
++                        'public_fragment':public,'public_digest':digest(public),
++                        'chars':len(target),'utf8_bytes':len(target.encode())})
++    result={'version':'jev_unrelated_E_snapshot_v1','mode':'E_unrelated_control',
++        'review_status':'APPROVED_DETERMINISTIC_PLACEBO_NOT_EVIDENCE',
++        'source_snapshot_digest':value['snapshot_digest'], 'source_groups':value['source_groups'],
++        'rule':CONTROL_RULE,'entries':entries}
++    result['snapshot_digest']=digest(result)
++    return result
++
++
++def validate_control(control, snapshot):
++    validate_schema('evaluation_control_v1',control)
++    require(control==build_control(snapshot),'control_tampered_or_unreviewed')
++    return control
++
++
++def budget_for_tasks(tasks, repetitions=1):
++    require(type(repetitions) is int and repetitions==1,'unregistered_repeats')
++    require(len({t['task_id'] for t in tasks})==len(tasks),'duplicate_tasks')
++    jobs=[]
++    for t in tasks:
++        n=len(t['items'])
++        require(n>0,'empty_task')
++        for method,meta in REGISTRY.items():
++            jobs.append({'job_id':f'J{len(jobs):04d}','task_id':t['task_id'],
++                'method_id':method,'repeat':0,'max_sends':n if meta['remote'] else 0,
++                'status':'NOT_RUN'})
++    return {'jobs':jobs,'natural_job_slots':len(jobs),
++            'remote_job_slots':sum(REGISTRY[j['method_id']]['remote'] for j in jobs),
++            'per_job':{j['job_id']:j['max_sends'] for j in jobs},
++            'shared_batch_max_sends':sum(j['max_sends'] for j in jobs),
++            'formula':'sum(task_box_count * 4 remote methods * 1 repeat); local/singleton sends zero; no credit recycling'}
++
++
++def validate_plan(root, *, repo, for_execution=False):
++    root=Path(root);repo=Path(repo);p=load(root/'plan/plan.json')
++    validate_schema('evaluation_plan_blocked_v1',p)
++    require(p['method_registry']==REGISTRY,'method_registry_changed')
++    require(p['plan_digest']==digest({k:v for k,v in p.items() if k!='plan_digest'}),'plan_tampered')
++    for name,expected in p['artifacts'].items():
++        path=(root/name).resolve()
++        require(path.is_relative_to(root.resolve()) and path.is_file() and sha(path)==expected,'artifact_changed')
++    for name,expected in p['external_refs'].items():
++        path=(repo/name).resolve()
++        require(path.is_relative_to(repo.resolve()) and path.is_file() and sha(path)==expected,'parent_or_contract_changed')
++    from .experiment import source_manifest
++    require(source_manifest()==load(root/'source_manifest.json'),'production_identity_changed')
++    from .packaging_experience import validate_snapshot as validate_T
++    validate_T(load(repo/p['snapshots']['T']))
++    from .packaging_contrast import validate_snapshot as validate_E
++    e=validate_E(load(repo/p['snapshots']['E']))
++    validate_control(load(root/p['snapshots']['control']),e)
++    require(p['matrix']==budget_for_tasks([]),'blocked_matrix_not_empty')
++    validate_partition(load(root/'split_manifest.json')['assignments'])
++    if for_execution:
++        require(False,'NOT_READY_JN4_B_NOT_ADMITTED')
++    return {'status':'VALID_BLOCKED_PLAN','JN4_B_admitted':False,
++            'model_api_calls':0,'formal_test_jobs_executed':0}
++
++
++def main():
++    parser=argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('command',choices=['validate','check-execution-admission'])
++    parser.add_argument('--output',required=True);parser.add_argument('--repo',default='.')
++    a=parser.parse_args()
++    result=validate_plan(a.output,repo=a.repo,for_execution=a.command=='check-execution-admission')
++    print(canonical(result))
++
++
++if __name__=='__main__':main()
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_control_v1.schema.json b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_control_v1.schema.json
+new file mode 100644
+index 00000000..671be87b
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_control_v1.schema.json
+@@ -0,0 +1,95 @@
++{
++  "type": "object",
++  "additionalProperties": false,
++  "required": [
++    "version",
++    "mode",
++    "review_status",
++    "source_snapshot_digest",
++    "source_groups",
++    "rule",
++    "entries",
++    "snapshot_digest"
++  ],
++  "properties": {
++    "version": {
++      "const": "jev_unrelated_E_snapshot_v1"
++    },
++    "mode": {
++      "const": "E_unrelated_control"
++    },
++    "review_status": {
++      "const": "APPROVED_DETERMINISTIC_PLACEBO_NOT_EVIDENCE"
++    },
++    "source_snapshot_digest": {
++      "type": "string"
++    },
++    "source_groups": {
++      "type": "array",
++      "items": {
++        "type": "string"
++      }
++    },
++    "rule": {
++      "type": "object"
++    },
++    "entries": {
++      "type": "array",
++      "minItems": 1,
++      "items": {
++        "type": "object",
++        "additionalProperties": false,
++        "required": [
++          "reference_public_digest",
++          "public_fragment",
++          "public_digest",
++          "chars",
++          "utf8_bytes"
++        ],
++        "properties": {
++          "reference_public_digest": {
++            "type": "string"
++          },
++          "public_fragment": {
++            "type": "object",
++            "additionalProperties": false,
++            "required": [
++              "kind",
++              "topic",
++              "notice",
++              "text"
++            ],
++            "properties": {
++              "kind": {
++                "const": "UNRELATED_NON_EVIDENCE"
++              },
++              "topic": {
++                "const": "typesetting"
++              },
++              "notice": {
++                "type": "string"
++              },
++              "text": {
++                "type": "string"
++              }
++            }
++          },
++          "public_digest": {
++            "type": "string"
++          },
++          "chars": {
++            "type": "integer",
++            "minimum": 0
++          },
++          "utf8_bytes": {
++            "type": "integer",
++            "minimum": 0
++          }
++        }
++      }
++    },
++    "snapshot_digest": {
++      "type": "string"
++    }
++  }
++}
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_plan_blocked_v1.schema.json b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_plan_blocked_v1.schema.json
+new file mode 100644
+index 00000000..8feec200
+--- /dev/null
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_plan_blocked_v1.schema.json
+@@ -0,0 +1,82 @@
++{
++  "type": "object",
++  "additionalProperties": false,
++  "required": [
++    "version",
++    "status",
++    "JN4_B_admitted",
++    "frozen_at",
++    "method_registry",
++    "artifacts",
++    "external_refs",
++    "snapshots",
++    "matrix",
++    "blockers",
++    "plan_digest"
++  ],
++  "properties": {
++    "version": {
++      "const": "jev_evaluation_plan_blocked_v1"
++    },
++    "status": {
++      "const": "NOT_READY"
++    },
++    "JN4_B_admitted": {
++      "const": false
++    },
++    "frozen_at": {
++      "type": "string"
++    },
++    "method_registry": {
++      "type": "object"
++    },
++    "artifacts": {
++      "type": "object",
++      "additionalProperties": {
++        "type": "string",
++        "pattern": "^[a-f0-9]{64}$"
++      }
++    },
++    "external_refs": {
++      "type": "object",
++      "additionalProperties": {
++        "type": "string",
++        "pattern": "^[a-f0-9]{64}$"
++      }
++    },
++    "snapshots": {
++      "type": "object",
++      "additionalProperties": false,
++      "required": [
++        "T",
++        "E",
++        "control"
++      ],
++      "properties": {
++        "T": {
++          "type": "string"
++        },
++        "E": {
++          "type": "string"
++        },
++        "control": {
++          "type": "string"
++        }
++      }
++    },
++    "matrix": {
++      "type": "object"
++    },
++    "blockers": {
++      "type": "array",
++      "minItems": 1,
++      "items": {
++        "type": "string"
++      }
++    },
++    "plan_digest": {
++      "type": "string",
++      "pattern": "^[a-f0-9]{64}$"
++    }
++  }
++}
+diff --git a/semantic_pallet_planner/tests/unit/test_packaging_evaluation_plan.py b/semantic_pallet_planner/tests/unit/test_packaging_evaluation_plan.py
+new file mode 100644
+index 00000000..c7233fd7
+--- /dev/null
++++ b/semantic_pallet_planner/tests/unit/test_packaging_evaluation_plan.py
+@@ -0,0 +1,124 @@
++"""JN4-A admission/control tests. All orders constructed; no model transport."""
++import copy
++from pathlib import Path
++import pytest
++from semantic_pallet_planner.jev_select import packaging_source_audit as a
++from semantic_pallet_planner.jev_select import packaging_evaluation_plan as p
++from semantic_pallet_planner.jev_select.contracts import JevSelectError,canonical,digest,validate_schema
++
++REPO=Path(__file__).resolve().parents[3]
++
++
++def order(rows, identity):
++    return {'properties':{'id':identity},'item_sequence':{str(i+1):{
++        'length/mm':r[0],'width/mm':r[1],'height/mm':r[2],'weight/kg':r[3]}
++        for i,r in enumerate(rows)}}
++
++
++def test_rotation_reorder_and_transitive_alias_component():
++    rows=[(20,30,10,1),(50,40,20,2)]
++    raw={'a':order(rows,'A'),'b':order([(30,20,10,1),(40,50,20,2)][::-1],'B'),
++         'c':order([(70,80,30,3)],'C')}
++    result=a.audit_sources(raw,{'A':[{'status':'TRAIN_DEV_OR_REAL_RUN'}]},[['b','C']])
++    assert len(result['components'])==1
++    assert result['components'][0]['raw_keys']==['a','b','c']
++    assert not result['components'][0]['strict_test_eligible']
++
++
++def test_ninety_percent_multiset_near_duplicate_and_mass():
++    rows=[(20+i,30,10,1) for i in range(10)]
++    near=rows[:-1]+[(900,900,900,90)]
++    mass=[(x,y,z,m+9) for x,y,z,m in rows]
++    groups,edges,_=a.components({'a':order(rows,'A'),'b':order(near,'B'),'c':order(mass,'C')})
++    assert sorted(map(len,groups.values()))==[1,2]
++    assert any(e['reason']=='near_multiset_90pct' for e in edges)
++
++
++def test_absent_hit_static_read_never_becomes_unseen():
++    result=a.audit_sources({'a':order([(20,30,10,1)],'A')},{})
++    c=result['components'][0]
++    assert c['exposure_status']=='UNKNOWN_EXPOSURE' and c['assigned_split']=='excluded'
++    assert c['current_access']['kind']=='STATIC_SOURCE_AUDIT'
++    assert result['strict_test_source_count']==0
++
++
++@pytest.mark.parametrize('rows',[
++    [{'component':'a','split':'train','exposure_status':'TRAIN_DEV_OR_REAL_RUN'},
++     {'component':'a','split':'dev','exposure_status':'TRAIN_DEV_OR_REAL_RUN'}],
++    [{'component':'a','split':'test','exposure_status':'UNKNOWN_EXPOSURE'}],
++    [{'component':'a','split':'test','exposure_status':'HISTORICAL_TEST'}],
++    [{'component':'a','split':'test','exposure_status':'TRAIN_DEV_OR_REAL_RUN'}],
++    [{'component':'a','split':'test','exposure_status':'VERIFIED_UNSEEN'}],
++])
++def test_reject_cross_split_and_unattested_test(rows):
++    with pytest.raises(JevSelectError):a.validate_partition(rows)
++
++
++def test_candidate_lists_are_not_exposure(tmp_path):
++    q=tmp_path/'exposure_manifest.json'
++    q.write_text('{"candidate_new_sources":[{"source_order_key":"001"}],"source_orders":[{"source_order_id":"002"}],"scope":"legacy"}')
++    e,_,_,errors=a.exposure_records([q],tmp_path)
++    assert '001' not in e and e['002'][0]['status']=='UNKNOWN_EXPOSURE' and not errors
++
++
++def test_parent_control_exact_length_review_and_tamper():
++    e=a.load(REPO/'semantic_pallet_planner/outputs/JEV_JN3_20261104_02/contrast_snapshot.json')
++    c=p.build_control(e);p.validate_control(c,e)
++    assert len(c['entries'])==len(e['cards'])==2
++    for row,card in zip(c['entries'],e['cards']):
++        assert len(canonical(row['public_fragment']))==len(canonical(card['public_fragment']))
++        assert len(canonical(row['public_fragment']).encode())==len(canonical(card['public_fragment']).encode())
++        assert row['public_fragment']['kind']=='UNRELATED_NON_EVIDENCE'
++    changed=copy.deepcopy(c);changed['entries'][0]['public_fragment']['text']='fake'
++    changed['snapshot_digest']=digest({k:v for k,v in changed.items() if k!='snapshot_digest'})
++    with pytest.raises(JevSelectError):p.validate_control(changed,e)
++    changed=copy.deepcopy(c);changed['review_status']='PENDING'
++    with pytest.raises(JevSelectError):p.validate_control(changed,e)
++
++
++def test_six_method_budget_is_count_based_and_bounded():
++    b=p.budget_for_tasks([{'task_id':'constructed','items':[{}, {}, {}]}])
++    assert b['natural_job_slots']==6 and b['remote_job_slots']==4
++    assert b['shared_batch_max_sends']==12
++    assert [j['max_sends'] for j in b['jobs']]==[0,0,3,3,3,3]
++    assert p.budget_for_tasks([])['shared_batch_max_sends']==0
++    with pytest.raises(JevSelectError):p.budget_for_tasks([],2)
++    with pytest.raises(JevSelectError):p.budget_for_tasks([{'task_id':'x','items':[] }])
++
++
++def test_new_blocked_schema_rejects_ready_unknown_fields_and_old_plan():
++    plan={'version':p.VERSION,'status':'NOT_READY','JN4_B_admitted':False,
++          'frozen_at':'2026-11-05','method_registry':p.REGISTRY,'artifacts':{},'external_refs':{},
++          'snapshots':{'T':'t','E':'e','control':'c'},'matrix':p.budget_for_tasks([]),
++          'blockers':['missing attestation'],'plan_digest':'0'*64}
++    validate_schema('evaluation_plan_blocked_v1',plan)
++    for key,value in [('JN4_B_admitted',True),('status','READY'),('version','jev_memory_order_plan_v1'),('extra',True)]:
++        bad=copy.deepcopy(plan);bad[key]=value
++        with pytest.raises(JevSelectError):validate_schema('evaluation_plan_blocked_v1',bad)
++
++
++def test_blocked_plan_integrity_and_execution_refusal(tmp_path):
++    from semantic_pallet_planner.jev_select.experiment import source_manifest
++    e_path='semantic_pallet_planner/outputs/JEV_JN3_20261104_02/contrast_snapshot.json'
++    t_path='semantic_pallet_planner/outputs/JEV_JN3_20261104_01/trajectory_snapshot.json'
++    def save(name,value):
++        q=tmp_path/name;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(canonical(value))
++    save('source_manifest.json',source_manifest());save('split_manifest.json',{'assignments':[]})
++    save('control.json',p.build_control(a.load(REPO/e_path)))
++    plan={'version':p.VERSION,'status':'NOT_READY','JN4_B_admitted':False,'frozen_at':'2026-11-05',
++        'method_registry':copy.deepcopy(p.REGISTRY),'artifacts':{n:a.sha(tmp_path/n) for n in ['source_manifest.json','split_manifest.json','control.json']},
++        'external_refs':{e_path:a.sha(REPO/e_path),t_path:a.sha(REPO/t_path)},
++        'snapshots':{'T':t_path,'E':e_path,'control':'control.json'},'matrix':p.budget_for_tasks([]),'blockers':['no verified sources']}
++    def seal(value):
++        value['plan_digest']=digest({k:v for k,v in value.items() if k!='plan_digest'});save('plan/plan.json',value)
++    seal(plan)
++    assert p.validate_plan(tmp_path,repo=REPO)['status']=='VALID_BLOCKED_PLAN'
++    with pytest.raises(JevSelectError,match='JN4_B_NOT_ADMITTED'):p.validate_plan(tmp_path,repo=REPO,for_execution=True)
++    changed=copy.deepcopy(plan);changed['matrix']['jobs']=[{'task_id':'outside'}];seal(changed)
++    with pytest.raises(JevSelectError):p.validate_plan(tmp_path,repo=REPO)
++    changed=copy.deepcopy(plan);changed['external_refs'][e_path]='0'*64;seal(changed)
++    with pytest.raises(JevSelectError):p.validate_plan(tmp_path,repo=REPO)
++    changed=copy.deepcopy(plan);changed['method_registry']['unregistered']={};seal(changed)
++    with pytest.raises(JevSelectError):p.validate_plan(tmp_path,repo=REPO)
++    seal(plan);save('control.json',{})
++    with pytest.raises(JevSelectError):p.validate_plan(tmp_path,repo=REPO)
+diff --git "a/docs/03_\351\230\266\346\256\265\344\272\247\345\207\272\345\210\206\346\236\220/Jev/Jev_JN4-A\347\213\254\347\253\213\346\235\245\346\272\220\345\256\241\350\256\241\344\270\216\346\255\243\345\274\217\345\256\236\351\252\214\345\206\273\347\273\223\345\207\206\345\205\245\351\252\214\346\224\266_20261105.md" "b/docs/03_\351\230\266\346\256\265\344\272\247\345\207\272\345\210\206\346\236\220/Jev/Jev_JN4-A\347\213\254\347\253\213\346\235\245\346\272\220\345\256\241\350\256\241\344\270\216\346\255\243\345\274\217\345\256\236\351\252\214\345\206\273\347\273\223\345\207\206\345\205\245\351\252\214\346\224\266_20261105.md"
+new file mode 100644
+index 00000000..4b845a68
+--- /dev/null
++++ "b/docs/03_\351\230\266\346\256\265\344\272\247\345\207\272\345\210\206\346\236\220/Jev/Jev_JN4-A\347\213\254\347\253\213\346\235\245\346\272\220\345\256\241\350\256\241\344\270\216\346\255\243\345\274\217\345\256\236\351\252\214\345\206\273\347\273\223\345\207\206\345\205\245\351\252\214\346\224\266_20261105.md"
+@@ -0,0 +1,78 @@
++# Jev JN4-A独立来源审计与正式实验冻结准入验收
++
++日期：2026-11-05。**本阶段交付NOT_READY，JN4_B_admitted=false。** 完成可独立开展的来源组件审计、隔离清单、E无关内容对照、来源级分析设计和机器可校验阻断计划。严格未见来源0，正式任务/job/API额度0；没有物化未知暴露来源，也没有提前运行正式测试。统一六方法执行协议尚未实现，不能将旧v9称为正式评测运行器。
++
++依据[主规范9.4](../../02_阶段实施方案/Jev/Jev新数据完整订单与经验增强分阶段开发规范_20261103.md)，承接[JN3-C](Jev_JN3-C逐决策记忆检索整单驱动与行为收益先导验收_20261105.md)、[T](Jev_JN3-A案例库公共检索与真实注入验收_20261104.md)、[E](Jev_JN3-B真实对比经验提炼证据审核与非空注入验收_20261104.md)及[评价v2](Jev_JN2评价规则v2与经验输入再分析验收_20261104.md)。[交接收据](../../../semantic_pallet_planner/outputs/JEV_JN4_20261105_01/handoff.json)、[准入判断](../../../semantic_pallet_planner/outputs/JEV_JN4_20261105_01/evaluation_plan_receipt.json)。下文文件相对于`semantic_pallet_planner/outputs/JEV_JN4_20261105_01/`。
++
++## 1. 现场身份与证据边界
++
++启动HEAD为`ee060c8d`，工作区干净，唯一适用协作文件为根AGENTS.md。父报告声明6个开发job、55请求、38非空注入及PROCEED，研究收益NOT_ESTABLISHED。本次核对父清单与收据，没有重跑父实验，也没有将历史测试数计入本次通过数。
++
++直接父JN3-C、T/E及JN2评价v2包的原清单文件字节均核验。旧T/E/JN2清单所引用的两个导航README已被后续阶段更新，与其历史摘要不同；此差异在本次开始时已存在，记录于`parent_identity_verification.json`，不改写旧清单。JN3-C自身引用文档在开始时一致。原件前后核对另见`protected_before_after.json`及`history_inventory.json`。
++
++生产源码421→425项：只在既有`contracts.py`集中登记两个新Schema，新增`packaging_source_audit.py`、`packaging_evaluation_plan.py`及两份封闭顶层Schema。没有修改候选、物理、包装、检索阈值、T/E或旧协议Schema。完整源码、算法辅助文件、测试副本及既有文件集成patch随包交付。新计划版本`jev_evaluation_plan_blocked_v1`只能表达阻断状态；它不是拟议执行v10的替代实现。
++
++## 2. D01：来源连接、历史暴露与隔离
++
++先保存`plan/source_audit_registration.json`，再审计原始来源。实际物理数据入口由V1 provenance及包装构建器追溯到`raw/bed_bpp/bed-bpp_v1.json`；其字节摘要与原provenance一致。MixedPalletBoxes在该生成链中提供生成逻辑引用，不能凭目录名当作另一批独立实测订单。没有下载新数据。
++
++审计10003条原始订单，1581份两处outputs及V1来源/分区元数据，389个显式历史身份引用，无解析错误。V1旧split仅作证据，不直接沿用为新test；同源语言、缓冲、包装变体和分叉通过原始键、properties.id/order_nr、annotation别名、group_manifest物理/配对标识及归档连接材料合并。
++
++机械判据事前固定：竖直高度保留、水平0/90尺寸归一化，尺寸量化1mm、实际质量0.01kg，记录到货有序签名及箱体无序多重集。近重复要求多重集交集/较小订单箱数≥90%，且较小/较大箱数≥90%，再作传递闭包；这是保守隔离规则，不是所有潜在相似性的证明。到货重排不会使等价箱体订单分属不同组件。共3648个组件、6355条实际并查集合并边。
++
++| 组件状态 | 数量 | 处理 |
++|---|---:|---|
++| TRAIN_DEV_OR_REAL_RUN | 64 | 训练/开发登记污染隔离到train；不授权新增训练 |
++| HISTORICAL_TEST | 62 | 保留历史测试登记，排除严格未见测试 |
++| UNKNOWN_EXPOSURE | 3522 | 缺闭合历史证明，排除，不能用“未检出”升级UNSEEN |
++
++状态依据为登记的来源与计划/输入元数据；并非每条记录都证明真实模型发送。逐条保留路径、JSON指针、旧split和证据类别，组件同时保留所有命中状态，不以主分类抹掉历史测试。外部、删除及未登记的历史用途无法由当前文件系统排除。未知状态不是声称这些来源实际被污染。
++
++本次对全部原始机械元数据的读取单独登记为STATIC_SOURCE_AUDIT，不是“从未读取”，也没有进入模型、选择策略或正式测试轨迹。新split为64个污染组件的train隔离清单，dev/test为空，其他3584个组件逐项排除。T/E仍为相同两个已暴露来源组；与空test的交叉为空是空集核对，不构成独立来源就绪。见`source_audit.json`、`exposure_records.json`、`near_duplicate_components.json`、`source_access_receipt.json`及`split_manifest.json`。
++
++## 3. D02：数据准备的阻断
++
++原16个包装任务仍来自4个训练来源，不能拆分成未见测试。完成原包正式加载及Schema/属性来源静态核验，identity仍为`9cf6d039543df402d04d406f45cd8cff00ee0a5ab49540190662e7f0d18f21de`，UNKNOWN保留。未生成候选或运行订单。
++
++`plan/data_build_registration.json`登记条件式补齐方案：仅在来源履历可核实后，按14—20、21—30、31—40箱三层各2个组件，固定hash种子20261105，每来源1个controlled_heterogeneous变体、1次观测。6来源是覆盖三个长度层的有限描述性设计，不是统计效能估计；JN3-C没有重复，不能估算模型方差。质量/尺寸异质性事前定义并完整报告，不按装入成绩、命中率、难度或监测结果换源。层不足即NOT_READY。
++
++原质量/尺寸保持来源值，包装仍复用原seed、profile_for及冻结训练标定m_ref=8.586、scale=9和0/9/27/54kg合成承载；不得按test重拟合。新派生加载器必须独立版本化，不能绕过旧四来源保护。当前合格来源0，因此新数据包NOT_MATERIALIZED，任务/变体均0；没有把抽取设计写成已构建数据。
++
++## 4. D03—D04：方法、对照与分析设计
++
++冻结六方法设计及显式次序：几何、固定顺序、Jev无经验、T、E、E无关内容对照。基础模型/提示及公共物理/监测引用原冻结合同，当前服务可用性UNKNOWN且未探测。正式可执行新版本必须完成服务/依赖身份核对；本次没有调用API查模型列表或试跑。
++
++新增`jev_unrelated_E_placebo_v1`：沿用冻结E的公开查询、来源排除、排名与整条预算，计划将合格条目替换为一一配对的无关排版标点内容。对照明确标NON_EVIDENCE，无装箱建议、伪数值或错配事实。两条规范JSON分别3784/3771字符及UTF-8字节，数组注入为3786/3773，与原E逐条完全一致，容差0。原T/E卡片未改。固定种子20261105，不试其他种子。对照快照已独立构建并作确定性审核；同字节不等于同token、语义、注意力或信息量，残余差异完整保留。
++
++**执行缺口仍存在：** v9仅允许两个暴露train任务及none/T/E，缺两个本地方法、无关内容MemoryView/Schema/集中执行路由。新模块仅完成计划登记、预算计算、快照/封印验证与拒绝执行，没有复制订单引擎或放宽v9。六方法同协议、DECISION_READY恢复等新版本行为必须在来源补齐后独立实现和验收；本次不能声称已验证。
++
++分析事前冻结`jev_branch_comparison_rule_v2`及其原容差：稳定完整完成→体积装入→件数/质量Pareto→装入等价后的高度/包络。增高和其他反向代价继续报告。主要配对为T/无经验、E/无经验、E/T、E/无关E；两个本地基线全部报告。单位为连接来源组件，变体/重复嵌套，不把配对数量当N。
++
++逐来源差值、均值、中位数、范围、完整分母及有效对子数均报告。有效来源≥6才按固定seed进行10000次来源bootstrap及线性分位数95%探索区间；不足记NOT_ESTIMABLE并给描述性范围，不强求显著性。技术、UNKNOWN_SEND、看门狗、取消、未运行、UNASSESSABLE及缺指标对子不作策略胜负，保留所有job，并以缺失体积差值[-1,1]报告完整队列界限。当前无正式样本，不生成空数据统计结论。
++
++## 5. D05：本机验证范围
++
++本次最终固定源码离线测试169项，失败0、错误0、跳过0。实际结果及命令见`engineering_acceptance.json`、`tests/final.xml`、`tests/final_guard.json`与`commands.json`。构造/开发输入全部使用Fake，网络与凭证访问由包装器阻断；没有正式测试整单。新测试覆盖来源连接、近重复、未知暴露/跨区拒绝、对照长度/审核/篡改、计数预算、封闭新计划及执行拒绝；旧JN3/早期包装协议的恢复、预算、发送不明、先导接续及保存记录等复验独立记录。
++
++最初测试暴露了新Schema尚未集中登记的问题，已修正；同批运行中源码变更触发旧驱动身份拒绝，保留原失败/中断日志，不计为最终通过。后续在固定生产源码下重新验证。不得把旧协议Fake覆盖称为新六方法执行协议已完成；新数据加载和六方法恢复验收明确NOT_RUN。
++
++静态计划校验在父read-only guard阻断网络、凭证、历史写入及执行派发下运行。计划准入检查预期拒绝；保存记录不重新派发。生产源码及归档逐文件核对；受保护原数据、父包及历史报告未被改写，两个导航索引是明确允许的新交付集成。
++
++## 6. D06、准入与交接
++
++| 验收 | 状态 | 实际边界 |
++|---|---|---|
++| D01 | NOT_READY | 审计/隔离完成；可核实严格未见来源0 |
++| D02 | BLOCKED | 构建登记和旧包加载完成；新包未物化 |
++| D03 | PARTIAL | 方法/提示/快照设计冻结；正式任务与统一执行协议缺失 |
++| D04 | PASS_DESIGN_ONLY | 最小长度对照、来源级统计与完整失败分母设计完成，无效果实验 |
++| D05 | PARTIAL | 静态及已有协议Fake复验；新数据/新六方法行为NOT_RUN |
++| D06 | PARTIAL | 阻断计划、manifest及收据交付；无非空可执行正式矩阵 |
++
++实际准入为独立来源0、任务0、变体0、重复设计1、方法设计6、自然job槽位0、远程槽位0、每job额度空、共享发送额度0。条件式6来源设计若获准物化，将是36自然槽位、24远程槽位、4×各任务实际箱数之和的发送上限；这只是计算式，不是本次授权或可消费矩阵。singleton、本地方法均零调用，额度不按恢复重置，不返还未用额度扩范围。
++
++未来首批须为首来源全部六方法，核对身份、账目、收尾、监测/注入及保存记录；收益不是接续门槛。E/对照无实际非空注入只暂停审查，不能换订单求命中。技术错误、发送不明、模型不可用及服务/依赖变化停批，剩余NOT_RUN。看门狗10000事件/1800秒活动时间、网络30秒、零重试，在持久化边界检查，不称硬实时。范围停单单列并使相应策略比较无效。
++
++下一步首先需要可审计的来源履历/暴露闭合证据或另行授权的新来源交付；随后补齐新数据和统一执行协议，重新形成独立版本的非空计划并完成D门槛。禁止把本包零矩阵直接交给v9执行，`check-execution-admission`会明确拒绝。不改历史身份，不自动重签本包成为READY。
++
++本阶段模型API调用0、凭证读取0、正式测试job执行0、训练/新分叉/重新提炼0。研究收益仍NOT_ESTABLISHED。本包NOT_READY为合法退出，不代表JN4全部通过。交付后停止，未进入JN4-B，未启动子代理，未commit/push。

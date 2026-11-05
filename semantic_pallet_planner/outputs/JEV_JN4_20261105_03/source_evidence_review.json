@@ -1,0 +1,65 @@
+{
+  "admission_action": "NONE; preserve historical statuses; no missing-hit to unseen inference",
+  "components": 3648,
+  "formal_plan": null,
+  "gaps": [
+    {
+      "available": "_02/source_trust_policy.json issuers={}；公开发布者身份不是本项目保管者信任根",
+      "id": "G01",
+      "missing": "独立受信保管者身份、完整来源履历授权范围及可信公钥登记",
+      "needed": "由有权核对项目数据/运行归档的保管责任人提供可认证身份、职责覆盖、独立可信公钥和核验依据；不能由声明自身建立信任",
+      "owner_role": "项目数据保管负责人/独立审核者"
+    },
+    {
+      "available": "本地manifest有路径和sha；上游主页/论文有来源描述，但未绑定本地文件取得事件或逐订单原始系统证明",
+      "id": "G02",
+      "missing": "本地原始文件取得时间、原始订单到发布/获取的身份链和逐组件绑定原始记录",
+      "needed": "绑定raw sha、原始键/逐订单摘要、上游版本和取得事件的证据；无法取得的匿名来源细节明确UNKNOWN，不能发明企业/时间",
+      "owner_role": "原始数据发布保管者与项目数据接收保管者"
+    },
+    {
+      "available": "_01正向历史命中能证明已暴露；未命中不能证明未见",
+      "id": "G03",
+      "missing": "覆盖六域和全时间范围的使用/暴露履历与遗漏说明",
+      "needed": "从创建到已冻结cutoff的model_requests/policy_development/training/memory_build/historical_testing/aliases_variants_forks记录，逐使用事件引用证据；识别其他窗口/外部存储/未归档访问；空事件列表也须有覆盖证据，缺项保留UNKNOWN",
+      "owner_role": "项目运行、策略开发、训练和记忆归档保管者"
+    },
+    {
+      "available": "_01已有机械连接组件；_02已有raw keys/identities/逐订单摘要",
+      "id": "G04",
+      "missing": "组件全部别名、近重复、变体和分叉的完整审核与证据摘要",
+      "needed": "对实际组件身份摘要绑定审核结论和证据文件，核对历史命中及未归档关联，不能只签被抽中的单个raw key；污染优先且不得洗白64+62组件",
+      "owner_role": "来源隔离审核者与运行记录保管者"
+    },
+    {
+      "available": "查见六份statement均在constructed_data_fixture，fixture_only，不能作真实证明",
+      "id": "G05",
+      "missing": "绑定证据文件并通过独立可信根核验的真实版本化签名履历",
+      "needed": "按现有jev_source_provenance_v1逐组件提供真实statement及JSON证据文件sha；签名仅认证声明，内容覆盖仍需独立审核；不得自签、伪造人工批准或填closed_world=true掩盖未知",
+      "owner_role": "已独立认证且具相应授权范围的履历签发者"
+    }
+  ],
+  "inherited_status_counts": {
+    "CONTAMINATED": 64,
+    "HISTORICAL_TEST": 62,
+    "UNKNOWN_EXPOSURE": 3522
+  },
+  "local_discovery": {
+    "credential_locations_accessed": 0,
+    "fixture_statements_found": 6,
+    "limits": "bounded review of repository metadata and listed public upstream sources; not proof of absence in external/private archives",
+    "metadata_filename_search": "statement/custod/provenance/trust/acquisition/exposure/authority outside git, env, tests and snapshots",
+    "real_signed_statements_found": 0,
+    "upstream_contacts_sent": 0,
+    "version_string_search": "rg -l -F jev_source_provenance_v1 in outputs and dataset JSON excluding code snapshots/schemas"
+  },
+  "materialization": "NOT_MATERIALIZED",
+  "new_verified_components": 0,
+  "next": "补证或另行登记授权替代语料；本轮停止等待质检",
+  "public_metadata_review": "upstream_metadata_review.json",
+  "raw_sha256": "6ecc91d92b9ce88de113ac66c45a450ac3eec303018f14cd73e4bd0eaf8eb3cc",
+  "registered_corpus": "raw/bed_bpp/bed-bpp_v1.json",
+  "registered_scope_unchanged": true,
+  "status": "INSUFFICIENT_AVAILABLE_EVIDENCE",
+  "version": "jev_jn4_real_source_evidence_review_v1"
+}

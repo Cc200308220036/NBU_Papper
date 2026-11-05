@@ -1,0 +1,27 @@
+{
+  "version": "jev_jn4_real_source_review_commands_v1",
+  "working_directory": "NBU_Papper repository root",
+  "read_only_discovery_commands": [
+    "git status --short",
+    "git rev-parse --short=8 HEAD",
+    "git log -1 --format='%H %s'",
+    "rg --files -g AGENTS.md",
+    "git log --all --follow --format='%h %ad %s' --date=iso -- raw/bed_bpp/bed-bpp_v1.json",
+    "git check-ignore -v raw/bed_bpp/bed-bpp_v1.json",
+    "git ls-files raw/bed_bpp",
+    "rg -l -F '\"jev_source_provenance_v1\"' semantic_pallet_planner/outputs semantic_pallet_dataset_v1 --glob '*.json' --glob '!**/code_snapshot/**' --glob '!**/schemas/**'"
+  ],
+  "static_delivery_commands": [
+    "python3 semantic_pallet_planner/outputs/JEV_JN4_20261105_03/verify_delivery.py --seal",
+    "python3 semantic_pallet_planner/outputs/JEV_JN4_20261105_03/verify_delivery.py",
+    "git diff --check",
+    "git status --short"
+  ],
+  "artifact_construction": "Standard-library inline Python recorded raw/parent/input SHA-256, source_manifest equality, original sequence lengths and inherited admission gaps; no production imports. verify_delivery.py independently rechecks calculated rows, counts and all hashes.",
+  "public_document_reads": "web tool open of the 3 documentation URLs in upstream_metadata_review.json; no raw corpus download and no outbound model transport",
+  "engineering_test_command": "NOT_RUN_THIS_REVIEW",
+  "formal_test_command": "NOT_RUN_PROHIBITED",
+  "model_api_calls": 0,
+  "credential_reads": 0,
+  "new_fake_tests_or_jobs": 0
+}

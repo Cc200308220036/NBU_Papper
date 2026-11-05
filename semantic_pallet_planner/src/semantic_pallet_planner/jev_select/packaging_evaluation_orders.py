@@ -14,6 +14,7 @@ from .experiment import source_manifest,file_manifest
 from .packaging_source_audit import require,sha
 from .packaging_evaluation_protocol import VERSION,VERSIONS,REGISTRY,METHODS,EvaluationLedger,load_evaluation_config,budget_identity
 from .packaging_evaluation_memory import MemoryDriver
+from .packaging_synthetic_protocol import request_accounting
 from .packaging_evaluation_plan import build_control,validate_control,budget_for_tasks
 from .packaging_pilot_memory import NONE_DIGEST
 from . import packaging_experiment as common
@@ -88,7 +89,11 @@ def prepare(data,output,*,purpose='FIXTURE_ENGINEERING',watchdog=None):
 
 
 def validate_plan(root):
-    root=Path(root);p=read(root/'plan.json');validate_schema('evaluation_orders_plan_v1',p)
+    root=Path(root);p=read(root/'plan.json')
+    if p['version']=='jev_synthetic_orders_plan_v1':
+        from .packaging_synthetic_orders import validate_plan as synthetic_validate
+        return synthetic_validate(root)
+    validate_schema('evaluation_orders_plan_v1',p)
     require(read(root/'delivery_manifest.json')==file_manifest(root) and read(root/'plan_receipt.json')=={'plan_digest':digest(p)},'evaluation_plan_bytes')
     require(p['source_manifest']==source_manifest() and p['dependencies']==dependencies() and p['physical_manifest']==physical_manifest(),'evaluation_runtime_identity_changed')
     _scope(p['data'],p['purpose']);require(p['method_ids']==METHODS and p['task_ids']==[t['task_id'] for t in p['data']['tasks']],'evaluation_plan_scope')
@@ -104,8 +109,16 @@ def validate_plan(root):
     return p
 
 
+def ledger_type(plan):
+    if plan['execution_version']=='jev_packaging_synthetic_v11':
+        from .packaging_synthetic_protocol import SyntheticLedger
+        return SyntheticLedger
+    return EvaluationLedger
+
+
 def saved_requests(root,plan):
-    l=EvaluationLedger.__new__(EvaluationLedger);l.path=Path(root)/'request_ledger/requests.json'
+    Ledger=ledger_type(plan)
+    l=Ledger.__new__(Ledger);l.path=Path(root)/'request_ledger/requests.json'
     l.limits=plan['request_budget']['per_job'];l.max_sends=plan['request_budget']['global'];l.configs={j['job_id']:j['config'] for j in plan['jobs']}
     l._budget_digest=budget_identity(plan['request_budget'],l.configs)
     return l._load()['requests']
@@ -119,18 +132,18 @@ def metrics(task,cfg,cp,status,requests,reuses=()):
         if e.get('context'):
             e['context']['retrieval_receipt']['raw_retrieval']=e['context']['retrieval_receipt']['reference_receipt']['raw_retrieval']
     row.update(version='jev_evaluation_order_metrics_v1',origin='jev' if REGISTRY[cfg['selector']]['remote'] else 'LOCAL_TEST_DOUBLE_NOT_JEV',
-      cost=orders.request_statistics(requests,reuses),memory_mode=cfg['memory_mode'],snapshot_digest=cfg['memory_snapshot_digest'],
+      cost=(request_accounting(requests,reuses) if cfg['version']=='jev_packaging_synthetic_v11' else orders.request_statistics(requests,reuses)),memory_mode=cfg['memory_mode'],snapshot_digest=cfg['memory_snapshot_digest'],
       memory_metrics=pilot.exposure(projected,requests,cfg['memory_mode'],library_nonempty=bool(cfg['memory_index'])))
     validate_schema('evaluation_order_metrics_v1',row);return row
 
 
 def collect(root,p):
     root=Path(root);jobs=[{'job_id':j['job_id'],'task_id':j['task_id'],'method_id':j['method_id'],**read(root/'jobs'/j['job_id']/'status.json')} for j in p['jobs']]
-    stats=orders.request_statistics(saved_requests(root,p),orders.saved_reuses(root))
-    return {'version':'jev_evaluation_summary_v1','planned_jobs':len(jobs),'job_ledger':jobs,
+    stats=request_accounting(saved_requests(root,p),orders.saved_reuses(root))
+    return {'version':'jev_synthetic_summary_v1' if p['execution_version']=='jev_packaging_synthetic_v11' else 'jev_evaluation_summary_v1','planned_jobs':len(jobs),'job_ledger':jobs,
        'categories':{c:sum(j['category']==c for j in jobs) for c in CATEGORIES},'request_statistics':stats,
        'status':'ERROR' if any(j['category'] in STOP for j in jobs) or (root/'technical_failure.json').exists() else 'PASS_IN_EXECUTED_SCOPE',
-       'scope':p['purpose'],'actual_model_api_calls':0 if p['purpose']!='FROZEN_FORMAL_TEST' else 'UNKNOWN'}
+       'scope':p['purpose'],'actual_model_api_calls':stats['actual_model_api_calls']}
 
 
 def gate(root,p):
@@ -140,19 +153,22 @@ def gate(root,p):
     for j in p['jobs'][:6]:
         f=root/'jobs'/j['job_id']/'metrics.json'
         if f.exists():exposure[j['method_id']]=read(f)['memory_metrics']['actually_sent_nonempty_count']
+    if p['purpose']=='FROZEN_SYNTHETIC_EVALUATION':
+        rows=saved_requests(root,p)
+        exposure={j['method_id']:sum(r['job_id']==j['job_id'] and r['origin']=='jev' and r['send_started'] and r['transport'] is not None and r['transport']['network_attempted'] is True and r['injected_digest']!=digest([]) for r in rows) for j in p['jobs'][:6]}
     hit=all(exposure.get(m,0)>0 for m in ('jev_with_contrast_experience','jev_with_unrelated_E_control'))
-    return {'version':'jev_evaluation_gate_v1','plan_digest':digest(p),'closed':closed,'exposure':exposure,
+    return {'version':'jev_synthetic_gate_v1' if p['execution_version']=='jev_packaging_synthetic_v11' else 'jev_evaluation_gate_v1','plan_digest':digest(p),'closed':closed,'exposure':exposure,
       'status':'STOP_TECHNICAL' if (root/'technical_failure.json').exists() else 'PASS' if closed and hit else 'DEFER_NO_EXPOSURE' if closed else 'STOP_TECHNICAL','benefit_used':False,
       'job_files_sha256':{str(f.relative_to(root)):sha(f) for j in p['jobs'][:6] for f in (root/'jobs'/j['job_id']).rglob('*') if f.is_file()}}
 
 
 def run_validation(plan_root,output,*,transport_factory,resume=False,continue_pending=False,task_ids=None,method_ids=None):
     p=validate_plan(plan_root);root=Path(output)
-    require(p['purpose']!='FROZEN_FORMAL_TEST','JN4_A_FORMAL_TEST_EXECUTION_FORBIDDEN')
+    require(p['purpose'] not in ('FROZEN_FORMAL_TEST','FROZEN_SYNTHETIC_EVALUATION'),'JN4_A_FORMAL_TEST_EXECUTION_FORBIDDEN')
     require(task_ids is None or task_ids==p['task_ids'],'evaluation_unplanned_task');require(method_ids is None or method_ids==METHODS,'evaluation_unplanned_method')
     require(location(root)==p['run_location'],'evaluation_run_location')
     require(not continue_pending or resume,'evaluation_continue_requires_resume')
-    receipt={'version':VERSIONS['run'],'plan':location(plan_root),'plan_digest':digest(p)}
+    receipt={'version':'jev_synthetic_orders_run_v1' if p['execution_version']=='jev_packaging_synthetic_v11' else VERSIONS['run'],'plan':location(plan_root),'plan_digest':digest(p)}
     if resume:
         require(read(root/'run_receipt.json')==receipt,'evaluation_resume_identity')
         require((root/'request_ledger/requests.json').exists(),'evaluation_missing_durable_ledger')
@@ -169,9 +185,11 @@ def run_validation(plan_root,output,*,transport_factory,resume=False,continue_pe
             write(job/'status.json',{'state':'NOT_RUN','category':'NOT_RUN','active_wall_s':0.,'error':None})
     with exclusive(root):
         if (root/'delivery_manifest.json').exists():(root/'delivery_manifest.json').unlink()
-        configs={j['job_id']:j['config'] for j in p['jobs']};ledger=EvaluationLedger(root/'request_ledger',p['request_budget'],configs)
+        configs={j['job_id']:j['config'] for j in p['jobs']};ledger=ledger_type(p)(root/'request_ledger',p['request_budget'],configs)
         for i,j in enumerate(p['jobs']):
             if i>=6 and not continue_pending:break
+            if i>=6 and p['execution_version']=='jev_packaging_synthetic_v11':
+                require((root/'first_gate.json').exists() and read(root/'first_gate.json')==gate(root,p) and gate(root,p)['status']=='PASS','synthetic_first_gate_required')
             job=root/'jobs'/j['job_id'];status=read(job/'status.json')
             if status['state']=='FINISHED':
                 if status['category'] in STOP:break
@@ -180,7 +198,7 @@ def run_validation(plan_root,output,*,transport_factory,resume=False,continue_pe
             try:
                 transport=transport_factory(cfg,j) if REGISTRY[j['method_id']]['remote'] else None
                 require(transport is None or transport.origin=='test_double','evaluation_fake_transport_required')
-                selector=selector_factory(j['method_id'],execution_version=VERSION,config=cfg,transport=transport,ledger=ledger,job_id=j['job_id'])
+                selector=selector_factory(j['method_id'],execution_version=p['execution_version'],config=cfg,transport=transport,ledger=ledger,job_id=j['job_id'])
                 driver=MemoryDriver(cfg,snapshot=None if mode=='none' else p['snapshots'][refmode],control=p['snapshots']['control'] if mode=='E_unrelated_control' else None)
             except Exception as exc:
                 status.update(state='FINISHED',category='ERROR',error={'code':getattr(exc,'code','EVALUATION_INITIALIZATION_ERROR'),'detail':str(exc)[:240]})
@@ -218,7 +236,7 @@ def run_validation(plan_root,output,*,transport_factory,resume=False,continue_pe
 
 def validate_run(root):
     """Saved facts only: no transport, resolve, selection, candidates, PCT or commit."""
-    root=Path(root);receipt=read(root/'run_receipt.json');validate_schema('evaluation_orders_run_v1',receipt)
+    root=Path(root);receipt=read(root/'run_receipt.json');validate_schema('synthetic_orders_run_v1' if receipt['version']=='jev_synthetic_orders_run_v1' else 'evaluation_orders_run_v1',receipt)
     p=validate_plan(resolve(receipt['plan']));require(receipt['plan_digest']==digest(p),'evaluation_saved_plan_changed')
     require(file_manifest(root)==read(root/'delivery_manifest.json'),'evaluation_run_bytes')
     rows=saved_requests(root,p);used=set()
@@ -244,7 +262,7 @@ def validate_run(root):
             require(read(job/'decision_ready'/f"{e['decision_id']}.json")=={'context':e['context'],'bundle':e['bundle']},'evaluation_ready_record_changed')
             if e['selection'] and e['selection']['attempt_ids']:
                 row=next((r for r in requests if r['decision_id']==e['decision_id']),None);require(row is not None,'evaluation_request_missing')
-                identity=EvaluationLedger.identity(DecisionContext.from_dict(e['context']),j['job_id'],e['decision_id'])
+                identity=ledger_type(p).identity(DecisionContext.from_dict(e['context']),j['job_id'],e['decision_id'])
                 require(all(row[k]==v for k,v in identity.items()) and row['selection']==e['selection'] and parse_response(DecisionContext.from_dict(e['context']),row,cfg).data==e['selection'],'evaluation_response_binding')
                 used.add(row['attempt_id'])
         require(read(job/'final_layout.json')==cp['state']['placed_items'] and read(job/'physical_evaluation.json')==evaluate_state(cp['state']),'evaluation_final_layout_changed')

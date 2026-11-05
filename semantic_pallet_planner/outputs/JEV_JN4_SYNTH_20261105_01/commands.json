@@ -1,0 +1,16 @@
+{
+  "cwd": "NBU_Papper repository root",
+  "data_preparation": [
+    "PYTHONPATH=semantic_pallet_planner/src python3 -m semantic_pallet_planner.jev_select.packaging_synthetic_orders freeze --output semantic_pallet_planner/outputs/JEV_JN4_SYNTH_20261105_01/data",
+    "PYTHONPATH=semantic_pallet_planner/src python3 -m semantic_pallet_planner.jev_select.packaging_synthetic_orders build --dataset semantic_pallet_planner/outputs/JEV_JN4_SYNTH_20261105_01/data",
+    "PYTHONPATH=semantic_pallet_planner/src python3 -m semantic_pallet_planner.jev_select.packaging_synthetic_orders plan --dataset semantic_pallet_planner/outputs/JEV_JN4_SYNTH_20261105_01/data --output semantic_pallet_planner/outputs/JEV_JN4_SYNTH_20261105_01/plan"
+  ],
+  "final_closure_commands": [
+    "PYTHONPATH=semantic_pallet_planner/src python3 -m semantic_pallet_planner.jev_select.packaging_synthetic_orders plan --dataset semantic_pallet_planner/outputs/JEV_JN4_SYNTH_20261105_01/data --output semantic_pallet_planner/outputs/JEV_JN4_SYNTH_20261105_01/plan_final",
+    "PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/outputs/JEV_JN4_SYNTH_20261105_01/static_review.py"
+  ],
+  "final_tests": "PYTHONPATH=semantic_pallet_planner/src python3 -m pytest semantic_pallet_planner/tests/unit/test_packaging_synthetic.py semantic_pallet_planner/tests/unit/test_packaging_evaluation_v10.py::test_six_methods_same_protocol_control_length_and_paused_continuation semantic_pallet_planner/tests/unit/test_packaging_evaluation_data.py semantic_pallet_planner/tests/unit/test_packaging_memory_pilot.py -q --disable-warnings --maxfail=2 --junitxml=semantic_pallet_planner/outputs/JEV_JN4_SYNTH_20261105_01/tests_final.xml",
+  "lint": "git diff --check",
+  "result_scope": "prepare only; all official trajectory execution and live service probing NOT_RUN; no credential read",
+  "static_review": "PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/outputs/JEV_JN4_SYNTH_20261105_01/static_review.py"
+}

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_candidate_bundle_v1"
+    },
+    "observation_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "candidate_backend": {
+      "const": "e2_original_v1"
+    },
+    "generator_config_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "physical_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "maxItems": 48
+    },
+    "physical_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "generation_counts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pick_item_id": {
+            "type": "string"
+          },
+          "returned": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16
+          },
+          "sampled_physical": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "pick_item_id",
+          "returned",
+          "sampled_physical"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 3
+    },
+    "selectable_pool": {
+      "enum": [
+        "unfiltered",
+        "hard_business_feasible",
+        "legacy_soft_eligible"
+      ]
+    },
+    "selectable_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "maxItems": 48
+    },
+    "selectable_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "policy_digest": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "version",
+    "observation_digest",
+    "candidate_backend",
+    "generator_config_digest",
+    "physical_candidates",
+    "physical_digest",
+    "generation_counts",
+    "selectable_pool",
+    "selectable_candidates",
+    "selectable_digest",
+    "policy_digest"
+  ],
+  "additionalProperties": false
+}

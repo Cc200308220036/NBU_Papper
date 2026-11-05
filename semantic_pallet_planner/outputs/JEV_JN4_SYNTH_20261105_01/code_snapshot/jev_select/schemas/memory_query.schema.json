@@ -1,0 +1,106 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_memory_query_v1"
+    },
+    "tokenizer_version": {
+      "const": "english_ascii_numeric_6dp_v1"
+    },
+    "units": {
+      "type": "object",
+      "properties": {
+        "length": {
+          "const": "mm"
+        },
+        "mass": {
+          "const": "kg"
+        },
+        "angle": {
+          "const": "deg"
+        }
+      },
+      "required": [
+        "length",
+        "mass",
+        "angle"
+      ],
+      "additionalProperties": false
+    },
+    "facts": {
+      "type": "object",
+      "properties": {
+        "placed_count": {
+          "type": "number"
+        },
+        "available_count": {
+          "type": "number"
+        },
+        "candidate_count": {
+          "type": "number"
+        },
+        "layout_height_mm": {
+          "type": "number"
+        },
+        "max_available_mass_kg": {
+          "type": "number"
+        },
+        "min_support_ratio": {
+          "type": "number"
+        },
+        "buffer_capacity": {
+          "type": "number"
+        },
+        "container_length_mm": {
+          "type": "number"
+        },
+        "container_width_mm": {
+          "type": "number"
+        },
+        "container_max_height_mm": {
+          "type": "number"
+        },
+        "container_max_payload_kg": {
+          "type": "number"
+        },
+        "available_categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "policy_terms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "tokens": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "text": {
+      "type": "string"
+    },
+    "query_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "tokenizer_version",
+    "units",
+    "facts",
+    "tokens",
+    "text",
+    "query_digest"
+  ],
+  "additionalProperties": false
+}

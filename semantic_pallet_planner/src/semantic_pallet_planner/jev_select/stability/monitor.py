@@ -17,7 +17,7 @@ TERMINATIONS = {'UNSTABLE':'PREDICTED_STATIC_INSTABILITY',
 
 
 def is_monitored(config):
-    return config.get('version') in (VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10')
+    return config.get('version') in (VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11')
 
 
 def freeze(enabled=False):
@@ -60,6 +60,10 @@ def load_monitor_config(*, data_identity, task_digest, method='local_geometry_te
 
 def preflight(config):
     validate_schema('config', config)
+    if config['version']=='jev_packaging_synthetic_v11':
+        from ..packaging_synthetic_protocol import preflight_synthetic
+        preflight_synthetic(config)
+        return
     if config['version']=='jev_packaging_evaluation_v10':
         from ..packaging_evaluation_protocol import preflight_evaluation
         preflight_evaluation(config)
@@ -191,7 +195,7 @@ def validate_checkpoint(cp, task, config, job_id, method):
     from ..selector import SelectionResult
     from ..execution import commit_physical
     from ..packaging_runtime import validate_runtime_context,evaluate_state
-    if config['version'] in ('jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10'):
+    if config['version'] in ('jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11'):
         from ..packaging_experiment import validate_saved_checkpoint
         return validate_saved_checkpoint(cp, task, config, job_id)
     validate_schema('checkpoint_v5',cp)

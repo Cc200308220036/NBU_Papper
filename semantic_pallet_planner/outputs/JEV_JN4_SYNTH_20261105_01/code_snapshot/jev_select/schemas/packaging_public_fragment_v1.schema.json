@@ -1,0 +1,395 @@
+{
+  "type": "object",
+  "properties": {
+    "condition": {
+      "type": "object",
+      "properties": {
+        "buffer_capacity": {
+          "type": "number"
+        },
+        "container": {
+          "type": "object",
+          "properties": {
+            "coordinate_frame": {
+              "const": "container_bottom_center"
+            },
+            "length_mm": {
+              "type": "number"
+            },
+            "max_height_mm": {
+              "type": "number"
+            },
+            "max_payload_kg": {
+              "type": "number"
+            },
+            "width_mm": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "coordinate_frame",
+            "length_mm",
+            "max_height_mm",
+            "max_payload_kg",
+            "width_mm"
+          ],
+          "additionalProperties": false
+        },
+        "observed_buffer": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "dimensions_mm": {
+                "type": "object",
+                "properties": {
+                  "height": {
+                    "type": "number"
+                  },
+                  "length": {
+                    "type": "number"
+                  },
+                  "width": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "height",
+                  "length",
+                  "width"
+                ],
+                "additionalProperties": false
+              },
+              "mass_kg": {
+                "type": "number"
+              },
+              "role": {
+                "type": "string",
+                "pattern": "^history_box_[1-3]$"
+              },
+              "stackable": {
+                "type": "boolean"
+              },
+              "top_load_limit_kg_synthetic": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "dimensions_mm",
+              "mass_kg",
+              "role",
+              "stackable",
+              "top_load_limit_kg_synthetic"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 3
+        },
+        "placed_count": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "buffer_capacity",
+        "container",
+        "observed_buffer",
+        "placed_count"
+      ],
+      "additionalProperties": false
+    },
+    "evaluation_rule": {
+      "const": "jev_branch_comparison_rule_v2"
+    },
+    "fixed_followup": {
+      "const": "local_geometry_test_double"
+    },
+    "geometry_convention": {
+      "const": "historical center x/L,y/W and base z/H; normalized historical descriptions are not current hard actions"
+    },
+    "historical_interventions": {
+      "type": "object",
+      "properties": {
+        "alternative": {
+          "type": "object",
+          "properties": {
+            "box": {
+              "type": "object",
+              "properties": {
+                "dimensions_mm": {
+                  "type": "object",
+                  "properties": {
+                    "height": {
+                      "type": "number"
+                    },
+                    "length": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "height",
+                    "length",
+                    "width"
+                  ],
+                  "additionalProperties": false
+                },
+                "mass_kg": {
+                  "type": "number"
+                },
+                "stackable": {
+                  "type": "boolean"
+                },
+                "top_load_limit_kg_synthetic": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "dimensions_mm",
+                "mass_kg",
+                "stackable",
+                "top_load_limit_kg_synthetic"
+              ],
+              "additionalProperties": false
+            },
+            "historical_center_over_container": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "size_over_container": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "yaw_deg": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "box",
+            "historical_center_over_container",
+            "size_over_container",
+            "yaw_deg"
+          ],
+          "additionalProperties": false
+        },
+        "original": {
+          "type": "object",
+          "properties": {
+            "box": {
+              "type": "object",
+              "properties": {
+                "dimensions_mm": {
+                  "type": "object",
+                  "properties": {
+                    "height": {
+                      "type": "number"
+                    },
+                    "length": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "height",
+                    "length",
+                    "width"
+                  ],
+                  "additionalProperties": false
+                },
+                "mass_kg": {
+                  "type": "number"
+                },
+                "stackable": {
+                  "type": "boolean"
+                },
+                "top_load_limit_kg_synthetic": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "dimensions_mm",
+                "mass_kg",
+                "stackable",
+                "top_load_limit_kg_synthetic"
+              ],
+              "additionalProperties": false
+            },
+            "historical_center_over_container": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "size_over_container": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "yaw_deg": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "box",
+            "historical_center_over_container",
+            "size_over_container",
+            "yaw_deg"
+          ],
+          "additionalProperties": false
+        },
+        "relationship": {
+          "enum": [
+            "same box different position",
+            "different boxes"
+          ]
+        }
+      },
+      "required": [
+        "alternative",
+        "original",
+        "relationship"
+      ],
+      "additionalProperties": false
+    },
+    "historical_result": {
+      "type": "object",
+      "properties": {
+        "alternative": {
+          "type": "object",
+          "properties": {
+            "actual_height_mm": {
+              "type": "number"
+            },
+            "envelope_utilization": {
+              "type": "number"
+            },
+            "placed_items": {
+              "type": "number"
+            },
+            "placed_mass_kg": {
+              "type": "number"
+            },
+            "placed_volume_ratio": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "actual_height_mm",
+            "envelope_utilization",
+            "placed_items",
+            "placed_mass_kg",
+            "placed_volume_ratio"
+          ],
+          "additionalProperties": false
+        },
+        "delta": {
+          "type": "object",
+          "properties": {
+            "actual_height_mm": {
+              "type": "number"
+            },
+            "envelope_utilization": {
+              "type": "number"
+            },
+            "placed_items": {
+              "type": "number"
+            },
+            "placed_mass_kg": {
+              "type": "number"
+            },
+            "placed_volume_ratio": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "actual_height_mm",
+            "envelope_utilization",
+            "placed_items",
+            "placed_mass_kg",
+            "placed_volume_ratio"
+          ],
+          "additionalProperties": false
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "actual_height_mm": {
+              "type": "number"
+            },
+            "envelope_utilization": {
+              "type": "number"
+            },
+            "placed_items": {
+              "type": "number"
+            },
+            "placed_mass_kg": {
+              "type": "number"
+            },
+            "placed_volume_ratio": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "actual_height_mm",
+            "envelope_utilization",
+            "placed_items",
+            "placed_mass_kg",
+            "placed_volume_ratio"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "alternative",
+        "delta",
+        "reference"
+      ],
+      "additionalProperties": false
+    },
+    "kind": {
+      "const": "T"
+    },
+    "limitations": {
+      "const": [
+        "POST_HOC_USER_REVISED_OBJECTIVE",
+        "two previously exposed training sources; no unseen-source validation",
+        "fixed local_geometry_test_double continuation; finite intervention, no causal or global optimum claim",
+        "synthetic packaging load parameters; feasibility UNKNOWN",
+        "historical observation only, not a recommendation or an action for the current task",
+        "not a universal cross-box or rank rule; external memory is not weight updating"
+      ]
+    },
+    "notice": {
+      "const": "historical observation only, not a recommendation or an action for the current task"
+    }
+  },
+  "required": [
+    "condition",
+    "evaluation_rule",
+    "fixed_followup",
+    "geometry_convention",
+    "historical_interventions",
+    "historical_result",
+    "kind",
+    "limitations",
+    "notice"
+  ],
+  "additionalProperties": false
+}

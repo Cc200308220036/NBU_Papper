@@ -25,7 +25,7 @@ METHODS = ('local_geometry_test_double','local_first_test_double')
 
 
 def is_packaging(config):
-    return config.get('version') in (VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10')
+    return config.get('version') in (VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11')
 
 
 def no_policy(observation):
@@ -272,7 +272,7 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
 def validate_runtime_context(context,observation=None,bundle=None,config=None):
     from .candidates import validate_bundle,decision_route
     value=context.data;validate_schema('decision_context',value)
-    if value['version'] in ('jev_decision_context_v9','jev_decision_context_v10'):
+    if value['version'] in ('jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11'):
         interface=driven_memory(config['version']);MemoryView,validate_receipt=interface.PilotMemoryView,interface.validate_receipt
         require(config is not None,'pilot_config_required_for_context_validation')
         saved=value['retrieval_receipt'];view=MemoryView.from_dict(value['memory_view'])
@@ -316,7 +316,7 @@ def validate_runtime_context(context,observation=None,bundle=None,config=None):
         require(binding['physical_digest']==b['physical_digest'] and binding['selectable_digest']==b['selectable_digest'] and
             route==decision_route(bundle),'runtime_stale_pool')
         # Deterministic reconstruction checks all public facts, deltas and private mapping.
-        extras=({'memory_view':MemoryView.from_dict(value['memory_view']),'retrieval_receipt':value['retrieval_receipt']} if value['version'] in ('jev_decision_context_v9','jev_decision_context_v10') else {'memory_view':MemoryView.from_dict(value['memory_view'])} if value['version'] in ('jev_decision_context_v7','jev_decision_context_v8') else {})
+        extras=({'memory_view':MemoryView.from_dict(value['memory_view']),'retrieval_receipt':value['retrieval_receipt']} if value['version'] in ('jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11') else {'memory_view':MemoryView.from_dict(value['memory_view'])} if value['version'] in ('jev_decision_context_v7','jev_decision_context_v8') else {})
         rebuilt=build_context(config,observation,bundle,no_policy(observation),**extras).data
         for key in ('job_id','decision_id'):
             if key in binding:rebuilt['local_binding'][key]=binding[key]
@@ -401,9 +401,9 @@ def summary(task,config,method,state,events,reason):
             monitor_statistics=statistics(config,events,row))
         if is_driven(config):
             from .packaging_remote import event_cost
-            row.update(version='jev_packaging_evaluation_metrics_v1' if config['version']=='jev_packaging_evaluation_v10' else 'jev_packaging_memory_order_metrics_v1',origin='LOCAL_TEST_DOUBLE_NOT_JEV' if method in METHODS else 'jev',memory_snapshot_digest=config['memory_snapshot_digest'])
+            row.update(version='jev_packaging_evaluation_metrics_v1' if config['version'] in ('jev_packaging_evaluation_v10','jev_packaging_synthetic_v11') else 'jev_packaging_memory_order_metrics_v1',origin='LOCAL_TEST_DOUBLE_NOT_JEV' if method in METHODS else 'jev',memory_snapshot_digest=config['memory_snapshot_digest'])
             row['cost'].update(event_cost(events))
-            validate_schema('evaluation_episode_metrics_v1' if config['version']=='jev_packaging_evaluation_v10' else 'pilot_order_metrics_v1',row)
+            validate_schema('evaluation_episode_metrics_v1' if config['version'] in ('jev_packaging_evaluation_v10','jev_packaging_synthetic_v11') else 'pilot_order_metrics_v1',row)
         elif config['version']=='jev_packaging_contrast_v8':
             from .packaging_remote import event_cost
             row.update(version='jev_packaging_contrast_metrics_v1',origin='jev',memory_snapshot_digest=config['memory_snapshot_digest'])

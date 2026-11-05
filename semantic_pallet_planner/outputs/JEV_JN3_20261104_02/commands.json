@@ -1,0 +1,31 @@
+[
+  {
+    "scope": "final tests before real generation",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python -m pytest -q semantic_pallet_planner/tests/unit/test_packaging_contrast.py semantic_pallet_planner/tests/unit/test_packaging_experience.py semantic_pallet_planner/tests/unit/test_packaging_remote.py semantic_pallet_planner/tests/unit/test_packaging_full_order.py semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_packaging_runtime.py semantic_pallet_planner/tests/unit/test_stability_monitor.py --disable-warnings --maxfail=1 --junitxml=semantic_pallet_planner/outputs/JEV_JN3_20261104_02/tests/accepted.xml",
+    "result": "167 passed"
+  },
+  {
+    "scope": "freeze exactly two generation tasks",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python -m semantic_pallet_planner.jev_select.packaging_contrast_generation prepare --output semantic_pallet_planner/outputs/JEV_JN3_20261104_02"
+  },
+  {
+    "scope": "real extraction, each task once",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python -m semantic_pallet_planner.jev_select.packaging_contrast_generation run --output semantic_pallet_planner/outputs/JEV_JN3_20261104_02"
+  },
+  {
+    "scope": "same fixed public query; E freeze",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python -m semantic_pallet_planner.jev_select.packaging_contrast_validation prepare --output semantic_pallet_planner/outputs/JEV_JN3_20261104_02"
+  },
+  {
+    "scope": "one Jev E decision",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python -m semantic_pallet_planner.jev_select.packaging_contrast_validation run --output semantic_pallet_planner/outputs/JEV_JN3_20261104_02 --api-key-file typesafe_api_key.md"
+  },
+  {
+    "scope": "current saved validation",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python semantic_pallet_planner/outputs/JEV_JN3_20261104_02/readonly_guard.py semantic_pallet_planner/outputs/VERIFY_JN3_E_20261104_01/current_guard.json semantic_pallet_planner.jev_select.packaging_contrast_validation validate --output semantic_pallet_planner/outputs/JEV_JN3_20261104_02"
+  },
+  {
+    "scope": "archived saved validation",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python semantic_pallet_planner/outputs/JEV_JN3_20261104_02/readonly_guard.py semantic_pallet_planner/outputs/VERIFY_JN3_E_20261104_01/archived_guard.json script semantic_pallet_planner/outputs/JEV_JN3_20261104_02/verify_frozen.py --output semantic_pallet_planner/outputs/JEV_JN3_20261104_02 --repo ."
+  }
+]

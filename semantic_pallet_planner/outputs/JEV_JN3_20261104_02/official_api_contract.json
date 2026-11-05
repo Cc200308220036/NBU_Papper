@@ -1,0 +1,48 @@
+{
+  "version": "JN3-B_official_api_contract_v1",
+  "access_date": "2026-11-04",
+  "DeepSeek": {
+    "endpoint": "https://api.deepseek.com/chat/completions",
+    "model_id": "deepseek-v4-pro",
+    "documented_version": "DeepSeek-V4-Pro-0813",
+    "model_identity_limit": "documented model ID/version plus actual response.model and system_fingerprint recorded; no unexposed provider weights hash claimed; no alias fallback",
+    "format": "non-thinking, response_format json_object, explicit JSON schema in prompt; strict local JSON and claim schema checks, blank or truncated response fails",
+    "request_parameters": {
+      "thinking": {
+        "type": "disabled"
+      },
+      "temperature": 0,
+      "max_tokens": 2048,
+      "stream": false,
+      "timeout_s": 60,
+      "max_retries": 0
+    },
+    "errors": "HTTP errors preserved, credential failure NOT_SENT, uncertain transport UNKNOWN_IN_FLIGHT; no retry/repair or extra review model call",
+    "sources": [
+      "https://api-docs.deepseek.com/api/create-chat-completion/",
+      "https://api-docs.deepseek.com/guides/json_mode/",
+      "https://api-docs.deepseek.com/quick_start/pricing/",
+      "https://api-docs.deepseek.com/quick_start/error_codes/"
+    ]
+  },
+  "Jev": {
+    "endpoint": "https://api.typesafe.ai/v1/systemone",
+    "model": "jev-1.14.0",
+    "format": "inherited native Choice strict parser, complete current label mapping, original raw probability values",
+    "sources": [
+      "https://docs.typesafe.ai/api/system-one",
+      "https://docs.typesafe.ai/primitives/choice",
+      "https://docs.typesafe.ai/models",
+      "https://docs.typesafe.ai/api/errors"
+    ]
+  },
+  "credentials": "existing memory_generation._credential reads deepseek_api.md; existing JevTransport reads typesafe_api_key.md. Only after send reservation. Never headers or keys persisted.",
+  "cost_policy": "save usage, cost UNKNOWN without bill; no account balance or model-list/probe request",
+  "authorization": {
+    "E_generation_max": 2,
+    "per_input_max": 1,
+    "Jev_E_max": 1,
+    "review_model_max": 0,
+    "extra_T_calls": 0
+  }
+}

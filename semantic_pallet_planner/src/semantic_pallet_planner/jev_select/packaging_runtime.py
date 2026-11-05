@@ -24,7 +24,7 @@ METHODS = ('local_geometry_test_double','local_first_test_double')
 
 
 def is_packaging(config):
-    return config.get('version') in (VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7')
+    return config.get('version') in (VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8')
 
 
 def no_policy(observation):
@@ -193,8 +193,10 @@ def build_context(config,observation,bundle,policy,*,memory_view=None):
             'pending':[{**p,'object_id':aliases[p['object_id']]} for p in buffer['pending']]},
         'objective':OBJECTIVE,'memories':[]}
     memory_fields={}
-    if config['version']=='jev_packaging_memory_v7':
-        from .packaging_experience import empty_view, validate_view
+    if config['version'] in ('jev_packaging_memory_v7','jev_packaging_contrast_v8'):
+        from .packaging_memory_protocol import memory_interface
+        interface=memory_interface(config['version'])
+        empty_view,validate_view=interface.empty_view,interface.validate_view
         view=empty_view(config['memory_snapshot_digest']) if memory_view is None else memory_view
         mv=validate_view(view,config['memory_snapshot_digest'])
         require(all(digest(e) in config['memory_entry_digests'] for e in mv['entries']),'memory_entry_not_in_frozen_config')
@@ -249,8 +251,12 @@ def build_context(config,observation,bundle,policy,*,memory_view=None):
 def validate_runtime_context(context,observation=None,bundle=None,config=None):
     from .candidates import validate_bundle,decision_route
     value=context.data;validate_schema('decision_context',value)
-    if value['version']=='jev_decision_context_v7':
-        from .packaging_experience import MemoryView,validate_view,public_query
+    if value['version'] in ('jev_decision_context_v7','jev_decision_context_v8'):
+        from .packaging_experience import public_query
+        from .packaging_memory_protocol import memory_interface
+        interface=memory_interface('jev_packaging_contrast_v8' if value['version']=='jev_decision_context_v8' else 'jev_packaging_memory_v7')
+        MemoryView=interface.EMemoryView if value['version']=='jev_decision_context_v8' else interface.MemoryView
+        validate_view=interface.validate_view
         mv=validate_view(MemoryView.from_dict(value['memory_view']),config['memory_snapshot_digest'] if config else None)
         require(value['model_state']['memories']==mv['entries'] and value['local_binding']['memory_view_digest']==mv['view_digest'] and value['local_binding']['memory_snapshot_digest']==mv['snapshot_digest'],'memory_context_changed')
         if config is not None:
@@ -282,7 +288,7 @@ def validate_runtime_context(context,observation=None,bundle=None,config=None):
         require(binding['physical_digest']==b['physical_digest'] and binding['selectable_digest']==b['selectable_digest'] and
             route==decision_route(bundle),'runtime_stale_pool')
         # Deterministic reconstruction checks all public facts, deltas and private mapping.
-        rebuilt=build_context(config,observation,bundle,no_policy(observation),**({'memory_view':MemoryView.from_dict(value['memory_view'])} if value['version']=='jev_decision_context_v7' else {})).data
+        rebuilt=build_context(config,observation,bundle,no_policy(observation),**({'memory_view':MemoryView.from_dict(value['memory_view'])} if value['version'] in ('jev_decision_context_v7','jev_decision_context_v8') else {})).data
         for key in ('job_id','decision_id'):
             if key in binding:rebuilt['local_binding'][key]=binding[key]
         require(value==rebuilt,'runtime_context_reconstruction')
@@ -364,7 +370,12 @@ def summary(task,config,method,state,events,reason):
         row.update(version='jev_packaging_monitored_metrics_v1',
             stability_algorithm='pct_contact_network_v2' if config['stability_monitor']['enabled'] else 'DISABLED',
             monitor_statistics=statistics(config,events,row))
-        if config['version']=='jev_packaging_memory_v7':
+        if config['version']=='jev_packaging_contrast_v8':
+            from .packaging_remote import event_cost
+            row.update(version='jev_packaging_contrast_metrics_v1',origin='jev',memory_snapshot_digest=config['memory_snapshot_digest'])
+            row['cost'].update(event_cost(events))
+            validate_schema('contrast_order_metrics_v1',row)
+        elif config['version']=='jev_packaging_memory_v7':
             from .packaging_remote import event_cost
             row.update(version='jev_packaging_memory_metrics_v1',origin='jev',memory_snapshot_digest=config['memory_snapshot_digest'])
             row['cost'].update(event_cost(events))

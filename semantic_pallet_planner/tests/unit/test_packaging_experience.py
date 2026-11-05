@@ -203,9 +203,11 @@ def test_singleton_no_request(constructed,tmp_path):
     assert s.select(ctx,decision_id='J_D0000').data['status']=='singleton' and f.calls==0 and not l.data['requests']
 
 
-def test_workflow_constructed_transport_closed_loop():
+def test_workflow_constructed_transport_closed_loop(monkeypatch):
     import tempfile
     from semantic_pallet_planner.jev_select import packaging_trajectory_validation as w
+    # Constructed transport scope must not spend or reset the archived real stage budget.
+    monkeypatch.setattr(w,'prior_requests',lambda output:[])
     with tempfile.TemporaryDirectory(prefix='CONSTRUCTED_JN3_',dir=REPO/'semantic_pallet_planner/outputs') as d:
         p=w.prepare(d);assert p['ready_to_send']
         fake=Fake();r=w.run(d,transport=fake)

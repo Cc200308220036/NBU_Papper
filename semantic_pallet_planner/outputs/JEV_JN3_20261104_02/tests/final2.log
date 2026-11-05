@@ -1,0 +1,28 @@
+....................................................................F
+=================================== FAILURES ===================================
+_______________ test_workflow_constructed_transport_closed_loop ________________
+
+    def test_workflow_constructed_transport_closed_loop(monkeypatch):
+        import tempfile
+        from semantic_pallet_planner.jev_select import packaging_trajectory_validation as w
+        # Constructed transport scope must not spend or reset the archived real stage budget.
+>       monkeypatch.setattr(w,'prior_requests',lambda output:[])
+
+semantic_pallet_planner/tests/unit/test_packaging_experience.py:210: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_trajectory_validation.py:34: in prepare
+    prior=prior_requests(root);require(not prior,'trajectory_previous_attempt_exists')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, code = 'trajectory_previous_attempt_exists'
+
+    def require(ok, code):
+>       if not ok: raise JevSelectError(code)
+E       semantic_pallet_planner.jev_select.contracts.JevSelectError: trajectory_previous_attempt_exists
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py:42: JevSelectError
+- generated xml file: /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JN3_20261104_02/tests/final2.xml -
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/tests/unit/test_packaging_experience.py::test_workflow_constructed_transport_closed_loop
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 68 passed in 26.41s

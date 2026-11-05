@@ -46,16 +46,17 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
 def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
                 hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None):
     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
-    if config.get('version') in ('jev_packaging_monitored_v5','jev_packaging_remote_v6','jev_packaging_memory_v7'):
+    if config.get('version') in ('jev_packaging_monitored_v5','jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8'):
         config = copy.deepcopy(config)
     if is_packaging(config):
         if config.get('version') == 'jev_packaging_remote_v6':
             from .packaging_remote import REGISTRY
             METHODS = tuple(REGISTRY)
-        if config.get('version')=='jev_packaging_memory_v7':
-            from .packaging_experience import METHOD,validate_view
-            METHODS=(METHOD,)
-            if memory_view is not None:validate_view(memory_view,config['memory_snapshot_digest'])
+        if config.get('version') in ('jev_packaging_memory_v7','jev_packaging_contrast_v8'):
+            from .packaging_memory_protocol import memory_interface
+            interface=memory_interface(config['version'])
+            METHODS=(interface.METHOD,)
+            if memory_view is not None:interface.validate_view(memory_view,config['memory_snapshot_digest'])
         elif memory_view is not None:
             raise JevSelectError('packaging_memory_protocol_incompatible')
         if (memory_snapshot is not None or task.get('version') != DATA_VERSION or

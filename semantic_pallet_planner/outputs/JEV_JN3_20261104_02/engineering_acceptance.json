@@ -1,0 +1,80 @@
+{
+  "stage": "JN3-B",
+  "version": "packaging_contrast_acceptance_v1",
+  "criteria": {
+    "E01": {
+      "status": "PASS",
+      "evidence": [
+        "generation_plan.json",
+        "generation_requests/",
+        "generation_accounting/",
+        "generation_ledger.json",
+        "official_api_contract.json"
+      ],
+      "scope": "2 frozen real DeepSeek tasks, one send each, pinned documented model ID, prompt/input/usage/raw/failure accounting; no retries"
+    },
+    "E02": {
+      "status": "PASS",
+      "evidence": [
+        "contrast_snapshot.json",
+        "facts/",
+        "reviews/",
+        "design_contract.json"
+      ],
+      "scope": "observable conditions and attribute/geometry relations, conditional hypotheses, costs, exact relevance counts and counterexample/scope limits; no Cxx/order/rank shortcut"
+    },
+    "E03": {
+      "status": "PASS",
+      "evidence": [
+        "reviews/G00_claim_evidence.json",
+        "reviews/G01_claim_evidence.json",
+        "reviews/G00_fact_audit.json",
+        "reviews/G01_fact_audit.json"
+      ],
+      "scope": "5 grouped fact claims per card, all source leaf or comparison refs; numeric facts resolved by program, mechanisms only HYPOTHESIS"
+    },
+    "E04": {
+      "status": "PASS",
+      "evidence": [
+        "generation_reviews.json",
+        "reviews/G00_semantic_review.json",
+        "reviews/G01_semantic_review.json",
+        "T_E_information_budget.json",
+        "tests/accepted.xml"
+      ],
+      "scope": "independent fact/semantic receipts, 2 approved 0 rejected 0 pending real candidates; synthetic rejection/pending tests, no unapproved activation; same result budget with explicit information differences"
+    },
+    "E05": {
+      "status": "PASS",
+      "evidence": [
+        "E_query_preregistration.json",
+        "E_preregistration.json",
+        "E_retrieval.json",
+        "E_request.json",
+        "E_request_ledger/requests.json",
+        "E_response.raw.json",
+        "E_selection.json",
+        "E_monitor.json",
+        "E_execution.json",
+        "E_stages/",
+        "saved_record_validation.json"
+      ],
+      "scope": "fixed source-isolated query, 1 real E entry through public retrieval into 1 Jev request, strict current C14 mapping -> STABLE -> original commit once -> stop"
+    },
+    "E06": {
+      "status": "PASS",
+      "evidence": [
+        "contrast_memory_readiness.json",
+        "contrast_snapshot.json",
+        "interface_contract.json",
+        "T_E_information_budget.json",
+        "code_snapshot/",
+        "verify_frozen.py",
+        "readonly_guard.py"
+      ],
+      "scope": "frozen E and reusable single-decision interfaces handed off; JN3-C needs independent scope/driver and authorization, not executed"
+    }
+  },
+  "research_benefit": "NOT_ESTABLISHED",
+  "full_JN3_complete": false
+}

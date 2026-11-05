@@ -217,6 +217,11 @@ def retrieve(query,snapshot,*,excluded_source_groups=(),excluded_fork_digests=()
     validate_query(query);s=validate_snapshot(snapshot)
     rule=RULE if rule is None else rule
     require(rule==RULE,'memory_unregistered_retrieval_rule')
+    return _retrieve_validated(query,s,rule,excluded_source_groups,excluded_fork_digests)
+
+
+def _retrieve_validated(query,s,rule,excluded_source_groups,excluded_fork_digests,*,view_class=MemoryView,
+                        view_version='packaging_memory_view_v1',mode='T',view_validator=validate_view):
     rows=[]
     for c in s['cases']:
         excluded=c['provenance']['source_group'] in excluded_source_groups or c['provenance']['fork_digest'] in excluded_fork_digests
@@ -233,10 +238,10 @@ def retrieve(query,snapshot,*,excluded_source_groups=(),excluded_fork_digests=()
         lengths.append({'public_digest':r['public_digest'],'chars':len(text),'utf8_bytes':len(text.encode()),'accepted':accept})
         if accept:entries.append(entry)
     rendered=canonical(entries)
-    v=sealed({'version':'packaging_memory_view_v1','mode':'T','snapshot_digest':s['snapshot_digest'],
+    v=sealed({'version':view_version,'mode':mode,'snapshot_digest':s['snapshot_digest'],
        'query_digest':digest(query),'entries':entries,'reason':'HIT' if entries else 'NO_QUALIFIED_COMPLETE_ENTRY',
        'injected_chars':len(rendered),'injected_utf8_bytes':len(rendered.encode())},'view_digest')
-    view=MemoryView.from_dict(v);validate_view(view)
+    view=view_class.from_dict(v);view_validator(view)
     return view,{'query':query,'query_digest':digest(query),'rule':rule,'snapshot_digest':s['snapshot_digest'],
        'exclusions':{'source_groups':list(excluded_source_groups),'fork_digests':list(excluded_fork_digests)},
        'candidates':rows,'length_handling':lengths,'view':v,'library_nonempty':bool(s['cases']),

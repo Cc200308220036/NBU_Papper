@@ -62,3 +62,14 @@ def memory_selector_factory(method,*,config,transport,ledger,job_id):
     validate_schema('config',config)
     if not isinstance(ledger,MemoryRequestLedger) or not job_id:raise JevSelectError('memory_dependencies_required')
     return PackagingMemorySelector(config,ledger,job_id,transport)
+
+
+def memory_interface(version):
+    """Central typed memory dispatch. Unknown/legacy protocols never accept memory."""
+    if version=='jev_packaging_memory_v7':
+        from . import packaging_experience
+        return packaging_experience
+    if version=='jev_packaging_contrast_v8':
+        from . import packaging_contrast
+        return packaging_contrast
+    raise JevSelectError('unsupported_packaging_memory_interface')

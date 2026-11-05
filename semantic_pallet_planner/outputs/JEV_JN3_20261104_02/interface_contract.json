@@ -1,0 +1,60 @@
+{
+  "stage": "JN3-B",
+  "method": "jev_with_contrast_experience",
+  "execution": "jev_packaging_contrast_v8",
+  "versions": {
+    "candidate_bundle": "jev_candidate_bundle_v8",
+    "checkpoint": "jev_checkpoint_v8",
+    "config": "jev_packaging_contrast_v8",
+    "context": "jev_decision_context_v8",
+    "execution": "jev_packaging_contrast_v8",
+    "metrics": "jev_packaging_contrast_metrics_v1",
+    "request_ledger": "jev_packaging_contrast_requests_v1",
+    "run": "JN3-B_single_decision_v1",
+    "selection": "jev_selection_result_v8"
+  },
+  "new_schemas": [
+    "config_v8",
+    "candidate_bundle_v8",
+    "decision_context_v8",
+    "selection_result_v8",
+    "checkpoint_v8",
+    "contrast_order_metrics_v1",
+    "packaging_contrast_generation_v1",
+    "packaging_contrast_fact_pack_v1",
+    "packaging_contrast_card_v1",
+    "packaging_contrast_public_v1",
+    "packaging_contrast_snapshot_v1",
+    "packaging_contrast_view_v1"
+  ],
+  "entrypoints": [
+    "packaging_contrast.build_fact_pack(case, repo, parent)",
+    "generation_body(pack)",
+    "fact_audit(candidate, pack)",
+    "semantic_review(candidate, pack, audit)",
+    "freeze_snapshot(cards)",
+    "retrieve(public_query, snapshot, excluded_source_groups=..., excluded_fork_digests=...)",
+    "load_contrast_config(..., snapshot_digest, entry_digests, enabled)",
+    "selector_factory(method, execution_version=jev_packaging_contrast_v8, ...)",
+    "ContextBuilder.build(..., memory_view=EMemoryView)",
+    "run_episode(..., memory_view=EMemoryView)"
+  ],
+  "CLI": {
+    "generation": "python -m semantic_pallet_planner.jev_select.packaging_contrast_generation prepare|run|validate --output ...",
+    "E_decision": "python -m semantic_pallet_planner.jev_select.packaging_contrast_validation prepare|run|validate --output ..."
+  },
+  "identity": "config binds E snapshot and entry whitelist; context binds actual EMemoryView, query, body/mapping/state; ContrastRequestLedger binds snapshot/view/injected digests; checkpoint v8 config/context bindings reject changed snapshot/entries/review/query",
+  "old_versions": "v6 no-memory and v7 T unchanged closed schemas; new EMemoryView subclass has separate version/mode/schema/validation; empty v6 stays empty",
+  "unchanged": [
+    "native transport_v1",
+    "strict Choice parser",
+    "durable RequestLedger phases and UNKNOWN_SEND handling",
+    "shared episode phases",
+    "selected monitor v2 kernel and physical_commit_v1",
+    "candidate generator/scoring/parameters/data/tolerances",
+    "packaging_load_en_v1 prompt objective"
+  ],
+  "limited_scope": "single explicit E MemoryView per decision; E whole-order driver NOT_IMPLEMENTED; no implicit task-based retrieval",
+  "generator_audit": "reuses old memory_generation credential loader, redacted single-send remote_complete, durable raw-response journal and metadata only. Old training exports/business corpus/automatic repairs and J4 accounting are not invoked.",
+  "semantic_review_scope": "restricted structured hypotheses selected by LLM, certified against independently frozen deterministic claim-graph rules; no unrestricted prose, no human review, no extra review-model call"
+}

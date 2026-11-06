@@ -5,7 +5,7 @@ explicit Fake transports. A frozen formal plan is consumable but NOT dispatched
 by this JN4-A entry point (including its local methods).
 """
 from pathlib import Path
-from .packaging_versions import EXACT_VERSION,EXACT_PLAN,EXACT_RUN
+from .packaging_versions import EXACT_VERSION,EXACT_PLAN,EXACT_RUN,REMAINDER_PLAN
 import copy
 import importlib.metadata
 import platform
@@ -91,7 +91,7 @@ def prepare(data,output,*,purpose='FIXTURE_ENGINEERING',watchdog=None):
 
 def validate_plan(root):
     root=Path(root);p=read(root/'plan.json')
-    if p['version']==EXACT_PLAN:
+    if p['version'] in (EXACT_PLAN,REMAINDER_PLAN):
         from .packaging_exact_orders import validate_plan as exact_validate
         return exact_validate(root)
     if p['version']=='jev_synthetic_orders_plan_v1':

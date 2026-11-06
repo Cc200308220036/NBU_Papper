@@ -1,0 +1,347 @@
+EEEEEEE.EE.                                                              [100%]
+==================================== ERRORS ====================================
+_______ ERROR at setup of test_derive_budget_scope_and_static_tampering ________
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x75dffb3ba060>, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-76'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def archived_fixture(tmp_path_factory):
+        tmp_path=tmp_path_factory.mktemp('remaining_parent')
+        # Module fixture also guards setup before function-level guards are applied.
+        with pytest.MonkeyPatch.context() as m:
+            def no(*a,**kw):pytest.fail('fixture attempted network or credential access')
+            m.setattr(socket.socket,'connect',no);m.setattr(transport,'credential',no)
+>           return build_parent(tmp_path)
+
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:34: in build_parent
+    synth.run_constructed(tmp_path/'original/plan',tmp_path/'original/run',transport_factory=factory(Fake()))
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:118: in run_constructed
+    return base._run_plan(p,plan_root,output,transport_factory=transport_factory,
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:281: in _run_plan
+    validate_run(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:296: in validate_run
+    p=validate_plan(resolve(receipt['plan']));require(receipt['plan_digest']==digest(p),'evaluation_saved_plan_changed')
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:99: in validate_plan
+    return synthetic_validate(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:64: in validate_plan
+    require(p['source_manifest']==source_manifest() and p['dependencies']==base.dependencies() and p['physical_manifest']==physical_manifest(),'synthetic_plan_runtime_identity')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, reason = 'synthetic_plan_runtime_identity'
+
+    def require(ok, reason):
+        if not ok:
+>           raise JevSelectError('source_admission_' + reason)
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: source_admission_synthetic_plan_runtime_identity
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py:38: JevSelectError
+__ ERROR at setup of test_parent_rejects_started_or_changed_scope[checkpoint] __
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x75dffb3ba060>, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-76'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def archived_fixture(tmp_path_factory):
+        tmp_path=tmp_path_factory.mktemp('remaining_parent')
+        # Module fixture also guards setup before function-level guards are applied.
+        with pytest.MonkeyPatch.context() as m:
+            def no(*a,**kw):pytest.fail('fixture attempted network or credential access')
+            m.setattr(socket.socket,'connect',no);m.setattr(transport,'credential',no)
+>           return build_parent(tmp_path)
+
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:34: in build_parent
+    synth.run_constructed(tmp_path/'original/plan',tmp_path/'original/run',transport_factory=factory(Fake()))
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:118: in run_constructed
+    return base._run_plan(p,plan_root,output,transport_factory=transport_factory,
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:281: in _run_plan
+    validate_run(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:296: in validate_run
+    p=validate_plan(resolve(receipt['plan']));require(receipt['plan_digest']==digest(p),'evaluation_saved_plan_changed')
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:99: in validate_plan
+    return synthetic_validate(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:64: in validate_plan
+    require(p['source_manifest']==source_manifest() and p['dependencies']==base.dependencies() and p['physical_manifest']==physical_manifest(),'synthetic_plan_runtime_identity')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, reason = 'synthetic_plan_runtime_identity'
+
+    def require(ok, reason):
+        if not ok:
+>           raise JevSelectError('source_admission_' + reason)
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: source_admission_synthetic_plan_runtime_identity
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py:38: JevSelectError
+___ ERROR at setup of test_parent_rejects_started_or_changed_scope[request] ____
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x75dffb3ba060>, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-76'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def archived_fixture(tmp_path_factory):
+        tmp_path=tmp_path_factory.mktemp('remaining_parent')
+        # Module fixture also guards setup before function-level guards are applied.
+        with pytest.MonkeyPatch.context() as m:
+            def no(*a,**kw):pytest.fail('fixture attempted network or credential access')
+            m.setattr(socket.socket,'connect',no);m.setattr(transport,'credential',no)
+>           return build_parent(tmp_path)
+
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:34: in build_parent
+    synth.run_constructed(tmp_path/'original/plan',tmp_path/'original/run',transport_factory=factory(Fake()))
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:118: in run_constructed
+    return base._run_plan(p,plan_root,output,transport_factory=transport_factory,
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:281: in _run_plan
+    validate_run(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:296: in validate_run
+    p=validate_plan(resolve(receipt['plan']));require(receipt['plan_digest']==digest(p),'evaluation_saved_plan_changed')
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:99: in validate_plan
+    return synthetic_validate(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:64: in validate_plan
+    require(p['source_manifest']==source_manifest() and p['dependencies']==base.dependencies() and p['physical_manifest']==physical_manifest(),'synthetic_plan_runtime_identity')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, reason = 'synthetic_plan_runtime_identity'
+
+    def require(ok, reason):
+        if not ok:
+>           raise JevSelectError('source_admission_' + reason)
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: source_admission_synthetic_plan_runtime_identity
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py:38: JevSelectError
+____ ERROR at setup of test_parent_rejects_started_or_changed_scope[status] ____
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x75dffb3ba060>, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-76'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def archived_fixture(tmp_path_factory):
+        tmp_path=tmp_path_factory.mktemp('remaining_parent')
+        # Module fixture also guards setup before function-level guards are applied.
+        with pytest.MonkeyPatch.context() as m:
+            def no(*a,**kw):pytest.fail('fixture attempted network or credential access')
+            m.setattr(socket.socket,'connect',no);m.setattr(transport,'credential',no)
+>           return build_parent(tmp_path)
+
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:34: in build_parent
+    synth.run_constructed(tmp_path/'original/plan',tmp_path/'original/run',transport_factory=factory(Fake()))
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:118: in run_constructed
+    return base._run_plan(p,plan_root,output,transport_factory=transport_factory,
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:281: in _run_plan
+    validate_run(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:296: in validate_run
+    p=validate_plan(resolve(receipt['plan']));require(receipt['plan_digest']==digest(p),'evaluation_saved_plan_changed')
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:99: in validate_plan
+    return synthetic_validate(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:64: in validate_plan
+    require(p['source_manifest']==source_manifest() and p['dependencies']==base.dependencies() and p['physical_manifest']==physical_manifest(),'synthetic_plan_runtime_identity')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, reason = 'synthetic_plan_runtime_identity'
+
+    def require(ok, reason):
+        if not ok:
+>           raise JevSelectError('source_admission_' + reason)
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: source_admission_synthetic_plan_runtime_identity
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py:38: JevSelectError
+____ ERROR at setup of test_parent_rejects_started_or_changed_scope[active] ____
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x75dffb3ba060>, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-76'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def archived_fixture(tmp_path_factory):
+        tmp_path=tmp_path_factory.mktemp('remaining_parent')
+        # Module fixture also guards setup before function-level guards are applied.
+        with pytest.MonkeyPatch.context() as m:
+            def no(*a,**kw):pytest.fail('fixture attempted network or credential access')
+            m.setattr(socket.socket,'connect',no);m.setattr(transport,'credential',no)
+>           return build_parent(tmp_path)
+
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:34: in build_parent
+    synth.run_constructed(tmp_path/'original/plan',tmp_path/'original/run',transport_factory=factory(Fake()))
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:118: in run_constructed
+    return base._run_plan(p,plan_root,output,transport_factory=transport_factory,
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:281: in _run_plan
+    validate_run(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:296: in validate_run
+    p=validate_plan(resolve(receipt['plan']));require(receipt['plan_digest']==digest(p),'evaluation_saved_plan_changed')
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:99: in validate_plan
+    return synthetic_validate(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:64: in validate_plan
+    require(p['source_manifest']==source_manifest() and p['dependencies']==base.dependencies() and p['physical_manifest']==physical_manifest(),'synthetic_plan_runtime_identity')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, reason = 'synthetic_plan_runtime_identity'
+
+    def require(ok, reason):
+        if not ok:
+>           raise JevSelectError('source_admission_' + reason)
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: source_admission_synthetic_plan_runtime_identity
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py:38: JevSelectError
+____ ERROR at setup of test_parent_rejects_started_or_changed_scope[nested] ____
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x75dffb3ba060>, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-76'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def archived_fixture(tmp_path_factory):
+        tmp_path=tmp_path_factory.mktemp('remaining_parent')
+        # Module fixture also guards setup before function-level guards are applied.
+        with pytest.MonkeyPatch.context() as m:
+            def no(*a,**kw):pytest.fail('fixture attempted network or credential access')
+            m.setattr(socket.socket,'connect',no);m.setattr(transport,'credential',no)
+>           return build_parent(tmp_path)
+
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:34: in build_parent
+    synth.run_constructed(tmp_path/'original/plan',tmp_path/'original/run',transport_factory=factory(Fake()))
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:118: in run_constructed
+    return base._run_plan(p,plan_root,output,transport_factory=transport_factory,
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:281: in _run_plan
+    validate_run(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:296: in validate_run
+    p=validate_plan(resolve(receipt['plan']));require(receipt['plan_digest']==digest(p),'evaluation_saved_plan_changed')
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:99: in validate_plan
+    return synthetic_validate(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:64: in validate_plan
+    require(p['source_manifest']==source_manifest() and p['dependencies']==base.dependencies() and p['physical_manifest']==physical_manifest(),'synthetic_plan_runtime_identity')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, reason = 'synthetic_plan_runtime_identity'
+
+    def require(ok, reason):
+        if not ok:
+>           raise JevSelectError('source_admission_' + reason)
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: source_admission_synthetic_plan_runtime_identity
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py:38: JevSelectError
+__ ERROR at setup of test_remainder_unknown_stops_without_followup_or_resend ___
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x75dffb3ba060>, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-76'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def archived_fixture(tmp_path_factory):
+        tmp_path=tmp_path_factory.mktemp('remaining_parent')
+        # Module fixture also guards setup before function-level guards are applied.
+        with pytest.MonkeyPatch.context() as m:
+            def no(*a,**kw):pytest.fail('fixture attempted network or credential access')
+            m.setattr(socket.socket,'connect',no);m.setattr(transport,'credential',no)
+>           return build_parent(tmp_path)
+
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:34: in build_parent
+    synth.run_constructed(tmp_path/'original/plan',tmp_path/'original/run',transport_factory=factory(Fake()))
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:118: in run_constructed
+    return base._run_plan(p,plan_root,output,transport_factory=transport_factory,
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:281: in _run_plan
+    validate_run(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:296: in validate_run
+    p=validate_plan(resolve(receipt['plan']));require(receipt['plan_digest']==digest(p),'evaluation_saved_plan_changed')
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:99: in validate_plan
+    return synthetic_validate(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:64: in validate_plan
+    require(p['source_manifest']==source_manifest() and p['dependencies']==base.dependencies() and p['physical_manifest']==physical_manifest(),'synthetic_plan_runtime_identity')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, reason = 'synthetic_plan_runtime_identity'
+
+    def require(ok, reason):
+        if not ok:
+>           raise JevSelectError('source_admission_' + reason)
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: source_admission_synthetic_plan_runtime_identity
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py:38: JevSelectError
+_______ ERROR at setup of test_remainder_saved_request_restore[SENDING] ________
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x75dffb3ba060>, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-76'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def archived_fixture(tmp_path_factory):
+        tmp_path=tmp_path_factory.mktemp('remaining_parent')
+        # Module fixture also guards setup before function-level guards are applied.
+        with pytest.MonkeyPatch.context() as m:
+            def no(*a,**kw):pytest.fail('fixture attempted network or credential access')
+            m.setattr(socket.socket,'connect',no);m.setattr(transport,'credential',no)
+>           return build_parent(tmp_path)
+
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:34: in build_parent
+    synth.run_constructed(tmp_path/'original/plan',tmp_path/'original/run',transport_factory=factory(Fake()))
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:118: in run_constructed
+    return base._run_plan(p,plan_root,output,transport_factory=transport_factory,
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:281: in _run_plan
+    validate_run(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:296: in validate_run
+    p=validate_plan(resolve(receipt['plan']));require(receipt['plan_digest']==digest(p),'evaluation_saved_plan_changed')
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:99: in validate_plan
+    return synthetic_validate(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:64: in validate_plan
+    require(p['source_manifest']==source_manifest() and p['dependencies']==base.dependencies() and p['physical_manifest']==physical_manifest(),'synthetic_plan_runtime_identity')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, reason = 'synthetic_plan_runtime_identity'
+
+    def require(ok, reason):
+        if not ok:
+>           raise JevSelectError('source_admission_' + reason)
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: source_admission_synthetic_plan_runtime_identity
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py:38: JevSelectError
+____ ERROR at setup of test_remainder_saved_request_restore[RESPONSE_SAVED] ____
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x75dffb3ba060>, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-76'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def archived_fixture(tmp_path_factory):
+        tmp_path=tmp_path_factory.mktemp('remaining_parent')
+        # Module fixture also guards setup before function-level guards are applied.
+        with pytest.MonkeyPatch.context() as m:
+            def no(*a,**kw):pytest.fail('fixture attempted network or credential access')
+            m.setattr(socket.socket,'connect',no);m.setattr(transport,'credential',no)
+>           return build_parent(tmp_path)
+
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:34: in build_parent
+    synth.run_constructed(tmp_path/'original/plan',tmp_path/'original/run',transport_factory=factory(Fake()))
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:118: in run_constructed
+    return base._run_plan(p,plan_root,output,transport_factory=transport_factory,
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:281: in _run_plan
+    validate_run(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:296: in validate_run
+    p=validate_plan(resolve(receipt['plan']));require(receipt['plan_digest']==digest(p),'evaluation_saved_plan_changed')
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:99: in validate_plan
+    return synthetic_validate(root)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_orders.py:64: in validate_plan
+    require(p['source_manifest']==source_manifest() and p['dependencies']==base.dependencies() and p['physical_manifest']==physical_manifest(),'synthetic_plan_runtime_identity')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, reason = 'synthetic_plan_runtime_identity'
+
+    def require(ok, reason):
+        if not ok:
+>           raise JevSelectError('source_admission_' + reason)
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: source_admission_synthetic_plan_runtime_identity
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py:38: JevSelectError
+- generated xml file: /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JN4_REMAIN24_20261106_01/tests.xml -
+=========================== short test summary info ============================
+ERROR semantic_pallet_planner/tests/unit/test_packaging_remaining24.py::test_derive_budget_scope_and_static_tampering
+ERROR semantic_pallet_planner/tests/unit/test_packaging_remaining24.py::test_parent_rejects_started_or_changed_scope[checkpoint]
+ERROR semantic_pallet_planner/tests/unit/test_packaging_remaining24.py::test_parent_rejects_started_or_changed_scope[request]
+ERROR semantic_pallet_planner/tests/unit/test_packaging_remaining24.py::test_parent_rejects_started_or_changed_scope[status]
+ERROR semantic_pallet_planner/tests/unit/test_packaging_remaining24.py::test_parent_rejects_started_or_changed_scope[active]
+ERROR semantic_pallet_planner/tests/unit/test_packaging_remaining24.py::test_parent_rejects_started_or_changed_scope[nested]
+ERROR semantic_pallet_planner/tests/unit/test_packaging_remaining24.py::test_remainder_unknown_stops_without_followup_or_resend
+ERROR semantic_pallet_planner/tests/unit/test_packaging_remaining24.py::test_remainder_saved_request_restore[SENDING]
+ERROR semantic_pallet_planner/tests/unit/test_packaging_remaining24.py::test_remainder_saved_request_restore[RESPONSE_SAVED]
+2 passed, 9 errors in 28.44s

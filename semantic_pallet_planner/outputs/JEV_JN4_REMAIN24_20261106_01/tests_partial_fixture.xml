@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="14" time="232.127" timestamp="2026-11-06T15:50:24.874124+08:00" hostname="cyw-R7000P"><testcase classname="tests.unit.test_packaging_remaining24" name="test_derive_budget_scope_and_static_tampering" time="69.703" /><testcase classname="tests.unit.test_packaging_remaining24" name="test_parent_rejects_started_or_changed_scope[checkpoint]" time="0.054" /><testcase classname="tests.unit.test_packaging_remaining24" name="test_parent_rejects_started_or_changed_scope[request]" time="0.040" /><testcase classname="tests.unit.test_packaging_remaining24" name="test_parent_rejects_started_or_changed_scope[status]" time="0.039" /><testcase classname="tests.unit.test_packaging_remaining24" name="test_parent_rejects_started_or_changed_scope[active]" time="0.025" /><testcase classname="tests.unit.test_packaging_remaining24" name="test_parent_rejects_started_or_changed_scope[nested]" time="6.037" /><testcase classname="tests.unit.test_packaging_remaining24" name="test_remainder_unknown_stops_without_followup_or_resend" time="61.094" /><testcase classname="tests.unit.test_packaging_remaining24" name="test_owner_same_run_resume_and_duplicate_rejected" time="0.007" /><testcase classname="tests.unit.test_packaging_remaining24" name="test_remainder_saved_request_restore[SENDING]" time="15.564" /><testcase classname="tests.unit.test_packaging_remaining24" name="test_remainder_saved_request_restore[RESPONSE_SAVED]" time="9.349"><failure message="semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_memory_snapshot_v1: /: None is not of type 'object'">stopped = PosixPath('/tmp/pytest-of-cyw/pytest-77/remaining_parent0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x77760a445a90&gt;
+phase = 'RESPONSE_SAVED'
+
+    @pytest.mark.parametrize('phase',['SENDING','RESPONSE_SAVED'])
+    def test_remainder_saved_request_restore(stopped,monkeypatch,phase):
+        p=exact.prepare_remaining(stopped/'parent/plan',stopped/'parent/run',stopped/'next/plan')
+        from semantic_pallet_planner.jev_select.packaging_exact_protocol import ExactLedger
+        from semantic_pallet_planner.jev_select.packaging_evaluation_memory import MemoryDriver
+        original=ExactLedger._transition
+        class Cut(BaseException):pass
+        def pause(self,row,state):
+            original(self,row,state)
+            if state==phase:raise Cut()
+        monkeypatch.setattr(ExactLedger,'_transition',pause);f=Fake()
+        with pytest.raises(Cut):exact.run(stopped/'next/plan',constructed_factory=factory(f))
+        monkeypatch.setattr(ExactLedger,'_transition',original)
+        if phase=='SENDING':
+            monkeypatch.setattr(MemoryDriver,'resolve',lambda *a:pytest.fail('DECISION_READY re-retrieved'))
+            s=exact.run(stopped/'next/plan',resume=True,constructed_factory=factory(f))
+            assert s['request_statistics']['unknown_sends']==1 and f.calls==0
+        else:
+            # Restore exactly the saved decision; stop before another decision needs retrieval.
+            from semantic_pallet_planner.jev_select.packaging_exact_protocol import selector_factory
+            from semantic_pallet_planner.jev_select.episode import run_episode
+            j=p['jobs'][0];cfg=j['config'];task=next(t for t in p['data']['tasks'] if t['task_id']==j['task_id'])
+            cp=read(stopped/'next/run/jobs'/j['job_id']/'checkpoint.json')
+            ledger=ExactLedger(stopped/'next/run/request_ledger',p['request_budget'],{x['job_id']:x['config'] for x in p['jobs']})
+            sel=selector_factory(j['method_id'],config=cfg,transport=None,ledger=ledger,job_id=j['job_id'])
+&gt;           driver=MemoryDriver(cfg);monkeypatch.setattr(driver,'resolve',lambda *a:pytest.fail('DECISION_READY re-retrieved'))
+
+semantic_pallet_planner/tests/unit/test_packaging_remaining24.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_memory.py:67: in __init__
+    self.reference=base.MemoryDriver(reference_config(config),snapshot=snapshot)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_pilot_memory.py:110: in __init__
+    value=T.validate_snapshot(snapshot,config['memory_snapshot_digest']) if self.mode=='T' else E.validate_snapshot(snapshot,config['memory_snapshot_digest'])
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py:179: in validate_snapshot
+    validate_schema('packaging_memory_snapshot_v1',s);verify_seal(s,'snapshot_digest')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_memory_snapshot_v1', value = None
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_memory_snapshot_v1: /: None is not of type 'object'
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:52: JevSelectError</failure></testcase><testcase classname="tests.unit.test_packaging_remaining24" name="test_future_formal_entry_registers_then_uses_shared_loop" time="0.002" /><testcase classname="tests.unit.test_packaging_exact" name="test_exact_saved_stage_does_not_reselect_remonitor_or_recommit[MONITORED]" time="35.335" /><testcase classname="tests.unit.test_packaging_exact" name="test_exact_saved_stage_does_not_reselect_remonitor_or_recommit[COMMITTED]" time="34.491" /><testcase classname="tests.unit.test_packaging_exact" name="test_formal_supplement_owner_cannot_be_replaced_by_new_plan" time="0.003" /></testsuite></testsuites>

@@ -1,0 +1,55 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "packaging_contrast_snapshot_v1"
+    },
+    "mode": {
+      "const": "E"
+    },
+    "cards": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "review_status": {
+      "const": "APPROVED"
+    },
+    "source_groups": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "retrieval_rule": {
+      "type": "object"
+    },
+    "grammar": {
+      "type": "object"
+    },
+    "render_version": {
+      "const": "packaging_contrast_render_v1"
+    },
+    "frozen_at": {
+      "type": "string"
+    },
+    "snapshot_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "mode",
+    "cards",
+    "review_status",
+    "source_groups",
+    "retrieval_rule",
+    "grammar",
+    "render_version",
+    "frozen_at",
+    "snapshot_digest"
+  ],
+  "additionalProperties": false
+}

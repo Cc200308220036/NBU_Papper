@@ -91,10 +91,10 @@ def check_execution_transport(transport,config,mode):
     from .transport import JevTransport
     if not REGISTRY[config['selector']]['remote']:
         require(transport is None,'synthetic_local_transport');return
-    if mode=='JEV_TRANSPORT':
+    if mode in ('JEV_TRANSPORT','JEV_SUPPLEMENTAL_TRANSPORT'):
         require(type(transport) is JevTransport and transport.config==config,'synthetic_native_transport_required')
     else:
-        require(mode=='CONSTRUCTED_TRANSPORT_ONLY' and type(transport) is ConstructedTransport,'synthetic_constructed_transport_required')
+        require(mode in ('CONSTRUCTED_TRANSPORT_ONLY','CONSTRUCTED_SUPPLEMENTAL_ONLY') and type(transport) is ConstructedTransport,'synthetic_constructed_transport_required')
 
 
 def native_transport(config,job):

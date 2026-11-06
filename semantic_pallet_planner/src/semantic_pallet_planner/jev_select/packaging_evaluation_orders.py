@@ -5,6 +5,7 @@ explicit Fake transports. A frozen formal plan is consumable but NOT dispatched
 by this JN4-A entry point (including its local methods).
 """
 from pathlib import Path
+from .packaging_versions import EXACT_VERSION,EXACT_PLAN,EXACT_RUN
 import copy
 import importlib.metadata
 import platform
@@ -90,6 +91,9 @@ def prepare(data,output,*,purpose='FIXTURE_ENGINEERING',watchdog=None):
 
 def validate_plan(root):
     root=Path(root);p=read(root/'plan.json')
+    if p['version']==EXACT_PLAN:
+        from .packaging_exact_orders import validate_plan as exact_validate
+        return exact_validate(root)
     if p['version']=='jev_synthetic_orders_plan_v1':
         from .packaging_synthetic_orders import validate_plan as synthetic_validate
         return synthetic_validate(root)
@@ -110,6 +114,9 @@ def validate_plan(root):
 
 
 def ledger_type(plan):
+    if plan['execution_version']==EXACT_VERSION:
+        from .packaging_exact_protocol import ExactLedger
+        return ExactLedger
     if plan['execution_version']=='jev_packaging_synthetic_v11':
         from .packaging_synthetic_protocol import SyntheticLedger
         return SyntheticLedger
@@ -132,7 +139,7 @@ def metrics(task,cfg,cp,status,requests,reuses=()):
         if e.get('context'):
             e['context']['retrieval_receipt']['raw_retrieval']=e['context']['retrieval_receipt']['reference_receipt']['raw_retrieval']
     row.update(version='jev_evaluation_order_metrics_v1',origin='jev' if REGISTRY[cfg['selector']]['remote'] else 'LOCAL_TEST_DOUBLE_NOT_JEV',
-      cost=(request_accounting(requests,reuses) if cfg['version']=='jev_packaging_synthetic_v11' else orders.request_statistics(requests,reuses)),memory_mode=cfg['memory_mode'],snapshot_digest=cfg['memory_snapshot_digest'],
+      cost=(request_accounting(requests,reuses) if cfg['version'] in ('jev_packaging_synthetic_v11',EXACT_VERSION) else orders.request_statistics(requests,reuses)),memory_mode=cfg['memory_mode'],snapshot_digest=cfg['memory_snapshot_digest'],
       memory_metrics=pilot.exposure(projected,requests,cfg['memory_mode'],library_nonempty=bool(cfg['memory_index'])))
     validate_schema('evaluation_order_metrics_v1',row);return row
 
@@ -141,7 +148,7 @@ def collect(root,p):
     root=Path(root);jobs=[{'job_id':j['job_id'],'task_id':j['task_id'],'method_id':j['method_id'],**read(root/'jobs'/j['job_id']/'status.json')} for j in p['jobs']]
     stats=request_accounting(saved_requests(root,p),orders.saved_reuses(root))
     evidence={'execution_evidence':read(root/'execution_evidence.json')} if (root/'execution_evidence.json').exists() else {}
-    return {**evidence,'version':'jev_synthetic_summary_v1' if p['execution_version']=='jev_packaging_synthetic_v11' else 'jev_evaluation_summary_v1','planned_jobs':len(jobs),'job_ledger':jobs,
+    return {**evidence,'version':'jev_exact_supplement_summary_v2' if p['execution_version']==EXACT_VERSION else 'jev_synthetic_summary_v1' if p['execution_version']=='jev_packaging_synthetic_v11' else 'jev_evaluation_summary_v1','planned_jobs':len(jobs),'job_ledger':jobs,
        'categories':{c:sum(j['category']==c for j in jobs) for c in CATEGORIES},'request_statistics':stats,
        'status':'ERROR' if any(j['category'] in STOP for j in jobs) or (root/'technical_failure.json').exists() else 'PASS_IN_EXECUTED_SCOPE',
        'scope':p['purpose'],'actual_model_api_calls':stats['actual_model_api_calls']}
@@ -179,11 +186,14 @@ def _run_plan(p,plan_root,output,*,transport_factory,resume=False,continue_pendi
     """One shared order loop. Formal/test entry points own purpose and transport gates."""
     root=Path(output)
     strict=execution_mode is not None
+    supplemental=p['execution_version']==EXACT_VERSION
+    require(not supplemental or execution_mode in ('JEV_SUPPLEMENTAL_TRANSPORT','CONSTRUCTED_SUPPLEMENTAL_ONLY'),'exact_execution_mode')
+    require(not supplemental or not continue_pending,'exact_entire_scope_frozen_no_continue')
     require(location(root)==p['run_location'],'evaluation_run_location')
     require(not continue_pending or resume,'evaluation_continue_requires_resume')
-    receipt={'version':'jev_synthetic_orders_run_v1' if p['execution_version']=='jev_packaging_synthetic_v11' else VERSIONS['run'],'plan':location(plan_root),'plan_digest':digest(p)}
+    receipt={'version':EXACT_RUN if supplemental else 'jev_synthetic_orders_run_v1' if p['execution_version']=='jev_packaging_synthetic_v11' else VERSIONS['run'],'plan':location(plan_root),'plan_digest':digest(p)}
     evidence={'version':'jev_synthetic_execution_evidence_v1','plan_digest':digest(p),
-              'kind':execution_mode,'fixture_only':execution_mode=='CONSTRUCTED_TRANSPORT_ONLY'}
+              'kind':execution_mode,'fixture_only':execution_mode in ('CONSTRUCTED_TRANSPORT_ONLY','CONSTRUCTED_SUPPLEMENTAL_ONLY')}
     if resume:
         if strict:require(read(root/'execution_evidence.json')==evidence,'synthetic_execution_mode_changed')
         require(read(root/'run_receipt.json')==receipt,'evaluation_resume_identity')
@@ -204,8 +214,8 @@ def _run_plan(p,plan_root,output,*,transport_factory,resume=False,continue_pendi
         # Invalidate the validated old closure before persisting new execution
         # scope: interruption after the marker must not leave a stale manifest.
         if strict and (root/'delivery_manifest.json').exists():(root/'delivery_manifest.json').unlink()
-        allow_followups=continue_pending
-        if strict:
+        allow_followups=supplemental or continue_pending
+        if strict and not supplemental:
             allow_followups=False
             if continue_pending or (root/'continuation.json').exists():
                 require((root/'first_gate.json').exists(),'synthetic_first_gate_required')
@@ -260,7 +270,7 @@ def _run_plan(p,plan_root,output,*,transport_factory,resume=False,continue_pendi
                 if not reasons or not set(reasons)<=set(GATE['allowed_range_reasons']):
                     write(root/'technical_failure.json',{'reason':'UNREGISTERED_MONITOR_SCOPE'});break
         write(root/'summary.json',collect(root,p))
-        first_closed=all(read(root/'jobs'/j['job_id']/'status.json')['state']=='FINISHED' for j in p['jobs'][:6])
+        first_closed=not supplemental and all(read(root/'jobs'/j['job_id']/'status.json')['state']=='FINISHED' for j in p['jobs'][:6])
         if first_closed and not strict:write(root/'first_gate.json',gate(root,p))
         write(root/'delivery_manifest.json',file_manifest(root))
         try:
@@ -282,15 +292,20 @@ def _run_plan(p,plan_root,output,*,transport_factory,resume=False,continue_pendi
 
 def validate_run(root):
     """Saved facts only: no transport, resolve, selection, candidates, PCT or commit."""
-    root=Path(root);receipt=read(root/'run_receipt.json');validate_schema('synthetic_orders_run_v1' if receipt['version']=='jev_synthetic_orders_run_v1' else 'evaluation_orders_run_v1',receipt)
+    root=Path(root);receipt=read(root/'run_receipt.json');validate_schema('synthetic_supplement_run_v2' if receipt['version']==EXACT_RUN else 'synthetic_orders_run_v1' if receipt['version']=='jev_synthetic_orders_run_v1' else 'evaluation_orders_run_v1',receipt)
     p=validate_plan(resolve(receipt['plan']));require(receipt['plan_digest']==digest(p),'evaluation_saved_plan_changed')
     require(file_manifest(root)==read(root/'delivery_manifest.json'),'evaluation_run_bytes')
     if (root/'execution_evidence.json').exists():
         evidence=read(root/'execution_evidence.json')
-        require(evidence['plan_digest']==digest(p) and evidence['kind'] in ('JEV_TRANSPORT','CONSTRUCTED_TRANSPORT_ONLY'), 'synthetic_saved_execution_mode')
-        require(evidence['fixture_only']==(evidence['kind']=='CONSTRUCTED_TRANSPORT_ONLY'),'synthetic_saved_fixture_mode')
-        require(p['purpose']==('FROZEN_SYNTHETIC_EVALUATION' if evidence['kind']=='JEV_TRANSPORT' else 'SYNTHETIC_ENGINEERING'),'synthetic_saved_purpose')
-        if (root/'continuation.json').exists():
+        supplemental=p['execution_version']==EXACT_VERSION
+        kinds=('JEV_SUPPLEMENTAL_TRANSPORT','CONSTRUCTED_SUPPLEMENTAL_ONLY') if supplemental else ('JEV_TRANSPORT','CONSTRUCTED_TRANSPORT_ONLY')
+        require(evidence['plan_digest']==digest(p) and evidence['kind'] in kinds, 'synthetic_saved_execution_mode')
+        fixture=evidence['kind'] in ('CONSTRUCTED_TRANSPORT_ONLY','CONSTRUCTED_SUPPLEMENTAL_ONLY')
+        require(evidence['fixture_only']==fixture,'synthetic_saved_fixture_mode')
+        require(p['purpose']==('SYNTHETIC_ENGINEERING' if fixture else 'FROZEN_SYNTHETIC_EVALUATION'),'synthetic_saved_purpose')
+        if supplemental:
+            require(not (root/'first_gate.json').exists() and not (root/'continuation.json').exists(),'exact_no_reissued_old_gate')
+        elif (root/'continuation.json').exists():
             first=read(root/'first_gate.json')
             require(first==gate(root,p) and first['status']=='PASS','synthetic_saved_gate')
             require(read(root/'continuation.json')=={'version':'jev_synthetic_continuation_v1','plan_digest':digest(p),'first_gate_digest':digest(first),'job_ids':[j['job_id'] for j in p['jobs'][6:]]},'synthetic_saved_continuation')

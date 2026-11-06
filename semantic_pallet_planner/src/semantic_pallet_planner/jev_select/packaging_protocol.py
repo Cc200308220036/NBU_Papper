@@ -29,6 +29,10 @@ METRICS_CONTRACT = {
 
 
 def selector_factory(method, *, execution_version=EXECUTION_VERSION, config=None, transport=None, ledger=None, job_id=None):
+    from .packaging_versions import EXACT_VERSION
+    if execution_version == EXACT_VERSION:
+        from .packaging_exact_protocol import selector_factory as exact_factory
+        return exact_factory(method,config=config,transport=transport,ledger=ledger,job_id=job_id)
     if execution_version == 'jev_packaging_synthetic_v11':
         from .packaging_synthetic_protocol import selector_factory as synthetic_factory
         return synthetic_factory(method,config=config,transport=transport,ledger=ledger,job_id=job_id)

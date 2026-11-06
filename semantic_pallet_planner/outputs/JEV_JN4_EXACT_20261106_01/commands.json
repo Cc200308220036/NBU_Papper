@@ -1,0 +1,29 @@
+{
+  "version": "jev_exact_commands_v1",
+  "cwd": "NBU_Papper",
+  "head_at_entry": "dae7ab0d",
+  "environment": "existing python3; PYTHONPATH=semantic_pallet_planner/src; no dependency changes",
+  "commands": [
+    {
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/outputs/JEV_JN4_EXACT_20261106_01/run_checks.py",
+      "result": "61 passed; offline_guards credential/network counters0"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m semantic_pallet_planner.jev_select.packaging_exact_orders prepare --parent-plan semantic_pallet_planner/outputs/JEV_JN4_SYNTH_EXEC_20261105_01/plan --parent-run semantic_pallet_planner/outputs/JEV_JN4_SYNTH_EXEC_20261105_01/run --output semantic_pallet_planner/outputs/JEV_JN4_EXACT_20261106_01/plan",
+      "log": "prepare.log",
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m semantic_pallet_planner.jev_select.packaging_exact_orders run --plan semantic_pallet_planner/outputs/JEV_JN4_EXACT_20261106_01/plan",
+      "log": "run.log",
+      "state": "EXITED",
+      "exit_code": 1,
+      "wall_s": 494.9113851679722
+    }
+  ],
+  "credential_bootstrap": "existing transport.credential(\"TYPESAFE_API_KEY\", \"typesafe_api_key.md\") -> subprocess environment; never printed or persisted",
+  "prior_tests": "initial22 passed; interrupted intermediate40passed/2failed from new recovery test reading state instead of final_state; corrected test API field; batches overlap, not summed",
+  "authorized_scope": "only original29 NOT_RUN,9local20remote,remaining592 reservations, original7 not repeated",
+  "probes": 0,
+  "implicit_retries": 0
+}

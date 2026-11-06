@@ -1,5 +1,6 @@
 """Fill-then-plan direct-selection simulator. Checkpoints own durable state."""
 from __future__ import annotations
+from .packaging_versions import EXACT_VERSION
 
 import copy
 import time
@@ -56,7 +57,7 @@ def run_episode(task, selector, config, *, job_id, method, resume=None, on_check
     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
     if memory_driver is not None and not is_driven(config):
         raise JevSelectError('pilot_driver_protocol_incompatible')
-    if config.get('version') in ('jev_packaging_monitored_v5','jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11'):
+    if config.get('version') in ('jev_packaging_monitored_v5','jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION):
         config = copy.deepcopy(config)
     if is_packaging(config):
         if config.get('version') == 'jev_packaging_remote_v6':
@@ -64,7 +65,7 @@ def run_episode(task, selector, config, *, job_id, method, resume=None, on_check
             METHODS = tuple(REGISTRY)
         if is_driven(config):
             from .packaging_pilot_protocol import METHODS
-            if config['version'] in ('jev_packaging_evaluation_v10','jev_packaging_synthetic_v11'):
+            if config['version'] in ('jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION):
                 from .packaging_evaluation_protocol import METHODS
             if memory_view is not None:raise JevSelectError('pilot_requires_per_decision_driver')
         elif config.get('version') in ('jev_packaging_memory_v7','jev_packaging_contrast_v8'):
@@ -74,7 +75,7 @@ def run_episode(task, selector, config, *, job_id, method, resume=None, on_check
             if memory_view is not None:interface.validate_view(memory_view,config['memory_snapshot_digest'])
         elif memory_view is not None:
             raise JevSelectError('packaging_memory_protocol_incompatible')
-        if (memory_snapshot is not None or task.get('version') not in ((DATA_VERSION,'jev_evaluation_packaging_task_v1') if config['version'] in ('jev_packaging_evaluation_v10','jev_packaging_synthetic_v11') else (DATA_VERSION,)) or
+        if (memory_snapshot is not None or task.get('version') not in ((DATA_VERSION,'jev_evaluation_packaging_task_v1') if config['version'] in ('jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION) else (DATA_VERSION,)) or
             task.get('reference_policy') != {'version':DATA_VERSION,'rules':[]} or
             task.get('regions') != [] or method != config['selector'] or method not in METHODS or
             config['runtime_identity']['task_identity'] != digest(task)):

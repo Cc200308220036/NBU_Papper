@@ -4,6 +4,7 @@ Durability belongs to the shared episode checkpoint. This module owns frozen
 monitor identity, exact-action credentials and validation without reassessment.
 """
 from __future__ import annotations
+from ..packaging_versions import EXACT_VERSION
 
 import copy
 import time
@@ -17,7 +18,7 @@ TERMINATIONS = {'UNSTABLE':'PREDICTED_STATIC_INSTABILITY',
 
 
 def is_monitored(config):
-    return config.get('version') in (VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11')
+    return config.get('version') in (VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
 
 
 def freeze(enabled=False):
@@ -60,6 +61,10 @@ def load_monitor_config(*, data_identity, task_digest, method='local_geometry_te
 
 def preflight(config):
     validate_schema('config', config)
+    if config['version']==EXACT_VERSION:
+        from ..packaging_exact_protocol import preflight_exact
+        preflight_exact(config)
+        return
     if config['version']=='jev_packaging_synthetic_v11':
         from ..packaging_synthetic_protocol import preflight_synthetic
         preflight_synthetic(config)
@@ -109,12 +114,30 @@ def selected_box(state, candidate):
             'oriented_size_mm':list(candidate['oriented_size_mm'])}
 
 
+def exact_freeze():
+    from .exact_adapter import algorithm_identity
+    from .exact_contracts import load_config
+    from .runtime import environment
+    cfg=load_config()
+    return dict(enabled=True,algorithm=cfg.algorithm,kernel_config=asdict(cfg),
+        algorithm_identity=algorithm_identity(),execution_environment=environment())
+
+
+def kernel_interface(algorithm):
+    if algorithm=='pct_contact_network_v2':
+        from . import balance_adapter as adapter, balance_contracts as contracts
+        return adapter.assess_candidate,contracts.load_config,contracts.BalancedResult,'stability_result_v2.schema.json'
+    if algorithm=='pct_exact_pose_network_v3':
+        from . import exact_adapter as adapter, exact_contracts as contracts
+        return adapter.assess_candidate,contracts.load_config,contracts.ExactResult,'stability_result_v3.schema.json'
+    raise JevSelectError('unregistered_stability_algorithm')
+
+
 def monitor_selected_action(state, candidate, event, config):
     frozen = config['stability_monitor']
     result = None
     if frozen['enabled']:
-        from .balance_adapter import assess_candidate
-        from .balance_contracts import load_config
+        assess_candidate,load_config,result_type,_=kernel_interface(frozen['algorithm'])
         from .geometry import state_from_runtime, box_from_runtime
         started=time.perf_counter()
         try:
@@ -125,8 +148,7 @@ def monitor_selected_action(state, candidate, event, config):
             # Startup failures were rejected before selection. Runtime exceptions
             # remain a persisted technical failure, never disable the monitor.
             status = 'ERROR'
-            from .balance_contracts import BalancedResult
-            result = BalancedResult(status='ERROR',reason_code='MONITOR_EXCEPTION',
+            result = result_type(status='ERROR',reason_code='MONITOR_EXCEPTION',
                 state_digest=digest(asdict(state_from_runtime(state))),
                 candidate_digest=digest(asdict(box_from_runtime(selected_box(state,candidate)))),
                 candidate_id=candidate['pick_item_id'],config_digest=digest(frozen['kernel_config']),
@@ -163,7 +185,8 @@ def validate_monitor(row, state, candidate, event, config, *, require_stable=Fal
         from importlib.resources import files
         import json
         from jsonschema import Draft202012Validator
-        schema=json.loads(files(__package__).joinpath('schemas/stability_result_v2.schema.json').read_text())
+        *_,schema_name=kernel_interface(config['stability_monitor']['algorithm'])
+        schema=json.loads(files(__package__).joinpath('schemas',schema_name).read_text())
         Draft202012Validator(schema).validate(res)
         frozen=config['stability_monitor']
         if (res['algorithm_identity']!=frozen['algorithm_identity'] or
@@ -195,7 +218,7 @@ def validate_checkpoint(cp, task, config, job_id, method):
     from ..selector import SelectionResult
     from ..execution import commit_physical
     from ..packaging_runtime import validate_runtime_context,evaluate_state
-    if config['version'] in ('jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11'):
+    if config['version'] in ('jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION):
         from ..packaging_experiment import validate_saved_checkpoint
         return validate_saved_checkpoint(cp, task, config, job_id)
     validate_schema('checkpoint_v5',cp)

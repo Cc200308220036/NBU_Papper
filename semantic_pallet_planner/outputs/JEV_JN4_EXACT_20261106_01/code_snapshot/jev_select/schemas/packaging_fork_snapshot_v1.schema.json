@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_training_fork_v1"
+    },
+    "parent_identity": {
+      "type": "object"
+    },
+    "decision_id": {
+      "type": "string"
+    },
+    "parent_job_id": {
+      "type": "string"
+    },
+    "record": {
+      "type": "string"
+    },
+    "parent_record_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_group": {
+      "type": "string"
+    },
+    "task_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "parent_config": {
+      "type": "object"
+    },
+    "state": {
+      "type": "object"
+    },
+    "cursor": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "end_of_stream": {
+      "type": "boolean"
+    },
+    "buffer": {
+      "type": "array"
+    },
+    "pool": {
+      "type": "object"
+    },
+    "mapping": {
+      "type": "object"
+    },
+    "event": {
+      "type": "object"
+    },
+    "field_evidence": {
+      "type": "object"
+    },
+    "record_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "parent_identity",
+    "decision_id",
+    "parent_job_id",
+    "record",
+    "parent_record_digest",
+    "source_group",
+    "task_digest",
+    "parent_config",
+    "state",
+    "cursor",
+    "end_of_stream",
+    "buffer",
+    "pool",
+    "mapping",
+    "event",
+    "field_evidence",
+    "record_digest"
+  ],
+  "additionalProperties": false
+}

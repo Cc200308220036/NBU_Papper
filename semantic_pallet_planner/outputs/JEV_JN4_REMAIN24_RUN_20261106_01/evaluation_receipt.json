@@ -1,0 +1,144 @@
+{
+  "version": "jev_remaining24_execution_receipt_v1",
+  "head_at_entry": "c3ff2a09",
+  "plan": "semantic_pallet_planner/outputs/JEV_JN4_REMAIN24_20261106_01/plan",
+  "run": "semantic_pallet_planner/outputs/JEV_JN4_REMAIN24_20261106_01/run",
+  "plan_digest": "bafdfa12a3556d0e83d400ca7badd4814b54bf0adc9945a850db67f05597f73b",
+  "new24_closed": 24,
+  "new24_not_run": 0,
+  "new24_categories": {
+    "CANCELED": 0,
+    "COMMIT_FAILURE": 0,
+    "COMPLETE": 0,
+    "EMPTY_POOL": 24,
+    "ERROR": 0,
+    "NOT_RUN": 0,
+    "PREDICTED_STATIC_INSTABILITY": 0,
+    "SELECTION_FAILURE": 0,
+    "TECHNICAL_LIMIT": 0,
+    "UNASSESSABLE": 0
+  },
+  "all36_categories": {
+    "COMPLETE": 6,
+    "UNASSESSABLE": 1,
+    "EMPTY_POOL": 28,
+    "SELECTION_FAILURE": 1
+  },
+  "stop_reason": "AUTHORIZED24_COVERAGE_COMPLETE",
+  "technical_failure": null,
+  "new_request_statistics": {
+    "actual_model_api_calls": 291,
+    "failed_requests": 0,
+    "known_real_model_calls": 291,
+    "memory_cost_usd": 0,
+    "model_calls": 291,
+    "model_cost_usd": "UNKNOWN",
+    "models": [
+      "jev-1.14.0"
+    ],
+    "network_attempts": 291,
+    "origins": [
+      "jev"
+    ],
+    "real_model_call_interval": {
+      "maximum": 291,
+      "minimum": 291
+    },
+    "request_latency_s": {
+      "n": 291,
+      "p50": 0.7193247979739681,
+      "p95": 1.224435739510227,
+      "sum": 233.50126375467516
+    },
+    "send_reservations": 291,
+    "stored_request_reuses": 0,
+    "stored_response_reuses": 0,
+    "stored_selection_reuses": 0,
+    "unknown_real_send_count": 0,
+    "unknown_sends": 0,
+    "usage": {
+      "input_tokens": 4033073,
+      "known_request_count": 291,
+      "missing_request_count": 0,
+      "output_tokens": 104847
+    },
+    "valid_responses": 291
+  },
+  "cumulative_requests": {
+    "send_reservations": 412,
+    "network_attempts": 412,
+    "known_real_model_calls": 411,
+    "unknown_real_send_count": 1,
+    "failed_requests": 0,
+    "valid_responses": 411,
+    "global_cap": 656,
+    "remaining_reservations": 244,
+    "actual_model_api_calls": "UNKNOWN",
+    "real_model_call_interval": {
+      "minimum": 411,
+      "maximum": 412
+    },
+    "model_cost_usd": "UNKNOWN",
+    "usage": {
+      "input_tokens": 5715409,
+      "output_tokens": 151626,
+      "known_request_count": 411,
+      "missing_request_count": 1
+    }
+  },
+  "criteria": {
+    "E24-01": {
+      "status": "PASS_EXECUTED_FROZEN_SCOPE",
+      "evidence": [
+        "preflight.json",
+        "scoped_request_index.json"
+      ],
+      "scope": "only J0012-J0035, no old job replay/retry or unplanned calls"
+    },
+    "E24-02": {
+      "status": "PASS_COVERAGE_AND_ACCOUNTING",
+      "evidence": [
+        "new_24_slots.json",
+        "budget_accounting.json",
+        "owner_records.json"
+      ]
+    },
+    "E24-03": {
+      "status": "PASS_SAVED_FACTS_IN_EXECUTED_SCOPE",
+      "evidence": [
+        "saved_validation.json",
+        "validate_run.log",
+        "unknown_sends.json"
+      ]
+    },
+    "E24-04": {
+      "status": "PASS_VERSIONED_DESCRIPTIVE_DELIVERY",
+      "evidence": [
+        "all_36_slots.json",
+        "paired_comparisons_v2.json"
+      ],
+      "scope": "unrun/invalid pairs retained, no causal or unseen-source claim"
+    },
+    "E24-05": {
+      "status": "PASS_DELIVERY_STOP",
+      "evidence": [
+        "execution_command.json",
+        "official_api_review.json",
+        "delivery_manifest.json",
+        "handoff.json"
+      ]
+    }
+  },
+  "new24_execution_coverage_complete": true,
+  "JN5_limited_analysis_review_eligible": true,
+  "JN4_B_admitted": false,
+  "research_benefit": "NOT_ESTABLISHED",
+  "new_experience_generated": false,
+  "repeated_old_jobs": 0,
+  "resumes": 0,
+  "automatic_retries": 0,
+  "run_manifest_sha256": "b388f4cfa4446a8b631950c681248f2ef16cda1ed558dacb57e04805799eed4b",
+  "run_summary_sha256": "8bb6b99b74ab5aa07e88fc3d42ecf0d3dfd049e6045ee7d0d93a1c954dc6ffe3",
+  "source_manifest_digest": "6a7a3773ebeb2dd689034f3d90b9d16a9332850419bf8862b75bde0c57b07492",
+  "stop": true
+}

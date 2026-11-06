@@ -26,6 +26,48 @@ def require(ok, code):
         raise JevSelectError(code)
 
 
+def unassessable_reasons_from_checkpoint(checkpoint):
+    """Read failure reasons, never confuse successful monitor statistics with scope.
+
+    Called only after an UNASSESSABLE job has terminated. Full checkpoint/binding
+    validation remains owned by the saved-record validator; malformed terminal
+    facts must fail closed here before another job can be dispatched.
+    """
+    code = 'invalid_unassessable_checkpoint'
+    require(isinstance(checkpoint, dict), code)
+    events = checkpoint.get('events')
+    require(checkpoint.get('phase') == 'TERMINATED'
+            and checkpoint.get('reason') == 'STABILITY_UNASSESSABLE'
+            and checkpoint.get('pending_event') is None
+            and isinstance(events, list) and bool(events), code)
+    terminal = events[-1]
+    require(isinstance(terminal, dict) and terminal.get('event') == 'STOP'
+            and terminal.get('reason') == 'STABILITY_UNASSESSABLE', code)
+    reasons = set()
+    for event in events:
+        require(isinstance(event, dict), code)
+        monitor = event.get('monitor')
+        if monitor is None:
+            require(event is not terminal, code)
+            continue
+        require(isinstance(monitor, dict), code)
+        status = monitor.get('status')
+        require(status in ('STABLE', 'DISABLED', 'UNASSESSABLE'), code)
+        result = monitor.get('result')
+        if status != 'DISABLED':
+            require(isinstance(result, dict) and result.get('status') == status, code)
+        else:
+            require(result is None, code)
+        if status == 'UNASSESSABLE':
+            reason = result.get('reason_code')
+            require(event is terminal and isinstance(reason, str) and bool(reason.strip()), code)
+            reasons.add(reason)
+        elif event is terminal:
+            require(False, code)
+    require(bool(reasons), code)
+    return reasons
+
+
 def relative(path):
     return Path(path).resolve().relative_to(REPO).as_posix()
 

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="10" skipped="0" tests="16" time="138.503" timestamp="2026-11-06T12:51:08.863961+08:00" hostname="cyw-R7000P"><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_scope_extraction_excludes_success_without_mutating_saved_facts" time="0.001"><failure message="TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'">def test_scope_extraction_excludes_success_without_mutating_saved_facts():
+&gt;       cp = checkpoint(); before = copy.deepcopy(cp)
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def checkpoint():
+        def event(status, reason, **kwargs):
+            return {'monitor': {'status': status, 'result': {'status': status, 'reason_code': reason}}, **kwargs}
+        return {'phase': 'TERMINATED', 'reason': 'STABILITY_UNASSESSABLE', 'pending_event': None,
+                'events': [event('STABLE', 'CONTACT_NETWORK_BALANCED', event='PLACE'),
+&gt;                          event('UNASSESSABLE', 'POSE_HEIGHT_MISMATCH', event='STOP', reason='STABILITY_UNASSESSABLE')]}
+E       TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:34: TypeError</failure></testcase><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_scope_extraction_fails_closed[missing_monitor]" time="0.001"><failure message="TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'">corruption = 'missing_monitor'
+
+    @pytest.mark.parametrize('corruption', ['missing_monitor', 'missing_result', 'missing_reason',
+        'empty_reason', 'contradictory_status', 'wrong_stop', 'wrong_phase', 'pending', 'no_failure'])
+    def test_scope_extraction_fails_closed(corruption):
+&gt;       cp = checkpoint(); last = cp['events'][-1]
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def checkpoint():
+        def event(status, reason, **kwargs):
+            return {'monitor': {'status': status, 'result': {'status': status, 'reason_code': reason}}, **kwargs}
+        return {'phase': 'TERMINATED', 'reason': 'STABILITY_UNASSESSABLE', 'pending_event': None,
+                'events': [event('STABLE', 'CONTACT_NETWORK_BALANCED', event='PLACE'),
+&gt;                          event('UNASSESSABLE', 'POSE_HEIGHT_MISMATCH', event='STOP', reason='STABILITY_UNASSESSABLE')]}
+E       TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:34: TypeError</failure></testcase><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_scope_extraction_fails_closed[missing_result]" time="0.000"><failure message="TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'">corruption = 'missing_result'
+
+    @pytest.mark.parametrize('corruption', ['missing_monitor', 'missing_result', 'missing_reason',
+        'empty_reason', 'contradictory_status', 'wrong_stop', 'wrong_phase', 'pending', 'no_failure'])
+    def test_scope_extraction_fails_closed(corruption):
+&gt;       cp = checkpoint(); last = cp['events'][-1]
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def checkpoint():
+        def event(status, reason, **kwargs):
+            return {'monitor': {'status': status, 'result': {'status': status, 'reason_code': reason}}, **kwargs}
+        return {'phase': 'TERMINATED', 'reason': 'STABILITY_UNASSESSABLE', 'pending_event': None,
+                'events': [event('STABLE', 'CONTACT_NETWORK_BALANCED', event='PLACE'),
+&gt;                          event('UNASSESSABLE', 'POSE_HEIGHT_MISMATCH', event='STOP', reason='STABILITY_UNASSESSABLE')]}
+E       TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:34: TypeError</failure></testcase><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_scope_extraction_fails_closed[missing_reason]" time="0.001"><failure message="TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'">corruption = 'missing_reason'
+
+    @pytest.mark.parametrize('corruption', ['missing_monitor', 'missing_result', 'missing_reason',
+        'empty_reason', 'contradictory_status', 'wrong_stop', 'wrong_phase', 'pending', 'no_failure'])
+    def test_scope_extraction_fails_closed(corruption):
+&gt;       cp = checkpoint(); last = cp['events'][-1]
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def checkpoint():
+        def event(status, reason, **kwargs):
+            return {'monitor': {'status': status, 'result': {'status': status, 'reason_code': reason}}, **kwargs}
+        return {'phase': 'TERMINATED', 'reason': 'STABILITY_UNASSESSABLE', 'pending_event': None,
+                'events': [event('STABLE', 'CONTACT_NETWORK_BALANCED', event='PLACE'),
+&gt;                          event('UNASSESSABLE', 'POSE_HEIGHT_MISMATCH', event='STOP', reason='STABILITY_UNASSESSABLE')]}
+E       TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:34: TypeError</failure></testcase><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_scope_extraction_fails_closed[empty_reason]" time="0.001"><failure message="TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'">corruption = 'empty_reason'
+
+    @pytest.mark.parametrize('corruption', ['missing_monitor', 'missing_result', 'missing_reason',
+        'empty_reason', 'contradictory_status', 'wrong_stop', 'wrong_phase', 'pending', 'no_failure'])
+    def test_scope_extraction_fails_closed(corruption):
+&gt;       cp = checkpoint(); last = cp['events'][-1]
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def checkpoint():
+        def event(status, reason, **kwargs):
+            return {'monitor': {'status': status, 'result': {'status': status, 'reason_code': reason}}, **kwargs}
+        return {'phase': 'TERMINATED', 'reason': 'STABILITY_UNASSESSABLE', 'pending_event': None,
+                'events': [event('STABLE', 'CONTACT_NETWORK_BALANCED', event='PLACE'),
+&gt;                          event('UNASSESSABLE', 'POSE_HEIGHT_MISMATCH', event='STOP', reason='STABILITY_UNASSESSABLE')]}
+E       TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:34: TypeError</failure></testcase><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_scope_extraction_fails_closed[contradictory_status]" time="0.000"><failure message="TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'">corruption = 'contradictory_status'
+
+    @pytest.mark.parametrize('corruption', ['missing_monitor', 'missing_result', 'missing_reason',
+        'empty_reason', 'contradictory_status', 'wrong_stop', 'wrong_phase', 'pending', 'no_failure'])
+    def test_scope_extraction_fails_closed(corruption):
+&gt;       cp = checkpoint(); last = cp['events'][-1]
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def checkpoint():
+        def event(status, reason, **kwargs):
+            return {'monitor': {'status': status, 'result': {'status': status, 'reason_code': reason}}, **kwargs}
+        return {'phase': 'TERMINATED', 'reason': 'STABILITY_UNASSESSABLE', 'pending_event': None,
+                'events': [event('STABLE', 'CONTACT_NETWORK_BALANCED', event='PLACE'),
+&gt;                          event('UNASSESSABLE', 'POSE_HEIGHT_MISMATCH', event='STOP', reason='STABILITY_UNASSESSABLE')]}
+E       TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:34: TypeError</failure></testcase><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_scope_extraction_fails_closed[wrong_stop]" time="0.000"><failure message="TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'">corruption = 'wrong_stop'
+
+    @pytest.mark.parametrize('corruption', ['missing_monitor', 'missing_result', 'missing_reason',
+        'empty_reason', 'contradictory_status', 'wrong_stop', 'wrong_phase', 'pending', 'no_failure'])
+    def test_scope_extraction_fails_closed(corruption):
+&gt;       cp = checkpoint(); last = cp['events'][-1]
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def checkpoint():
+        def event(status, reason, **kwargs):
+            return {'monitor': {'status': status, 'result': {'status': status, 'reason_code': reason}}, **kwargs}
+        return {'phase': 'TERMINATED', 'reason': 'STABILITY_UNASSESSABLE', 'pending_event': None,
+                'events': [event('STABLE', 'CONTACT_NETWORK_BALANCED', event='PLACE'),
+&gt;                          event('UNASSESSABLE', 'POSE_HEIGHT_MISMATCH', event='STOP', reason='STABILITY_UNASSESSABLE')]}
+E       TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:34: TypeError</failure></testcase><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_scope_extraction_fails_closed[wrong_phase]" time="0.001"><failure message="TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'">corruption = 'wrong_phase'
+
+    @pytest.mark.parametrize('corruption', ['missing_monitor', 'missing_result', 'missing_reason',
+        'empty_reason', 'contradictory_status', 'wrong_stop', 'wrong_phase', 'pending', 'no_failure'])
+    def test_scope_extraction_fails_closed(corruption):
+&gt;       cp = checkpoint(); last = cp['events'][-1]
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def checkpoint():
+        def event(status, reason, **kwargs):
+            return {'monitor': {'status': status, 'result': {'status': status, 'reason_code': reason}}, **kwargs}
+        return {'phase': 'TERMINATED', 'reason': 'STABILITY_UNASSESSABLE', 'pending_event': None,
+                'events': [event('STABLE', 'CONTACT_NETWORK_BALANCED', event='PLACE'),
+&gt;                          event('UNASSESSABLE', 'POSE_HEIGHT_MISMATCH', event='STOP', reason='STABILITY_UNASSESSABLE')]}
+E       TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:34: TypeError</failure></testcase><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_scope_extraction_fails_closed[pending]" time="0.001"><failure message="TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'">corruption = 'pending'
+
+    @pytest.mark.parametrize('corruption', ['missing_monitor', 'missing_result', 'missing_reason',
+        'empty_reason', 'contradictory_status', 'wrong_stop', 'wrong_phase', 'pending', 'no_failure'])
+    def test_scope_extraction_fails_closed(corruption):
+&gt;       cp = checkpoint(); last = cp['events'][-1]
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def checkpoint():
+        def event(status, reason, **kwargs):
+            return {'monitor': {'status': status, 'result': {'status': status, 'reason_code': reason}}, **kwargs}
+        return {'phase': 'TERMINATED', 'reason': 'STABILITY_UNASSESSABLE', 'pending_event': None,
+                'events': [event('STABLE', 'CONTACT_NETWORK_BALANCED', event='PLACE'),
+&gt;                          event('UNASSESSABLE', 'POSE_HEIGHT_MISMATCH', event='STOP', reason='STABILITY_UNASSESSABLE')]}
+E       TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:34: TypeError</failure></testcase><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_scope_extraction_fails_closed[no_failure]" time="0.001"><failure message="TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'">corruption = 'no_failure'
+
+    @pytest.mark.parametrize('corruption', ['missing_monitor', 'missing_result', 'missing_reason',
+        'empty_reason', 'contradictory_status', 'wrong_stop', 'wrong_phase', 'pending', 'no_failure'])
+    def test_scope_extraction_fails_closed(corruption):
+&gt;       cp = checkpoint(); last = cp['events'][-1]
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def checkpoint():
+        def event(status, reason, **kwargs):
+            return {'monitor': {'status': status, 'result': {'status': status, 'reason_code': reason}}, **kwargs}
+        return {'phase': 'TERMINATED', 'reason': 'STABILITY_UNASSESSABLE', 'pending_event': None,
+                'events': [event('STABLE', 'CONTACT_NETWORK_BALANCED', event='PLACE'),
+&gt;                          event('UNASSESSABLE', 'POSE_HEIGHT_MISMATCH', event='STOP', reason='STABILITY_UNASSESSABLE')]}
+E       TypeError: checkpoint.&lt;locals&gt;.event() got multiple values for argument 'reason'
+
+semantic_pallet_planner/tests/unit/test_packaging_monitor_scope.py:34: TypeError</failure></testcase><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_mixed_success_and_range_routes_batch_and_preserves_failed_action[POSE_HEIGHT_MISMATCH-v9]" time="15.213" /><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_mixed_success_and_range_routes_batch_and_preserves_failed_action[POSE_HEIGHT_MISMATCH-v10]" time="30.029" /><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_mixed_success_and_range_routes_batch_and_preserves_failed_action[POSE_HEIGHT_MISMATCH-v11]" time="47.106" /><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_mixed_success_and_range_routes_batch_and_preserves_failed_action[CONSTRUCTED_UNREGISTERED_RANGE-v9]" time="8.184" /><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_mixed_success_and_range_routes_batch_and_preserves_failed_action[CONSTRUCTED_UNREGISTERED_RANGE-v10]" time="17.480" /><testcase classname="tests.unit.test_packaging_monitor_scope" name="test_mixed_success_and_range_routes_batch_and_preserves_failed_action[CONSTRUCTED_UNREGISTERED_RANGE-v11]" time="20.125" /></testsuite></testsuites>

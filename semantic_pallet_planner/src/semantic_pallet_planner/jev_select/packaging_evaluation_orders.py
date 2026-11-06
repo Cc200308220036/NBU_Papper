@@ -252,7 +252,11 @@ def _run_plan(p,plan_root,output,*,transport_factory,resume=False,continue_pendi
             result=common._run_job(read(job/'task.snapshot.json'),j,job,p['watchdog'],selector=selector,metrics_builder=builder,hook=hook,memory_driver=driver)
             if result['category'] in STOP:break
             if result['category']=='UNASSESSABLE':
-                reasons=read(job/'metrics.json')['monitor_reasons']
+                try:
+                    reasons=common.unassessable_reasons_from_checkpoint(read(job/'checkpoint.json'))
+                except (common.JevSelectError, OSError, ValueError) as exc:
+                    write(root/'technical_failure.json',{'reason':'INVALID_UNASSESSABLE_RECORD',
+                        'error_code':getattr(exc,'code','UNASSESSABLE_CHECKPOINT_UNREADABLE')});break
                 if not reasons or not set(reasons)<=set(GATE['allowed_range_reasons']):
                     write(root/'technical_failure.json',{'reason':'UNREGISTERED_MONITOR_SCOPE'});break
         write(root/'summary.json',collect(root,p))

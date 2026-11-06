@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "jev_evaluation_orders_run_v1"
+    },
+    "plan": {
+      "type": "string"
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "plan",
+    "plan_digest"
+  ]
+}

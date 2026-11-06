@@ -290,7 +290,7 @@ def run(plan_root,output,*,resume=False,continue_pending=False,transport_factory
                 result=common._run_job(task,j,job,plan['watchdog'],selector=selector,metrics_builder=builder,hook=hook,memory_driver=driver)
                 if result['category'] in STOP:break
                 if result['category']=='UNASSESSABLE':
-                    reasons=read(job/'metrics.json')['monitor_reasons']
+                    reasons=common.unassessable_reasons_from_checkpoint(read(job/'checkpoint.json'))
                     T.require(bool(reasons) and set(reasons)<=set(GATE['allowed_range_reasons']),'pilot_unexplained_monitor_range')
             result=summarize(root,plan)
             write(root/'delivery_manifest.json',file_manifest(root));validate_run(root,check_gate=False)

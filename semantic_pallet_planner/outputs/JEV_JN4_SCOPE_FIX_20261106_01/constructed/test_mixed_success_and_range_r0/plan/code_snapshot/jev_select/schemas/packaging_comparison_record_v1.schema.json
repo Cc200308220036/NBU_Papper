@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_comparison_record_v1"
+    },
+    "comparison_id": {
+      "type": "string"
+    },
+    "source_group": {
+      "type": "string"
+    },
+    "task": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string"
+    },
+    "fork_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "state_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "candidate_pool_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "reference_action": {
+      "type": "object"
+    },
+    "alternative_action": {
+      "type": "object"
+    },
+    "intervention": {
+      "enum": [
+        "SAME_BOX_DIFFERENT_POSE",
+        "CROSS_BOX_SELECTION"
+      ]
+    },
+    "probability": {
+      "type": "object"
+    },
+    "continuation": {
+      "type": "object"
+    },
+    "execution_source_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "receipts": {
+      "type": "object"
+    },
+    "reference_result": {
+      "type": "object"
+    },
+    "alternative_result": {
+      "type": "object"
+    },
+    "delta_direction": {
+      "const": "alternative_minus_reference"
+    },
+    "delta": {
+      "anyOf": [
+        {
+          "type": "object"
+        },
+        {
+          "const": "NOT_AVAILABLE"
+        }
+      ]
+    },
+    "stop_reasons": {
+      "type": "object"
+    },
+    "comparison_valid": {
+      "type": "boolean"
+    },
+    "invalid_reasons": {
+      "type": "array"
+    },
+    "label": {
+      "enum": [
+        "improved",
+        "neutral",
+        "degraded",
+        "trade_off",
+        "invalid"
+      ]
+    },
+    "label_rule": {
+      "type": "object"
+    },
+    "evidence": {
+      "type": "object"
+    },
+    "interpretation": {
+      "type": "string"
+    },
+    "record_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "comparison_id",
+    "source_group",
+    "task",
+    "decision",
+    "fork_digest",
+    "state_digest",
+    "candidate_pool_digest",
+    "reference_action",
+    "alternative_action",
+    "intervention",
+    "probability",
+    "continuation",
+    "execution_source_digest",
+    "receipts",
+    "reference_result",
+    "alternative_result",
+    "delta_direction",
+    "delta",
+    "stop_reasons",
+    "comparison_valid",
+    "invalid_reasons",
+    "label",
+    "label_rule",
+    "evidence",
+    "interpretation",
+    "record_digest"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "comparison_valid": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "label": {
+            "const": "invalid"
+          },
+          "invalid_reasons": {
+            "minItems": 1
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "label": {
+            "enum": [
+              "improved",
+              "neutral",
+              "degraded",
+              "trade_off"
+            ]
+          },
+          "invalid_reasons": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "packaging_contrast_card_v1"
+    },
+    "kind": {
+      "const": "E"
+    },
+    "fixture_only": {
+      "type": "boolean"
+    },
+    "review_status": {
+      "enum": [
+        "APPROVED",
+        "PENDING_REVIEW",
+        "REJECTED"
+      ]
+    },
+    "candidate": {
+      "type": "object"
+    },
+    "fact_pack": {
+      "type": "object"
+    },
+    "fact_audit": {
+      "type": "object"
+    },
+    "semantic_review": {
+      "type": "object"
+    },
+    "generation": {
+      "type": "object"
+    },
+    "public_fragment": {
+      "type": "object"
+    },
+    "public_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "retrieval_query": {
+      "type": "object"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "case_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "kind",
+    "fixture_only",
+    "review_status",
+    "candidate",
+    "fact_pack",
+    "fact_audit",
+    "semantic_review",
+    "generation",
+    "public_fragment",
+    "public_digest",
+    "retrieval_query",
+    "provenance",
+    "case_digest"
+  ],
+  "additionalProperties": false
+}

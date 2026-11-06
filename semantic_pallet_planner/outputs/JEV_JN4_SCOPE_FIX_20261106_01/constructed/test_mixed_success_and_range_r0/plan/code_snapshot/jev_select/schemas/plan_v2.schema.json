@@ -1,0 +1,241 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_plan_v2"
+    },
+    "experiment_protocol": {
+      "const": "jev_j3_physical_business_eval_v1"
+    },
+    "profile": {
+      "enum": [
+        "dataset-orders",
+        "dataset-dev",
+        "dataset-validation",
+        "constructed-eval"
+      ]
+    },
+    "mode": {
+      "enum": [
+        "offline",
+        "remote"
+      ]
+    },
+    "partitions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "source_limit": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "methods": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "shared_geometry",
+          "shared_business_lexicographic",
+          "jev_choice"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "jobs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "pattern": "^J[0-9]{4,}$"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "method": {
+            "enum": [
+              "shared_geometry",
+              "shared_business_lexicographic",
+              "jev_choice"
+            ]
+          },
+          "source_group_id": {
+            "type": "string"
+          },
+          "partition": {
+            "type": "string"
+          },
+          "business_configuration": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "task_id",
+          "method",
+          "source_group_id",
+          "partition",
+          "business_configuration"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "task_registry": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "task_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "source_group_id": {
+            "type": "string"
+          },
+          "partition": {
+            "type": "string"
+          },
+          "business_configuration": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "task_id",
+          "task_digest",
+          "source_group_id",
+          "partition",
+          "business_configuration"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "offline_scenario": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "global_attempts": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "per_job_attempts": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      },
+      "required": [
+        "global_attempts",
+        "per_job_attempts"
+      ],
+      "additionalProperties": false
+    },
+    "workers": {
+      "const": 1
+    },
+    "cache_policy": {
+      "const": "clear_generation_and_business_caches_before_each_job"
+    },
+    "method_order_seed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "input_manifest_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "business_spec_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "split_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "config_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "role": {
+      "enum": [
+        "diagnostic",
+        "development",
+        "validation",
+        "formal_test"
+      ]
+    },
+    "pricing": {
+      "type": "object",
+      "properties": {
+        "currency": {
+          "const": "USD"
+        },
+        "input_per_million": {
+          "const": 0.042
+        },
+        "output_per_million": {
+          "const": 0.0
+        },
+        "source": {
+          "const": "https://docs.typesafe.ai/models"
+        },
+        "verified_date": {
+          "const": "2026-10-29"
+        }
+      },
+      "required": [
+        "currency",
+        "input_per_million",
+        "output_per_million",
+        "source",
+        "verified_date"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "experiment_protocol",
+    "profile",
+    "mode",
+    "partitions",
+    "source_limit",
+    "methods",
+    "jobs",
+    "task_registry",
+    "offline_scenario",
+    "budget",
+    "workers",
+    "cache_policy",
+    "method_order_seed",
+    "input_manifest_digest",
+    "business_spec_digest",
+    "split_digest",
+    "config_digest",
+    "role",
+    "pricing"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

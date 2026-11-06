@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "const": {
+    "version": "jev_packaging_load_dataset_v1",
+    "generator_version": "packaging_load_v1.0",
+    "seed": 20261102,
+    "source_delivery": "DATA_JEV_J4_V2_20261101_03",
+    "source_keys": [
+      "00100027",
+      "00100090",
+      "00100150",
+      "00100153"
+    ],
+    "source_file_manifest": {
+      "splits/group_manifest.json": "994916195bd7cce1fb7ee9631f4912f229441cfc0f514bf1a055e45bef32d5b6",
+      "tasks/scenarios/NEW_00100027.json": "2550323edaaecca136fda14e1cd2c0bd75c9e404d7c06838d27fb5880e02c898",
+      "annotations/ground_truth_rules/NEW_00100027.json": "0189225663af27d68df5255ebf83d9c39347825e8aa97cfa548d39eefddef5ed",
+      "tasks/scenarios/NEW_00100090.json": "8da6a66fb15c42eaa8dcdfface450ea73d7b105614d92e00247b5bee7a0286f6",
+      "annotations/ground_truth_rules/NEW_00100090.json": "32ccf05dff8053c65517f143825916bc4ce5d69eac67b621531e602d5ca8f893",
+      "tasks/scenarios/NEW_00100150.json": "d1feaa8f74a02ca80c042a27483ba30fd6048ac9912a3e2b4c33d12b01fce267",
+      "annotations/ground_truth_rules/NEW_00100150.json": "5422664c415cd3868055ff2c1e77c8bfe2f842e88e2d46c9d92a64941791528c",
+      "tasks/scenarios/NEW_00100153.json": "14bdb78b90d7aeca43e4af2d74603e83d85a0cae3fe226990264a35ef8208943",
+      "annotations/ground_truth_rules/NEW_00100153.json": "826d5fcd104c644cf57e2ef7603fe9b4b7e6fd41b136bdf55d96f74e212703d7"
+    },
+    "scope": "four already exposed train groups only; no unseen-test claim",
+    "expected_source_instances": 66,
+    "expected_tasks": 16,
+    "calibration": {
+      "partition": "train",
+      "statistic": "unique physical SKU mass linear q75",
+      "m_ref_kg": 8.586,
+      "scale_kg": 9,
+      "rounding": "ceil(q75) to whole kg",
+      "basis": "synthetic experimental scale, not compression formula or industrial measurement"
+    },
+    "assignment": "sha256 canonical [version,seed,sku_id] first 8 hex / 2**32; cumulative bins; no resampling",
+    "profiles": [
+      {
+        "id": "no_support",
+        "probability": 0.1,
+        "stackable": false,
+        "capacity_kg": 0
+      },
+      {
+        "id": "low",
+        "probability": 0.25,
+        "stackable": true,
+        "capacity_kg": 9
+      },
+      {
+        "id": "ordinary",
+        "probability": 0.45,
+        "stackable": true,
+        "capacity_kg": 27
+      },
+      {
+        "id": "reinforced",
+        "probability": 0.2,
+        "stackable": true,
+        "capacity_kg": 54
+      }
+    ],
+    "layers": {
+      "source_difficult": {
+        "mode": "source_preserving",
+        "assignment": "source",
+        "capacity_factor": 1
+      },
+      "controlled_base": {
+        "mode": "controlled_packaging",
+        "assignment": "reinforced",
+        "capacity_factor": 1
+      },
+      "controlled_heterogeneous": {
+        "mode": "controlled_packaging",
+        "assignment": "hash",
+        "capacity_factor": 1
+      },
+      "controlled_capacity_tight": {
+        "mode": "controlled_packaging",
+        "assignment": "hash",
+        "capacity_factor": 0.5
+      }
+    },
+    "single_factor_pair": [
+      "controlled_heterogeneous",
+      "controlled_capacity_tight"
+    ],
+    "single_factor": "max_top_load_kg only; profile identity changes with capacity factor",
+    "buffer_capacity": 3,
+    "candidate_limits": {
+      "per_box": 16,
+      "joint": 48
+    },
+    "mass_distribution": "uniform",
+    "centroid_model": "geometric_center",
+    "feasibility_without_witness": "UNKNOWN",
+    "runtime_status": "NOT_RUN",
+    "evidence_gaps": [
+      "No measured packaging compression ratings; all controlled capacities and probabilities are experimental assumptions.",
+      "No unseen calibration/test sources; four sources already exposed train.",
+      "No complete layout witnesses; main-layer feasibility unestablished.",
+      "Positive yaw handedness is not observable from upright 0/90 axis-aligned footprints; third-party signed-angle transform UNVERIFIED."
+    ],
+    "forbidden_rules": [
+      "region",
+      "compatibility",
+      "relative_direction",
+      "category_override"
+    ],
+    "physical_identity": "existing planner constraints + independent geometry oracle, separately hashed; no replacement",
+    "strategy_identity": "NOT_RUN"
+  }
+}

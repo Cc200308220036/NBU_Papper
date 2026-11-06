@@ -1,0 +1,195 @@
+{
+  "version": "jev_synthetic_six_method_execution_receipt_v1",
+  "date": "2026-11-06",
+  "head": "34fc871d",
+  "scope": "six frozen synthetic combination orders; not independent unseen real sources",
+  "plan": "semantic_pallet_planner/outputs/JEV_JN4_SYNTH_EXEC_20261105_01/plan",
+  "run": "semantic_pallet_planner/outputs/JEV_JN4_SYNTH_EXEC_20261105_01/run",
+  "analysis": "semantic_pallet_planner/outputs/JEV_JN4_SYNTH_RUN_20261106_01",
+  "first_gate": "PASS",
+  "closed_slots": 7,
+  "not_run_slots": 29,
+  "planned_slots": 36,
+  "request_budget": {
+    "global": 656,
+    "per_job": {
+      "J0000": 0,
+      "J0001": 0,
+      "J0002": 16,
+      "J0003": 16,
+      "J0004": 16,
+      "J0005": 16,
+      "J0006": 0,
+      "J0007": 0,
+      "J0008": 20,
+      "J0009": 20,
+      "J0010": 20,
+      "J0011": 20,
+      "J0012": 0,
+      "J0013": 0,
+      "J0014": 24,
+      "J0015": 24,
+      "J0016": 24,
+      "J0017": 24,
+      "J0018": 0,
+      "J0019": 0,
+      "J0020": 30,
+      "J0021": 30,
+      "J0022": 30,
+      "J0023": 30,
+      "J0024": 0,
+      "J0025": 0,
+      "J0026": 34,
+      "J0027": 34,
+      "J0028": 34,
+      "J0029": 34,
+      "J0030": 0,
+      "J0031": 0,
+      "J0032": 40,
+      "J0033": 40,
+      "J0034": 40,
+      "J0035": 40
+    }
+  },
+  "request_statistics": {
+    "actual_model_api_calls": 64,
+    "failed_requests": 0,
+    "known_real_model_calls": 64,
+    "memory_cost_usd": 0,
+    "model_calls": 64,
+    "model_cost_usd": "UNKNOWN",
+    "models": [
+      "jev-1.14.0"
+    ],
+    "network_attempts": 64,
+    "origins": [
+      "jev"
+    ],
+    "real_model_call_interval": {
+      "maximum": 64,
+      "minimum": 64
+    },
+    "request_latency_s": {
+      "n": 64,
+      "p50": 0.8429752514930442,
+      "p95": 1.3857684018934378,
+      "sum": 58.454301599704195
+    },
+    "send_reservations": 64,
+    "stored_request_reuses": 0,
+    "stored_response_reuses": 0,
+    "stored_selection_reuses": 0,
+    "unknown_real_send_count": 0,
+    "unknown_sends": 0,
+    "usage": {
+      "input_tokens": 914040,
+      "known_request_count": 64,
+      "missing_request_count": 0,
+      "output_tokens": 26102
+    },
+    "valid_responses": 64
+  },
+  "stop_reason": "STOP_TECHNICAL",
+  "criteria": {
+    "V01": "PARTIAL_EXECUTED_SCOPE_WITH_STOP",
+    "V02": "PASS_EXECUTED_SCOPE_FROZEN_COMMON_CONTRACT",
+    "V03": "PARTIAL_BATCH_SCOPE_CLASSIFICATION_FAILURE_SEE_EVIDENCE",
+    "V04": "PASS_COMPLETE_DENOMINATOR_AND_UNKNOWN_COST_RETAINED",
+    "V05": "PARTIAL_UNEXECUTED_PAIRS_RETAINED",
+    "V06": "PASS_DELIVERY_RESEARCH_BENEFIT_NOT_ESTABLISHED"
+  },
+  "research_benefit": "NOT_ESTABLISHED",
+  "JN4_B_admitted": false,
+  "technical_stop_evidence": {
+    "reason": "UNREGISTERED_MONITOR_SCOPE"
+  },
+  "stop_diagnosis": {
+    "version": "jev_synthetic_stop_diagnosis_v1",
+    "method": "read-only saved metrics and frozen source inspection; no replay",
+    "job": "J0006",
+    "task": "SYN_COMBO_02",
+    "method_id": "local_geometry_test_double",
+    "saved_batch_failure": {
+      "reason": "UNREGISTERED_MONITOR_SCOPE"
+    },
+    "job_category": "UNASSESSABLE",
+    "placed_items": 14,
+    "planned_items": 20,
+    "monitor_reason_counts": {
+      "CONTACT_NETWORK_BALANCED": 14,
+      "POSE_HEIGHT_MISMATCH": 1
+    },
+    "terminating_monitor_reason": "POSE_HEIGHT_MISMATCH",
+    "terminating_reason_is_registered": true,
+    "allowed_range_reasons": [
+      "POSE_HEIGHT_MISMATCH",
+      "DEGENERATE_SUPPORT_HULL",
+      "DEGENERATE_CONTACT",
+      "CONSERVATIVE_HULL_INFEASIBLE",
+      "CONSERVATIVE_HULL_BOUNDARY",
+      "NETWORK_INTERIOR_BOUNDARY",
+      "NETWORK_INFEASIBILITY_UNCERTIFIED"
+    ],
+    "aggregate_reasons_not_in_range_list": [
+      "CONTACT_NETWORK_BALANCED"
+    ],
+    "source_location": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:254",
+    "finding": "Frozen batch scope check compares every reason in monitor_reasons, including successful CONTACT_NETWORK_BALANCED, against the UNASSESSABLE range allowlist. Thus this saved stop is a scope-check false positive; actual terminating POSE_HEIGHT_MISMATCH is registered. Preserve stop, do not modify code, rerun or continue.",
+    "predicted_instability": false,
+    "failed_action_committed": false,
+    "remaining_slots": "29 NOT_RUN",
+    "next": "separately authorize a scoped fix/verification; any later execution requires explicit handling of changed source identity and this stopped matrix; no implicit resume/retry",
+    "saved_failed_event": {
+      "event": "STOP",
+      "before_after_equal": true,
+      "checkpoint_phase": "TERMINATED",
+      "placed_count": 14,
+      "buffer_count": 3
+    }
+  },
+  "real_injection": {
+    "J0000": {
+      "task": "SYN_COMBO_01",
+      "method": "local_geometry_test_double",
+      "count": 0
+    },
+    "J0001": {
+      "task": "SYN_COMBO_01",
+      "method": "local_first_test_double",
+      "count": 0
+    },
+    "J0002": {
+      "task": "SYN_COMBO_01",
+      "method": "jev_no_memory",
+      "count": 0
+    },
+    "J0003": {
+      "task": "SYN_COMBO_01",
+      "method": "jev_with_trajectory",
+      "count": 16
+    },
+    "J0004": {
+      "task": "SYN_COMBO_01",
+      "method": "jev_with_contrast_experience",
+      "count": 16
+    },
+    "J0005": {
+      "task": "SYN_COMBO_01",
+      "method": "jev_with_unrelated_E_control",
+      "count": 16
+    },
+    "J0006": {
+      "task": "SYN_COMBO_02",
+      "method": "local_geometry_test_double",
+      "count": 0
+    }
+  },
+  "validation": "runner validates saved records before returning; see commands and exit records",
+  "source_changed": false,
+  "experience_updated": false,
+  "implicit_retries": 0,
+  "extra_model_probes": 0,
+  "continuation": "semantic_pallet_planner/outputs/JEV_JN4_SYNTH_EXEC_20261105_01/run/continuation.json",
+  "resume_commands": 0,
+  "next": "stop; no further experiment authorized by this receipt"
+}

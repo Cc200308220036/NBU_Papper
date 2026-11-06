@@ -1,0 +1,44 @@
+{
+  "version": "jev_synthetic_stop_diagnosis_v1",
+  "method": "read-only saved metrics and frozen source inspection; no replay",
+  "job": "J0006",
+  "task": "SYN_COMBO_02",
+  "method_id": "local_geometry_test_double",
+  "saved_batch_failure": {
+    "reason": "UNREGISTERED_MONITOR_SCOPE"
+  },
+  "job_category": "UNASSESSABLE",
+  "placed_items": 14,
+  "planned_items": 20,
+  "monitor_reason_counts": {
+    "CONTACT_NETWORK_BALANCED": 14,
+    "POSE_HEIGHT_MISMATCH": 1
+  },
+  "terminating_monitor_reason": "POSE_HEIGHT_MISMATCH",
+  "terminating_reason_is_registered": true,
+  "allowed_range_reasons": [
+    "POSE_HEIGHT_MISMATCH",
+    "DEGENERATE_SUPPORT_HULL",
+    "DEGENERATE_CONTACT",
+    "CONSERVATIVE_HULL_INFEASIBLE",
+    "CONSERVATIVE_HULL_BOUNDARY",
+    "NETWORK_INTERIOR_BOUNDARY",
+    "NETWORK_INFEASIBILITY_UNCERTIFIED"
+  ],
+  "aggregate_reasons_not_in_range_list": [
+    "CONTACT_NETWORK_BALANCED"
+  ],
+  "source_location": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_orders.py:254",
+  "finding": "Frozen batch scope check compares every reason in monitor_reasons, including successful CONTACT_NETWORK_BALANCED, against the UNASSESSABLE range allowlist. Thus this saved stop is a scope-check false positive; actual terminating POSE_HEIGHT_MISMATCH is registered. Preserve stop, do not modify code, rerun or continue.",
+  "predicted_instability": false,
+  "failed_action_committed": false,
+  "remaining_slots": "29 NOT_RUN",
+  "next": "separately authorize a scoped fix/verification; any later execution requires explicit handling of changed source identity and this stopped matrix; no implicit resume/retry",
+  "saved_failed_event": {
+    "event": "STOP",
+    "before_after_equal": true,
+    "checkpoint_phase": "TERMINATED",
+    "placed_count": 14,
+    "buffer_count": 3
+  }
+}

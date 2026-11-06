@@ -1,0 +1,37 @@
+{
+  "version": "jev_synthetic_execution_commands_v1",
+  "cwd": "NBU_Papper",
+  "environment": "existing python3; PYTHONPATH=semantic_pallet_planner/src",
+  "credential_bootstrap": "existing transport.credential(\"TYPESAFE_API_KEY\", \"typesafe_api_key.md\") -> subprocess environment TYPESAFE_API_KEY; never printed or persisted",
+  "commands": [
+    {
+      "command": "git status --short; git log -5 --oneline",
+      "result": "HEAD 34fc871d; existing untracked raw/mixed_pallet_boxes/ preserved"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m semantic_pallet_planner.jev_select.packaging_synthetic_orders validate-plan --output semantic_pallet_planner/outputs/JEV_JN4_SYNTH_EXEC_20261105_01/plan",
+      "result": "PASS_STATIC_ONLY_NO_FORMAL_DISPATCH"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m semantic_pallet_planner.jev_select.packaging_synthetic_orders run-first-block --plan semantic_pallet_planner/outputs/JEV_JN4_SYNTH_EXEC_20261105_01/plan",
+      "log": "first_block.log",
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m semantic_pallet_planner.jev_select.packaging_synthetic_orders continue --plan semantic_pallet_planner/outputs/JEV_JN4_SYNTH_EXEC_20261105_01/plan",
+      "log": "continuation.log",
+      "exit_code": 1,
+      "wall_s": 828.4029803310405
+    }
+  ],
+  "not_run": [
+    "service probes",
+    "extra model requests",
+    "historical/Fake regression",
+    "training",
+    "experience generation",
+    "JN5 development",
+    "commit/push"
+  ],
+  "scope": "first six; remaining30 only if durable gate PASS"
+}

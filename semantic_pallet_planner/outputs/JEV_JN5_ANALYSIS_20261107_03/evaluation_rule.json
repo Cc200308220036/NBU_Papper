@@ -1,0 +1,36 @@
+{
+  "version": "jev_branch_comparison_rule_v2",
+  "delta_direction": "alternative_minus_reference",
+  "levels": [
+    "STABLE_COMPLETION",
+    "LOADED_VOLUME",
+    "COUNT_MASS",
+    "COMPACTNESS"
+  ],
+  "hierarchy": "first unequal stable completion or volume decides; otherwise count/mass Pareto; only equal loading permits height/envelope Pareto",
+  "tolerances": {
+    "ratio": 1e-09,
+    "height_mm": 1e-06,
+    "mass_kg": 1e-09,
+    "items": 0
+  },
+  "valid_categories": [
+    "COMPLETE",
+    "EMPTY_POOL",
+    "PREDICTED_STATIC_INSTABILITY"
+  ],
+  "compactness": "height lower, envelope higher; both empty NOT_APPLICABLE; missing nonempty metrics invalidate compactness layer and reject experience",
+  "secondary_regressions": [
+    "placed_items",
+    "placed_mass_kg",
+    "actual_height_mm",
+    "envelope_utilization"
+  ],
+  "excluded_diagnostics": [
+    "fixed_container_utilization",
+    "remaining_capacity_sum",
+    "cost",
+    "latency_s"
+  ],
+  "neutral": "registered metric equivalence only; not action, box-set or layout identity"
+}

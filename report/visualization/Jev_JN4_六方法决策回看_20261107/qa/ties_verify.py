@@ -1,0 +1,41 @@
+"""Viewer-only tie checks. Requires the same local server/Chrome as browser_verify.py."""
+from cdp_client import CDP
+from pathlib import Path
+import json,time
+OUT=Path('report/visualization/Jev_JN4_六方法决策回看_20261107')
+c=CDP();c.call('Emulation.setDeviceMetricsOverride',{'width':1440,'height':1100,'deviceScaleFactor':1,'mobile':False});time.sleep(2)
+checks=[]
+def check(name,expression):
+ value=c.ev(expression);checks.append({'name':name,'passed':value});assert value,name
+check('audit total 411 and top ties 37', 'D.probability_ties.scored_decisions===411 && D.probability_ties.top_tied_decisions===37')
+check('rounding does not create ties', "!topTie({selection:{source:'jev',probabilities:{C01:0.100001,C02:0.100002}}}).tied")
+check('singleton and local are not model ties', "!topTie({selection:{source:'singleton',probabilities:null}}).available && !topTie({selection:{source:'test_double',probabilities:{C01:1}}}).available")
+c.ev("choose('J0002',3)");time.sleep(.4);c.ev("state.tab='candidates';renderDetail()")
+check('known three-way tie summary', "document.querySelector('#selectionSummary [data-top-tie]')?.innerText.includes('3项') && actual(event())==='C12'")
+check('all and only top candidates highlighted', "[...document.querySelectorAll('tr.top-tied-row')].map(x=>x.dataset.candidate).join(',')==='C07,C12,C20'")
+check('timeline marks every tied decision', "document.querySelectorAll('#timeline .top-tie').length===state.job.events.filter(e=>topTie(e).tied).length")
+c.ev("document.querySelector('#selectionSummary [data-tie-candidate=C07]').click()")
+check('preview tie preserves actual selection', "state.candidate==='C07' && actual(event())==='C12'")
+c.ev("document.querySelector('#selectionSummary [data-tie-step]:not([disabled])').click()")
+check('tie navigation targets a tied step', 'topTie(event()).tied && state.step!==3')
+c.ev("choose('J0002',3)");time.sleep(.2);c.ev("document.querySelector('#selectionSummary').scrollIntoView()");c.shot(str(OUT/'qa/tie_decision.png'))
+c.ev("choose('J0016',2)");time.sleep(.3);c.ev("state.tab='memory';renderDetail()")
+check('injected experience maps to historical decision', "document.querySelector('#detailContent').innerText.includes('与本步实际经验来源对照') && document.querySelector('#detailContent').innerText.includes('唯一最高')")
+c.ev("page('library')")
+check('default comparison same v3 four orders', "document.querySelector('#tieScope').value==='new24' && D.probability_ties.decisions.filter(x=>Number(x.task_id.slice(-2))>=3).length===291")
+check('T and E still have ties same v3', "document.querySelector('[data-tie-method=jev_with_trajectory]').cells[3].innerText==='6' && document.querySelector('[data-tie-method=jev_with_contrast_experience]').cells[3].innerText==='5'")
+c.ev("document.querySelector('#tieScope').value='all';document.querySelector('#tieScope').dispatchEvent(new Event('change',{bubbles:true}))")
+check('all version T and E counts', "document.querySelector('[data-tie-method=jev_with_trajectory]').cells[3].innerText==='7' && document.querySelector('[data-tie-method=jev_with_contrast_experience]').cells[3].innerText==='8'")
+check('all 37 tied decisions can be opened', "document.querySelectorAll('#libraryContent [data-tie-job]').length===37")
+check('historical unique sources and native verification', "D.probability_ties.historical_sources.length===2 && D.probability_ties.historical_sources.every(x=>x.any_tie&&!x.top_tie&&x.maximum===0.29&&x.library_refs.length===2)")
+c.ev("document.querySelector('.tie-comparison').scrollIntoView()");c.shot(str(OUT/'qa/tie_comparison.png'))
+c.ev("document.querySelector('#libraryContent [data-tie-job]').click()");time.sleep(.3)
+check('tie list opens actual job decision', "state.page==='explorer' && state.job.id==='J0002' && event().decision_id==='J0002_D0003'")
+c.call('Emulation.setDeviceMetricsOverride',{'width':390,'height':844,'deviceScaleFactor':1,'mobile':True});c.ev("page('library')");time.sleep(.4)
+check('mobile tie comparison no page overflow', 'document.documentElement.scrollWidth<=390')
+c.ev("document.querySelector('.tie-comparison').scrollIntoView()");c.shot(str(OUT/'qa/tie_mobile.png'))
+c.call('Page.navigate',{'url':(OUT/'web/index.html').resolve().as_uri()+'#job=J0002&step=3'});time.sleep(2)
+check('offline tie annotation', "topTie(event()).tied && document.querySelectorAll('tr.top-tied-row').length===3")
+check('no uncaught errors',str(not c.errors).lower())
+(OUT/'qa/tie_checks.json').write_text(json.dumps({'checks':checks,'uncaught_errors':c.errors},ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(checks,ensure_ascii=False))

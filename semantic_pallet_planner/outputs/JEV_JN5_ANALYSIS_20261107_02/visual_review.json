@@ -1,0 +1,36 @@
+{
+  "version": "jev_jn5_visual_review_v1",
+  "review_date": "2026-11-07",
+  "method": "assistant inspected rendered PNG previews using view_image; F3/F4 reinspected after legend/annotation adjustment",
+  "status": "PASS_WITH_DISPLAY_LIMITATIONS",
+  "figures": [
+    {
+      "file": "F1_main_loading.png",
+      "sha256": "f8656e55796dedd2a3b974eb19d6396e94db51ea23fb14f9d5a6b422a4517f9c"
+    },
+    {
+      "file": "F2_pair_deltas.png",
+      "sha256": "ee2f7e27894a2a64322c73c7b714fe949d4bc442de177524533e4ba0f5d5d6ba"
+    },
+    {
+      "file": "F3_saved_layouts.png",
+      "sha256": "7b222bbdc0169d58da2d6d7a6a847b89e4d87628ecb06c1310ac02398bdb9815"
+    },
+    {
+      "file": "F4_historical_failures.png",
+      "sha256": "c7f414bac5af30dfec82a8105b305d95d4add7fc458c54217e8781d95b685ca1"
+    }
+  ],
+  "checks": {
+    "F1": "all four tasks and six methods, full-order counts/status, shared untruncated 0-100% axis, labels readable",
+    "F2": "16 pair values/labels, pp units, zero-centered symmetric diverging limits; secondary deltas in table",
+    "F3": "identical container/camera/axis proportions; stable item identity color legend added; titles count/volume/height/status consistent; saved committed boxes only",
+    "F4": "exact Y=305 mm section; actual z=0 dashed and diagnostic restored z=490 dotted; no commit; timeout 6/20 unchanged; annotations moved clear of box labels"
+  },
+  "limitations": [
+    "3D single view occludes some boxes; full task identity legend does not mean all boxes loaded",
+    "3D box numeric text may be depth-occluded; color legend and saved exact per-box mapping are the identity reference",
+    "SVG/PDF are projected polygon exports, not editable 3D scenes"
+  ],
+  "rerender_policy": "when reused in a new analysis copy, this records prior visual review only; verify matching PNG hashes before reuse"
+}

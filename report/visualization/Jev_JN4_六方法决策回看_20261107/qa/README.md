@@ -1,5 +1,20 @@
 # 展示层浏览器验证
 
+## 2026-11-09 经验命中增强
+
+从仓库根目录执行：
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 report/visualization/Jev_JN4_六方法决策回看_20261107/qa/verify_memory_hits.py
+node report/visualization/Jev_JN4_六方法决策回看_20261107/qa/verify_memory_render.cjs
+```
+
+前者逐条核对296个命中的原检查点、检索分、实际内容、状态/候选池/动作及指标；后者使用实际UI模板渲染全部命中并检查筛选。均不执行工程运行模块。
+
+本次还通过IAB实际检查了HTTP桌面页，记录为 `memory_hit_browser_checks.json`，截图为 `memory_hit_T.png`、`memory_hit_E.png`、`memory_hit_list.png`。没有把下面历史Chrome、手机与file测试计为本次结果。
+
+## 2026-11-07 历史浏览器复核流程
+
 在仓库根目录，使用现有Chrome和Python websocket-client；不安装或升级依赖。先在两个独立终端启动只读静态服务器和临时调试浏览器：
 
 ```bash

@@ -1,5 +1,6 @@
 """Offline projection of saved JN4 evidence. Stdlib only; no credential/solver/model imports."""
 import base64,copy,hashlib,json,math
+from memory_audit import build_audit
 from pathlib import Path
 from collections import Counter
 ROOT=Path(__file__).resolve().parents[3]
@@ -22,7 +23,7 @@ def write(path,data):path.write_text(json.dumps(data,ensure_ascii=False,indent=2
 analysis=Path('semantic_pallet_planner/outputs/JEV_JN4_REMAIN24_RUN_20261106_01')
 rows=read(analysis/'all_36_slots.json');pairs=read(analysis/'paired_comparisons_v2.json');summary=read(analysis/'descriptive_summary.json')
 names=['几何基线','固定顺序','Jev 无经验','T 历史案例','E 对比经验','无关E 对照'];methods=list(dict.fromkeys(r['method_id'] for r in rows))
-tie_decisions=[];plans={};ledgers={};jobcards=[];counts=Counter();arithmetic=[];library={}
+tie_decisions=[];plans={};ledgers={};jobcards=[];counts=Counter();arithmetic=[];library={};audit_jobs={}
 for row in rows:
  run=Path(row['run']);planpath=run.parent/'plan/plan.json'
  if str(run) not in plans:
@@ -62,7 +63,10 @@ for row in rows:
   if mem:mem.pop('entries',None)
   for entry in entries:library[hashlib.sha256(json.dumps(entry,sort_keys=True).encode()).hexdigest()]=entry
   events.append({'event_index':i,'decision_id':e.get('decision_id'),'event':e['event'],'reason':e.get('reason'),'route':e.get('route'),'before':e['before'],'after':e['after'],'action':e.get('action'),'proposed_action':e.get('proposed_action'),'request':request,'mapping':mapping,'candidates':candidates,'generation_counts':bundle.get('generation_counts',[]),'physical_count':len(physical),'unshown_candidates':[c for id,c in physical.items() if id not in {m['candidate_id'] for m in mapping.values()}],'selection':selection,'monitor':monitor,'memory':mem,'retrieval':context.get('retrieval_receipt'),'raw_response':raw,'transport':{k:r['transport'].get(k) for k in ['status','network_attempted','http_status','error_code','error_stage','latency_s']} if r and r.get('transport') else None,'request_state':r['state'] if r else None,'timings':e.get('timings'),'binding':context.get('local_binding'),'evidence':{'checkpoint':str(folder/'checkpoint.json'),'json_pointer':f'/events/{i}','checkpoint_sha256':SOURCES[str(folder/'checkpoint.json')]}})
+  if request is None and context.get('criteria'):events[-1]['prepared_criteria']=copy.deepcopy(context['criteria'])
+  if not entries and (context.get('memory_view') or {}).get('entries'):events[-1]['prepared_memory_entries']=copy.deepcopy(context['memory_view']['entries'])
  data={'id':j['job_id'],'method':j['method_id'],'method_name':names[methods.index(j['method_id'])],'task_id':j['task_id'],'items':task['items'],'container':task['container'],'events':events,'event_log':flow,'metrics':metric,'status':status,'source':row,'rule':local_rule,'algorithm_identity':j['config']['stability_monitor']['algorithm_identity'],'monitor_config':j['config']['stability_monitor']['kernel_config'],'config':j['config']}
+ audit_jobs[data['id']]=data
  js(WEB/'data'/f'{j["job_id"]}.js',f'window.JN4_JOBS["{j["job_id"]}"]',data)
  jobcards.append({k:data[k] for k in ['id','method','method_name','task_id','status','metrics'] }|{'algorithm':row['algorithm'],'source_digest':row['source_manifest_digest'],'source_revision':row['source_delivery_commit'],'run':str(run),'steps':len(events),'committed':metric['loading']['placed_items'],'items':len(task['items'])})
  counts['decisions_and_stops']+=len(events);counts['all_events']+=len(flow)
@@ -96,6 +100,15 @@ run_history=[]
 for run in plans:
  hist=read(Path(run)/'summary.json');run_history.append({'run':run,**{k:hist[k] for k in ['status','planned_jobs','categories','request_statistics'] if k in hist}})
 run_history[0]['technical_failure']=read(Path(run_history[0]['run'])/'technical_failure.json')
-js(WEB/'index-data.js','window.JN4_INDEX',{'probability_ties':tie_audit,'run_history':run_history,'jobs':jobcards,'pairs':pairs,'summary':summary,'counts':dict(counts),'methods':[{'id':m,'name':n} for m,n in zip(methods,names)],'memory_library':list(library.values()),'snapshots':snapshots,'built_on':'2026-11-07','scope':'合成组合订单 · 36个原始槽位 · 旧7项v2 / 后29项v3 · 仅回看保存事实'})
-write(OUT/'source_manifest.json',SOURCES);write(OUT/'arithmetic_audit.json',{'type':'saved_reactions_arithmetic_only_not_new_LP','node_checks':len(arithmetic),'failed':sum(not r['within_saved_tolerances'] for r in arithmetic),'rows':arithmetic})
-write(OUT/'export_receipt.json',{'status':'PASS_DATA_EXPORT','counts':dict(counts),'source_files':len(SOURCES),'source_changed':False,'model_calls':0,'credential_reads':0,'solver_calls':0,'episode_runs':0,'limitations':['Jev Choice has no saved natural-language reasoning','Candidate probabilities are raw reported values, not utility or PCT scores','No PCT assessment exists for unselected alternatives','Same step across different method trajectories need not share state or pool','Kernel reaction coordinates are corner-based; viewport is bottom-center-based','Full task inventory is retrospective, not a model input']})
+memory_audit=build_audit(audit_jobs,snapshots,pairs)
+write(OUT/'memory_hit_audit.json',memory_audit)
+js(WEB/'index-data.js','window.JN4_INDEX',{'memory_hits':memory_audit,'probability_ties':tie_audit,'run_history':run_history,'jobs':jobcards,'pairs':pairs,'summary':summary,'counts':dict(counts),'methods':[{'id':m,'name':n} for m,n in zip(methods,names)],'memory_library':list(library.values()),'snapshots':snapshots,'built_on':'2026-11-09','scope':'合成组合订单 · 36个原始槽位 · 旧7项v2 / 后29项v3 · 仅回看保存事实'})
+write(OUT/'source_manifest.json',SOURCES)
+# Existing historical floating-point arithmetic receipt remains byte-identical.
+# Current arithmetic was checked above; Python versions may differ at roundoff scale.
+if (OUT/'arithmetic_audit.json').exists():
+ prior=json.loads((OUT/'arithmetic_audit.json').read_text())
+ assert prior['node_checks']==len(arithmetic) and prior['failed']==0
+ assert [(r['job_id'],r['decision_id'],r['item_id'],r['within_saved_tolerances']) for r in prior['rows']]==[(r['job_id'],r['decision_id'],r['item_id'],r['within_saved_tolerances']) for r in arithmetic]
+else:write(OUT/'arithmetic_audit.json',{'type':'saved_reactions_arithmetic_only_not_new_LP','node_checks':len(arithmetic),'failed':0,'rows':arithmetic})
+write(OUT/'export_receipt.json',{'status':'PASS_DATA_EXPORT','memory_hit_audit':{'version':memory_audit['version'],'counts':memory_audit['counts'],'assessment_type':'POST_HOC_DESCRIPTIVE_RETRIEVAL_AUDIT'},'counts':dict(counts),'source_files':len(SOURCES),'source_changed':False,'model_calls':0,'credential_reads':0,'solver_calls':0,'episode_runs':0,'limitations':['Jev Choice has no saved natural-language reasoning','Candidate probabilities are raw reported values, not utility or PCT scores','No PCT assessment exists for unselected alternatives','Same step across different method trajectories need not share state or pool','Kernel reaction coordinates are corner-based; viewport is bottom-center-based','Full task inventory is retrospective, not a model input']})

@@ -1,0 +1,39 @@
+{
+  "version": "jm1_b2_limited_admission_v1",
+  "next_unit": "JM1-B2",
+  "status": "CONDITIONAL",
+  "prerequisites": [
+    {
+      "requirement": "B1 M12-02/03/05/06离线程序构造",
+      "evidence": "本轮QA及10项本机测试",
+      "status": "PASS"
+    },
+    {
+      "requirement": "任务候选来源和暴露可追溯",
+      "evidence": "27材料摘要；formal_tasks空",
+      "status": "PARTIAL",
+      "impact": "可做候选审计/模板，不能伪造正式任务"
+    },
+    {
+      "requirement": "真实v3执行/恢复及身份",
+      "evidence": "父A3/B1明确NOT_IMPLEMENTED",
+      "status": "NOT_MET",
+      "impact": "正式可发送基线冻结及C1/C2阻断"
+    }
+  ],
+  "allowed_scope": [
+    "两波任务/来源/顺序/重复及预算模板、无发送校验器",
+    "源数据候选身份与暴露审计，整体标TEMPLATE_ONLY/NOT_EXECUTABLE",
+    "M12-01/04/07的非执行模板/构造部分"
+  ],
+  "not_allowed": [
+    "关闭整个JM1-A或以旧v6代替真实v3",
+    "签发正式可发送基线或真实epsilon",
+    "在B2内实施真实v3通路、C1/C2",
+    "模型、订单、分叉、候选重建、求解及新训练/评价数据"
+  ],
+  "release_conditions": "真实v3独立工程验收、实际任务/来源/到货/预算和运行身份冻结；真实发送另需明确授权",
+  "real_calls_authorized": 0,
+  "nonblocking_issue": "QA-JM1B1-01",
+  "stop": true
+}

@@ -1,0 +1,80 @@
+{
+  "version": "jm1_b1_qa_v1",
+  "date": "2026-11-11",
+  "reviewed_unit": "JM1-B1",
+  "head": "11790ca4e7af9d2affe0a2980dc1158a774d9900",
+  "plan_version": "JM-plan-v2",
+  "engineering_status": "COMPLETE_LIMITED_OFFLINE_CONSTRUCTED_SCOPE",
+  "evidence_readiness": "SUFFICIENT_FOR_LIMITED_B2_TEMPLATE_ENGINEERING_WITH_VERIFIER_LIMIT",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "CONDITIONAL",
+  "report": "docs/03_阶段产出分析/Jev/Jev_JM1-B1独立质检与JM1-B2限定准入_20261111_01.md",
+  "reviewed_package": "semantic_pallet_planner/outputs/JEV_JM1_B1_20261111_01",
+  "acceptance": [
+    {
+      "id": "M12-02",
+      "status": "PASS",
+      "scope": "程序/构造限定范围；真实事实NOT_RUN"
+    },
+    {
+      "id": "M12-03",
+      "status": "PASS",
+      "scope": "程序/构造限定范围；真实事实NOT_RUN"
+    },
+    {
+      "id": "M12-05",
+      "status": "PASS",
+      "scope": "程序/构造限定范围；真实事实NOT_RUN"
+    },
+    {
+      "id": "M12-06",
+      "status": "PASS",
+      "scope": "程序/构造限定范围；真实事实NOT_RUN"
+    },
+    {
+      "id": "M12-01/04/07",
+      "status": "NOT_APPLICABLE",
+      "basis": "B2计划及C1实际范围，本轮不关闭"
+    },
+    {
+      "id": "original_verifier_current_run",
+      "status": "FAIL",
+      "issue": "QA-JM1B1-01"
+    },
+    {
+      "id": "local_unittest",
+      "status": "PASS",
+      "result": "10/10 constructed tests"
+    },
+    {
+      "id": "independent_static_check",
+      "status": "PASS",
+      "evidence": "static_checks.json"
+    },
+    {
+      "id": "real_execution_and_research",
+      "status": "NOT_RUN"
+    }
+  ],
+  "findings": [
+    {
+      "id": "QA-JM1B1-01",
+      "severity": "LOW",
+      "blocking": false,
+      "contract": "保存事实与身份可复验",
+      "location": "semantic_pallet_planner/outputs/JEV_JM1_B1_20261111_01/verify_delivery.py:32-39",
+      "actual": "以当前HEAD作为开发前基线，交付提交后39行必败；本轮已实际复现",
+      "impact": "原脚本提交后不可复用；独立固定入口基线检查通过，未否定采点行为",
+      "minimal_fix": "新增固定entry_head与交付摘要的版本化补充validator/收据，保留旧脚本及manifest",
+      "validation_boundary": "纯保存字节和差异校验，提交后可复验且拒绝源码漂移，无业务派发"
+    }
+  ],
+  "facts": {
+    "report_claim": "限定离线工程完成待QA，10项通过",
+    "source_implemented": "离线封闭协议、原生概率、确定性采点与保存证据校验；真实v3适配未实现",
+    "archived": "13负例、24决策12点及零派发收据",
+    "current_run": "10/10本机测试、37/56/4/27摘要与41引用；原脚本FAIL"
+  },
+  "whole_JM1_A": "PARTIAL_REAL_V3_NOT_IMPLEMENTED",
+  "stop": true
+}

@@ -17,3 +17,7 @@ JM_CONTINUATION_PROTOCOLS={JM_CONTINUATION_VERSION: 'packaging_jev_continuation'
 # A3 recovery/repeats are independent; old execution schemas remain closed.
 JM_RECOVERY_VERSION='jev_jm_recovery_v1'
 JM_RECOVERY_PROTOCOLS={JM_RECOVERY_VERSION: 'packaging_jev_recovery'}
+
+# B1 is stdlib-only, offline saved-public sampling; no execution route.
+JM_SAMPLING_VERSION='jev_jm_sampling_public_v1'
+JM_SAMPLING_PROTOCOLS={JM_SAMPLING_VERSION: 'packaging_jev_sampling'}

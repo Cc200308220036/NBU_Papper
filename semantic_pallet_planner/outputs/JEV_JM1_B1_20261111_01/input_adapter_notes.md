@@ -1,0 +1,17 @@
+# B1输入兼容与审计侧边界
+
+本接口是离线保存事实投影，不是v3真实执行适配。`project_public`接受已公开、封闭字段的v1包，复制后验证；`private_audit`从不遍历或读取。调用方不得把完整任务、snapshot、episode或checkpoint作为采样参数。额外字段（包括嵌套PCT诊断）拒绝。任意字符串中的隐蔽编码不属于自动信息流证明，公开字段的来源仍须审计。
+
+`public_state`仅含当前container、buffer的实际item ID/尺寸/质量/包装承载/stackable，以及当前placed_objects的精确几何和原面积分载事实。尺寸依次为length/width/height；pose为底面中心毫米坐标，yaw仅整数0/90。buffer和placed不能重叠；候选必须属于buffer，oriented_size随yaw核对。没有arrival未来列表、end-of-stream推导目标、整单分母、终态或监测字段。
+
+`pool`包含**完整保存的selectable_candidates**，保持原顺序，每项含完整`frozen_candidate`、原candidate_id、原候选摘要和精确动作。封闭候选形状覆盖现有公开candidate_fingerprint/ems/geometry_score_components/load/physical_valid/physical_rejection_reasons/resulting_geometry/support；这些是原候选公开事实，禁止添加PCT预评。未知字段/新形状须新版本，不删未知字段后假装完整。`candidate_digest`为原完整候选的规范JSON摘要；公开wrapper与原候选逐字段绑定。`pool_ref`的pointer必须指向原保存完整selectable_candidates数组。`prefix_ref`指向单独保存的public_state投影；原私有checkpoint和投影间的映射证明只留审计侧。不得将本协议exact_digest直接当旧A1的digest：v1对几何数字做数值等价规范化，原candidate_digest仍独立保留。
+
+`display_mapping`为全部label/candidate_id/candidate_digest的双射；重复精确动作仍保留全部标签。`original`绑定保存choice标签、原candidate_id及规范精确动作摘要；原动作即使在重复组内不是最高分成员也保留原身份。替代组取max原生分，不相加；组内代表按最高成员分、候选摘要/ID/label确定。替代组按最高组分和精确动作摘要选择。跨箱保存公开属性对照，同箱保存位置/朝向变化标志。
+
+`probability_evidence`原样base64保存原始HTTP正文和SHA256。已注册`jev_systemone_choice_native_v1`接受现有`model/answers.next_action/{type,choice,probabilities,confidence}`原生数值协议，可有计数usage。JSON数值token通过独立类型保留，再交Decimal/Fraction；字符串数值、bool、NaN/Infinity、缺键、重复JSON键等均拒绝。不得从selection.probabilities浮点结果、四位展示、排行或confidence补概率。不强加sampling_policy未规定的新概率和容差，不做归一化；本解析器不取代原生产选择验收。原响应中的model字段仅作保存事实，本轮不签发模型/服务身份。
+
+历史v6/v12 context可提供当前model_state及display_mapping的审计来源，实际item ID和Bxxx显示别名必须由保存映射核对，不能凭名字猜。原transport的raw_body_b64/raw_sha256可在审计侧核对后原样重命名为本证据字段；其origin与当前材料限定用途须保留。完整旧snapshot含私有内容，禁止直接传入；本轮仅列材料和字段说明，不运行历史转投影、不重建历史候选、不计算真实epsilon。
+
+`validate_saved_evidence(public, root=...)`只读取所列保存字节、SHA、JSON pointer及完整数组/公开前态等值；拒绝路径逃逸，不重建候选、不重算监测或执行订单。它证明当前投影与指定保存文件一致，**不证明文件是正式真实采集，也不证明调用方已交齐所有决策**。全部决策分母要由未来基线账本独立交叉核对；本轮sample保留全部传入记录，不能接收未提交的隐藏决策。
+
+离线入口接受封闭`{version: jev_jm_sampling_batch_v1, task_order, decisions}`，输出只写新文件，拒绝覆盖。`sample`只生成diagnostic，不生成fork_plan、任务矩阵、repeat、发送预算或可执行配置。构造批次epsilon标DIAGNOSTIC_NOT_FORMAL_FROZEN_VALUE；真实epsilon仍NOT_MATERIALIZED_DEFER_C1。C1日后须绑定全部公开基线投影，在后缀发送门前另交正式收据。本轮没有6任务正式选择，也未将旧材料用作新真实采点。

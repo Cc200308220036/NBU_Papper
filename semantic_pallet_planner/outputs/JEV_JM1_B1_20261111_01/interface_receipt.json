@@ -1,0 +1,25 @@
+{
+  "version": "jm1_b1_interface_receipt_v1",
+  "module": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_sampling.py",
+  "public_protocol": "jev_jm_sampling_public_v1",
+  "schema": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_sampling_public_v1.schema.json",
+  "registry": "packaging_versions.JM_SAMPLING_PROTOCOLS; independent offline route only",
+  "interfaces": [
+    "project_public(saved_public, private_audit=None)",
+    "validate_public(public)",
+    "parse_probabilities(public)",
+    "exact_action(candidate)/exact_digest(candidate)",
+    "inspect_decision(public)",
+    "sample(public_decisions, task_order=...)",
+    "validate_saved_evidence(public, root=...)"
+  ],
+  "batch_protocol": "jev_jm_sampling_batch_v1: closed version/task_order/decisions",
+  "cli": "PYTHONPATH=semantic_pallet_planner/src python3 -m semantic_pallet_planner.jev_select.packaging_jev_sampling INPUT NEW_OUTPUT",
+  "schema_validation": "stdlib recursive exact subset of delivered JSON Schema, unsupported keywords rejected; no old contracts/schema routes changed",
+  "saved_validation": "jev_jm_sampling_saved_check_v1; read-only saved bytes, complete frozen array and public state equality, no business imports",
+  "native_response": "jev_systemone_choice_native_v1; original base64 SHA256 + numeric lexemes + Decimal/Fraction; service precision/tie rule UNKNOWN",
+  "full_pool": "all frozen_candidate objects retained and candidate_digest checked; unknown fields rejected",
+  "output": "jev_jm_sampling_diagnostic_v1; execution_authorized=false; never a fork_plan",
+  "adapter_notes": "input_adapter_notes.md",
+  "real_v3_adapter": "NOT_IMPLEMENTED_NOT_THIS_TASK"
+}

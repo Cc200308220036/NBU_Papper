@@ -1,0 +1,29 @@
+{
+  "version": "jm1_b1_commands_v1",
+  "commands": [
+    "PYTHONPATH=semantic_pallet_planner/src JM_B1_EVIDENCE=semantic_pallet_planner/outputs/JEV_JM1_B1_20261111_01 python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_packaging_jev_sampling.py -v",
+    "python3 semantic_pallet_planner/outputs/JEV_JM1_B1_20261111_01/verify_delivery.py",
+    "git diff --check"
+  ],
+  "local_environment": {
+    "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 16:09:02) [GCC 11.2.0]",
+    "dependencies": "stdlib only; existing pytest/jsonschema/numpy/scipy available but no old engine regression run"
+  },
+  "local_scope": "10 actual sampler/validator/CLI constructed tests; import/network guard subprocess; no run_episode/forks/monitor/commit invocation",
+  "old_regressions": "NOT_RUN: new independent route, no old behavior edits; static frozen-file protection instead",
+  "prohibited_operations": {
+    "real_models": 0,
+    "credential_reads": 0,
+    "network": 0,
+    "orders": 0,
+    "forks": 0,
+    "candidate_rebuilds": 0,
+    "solver": 0,
+    "real_data_generation": 0,
+    "dependency_install": 0,
+    "subagents": 0,
+    "git_add": 0,
+    "commit": 0,
+    "push": 0
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "version": "jev_jm_sampling_coverage_spec_v1",
+  "policy": {
+    "path": "semantic_pallet_planner/outputs/JEV_JM0_B_20261111_01/sampling_policy.json",
+    "sha256": "4eb0d822b1fec051cebadcb2a378487e6099565130093e4d16364e8038fb63fb",
+    "bytes": 5796
+  },
+  "input_schema": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_sampling_public_v1.schema.json",
+  "diagnostic_version": "jev_jm_sampling_diagnostic_v1",
+  "unit": "all supplied saved public decisions, including malformed/rejected records; future C1 independently verifies source ledger completeness",
+  "dimensions": [
+    "task/source group",
+    "multi-candidate and distinct exact-action counts",
+    "probability complete/missing/invalid",
+    "native exact top tie",
+    "relative near top",
+    "same-box/cross-box available and missing",
+    "OPENING/NONEMPTY",
+    "selected/unselected reason",
+    "prefix/pool/raw/action references"
+  ],
+  "full_rows": "rows: one per input; groups/members/native_lexemes/gaps retained for parseable records; malformed public envelope carries digest and refusal",
+  "counts": "global counts + per_task_coverage; exact/near dimensions may overlap; eligible class counts require original inside layer",
+  "epsilon": "smallest positive distinct-action gap per complete non-singleton decision; nearest rank ceil(n/4); capped at 1/10; none =>0 exact-only; rational arithmetic",
+  "selection": "task_order, OPENING then NONEMPTY; both classes > same > cross; exact-top tie > near; decision ordinal > pool/action digest; one per task/stage; max6 tasks/12points",
+  "duplicates": "max native score, member mapping retained, original saved identity preserved",
+  "zero_max": "NONPOSITIVE_MAX; no imputation or normalization",
+  "claim_scope": "Observed saved-native top/near-top layer only; no all-decision/high-confidence-error/physical-confidence/generalization claim",
+  "real_epsilon": "NOT_MATERIALIZED_DEFER_C1",
+  "formal_matrix": "DEFER_B2",
+  "execution_authorized": false,
+  "constructed_only": true
+}

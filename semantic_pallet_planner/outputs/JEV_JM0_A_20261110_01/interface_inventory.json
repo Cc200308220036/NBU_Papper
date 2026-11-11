@@ -1,0 +1,525 @@
+{
+  "version": "jm0_a_interface_inventory_v1",
+  "items": [
+    {
+      "id": "I01",
+      "references": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py",
+          "symbol": "run_episode",
+          "line": 55,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py",
+          "symbol": "decision_inputs",
+          "line": 21,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py",
+          "symbol": "_run_episode_v2",
+          "line": 196,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py",
+          "symbol": "CandidateProvider",
+          "line": 71,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py",
+          "symbol": "resolve_display_id",
+          "line": 325,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v12.schema.json"
+        }
+      ],
+      "implemented_static": "填满缓冲后生成原公共候选，guard处理后构建上下文；Cxx经display_mapping绑定不可变候选及精确姿态。v5—v12显式路由。",
+      "limitations_and_JM_v2_gap": "新fork/memory/repeat协议未注册；不得复制循环或通过删除保护适配。",
+      "responsible_units": [
+        "JM1-A1",
+        "JM4-A1"
+      ],
+      "behavior_test_this_turn": "NOT_RUN"
+    },
+    {
+      "id": "I02",
+      "references": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_remote.py",
+          "symbol": "PackagingRemoteSelector",
+          "line": 192,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_remote.py",
+          "symbol": "remote_selector_factory",
+          "line": 212,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_pilot_memory.py",
+          "symbol": "MemoryDriver",
+          "line": 104,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_protocol.py",
+          "symbol": "selector_factory",
+          "line": 75,
+          "exists": true
+        }
+      ],
+      "implemented_static": "v6无经验selector拒绝memories非空；v9+none模式要求无snapshot并产生空entries，远程仍复用Choice和账本。",
+      "limitations_and_JM_v2_gap": "旧几何分叉未使用该真实路由；新后续所有请求须空记忆，不能假定v6工厂可直接收v12。",
+      "responsible_units": [
+        "JM1-A2",
+        "JM4-A1"
+      ],
+      "behavior_test_this_turn": "NOT_RUN"
+    },
+    {
+      "id": "I03",
+      "references": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py",
+          "symbol": "_run_episode_v2",
+          "line": 196,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py",
+          "symbol": "monitor_selected_action",
+          "line": 136,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/execution.py",
+          "symbol": "commit_physical",
+          "line": 14,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py",
+          "symbol": "kernel_interface",
+          "line": 126,
+          "exists": true
+        }
+      ],
+      "implemented_static": "SELECTED持久化后监测选定动作；MONITORED持久化；STABLE或合法DISABLED走原复核提交，其余分类停止；未提交箱留在缓冲。v2/v3按algorithm分派。",
+      "limitations_and_JM_v2_gap": "新路线需显式启用v3；禁预过滤/失稳改选；DISABLED允许原合同提交但不满足新实验执行验收。",
+      "responsible_units": [
+        "JM1-A1",
+        "JM1-A3",
+        "JM4-A1"
+      ],
+      "behavior_test_this_turn": "NOT_RUN"
+    },
+    {
+      "id": "I04",
+      "references": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py",
+          "symbol": "validate_checkpoint",
+          "line": 207,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_remote.py",
+          "symbol": "RequestLedger",
+          "line": 56,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_pilot_memory.py",
+          "symbol": "validate_receipt",
+          "line": 90,
+          "exists": true
+        }
+      ],
+      "implemented_static": "监测检查点绑定task/config/runtime/阶段；已保存选择和监测复用；SENDING恢复为UNKNOWN_SEND，不重新发送；保存检索代数核对。",
+      "limitations_and_JM_v2_gap": "新fork/repeat/策略/查询身份及阶段恢复需独立扩展；本轮未运行恢复行为。",
+      "responsible_units": [
+        "JM1-A3",
+        "JM3-A2"
+      ],
+      "behavior_test_this_turn": "NOT_RUN"
+    },
+    {
+      "id": "I05",
+      "references": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_counterfactual.py",
+          "symbol": "restore_training_fork",
+          "line": 75,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_counterfactual.py",
+          "symbol": "bootstrap",
+          "line": 181,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_counterfactual.py",
+          "symbol": "validate_branch_checkpoint",
+          "line": 208,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_counterfactual.py",
+          "symbol": "continuation_factory",
+          "line": 162,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_fork_binding_v1.schema.json"
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_fork_snapshot_v1.schema.json"
+        }
+      ],
+      "implemented_static": "绑定train任务、before、cursor、buffer、pool、mapping和父记录；新分支SELECTED强制首步一次；METHOD固定local_geometry_test_double。",
+      "limitations_and_JM_v2_gap": "仍为几何后续；首步source=test_double，尚无新FORCED_FROM_FROZEN_POOL原生origin、真实Jev后续及重复槽位协议。",
+      "responsible_units": [
+        "JM1-A1",
+        "JM1-A2",
+        "JM1-A3"
+      ],
+      "behavior_test_this_turn": "NOT_RUN"
+    },
+    {
+      "id": "I06",
+      "references": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_counterfactual.py",
+          "symbol": "interventions",
+          "line": 134,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_comparisons.py",
+          "symbol": "prepare",
+          "line": 131,
+          "exists": true
+        }
+      ],
+      "implemented_static": "原动作、同箱不同姿态、跨箱动作分别组织；完整概率用于排序，缺概率用摘要；历史为最早和中点采样。",
+      "limitations_and_JM_v2_gap": "不是最高并列/近并列采点；需要公开输入白名单、覆盖程序、两波冻结及重复预算。",
+      "responsible_units": [
+        "JM1-B1",
+        "JM1-B2",
+        "JM1-C1"
+      ],
+      "behavior_test_this_turn": "NOT_RUN"
+    },
+    {
+      "id": "I07",
+      "references": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py",
+          "symbol": "historical_fragment",
+          "line": 74,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py",
+          "symbol": "build_snapshot",
+          "line": 124,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_trajectory_v1.schema.json"
+        }
+      ],
+      "implemented_static": "T构建限F00_B02/F02_B02，非空placed明确拒绝，公共摘要与私有证据分离。",
+      "limitations_and_JM_v2_gap": "保留旧拒绝；新增非空投影、动作角色和完整性审核。",
+      "responsible_units": [
+        "JM2-A2",
+        "JM2-A3"
+      ],
+      "behavior_test_this_turn": "NOT_RUN"
+    },
+    {
+      "id": "I08",
+      "references": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py",
+          "symbol": "query_from_facts",
+          "line": 98,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py",
+          "symbol": "public_query",
+          "line": 111,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py",
+          "symbol": "build_snapshot",
+          "line": 124,
+          "exists": true
+        }
+      ],
+      "implemented_static": "九维归一化均值；当前candidate_height取全部criteria，历史索引取reference/alternative两动作。",
+      "limitations_and_JM_v2_gap": "同名特征总体不一致；缺阶段/结构/动作关系，须同函数同总体新版本。",
+      "responsible_units": [
+        "JM2-A1",
+        "JM2-A2"
+      ],
+      "behavior_test_this_turn": "NOT_RUN"
+    },
+    {
+      "id": "I09",
+      "references": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py",
+          "symbol": "retrieve",
+          "line": 216,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py",
+          "symbol": "_retrieve_validated",
+          "line": 223,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_pilot_memory.py",
+          "symbol": "MemoryDriver",
+          "line": 104,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_evaluation_memory.py",
+          "symbol": "MemoryDriver",
+          "line": 60,
+          "exists": true
+        }
+      ],
+      "implemented_static": "平均绝对距离、1/(1+d)、0.5门槛、最多1条整片；来源和fork排除；显式MemoryView、预算与逐步收据；无关E按参考检索转换。",
+      "limitations_and_JM_v2_gap": "未有JM R1条件门控、动作角色匹配、生命周期执行白名单；高注入不证明适用。",
+      "responsible_units": [
+        "JM3-A1",
+        "JM3-A2",
+        "JM3-B1",
+        "JM3-B2"
+      ],
+      "behavior_test_this_turn": "NOT_RUN"
+    },
+    {
+      "id": "I10",
+      "references": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_contrast.py",
+          "symbol": "build_fact_pack",
+          "line": 40,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_contrast.py",
+          "symbol": "generation_body",
+          "line": 111,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_contrast.py",
+          "symbol": "semantic_review",
+          "line": 146,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_contrast.py",
+          "symbol": "render",
+          "line": 175,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_contrast_generation.py",
+          "symbol": "review_result",
+          "line": 95,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_contrast_generation_v1.schema.json"
+        }
+      ],
+      "implemented_static": "F001—F005事实包、原响应和生成账目、确定性fact/semantic审核；GRAMMAR仅两类direction映射固定英文建议；reviewer明确无人工/生成器自评。",
+      "limitations_and_JM_v2_gap": "旧受限语法不是自由文本内容有效性审核；新条件化E、真实人工署名或独立模型审核、FACT_CASE/CANDIDATE/EXECUTION生命周期未有。",
+      "responsible_units": [
+        "JM2-B1",
+        "JM2-B2",
+        "JM2-C1",
+        "JM2-C2"
+      ],
+      "behavior_test_this_turn": "NOT_RUN"
+    },
+    {
+      "id": "I11",
+      "references": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py",
+          "symbol": "components",
+          "line": 49,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_audit.py",
+          "symbol": "audit_sources",
+          "line": 160,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_source_provenance.py",
+          "symbol": "adjudicate",
+          "line": 23,
+          "exists": true
+        }
+      ],
+      "implemented_static": "来源别名、旋转多重集与90%近重复保守连通；正向来源证明检查完整生命周期/签名/证据，未命中不视为未见。",
+      "limitations_and_JM_v2_gap": "旧来源登记不等于JM多用途隔离已冻结；需新增登记与分区合同，不调用审计引擎重建历史。",
+      "responsible_units": [
+        "JM0-B",
+        "JM1-B2",
+        "JM3-B1",
+        "JM5-A1"
+      ],
+      "behavior_test_this_turn": "NOT_RUN"
+    },
+    {
+      "id": "I12",
+      "references": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_synthetic_data.py",
+          "symbol": "build",
+          "line": 218,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py",
+          "symbol": "load_runtime_dataset",
+          "line": 61,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py",
+          "symbol": "runtime_task",
+          "line": 39,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_orders.py",
+          "symbol": "prepare",
+          "line": 54,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_exact_orders.py",
+          "symbol": "prepare_remaining",
+          "line": 252,
+          "exists": true
+        }
+      ],
+      "implemented_static": "合成组合有独立数据/运行版本、完整订单计划与公共run_episode；v12/remaining24独立历史补充协议。",
+      "limitations_and_JM_v2_gap": "新种子/订单不自动独立；旧单次矩阵不等于JM重复/七方法合同。",
+      "responsible_units": [
+        "JM0-B",
+        "JM1-B2",
+        "JM4-B1",
+        "JM5-A2"
+      ],
+      "behavior_test_this_turn": "NOT_RUN"
+    },
+    {
+      "id": "I13",
+      "references": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_metrics.py",
+          "symbol": "job_metrics",
+          "line": 19,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_metrics.py",
+          "symbol": "aggregate",
+          "line": 75,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_orders.py",
+          "symbol": "metrics",
+          "line": 185,
+          "exists": true
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_orders.py",
+          "symbol": "request_statistics",
+          "line": 158,
+          "exists": true
+        }
+      ],
+      "implemented_static": "完整分母、装入件/体积/质量、固定/包络利用率、垛高、分类终态、监测覆盖、时延；remote包装在基础本地指标上补请求统计。",
+      "limitations_and_JM_v2_gap": "基础metrics默认本地origin/成本0不能单独用于真实路由；新来源聚合/重复/适用性/七方法需版本化。",
+      "responsible_units": [
+        "JM1-C2",
+        "JM3-B2",
+        "JM4-B2",
+        "JM5-A2",
+        "JM6-A"
+      ],
+      "behavior_test_this_turn": "NOT_RUN"
+    }
+  ],
+  "proposed_plan_names": [
+    {
+      "name": "freeze_training_plan",
+      "current_definitions": [],
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "name": "select_fork_points",
+      "current_definitions": [],
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "name": "run_jev_fork",
+      "current_definitions": [],
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "name": "build_scenario_signature",
+      "current_definitions": [],
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "name": "build_case_snapshot",
+      "current_definitions": [],
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "name": "prepare_experience_generation",
+      "current_definitions": [],
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "name": "admit_memory",
+      "current_definitions": [],
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "name": "freeze_evaluation_plan",
+      "current_definitions": [],
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    }
+  ],
+  "proposed_modules": {
+    "packaging_jev_forks.py": false,
+    "packaging_scenario_memory.py": false,
+    "packaging_memory_admission.py": false
+  }
+}

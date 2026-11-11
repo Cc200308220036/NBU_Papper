@@ -1,0 +1,47 @@
+{
+  "version": "jm1_a1_admission_review_v1",
+  "next_unit": "JM1-A1",
+  "status": "READY",
+  "scope": "仅新版本分叉绑定Schema、状态复制、强制首步构造工程；M11-01与M11-02首步部分",
+  "prerequisites": [
+    {
+      "requirement": "JM0-A独立复核和准入证据可读",
+      "evidence": "11月11日父QA七件均到达，8个非共享导航清单项摘要一致",
+      "status": "PASS"
+    },
+    {
+      "requirement": "JM0-B关键研究合同、阈值选择程序及范围明确",
+      "evidence": "6主合同+4支持合同、逐参数输入/期限/owner/failure、9类预算",
+      "status": "PASS"
+    },
+    {
+      "requirement": "JM0-B合同独立复核",
+      "evidence": "本次逐M00-03—08静态设计审查及独立分项核对",
+      "status": "PASS"
+    },
+    {
+      "requirement": "构造绑定/复制/强制首步可复用工程入口",
+      "evidence": "packaging_counterfactual.restore_training_fork/bootstrap/validate_branch_checkpoint、episode.run_episode、execution.commit_physical存在；新JM接口仍待实现",
+      "status": "PASS_FOR_REUSE_DESIGN"
+    },
+    {
+      "requirement": "真实分区/卡片/新Jev后缀/第三方执行材料",
+      "status": "NOT_APPLICABLE",
+      "basis": "不属于JM1-A1构造工程成品前置；未来真实准入仍DEFER，不能拿checker当生产准入器"
+    }
+  ],
+  "nonblocking_limits": [
+    "QA-JM0B-02隔离checker不是生产准入器",
+    "原B checker本轮整体FAIL，独立分项证据另列",
+    "数据、文献原文、审核、执行经验与真实执行未准入"
+  ],
+  "not_admitted": [
+    "JM1-A2真实后续路由开发任务",
+    "JM1-A3完整恢复/重复单元",
+    "JM1-B/C任务或真实采集",
+    "数据生成/模型/历史回放/求解实验"
+  ],
+  "real_calls_authorized": 0,
+  "authorization": "技术与证据准入建议；实际新窗口任务需用户指定，不能自动扩展下一单元。",
+  "stop": true
+}

@@ -1,0 +1,98 @@
+{
+  "version": "jm1_a1_independent_quality_review_v1",
+  "date": "2026-11-11",
+  "unit": "JM1-A1",
+  "plan_version": "JM-plan-v2",
+  "plan": "docs/02_阶段实施方案/Jev/Jev经验构建检索与无经验Jev分叉改进分阶段开发方案_20261109.md",
+  "baseline": {
+    "head": "114ef898ddfcd4f20966c7e7f1a129adcc77bc07",
+    "developer_entry": "42654d35a5c2b93aeeea2e6e2e216e8c4ba44a8b",
+    "initial_worktree": "CLEAN",
+    "source_identity": "semantic_pallet_planner/outputs/JEV_JM1_A1_20261111_01/source_identity.json",
+    "scope": "10 changed source/schema/test/fixture files; old counterfactual/stability/candidates/generator config unchanged"
+  },
+  "engineering_status": "COMPLETE_A1_CONSTRUCTED_SCOPE",
+  "evidence_readiness": "SUFFICIENT_FOR_A2_ENGINEERING_NOT_REAL_EXECUTION",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "READY",
+  "acceptance": [
+    {
+      "id": "M11-01",
+      "status": "PASS",
+      "scope": "A1构造绑定/复制，依据当前源码及同摘要归档行为证据；本机未重跑pytest",
+      "evidence": "9类重签篡改测试与隔离复制测试在29项JUnit内；代码重读父receipt列举字节及start/task/cursor/buffer/pool/map/action/config；本轮185产物/12仓库交付/476运行源码摘要核对。"
+    },
+    {
+      "id": "M11-02_FIRST",
+      "status": "PASS",
+      "scope": "原动作参考、同箱/跨箱及首步；不含后续真实路由",
+      "evidence": "原选择映射、forced来源、公共run_episode及commit路径；本轮12组保存记录覆盖3类干预×4监测状态，1次强制/监测、稳定提交1次、失败提交0次。"
+    },
+    {
+      "id": "M11-02",
+      "status": "PARTIAL",
+      "scope": "父项总体",
+      "evidence": "A2真实无经验后续路由NOT_IMPLEMENTED；不是A1未完成。"
+    },
+    {
+      "id": "M11-04",
+      "status": "PARTIAL",
+      "scope": "首步失败不提交/强制计数已具构造证据；后续及独立账本由A2关闭",
+      "evidence": "失败state/缓冲/件数体积质量不变；构造singleton保留强制来源；非首步请求账目未实现。"
+    },
+    {
+      "id": "M11-03",
+      "status": "NOT_RUN",
+      "scope": "A3负责",
+      "evidence": "resume显式拒绝；未验收完整恢复/UNKNOWN_SEND。"
+    },
+    {
+      "id": "M11-05",
+      "status": "NOT_RUN",
+      "scope": "A3负责",
+      "evidence": "未实现重复槽位/跨调用去重；旧Schema文件未放宽。"
+    },
+    {
+      "id": "THIS_TURN_PYTEST",
+      "status": "NOT_RUN",
+      "scope": "本机行为复验",
+      "evidence": "当前python缺pytest/jsonschema/numpy/scipy，不安装依赖；29+50仅归档证据。"
+    },
+    {
+      "id": "THIS_TURN_SAVED_VERIFICATION",
+      "status": "PASS",
+      "scope": "纯stdlib只读文件/身份/保存账目",
+      "evidence": "原verify_delivery.py与独立verify_review.py成功，无业务模块导入。"
+    }
+  ],
+  "blocking_findings": [],
+  "findings": [
+    {
+      "id": "QA-JM1A1-01",
+      "severity": "一般",
+      "blocking_for_A2": false,
+      "contract": "交付可移植性，非首步行为合同",
+      "evidence": "semantic_pallet_planner/outputs/JEV_JM1_A1_20261111_01/constructed_evidence/*current",
+      "actual": "pytest生成的current符号链接含操作端/home/cyw绝对路径，本机为断链；实体测试目录和清单所列字节完整，原验证脚本排除这些别名。",
+      "impact": "不能通过current别名跨端定位fixture，不影响12实体首步记录或A1验收；不将此目录作为真实执行前缀。",
+      "minimum_fix": "后续新交付使用实体相对路径；若需要修复历史归档别名，另行记录，不修改当前冻结证据。"
+    }
+  ],
+  "fact_layers": {
+    "report": "A1 complete, whole JM1-A partial; historical29/50 pass",
+    "implementation": "versioned binding/forced selection + guarded public episode/commit adaptation exists",
+    "archived": "29/50 JUnit no failures,12 first-step records,current hash matches",
+    "this_turn": "stdlib saved checks PASS; pytest and business execution NOT_RUN"
+  },
+  "evidence": "semantic_pallet_planner/outputs/JEV_JM_JM1_A1_QA_20261111_01/static_checks.json",
+  "boundary": [
+    "No real model or credentials/network",
+    "No orders/forks/candidate rebuild/solver",
+    "No public-engine first-step execution this turn",
+    "No full historical replay",
+    "No across-invocation exactly-once or whole JM1 completion claim"
+  ],
+  "raw_archive_observation": "HEAD also contains raw/mixed_pallet_boxes/MixedPalletBoxes-v1.0 mode160000 gitlink; not used as A1 evidence nor proof of workbook synchronization/source admission",
+  "prompt_delivery": "INLINE_FINAL_ONLY_NO_LOCAL_MARKDOWN",
+  "stop": true
+}

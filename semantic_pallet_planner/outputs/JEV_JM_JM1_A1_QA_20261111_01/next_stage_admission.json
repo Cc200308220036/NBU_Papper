@@ -1,0 +1,44 @@
+{
+  "version": "jm1_a2_admission_review_v1",
+  "next_unit": "JM1-A2",
+  "status": "READY",
+  "scope": "仅无经验后续路由、独立账本和停止的工程/构造验证；M11-02路由部分与M11-04",
+  "prerequisites": [
+    {
+      "requirement": "JM0-B研究/采点/额度合同及A1工程准入",
+      "evidence": "JM0-B合同包及父QA/handoff，A1输入27份均摘要一致",
+      "status": "PASS"
+    },
+    {
+      "requirement": "同前缀同池、不可变精确动作及独立分支绑定",
+      "evidence": "freeze_start/validate_start/bind_branch/validate_binding/bootstrap及同摘要归档测试",
+      "status": "PASS_IN_CONSTRUCTED_SCOPE"
+    },
+    {
+      "requirement": "首步选后监测/保存/公共提交或分类停止",
+      "evidence": "12保存组、源码受jm_first路由保护；成功后边界STOP、resume拒绝",
+      "status": "PASS_IN_CONSTRUCTED_SCOPE"
+    },
+    {
+      "requirement": "A2接入位置及版本边界明确",
+      "evidence": "UnimplementedContinuation是A1哨兵；A2必须独立版本化替换后续身份/账本，保留A1现有行为",
+      "status": "PASS_FOR_ENGINEERING_DESIGN"
+    },
+    {
+      "requirement": "真实来源分区/新Jev后缀/执行经验或第三方原件",
+      "status": "NOT_APPLICABLE",
+      "basis": "A2仅开发和构造验证；真实发送仍0，不能提前要求未来成品"
+    }
+  ],
+  "not_admitted": [
+    "真实Jev/DeepSeek/其他模型请求",
+    "历史订单/后缀实验",
+    "JM1-A3完整恢复与重复单元",
+    "JM1-B/C采点计划或采集",
+    "真实来源或经验资格升级"
+  ],
+  "real_calls_authorized": 0,
+  "conditions_for_future_execution": "实际数据、v3算法、源码/依赖/策略/提示/模型/预算身份及用户对具体冻结范围的授权另行满足；不得将A1构造标志改写为真实准入。",
+  "authorization_note": "技术准入建议；本窗口不执行下一阶段，用户需指定开发窗口任务。",
+  "stop": true
+}

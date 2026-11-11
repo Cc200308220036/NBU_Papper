@@ -9,3 +9,7 @@ REMAINDER_PLAN='jev_synthetic_remainder_plan_v3'
 # JM1-A1 is an independent fork/forced-selection protocol over saved envelopes.
 JM_FORK_VERSION='jev_jm_fork_binding_v1'
 JM_FORK_PROTOCOLS={JM_FORK_VERSION: 'packaging_jev_forks'}
+
+# A2 has a separate execution wrapper; A1 binding and stop route stay intact.
+JM_CONTINUATION_VERSION='jev_jm_continuation_v1'
+JM_CONTINUATION_PROTOCOLS={JM_CONTINUATION_VERSION: 'packaging_jev_continuation'}

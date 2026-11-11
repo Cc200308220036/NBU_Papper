@@ -1,0 +1,74 @@
+{
+  "version": "jm1_a2_commands_v1",
+  "commands": [
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m pytest -q semantic_pallet_planner/tests/unit/test_packaging_jev_continuation.py semantic_pallet_planner/tests/unit/test_packaging_jev_forks.py --basetemp=semantic_pallet_planner/outputs/JEV_JM1_A2_20261111_01/constructed_evidence --junitxml=semantic_pallet_planner/outputs/JEV_JM1_A2_20261111_01/constructed_junit.xml",
+      "status": "PASS",
+      "passed": 58,
+      "A2": 29,
+      "A1": 29,
+      "log": "constructed_tests.log"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m pytest -q semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_protocol.py semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_selection.py -k 'not no_key and not urllib and not http and not transport and not redirect and not exception and not timeout and not secret' --junitxml=semantic_pallet_planner/outputs/JEV_JM1_A2_20261111_01/public_regression_junit.xml",
+      "status": "PASS",
+      "passed": 50,
+      "deselected": 10,
+      "log": "public_regression.log"
+    },
+    {
+      "command": "python3 semantic_pallet_planner/outputs/JEV_JM1_A2_20261111_01/verify_delivery.py",
+      "scope": "read-only stdlib delivery check",
+      "status": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "status": "PASS"
+    }
+  ],
+  "development_runs": [
+    {
+      "scope": "19 initial A2 tests",
+      "result": "3 failed,16 passed",
+      "reason": "constructed accumulated volume utilization fixture; fake provider status used non-schema HTTP_ERROR",
+      "resolution": "fixture stage ratio and PROVIDER_FAILURE status corrected"
+    },
+    {
+      "scope": "corrected initial set",
+      "result": "19 passed"
+    },
+    {
+      "scope": "expanded intermediate set",
+      "result": "26 passed"
+    },
+    {
+      "scope": "final source, expanded A2 and A1",
+      "result": "58 passed"
+    }
+  ],
+  "operations": {
+    "real_model_calls": 0,
+    "credential_reads": 0,
+    "network_calls": 0,
+    "solver_calls": 0,
+    "historical_fork_runs": 0,
+    "real_orders": 0,
+    "research_data_generation": 0,
+    "subagents": 0,
+    "installs": 0,
+    "downloads": 0,
+    "git_add": 0,
+    "commits": 0,
+    "pushes": 0
+  },
+  "construction": "handwritten frozen pools + injected monitor stub + FakeTransport; original physical checks/commit retained",
+  "aliases": "removed only newly generated pytest current symlinks; entity directories retained",
+  "not_run": [
+    "true network/credentials",
+    "real v3 solver or order",
+    "historical suffix",
+    "A3 stage recovery/repeats",
+    "JM1-B/C"
+  ],
+  "final_source_rerun": "58 constructed and 50 public regression passed after independent reservation anchor strengthened; same scope"
+}

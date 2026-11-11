@@ -1,0 +1,37 @@
+{
+  "version": "jm1_a2_interface_receipt_v1",
+  "module": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_continuation.py",
+  "execution": "jev_jm_continuation_v1",
+  "schema": "jm_continuation_v1",
+  "policy": "jev_jm_no_memory_policy_v1",
+  "ledger": "jev_jm_continuation_requests_v1",
+  "saved_validation": "jev_jm_saved_continuation_check_v1",
+  "registry": "packaging_versions.JM_CONTINUATION_PROTOCOLS",
+  "interfaces": [
+    "freeze_execution",
+    "validate_execution",
+    "policy",
+    "ContinuationLedger",
+    "selector_factory",
+    "validate_route",
+    "run_continuation",
+    "validate_saved_execution"
+  ],
+  "selector": "packaging_remote.PackagingRemoteSelector (actual class, not geometry selector)",
+  "transport": "complete(final_body) -> jev_transport_v1; A2 only origin=test_double, scope=CONSTRUCTED_FAKE_TRANSPORT",
+  "ledger_parent": "packaging_remote.RequestLedger",
+  "order_engine": "episode.run_episode",
+  "commit": "execution.commit_physical",
+  "A1_preserved": true,
+  "supported_scope": "CONSTRUCTED_ONLY / v6 no-memory envelope / monitor stub in tests",
+  "not_supported": [
+    "real execution admission",
+    "v12 MemoryDriver continuation",
+    "full resume",
+    "repeat slots",
+    "cross-invocation exactly-once"
+  ],
+  "future_v3": "separately freeze protocol, identity and actual admission; never edit A1 scope/checkpoint",
+  "reservation": "jev_jm_request_reservation_v1",
+  "reservation_identity": "separate immutable-before-send context/body/mapping/execution/branch/job/decision/policy/model/allocation anchor"
+}

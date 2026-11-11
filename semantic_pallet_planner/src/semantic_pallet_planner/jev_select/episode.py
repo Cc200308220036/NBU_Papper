@@ -258,10 +258,19 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         if hasattr(selector, 'bind_public'):
             selector.bind_public(req, policy, bundle)
 
-    from .packaging_versions import JM_FORK_PROTOCOLS
+    from .packaging_versions import JM_FORK_PROTOCOLS, JM_CONTINUATION_PROTOCOLS
+    jm_continuation = training_fork is not None and training_fork.get('version') in JM_CONTINUATION_PROTOCOLS
     jm_first = training_fork is not None and training_fork.get('version') in JM_FORK_PROTOCOLS
     if training_fork is not None:
-        if jm_first:
+        if jm_continuation:
+            from .packaging_jev_continuation import validate_route
+            from .packaging_jev_forks import bootstrap
+            if resume is not None or expected_events is not None or not callable(on_checkpoint):
+                raise JevSelectError('jm_A2_resume_not_implemented_A3')
+            validate_route(training_fork, task, config, job_id, selector)
+            resume = bootstrap(training_fork['binding'], task, config, job_id)
+            on_checkpoint(copy.deepcopy(resume))
+        elif jm_first:
             from .packaging_jev_forks import bootstrap, UnimplementedContinuation
             if resume is not None:
                 raise JevSelectError('jm_resume_not_implemented_A3')
@@ -453,7 +462,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                         else:
                             validate_monitor(event['monitor'],state,chosen,event,config)
                             event['monitor_result_reuses'] += 1
-                        if jm_first and event['monitor']['status'] not in ('STABLE','UNSTABLE','UNASSESSABLE','ERROR'):
+                        if (jm_first or jm_continuation) and event['monitor']['status'] not in ('STABLE','UNSTABLE','UNASSESSABLE','ERROR'):
                             raise JevSelectError('jm_monitor_status_not_authorized')
                         reason = TERMINATIONS.get(event['monitor']['status'])
                     if reason is None:

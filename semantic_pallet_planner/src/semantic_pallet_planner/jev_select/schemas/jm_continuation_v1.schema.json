@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "binding_digest",
+    "branch_id",
+    "task_digest",
+    "config_digest",
+    "policy_digest",
+    "record_digest",
+    "version",
+    "scope",
+    "binding",
+    "policy",
+    "max_sends"
+  ],
+  "properties": {
+    "binding_digest": {
+      "type": "string"
+    },
+    "branch_id": {
+      "type": "string"
+    },
+    "task_digest": {
+      "type": "string"
+    },
+    "config_digest": {
+      "type": "string"
+    },
+    "policy_digest": {
+      "type": "string"
+    },
+    "record_digest": {
+      "type": "string"
+    },
+    "version": {
+      "const": "jev_jm_continuation_v1"
+    },
+    "scope": {
+      "const": "CONSTRUCTED_ONLY"
+    },
+    "binding": {
+      "type": "object"
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "selector",
+        "config_digest",
+        "source_identity",
+        "runtime_identity",
+        "model",
+        "prompt_version",
+        "memories",
+        "retrieval",
+        "retries",
+        "seed_support",
+        "python",
+        "dependencies"
+      ],
+      "properties": {
+        "version": {
+          "const": "jev_jm_no_memory_policy_v1"
+        },
+        "selector": {
+          "const": "jev_no_memory"
+        },
+        "config_digest": {
+          "type": "string"
+        },
+        "source_identity": {
+          "type": "string"
+        },
+        "runtime_identity": {
+          "type": "object"
+        },
+        "model": {
+          "type": "string"
+        },
+        "prompt_version": {
+          "type": "string"
+        },
+        "memories": {
+          "const": []
+        },
+        "retrieval": {
+          "const": "FORBIDDEN"
+        },
+        "retries": {
+          "const": 0
+        },
+        "seed_support": {
+          "const": "UNKNOWN"
+        },
+        "python": {
+          "type": "string"
+        },
+        "dependencies": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "jsonschema",
+            "numpy",
+            "scipy"
+          ],
+          "properties": {
+            "jsonschema": {
+              "type": "string"
+            },
+            "numpy": {
+              "type": "string"
+            },
+            "scipy": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "max_sends": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}

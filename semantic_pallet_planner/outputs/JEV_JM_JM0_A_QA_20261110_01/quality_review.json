@@ -1,0 +1,90 @@
+{
+  "version": "jm_independent_quality_review_v1",
+  "date": "2026-11-10",
+  "reviewed_unit": "JM0-A",
+  "plan_version": "JM-plan-v2",
+  "plan": "docs/02_阶段实施方案/Jev/Jev经验构建检索与无经验Jev分叉改进分阶段开发方案_20261109.md",
+  "baseline": {
+    "current_head": "3a3f83384b6cdde19cd5262cc86f27c4b8cd7011",
+    "reported_start_head": "5e6bfe4775d74b11d6b915687e7f3a5faae15385",
+    "reported_delivery_commit": "3a3f83384b6cdde19cd5262cc86f27c4b8cd7011",
+    "initial_worktree": "CLEAN (git status --short; ignored files not inferred absent)",
+    "commit_scope": "2 documentation files, no archived JM0-A output package"
+  },
+  "reviewed_report": "docs/03_阶段产出分析/Jev/Jev_JM0-A源码数据来源与暴露审查_20261110.md",
+  "claimed_delivery": "semantic_pallet_planner/outputs/JEV_JM0_A_20261110_01",
+  "claimed_closed_ids": [
+    "M00-01",
+    "M00-02"
+  ],
+  "actual_authorization": "仅独立质检与交接；新模型/订单/分叉/求解/凭证/子代理=0",
+  "engineering_status": "PARTIAL",
+  "evidence_readiness": "INSUFFICIENT_DELIVERY_MISSING",
+  "research_result": "NOT_APPLICABLE_STATIC_AUDIT",
+  "next_stage_admission": "NOT_READY",
+  "acceptance": [
+    {
+      "id": "M00-01",
+      "status": "PARTIAL",
+      "basis": "文字报告列出基线、实际入口及蓝图；源码抽查支持旧几何后续、非空保护、空记忆保护与v3分派。缺完整接口清单、源码/父证据身份及验证记录。"
+    },
+    {
+      "id": "M00-02",
+      "status": "PARTIAL",
+      "basis": "报告明确暴露和真实/合成限制；父材料4个train组、3648组件分布、T/E数量本轮可确认。缺逐来源用途登记、共享原型与覆盖附表，不能关闭完整交付。"
+    }
+  ],
+  "defects": [
+    {
+      "id": "QA-JM0A-01",
+      "severity": "阻断",
+      "acceptance_ids": [
+        "M00-01",
+        "M00-02",
+        "方案14.2交付合同"
+      ],
+      "evidence": [
+        "docs/03_阶段产出分析/Jev/Jev_JM0-A源码数据来源与暴露审查_20261110.md:20",
+        "docs/03_阶段产出分析/Jev/Jev_JM0-A源码数据来源与暴露审查_20261110.md:40",
+        "docs/03_阶段产出分析/Jev/Jev_JM0-A源码数据来源与暴露审查_20261110.md:91",
+        "docs/03_阶段产出分析/Jev/Jev_JM0-A源码数据来源与暴露审查_20261110.md:93",
+        "semantic_pallet_planner/outputs/JEV_JM0_A_20261110_01/"
+      ],
+      "actual": "报告声明已交付的整个JM0-A目录不存在；两个outputs根内未定位同名目录或替代主收据/接口清单/来源登记；HEAD仅包含报告和索引两文件。报告9个本地链接失效。",
+      "expected": "可读取的source_and_exposure_receipt、逐来源登记、接口/父证据及缺口、handoff、manifest和验证证据。",
+      "impact": "不能校验交付身份、逐来源用途理由及材料覆盖声明，M00-01/02不能关闭，JM0-B正式依赖输入不完整。",
+      "minimum_fix": "优先恢复原字节交付包并核验旧摘要；无法恢复则创建新的补交目录、实际基线和独立验证收据，明确为本轮重建，不能冒充原验收。"
+    },
+    {
+      "id": "QA-JM0A-02",
+      "severity": "重要",
+      "acceptance_ids": [
+        "M00-01",
+        "M00-02"
+      ],
+      "evidence": [
+        "docs/03_阶段产出分析/Jev/Jev_JM0-A源码数据来源与暴露审查_20261110.md:57",
+        "docs/03_阶段产出分析/Jev/Jev_JM0-A源码数据来源与暴露审查_20261110.md:59",
+        "docs/03_阶段产出分析/Jev/Jev_JM0-A源码数据来源与暴露审查_20261110.md:79",
+        "semantic_pallet_planner/outputs/JEV_JM_JM0_A_QA_20261110_01/static_checks.json"
+      ],
+      "actual": "报告称本轮存在ReMe-main、zip及未跟踪MixedPalletBoxes，但当前三处均不存在，third_party_review等收据亦缺失。",
+      "expected": "区分交付时与当前可用材料，保留原摘要/身份依据；缺失记UNKNOWN或UNAVAILABLE。",
+      "impact": "相关历史现场声明NOT_RUN，不能证明当时未执行或声明虚假；与QA-JM0A-01共同影响完整输入核验，目录不存在本身不要求下载第三方。",
+      "minimum_fix": "恢复已有来源证明/身份收据，或在新增补交中明确当前不可用与历史不可复验边界；不下载、不重建表格、不把缺失版本设为已核实。"
+    }
+  ],
+  "scope": {
+    "full_static": "原报告所有Markdown链接；继承source_audit保存表的3648行计数；split四组；6文件manifest摘要",
+    "sampled": "4项源码文本检查、T/E条数；不是完整接口或公共合同行为验证",
+    "not_run": [
+      "原verify_static.py（缺失）",
+      "原交付manifest全量验证（缺失）",
+      "pytest/业务导入/模型/订单/分叉/候选重建/求解",
+      "15对共享原型统计及12条分支/19条概率的全量复验",
+      "第三方版本与原始表格复验"
+    ]
+  },
+  "checks": "semantic_pallet_planner/outputs/JEV_JM_JM0_A_QA_20261110_01/static_checks.json",
+  "stop": true
+}

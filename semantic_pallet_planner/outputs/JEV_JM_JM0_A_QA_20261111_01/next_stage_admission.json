@@ -1,0 +1,53 @@
+{
+  "version": "jm_admission_review_v2",
+  "next_unit": "JM0-B",
+  "status": "READY",
+  "scope": "仅JM-plan-v2 M00-03—08合同设计",
+  "prerequisites": [
+    {
+      "requirement": "JM0-A源码/接口、父证据与身份清单可读",
+      "evidence": "semantic_pallet_planner/outputs/JEV_JM0_A_20261110_01/source_and_exposure_receipt.json; interface_inventory.json; parent_identity_checks.json",
+      "status": "PASS"
+    },
+    {
+      "requirement": "来源/暴露/真实合成限制、用途及缺口明确",
+      "evidence": "semantic_pallet_planner/outputs/JEV_JM0_A_20261110_01/source_task_register.json; inherited_component_register.json; coverage_gaps.json",
+      "status": "PASS"
+    },
+    {
+      "requirement": "新未见数据/未来卡片/无经验Jev后缀",
+      "evidence": "尚未就绪",
+      "status": "NOT_APPLICABLE",
+      "basis": "JM0-B设计合同的输入可以是明确缺口，不要求未来阶段成品"
+    },
+    {
+      "requirement": "直接使用第三方或工作簿原件",
+      "evidence": "当前不可用",
+      "status": "NOT_APPLICABLE",
+      "basis": "本次只准入离线合同设计，不准入原件执行或直接集成"
+    }
+  ],
+  "required_inputs": [
+    "docs/02_阶段实施方案/Jev/Jev经验构建检索与无经验Jev分叉改进分阶段开发方案_20261109.md",
+    "docs/03_阶段产出分析/Jev/Jev_JM0-A原包同步后独立复核与JM0-B准入_20261111_01.md",
+    "semantic_pallet_planner/outputs/JEV_JM0_A_20261110_01/handoff.json",
+    "semantic_pallet_planner/outputs/JEV_JM0_A_20261110_01/delivery_manifest.json",
+    "semantic_pallet_planner/outputs/JEV_JM0_A_20261110_01/source_and_exposure_receipt.json",
+    "semantic_pallet_planner/outputs/JEV_JM0_A_20261110_01/coverage_gaps.json"
+  ],
+  "must_preserve": [
+    "strict_unseen=0",
+    "current original availability limits",
+    "historical negative results and identities"
+  ],
+  "not_admitted": [
+    "JM1开发或运行",
+    "数据生成/订单/分叉",
+    "真实Jev/DeepSeek调用",
+    "第三方直接集成运行",
+    "正式评价"
+  ],
+  "real_calls_authorized": 0,
+  "execution_authorization": "技术与证据准入建议，不自动授权下一任务；须由用户指定JM0-B任务，真实调用另需具体冻结范围授权。",
+  "stop": true
+}

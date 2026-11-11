@@ -1,0 +1,99 @@
+{
+  "version": "jm0_a_resync_quality_review_v1",
+  "date": "2026-11-11",
+  "unit": "JM0-A",
+  "plan_version": "JM-plan-v2",
+  "plan": "docs/02_阶段实施方案/Jev/Jev经验构建检索与无经验Jev分叉改进分阶段开发方案_20261109.md",
+  "baseline": {
+    "head": "8b1b98b77169001bb1d4783ca6e6931aead88749",
+    "original_start": "5e6bfe4775d74b11d6b915687e7f3a5faae15385",
+    "original_report_commit": "3a3f83384b6cdde19cd5262cc86f27c4b8cd7011",
+    "synchronized_package_commit": "8b1b98b77169001bb1d4783ca6e6931aead88749",
+    "source_tests_data_tracked_diff_since_start": "EMPTY",
+    "initial_worktree": "only 7 untracked files in prior QA output; no tracked changes"
+  },
+  "engineering_status": "COMPLETE_STATIC_REVIEW",
+  "evidence_readiness": "SUFFICIENT_FOR_JM0_B_CONTRACT_DESIGN_ONLY",
+  "research_result": "NOT_APPLICABLE_STATIC_AUDIT",
+  "next_stage_admission": "READY",
+  "acceptance": [
+    {
+      "id": "M00-01",
+      "status": "PASS",
+      "scope": "JM0-A静态审查",
+      "evidence": "原包主收据、接口清单、身份附表与197项索引可读；53处接口引用、8份附表摘要、6份选定父摘要复核；第三方当前缺失已明确列出。"
+    },
+    {
+      "id": "M00-02",
+      "status": "PASS",
+      "scope": "来源/暴露审查，不代表数据执行准入",
+      "evidence": "27行含4来源/22任务/1候选语料，用途字段齐全；22文件摘要一致；3648行继承原字段与父表一致；69条来源引用/指针核对；严格未见0，15对共享关系保留。"
+    },
+    {
+      "id": "DELIVERY_14_2",
+      "status": "PASS",
+      "scope": "原交付存在且可追溯；历史索引演进例外明示",
+      "evidence": "主收据、manifest、handoff、验证记录等已同步并被8b1b98b7跟踪；manifest15项14项当前一致，README旧摘要与3a3f8338版本一致。"
+    },
+    {
+      "id": "ORIGINAL_VERIFY_STATIC_CURRENT_RUN",
+      "status": "FAIL",
+      "scope": "本轮直接执行原脚本",
+      "evidence": "在evidence_index的docs/03_阶段产出分析/Jev/README.md摘要断言停止；后续检查未执行，不能声称原脚本本轮通过。"
+    },
+    {
+      "id": "M00-03_TO_08",
+      "status": "NOT_APPLICABLE",
+      "scope": "JM0-B后续验收，不在JM0-A关闭",
+      "evidence": "JM-plan-v2 4.2及5.3"
+    },
+    {
+      "id": "RESEARCH_BENEFIT",
+      "status": "NOT_APPLICABLE",
+      "scope": "JM0-A不评价研究收益",
+      "evidence": "JM-plan-v2静态审查单元定义"
+    }
+  ],
+  "previous_findings": [
+    {
+      "id": "QA-JM0A-01",
+      "status": "CLOSED",
+      "reason": "原交付已同步纳入Git；核心材料存在且摘要/引用可核；旧NOT_READY记录保留。"
+    },
+    {
+      "id": "QA-JM0A-02",
+      "status": "CLOSED_FOR_CONTRACT_DESIGN_WITH_EXPLICIT_AVAILABILITY_LIMITS",
+      "reason": "third_party_review及source_task_register、evidence_index已可读，旧身份依据和当前缺失可区分；不把过去存在断言写成当前存在。第三方原件当前仍不可复验，不授予直接集成或数据执行资格。"
+    }
+  ],
+  "nonblocking_limits": [
+    {
+      "id": "R01",
+      "severity": "一般",
+      "blocking_for_JM0_B": false,
+      "topic": "历史导航摘要随索引更新失配",
+      "evidence": "原manifest15项中的README当前不匹配，历史3a3f8338字节匹配；不重签原摘要。",
+      "action": "新增复核记录说明，不改旧manifest/脚本以制造全通过。"
+    },
+    {
+      "id": "R02",
+      "severity": "重要",
+      "blocking_for_JM0_B": false,
+      "topic": "当前原件不可用",
+      "evidence": "197项索引188项当前摘要匹配，1项README演进，8项缺失；另11份工作簿原件不可用。",
+      "action": "JM0-B基于已存身份/缺口设计合同；直接运行第三方、重新解析语料或准入数据前须有实际可读材料和独立身份核验。"
+    },
+    {
+      "id": "R03",
+      "severity": "一般",
+      "blocking_for_JM0_B": false,
+      "topic": "旧archive_policy记录不再描述当前归档状态",
+      "evidence": "原收据记local ignored；8b1b98b7修改.gitignore并归档14个原包文件。",
+      "action": "按当时事实保留，当前状态在新报告登记。"
+    }
+  ],
+  "validation": "semantic_pallet_planner/outputs/JEV_JM_JM0_A_QA_20261111_01/static_checks.json",
+  "previous_review_preserved": "docs/03_阶段产出分析/Jev/Jev_JM0-A独立质检与交接_20261110_01.md",
+  "boundary": "Saved-file identity/reference/AST checks only; no behavior/model/network/credentials/orders/forks/candidate/solver. Partial original-script failure explicitly retained.",
+  "stop": true
+}

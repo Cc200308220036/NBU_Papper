@@ -1,0 +1,365 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_jm_training_template_v1"
+    },
+    "state": {
+      "const": "TEMPLATE_ONLY"
+    },
+    "execution_state": {
+      "const": "NOT_EXECUTABLE"
+    },
+    "execution_authorized": {
+      "const": false
+    },
+    "evidence_kind": {
+      "enum": [
+        "TEMPLATE_ONLY",
+        "CONSTRUCTED_ONLY"
+      ]
+    },
+    "policy_ref": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "pointer": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "pointer"
+      ],
+      "additionalProperties": false
+    },
+    "source_candidates_ref": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "pointer": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "pointer"
+      ],
+      "additionalProperties": false
+    },
+    "slots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "slot_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          },
+          "wave": {
+            "enum": [
+              1,
+              2
+            ]
+          },
+          "ordinal": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "assignment": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "task_id": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_.:-]+$"
+                  },
+                  "metadata_ref": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sha256": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$"
+                      },
+                      "pointer": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "sha256",
+                      "pointer"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "task_id",
+                  "metadata_ref"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "slot_id",
+          "wave",
+          "ordinal",
+          "assignment"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 6
+    },
+    "points": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "point_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "task_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          },
+          "stage": {
+            "enum": [
+              "OPENING",
+              "NONEMPTY"
+            ]
+          },
+          "projection_ref": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "pointer": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "sha256",
+              "pointer"
+            ],
+            "additionalProperties": false
+          },
+          "selected_point_ref": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "pointer": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "sha256",
+              "pointer"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "point_id",
+          "task_id",
+          "stage",
+          "projection_ref",
+          "selected_point_ref"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 12
+    },
+    "repeat_point_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "maxItems": 4
+    },
+    "limits": {
+      "type": "object",
+      "properties": {
+        "baselines": {
+          "const": 6
+        },
+        "points": {
+          "const": 12
+        },
+        "per_task_stage": {
+          "const": 1
+        },
+        "branches_per_point": {
+          "const": 3
+        },
+        "initial_suffixes": {
+          "const": 36
+        },
+        "repeat_points": {
+          "const": 4
+        },
+        "extra_repeats_per_branch": {
+          "const": 1
+        },
+        "repeat_suffixes": {
+          "const": 12
+        },
+        "total_suffixes": {
+          "const": 48
+        }
+      },
+      "required": [
+        "baselines",
+        "points",
+        "per_task_stage",
+        "branches_per_point",
+        "initial_suffixes",
+        "repeat_points",
+        "extra_repeats_per_branch",
+        "repeat_suffixes",
+        "total_suffixes"
+      ],
+      "additionalProperties": false
+    },
+    "sampling_protocol": {
+      "const": "jev_jm_sampling_public_v1"
+    },
+    "real_epsilon": {
+      "const": "NOT_MATERIALIZED_DEFER_C1"
+    },
+    "real_identities": {
+      "type": "object",
+      "properties": {
+        "v3_execution": {
+          "type": "null"
+        },
+        "v3_recovery": {
+          "type": "null"
+        },
+        "data": {
+          "type": "null"
+        },
+        "arrival": {
+          "type": "null"
+        },
+        "model_service": {
+          "type": "null"
+        },
+        "prompt": {
+          "type": "null"
+        },
+        "strategy": {
+          "type": "null"
+        },
+        "dependencies": {
+          "type": "null"
+        },
+        "algorithm": {
+          "type": "null"
+        },
+        "source_isolation": {
+          "type": "null"
+        },
+        "user_send_authorization": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "v3_execution",
+        "v3_recovery",
+        "data",
+        "arrival",
+        "model_service",
+        "prompt",
+        "strategy",
+        "dependencies",
+        "algorithm",
+        "source_isolation",
+        "user_send_authorization"
+      ],
+      "additionalProperties": false
+    },
+    "gates": {
+      "type": "object",
+      "properties": {
+        "baseline": {
+          "const": "DEFER_REAL_IDENTITY_AND_FORMAL_TASKS"
+        },
+        "c1": {
+          "const": "BASELINE_THEN_PUBLIC_SAMPLING_THEN_STOP"
+        },
+        "c2": {
+          "const": "CONSUME_SEPARATELY_FROZEN_C1_PLAN_ONLY"
+        }
+      },
+      "required": [
+        "baseline",
+        "c1",
+        "c2"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "state",
+    "execution_state",
+    "execution_authorized",
+    "evidence_kind",
+    "policy_ref",
+    "source_candidates_ref",
+    "slots",
+    "points",
+    "repeat_point_ids",
+    "limits",
+    "sampling_protocol",
+    "real_epsilon",
+    "real_identities",
+    "gates"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

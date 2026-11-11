@@ -21,3 +21,8 @@ JM_RECOVERY_PROTOCOLS={JM_RECOVERY_VERSION: 'packaging_jev_recovery'}
 # B1 is stdlib-only, offline saved-public sampling; no execution route.
 JM_SAMPLING_VERSION='jev_jm_sampling_public_v1'
 JM_SAMPLING_PROTOCOLS={JM_SAMPLING_VERSION: 'packaging_jev_sampling'}
+
+# B2 is a non-executable template and read-only saved-byte audit protocol.
+JM_TRAINING_TEMPLATE_VERSION='jev_jm_training_template_v1'
+JM_TRAINING_TEMPLATE_PROTOCOLS={JM_TRAINING_TEMPLATE_VERSION: 'packaging_jev_training_template'}
+JM_SAVED_BYTES_AUDIT_VERSION='jev_jm_saved_bytes_audit_v1'

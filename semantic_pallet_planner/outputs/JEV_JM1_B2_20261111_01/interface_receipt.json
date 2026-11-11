@@ -1,0 +1,33 @@
+{
+  "version": "jm1_b2_interface_v1",
+  "module": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_training_template.py",
+  "template_version": "jev_jm_training_template_v1",
+  "saved_audit_version": "jev_jm_saved_bytes_audit_v1",
+  "schemas": [
+    "jm_training_template_v1",
+    "jm_constructed_budget_metadata_v1",
+    "jm_saved_bytes_audit_v1"
+  ],
+  "schema_boundary": "new closed fields, nested fields closed; old schemas unchanged; reuse B1 stdlib schema-subset validator",
+  "interfaces": [
+    "make_template(policy_ref, source_candidates_ref)",
+    "validate_template(template, root=...)",
+    "formal_freeze_readiness(template, root=...) -> REFUSED only",
+    "repeat_priority(points, task_order=...)",
+    "relation_components(saved_relation_rows)",
+    "validate_saved_audit(capsule, root=...)",
+    "read_saved(ref, root=...)"
+  ],
+  "cli": "PYTHONPATH=semantic_pallet_planner/src python3 -m semantic_pallet_planner.jev_select.packaging_jev_training_template {template|audit|formal-gate} INPUT --root ROOT",
+  "reuse": "B1 validate_saved_evidence / exact_digest / exact_action / digest / strict_load; B1.sample never invoked by validator",
+  "identity_placeholders": "real_identities fields must be null; fake digests/strings rejected; constructed count metadata version explicitly CONSTRUCTED_ONLY",
+  "c1_boundary": "real v3 and historical projection adapter NOT_IMPLEMENTED; baseline gate separate from later public sampling and exact plan; C1 must stop before suffix",
+  "c2_boundary": "cannot consume this template/diagnostic; requires separately versioned frozen C1 exact pools/actions/repeats/budgets and explicit authorization",
+  "read_only": "validator reads saved hashes/JSON pointers/closed fields; no transport/candidate/order/monitor import or dispatch",
+  "not_implemented": [
+    "formal plan freeze",
+    "sendable baseline config",
+    "real v3 execution/recovery",
+    "real source/partition certification"
+  ]
+}

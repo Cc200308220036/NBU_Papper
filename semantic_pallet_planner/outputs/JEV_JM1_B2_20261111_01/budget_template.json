@@ -1,0 +1,37 @@
+{
+  "version": "jm1_b2_budget_template_v1",
+  "state": "TEMPLATE_ONLY",
+  "execution_state": "NOT_EXECUTABLE",
+  "limits": {
+    "baselines": 6,
+    "points": 12,
+    "per_task_stage": 1,
+    "branches_per_point": 3,
+    "initial_suffixes": 36,
+    "repeat_points": 4,
+    "extra_repeats_per_branch": 1,
+    "repeat_suffixes": 12,
+    "total_suffixes": 48
+  },
+  "wave_capacities": [
+    3,
+    3
+  ],
+  "slot_assignments": "UNBOUND_NULL; no real task matrix",
+  "baseline_formula": "sum(full_item_count for each admitted baseline job)",
+  "suffix_formula": "sum(max(0, full_item_count - placed_before - 1) for each unique branch/repeat job)",
+  "forced_first_and_singleton_api_calls": 0,
+  "initial_max": 36,
+  "repeat_max": 12,
+  "suffix_max": 48,
+  "repeat_rule": "alternate OPENING then NONEMPTY queues in cycles; within each queue unseen conservative source components first, then task order, task/decision digests; first <=4 starts; each existing branch one extra repeat",
+  "repeat_deadline": "before first suffix outcome; only public metadata accepted; no winner field",
+  "baseline_send_upper": null,
+  "suffix_send_upper": null,
+  "global_send_upper": null,
+  "numeric_status": "NOT_MATERIALIZED_NO_FORMAL_TASKS_OR_POINTS",
+  "unused_budget": "not recycled; no replacement task, seed, action, repeat or allocation transfer",
+  "actual_calls": 0,
+  "real_epsilon": "NOT_MATERIALIZED_DEFER_C1",
+  "cost": "UNKNOWN_NOT_RUN"
+}

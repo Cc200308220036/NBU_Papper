@@ -1,0 +1,31 @@
+{
+  "version": "jm_git_change_analysis_v1",
+  "head": "8b1b98b77169001bb1d4783ca6e6931aead88749",
+  "initial_untracked_files": [
+    "semantic_pallet_planner/outputs/JEV_JM_JM0_A_QA_20261110_01/delivery_manifest.json",
+    "semantic_pallet_planner/outputs/JEV_JM_JM0_A_QA_20261110_01/handoff.json",
+    "semantic_pallet_planner/outputs/JEV_JM_JM0_A_QA_20261110_01/next_stage_admission.json",
+    "semantic_pallet_planner/outputs/JEV_JM_JM0_A_QA_20261110_01/next_task_prompt.md",
+    "semantic_pallet_planner/outputs/JEV_JM_JM0_A_QA_20261110_01/quality_review.json",
+    "semantic_pallet_planner/outputs/JEV_JM_JM0_A_QA_20261110_01/static_checks.json",
+    "semantic_pallet_planner/outputs/JEV_JM_JM0_A_QA_20261110_01/verify_review.py"
+  ],
+  "initial_tracked_changes": [],
+  "cause": "HEAD在.gitignore新增!/semantic_pallet_planner/outputs/JEV_JM*/及log例外，原本忽略的本窗口旧QA文件进入Git可见范围；不是这些文件突然被程序修改。",
+  "latest_commit_changes": {
+    "gitignore": "新增JM归档例外及尾部换行",
+    "original_JM0_A_package": "14个文件已跟踪（含manifest）",
+    "business_source_tests_data": "无相对JM0-A起始基线的已跟踪差异"
+  },
+  "runtime_identity_basis": {
+    "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/experiment.py:45",
+    "behavior": "source_manifest仅遍历semantic_pallet_planner源码包.py/.json，排除tests和__pycache__；outputs及docs不在该范围",
+    "effect": "当前QA输出/索引修改不改变该源码摘要或候选/监测/选择配置；未执行实验验证"
+  },
+  "limits": [
+    "新HEAD必须在后续任务重新登记；不得重签旧运行身份或自动恢复历史任务",
+    "smoke_runtime:469另有输出须被Git忽略的历史守卫；本次未调用。若未来误用该旧入口且传JEV_JM路径可能被拒绝；这不是当前未跟踪QA文件造成，也不阻断JM0-B合同设计。"
+  ],
+  "recommended_handling": "保留并由用户按归档流程提交旧QA和本轮QA/报告；无需删除或重新忽略，不自动git add/commit/push。",
+  "new_files_this_turn": "semantic_pallet_planner/outputs/JEV_JM_JM0_A_QA_20261111_01/、本轮报告与README新入口"
+}

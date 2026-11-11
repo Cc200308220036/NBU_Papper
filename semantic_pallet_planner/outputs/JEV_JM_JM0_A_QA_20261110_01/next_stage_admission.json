@@ -1,0 +1,28 @@
+{
+  "version": "jm_admission_review_v1",
+  "next_unit": "JM0-B",
+  "status": "NOT_READY",
+  "prerequisites": [
+    {
+      "requirement": "JM0-A实际接口、父证据及来源用途收据可读且身份可核验",
+      "evidence": "原报告存在；主收据/manifest/handoff缺失",
+      "satisfied": false,
+      "impact": "阻断JM0-B正式输入闭合"
+    },
+    {
+      "requirement": "暴露与真实/合成边界明确",
+      "evidence": "原报告及父source_audit/split可查；本轮统计支持",
+      "satisfied": "PARTIAL",
+      "impact": "可理解合同背景，仍须补齐逐来源登记"
+    },
+    {
+      "requirement": "新增严格未见数据或无经验Jev后缀",
+      "evidence": "当前未就绪",
+      "satisfied": "NOT_REQUIRED_FOR_JM0_B_DESIGN",
+      "impact": "不是JM0-A失败的新增门槛；不可据此开展真实执行"
+    }
+  ],
+  "permitted_next_task": "仅JM0-A证据恢复/独立补交；本审查不授权JM0-B实施",
+  "release_condition": "QA-JM0A-01关闭，QA-JM0A-02身份/缺失边界可追溯，经复核后重判JM0-B",
+  "real_calls_authorized": 0
+}

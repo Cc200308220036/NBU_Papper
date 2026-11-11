@@ -1,0 +1,101 @@
+{
+  "version": "jm1_b2_independent_qa_v1",
+  "date": "2026-11-11",
+  "reviewed_unit": "JM1-B2 limited template scope",
+  "plan_version": "JM-plan-v2",
+  "baseline": {
+    "entry_head": "11790ca4e7af9d2affe0a2980dc1158a774d9900",
+    "delivery_commit": "3530626ec7303fcb217441e3e9f83b42c1cfddf6",
+    "current_head": "999f193b926db4a5c2ea1bd4af566120af172f1a",
+    "entry_worktree": "CLEAN",
+    "post_delivery_runtime_source_drift": "NONE"
+  },
+  "engineering_status": "PARTIAL_LIMITED_TEMPLATE_SAVED_POINT_SEMANTICS",
+  "evidence_readiness": "SUFFICIENT_TO_CONFIRM_LOCAL_DEFECT_WITH_PARENT_NAVIGATION_GAP",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "NOT_READY",
+  "report": "docs/03_阶段产出分析/Jev/Jev_JM1-B2独立质检与保存点语义校验整改_20261111_01.md",
+  "reviewed_package": "semantic_pallet_planner/outputs/JEV_JM1_B2_20261111_01",
+  "acceptance": [
+    {
+      "id": "M12-01",
+      "status": "PASS",
+      "scope": "limited template only; formal task/runtime freeze incomplete"
+    },
+    {
+      "id": "M12-04",
+      "status": "PASS",
+      "scope": "limited constructed budget only",
+      "evidence": "54 unique jobs, 36+12 suffixes, 579 upper bound; not actual sends"
+    },
+    {
+      "id": "M12-07",
+      "status": "PARTIAL",
+      "scope": "exact-action binding present; saved-point semantic assertions under-validated",
+      "issue": "QA-JM1B2-01"
+    },
+    {
+      "id": "new_semantic_negative_cases",
+      "status": "FAIL",
+      "evidence": "4/4 incorrect PASS_TEMPLATE_ONLY"
+    },
+    {
+      "id": "local_existing_constructed_tests",
+      "status": "PASS",
+      "evidence": "B2 10/10, B1 10/10"
+    },
+    {
+      "id": "QA-JM1B1-01",
+      "status": "PASS",
+      "scope": "CLOSED_IN_SUPPLEMENT_SCOPE; original script unchanged",
+      "evidence": "B1 37-file audit and B2 13-file audit actual calls; committed current tree checks"
+    },
+    {
+      "id": "parent_QA_five_files_arrived",
+      "status": "PASS",
+      "scope": "all five now exist; historical missing claim not rewritten"
+    },
+    {
+      "id": "parent_QA_manifest",
+      "status": "PARTIAL",
+      "scope": "8 non-navigation records match; 1 README expected bytes absent in current/recent20 historical blobs"
+    },
+    {
+      "id": "original_B2_delivery_verifier_current_run",
+      "status": "FAIL",
+      "scope": "README current navigation differs; delivery historical blob matches"
+    },
+    {
+      "id": "real_execution_and_research",
+      "status": "NOT_RUN"
+    }
+  ],
+  "findings": [
+    {
+      "id": "QA-JM1B2-01",
+      "severity": "MEDIUM",
+      "blocking": true,
+      "acceptance": "M12-07 template saved-point binding and inherited probability facts",
+      "location": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_training_template.py:_branch_facts:124-156; validate_template selected-point handling",
+      "actual": "Checks key sets and action identity, not probability/gap/stratum/contrast value consistency. Four independently altered constructed selected-point copies all return PASS_TEMPLATE_ONLY.",
+      "required": "Saved branch assertions must agree with unchanged raw response and public projection/pool; invalid or unassessable assertions must not pass.",
+      "impact": "Limited saved-fact validation incomplete; does not bypass REFUSED formal gate or prove archived original tampering.",
+      "minimum_fix": "Validate native tokens/members/max score/gap/layer/stratum and public action contrast against saved evidence; bind necessary diagnostic epsilon evidence or refuse; no sample/candidate/order/solver dispatch.",
+      "verification": "Four observed cases plus member/group/layer/cross-attribute negative cases and valid/category-missing/reference positive regressions.",
+      "evidence": "semantic_probe.json"
+    }
+  ],
+  "facts": {
+    "report_claim": "Limited templates complete, formal exit DEFER, B2/B1 tests 10+10",
+    "source": "Non-executable templates, repeat/source/arithmetic checks and always-refusing formal gate; semantic validation missing",
+    "archived": "54 constructed jobs, source/token/negative/zero-dispatch receipts; not real execution",
+    "current_run": "20 tests pass; independent archived checks; four semantic probes accepted incorrectly; original verifier fails at navigation"
+  },
+  "protected_original_artifacts_unchanged": true,
+  "limits": [
+    "No formal gate bypass proved",
+    "No model/order/fork/candidate regeneration/sampling or solver dispatch",
+    "Historical parent navigation bytes gap retained"
+  ],
+  "stop": true
+}

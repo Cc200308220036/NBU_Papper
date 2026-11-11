@@ -1,0 +1,34 @@
+{
+  "version": "jm1_b1_admission_review_v1",
+  "next_unit": "JM1-B1",
+  "status": "NOT_READY",
+  "prerequisites": [
+    {
+      "requirement": "A3正常恢复/重复工程及父证据可核",
+      "evidence": "26正常矩阵、12失败恢复、2INTENT停门、2重复slot有保存证据",
+      "status": "PARTIAL"
+    },
+    {
+      "requirement": "缺损情况下拒绝不一致进度、避免重放前缀",
+      "evidence": "QA-JM1A3-01",
+      "status": "FAIL",
+      "impact": "A3退出条件未闭合，先最小整改再复核"
+    },
+    {
+      "requirement": "真实v3路线/正式来源/具体API额度",
+      "evidence": "尚未就绪",
+      "status": "NOT_REQUIRED_TO_FIX_THIS_BLOCKER",
+      "impact": "不是本次阻断依据；不在整改扩成真实调用或v3开发"
+    },
+    {
+      "requirement": "下一单元JM1-B1确定性解析/采点工程",
+      "evidence": "依赖A3退出；当前尚未满足",
+      "status": "NOT_READY"
+    }
+  ],
+  "required_next_task": "JM1-A3最小整改QA-JM1A3-01并补实际生产保存校验/零派发拒绝构造验证；不实施B1",
+  "not_a_new_requirement": "只要求在现有后续账本已证明进度的情况下拒绝丢失检查点，不要求任意文件系统故障自动恢复或全局分布式恰好一次。",
+  "real_calls_authorized": 0,
+  "release_condition": "缺陷独立复核关闭后，再按实际接口/材料判定B1限定准入。",
+  "stop": true
+}

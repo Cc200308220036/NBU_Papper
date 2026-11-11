@@ -1,0 +1,111 @@
+{
+  "version": "jm1_a3_independent_quality_review_v1",
+  "date": "2026-11-11",
+  "unit": "JM1-A3",
+  "plan_version": "JM-plan-v2",
+  "plan": "docs/02_阶段实施方案/Jev/Jev经验构建检索与无经验Jev分叉改进分阶段开发方案_20261109.md",
+  "baseline": {
+    "head": "43caa1e431d32c546130ec9ef262f711f63f1898",
+    "developer_entry": "d48d7eef964f472a6cf7ee67aaa9b0fae814de08",
+    "initial_worktree": "CLEAN",
+    "source_identity": "semantic_pallet_planner/outputs/JEV_JM1_A3_20261111_01/source_identity.json"
+  },
+  "engineering_status": "PARTIAL_RECOVERY_VALIDATION_BLOCKER",
+  "evidence_readiness": "POSITIVE_CONSTRUCTION_EVIDENCE_PRESENT_MISSING_PROGRESS_CASE_UNCLOSED",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "NOT_READY",
+  "acceptance": [
+    {
+      "id": "M11-01",
+      "status": "PASS",
+      "scope": "已有构造绑定/身份保护，依据源码及归档；不包含本轮完整行为重跑",
+      "basis": "A1/A2源码保护、41输入/484源码身份一致，身份漂移/缺单件档案归档负例存在。"
+    },
+    {
+      "id": "M11-02",
+      "status": "PARTIAL",
+      "basis": "构造真实selector类/三干预路由及共同策略有证据，真实v3通路仍NOT_IMPLEMENTED，本身不是新增A3阻断。"
+    },
+    {
+      "id": "M11-03",
+      "status": "FAIL",
+      "scope": "完整恢复保存事实拒绝缺损这一关键子项",
+      "basis": "正常13类×2矩阵、12失败恢复和A2停门有归档支持；但QA-JM1A3-01组合缺损可使校验回退initial cp，不能全项通过。"
+    },
+    {
+      "id": "M11-04",
+      "status": "PASS",
+      "scope": "保存正常/失败构造记录与singleton计数；不包括缺损后恢复保证",
+      "basis": "26正常矩阵与12监测失败保存记录符合账目，真实执行NOT_RUN。"
+    },
+    {
+      "id": "M11-05",
+      "status": "PARTIAL",
+      "basis": "重复slot/root/budget/锁和纯读取校验存在；缺损后的回退可能破坏同槽位去重，QA-JM1A3-01未闭合。"
+    },
+    {
+      "id": "QA-JM1A2-01",
+      "status": "PASS",
+      "scope": "A3构造关闭旧INTENT停门边界",
+      "basis": "RecoveryLedger.admit_send先调用全账本admit_request；两类孤立ledger保留第一INTENT未发送、第二UNKNOWN_SEND/FAILED，归档用例通过。"
+    },
+    {
+      "id": "LOCAL_SAVED_DELIVERY_CHECK",
+      "status": "PASS",
+      "basis": "原verify_delivery以及独立stdlib核对；不证明未覆盖缺损组合。"
+    },
+    {
+      "id": "LOCAL_PYTEST_AND_FULL_RUNTIME_REPRO",
+      "status": "NOT_RUN",
+      "basis": "当前缺pytest/jsonschema/numpy/scipy；62/58/50为归档，不是本轮测试通过。"
+    }
+  ],
+  "findings": [
+    {
+      "id": "QA-JM1A3-01",
+      "severity": "阻断",
+      "acceptance_ids": [
+        "M11-03",
+        "M11-05",
+        "缺损记录拒绝/不重放已提交前缀公共合同"
+      ],
+      "evidence": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_recovery.py:233",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_recovery.py:245",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_recovery.py:250",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_recovery.py:262",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_recovery.py:274",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_recovery.py:307",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_recovery.py:325",
+        "semantic_pallet_planner/outputs/JEV_JM_JM1_A3_QA_20261111_01/missing_journal_probe.json"
+      ],
+      "condition": "activation与有效ledger/context/reservation保留，账本已有3条后续SELECTION_SAVED；全部stages和checkpoint_head同时缺失，episode尚未生成/不存在。",
+      "actual": "保存校验先取activation.initial_checkpoint；paths/head皆不存在时跳过尾部检查；只核对cp事件→账本，不核对账本→cp进度；episode缺失时无最终交叉检查。在原身份校验有效的前提下，控制流可返回SELECTED/decision0/sequence0，同时requests=3。run_repeat随后直接将返回cp作为resume。",
+      "expected": "已有后续请求与初始强制SELECTED状态冲突，应在任何恢复业务派发前拒绝；不得回到初始前缀。无须自动修复或重建丢失状态。",
+      "impact": "不能关闭M11-03缺损拒绝与M11-05跨调用恢复去重；恢复入口可能重新监测/提交已发生前缀。后果为静态推断，未执行真实恢复或提交。",
+      "reproduction_scope": "本轮使用新A3构造归档的NEW副本，执行实际validate_saved_execution函数AST，但将未变更原件的schema/身份依赖替换为只读前提校验；不是完整生产validator复现。复制文件与原件逐字节一致，源文件/历史产物未修改，业务派发0。",
+      "minimum_fix": "补账本/context/reservation与cp/阶段链双向进度一致性检查，特别是初始cp配非空后续账本拒绝；保留合法activation/空账本以及当前DECISION_READY的预发送记录。增加真实生产保存校验器和run_repeat零派发拒绝负例，不回放、不重签、不清空账本。"
+    }
+  ],
+  "blocking_findings": [
+    "QA-JM1A3-01"
+  ],
+  "checks": "semantic_pallet_planner/outputs/JEV_JM_JM1_A3_QA_20261111_01/static_checks.json",
+  "probe": "semantic_pallet_planner/outputs/JEV_JM_JM1_A3_QA_20261111_01/missing_journal_probe.json",
+  "positive_evidence": {
+    "delivery_hashes": 2893,
+    "input_hashes": 41,
+    "runtime_source_hashes": 484,
+    "matrix_runs": 26,
+    "request_rows": 74,
+    "failure_recovery_records": 12,
+    "archived_tests": [
+      62,
+      58,
+      50
+    ]
+  },
+  "review_boundary": "No business imports or execution. AST control-flow probe is precondition-adapted and is NOT a full production validator/test. Missing-journal copies contain only unchanged NEW constructed activation/ledger; originals untouched.",
+  "prompt_delivery": "INLINE_FINAL_ONLY_NO_MARKDOWN_FILE",
+  "stop": true
+}

@@ -1,0 +1,26 @@
+{
+  "version": "jm1_a3_missing_journal_control_flow_probe_v1",
+  "scope": "EXACT_VALIDATE_SAVED_EXECUTION_AST_WITH_ALREADY_VALID_IDENTITY_PRECONDITIONS; NOT_FULL_PRODUCTION_VALIDATOR",
+  "source": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_recovery.py",
+  "copied_from": "semantic_pallet_planner/outputs/JEV_JM1_A3_20261111_01/constructed_evidence/test_crash_matrix_False_ACTIVA0/a3/slots/88886cf6f26c7a2603b9a7c6e3013554d10692d7abf81402fc2522d6ffee47b1",
+  "copy": "semantic_pallet_planner/outputs/JEV_JM_JM1_A3_QA_20261111_01/missing_journal_control_flow_copy",
+  "copied_files_unchanged": true,
+  "missing": [
+    "stages/*.json",
+    "checkpoint_head.json",
+    "episode.json"
+  ],
+  "returned_phase": "SELECTED",
+  "returned_decision": 0,
+  "returned_sequence": 0,
+  "preserved_requests": 3,
+  "preserved_request_states": [
+    "SELECTION_SAVED",
+    "SELECTION_SAVED",
+    "SELECTION_SAVED"
+  ],
+  "finding": "Control flow returns initial forced SELECTED despite intact later request history; no reverse ledger-to-checkpoint progress consistency check. On resumption run_repeat would use this returned checkpoint; actual resumption NOT_RUN.",
+  "business_dispatches": 0,
+  "full_production_validator_run": false,
+  "identity_adapter_limit": "Identity/schema helpers are substituted, and only accept original unchanged recorded activation/initial checkpoint/contexts. No claim of full validator or runtime replay passing."
+}

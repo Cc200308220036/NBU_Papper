@@ -1,0 +1,47 @@
+{
+  "version": "jm1_b1_limited_admission_v1",
+  "next_unit": "JM1-B1",
+  "status": "CONDITIONAL",
+  "allowed_scope": [
+    "当前公开投影/原始概率解析协议",
+    "确定性精确/近并列采点及覆盖诊断程序",
+    "构造样例、失败路径和必要离线回归",
+    "既有材料身份/用途候选清单，明确非正式冻结"
+  ],
+  "acceptance_scope": "M12-02、M12-03、M12-05、M12-06的程序/构造部分",
+  "prerequisites": [
+    {
+      "requirement": "A3正常恢复/重复及QA-JM1A3-01整改证据",
+      "evidence": "当前修复、生产负例收据、合法正例、62/58归档回归及本轮摘要/账目核对",
+      "status": "PASS_CONSTRUCTED"
+    },
+    {
+      "requirement": "M12-02/03/05/06离线程序所需采样/参数合同和保存公开输入定义",
+      "evidence": "JM0-B sampling_policy/parameter_register及JM-plan-v2 6.2，公开池/映射/原生概率/状态接口已定义",
+      "status": "PASS_FOR_OFFLINE_ENGINEERING"
+    },
+    {
+      "requirement": "真实v3无经验执行协议/恢复及配置身份",
+      "evidence": "仍NOT_IMPLEMENTED",
+      "status": "NOT_MET",
+      "impact": "限制正式基线配置/可执行计划和C1/C2准入；不阻断独立解析/采点程序"
+    },
+    {
+      "requirement": "正式训练来源/任务/数据/到货/预算/矩阵",
+      "evidence": "未正式冻结",
+      "status": "DEFER_TO_B2_AND_SEND_GATES",
+      "impact": "只允许材料候选/接口规范，不把fixture或旧暴露诊断当正式采集"
+    }
+  ],
+  "not_allowed": [
+    "把JM1-A整体或真实v3通路标完成",
+    "正式基线任务/发送配置/矩阵冻结",
+    "生成真实训练或评价数据",
+    "真实基线/后缀/模型/求解运行",
+    "实施B2/C1/C2或借B1扩大成v3运行适配"
+  ],
+  "release_conditions_for_broader_admission": "独立版本化真实v3无经验执行/恢复通路具备可审计工程验收；实际来源/数据/任务及预算按后续合同冻结；真实发送另须用户对具体冻结范围授权。B1完成后重新判断B2，不自动放行。",
+  "real_calls_authorized": 0,
+  "note": "A3构造完成可与整个JM1-A仍PARTIAL同时成立；限定工程准入不等于真实实验授权。",
+  "stop": true
+}

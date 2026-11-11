@@ -1,0 +1,170 @@
+{
+  "version": "jm1_a3_fix_independent_review_checks_v1",
+  "head": "9471461b43df46b99597fc2fab220dcb5b289cc8",
+  "original_verify_delivery_current_run": "PASS_SAVED_FACTS_ONLY before adding new QA index",
+  "delivery_hashes": 2946,
+  "input_hashes": 19,
+  "runtime_source_hashes": 484,
+  "changed_source_test_files": [
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_recovery.py",
+    "semantic_pallet_planner/tests/unit/test_packaging_jev_recovery_progress.py"
+  ],
+  "archived_junit": {
+    "targeted": {
+      "tests": 11,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "regression": {
+      "tests": 62,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "legacy": {
+      "tests": 58,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    }
+  },
+  "negative_cases": [
+    {
+      "kind": "joint_loss",
+      "receipt": "semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/targeted_evidence/test_joint_journal_head_loss_r0/joint_loss_receipt.json",
+      "states": [],
+      "errors": [
+        "jm_A3_missing_reservation",
+        "jm_A3_missing_reservation"
+      ],
+      "zero_dispatch": true,
+      "remaining_bytes_unchanged": true
+    },
+    {
+      "kind": "joint_loss",
+      "receipt": "semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/targeted_evidence/test_joint_journal_head_loss_r1/joint_loss_receipt.json",
+      "states": [],
+      "errors": [
+        "jm_A3_unexplained_context_progress",
+        "jm_A3_unexplained_context_progress"
+      ],
+      "zero_dispatch": true,
+      "remaining_bytes_unchanged": true
+    },
+    {
+      "kind": "joint_loss",
+      "receipt": "semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/targeted_evidence/test_joint_journal_head_loss_r2/joint_loss_receipt.json",
+      "states": [
+        "INTENT"
+      ],
+      "errors": [
+        "jm_A3_unexplained_context_progress",
+        "jm_A3_unexplained_context_progress"
+      ],
+      "zero_dispatch": true,
+      "remaining_bytes_unchanged": true
+    },
+    {
+      "kind": "joint_loss",
+      "receipt": "semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/targeted_evidence/test_joint_journal_head_loss_r3/joint_loss_receipt.json",
+      "states": [
+        "RESPONSE_SAVED"
+      ],
+      "errors": [
+        "jm_A3_unexplained_context_progress",
+        "jm_A3_unexplained_context_progress"
+      ],
+      "zero_dispatch": true,
+      "remaining_bytes_unchanged": true
+    },
+    {
+      "kind": "joint_loss",
+      "receipt": "semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/targeted_evidence/test_joint_journal_head_loss_r4/joint_loss_receipt.json",
+      "states": [
+        "SELECTION_SAVED"
+      ],
+      "errors": [
+        "jm_A3_unexplained_context_progress",
+        "jm_A3_unexplained_context_progress"
+      ],
+      "zero_dispatch": true,
+      "remaining_bytes_unchanged": true
+    },
+    {
+      "kind": "orphan_future",
+      "receipt": "semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/targeted_evidence/test_orphan_future_decision_pr0/orphan_receipt.json",
+      "states": [
+        "RESPONSE_SAVED"
+      ],
+      "errors": [
+        "jm_A3_missing_reservation",
+        "jm_A3_missing_reservation"
+      ],
+      "zero_dispatch": true,
+      "remaining_bytes_unchanged": true
+    },
+    {
+      "kind": "orphan_future",
+      "receipt": "semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/targeted_evidence/test_orphan_future_decision_pr1/orphan_receipt.json",
+      "states": [
+        "RESPONSE_SAVED"
+      ],
+      "errors": [
+        "jm_A3_unexplained_context_progress",
+        "jm_A3_unexplained_context_progress"
+      ],
+      "zero_dispatch": true,
+      "remaining_bytes_unchanged": true
+    },
+    {
+      "kind": "orphan_future",
+      "receipt": "semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/targeted_evidence/test_orphan_future_decision_pr2/orphan_receipt.json",
+      "states": [
+        "RESPONSE_SAVED",
+        "INTENT"
+      ],
+      "errors": [
+        "jm_A3_unexplained_context_progress",
+        "jm_A3_unexplained_context_progress"
+      ],
+      "zero_dispatch": true,
+      "remaining_bytes_unchanged": true
+    }
+  ],
+  "zero_dispatch_rejections": 16,
+  "legal_current_DECISION_READY_receipts": [
+    {
+      "completed": true,
+      "final_sends": 3,
+      "point": "RESPONSE_SAVED",
+      "saved_phase": "DECISION_READY",
+      "saved_validation_readonly": true
+    },
+    {
+      "completed": true,
+      "final_sends": 3,
+      "point": "SELECTION_SAVED",
+      "saved_phase": "DECISION_READY",
+      "saved_validation_readonly": true
+    }
+  ],
+  "normal_recovery_observations": 26,
+  "regression_saved_requests_checked": 74,
+  "saved_validation_version": "jev_jm_saved_recovery_check_v2",
+  "old_QA_issue_closure": "QA-JM1A3-01 closed in constructed scope by source fix plus same-source archived production-validator tests; full local behavior rerun NOT_RUN",
+  "available_python_dependencies": {
+    "pytest": false,
+    "jsonschema": false,
+    "numpy": false,
+    "scipy": false
+  },
+  "not_run_this_turn": [
+    "pytest and full production-validator rerun",
+    "run_repeat/run_episode/selector/transport/monitor/commit",
+    "network/credentials/models",
+    "orders/forks/candidate generation/solver",
+    "formal baseline task freeze or real v3 runtime"
+  ],
+  "scope": "Saved hashes, raw negative receipts and unchanged copy bytes, legal receipts/JUnit, source diff/AST and recovery observations only; production negative tests are archive evidence, no substituted validation in those tests."
+}

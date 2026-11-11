@@ -1,0 +1,35 @@
+{
+  "version": "jm1_a3_fix_commands_v1",
+  "commands": [
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m pytest -q semantic_pallet_planner/tests/unit/test_packaging_jev_recovery_progress.py --maxfail=1 --basetemp=semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/targeted_evidence --junitxml=semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/targeted_junit.xml",
+      "exit_code": 0,
+      "passed": 11,
+      "log": "targeted_tests.log"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m pytest -q semantic_pallet_planner/tests/unit/test_packaging_jev_recovery.py --maxfail=1 --basetemp=semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/regression_evidence --junitxml=semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/regression_junit.xml",
+      "exit_code": 0,
+      "passed": 62,
+      "log": "regression_tests.log"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m pytest -q semantic_pallet_planner/tests/unit/test_packaging_jev_continuation.py semantic_pallet_planner/tests/unit/test_packaging_jev_forks.py --basetemp=semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/legacy_evidence --junitxml=semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/legacy_junit.xml",
+      "exit_code": 0,
+      "passed": 58,
+      "log": "legacy_tests.log"
+    }
+  ],
+  "verification_commands": [
+    "python3 semantic_pallet_planner/outputs/JEV_JM1_A3_FIX_20261111_01/verify_delivery.py",
+    "git diff --check"
+  ],
+  "verification_result": "delivery_checks.json after actual execution",
+  "environment": "existing python3 and dependencies, no installs; versions in source_identity.json",
+  "development": "initial 11 targeted passed; strengthened new-source-copy byte assertion and reran same 11 (passed). No implementation/test failures. Final suite logs/JUnit independently retained.",
+  "not_run": [
+    "public50 broad suite (historical evidence retained)",
+    "real calls/credentials/solver/history",
+    "JM1-B/C"
+  ]
+}

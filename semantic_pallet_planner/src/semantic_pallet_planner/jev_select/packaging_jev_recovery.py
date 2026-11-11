@@ -259,6 +259,26 @@ def validate_saved_execution(root, *, expected_execution=None):
             if did in reservations:
                 require(reservations[did] == obj.reservation(context, execution['branch_id'], did), 'jm_A3_reservation_changed')
         require(set(reservations) <= set(contexts), 'jm_A3_missing_context')
+        # Every prepared/requested decision must be explained by saved progress,
+        # not just every checkpoint selection by the ledger. In particular an
+        # activation-only forced SELECTED cannot explain any suffix request.
+        choice_events = {}
+        for event in cp['events'] + ([cp['pending_event']] if cp['pending_event'] else []):
+            selected = event.get('selection')
+            if event.get('context') and event['context']['route'] == 'CHOICE_REQUIRED' and not (
+                    selected and selected['source'] == 'FORCED_FROM_FROZEN_POOL'):
+                choice_events[event['decision_id']] = event
+        require(set(contexts) <= set(choice_events), 'jm_A3_unexplained_context_progress')
+        for did, data in contexts.items():
+            require(data == choice_events[did]['context'], 'jm_A3_saved_context_changed')
+        for row in rows:
+            event = choice_events.get(row['decision_id'])
+            require(event is not None, 'jm_A3_unexplained_request_progress')
+            # A response/selection may precede the public SELECTED checkpoint
+            # only for the currently persisted DECISION_READY decision.
+            current_ready = cp['phase'] == 'DECISION_READY' and event is cp['pending_event']
+            require(current_ready or (event.get('selection') is not None and
+                    row['selection'] == event['selection']), 'jm_A3_request_ahead_of_checkpoint')
         for event in cp['events'] + ([cp['pending_event']] if cp['pending_event'] else []):
             selected = event.get('selection')
             if event.get('context') and event['context']['route'] == 'CHOICE_REQUIRED' and not (
@@ -271,11 +291,14 @@ def validate_saved_execution(root, *, expected_execution=None):
                     require(len(matches) == 1 and matches[0]['selection'] == selected, 'jm_A3_saved_selection_changed')
     else:
         require(not paths, 'jm_A3_missing_ledger')
+    if not paths:
+        require(not (root / 'episode.json').exists() and not (root / 'counts.json').exists(),
+                'jm_A3_missing_progress_journal')
     if (root / 'episode.json').exists():
         episode = read(root / 'episode.json')
         require(episode['checkpoint'] == cp and episode['events'] == cp['events'] and
                 episode['final_state'] == cp['state'], 'jm_A3_episode_changed')
-    return {'version': 'jev_jm_saved_recovery_check_v1', 'checkpoint': cp, 'requests': len(rows),
+    return {'version': 'jev_jm_saved_recovery_check_v2', 'checkpoint': cp, 'requests': len(rows),
             'states': [r['state'] for r in rows], 'sequence': len(paths), 'previous_digest': previous}
 
 

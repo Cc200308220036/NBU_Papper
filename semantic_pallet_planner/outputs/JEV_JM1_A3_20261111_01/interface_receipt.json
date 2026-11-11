@@ -1,0 +1,45 @@
+{
+  "version": "jm1_a3_interface_receipt_v1",
+  "module": "semantic_pallet_planner.jev_select.packaging_jev_recovery",
+  "interfaces": [
+    "freeze_execution(binding, repeat_slot=..., max_sends=...)",
+    "validate_execution",
+    "freeze_schedule(rows, root=...)",
+    "validate_schedule",
+    "RecoveryLedger",
+    "selector_factory",
+    "validate_route",
+    "initial_checkpoint",
+    "validate_saved_checkpoint",
+    "validate_saved_execution(root, expected_execution=...)",
+    "run_repeat(schedule, branch_id=..., repeat_slot=..., root=..., transport=...)"
+  ],
+  "execution": "jev_jm_recovery_v1",
+  "schedule": "jev_jm_repeat_schedule_v1",
+  "checkpoint": "jev_jm_recovery_checkpoint_v1",
+  "activation": "jev_jm_activation_v1",
+  "journal": "jev_jm_checkpoint_journal_v1",
+  "reservation": "jev_jm_recovery_reservation_v1",
+  "ledger": "jev_jm_recovery_requests_v1",
+  "saved_validation": "jev_jm_saved_recovery_check_v1",
+  "counts": "jev_jm_repeat_counts_v1",
+  "registry": "packaging_versions.JM_RECOVERY_PROTOCOLS",
+  "closed_schemas": [
+    "jm_recovery_v1",
+    "jm_repeat_schedule_v1",
+    "jm_recovery_checkpoint_v1",
+    "jm_activation_v1",
+    "jm_checkpoint_journal_v1"
+  ],
+  "reuse": [
+    "A2 ContinuationLedger contexts/reservations and stopped gate",
+    "actual PackagingRemoteSelector and RequestLedger",
+    "public run_episode",
+    "original commit_physical",
+    "original monitor credential validation"
+  ],
+  "scope": "CONSTRUCTED_ONLY / v6 / fake transport / monitor stub; no real v3 route",
+  "old_interfaces": "A1/A2 implementations and their closed schemas unchanged",
+  "storage": "schedule stores repository-relative root; changing root rejected; allocation subroot deterministic; whole-schedule nonblocking writer lock",
+  "recovery": "saved state reuse; no candidate generation or committed-prefix physical replay; unknown SENDING never retried"
+}

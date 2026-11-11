@@ -13,3 +13,7 @@ JM_FORK_PROTOCOLS={JM_FORK_VERSION: 'packaging_jev_forks'}
 # A2 has a separate execution wrapper; A1 binding and stop route stay intact.
 JM_CONTINUATION_VERSION='jev_jm_continuation_v1'
 JM_CONTINUATION_PROTOCOLS={JM_CONTINUATION_VERSION: 'packaging_jev_continuation'}
+
+# A3 recovery/repeats are independent; old execution schemas remain closed.
+JM_RECOVERY_VERSION='jev_jm_recovery_v1'
+JM_RECOVERY_PROTOCOLS={JM_RECOVERY_VERSION: 'packaging_jev_recovery'}

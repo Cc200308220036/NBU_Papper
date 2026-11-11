@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "jev_jm_repeat_schedule_v1"
+    },
+    "executions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object"
+      }
+    },
+    "total_max_sends": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "record_digest": {
+      "type": "string"
+    },
+    "storage_root": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "version",
+    "executions",
+    "total_max_sends",
+    "record_digest",
+    "storage_root"
+  ]
+}

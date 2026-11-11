@@ -1,0 +1,56 @@
+{
+  "version": "jm1_a3_commands_v1",
+  "commands": [
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m pytest -q semantic_pallet_planner/tests/unit/test_packaging_jev_recovery.py --maxfail=1 --basetemp=semantic_pallet_planner/outputs/JEV_JM1_A3_20261111_01/constructed_evidence --junitxml=semantic_pallet_planner/outputs/JEV_JM1_A3_20261111_01/constructed_junit.xml",
+      "exit_code": 0,
+      "scope": "constructed only / selected public regression / read-only integrity"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m pytest -q semantic_pallet_planner/tests/unit/test_packaging_jev_continuation.py semantic_pallet_planner/tests/unit/test_packaging_jev_forks.py --basetemp=semantic_pallet_planner/outputs/JEV_JM1_A3_20261111_01/legacy_constructed_evidence --junitxml=semantic_pallet_planner/outputs/JEV_JM1_A3_20261111_01/legacy_constructed_junit.xml",
+      "exit_code": 0,
+      "scope": "constructed only / selected public regression / read-only integrity"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m pytest -q semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_protocol.py semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_selection.py -k 'not no_key and not urllib and not http and not transport and not redirect and not exception and not timeout and not secret' --junitxml=semantic_pallet_planner/outputs/JEV_JM1_A3_20261111_01/public_regression_junit.xml",
+      "exit_code": 0,
+      "scope": "constructed only / selected public regression / read-only integrity"
+    }
+  ],
+  "delivery_checks": {
+    "commands": [
+      "python3 semantic_pallet_planner/outputs/JEV_JM1_A3_20261111_01/verify_delivery.py",
+      "git diff --check"
+    ],
+    "actual_result": "delivery_checks.json written after actual execution",
+    "additional_saved_check_command": "python3 semantic_pallet_planner/outputs/JEV_JM1_A3_20261111_01/check_missing_tail.py",
+    "additional_saved_check_exit_code": 0
+  },
+  "environment": {
+    "command": "python3",
+    "python": "3.13.5",
+    "pytest": "8.3.4",
+    "dependencies": {
+      "jsonschema": "4.23.0",
+      "numpy": "2.1.3",
+      "scipy": "1.15.3"
+    },
+    "installation": "NONE"
+  },
+  "development": {
+    "logs": [
+      "development_a3_test.log",
+      "development_a3_dev2.log",
+      "development_a3_dev3.log"
+    ],
+    "initial_targeted_activation": "2 passed,55 deselected; earlier implementation only, not final acceptance",
+    "interrupted_runs": "Development suites manually interrupted with exit130 to add head/storage anchors, selector counters and scoped validation caching; an intermediate legacy rerun also interrupted. No interrupted run counted as passing. Initial A1/A2 58 and public50 passed before final tightening; final same sets rerun and independently retained.",
+    "failures": "One development fixture failure: suffix TERMINATED injection expected decision1 instead of incremented2; 35 passed/1 failed, then injection condition corrected. Preserved development_failure_constructed_tests.log/JUnit/evidence. Final failure/error counts read from JUnit; no provider retries."
+  },
+  "not_run": [
+    "credential/HTTP public tests excluded (10)",
+    "real network/models/solvers",
+    "history replay",
+    "JM1-B/C"
+  ]
+}

@@ -1,0 +1,32 @@
+...................................F
+=================================== FAILURES ===================================
+________ test_failure_recovery_no_reselection[True-TERMINATED-UNSTABLE] ________
+
+archived = ({'evidence_scope': 'CONSTRUCTED_ONLY', 'receipt': {'path': 'parent/receipt.json', 'pointer': '', 'sha256': 'c0116f233...TYPESAFE_API_KEY', 'buffer_capacity': 3, 'business_mode': 'physical_only', 'candidate_backend': 'e2_original_v1', ...})
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x75485cba4d70>
+status = 'UNSTABLE', phase = 'TERMINATED', suffix = True
+
+    @pytest.mark.parametrize('status',['UNSTABLE','UNASSESSABLE','ERROR'])
+    @pytest.mark.parametrize('phase',['MONITORED','TERMINATED'])
+    @pytest.mark.parametrize('suffix',[False,True])
+    def test_failure_recovery_no_reselection(archived,monkeypatch,status,phase,suffix):
+        start,_,_=archived; frozen_inputs(monkeypatch,start)
+        from semantic_pallet_planner.jev_select.stability import monitor
+        stable_calls=stub_monitor(monkeypatch,'STABLE');stable=monitor.monitor_selected_action
+        failed_calls=stub_monitor(monkeypatch,status);failed=monitor.monitor_selected_action
+        def assess(*a):
+            return stable(*a) if suffix and not stable_calls else failed(*a)
+        monkeypatch.setattr(monitor,'monitor_selected_action',assess)
+        s=schedule(start);fake=FakeTransport();hit=[]
+        def checkpoint(cp):
+            if cp['phase']==phase and (not suffix or cp['decision']==1) and not hit:
+                hit.append(phase);raise Crash()
+>       with pytest.raises(Crash):run(s,fake,on_checkpoint=checkpoint)
+E       Failed: DID NOT RAISE <class 'test_packaging_jev_recovery.Crash'>
+
+semantic_pallet_planner/tests/unit/test_packaging_jev_recovery.py:93: Failed
+- generated xml file: /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JM1_A3_20261111_01/constructed_junit.xml -
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/tests/unit/test_packaging_jev_recovery.py::test_failure_recovery_no_reselection[True-TERMINATED-UNSTABLE]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 35 passed in 241.19s (0:04:01)

@@ -236,7 +236,10 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
             value['memory_identity']=memory_identity
         if monitored:
             seal_checkpoint(value)
-        validate_schema('checkpoint_' + suffix,value)
+        if jm_recovery:
+            value['version'] = 'jev_jm_recovery_checkpoint_v1'
+            seal_checkpoint(value)
+        validate_schema('jm_recovery_checkpoint_v1' if jm_recovery else 'checkpoint_' + suffix,value)
         return value
 
     def persist():
@@ -258,11 +261,18 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         if hasattr(selector, 'bind_public'):
             selector.bind_public(req, policy, bundle)
 
-    from .packaging_versions import JM_FORK_PROTOCOLS, JM_CONTINUATION_PROTOCOLS
+    from .packaging_versions import JM_FORK_PROTOCOLS, JM_CONTINUATION_PROTOCOLS, JM_RECOVERY_PROTOCOLS
+    jm_recovery = training_fork is not None and training_fork.get('version') in JM_RECOVERY_PROTOCOLS
     jm_continuation = training_fork is not None and training_fork.get('version') in JM_CONTINUATION_PROTOCOLS
     jm_first = training_fork is not None and training_fork.get('version') in JM_FORK_PROTOCOLS
     if training_fork is not None:
-        if jm_continuation:
+        if jm_recovery:
+            from .packaging_jev_recovery import validate_route, validate_saved_checkpoint
+            if expected_events is not None or resume is None or not callable(on_checkpoint):
+                raise JevSelectError('jm_A3_saved_resume_required')
+            validate_route(training_fork, task, config, job_id, selector)
+            validate_saved_checkpoint(resume, training_fork)
+        elif jm_continuation:
             from .packaging_jev_continuation import validate_route
             from .packaging_jev_forks import bootstrap
             if resume is not None or expected_events is not None or not callable(on_checkpoint):
@@ -288,7 +298,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
 
     if resume is not None:
         from .contracts import validate_schema
-        validate_schema('checkpoint_' + suffix,resume)
+        validate_schema('jm_recovery_checkpoint_v1' if jm_recovery else 'checkpoint_' + suffix,resume)
         from .packaging_runtime import is_packaging
         if is_packaging(config) and resume['runtime_identity'] != config['runtime_identity']:
             raise JevSelectError('packaging_checkpoint_identity_changed')
@@ -296,7 +306,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
             raise JevSelectError('checkpoint_memory_changed')
         if is_v3(config) and resume.get('memory_identity',memory_identity)!=memory_identity:
             raise JevSelectError('checkpoint_memory_identity_changed')
-        if resume.get('version') != 'jev_checkpoint_' + suffix or resume['job_id'] != job_id or resume['method'] != method or resume['config_digest'] != digest(config) or resume['task_digest'] != digest(task):
+        if resume.get('version') != ('jev_jm_recovery_checkpoint_v1' if jm_recovery else 'jev_checkpoint_' + suffix) or resume['job_id'] != job_id or resume['method'] != method or resume['config_digest'] != digest(config) or resume['task_digest'] != digest(task):
             raise JevSelectError('checkpoint_identity_changed')
         if monitored:
             if training_fork is None:
@@ -408,7 +418,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         try:
             saved_context = (pending['context'] if pending is not None and phase=='DECISION_READY' else
                 expected_events[len(events)].get('context') if expected_events is not None and len(events)<len(expected_events) else None)
-            if monitored and pending is not None and phase in (('DECISION_READY','SELECTED','MONITORED') if is_driven(config) else ('SELECTED','MONITORED')):
+            if monitored and pending is not None and phase in (('DECISION_READY','SELECTED','MONITORED') if is_driven(config) or jm_recovery else ('SELECTED','MONITORED')):
                 from .contracts import CandidateBundle, DecisionContext
                 from .packaging_runtime import no_policy
                 req = copy.deepcopy(pending['observation'])
@@ -422,7 +432,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                 event=copy.deepcopy(pending);times=event['timings']
             route = decision_route(bundle)
             event.update(route=route,observation=req,bundle=bundle.data,context=context.data)
-            if is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
+            if (jm_recovery and (pending is None or phase=='DECISION_READY')) or is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
                 pending=copy.deepcopy(event);phase='DECISION_READY';persist()
             if hook: hook('decision_ready',event)
             if route == 'STOP_NO_PHYSICAL_CANDIDATE':
@@ -462,7 +472,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                         else:
                             validate_monitor(event['monitor'],state,chosen,event,config)
                             event['monitor_result_reuses'] += 1
-                        if (jm_first or jm_continuation) and event['monitor']['status'] not in ('STABLE','UNSTABLE','UNASSESSABLE','ERROR'):
+                        if (jm_first or jm_continuation or jm_recovery) and event['monitor']['status'] not in ('STABLE','UNSTABLE','UNASSESSABLE','ERROR'):
                             raise JevSelectError('jm_monitor_status_not_authorized')
                         reason = TERMINATIONS.get(event['monitor']['status'])
                     if reason is None:

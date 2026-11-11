@@ -1,0 +1,113 @@
+{
+  "version": "jm1_a2_independent_quality_review_v1",
+  "date": "2026-11-11",
+  "unit": "JM1-A2",
+  "plan_version": "JM-plan-v2",
+  "plan": "docs/02_阶段实施方案/Jev/Jev经验构建检索与无经验Jev分叉改进分阶段开发方案_20261109.md",
+  "baseline": {
+    "head": "98954b4101d38f7552d874c841c57ea72e09bcc2",
+    "development_entry": "a11c2cf83559498902b3c4bb5be289b5e1048c31",
+    "initial_worktree": "CLEAN",
+    "source_identity": "semantic_pallet_planner/outputs/JEV_JM1_A2_20261111_01/source_identity.json",
+    "protected_existing_code": "A1 module, RequestLedger base, execution, old fork, candidates/stability/generator unchanged"
+  },
+  "engineering_status": "COMPLETE_A2_CONSTRUCTED_SCOPE",
+  "evidence_readiness": "SUFFICIENT_FOR_A3_CONSTRUCTED_ENGINEERING_ONLY",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "READY",
+  "acceptance": [
+    {
+      "id": "M11-02_ROUTE_ENGINEERING",
+      "status": "PASS",
+      "scope": "A2构造路由，非真实网络调用或v3运行就绪",
+      "evidence": "实际PackagingRemoteSelector及原Choice解析、公共run_episode；3干预共享policy摘要；24保存请求body/model_state均空memories，reservation/body/map身份核对。"
+    },
+    {
+      "id": "M11-02_TOTAL",
+      "status": "PARTIAL",
+      "scope": "整个父项的生产真实执行维度未闭合",
+      "evidence": "当前协议仅CONSTRUCTED_ONLY/v6/test_double；真实v3准入与运行通路未由本包验收，不能以类名或fake响应冒充真实执行。"
+    },
+    {
+      "id": "M11-04",
+      "status": "PASS",
+      "scope": "A2一次新构造执行的失败/singleton/强制及请求计数",
+      "evidence": "20保存执行根和24请求；singleton无transport、正常监测；首步或后续监测失败不提交/改选/改变状态，forced=1/real_model_calls=0。恢复未含在此PASS内。"
+    },
+    {
+      "id": "M11-01_PRESERVATION",
+      "status": "PASS",
+      "scope": "A1保护保持的源码和归档构造证据",
+      "evidence": "A1模块/旧Schema与入口无改，episode新增独立A2条件；归档A1 29项包含于58构造总数。"
+    },
+    {
+      "id": "M11-03",
+      "status": "NOT_RUN",
+      "scope": "A3负责完整阶段/响应恢复",
+      "evidence": "A2仅activation拒绝重启和局部SENDING未知转换构造证据；不具完整恢复。"
+    },
+    {
+      "id": "M11-05",
+      "status": "NOT_RUN",
+      "scope": "A3重复槽位/跨调用去重",
+      "evidence": "尚未实现注册重复及完整恢复回归。"
+    },
+    {
+      "id": "LOCAL_SAVED_CHECKS",
+      "status": "PASS",
+      "scope": "本轮纯stdlib身份/账目复核",
+      "evidence": "原verify_delivery.py及独立verify_review.py通过，784交付/26输入/478源码/7变更摘要一致。"
+    },
+    {
+      "id": "LOCAL_BEHAVIOR_TESTS",
+      "status": "NOT_RUN",
+      "scope": "本机未重跑pytest",
+      "evidence": "当前缺pytest/jsonschema/numpy/scipy；58构造+50公共回归为归档0错误/0失败，不是本轮执行。"
+    }
+  ],
+  "findings": [
+    {
+      "id": "QA-JM1A2-01",
+      "severity": "重要",
+      "blocking_for_A3_engineering": false,
+      "blocks_unqualified_recovery_readiness": true,
+      "contract": "UNKNOWN_SEND保守停止；M11-03的A3恢复前置",
+      "evidence": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_remote.py:128",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_remote.py:133",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_remote.py:143",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_continuation.py:128",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_continuation.py:133"
+      ],
+      "actual": "新请求创建调用admit_request检查全账本停止状态；已有INTENT走matches路径直接进入admit_send。A2 admit_send仅校验origin/context/identity，没有全账本停止门。因此现有代码不能证明“另条请求失败/未知后恢复已有INTENT也绝不发送”。",
+      "observation_boundary": "本轮仅静态控制流检查，未执行该交错恢复反例，不能声称已观察到越停批发送；A2公开运行入口拒绝重启，完整INTENT恢复本属A3。",
+      "impact": "不把A3未实现恢复算A2失败，A3工程可以启动；开放恢复或关闭M11-03前必须构造复现/证明不可达并落实停批门。",
+      "minimum_fix": "新版本恢复入口及所有发送路径（含已有INTENT）在发送前检查相同停批/预算/身份门；未知不重试。保留A2冻结记录，不用改历史账本消除问题。"
+    },
+    {
+      "id": "QA-JM1A2-02",
+      "severity": "重要",
+      "blocking_for_A3_engineering": false,
+      "contract": "工程正确/实际路由/真实执行准入分别表述",
+      "evidence": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_continuation.py:29",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_continuation.py:141",
+        "semantic_pallet_planner/outputs/JEV_JM1_A2_20261111_01/interface_receipt.json"
+      ],
+      "actual": "freeze_execution仅v6构造起点；selector_factory和ledger拒绝非fake transport。当前是可执行构造机制，不是可直接用于真实v3后缀的完成态。",
+      "impact": "是交付主动声明的支持范围而非隐瞒缺陷；允许A3构造恢复开发，不准入真实实验或据此把整个JM1-A标总PASS。",
+      "minimum_fix": "A3最终逐维度列明支持/未实现，真实v3适配若仍缺则保留缺口、另行授权版本化实施；不改scope/版本常量绕过。"
+    }
+  ],
+  "blocking_findings_for_A3_engineering": [],
+  "next_stage_required_audit_items": [
+    "QA-JM1A2-01 existing INTENT + stopped ledger boundary",
+    "complete SELECTED/MONITORED/COMMITTED and response recovery",
+    "separate repeat-slot freeze and cross-call dedup",
+    "explicit real-v3 support boundary"
+  ],
+  "evidence": "semantic_pallet_planner/outputs/JEV_JM_JM1_A2_QA_20261111_01/static_checks.json",
+  "review_boundary": "20 valid saved execution roots and24 request rows; identity-corruption negative fixtures excluded from positive claims; archived JUnit/source inspected; no business or network execution",
+  "prompt_delivery": "INLINE_FINAL_RESPONSE_ONLY_NO_MARKDOWN_FILE",
+  "stop": true
+}

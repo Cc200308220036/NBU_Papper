@@ -1,0 +1,49 @@
+{
+  "version": "jm1_a3_admission_review_v1",
+  "next_unit": "JM1-A3",
+  "status": "READY",
+  "scope": "独立版本化完整阶段/响应恢复、重复槽位与针对性构造回归；不授予真实执行",
+  "prerequisites": [
+    {
+      "requirement": "A1精确绑定和强制首步及父合同可读",
+      "evidence": "26父输入摘要一致，A1模块未改，A1 29归档回归保持",
+      "status": "PASS"
+    },
+    {
+      "requirement": "A2执行/策略身份、独立账本和公开后续路由可审计",
+      "evidence": "20保存根/24请求与activation/execution/context/reservation/stages；实际selector类与公共引擎源码",
+      "status": "PASS_CONSTRUCTED_ONLY"
+    },
+    {
+      "requirement": "未知发送保守停止和恢复需补边界明确",
+      "evidence": "当前未知/失败保存状态成立；已有INTENT恢复停门见QA-JM1A2-01，须由A3关闭",
+      "status": "READY_AS_A3_WORK_ITEM_NOT_RECOVERY_PASS"
+    },
+    {
+      "requirement": "重复槽位/完整恢复已实现",
+      "status": "NOT_APPLICABLE",
+      "basis": "正是下一A3开发内容，不要求A2提前完成"
+    },
+    {
+      "requirement": "真实v3路由/来源/预算及真实调用授权",
+      "status": "NOT_APPLICABLE_FOR_A3_CONSTRUCTION",
+      "basis": "本次未满足，不可据工程READY发送真实请求"
+    }
+  ],
+  "mandatory_before_A3_close": [
+    "已存选择不重发，已存监测不重算，已提交不重复放置",
+    "QA-JM1A2-01全部发送路径停批门及交错恢复反例",
+    "INTENT/SENDING/响应已存/activation中断完整分母与身份",
+    "独立重复slot及预算，跨调用去重",
+    "整个M11-01—05逐项范围；未实现真实v3维度不得隐藏"
+  ],
+  "not_admitted": [
+    "真实模型/凭证/网络/后缀实验",
+    "JM1-B/C采集",
+    "历史A2轨迹回放或改签重启",
+    "伪造真实数据/经验准入"
+  ],
+  "real_calls_authorized": 0,
+  "authorization_note": "技术准入建议；本窗口不实施A3，开发窗口需用户指定任务。",
+  "stop": true
+}

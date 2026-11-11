@@ -1,0 +1,231 @@
+{
+  "version": "jm0_b_budget_and_stop_contract_v1",
+  "task": "JM0-B",
+  "plan_version": "JM-plan-v2",
+  "kind": "budget_and_stop_contract",
+  "contract_type": "STATIC_DESIGN_NOT_PRODUCTION_SCHEMA_OR_IMPLEMENTED_RUNTIME",
+  "design_status": "FROZEN_DESIGN_WITH_EXPLICIT_FUTURE_SEND_GATES",
+  "execution_authorized": false,
+  "payload": {
+    "current_authorized": {
+      "model_calls": 0,
+      "orders": 0,
+      "forks": 0,
+      "candidate_rebuilds": 0,
+      "solver_calls": 0,
+      "credential_reads": 0,
+      "network_calls": 0,
+      "training": 0,
+      "data_generation": 0,
+      "subagents": 0,
+      "installs": 0,
+      "downloads": 0,
+      "git_add": 0,
+      "commits": 0,
+      "pushes": 0
+    },
+    "allocations": [
+      {
+        "id": "TRAIN_BASELINE",
+        "stage": "JM1-C1",
+        "model": "Jev_no_memory",
+        "max_units": 6,
+        "unit": "whole_orders",
+        "send_formula": "sum(full_planned_item_count per registered baseline)",
+        "freeze_by": "JM1-B2_BEFORE_BASELINE",
+        "result_trigger": "no outcome extension"
+      },
+      {
+        "id": "TRAIN_SUFFIX",
+        "stage": "JM1-C2",
+        "model": "Jev_no_memory",
+        "max_units": 48,
+        "unit": "suffixes_including_original_refs_and_repeats",
+        "send_formula": "sum(max(0,full_planned_items - placed_before_point - 1) per registered branch/repeat)",
+        "freeze_by": "JM1-C1_BEFORE_C2",
+        "result_trigger": "none; initial<=36 plus repeats<=12 included, never add again"
+      },
+      {
+        "id": "E_GENERATION",
+        "stage": "JM2-C1",
+        "model": "DeepSeek_text",
+        "max_units": 8,
+        "unit": "one_call_per_frozen_evidence_family",
+        "send_formula": "one per approved generation family, <=8",
+        "freeze_by": "JM2-C1_BEFORE_GENERATION",
+        "result_trigger": "no auto repair/retry"
+      },
+      {
+        "id": "INDEPENDENT_REVIEW",
+        "stage": "JM2-C1",
+        "model": "NONE_HUMAN_SELECTED",
+        "max_units": 0,
+        "optional_model_mode_cap": 8,
+        "optional_model_mode": "NOT_SELECTED_REQUIRES_SEPARATE_BEFORE_GENERATION_APPROVAL",
+        "unit": "independent_model_calls",
+        "send_formula": "0 under selected human review; only separately frozen approved independent model mode can allocate <=8",
+        "freeze_by": "JM2-C1_BEFORE_GENERATION",
+        "result_trigger": "cannot absorb rejected generation spare"
+      },
+      {
+        "id": "MINIMUM_INJECTION",
+        "stage": "JM4-A2",
+        "model": "Jev",
+        "max_units": 2,
+        "unit": "single_choices_1T_1E",
+        "send_formula": "<=1 registered T plus <=1 registered E multi-choice, no searching replacement state",
+        "freeze_by": "JM4-A2_BEFORE_FIRST_SEND",
+        "result_trigger": "empty/mismatch does not permit refill"
+      },
+      {
+        "id": "LOCAL_SELECTION",
+        "stage": "JM4-M2",
+        "model": "Jev",
+        "max_units": 20,
+        "unit": "4_states_times_5_conditions",
+        "send_formula": "one per pre-registered state/condition; singleton or empty produces zero send",
+        "freeze_by": "JM4-M1",
+        "result_trigger": "no resampling changed actions"
+      },
+      {
+        "id": "LOCAL_SUFFIX",
+        "stage": "JM4-M2",
+        "model": "Jev_no_memory",
+        "max_units": 24,
+        "unit": "4_states_times_3_retained_actions_times_2_repeats",
+        "send_formula": "sum(max(0,full_planned_items - placed_before_point - 1) per retained action/repeat)",
+        "freeze_by": "JM4-M1 bound, concrete action IDs materialize deterministically after choices BEFORE_SUFFIX_SEND",
+        "result_trigger": "failed forced first =>0 subsequent sends, no replacement"
+      },
+      {
+        "id": "DEV_ORDERS",
+        "stage": "JM4-B2",
+        "model": "Jev_all_7_methods",
+        "max_units": 42,
+        "unit": "28_first_plus_14_registered_repeat_jobs",
+        "send_formula": "sum(full_planned_item_count over frozen jobs); default first4x7 + first2x7 repeat",
+        "freeze_by": "JM4-B1",
+        "result_trigger": "no result-dependent method omissions"
+      },
+      {
+        "id": "EVAL_ORDERS",
+        "stage": "JM5-B",
+        "model": "Jev_all_7_methods",
+        "max_units": "NOT_MATERIALIZED_NO_SEND",
+        "unit": "N_times_7_times_R",
+        "send_formula": "sum(full_planned_item_count over exact N*7*R rows), unequal repeats require new explicit matrix",
+        "freeze_by": "JM5-A2",
+        "result_trigger": "no sequential sample extension"
+      }
+    ],
+    "zero_call_units": [
+      "JM0",
+      "JM1-A",
+      "JM1-B",
+      "JM2-A",
+      "JM2-B",
+      "JM3",
+      "JM4-A1",
+      "JM4-M1",
+      "JM4-B1",
+      "JM5-A",
+      "JM6"
+    ],
+    "arithmetic": {
+      "training_points": {
+        "orders": 6,
+        "points_each": 2,
+        "total": 12
+      },
+      "training_initial": {
+        "points": 12,
+        "branches_each": 3,
+        "total": 36
+      },
+      "training_repeats": {
+        "points": 4,
+        "branches_each": 3,
+        "extra_repeat_each": 1,
+        "total": 12
+      },
+      "training_total_suffixes": 48,
+      "local_choices": {
+        "states": 4,
+        "conditions_each": 5,
+        "total": 20
+      },
+      "local_suffixes": {
+        "states": 4,
+        "actions_each": 3,
+        "repeat_each": 2,
+        "total": 24
+      },
+      "pilot": {
+        "orders": 4,
+        "methods": 7,
+        "extra_repeat_orders": 2,
+        "total": 42
+      }
+    },
+    "send_admission_all_required": [
+      "explicit user authorization of exact frozen scope",
+      "parent/evidence gates verified",
+      "new protocol implemented and validated in corresponding engineering unit",
+      "nonempty actual tasks/job IDs and full denominators",
+      "all required numeric parameters finite/materialized before deadline",
+      "data/source/strategy/model/prompt/dependencies/algorithm frozen",
+      "ledger per-kind per-stage per-job and global integer caps summed",
+      "no UNKNOWN_SEND/inflight predecessor",
+      "source/role isolation passes",
+      "memory qualification consistent with diagnostic/normal mode"
+    ],
+    "reservation_identity": [
+      "stage",
+      "allocation_id",
+      "job_id",
+      "branch_id",
+      "repeat_slot",
+      "decision_id",
+      "body_digest",
+      "method",
+      "model"
+    ],
+    "accounting": {
+      "no_double_count": "one actual transport reservation belongs to exactly one allocation_id; subtotal stage is sum unique rows; include original-action refs/repeats inside caps; no inherited budget borrowing",
+      "singleton_and_forced_first_calls": 0,
+      "forced_first_monitor": "not API; fail => terminate suffix",
+      "unused": "never recycled to extra task/seed/card or another allocation",
+      "retries": 0,
+      "dollar_default_cap": "NONE_TASK_SEND_CAPS_REQUIRED",
+      "generation_or_review_not_retrieval_time": true,
+      "known_call_interval": "[confirmed calls, confirmed calls+unknown sends]",
+      "exact_total_now": "NOT_MATERIALIZED_NO_RUN; task sizes absent, no invented finite total"
+    },
+    "stop": {
+      "batch_technical": [
+        "UNKNOWN_SEND",
+        "IDENTITY_DRIFT",
+        "DATA_LEAK",
+        "BUDGET_ERROR",
+        "UNREGISTERED_MONITOR_SCOPE",
+        "LEDGER_MISMATCH",
+        "UNRESOLVED_PARENT_EVIDENCE"
+      ],
+      "natural_branch": [
+        "EMPTY_POOL",
+        "PREDICTED_STATIC_INSTABILITY",
+        "COMPLETE"
+      ],
+      "range_branch": [
+        "UNASSESSABLE"
+      ],
+      "monitor_error": "ERROR; technical stop not instability",
+      "failure_commit": false,
+      "failure_reselect": false,
+      "authorization_to_resume": "new explicit decision under unchanged valid identity, never implicit retry of unknown send",
+      "remaining_slots": "retain NOT_RUN and cause",
+      "generation_rejection": "archive rejected/PENDING, no auto repair",
+      "freeze_deadline_miss": "DEFER before any affected send"
+    }
+  }
+}

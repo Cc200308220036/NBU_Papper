@@ -1,0 +1,93 @@
+{
+  "version": "jm0_b_parameter_register_v1",
+  "task": "JM0-B",
+  "plan_version": "JM-plan-v2",
+  "kind": "parameter_register",
+  "contract_type": "STATIC_DESIGN_NOT_PRODUCTION_SCHEMA_OR_IMPLEMENTED_RUNTIME",
+  "design_status": "FROZEN_DESIGN_WITH_EXPLICIT_FUTURE_SEND_GATES",
+  "execution_authorized": false,
+  "payload": {
+    "parameters": [
+      {
+        "name": "epsilon_near_top_relative",
+        "status": "PROCEDURE_FROZEN_VALUE_NOT_MATERIALIZED",
+        "inputs": [
+          "training public native probability projections only"
+        ],
+        "procedure_ref": {
+          "path": "semantic_pallet_planner/outputs/JEV_JM0_B_20261111_01/sampling_policy.json",
+          "json_pointer": "/payload/near_top"
+        },
+        "freeze_by": "JM1-C1_BEFORE_C2",
+        "owner": "JM1-B1/C1",
+        "on_missing": "EXACT_ONLY_OR_NO_ELIGIBLE_POINT_NO_FILL"
+      },
+      {
+        "name": "scenario_feature_definitions_and_action_predicates",
+        "status": "PROCEDURE_FROZEN_VALUE_NOT_MATERIALIZED",
+        "inputs": [
+          "public before state",
+          "complete saved pool",
+          "area-load facts",
+          "registered units"
+        ],
+        "procedure": "JM2-A1 define bounded implementable feature set, units/missing/population and role contrast. Shared function for historical/current; omit unimplemented future packing/critical path features. JM2-A3 blind sufficiency review requires all predicates supported, otherwise reject.",
+        "freeze_by": "JM2-A1_BEFORE_PROJECTION_AND_CONTENT",
+        "owner": "JM2-A1/A3",
+        "on_missing": "REJECT_UNSUPPORTED_FEATURE"
+      },
+      {
+        "name": "R1_score_threshold",
+        "status": "PROCEDURE_FROZEN_VALUE_NOT_MATERIALIZED",
+        "inputs": [
+          "isolated retrieval_tune public states/cards",
+          "blind tune labels",
+          "candidate scores without terminal outcomes"
+        ],
+        "procedure": "Freeze candidate family first: structural/action gates mandatory, ranking uses shared corrected nine-dimensional score, max_entries=1 and old whole-entry budgets. Threshold candidates = sorted distinct tune scores union {0.5, reject_all}; no LLM reranker. Eligible settings have zero forbidden-transfer injections, at least one labeled applicable accepted state in each declared stage/action stratum, and macro-source applicable precision >= R0. Choose greatest macro-source applicable recall, then precision, then fewer UNKNOWN injections, then higher threshold. No eligible candidate => DEFER. Freeze once before opening lock labels; lock failure needs new preregistered verification version and new isolated material.",
+        "freeze_by": "JM3-B1_BEFORE_LOCK_LABELS_OR_B2",
+        "owner": "JM3-A1/B1",
+        "on_missing": "DEFER_NO_REAL_LABELS_NO_PRECISION_CLAIM"
+      },
+      {
+        "name": "local_minimum_effect_and_noise",
+        "status": "PROCEDURE_FROZEN_VALUE_NOT_MATERIALIZED",
+        "inputs": [
+          "frozen authorized training task size summaries private design side",
+          "valid pre-registered JM1 repeated-action final volume ratios"
+        ],
+        "procedure": "delta_box = lower median across training tasks of (smallest item volume / full task volume). noise = max absolute same-action volume-ratio difference over complete registered repeat pairs. Freeze delta_local=max(delta_box,noise,1e-9), before local results. Need >=2 distinct training starts and >=2 source groups with complete valid repeat pairs; no repeat/invalid identities => DEFER, not noise=0. These are descriptive resolution/noise allowances, not a confidence interval.",
+        "freeze_by": "JM4-M1_BEFORE_ANY_LOCAL_SELECTION",
+        "owner": "JM4-M1",
+        "on_missing": "DEFER_NO_NUMERIC_EXECUTION_GATE"
+      },
+      {
+        "name": "evaluation_effect_sample_size_repeats",
+        "status": "PROCEDURE_FROZEN_VALUE_NOT_MATERIALIZED",
+        "inputs": [
+          "JM4-B frozen developer paired source differences and registered within-task repeats",
+          "eligible source register before eval outcomes"
+        ],
+        "procedure": "Current route is descriptive only. At JM5-A1 freeze eligible source/material group inventory and cutoff without eval outcomes; choose one canonical task per group sorted by source then task digest. N=min(eligible group count, separately approved positive integer source cap), R=2 common repeats. If N=0, any grouping UNKNOWN, cap absent, or cost/send matrix not approved => DEFER. Target practical effect is training delta_box from local-threshold contract, materialize before eval. No power calculation or inferential CI in this version. An inferential study requires a separately revised analysis contract and independently reviewed sample-size/multiplicity procedure before evaluation; not selectable from evaluation results.",
+        "freeze_by": "JM5-A2_BEFORE_ANY_EVAL_SEND",
+        "owner": "JM5-A1/A2",
+        "on_missing": "DEFER_NO_FINITE_MATRIX_OR_POWER_CLAIM"
+      }
+    ],
+    "common_rules": {
+      "unknown_numeric": "typed NOT_MATERIALIZED, never null/0 meaning ready",
+      "freeze_receipt_fields": [
+        "parameter_name",
+        "value_and_units",
+        "selection_program_digest",
+        "allowlisted_inputs_sha256",
+        "decision_timestamp",
+        "owner_review",
+        "deadline",
+        "receiving_plan_digest"
+      ],
+      "send_gate": "all required parameters materialized as finite typed numeric or explicitly excluded research stratum; no pending field crosses its deadline",
+      "revision": "new immutable version, no retroactive change or hidden result-dependent selection"
+    }
+  }
+}

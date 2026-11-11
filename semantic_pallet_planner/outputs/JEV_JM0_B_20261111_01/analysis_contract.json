@@ -1,0 +1,184 @@
+{
+  "version": "jm0_b_analysis_contract_v1",
+  "task": "JM0-B",
+  "plan_version": "JM-plan-v2",
+  "kind": "analysis_contract",
+  "contract_type": "STATIC_DESIGN_NOT_PRODUCTION_SCHEMA_OR_IMPLEMENTED_RUNTIME",
+  "design_status": "FROZEN_DESIGN_WITH_EXPLICIT_FUTURE_SEND_GATES",
+  "execution_authorized": false,
+  "payload": {
+    "comparison_rule": {
+      "version": "jev_branch_comparison_rule_v2",
+      "levels": [
+        "STABLE_COMPLETION",
+        "LOADED_VOLUME",
+        "COUNT_MASS",
+        "COMPACTNESS"
+      ],
+      "delta_direction": "alternative_minus_reference",
+      "tolerances": {
+        "ratio": 1e-09,
+        "height_mm": 1e-06,
+        "mass_kg": 1e-09,
+        "items": 0
+      },
+      "valid_categories": [
+        "COMPLETE",
+        "EMPTY_POOL",
+        "PREDICTED_STATIC_INSTABILITY"
+      ],
+      "decision": "first unequal stable completion or full-order volume decides; equal loading uses count/mass Pareto then height/envelope Pareto; report opposing lower-priority costs separately",
+      "invalid": [
+        "UNASSESSABLE",
+        "ERROR",
+        "UNKNOWN_SEND",
+        "SELECTION_FAILURE",
+        "TECHNICAL_LIMIT",
+        "CANCELLED",
+        "NOT_RUN",
+        "missing denominators/identity/metrics"
+      ],
+      "all_missing_or_invalid": "not zero or a strategy loss; retain full denominator"
+    },
+    "rule_source": {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_reanalysis.py"
+    },
+    "endpoints": {
+      "primary": "full-order placed_volume_ratio after stable-completion tier",
+      "also_report": [
+        "completed_and_stable_completed",
+        "placed_item_ratio",
+        "placed_mass_ratio",
+        "fixed_container_utilization",
+        "actual_height_mm",
+        "envelope_utilization",
+        "predicted_static_instability_progress",
+        "monitor_assessable_coverage_and_reasons",
+        "technical_failure_cancel_NOT_RUN",
+        "candidate_selection_monitor_API_order_latency",
+        "request_origin_unknown_send_usage_cost"
+      ],
+      "NA": "empty height/envelope, missing costs/features/intervals kept typed NA/UNKNOWN/NOT_IMPLEMENTED/NOT_RUN; never fake zero"
+    },
+    "main_comparisons": [
+      {
+        "id": "T1__T0",
+        "a": "T1",
+        "b": "T0",
+        "family": "confirmatory_if_frozen_in_JM5"
+      },
+      {
+        "id": "E1__E0",
+        "a": "E1",
+        "b": "E0",
+        "family": "confirmatory_if_frozen_in_JM5"
+      },
+      {
+        "id": "T1__N",
+        "a": "T1",
+        "b": "N",
+        "family": "confirmatory_if_frozen_in_JM5"
+      },
+      {
+        "id": "E1__N",
+        "a": "E1",
+        "b": "N",
+        "family": "confirmatory_if_frozen_in_JM5"
+      },
+      {
+        "id": "E1__U1",
+        "a": "E1",
+        "b": "U1",
+        "family": "confirmatory_if_frozen_in_JM5"
+      },
+      {
+        "id": "E1__G1",
+        "a": "E1",
+        "b": "G1",
+        "family": "confirmatory_if_frozen_in_JM5"
+      }
+    ],
+    "exploratory": [
+      "E1/T1 same-evidence representation with unequal information",
+      "per-card/per-stage observations not prespecified",
+      "historical JN4/JN5 appended only, not pooled with new route"
+    ],
+    "aggregation": {
+      "repeat": "within task+method first, preserve full per-repeat outcomes; never pick best",
+      "task": "paired only same data/config/algorithm/service scope",
+      "source": "equal weights audited independent source or material groups; tasks/repeats within group summarized first",
+      "method": "do not average across old v2/v3 mixed protocol histories",
+      "n": "report source/material/task/start/repeat/branch/requests separately"
+    },
+    "missing_and_sensitivity": {
+      "all_planned_slots": "include completed,natural_stop,range_stop,technical_failure,cancel,NOT_RUN",
+      "technical_pair": "invalid for primary benefit rank; retain observed stop-before metrics as diagnostics",
+      "valid_pair_mean": "label conditional-on-valid subset; report missing fraction",
+      "bounds": "for missing primary volume ratio use [0,1] logical range only, derive worst/best paired bounds without relabeling missing as observed zero",
+      "unknown_send_calls": "known_calls + unknown_sends interval; usage and cost UNKNOWN for unavailable parts"
+    },
+    "retrieval_metrics": {
+      "unit": "state-card applicability and action-role relation, not terminal winner",
+      "precision": "true_applicable_accepts / all adjudicated known-label accepts; if zero denominator NA; UNKNOWN accepts separate",
+      "recall": "true_applicable_accepts / all known applicable state-card cases; zero denominator NA",
+      "also_report": [
+        "false_injections",
+        "wrong_rejections",
+        "unknown_fraction",
+        "all_empty",
+        "per-source/family/stage/action coverage",
+        "view/body/confirmed-send split"
+      ],
+      "label_values": [
+        "APPLICABLE",
+        "FORBIDDEN_OR_NOT_APPLICABLE",
+        "UNKNOWN"
+      ],
+      "label_review": "two independent signed human judgements using public state/pool/card only; preserve disagreement, no retriever scores or terminal results"
+    },
+    "local": {
+      "unit": "same public state/pool; retained normalized exact actions, common no-memory suffix strategy",
+      "controls": [
+        "L-N",
+        "L-T",
+        "L-E",
+        "L-A",
+        "L-G"
+      ],
+      "partial_condition": "unretained or missing action has no outcome delta; record NOT_RUN",
+      "noncausal": "deletion leaves facts that may imply direction; stochastic suffix differs; no pure single-property causal claim"
+    },
+    "uncertainty": {
+      "default": "BOUNDED_DESCRIPTIVE_ONLY_IN_THIS_CONTRACT_VERSION",
+      "small_or_shared_source": "CI/power NOT_ESTIMATED; empirical ranges not CI; no significance/generalization claim",
+      "upgrade_rule": "Not enabled in this version. New independently reviewed and versioned analysis contract must freeze independent-source sample size, N/R, confidence level, intervals, multiplicity and practical effect BEFORE evaluating any new outcome.",
+      "not_permitted": "request-level or adjacent-state iid CI; post-hoc new primary; seed picking",
+      "sample_and_effect_ref": {
+        "path": "semantic_pallet_planner/outputs/JEV_JM0_B_20261111_01/parameter_register.json",
+        "json_pointer": "/payload/parameters/4"
+      }
+    },
+    "cost_latency": {
+      "cost": "actual invoice or authoritative metering only; unknown stays UNKNOWN, no price-table fabricated bill",
+      "record": [
+        "reservation",
+        "send_started",
+        "confirmed_response",
+        "unknown_send",
+        "failure_stage",
+        "origin",
+        "input/output usage",
+        "transport duration",
+        "stage durations"
+      ],
+      "latency": "pool raw samples before quantiles; no averaging job p95 or adding nested timings"
+    },
+    "claim_ladder": {
+      "overall": "only preregistered positive E1/N or T1/N supports observed net gain",
+      "retrieval": "requires fixed-library R1/R0",
+      "related_content": "requires E1/U1",
+      "beyond_generic": "requires E1/G1",
+      "no_positive": "negative/null result valid completion; engineering/qualification != efficacy"
+    }
+  }
+}

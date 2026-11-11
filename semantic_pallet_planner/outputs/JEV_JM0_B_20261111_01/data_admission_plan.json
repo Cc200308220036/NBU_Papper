@@ -1,0 +1,158 @@
+{
+  "version": "jm0_b_data_admission_plan_v1",
+  "task": "JM0-B",
+  "plan_version": "JM-plan-v2",
+  "kind": "data_admission_plan",
+  "contract_type": "STATIC_DESIGN_NOT_PRODUCTION_SCHEMA_OR_IMPLEMENTED_RUNTIME",
+  "design_status": "FROZEN_DESIGN_WITH_EXPLICIT_FUTURE_SEND_GATES",
+  "execution_authorized": false,
+  "payload": {
+    "route": {
+      "path": "semantic_pallet_planner/outputs/JEV_JM0_B_20261111_01/research_contract.json",
+      "json_pointer": "/payload/route"
+    },
+    "roles": [
+      "training",
+      "retrieval_tune",
+      "retrieval_lock",
+      "local_content",
+      "whole_order_dev",
+      "evaluation"
+    ],
+    "forbidden_overlap_pairs": [
+      [
+        "training",
+        "retrieval_tune"
+      ],
+      [
+        "training",
+        "retrieval_lock"
+      ],
+      [
+        "training",
+        "local_content"
+      ],
+      [
+        "training",
+        "whole_order_dev"
+      ],
+      [
+        "training",
+        "evaluation"
+      ],
+      [
+        "retrieval_tune",
+        "retrieval_lock"
+      ],
+      [
+        "retrieval_tune",
+        "local_content"
+      ],
+      [
+        "retrieval_tune",
+        "whole_order_dev"
+      ],
+      [
+        "retrieval_tune",
+        "evaluation"
+      ],
+      [
+        "retrieval_lock",
+        "local_content"
+      ],
+      [
+        "retrieval_lock",
+        "whole_order_dev"
+      ],
+      [
+        "retrieval_lock",
+        "evaluation"
+      ],
+      [
+        "local_content",
+        "whole_order_dev"
+      ],
+      [
+        "local_content",
+        "evaluation"
+      ],
+      [
+        "whole_order_dev",
+        "evaluation"
+      ]
+    ],
+    "grouping": {
+      "algorithm_contract": "connected-component union on registered evidence; do not execute source auditing engine at JM0-B",
+      "edge_types": [
+        "same_raw_order_or_alias",
+        "saved_exact_or_rotation_multiset_match",
+        "saved_near_duplicate_component",
+        "packaging_variant_of_same_order",
+        "fork_or_repeat_of_same_prefix",
+        "shared_physical_prototype_or_SKU",
+        "shared_synthetic_material_pool_and_generator_family",
+        "same_seed_family_or_generation_parent"
+      ],
+      "unknown_relation": "quarantine; cannot assign disjoint merely because no match",
+      "new_family_attestation": "different names/seeds alone invalid; justify source/prototype/pool separation and record complete memberships",
+      "inherit": "do not weaken saved source audit near-duplicate edges or roundings",
+      "synthetic_caution": "same generator family/material pool conservative union; disjoint partition requires actual audited disjoint materials, not random split of old pool"
+    },
+    "machine_assignment_fields": [
+      "entity_identity_sha256",
+      "role",
+      "source_group_ids",
+      "near_duplicate_component_ids",
+      "material_family_ids",
+      "prototype_ids",
+      "seed_family_ids",
+      "evidence_refs",
+      "exposure_status",
+      "parent_entity_ids"
+    ],
+    "assignment_rule": "For every forbidden pair, no shared entity/group/near_duplicate/material/prototype/seed or ancestor. All fields typed; absent relations => UNKNOWN/DEFER, not empty proof. Every child inherits all parent grouping tokens. Freeze before use.",
+    "existing_materials": {
+      "source_register": {
+        "path": "semantic_pallet_planner/outputs/JEV_JM0_A_20261110_01/source_task_register.json",
+        "json_pointer": "/source_rows"
+      },
+      "legacy_components": {
+        "path": "semantic_pallet_planner/outputs/JEV_JM0_A_20261110_01/inherited_component_register.json",
+        "json_pointer": "/rows"
+      },
+      "role_assigned_now": "historical_diagnostic_only",
+      "formal_assignments": [],
+      "formal_partition_status": "DEFER",
+      "strict_unseen_admitted": 0
+    },
+    "admission": {
+      "training": "exposed sources permitted only in frozen training plan, never eval; legacy branches are not new Jev suffixes",
+      "development": "may be historically exposed but disjoint from training and between development roles; each use logged",
+      "evaluation": "closed lifecycle exposure proof, provenance/trust policy, aliases and material closure; never previous JN2/JN3/JN4/negative-analysis source family",
+      "synthetic_evaluation": "explicit restricted synthetic scope with audited grouped holdout; not independent real-origin evidence",
+      "UNKNOWN": "NOT_READY",
+      "insufficient_groups": "DEFER, no seed variants/repeats to fill sources"
+    },
+    "selection_without_results": {
+      "order": "sort eligible source/material identity digests then task identity digests; round-robin sources; no terminal outcome fields",
+      "training_limit": 6,
+      "training_minimum_groups_for_execution_memory": 2,
+      "dev_minimum_groups_for_execution_memory": 2,
+      "missing": "do not replace after outcome; freeze smaller bounded set or DEFER before sending"
+    },
+    "id_rules": {
+      "canonical": "UTF-8 JSON sorted keys compact separators, decimal/unit rules frozen, SHA256",
+      "new_entity_id": "role + full SHA256(parent identities + protocol + generation/selection rule + deterministic ordinal)",
+      "fork_id": "SHA256(public pre-state + full pool + original and forced action + continuation identity + repeat slot)",
+      "actual_future_ids": "NOT_MATERIALIZED_THIS_STAGE",
+      "deadlines": {
+        "training_task_ids": "JM1-B2 before baseline send",
+        "fork_and_repeat_ids": "JM1-C1 after allowed public sampling before C2",
+        "tune_lock": "JM3-B1 before labels/config lock",
+        "local_state_ids": "JM4-M1 before local send",
+        "pilot_jobs": "JM4-B1 before pilot send",
+        "eval_tasks_jobs": "JM5-A1/A2 before evaluation send"
+      }
+    }
+  }
+}

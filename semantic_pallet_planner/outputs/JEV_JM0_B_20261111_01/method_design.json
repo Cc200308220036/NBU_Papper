@@ -1,0 +1,215 @@
+{
+  "version": "jm0_b_method_design_v1",
+  "task": "JM0-B",
+  "plan_version": "JM-plan-v2",
+  "kind": "method_design",
+  "contract_type": "STATIC_DESIGN_NOT_PRODUCTION_SCHEMA_OR_IMPLEMENTED_RUNTIME",
+  "design_status": "FROZEN_DESIGN_WITH_EXPLICIT_FUTURE_SEND_GATES",
+  "execution_authorized": false,
+  "payload": {
+    "literature_evidence_status": "OFFLINE_PARENT_PLAN_REPORTED_ONLY_NOT_REBROWSED_NOT_VERIFIED_CURRENT_PRIMARY_TEXT",
+    "literature_design_map": [
+      {
+        "name": "ReMe",
+        "parent_plan_section": "2",
+        "reported_url": "https://arxiv.org/html/2512.10696v2",
+        "adopted_design": [
+          "usage_scenario + concrete contrast + evidence",
+          "recall separate from admission",
+          "training/dev-only explicit maintenance"
+        ],
+        "not_adopted": [
+          "online rewriting/reranking",
+          "confidence-as-benefit",
+          "automatic runtime services/retries"
+        ],
+        "verification": "PENDING_PRIMARY_VERSION_AND_TEXT_VERIFICATION; source mapped from plan, not direct paper assertion"
+      },
+      {
+        "name": "ExpeL",
+        "reported_url": "https://arxiv.org/html/2308.10144v3",
+        "adopted_design": [
+          "retain successful/failed/neutral/conflicting evidence",
+          "explicit refine/retire receipts",
+          "same-source T/E"
+        ],
+        "verification": "PARENT_PLAN_REPORTED_PENDING_PRIMARY"
+      },
+      {
+        "name": "Reflexion",
+        "reported_url": "https://arxiv.org/abs/2303.11366",
+        "adopted_design": [
+          "separate feedback facts and model hypothesis",
+          "failure lessons allowed"
+        ],
+        "verification": "PARENT_PLAN_REPORTED_PENDING_PRIMARY"
+      }
+    ],
+    "third_party": {
+      "parent_receipt": {
+        "path": "semantic_pallet_planner/outputs/JEV_JM0_A_20261110_01/third_party_review.json"
+      },
+      "reported_local_version": "0.4.1.11",
+      "upstream_commit": "UNKNOWN",
+      "equivalence_to_paper_v2": "UNKNOWN",
+      "external_qa_availability": "USER_REPORTED_UNAVAILABLE; QA files missing locally",
+      "local_path_observation_only": "see input_review.json; local bytes do not establish upstream identity or availability on other endpoint",
+      "runtime_integration": "NOT_ADOPTED",
+      "embedding": "NOT_ADOPTED",
+      "online_LLM_rerank_or_rewrite": "NOT_ADOPTED",
+      "method_borrowing": "ADOPTED_AT_DESIGN_LEVEL_FROM_PARENT_PLAN",
+      "reason": "known evidence/feature/coverage problems can be addressed with current public engine and auditable conditional content; no runtime identity evidence or dependency need established",
+      "if_later_adopted": "separate version, primary provenance/dependency/security/identity checks and authorized scope; no automatic install"
+    },
+    "methods": [
+      {
+        "id": "N",
+        "memory": "none",
+        "retrieval": "none",
+        "purpose": "no-memory baseline"
+      },
+      {
+        "id": "T0",
+        "memory": "T",
+        "retrieval": "R0",
+        "purpose": "same T old-formula comparator"
+      },
+      {
+        "id": "T1",
+        "memory": "T",
+        "retrieval": "R1",
+        "purpose": "fixed-T retrieval comparison"
+      },
+      {
+        "id": "E0",
+        "memory": "E",
+        "retrieval": "R0",
+        "purpose": "same E old-formula comparator"
+      },
+      {
+        "id": "E1",
+        "memory": "E",
+        "retrieval": "R1",
+        "purpose": "fixed-E retrieval and policy comparison"
+      },
+      {
+        "id": "U1",
+        "memory": "unrelated_frozen_content",
+        "retrieval": "E_R1_REFERENCE_THEN_REPLACE",
+        "purpose": "related content increment"
+      },
+      {
+        "id": "G1",
+        "memory": "generic_frozen_reminder",
+        "retrieval": "E_R1_REFERENCE_THEN_REPLACE",
+        "purpose": "beyond generic reminder"
+      }
+    ],
+    "shared_freeze": [
+      "data_arrivals_buffer",
+      "public_candidate_generator_TopK_order",
+      "display_seed_prompt_and_model",
+      "physical_parameters_monitor_v3",
+      "same_T_E_evidence_families_and_execution_whitelist",
+      "token_length_reporting"
+    ],
+    "R0": {
+      "features": "new corrected shared nine-feature definition, same population as R1",
+      "distance": "mean absolute normalized distance",
+      "score": "1/(1+d)",
+      "minimum_score": 0.5,
+      "max_entries": 1,
+      "max_chars": 12000,
+      "max_utf8_bytes": 16000,
+      "truncation": "whole entries only",
+      "old_run_reproduction": false
+    },
+    "R1": {
+      "structural_before_score": true,
+      "checks": [
+        "isolated_source",
+        "supported_stage",
+        "action_contrast_roles_both_sides",
+        "observable_registered_preconditions",
+        "complete_features",
+        "scope",
+        "conflict",
+        "execution_eligibility_in_normal_mode"
+      ],
+      "threshold": {
+        "path": "semantic_pallet_planner/outputs/JEV_JM0_B_20261111_01/parameter_register.json",
+        "json_pointer": "/payload/parameters/2"
+      },
+      "ranking": "same corrected nine-dimensional score in first design; no online model calls",
+      "normal_whitelist": "shared T/E EXECUTION_ELIGIBLE only; same whitelist for R0 and R1",
+      "diagnostic": "CANDIDATE_MEMORY allowed only in frozen explicit JM4 diagnostic mode",
+      "no_hit": "empty view with reason, keep method identity; no fallback or resend"
+    },
+    "U1_G1": {
+      "query": "own current trajectory reference-E R1 public query/admission; replace only after admitted reference content",
+      "never_reads": "E1 actual selected action or future trajectory",
+      "pairing": "freeze one unrelated payload per E fragment and same generic text for L-G/G1, before respective sends",
+      "unrelated": "contains no current task answer/training factual advice; control mapping and bytes/token difference saved",
+      "generic": "no training facts/results/current answer; freeze actual text at JM4-M1; same bytes reused in G1",
+      "length": "report chars UTF-8 bytes actual tokens separately; no equal-information claim"
+    },
+    "local_conditions": [
+      {
+        "id": "L-N",
+        "content": "empty memories"
+      },
+      {
+        "id": "L-T",
+        "content": "candidate T fragment"
+      },
+      {
+        "id": "L-E",
+        "content": "same-family candidate E fragment"
+      },
+      {
+        "id": "L-A",
+        "content": "pre-registered E advice-direction/prediction deletion; facts conditions costs retained"
+      },
+      {
+        "id": "L-G",
+        "content": "same frozen generic reminder as G1"
+      }
+    ],
+    "local_action_retention": {
+      "max_states": 4,
+      "conditions_each": 5,
+      "selection_requests_max": 20,
+      "distinct_actions_each_max": 3,
+      "must_include": "L-N",
+      "priority_after_LN": [
+        "L-E",
+        "L-T",
+        "L-A",
+        "L-G"
+      ],
+      "dedup": "exact item+pose+oriented extents; identical conditions retained but action executed once per registered repeat",
+      "critical_unretained_action": "NOT_RUN; missing critical E/A/G comparison => card DEFER, never expand cap",
+      "suffix_repeats_each": 2,
+      "suffixes_max": 24,
+      "suffix_policy": "no-memory Jev for all, first forced, fail-first stops",
+      "monitor_reuse_between_diagnostic_and_suffix": false
+    },
+    "pilot": {
+      "orders_max": 4,
+      "first_jobs_max": 28,
+      "repeat_first_orders": 2,
+      "repeat_jobs_max": 14,
+      "total_jobs_max": 42,
+      "order_rule": "rotating seven-method sequence by frozen task/repeat ordinal; starting offsets cycle 0..6; log unbalanced residual and service time blocks",
+      "no_result_based_order": true,
+      "complete_experience_matrix_ready": false
+    },
+    "claims": [
+      "T1/T0 and E1/E0: fixed-library retrieval differences",
+      "T1/N and E1/N: total memory route increment",
+      "E1/U1: related-content increment",
+      "E1/G1: beyond generic reminder",
+      "E1/T1: representation diagnostic with information differences, not pure summarization causality"
+    ]
+  }
+}

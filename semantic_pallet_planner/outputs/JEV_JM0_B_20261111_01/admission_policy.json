@@ -1,0 +1,122 @@
+{
+  "version": "jm0_b_admission_policy_v1",
+  "task": "JM0-B",
+  "plan_version": "JM-plan-v2",
+  "kind": "admission_policy",
+  "contract_type": "STATIC_DESIGN_NOT_PRODUCTION_SCHEMA_OR_IMPLEMENTED_RUNTIME",
+  "design_status": "FROZEN_DESIGN_WITH_EXPLICIT_FUTURE_SEND_GATES",
+  "execution_authorized": false,
+  "payload": {
+    "lifecycle": {
+      "FACT_CASE": {
+        "requires": [
+          "traceable saved facts, all valid/invalid/conflict counts preserved"
+        ],
+        "permissions": [
+          "archive",
+          "display"
+        ],
+        "forbidden": [
+          "normal runtime injection"
+        ]
+      },
+      "CANDIDATE_MEMORY": {
+        "requires": [
+          "projection_sufficiency",
+          "observable_predicates",
+          "action_role_integrity",
+          "programmatic_fact_pass",
+          "independent_scope_and_content_review_pass"
+        ],
+        "permissions": [
+          "frozen offline applicability benchmark",
+          "explicit diagnostic local/injection mode"
+        ],
+        "forbidden": [
+          "normal full-order use"
+        ]
+      },
+      "EXECUTION_ELIGIBLE": {
+        "requires": [
+          "candidate gates",
+          "JM3 locked-applicability gate",
+          "JM4 local-content gate",
+          "shared T/E execution whitelist"
+        ],
+        "permissions": [
+          "frozen registered normal pilot/eval"
+        ],
+        "not_a_claim": "does not prove unseen policy benefit"
+      }
+    },
+    "evidence_grade": {
+      "PROVISIONAL_CASE": "single registered comparison",
+      "REPLICATED_LOCAL_OBSERVATION": "same-start registered repeated observations consistent, no contrary valid result",
+      "CROSS_START_SUPPORT": "same predeclared predicate/action family supported at distinct non-near-duplicate starts; source groups counted separately",
+      "not_equivalent_to_lifecycle": true
+    },
+    "review": {
+      "fact_audit": "program exact numbers, units, denominators, references and raw response; preserve cost and invalid/negative evidence",
+      "scope_review": "observable registered predicates, no ID/rank shortcut or single-attribute causality from multiattribute intervention",
+      "content_review": "at least one concrete candidate distinction and falsifiable scoped consequence, not generic reminder",
+      "chosen_mechanism": "TWO_REAL_NAMED_HUMAN_REVIEWERS_WITH_SIGNED_RECORDS",
+      "independence": "separate from generator; blinded to current/eval terminal outcomes and retriever acceptance; disclose human authorship/executor conflicts; no generator self-approval",
+      "disagreement": "UNKNOWN/PENDING; a third independent named reviewer may adjudicate once with preserved reasons, no silent majority override of factual error",
+      "current_roster": "NOT_AVAILABLE_NO_APPROVAL_CLAIMED",
+      "deadline": "JM2-B2 define rubric; roster/conflicts/signed acceptance frozen BEFORE JM2-C1 generation; no roster => DEFER",
+      "independent_model": "NOT_SELECTED; if separately authorized must freeze model/prompt/budget <=8 before generation, never hide as retrieval overhead"
+    },
+    "minimum_coverage": {
+      "training_distinct_starts_per_family": 2,
+      "training_source_groups_per_family": 2,
+      "development_non_near_duplicate_states_per_family": 2,
+      "development_source_groups_per_family": 2,
+      "same_start_repeat_cannot_count_start": true,
+      "shared_material_groups": "cannot count as independent true sources; report both source labels and material connected components",
+      "nonempty_claim": "requires actual nonempty training and dev support in claimed family",
+      "action_claim": "requires exact same action-contrast category and both matched roles",
+      "missing_coverage": "DEFER or narrower FACT_CASE, no winning resample"
+    },
+    "locked_retrieval_gate": {
+      "forbidden_transfer_injections_max": 0,
+      "role_or_predicate_known_error_max": 0,
+      "precision_noninferiority_margin": 0,
+      "precision_rule": "observed macro-source applicable precision R1>=R0 on locked labels; UNKNOWN excluded from correctness and reported",
+      "coverage": "nonzero accepted labeled applicable examples in every predeclared family/stage/action stratum; all-empty => DEFER",
+      "denominators": "applicable/nonapplicable/UNKNOWN and abstentions/all candidates retained; missing source classes => DEFER",
+      "error_interpretation": "zero observed errors is a finite-screen rule, not proof true error rate zero; uncertainty descriptive unless independent-source inference preregistered",
+      "deadline": "rubric, source partitions, errors and strata before JM3-B1 labels; parameter values before lock reveal"
+    },
+    "local_execution_gate": {
+      "threshold_ref": {
+        "path": "semantic_pallet_planner/outputs/JEV_JM0_B_20261111_01/parameter_register.json",
+        "json_pointer": "/payload/parameters/3"
+      },
+      "all_starts": "complete valid paired reference/suffixes and registered repeats in all required states; no unexplained in-scope contrary result or missing critical action",
+      "E_specific_increment": "E action vs L-N, L-A and L-G must have identifiable retained-action comparisons; at least two distinct dev starts/two groups show primary-volume advantage >= frozen delta_local or consistent higher stable-completion tier; no start/repeat degrades stable completion or loading beyond v2 equivalence",
+      "T_route": "T vs L-N likewise; T/E shared whitelist uses intersection of qualifications; no forced E if only T qualifies",
+      "no_action_difference": "preserve same-action observation; no distinguishable increment => DEFER, not efficacy certificate",
+      "risk_limits": {
+        "unresolved_within_scope_conflicts": 0,
+        "unexplained_stable_completion_or_loading_regressions": 0,
+        "technical_invalid_pair_accepted": 0
+      },
+      "uncertainty": "delta_local uses training resolution/noise, not local winners; two repeats screening only, no CI/stability proof",
+      "deadline": "JM4-M1 before any local sends",
+      "normal_matrix": "no common execution-eligible family => NOT_READY"
+    },
+    "maintenance": {
+      "allowed_before_freeze": [
+        "CREATE",
+        "CORROBORATE",
+        "REFINE",
+        "REJECT",
+        "RETIRE"
+      ],
+      "preserve_originals": true,
+      "change_public_text": "new version/digest and repeat relevant review and applicability/local gates",
+      "after_eval_freeze": "read-only; no updates from test results",
+      "conflict": "do not erase with support-vote majority"
+    }
+  }
+}

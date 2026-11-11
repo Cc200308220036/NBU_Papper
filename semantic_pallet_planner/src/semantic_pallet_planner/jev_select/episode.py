@@ -258,12 +258,24 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         if hasattr(selector, 'bind_public'):
             selector.bind_public(req, policy, bundle)
 
+    from .packaging_versions import JM_FORK_PROTOCOLS
+    jm_first = training_fork is not None and training_fork.get('version') in JM_FORK_PROTOCOLS
     if training_fork is not None:
-        from .packaging_counterfactual import bootstrap, validate_branch_checkpoint
-        seed = bootstrap(training_fork, task, config, job_id)
-        if resume is None:
-            resume = seed
-        validate_branch_checkpoint(resume, task, config, job_id, training_fork)
+        if jm_first:
+            from .packaging_jev_forks import bootstrap, UnimplementedContinuation
+            if resume is not None:
+                raise JevSelectError('jm_resume_not_implemented_A3')
+            if not isinstance(selector, UnimplementedContinuation) or not callable(on_checkpoint):
+                raise JevSelectError('jm_A1_requires_stop_boundary_and_persistence')
+            resume = bootstrap(training_fork, task, config, job_id)
+            # Durable forced selection precedes any monitor or commit dispatch.
+            on_checkpoint(copy.deepcopy(resume))
+        else:
+            from .packaging_counterfactual import bootstrap, validate_branch_checkpoint
+            seed = bootstrap(training_fork, task, config, job_id)
+            if resume is None:
+                resume = seed
+            validate_branch_checkpoint(resume, task, config, job_id, training_fork)
 
     if resume is not None:
         from .contracts import validate_schema
@@ -356,6 +368,9 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                 'public_parse_s','physical_generation_s','facts_context_s','public_business_s','selection_s','physical_commit_s','independent_evaluation_s','checkpoint_io_s'))
             pending['reason'] = None
             decision += 1
+            if jm_first:
+                from .packaging_jev_forks import STOP
+                reason = STOP
             append(pending)
             continue
         before = copy.deepcopy(state)
@@ -438,6 +453,8 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                         else:
                             validate_monitor(event['monitor'],state,chosen,event,config)
                             event['monitor_result_reuses'] += 1
+                        if jm_first and event['monitor']['status'] not in ('STABLE','UNSTABLE','UNASSESSABLE','ERROR'):
+                            raise JevSelectError('jm_monitor_status_not_authorized')
                         reason = TERMINATIONS.get(event['monitor']['status'])
                     if reason is None:
                         if hook: hook('before_commit',event)

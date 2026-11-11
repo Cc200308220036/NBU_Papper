@@ -1,0 +1,109 @@
+{
+  "version": "jm1_a1_handoff_v1",
+  "unit": "JM1-A1",
+  "plan_version": "JM-plan-v2",
+  "head": "42654d35a5c2b93aeeea2e6e2e216e8c4ba44a8b",
+  "actual_uncommitted_source_identity": "source_identity.json",
+  "parent_receipts": [
+    "semantic_pallet_planner/outputs/JEV_JM_JM0_B_QA_20261111_01/handoff.json",
+    "semantic_pallet_planner/outputs/JEV_JM0_B_20261111_01/handoff.json",
+    "semantic_pallet_planner/outputs/JEV_JM0_A_20261110_01/handoff.json"
+  ],
+  "parent_identity_index": "input_evidence_index.json",
+  "saved_prefixes": "parent_saved_evidence_review.json",
+  "source_dependencies_strategy_monitor_snapshot_identity": "source_identity.json plus each constructed binding config/runtime_identity and pinned parent references",
+  "report": "docs/03_阶段产出分析/Jev/Jev_JM1-A1分叉绑定状态复制与强制首步验收_20261111_01.md",
+  "engineering_status": "COMPLETE_A1_CONSTRUCTED_ONLY",
+  "evidence_readiness": "SUFFICIENT_FOR_A1_REVIEW_NOT_REAL_EXECUTION",
+  "research_result": "NOT_RUN",
+  "acceptance": {
+    "M11-01": {
+      "status": "PASS",
+      "scope": "A1 constructed; saved-byte anchors reject resealed state/cursor/pool/exact action/task/branch/config/candidate/mapping edits; parent files unchanged"
+    },
+    "M11-02": {
+      "status": "PARTIAL",
+      "first_action_and_reference_and_interventions": "PASS",
+      "real_no_memory_continuation": "NOT_IMPLEMENTED_A2"
+    },
+    "M11-03": {
+      "status": "NOT_RUN",
+      "owner": "A3; resume explicitly rejected"
+    },
+    "M11-04": {
+      "status": "PARTIAL",
+      "A1_monitor_failure_and_forced_counts": "PASS_CONSTRUCTED",
+      "real_continuation_accounting": "NOT_IMPLEMENTED_A2"
+    },
+    "M11-05": {
+      "status": "NOT_RUN",
+      "owner": "A3 repeat/resume; old schemas unchanged"
+    }
+  },
+  "checks": {
+    "constructed": {
+      "passed": 29,
+      "log": "constructed_tests.log",
+      "junit": "constructed_junit.xml"
+    },
+    "public_regression": {
+      "passed": 50,
+      "deselected": 10,
+      "log": "public_regression.log",
+      "junit": "public_regression_junit.xml"
+    },
+    "saved_verification": "verify_delivery.py"
+  },
+  "operations": {
+    "real_model_calls": 0,
+    "credential_loader_calls": 0,
+    "solver_calls": 0,
+    "real_orders": 0,
+    "historical_fork_runs": 0,
+    "data_generation": 0,
+    "subagents": 0,
+    "installs": 0,
+    "downloads": 0,
+    "git_add": 0,
+    "commit": 0,
+    "push": 0
+  },
+  "limitations_and_missing_materials": [
+    "ARCHIVED_ONLY_NOT_EXECUTION_ADMISSION starts are read-only and cannot execute through A1 bootstrap",
+    "fresh branch call only; no across-invocation or cross-process exactly-once claim, no duplicate-slot registry",
+    "restart checkpoint rejected until A3",
+    "real no-memory continuation and independent request ledger NOT_IMPLEMENTED_A2",
+    "no sampler, memory/T/E/retrieval/real experiments",
+    "v6/v2 compatibility exercised only in construction; v12/v3 construction covered; future real route must freeze v3 and receive admission",
+    "formal source partitions and isolation validator coverage not ready",
+    "execution memory and independent review not ready",
+    "new Jev suffix evidence absent",
+    "8 unavailable third-party/corpus originals inherited from JM0-B QA; not restored or re-audited here"
+  ],
+  "next_interface": {
+    "unit": "JM1-A2",
+    "status": "RECOMMENDED_AFTER_INDEPENDENT_QA_AND_SEPARATE_USER_TASK",
+    "consume": [
+      "freeze_start/bind_branch and immutable exact action",
+      "persisted forced-first stages and explicit continuation boundary",
+      "new config/policy/source/task/monitor identities"
+    ],
+    "implement_later": [
+      "real no-memory Jev continuation selector and independent request ledger",
+      "always-empty memories and conservative UNKNOWN_SEND stop",
+      "separately versioned admission for real v3 continuation"
+    ],
+    "A3_owns": [
+      "full stage recovery",
+      "repeat slots",
+      "cross-invocation deduplication tests"
+    ]
+  },
+  "not_authorized": [
+    "JM1-A2/A3 implementation in this task",
+    "real model or suffix/order experiment",
+    "formal dataset generation or source admission"
+  ],
+  "stop": true,
+  "await": "independent JM1-A1 quality review"
+}

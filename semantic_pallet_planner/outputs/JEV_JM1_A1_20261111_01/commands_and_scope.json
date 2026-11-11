@@ -1,0 +1,59 @@
+{
+  "version": "jm1_a1_commands_v1",
+  "commands": [
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m pytest -q semantic_pallet_planner/tests/unit/test_packaging_jev_forks.py --basetemp=semantic_pallet_planner/outputs/JEV_JM1_A1_20261111_01/constructed_evidence --junitxml=semantic_pallet_planner/outputs/JEV_JM1_A1_20261111_01/constructed_junit.xml",
+      "status": "PASS",
+      "passed": 29,
+      "log": "constructed_tests.log",
+      "scope": "all A1 constructed behaviors plus ordinary v6 public-engine regression; frozen fixture, synthetic monitor credentials, production credential validation and commit; network/credentials/generator/solver selectors fail-fast"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m pytest -q semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_protocol.py semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_selection.py -k 'not no_key and not urllib and not http and not transport and not redirect and not exception and not timeout and not secret' --junitxml=semantic_pallet_planner/outputs/JEV_JM1_A1_20261111_01/public_regression_junit.xml",
+      "status": "PASS",
+      "passed": 50,
+      "deselected": 10,
+      "log": "public_regression.log",
+      "scope": "existing constructed protocol/mapping/closed Schema/native Choice parsing/ledger tests; no credential or HTTP tests; public geometric generation only for constructed cases; no solver"
+    },
+    {
+      "command": "git diff --check",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 semantic_pallet_planner/outputs/JEV_JM1_A1_20261111_01/verify_delivery.py",
+      "status": "PASS",
+      "scope": "stdlib hashes, saved accounting/stages, links and manifests only"
+    }
+  ],
+  "development_failures": [
+    {
+      "status": "FAIL_THEN_FIXED",
+      "detail": "first run: candidate has no mass_kg; assertion changed to task/committed mass and exact volume; 15 passed/1 failed"
+    },
+    {
+      "status": "FAIL_THEN_FIXED",
+      "detail": "ordinary public engine reaches READY after appending commit; regression corrected to existing READY/event contract; 28 passed/1 failed"
+    },
+    {
+      "status": "FAIL_THEN_FIXED",
+      "detail": "saved verifier initially matched an untruncated pytest temp directory name; changed to branch records and exclude pytest current symlinks; no execution data changed"
+    }
+  ],
+  "execution_budget_actual": {
+    "real_model_calls": 0,
+    "credential_loader_calls": 0,
+    "solver_calls": 0,
+    "real_orders": 0,
+    "historical_fork_runs": 0,
+    "data_generation": 0,
+    "subagents": 0,
+    "installs": 0,
+    "downloads": 0,
+    "git_add": 0,
+    "commit": 0,
+    "push": 0
+  },
+  "construction_material": "manual frozen synthetic candidate/state fixture; not training/evaluation data or genuine monitoring",
+  "no_cost_claim": "real calls=0; no paid experiments"
+}

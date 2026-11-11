@@ -1,0 +1,79 @@
+{
+  "version": "jm1_a1_fork_engine_readiness_v1",
+  "unit": "JM1-A1",
+  "plan": "JM-plan-v2",
+  "engineering_status": "COMPLETE_A1_CONSTRUCTED_ONLY",
+  "evidence_readiness": "SUFFICIENT_FOR_A1_REVIEW_NOT_REAL_EXECUTION",
+  "research_result": "NOT_RUN",
+  "acceptance": {
+    "M11-01": {
+      "status": "PASS",
+      "scope": "A1 constructed; saved-byte anchors reject resealed state/cursor/pool/exact action/task/branch/config/candidate/mapping edits; parent files unchanged"
+    },
+    "M11-02": {
+      "status": "PARTIAL",
+      "first_action_and_reference_and_interventions": "PASS",
+      "real_no_memory_continuation": "NOT_IMPLEMENTED_A2"
+    },
+    "M11-03": {
+      "status": "NOT_RUN",
+      "owner": "A3; resume explicitly rejected"
+    },
+    "M11-04": {
+      "status": "PARTIAL",
+      "A1_monitor_failure_and_forced_counts": "PASS_CONSTRUCTED",
+      "real_continuation_accounting": "NOT_IMPLEMENTED_A2"
+    },
+    "M11-05": {
+      "status": "NOT_RUN",
+      "owner": "A3 repeat/resume; old schemas unchanged"
+    }
+  },
+  "behavior_acceptance": {
+    "A": "PASS_CONSTRUCTED",
+    "B": "PASS_CONSTRUCTED",
+    "C": "PASS_CONSTRUCTED",
+    "D": "PASS_CONSTRUCTED",
+    "E": "PASS_CONSTRUCTED",
+    "F": "PASS_CONSTRUCTED",
+    "G": "PASS_CONSTRUCTED"
+  },
+  "interfaces": {
+    "module": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_forks.py",
+    "freeze_start": "receipt_path/snapshot_path/JSON pointer/task_path/task_receipt_path -> sealed independent start",
+    "bind_branch": "frozen start + explicit existing label + new branch ID -> binding; no sampling",
+    "validate_start_and_binding": "saved bytes/context checks only; no model/generator/commit/solver",
+    "bootstrap": "new SELECTED checkpoint with explicit FORCED_FROM_FROZEN_POOL origin and counters; old config/bundle envelope unchanged",
+    "run_forced_first": "constructed only; persistence callback required; shared run_episode -> monitor -> original commit once or failure stop",
+    "continuation_boundary": "UnimplementedContinuation + JM_CONTINUATION_NOT_IMPLEMENTED; stops even if last planned item was placed, no natural-whole-order claim"
+  },
+  "new_schemas": [
+    "jev_jm_fork_start_v1",
+    "jev_jm_fork_binding_v1",
+    "jev_jm_forced_selection_v1"
+  ],
+  "preserved": [
+    "old packaging_counterfactual protocol, old schemas and algorithms",
+    "parent config/task/checkpoint bytes and frozen receipts",
+    "candidate generator/TopK/tolerances/packaging attributes",
+    "historical data/reports/snapshots/identity",
+    "gitignore and third-party code"
+  ],
+  "limits": [
+    "ARCHIVED_ONLY_NOT_EXECUTION_ADMISSION starts are read-only and cannot execute through A1 bootstrap",
+    "fresh branch call only; no across-invocation or cross-process exactly-once claim, no duplicate-slot registry",
+    "restart checkpoint rejected until A3",
+    "real no-memory continuation and independent request ledger NOT_IMPLEMENTED_A2",
+    "no sampler, memory/T/E/retrieval/real experiments",
+    "v6/v2 compatibility exercised only in construction; v12/v3 construction covered; future real route must freeze v3 and receive admission"
+  ],
+  "future_material_gaps": [
+    "formal source partitions and isolation validator coverage not ready",
+    "execution memory and independent review not ready",
+    "new Jev suffix evidence absent",
+    "8 unavailable third-party/corpus originals inherited from JM0-B QA; not restored or re-audited here"
+  ],
+  "next_stage_admission": "RECOMMEND_A2_ENGINEERING_AFTER_INDEPENDENT_QA_ONLY",
+  "real_execution_admission": "NOT_READY",
+  "stop": true
+}

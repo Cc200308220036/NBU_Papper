@@ -21,7 +21,11 @@ def commit_physical(state, regions, observation, bundle, context, selection, con
     validate_context(context, observation, bundle, config)
     selected = selection.data
     validate_schema("selection_result", selected)
-    if selected["version"] != f"jev_selection_result_{protocol_suffix(config)}" or selected["status"] not in ("selected", "singleton"):
+    jm_forced = selected['version'] == 'jev_jm_forced_selection_v1'
+    if jm_forced:
+        if monitor_event is None or monitor_event['selection'] != selected:
+            raise JevSelectError('jm_missing_forced_monitor_event')
+    elif selected["version"] != f"jev_selection_result_{protocol_suffix(config)}" or selected["status"] not in ("selected", "singleton"):
         raise JevSelectError("invalid_physical_selection")
     if (context.data["route"] == "SINGLETON_BYPASS") != (selected["status"] == "singleton"):
         raise JevSelectError("selection_route_mismatch")
@@ -30,6 +34,11 @@ def commit_physical(state, regions, observation, bundle, context, selection, con
     candidate = resolve_display_id(context, selected["selected_display_id"], observation, bundle, config)
     if candidate["candidate_id"] != selected["selected_candidate_id"]:
         raise JevSelectError("selection_candidate_mismatch")
+    if jm_forced:
+        from .packaging_jev_forks import validate_forced_selection
+        validate_forced_selection(selected, context, candidate, config)
+        if monitor is None or monitor['status'] != 'STABLE':
+            raise JevSelectError('jm_monitor_commit_not_stable')
     from .stability.monitor import is_monitored, validate_monitor
     if is_monitored(config):
         if monitor is None or monitor_event is None:

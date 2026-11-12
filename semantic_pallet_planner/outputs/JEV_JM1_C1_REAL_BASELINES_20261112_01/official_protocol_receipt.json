@@ -1,0 +1,34 @@
+{
+  "version": "jm_c1_official_protocol_check_v1",
+  "access_date": "2026-11-12",
+  "official_sources": [
+    "https://docs.typesafe.ai/api/system-one",
+    "https://docs.typesafe.ai/primitives/choice.md",
+    "https://docs.typesafe.ai/models"
+  ],
+  "verified": {
+    "endpoint": "POST https://api.typesafe.ai/v1/systemone",
+    "authentication": "Bearer token; Content-Type application/json",
+    "body": [
+      "model",
+      "state",
+      "questions"
+    ],
+    "choice_question": [
+      "type=choice",
+      "instructions",
+      "criteria"
+    ],
+    "answer": [
+      "model",
+      "answers.<question>.choice",
+      "answers.<question>.probabilities",
+      "answers.<question>.confidence",
+      "usage"
+    ],
+    "model": "jev-1.14.0"
+  },
+  "method": "official documentation read via web tool; no authenticated probe/models request",
+  "frozen_transport": "existing urllib JevTransport, max_retries=0, timeout_s=30; no protocol changes",
+  "cost": "UNKNOWN unless actual provider accounting available"
+}

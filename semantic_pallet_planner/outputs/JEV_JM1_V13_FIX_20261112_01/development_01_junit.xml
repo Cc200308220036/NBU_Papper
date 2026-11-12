@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="7.202" timestamp="2026-11-12T15:18:23.398954+08:00" hostname="cyw-R7000P"><testcase classname="tests.unit.test_packaging_jev_v13_saved_transitions" name="test_production_negative_and_legal_saved_transitions" time="6.812"><failure message="Failed: saved validator dispatched apply">setup = ({'allocation_id': 'dfa6c142062085d2410042292b4c99391123a950187fa86eade52273012aa8a1', 'config': {'api_key_env': 'TYPE...ackend': 'e2_original_v1', 'experiment_protocol': 'jev_packaging_runtime_v1', 'generation_counts': [], ...}, ...}], [])
+tmp_path = PosixPath('/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JM1_V13_FIX_20261112_01/constructed_evidence/test_production_negative_and_l0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7e51fd531ba0&gt;
+
+    def test_production_negative_and_legal_saved_transitions(setup,tmp_path,monkeypatch):
+        ex,_,_=setup;run(ex);root=Path(ex['storage_root']);original=files(root)
+        stages=[(p,read(p)) for p in sorted((root/'stages').glob('*.json'))]
+        def target(kind,count=None):
+            for p,r in stages:
+                cp=r['checkpoint'];e=cp['pending_event'] or (cp['events'][-1] if cp['events'] else None)
+                if e and e['event']==kind and (count is None or e['after']['placed_count']==count):return p,r
+            raise AssertionError((kind,count))
+        cases=['arrival_mass','arrival_size','arrival_packaging','arrival_slot','arrival_index','arrival_ids','arrival_cursor',
+               'arrival_old_buffer','arrival_container','arrival_event_index','arrival_eos','eos_payload','eos_geometry','eos_flag','eos_container','eos_attributes',
+               'new_pose','new_yaw','new_size','new_dimensions','new_mass','new_packaging','new_stackable','new_load','new_edges',
+               'remaining_buffer','remaining_slot','old_pose','old_mass','old_size','old_packaging','old_load','old_edges','place_container','place_attributes','place_event_index']
+        from semantic_pallet_planner.jev_select import episode,execution
+        from semantic_pallet_planner.jev_select.stability import monitor
+        from semantic_pallet_planner.evaluation import state as physical_state
+        from semantic_pallet_planner.o4.buffer import buffer_state
+        calls={k:0 for k in ('model','candidate','monitor','commit','apply','receive')}
+        def forbidden(key):
+            def no(*a,**kw):calls[key]+=1;pytest.fail('saved validator dispatched '+key)
+            return no
+        monkeypatch.setattr(FakeTransport,'complete',forbidden('model'))
+        monkeypatch.setattr(episode,'decision_inputs',forbidden('candidate'))
+        monkeypatch.setattr(monitor,'monitor_selected_action',forbidden('monitor'))
+        monkeypatch.setattr(execution,'commit_physical',forbidden('commit'))
+        monkeypatch.setattr(physical_state,'apply_candidate',forbidden('apply'))
+        monkeypatch.setattr(buffer_state,'receive',forbidden('receive'))
+        # Every archived checkpoint phase and all legitimate arrival/EOS/place deltas.
+        phases=set()
+        for _,r in stages:
+&gt;           v13.validate_saved_checkpoint(r['checkpoint'],ex);phases.add(r['checkpoint']['phase'])
+
+semantic_pallet_planner/tests/unit/test_packaging_jev_v13_saved_transitions.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_v13.py:246: in validate_saved_checkpoint
+    validate_context(ctx,event['observation'],bundle,config)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py:248: in validate_context
+    return validate_runtime_context(context, observation, bundle, config)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py:324: in validate_runtime_context
+    rebuilt=build_context(config,observation,bundle,no_policy(observation),**extras).data
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py:232: in build_context
+    value,state,criteria,mapping,buffer=public_facts(config,observation,bundle,policy)
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py:203: in public_facts
+    label=f'C{i:02d}';after=apply_candidate({'placed_items':placed,'available_items':available},c)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+a = ({'available_items': [{'dimensions_mm': {'height': 20, 'length': 20, 'width': 30}, 'item_id': 'A', 'mass_kg': 2, 'stac...pace'}, 'geometry_score_components': {'balance': 0.793481, 'compactness': 1.0, 'height': 0.98, 'stability': 1.0}, ...})
+kw = {}
+
+&gt;   def no(*a,**kw):calls[key]+=1;pytest.fail('saved validator dispatched '+key)
+E   Failed: saved validator dispatched apply
+
+semantic_pallet_planner/tests/unit/test_packaging_jev_v13_saved_transitions.py:76: Failed</failure></testcase></testsuite></testsuites>

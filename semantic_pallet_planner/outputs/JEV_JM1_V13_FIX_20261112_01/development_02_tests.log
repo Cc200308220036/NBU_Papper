@@ -1,0 +1,41 @@
+.F
+=================================== FAILURES ===================================
+_________________ test_stacked_area_load_positive_and_negative _________________
+
+setup = ({'allocation_id': '79c1b6c33f3130d478454157f3991821784d2f86ac7cadd8ca9555f1245da405', 'config': {'api_key_env': 'TYPE...ackend': 'e2_original_v1', 'experiment_protocol': 'jev_packaging_runtime_v1', 'generation_counts': [], ...}, ...}], [])
+tmp_path = PosixPath('/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JM1_V13_FIX_20261112_01/constructed_evidence/test_stacked_area_load_positiv0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x78a3738a5cd0>
+
+    def test_stacked_area_load_positive_and_negative(setup,tmp_path,monkeypatch):
+        # A new constructed singleton pool stacks all four boxes. No generator/LP.
+        ex,_,_=setup
+        from semantic_pallet_planner.jev_select import episode
+        from semantic_pallet_planner.jev_select.packaging_runtime import build_context,no_policy
+        from semantic_pallet_planner.jev_select.selector import bind_decision
+        from semantic_pallet_planner.o4.extensions.e2.protocol import observation
+        fixture=read(Path(__file__).parents[1]/'fixtures/jm_a1_frozen_pool.json')
+        template=fixture['candidates'][0]
+        def inputs(s,task,cfg,job_id,did,**kw):
+            req=observation(s,task['instruction_text'],[]);item=s['pending_items'][0]['item'];c=copy.deepcopy(template)
+            c.update(candidate_id='constructed_stack_'+item['item_id'],pick_item_id=item['item_id'],candidate_fingerprint=digest(['CONSTRUCTED_STACK',item['item_id']]),
+                     pose={'x_mm':0,'y_mm':0,'z_base_mm':20*s['placed_count'],'yaw_deg':0},oriented_size_mm=[20,30,20])
+            pool=[c];b={'version':'jev_candidate_bundle_v13','observation_digest':req['observation_digest'],'candidate_backend':'e2_original_v1',
+                'generator_config_digest':digest('CONSTRUCTED_STACK_ONLY'),'physical_candidates':pool,'physical_digest':digest(pool),
+                'selectable_candidates':pool,'selectable_digest':digest(pool),'generation_counts':[],'selectable_pool':'physical_feasible',
+                'policy_digest':digest(no_policy(req).data),'experiment_protocol':cfg['experiment_protocol'],'business_mode':cfg['business_mode']}
+            bundle=CandidateBundle.from_dict(b);policy=no_policy(req)
+            ctx=bind_decision(build_context(cfg,req,bundle,policy),job_id,did,config=cfg)
+            return req,policy,bundle,ctx
+        monkeypatch.setattr(episode,'decision_inputs',inputs)
+>       ep=run(ex);assert ep['checkpoint']['reason']=='ALL_ITEMS_PLACED'
+E       AssertionError: assert 'physical_rejection' == 'ALL_ITEMS_PLACED'
+E         
+E         - ALL_ITEMS_PLACED
+E         + physical_rejection
+
+semantic_pallet_planner/tests/unit/test_packaging_jev_v13_saved_transitions.py:138: AssertionError
+- generated xml file: /home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JM1_V13_FIX_20261112_01/targeted_junit.xml -
+=========================== short test summary info ============================
+FAILED semantic_pallet_planner/tests/unit/test_packaging_jev_v13_saved_transitions.py::test_stacked_area_load_positive_and_negative
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 passed in 63.53s (0:01:03)

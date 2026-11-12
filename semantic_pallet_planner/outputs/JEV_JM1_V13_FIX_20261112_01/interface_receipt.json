@@ -1,0 +1,20 @@
+{
+  "arrival_rule": "task[cursor] complete item+attributes; minimum free slot; arrival_index=cursor; append only; arrival_count/event_index +1; all other fields exact",
+  "eos_rule": "cursor==task length; can_wait; end_of_stream true + event_index +1 only",
+  "hardened_existing": [
+    "validate_saved_checkpoint",
+    "validate_saved_execution (transitive)",
+    "run_execution (saved resume transitive)"
+  ],
+  "load_rule": "geometry_oracle.bounds/support_rect/propagate pure arithmetic, same contact tolerance and iteration as existing area rule; old support_fractions immutable; new fraction list derived from saved footprint and old top faces; new supported_load=0",
+  "module": "semantic_pallet_planner.jev_select.packaging_jev_v13",
+  "new_helpers": [
+    "validate_saved_arrival(before,after,task,kind)",
+    "validate_saved_place(before,after,candidate)"
+  ],
+  "place_rule": "selected buffered complete item + exact candidate pose/yaw/size; ordered pending removal only; complete old items immutable except exact supported_load_kg area increments; placed_count/event_index +1 only",
+  "readonly_boundary": "No receive/place/commit/apply_candidate call in new delta helpers; existing context validator still derives public hypothetical candidate features via pure apply_candidate on copies, not prefix replay or a durable commit; preserved existing context checks",
+  "runtime_protocol_and_schema": "UNCHANGED: jev_packaging_jm_no_memory_v13 / jev_jm_v13_execution_v1; no schema relaxation",
+  "source_identity": "source_identity.json",
+  "version": "jm_v13_saved_transition_audit_receipt_v1"
+}

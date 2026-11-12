@@ -1,0 +1,49 @@
+{
+  "affected_contracts": [
+    "M11-01",
+    "M11-03",
+    "M11-05"
+  ],
+  "independent_quality_review": "PENDING",
+  "items": [
+    {
+      "engineering_status": "PASS_CONSTRUCTED",
+      "evidence": "regression_evidence_index.json",
+      "fact": "WAIT_RECEIVE binds task item, attributes, slot/cursor/list and all unaffected fields",
+      "id": "arrival"
+    },
+    {
+      "engineering_status": "PASS_CONSTRUCTED",
+      "evidence": "regression_evidence_index.json",
+      "fact": "EOS only end flag and event index changes",
+      "id": "eos"
+    },
+    {
+      "engineering_status": "PASS_CONSTRUCTED",
+      "evidence": "regression_evidence_index.json",
+      "fact": "new item complete payload/geometry/orientation bound to frozen pick",
+      "id": "new_placement"
+    },
+    {
+      "engineering_status": "PASS_CONSTRUCTED",
+      "evidence": "regression_evidence_index.json",
+      "fact": "old objects/container/remaining buffer exact; only supported_load area increments permitted",
+      "id": "immutable_and_load"
+    },
+    {
+      "engineering_status": "PASS_CONSTRUCTED",
+      "evidence": "regression_evidence_index.json",
+      "fact": "36 cases /72 production entry refusals, no dispatch, original and remaining byte hashes unchanged",
+      "id": "readonly_rejection"
+    },
+    {
+      "engineering_status": "PASS_CONSTRUCTED",
+      "evidence": "regression_evidence_index.json",
+      "fact": "legal arrival/EOS/all six checkpoint phases; recursive stacked load positive; v13 and old A regressions",
+      "id": "positive_and_regression"
+    }
+  ],
+  "qa_issue": "QA-JMV13-01",
+  "real_service": "NOT_RUN",
+  "real_v3_solver": "NOT_RUN"
+}

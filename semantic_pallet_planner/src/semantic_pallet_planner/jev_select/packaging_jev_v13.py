@@ -161,6 +161,70 @@ def initial_checkpoint(ex):
         'state':state,'cursor':state['arrival_count'],'decision':0,'events':[],'reason':None,'phase':phase,'pending_event':pending})
 
 
+
+def validate_saved_arrival(before, after, task, kind):
+    """Compare one saved receive/EOS delta; never call receive or replay a prefix."""
+    require(not before['end_of_stream'] and len(before['pending_items'])<before['buffer_capacity'],
+            'jm13_arrival_not_allowed')
+    expected=copy.deepcopy(before);cursor=before['arrival_count']
+    expected['event_index']+=1
+    if kind=='WAIT_RECEIVE':
+        require(cursor<len(task['items']),'jm13_arrival_past_task')
+        item=task['items'][cursor];identifier=item['item_id']
+        require(identifier not in before['arrived_ids'],'jm13_duplicate_arrival')
+        slot=min(set(range(before['buffer_capacity']))-{x['slot'] for x in before['pending_items']})
+        expected['pending_items'].append({'item':copy.deepcopy(item),'slot':slot,'arrival_index':cursor})
+        expected['attributes'][identifier]=copy.deepcopy(task['attributes'][identifier])
+        expected['arrived_ids'].append(identifier);expected['arrival_count']+=1
+    else:
+        require(kind=='EOS' and cursor==len(task['items']),'jm13_eos_before_task_end')
+        expected['end_of_stream']=True
+    require(after==expected,'jm13_saved_arrival_delta_changed')
+
+
+def validate_saved_place(before, after, candidate):
+    """Audit saved values, not physical feasibility or a simulated commit.
+
+    Immutable state/item fields compare exactly. The sole old-item mutable field
+    is supported_load_kg: audit its increment from saved geometry/area edges,
+    using the existing pure rectangle and propagation arithmetic (no oracle,
+    apply_candidate, commit, candidate generation, prefix replay, or LP).
+    """
+    from collections import defaultdict
+    from semantic_pallet_planner.evaluation.geometry_oracle import bounds,support_rect,propagate
+    matches=[x for x in before['pending_items'] if x['item']['item_id']==candidate['pick_item_id']]
+    require(len(matches)==1,'jm13_saved_place_unknown_item')
+    item=matches[0]['item'];dims=[item['dimensions_mm'][k] for k in ('length','width','height')]
+    yaw=candidate['pose']['yaw_deg']
+    require(yaw in (0,90) and candidate['oriented_size_mm']==(dims if yaw==0 else [dims[1],dims[0],dims[2]]),
+            'jm13_saved_place_orientation_changed')
+    # Only selected footprint versus already saved top faces; no solver or
+    # physical check is dispatched. Iteration/order matches the frozen area rule.
+    cb=bounds(candidate);areas=[]
+    if cb[4]>0:
+        for old in before['placed_items']:
+            pb=bounds(old)
+            if abs(pb[5]-cb[4])>1e-6:continue
+            rect=support_rect(cb,pb)
+            if rect:areas.append((old['item_id'],(rect[1]-rect[0])*(rect[3]-rect[2])))
+        require(bool(areas),'jm13_saved_place_support_missing')
+    total=sum(a for _,a in areas)
+    fractions=[{'item_id':identifier,'fraction':a/total} for identifier,a in areas]
+    expected=copy.deepcopy(before);old_by_id={x['item_id']:x for x in expected['placed_items']}
+    increments=defaultdict(float)
+    for edge in fractions:
+        propagate(edge['item_id'],item['mass_kg']*edge['fraction'],old_by_id,increments)
+    for identifier,increment in increments.items():
+        old_by_id[identifier]['supported_load_kg']+=increment
+    placed=copy.deepcopy(item)
+    placed.update(pose=copy.deepcopy(candidate['pose']),oriented_size_mm=list(candidate['oriented_size_mm']),
+                  supported_load_kg=0.0,support_fractions=fractions)
+    expected['placed_items'].append(placed)
+    expected['pending_items']=[x for x in expected['pending_items'] if x['item']['item_id']!=candidate['pick_item_id']]
+    expected['placed_count']+=1;expected['event_index']+=1
+    require(after==expected,'jm13_saved_place_delta_changed')
+
+
 def validate_saved_checkpoint(cp,ex,*,_validated=False):
     if not _validated:validate_execution(ex)
     task=ex['task'];config=ex['config'];validate_schema('checkpoint_v13',cp);check_seal(cp)
@@ -203,15 +267,13 @@ def validate_saved_checkpoint(cp,ex,*,_validated=False):
             if event['event']=='PLACE':
                 require(event.get('monitor') is not None and event['monitor']['status']=='STABLE' and event['action']==event['proposed_action'] and
                         event['after']['placed_count']==state['placed_count']+1,'jm13_commit_changed')
-                require(event['after']['placed_items'][:-1]==state['placed_items'] or
-                        [x['item_id'] for x in event['after']['placed_items'][:-1]]==[x['item_id'] for x in state['placed_items']],
-                        'jm13_placed_prefix_changed')
-                require({x['item']['item_id'] for x in event['after']['pending_items']}==
-                        {x['item']['item_id'] for x in state['pending_items']}-{candidate['pick_item_id']},
-                        'jm13_buffer_commit_changed')
+                require(selected is not None and selected['status'] in ('selected','singleton'),'jm13_place_without_selection')
+                validate_saved_place(state,event['after'],candidate)
             else:require(event['after']==state and event['action'] is None,'jm13_failure_mutated_state')
             if event is not cp['pending_event']:decisions+=1
-        else:require(event['event'] in ('WAIT_RECEIVE','EOS'),'jm13_unknown_event')
+        else:
+            require(event['event'] in ('WAIT_RECEIVE','EOS'),'jm13_unknown_event')
+            validate_saved_arrival(state,event['after'],task,event['event'])
         state=event['after']
     require(state==cp['state'] and cp['decision']==decisions and forced==int(ex['kind']=='FORK'),'jm13_progress_changed')
     invariant(state)

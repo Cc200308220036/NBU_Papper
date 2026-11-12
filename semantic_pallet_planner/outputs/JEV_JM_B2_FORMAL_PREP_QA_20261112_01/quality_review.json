@@ -1,0 +1,91 @@
+{
+  "version": "jm_b2_formal_prep_independent_qa_v1",
+  "date": "2026-11-12",
+  "reviewed_unit": "JM1-B2 formal plan offline preparation",
+  "plan": "JM-plan-v2",
+  "baseline": {
+    "development_entry": "92c024097111b700b859b5081c2adcb4467803ae",
+    "delivery_commit": "e7646132",
+    "current_head": "c21d6b511e4c33e5ff0acfd4a51931c896edb60d",
+    "entry_worktree": "CLEAN",
+    "post_delivery_runtime_drift": "NONE"
+  },
+  "engineering_status": "COMPLETE_OFFLINE_PREPARATION_WITH_NONBLOCKING_TEST_FIX",
+  "evidence_readiness": "SUFFICIENT_OFFLINE_PREPARATION_FORMAL_FREEZE_PENDING",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "NOT_READY",
+  "report": "docs/03_阶段产出分析/Jev/Jev_JM1-B2正式计划离线准备独立质检与冻结收尾交接_20261112_01.md",
+  "package": "semantic_pallet_planner/outputs/JEV_JM1_B2_FORMAL_PREP_20261112_01",
+  "acceptance": [
+    {
+      "id": "M12-01",
+      "status": "PASS",
+      "scope": "offline preparation only; formal freeze incomplete"
+    },
+    {
+      "id": "M12-04",
+      "status": "PASS",
+      "scope": "plan envelope, not actual sends",
+      "budget": {
+        "baseline": 103,
+        "initial_suffix": 564,
+        "repeat_suffix": 210,
+        "suffix": 774,
+        "global": 877
+      }
+    },
+    {
+      "id": "M12-07",
+      "status": "PASS",
+      "scope": "plan/send gate boundaries; exact fork plan deferred to C1"
+    },
+    {
+      "id": "formal_B2_freeze",
+      "status": "PARTIAL",
+      "basis": "old prepared plan still records missing QA; new bound identity/freeze admission absent"
+    },
+    {
+      "id": "current_saved_fact_checks",
+      "status": "PASS",
+      "delivery": 30,
+      "runtime_sources": 503,
+      "input_refs": 32,
+      "protected_files": 632
+    },
+    {
+      "id": "current_production_behavior",
+      "status": "NOT_RUN",
+      "basis": "missing dependencies/frozen runtime different; no identity substitution"
+    },
+    {
+      "id": "real_C1_C2_and_research",
+      "status": "NOT_RUN",
+      "authority": 0
+    }
+  ],
+  "findings": [
+    {
+      "id": "QA-JMB2P-01",
+      "severity": "LOW",
+      "blocking_offline_preparation": false,
+      "location": "semantic_pallet_planner/tests/unit/test_packaging_jev_training_plan.py:prepared fixture and test_refuse_mutations:66,79-81",
+      "actual": "Missing-QA-erased case assumes parent files absent. With QA all present, fresh plan missing_qa=[] and mutation becomes no-op.",
+      "evidence_level": "STATIC_ONLY_NOT_CURRENT_PYTEST_FAILURE",
+      "impact": "18 archived tests remain historical facts; current cross-environment regression negative not stable. Does not invalidate saved plan arithmetic/identity.",
+      "minimum_fix": "Deterministic inventory inconsistency construction plus complete-QA valid and missing-QA DEFER positive fixtures; preserve old logs/plan."
+    }
+  ],
+  "blocking_production_defects_for_offline_scope": [],
+  "facts": {
+    "report": "18offline tests pass; parent QA5 absent; formal DEFER",
+    "source": "new independent saved plan/schema/registration, both gates always refuse",
+    "archived": "6tasks, configs/schedule, audit/roles/budget,18JUnit and saved validation",
+    "current": "30/503/32/632 and selection/closure/6executions/budget checked; parent5 now present but not bound by old plan; no runtime execution"
+  },
+  "limits": [
+    "Parent QA mutable navigation exact bytes unavailable in current/recent history; non-navigation records checked",
+    "Storage root is bound to /home/cyw/NBU_Papper; Mac check not a Linux runtime validation",
+    "Real points/epsilon not a B2 preparation prerequisite"
+  ],
+  "stop": true
+}

@@ -1,0 +1,55 @@
+{
+  "version": "jm_c1_commands_v1",
+  "cwd": ".",
+  "commands": [
+    {
+      "command": "pwd; git rev-parse HEAD; git status --short",
+      "result": {
+        "root": "/home/cyw/NBU_Papper",
+        "head": "67c36e85c69edb008cd6826710cdd38b382e8461",
+        "entry_worktree": "CLEAN"
+      }
+    },
+    {
+      "command": "git log -3 --oneline; git diff --stat 9cd053e474be9fc3e8a252c420258dc388ffacb1 HEAD",
+      "result": "67c36e85 direct successor; nine QA/report/index files only; preserved"
+    },
+    {
+      "command": "python3 (stdlib sys/importlib.metadata version inspection)",
+      "result": "Python 3.13.5; jsonschema 4.23.0; numpy 2.1.3; scipy 1.15.3"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/outputs/JEV_JM1_B2_FREEZE_CLOSURE_20261112_01/verify_delivery.py",
+      "exit_code": 1,
+      "error": "semantic_pallet_planner.jev_select.contracts.JevSelectError: jm13_monitor_identity",
+      "failure_path": [
+        "verify_delivery.py:13",
+        "packaging_jev_training_freeze.validate_frozen_plan",
+        "packaging_jev_training_freeze.freeze_plan",
+        "packaging_jev_training_plan.validate_plan",
+        "packaging_jev_v13.validate_schedule",
+        "packaging_jev_v13.validate_execution",
+        "packaging_jev_v13.preflight:48"
+      ],
+      "before_failure": "39 delivery files and exact source_manifest comparison passed; no success receipt emitted"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/outputs/JEV_JM1_C1_PRESEND_CHECK_20261112_01/verify_preflight.py > semantic_pallet_planner/outputs/JEV_JM1_C1_PRESEND_CHECK_20261112_01/preflight_receipt.json",
+      "exit_code": 0,
+      "meaning": "collector completed, receipt status STOP_MONITOR_IDENTITY_MISMATCH; not a production-validator PASS"
+    }
+  ],
+  "read_scope": "AGENTS, JM-plan-v2 6.2-6.4/12-14, frozen package, QA and parent handoffs/interfaces, JM0-B sampling/budget, relevant validator/environment/send-permit source; no credential files",
+  "not_executed": [
+    "orders",
+    "forks",
+    "sampling",
+    "candidate generation",
+    "LP",
+    "send gates after mismatch",
+    "credential loading",
+    "permit creation",
+    "provider probes"
+  ],
+  "stop": true
+}

@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_jm_v13_journal_v1"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "previous_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "execution_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "checkpoint": {
+      "type": "object"
+    },
+    "record_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "sequence",
+    "previous_digest",
+    "execution_digest",
+    "checkpoint",
+    "record_digest"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

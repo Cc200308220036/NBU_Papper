@@ -32,7 +32,7 @@ def result(context, *, status, source, label=None, attempt=None, payload=None, e
                  "usage": metadata.get("usage"), "latency_s": saved["latency_s"] if saved else None,
                  "local_binding_digest": digest(value["local_binding"]),
                  "raw_response_digest": saved["raw_sha256"] if saved else None, "error": error}
-    if value['version'] in ('jev_decision_context_v6','jev_decision_context_v7','jev_decision_context_v8','jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT):
+    if value['version'] in ('jev_decision_context_v13','jev_decision_context_v6','jev_decision_context_v7','jev_decision_context_v8','jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT):
         selection.update(network_attempted=saved['network_attempted'] if saved else False,
                          error_stage=('response_validation' if status=='invalid_response' else (saved or {}).get('error_stage')) if error else None,
                          error_code=error)

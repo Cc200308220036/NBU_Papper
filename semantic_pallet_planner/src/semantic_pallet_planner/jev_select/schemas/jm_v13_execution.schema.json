@@ -1,0 +1,155 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_jm_v13_execution_v1"
+    },
+    "kind": {
+      "enum": [
+        "BASELINE",
+        "FORK"
+      ]
+    },
+    "task": {
+      "type": "object"
+    },
+    "config": {
+      "type": "object"
+    },
+    "job_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "repeat_slot": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "storage_root": {
+      "type": "string",
+      "minLength": 1
+    },
+    "start": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": "jev_jm_v13_start_v1"
+            },
+            "activation_ref": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "path",
+                "sha256"
+              ],
+              "additionalProperties": false
+            },
+            "checkpoint_ref": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "path",
+                "sha256"
+              ],
+              "additionalProperties": false
+            },
+            "decision_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          },
+          "required": [
+            "version",
+            "activation_ref",
+            "checkpoint_ref",
+            "decision_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "https://json-schema.org/draft/2020-12/schema"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "forced_label": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "max_sends": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "allocation_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "identity": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "dependencies": {
+          "type": "object"
+        },
+        "python": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "dependencies",
+        "python"
+      ],
+      "additionalProperties": false
+    },
+    "record_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "kind",
+    "task",
+    "config",
+    "job_id",
+    "repeat_slot",
+    "storage_root",
+    "start",
+    "forced_label",
+    "max_sends",
+    "allocation_id",
+    "identity",
+    "record_digest"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

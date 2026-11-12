@@ -55,12 +55,14 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
 def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
                 hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None):
     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
+    if config.get('version')=='jev_packaging_jm_no_memory_v13' and (training_fork is None or training_fork.get('version')!='jev_jm_v13_execution_v1'):
+        raise JevSelectError('jm13_explicit_execution_route_required')
     if memory_driver is not None and not is_driven(config):
         raise JevSelectError('pilot_driver_protocol_incompatible')
-    if config.get('version') in ('jev_packaging_monitored_v5','jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION):
+    if config.get('version') in ('jev_packaging_jm_no_memory_v13','jev_packaging_monitored_v5','jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION):
         config = copy.deepcopy(config)
     if is_packaging(config):
-        if config.get('version') == 'jev_packaging_remote_v6':
+        if config.get('version') in ('jev_packaging_remote_v6','jev_packaging_jm_no_memory_v13'):
             from .packaging_remote import REGISTRY
             METHODS = tuple(REGISTRY)
         if is_driven(config):
@@ -262,11 +264,18 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
             selector.bind_public(req, policy, bundle)
 
     from .packaging_versions import JM_FORK_PROTOCOLS, JM_CONTINUATION_PROTOCOLS, JM_RECOVERY_PROTOCOLS
+    jm_v13 = training_fork is not None and training_fork.get('version') == 'jev_jm_v13_execution_v1'
     jm_recovery = training_fork is not None and training_fork.get('version') in JM_RECOVERY_PROTOCOLS
     jm_continuation = training_fork is not None and training_fork.get('version') in JM_CONTINUATION_PROTOCOLS
     jm_first = training_fork is not None and training_fork.get('version') in JM_FORK_PROTOCOLS
     if training_fork is not None:
-        if jm_recovery:
+        if jm_v13:
+            from .packaging_jev_v13 import validate_route, validate_saved_checkpoint
+            if expected_events is not None or resume is None or not callable(on_checkpoint):
+                raise JevSelectError('jm_v13_durable_resume_required')
+            validate_route(training_fork,task,config,job_id,selector)
+            validate_saved_checkpoint(resume,training_fork)
+        elif jm_recovery:
             from .packaging_jev_recovery import validate_route, validate_saved_checkpoint
             if expected_events is not None or resume is None or not callable(on_checkpoint):
                 raise JevSelectError('jm_A3_saved_resume_required')
@@ -418,7 +427,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         try:
             saved_context = (pending['context'] if pending is not None and phase=='DECISION_READY' else
                 expected_events[len(events)].get('context') if expected_events is not None and len(events)<len(expected_events) else None)
-            if monitored and pending is not None and phase in (('DECISION_READY','SELECTED','MONITORED') if is_driven(config) or jm_recovery else ('SELECTED','MONITORED')):
+            if monitored and pending is not None and phase in (('DECISION_READY','SELECTED','MONITORED') if is_driven(config) or jm_recovery or jm_v13 else ('SELECTED','MONITORED')):
                 from .contracts import CandidateBundle, DecisionContext
                 from .packaging_runtime import no_policy
                 req = copy.deepcopy(pending['observation'])
@@ -432,7 +441,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                 event=copy.deepcopy(pending);times=event['timings']
             route = decision_route(bundle)
             event.update(route=route,observation=req,bundle=bundle.data,context=context.data)
-            if (jm_recovery and (pending is None or phase=='DECISION_READY')) or is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
+            if ((jm_recovery or jm_v13) and (pending is None or phase=='DECISION_READY')) or is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
                 pending=copy.deepcopy(event);phase='DECISION_READY';persist()
             if hook: hook('decision_ready',event)
             if route == 'STOP_NO_PHYSICAL_CANDIDATE':
@@ -472,7 +481,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                         else:
                             validate_monitor(event['monitor'],state,chosen,event,config)
                             event['monitor_result_reuses'] += 1
-                        if (jm_first or jm_continuation or jm_recovery) and event['monitor']['status'] not in ('STABLE','UNSTABLE','UNASSESSABLE','ERROR'):
+                        if (jm_first or jm_continuation or jm_recovery or jm_v13) and event['monitor']['status'] not in ('STABLE','UNSTABLE','UNASSESSABLE','ERROR'):
                             raise JevSelectError('jm_monitor_status_not_authorized')
                         reason = TERMINATIONS.get(event['monitor']['status'])
                     if reason is None:

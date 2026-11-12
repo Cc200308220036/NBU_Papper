@@ -18,7 +18,7 @@ TERMINATIONS = {'UNSTABLE':'PREDICTED_STATIC_INSTABILITY',
 
 
 def is_monitored(config):
-    return config.get('version') in (VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
+    return config.get('version') in ('jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
 
 
 def freeze(enabled=False):
@@ -61,6 +61,10 @@ def load_monitor_config(*, data_identity, task_digest, method='local_geometry_te
 
 def preflight(config):
     validate_schema('config', config)
+    if config['version']=='jev_packaging_jm_no_memory_v13':
+        from ..packaging_jev_v13 import preflight
+        preflight(config)
+        return
     if config['version']==EXACT_VERSION:
         from ..packaging_exact_protocol import preflight_exact
         preflight_exact(config)

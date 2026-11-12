@@ -26,7 +26,7 @@ METHODS = ('local_geometry_test_double','local_first_test_double')
 
 
 def is_packaging(config):
-    return config.get('version') in (VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
+    return config.get('version') in ('jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
 
 
 def no_policy(observation):
@@ -273,6 +273,9 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
 def validate_runtime_context(context,observation=None,bundle=None,config=None):
     from .candidates import validate_bundle,decision_route
     value=context.data;validate_schema('decision_context',value)
+    if value['version']=='jev_decision_context_v13':
+        require(value['model_state']['memories']==[] and not any(k in value for k in ('memory_view','retrieval_receipt')), 'jm_v13_memory_forbidden')
+        if bundle is not None: require(bundle.data['selectable_candidates']==bundle.data['physical_candidates'],'jm_v13_full_physical_pool_required')
     if value['version'] in ('jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT):
         interface=driven_memory(config['version']);MemoryView,validate_receipt=interface.PilotMemoryView,interface.validate_receipt
         require(config is not None,'pilot_config_required_for_context_validation')
@@ -415,11 +418,14 @@ def summary(task,config,method,state,events,reason):
             row.update(version='jev_packaging_memory_metrics_v1',origin='jev',memory_snapshot_digest=config['memory_snapshot_digest'])
             row['cost'].update(event_cost(events))
             validate_schema('memory_order_metrics_v1',row)
-        elif config['version'] == 'jev_packaging_remote_v6':
+        elif config['version'] in ('jev_packaging_remote_v6','jev_packaging_jm_no_memory_v13'):
             from .packaging_remote import event_cost
-            row.update(version='jev_packaging_remote_metrics_v1', origin='jev' if method=='jev_no_memory' else 'LOCAL_TEST_DOUBLE_NOT_JEV')
+            row.update(version='jev_jm_no_memory_metrics_v1' if config['version']=='jev_packaging_jm_no_memory_v13' else 'jev_packaging_remote_metrics_v1', origin='jev' if method=='jev_no_memory' else 'LOCAL_TEST_DOUBLE_NOT_JEV')
             row['cost'].update(event_cost(events))
-            validate_schema('remote_order_metrics_v1',row)
+            if config['version']=='jev_packaging_jm_no_memory_v13':
+                row['stability_algorithm']=config['stability_monitor']['algorithm']
+                if config['jm_mode']=='CONSTRUCTED_ONLY': row['origin']='CONSTRUCTED_FAKE_TRANSPORT_MONITOR_STUB'
+            validate_schema('jm_v13_metrics' if config['version']=='jev_packaging_jm_no_memory_v13' else 'remote_order_metrics_v1',row)
         else:
             validate_schema('monitored_order_metrics_v1',row)
     else:

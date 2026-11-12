@@ -1,0 +1,61 @@
+{
+  "version": "jm1_b2_fix_closure_v1",
+  "issue": "QA-JM1B2-01",
+  "status": "FIXED_CONSTRUCTED_VERIFIED_AWAIT_INDEPENDENT_REVIEW",
+  "original_four_cases": [
+    {
+      "case": "invalid_native_lexeme",
+      "reason": "B2_NATIVE_LEXEME_CHANGED",
+      "accepted": false
+    },
+    {
+      "case": "contradictory_gap",
+      "reason": "B2_RELATIVE_GAP_CHANGED",
+      "accepted": false
+    },
+    {
+      "case": "false_orientation",
+      "reason": "B2_ORIENTATION_FLAG_CHANGED",
+      "accepted": false
+    },
+    {
+      "case": "invalid_stratum",
+      "reason": "B2_STRATUM_CHANGED",
+      "accepted": false
+    }
+  ],
+  "mapping": [
+    {
+      "requirement": "raw SHA/complete map/native numeric tokens",
+      "evidence": "raw_negative_receipts.json; original_probe_replay.log; B1 parser reused"
+    },
+    {
+      "requirement": "branch token/members/group max/gap/layer",
+      "evidence": "negative_semantic_receipts.json; legal_duplicate_receipt.json"
+    },
+    {
+      "requirement": "same-box pose/orientation and cross-box public contrast",
+      "evidence": "negative_semantic_receipts.json; unchanged original legitimate fixture"
+    },
+    {
+      "requirement": "stratum legal + saved facts, epsilon/diagnostic identity",
+      "evidence": "diagnostic_negative_receipts.json; legal_near_and_outside_receipt.json"
+    },
+    {
+      "requirement": "legal old archive/duplicates/reference/category missing/small budgets",
+      "evidence": "legal_original_receipt.json; legal_duplicate_receipt.json; b2_regression.log"
+    },
+    {
+      "requirement": "no sample/engine/monitor/network; read-only and originals preserved",
+      "evidence": "verbatim replay_original_qa_probe.py guard, per-case bytes assertions, original_artifact_protection.json"
+    }
+  ],
+  "negative_evidence": {
+    "semantic_cases": 17,
+    "diagnostic_cases": 8,
+    "raw_parser_cases": 4,
+    "outside_layer_case": 1
+  },
+  "tests_are_not_research": true,
+  "stop": true
+}

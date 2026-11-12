@@ -1,0 +1,120 @@
+{
+  "version": "jm0_b_sampling_policy_v1",
+  "task": "JM0-B",
+  "plan_version": "JM-plan-v2",
+  "kind": "sampling_policy",
+  "contract_type": "STATIC_DESIGN_NOT_PRODUCTION_SCHEMA_OR_IMPLEMENTED_RUNTIME",
+  "design_status": "FROZEN_DESIGN_WITH_EXPLICIT_FUTURE_SEND_GATES",
+  "execution_authorized": false,
+  "payload": {
+    "stages": {
+      "OPENING": "len(current_public_placed_objects)==0",
+      "NONEMPTY": "len(current_public_placed_objects)>0",
+      "future_fraction": false
+    },
+    "input_boundary": {
+      "allow": [
+        "current_public_container",
+        "current_placed_geometry_and_area_load_facts",
+        "current_buffer_and_public_attributes",
+        "saved_complete_public_candidate_pool",
+        "saved_label_to_exact_action_mapping",
+        "saved_native_probability_lexemes",
+        "original_selected_exact_action_for_reference_only"
+      ],
+      "deny": [
+        "future_items_or_full_task_private_fields",
+        "terminal_order_metrics",
+        "suffix_actions_or_outcomes",
+        "witness_or_reference_solution",
+        "other_method_current_choice",
+        "test_results",
+        "PCT_reactions_diagnostics_or_candidate_preassessment"
+      ],
+      "private_runner_boundary": "Full task/arrival stream retained only by authorized order runner; selector/query/sampler receive allowlisted projection. Sampling cannot consume monitor or terminal fields."
+    },
+    "probabilities": {
+      "representation": "parse saved original native probability numeric lexemes using Decimal; never displayed 4-decimal text",
+      "requirements": [
+        "complete exact label map",
+        "finite in [0,1]",
+        "original native body identity saved",
+        "no renormalization or imputation"
+      ],
+      "duplicate_actions": "group exact pick_item_id + canonical pose + oriented_size_mm; group score=max of member native probabilities, not sum; retain member map and original forced candidate",
+      "ties": "exact Decimal equality of saved native values only; provider internal tie resolution UNKNOWN",
+      "rank": "not physical probability or causal confidence"
+    },
+    "near_top": {
+      "parameter": "epsilon_near_top_relative",
+      "definition": "g(a)=(p_max-p_a)/p_max; admitted when g<=epsilon; exact group g==0 separately",
+      "selection_program": "From training public baseline projections, for each complete non-singleton decision find smallest strictly-positive gap g among distinct actions. q=nearest-rank 25th percentile of these gaps. epsilon=min(q,1/10). If no positive gaps, use epsilon=0 and exact-only. If p_max<=0 reject decision.",
+      "quantile": {
+        "numerator": 1,
+        "denominator": 4,
+        "index": "max(1,ceil(n/4)), sorted ascending, 1-based"
+      },
+      "relative_ceiling": {
+        "numerator": 1,
+        "denominator": 10,
+        "basis": "operational definition of near-top (at least 90% of top native score), a conservative design convention not a measured optimal cutoff or physical confidence"
+      },
+      "current_numeric_value": "NOT_MATERIALIZED",
+      "freeze_deadline": "JM1-C1 public sampling receipt BEFORE any suffix dispatch; algorithm fixed JM0-B and parser/range constructs verified JM1-B1",
+      "no_valid_projection": "NO_ELIGIBLE_POINT; no lower-probability fill"
+    },
+    "point_selection": {
+      "max_orders": 6,
+      "waves": [
+        3,
+        3
+      ],
+      "max_points_per_order": 2,
+      "total_points_cap": 12,
+      "per_stage": 1,
+      "required_reference": "original selected exact action must be in the registered top/near set; otherwise skip with ORIGINAL_OUTSIDE_LAYER",
+      "strata": [
+        "OBSERVED_EXACT_TOP_TIE",
+        "RELATIVE_NEAR_TOP"
+      ],
+      "priority": [
+        "stage OPENING then NONEMPTY",
+        "both same-box and cross-box available then same-box then cross-box",
+        "exact-top-tie then near-top",
+        "ascending saved decision ordinal",
+        "ascending pool/action digest"
+      ],
+      "selection_information": "public decision only, no terminal or monitoring result",
+      "reference_branch": true,
+      "same_box": "same exact item ID; pose/yaw differs; position and orientation subtypes retained",
+      "cross_box": "different exact item ID; public attribute contrast recorded",
+      "alternative_choice": "within registered layer choose highest saved native score, then ascending exact action digest; at most one each class",
+      "no_category": "record missing class; do not substitute another category",
+      "singleton": "not a fork point; no API",
+      "no_point": "NO_ELIGIBLE_POINT; retain denominator"
+    },
+    "branches_and_repeats": {
+      "branches_per_point_max": 3,
+      "initial_suffixes_max": 36,
+      "repeat_points_max": 4,
+      "extra_repeats_per_branch": 1,
+      "repeat_suffixes_max": 12,
+      "total_suffixes_max": 48,
+      "repeat_selection": "task-order round robin over OPENING then NONEMPTY strata, distinct source groups first, then ascending task/decision digest; freeze concrete first <=4 points BEFORE first suffix result",
+      "new_original_reference": "re-run original forced action with SAME no-memory Jev continuation per repeat",
+      "all_suffix_memories": [],
+      "provider_seed": "freeze actual support or UNSUPPORTED; never invent common random numbers"
+    },
+    "reject_codes": [
+      "MISSING_NATIVE_PROBABILITIES",
+      "INCOMPLETE_MAP",
+      "NONFINITE_OR_OUT_OF_RANGE",
+      "DISPLAY_ROUNDING_ONLY",
+      "DUPLICATE_EXACT_ACTION",
+      "NO_ALTERNATIVE_CLASS",
+      "ORIGINAL_OUTSIDE_LAYER",
+      "NO_ELIGIBLE_POINT"
+    ],
+    "claim_scope": "If sampling is top ties/near-top only, findings restricted to this registered observed-native-probability stratum; no high-confidence-error/all-decision claim."
+  }
+}

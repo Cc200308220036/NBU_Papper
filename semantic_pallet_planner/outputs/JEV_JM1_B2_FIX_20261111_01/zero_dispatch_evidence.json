@@ -1,0 +1,26 @@
+{
+  "version": "jm1_b2_fix_zero_dispatch_v1",
+  "scope": "CONSTRUCTED_ONLY",
+  "original_QA_script_copied_verbatim": true,
+  "original_probe_guard": "business imports/socket/B1.sample forbidden; production validate_template called; copies and original unchanged",
+  "targeted_guard": "B1.sample and socket forbidden during actual production validation; before/after file maps asserted equal",
+  "B2_regression_guard": "fresh child process business imports/network forbidden; B1.sample forbidden; actual validator/formal gate called read-only",
+  "operations": {
+    "model": 0,
+    "credentials": 0,
+    "network": 0,
+    "sampling": 0,
+    "candidate_generation": 0,
+    "prefix_replay": 0,
+    "order": 0,
+    "fork": 0,
+    "solver": 0,
+    "subagents": 0
+  },
+  "evidence": [
+    "semantic_probe.json",
+    "targeted_tests.log",
+    "b2_regression.log",
+    "original_artifact_protection.json"
+  ]
+}

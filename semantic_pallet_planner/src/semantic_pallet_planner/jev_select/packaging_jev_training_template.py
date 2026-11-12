@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+from fractions import Fraction
 import json
 from pathlib import Path
 
@@ -121,6 +122,87 @@ def repeat_priority(points, *, task_order):
     return selected
 
 
+def _same_fact(actual, expected, code):
+    """Value and JSON type equality, so true/1 or 1.0/1 cannot mask a mismatch."""
+    require(public.digest(actual)==public.digest(expected),code)
+
+
+def _saved_ratio(value, code):
+    require(type(value) is dict and set(value)=={'numerator','denominator'} and
+            type(value['numerator']) is int and type(value['denominator']) is int and
+            value['denominator']>0,code)
+    ratio=Fraction(value['numerator'],value['denominator'])
+    _same_fact(value,public._ratio(ratio),code)
+    return ratio
+
+
+def _probability_facts(projection):
+    # Pure original-byte parser and exact grouping only. Never B1.sample.
+    native=public.parse_probabilities(projection)
+    groups=public._groups(projection,native)
+    top=max(g['score'] for g in groups.values())
+    require(top>0,'B2_NONPOSITIVE_NATIVE_MAX')
+    gaps={key:(top-g['score'])/top for key,g in groups.items()}
+    original=projection['original']['exact_action_digest']
+    stratum=('OBSERVED_EXACT_TOP_TIE' if gaps[original]==0 and
+             sum(gap==0 for gap in gaps.values())>1 else 'RELATIVE_NEAR_TOP')
+    return {'native':native,'groups':groups,'gaps':gaps,'stratum':stratum}
+
+
+def _validate_point_diagnostic(ref, projection, point, facts, *, root):
+    """Bind epsilon to the same hashed diagnostic that contains selected_point.
+
+    Validate saved threshold arithmetic and this decision's raw-derived facts;
+    do not regenerate point selection or infer missing baseline decisions.
+    Standalone selected-point files cannot prove their epsilon and are refused.
+    """
+    parts=ref['pointer'].split('/')
+    require(len(parts)==3 and parts[0]=='' and parts[1]=='selected_points' and
+            parts[2].isdigit(),'B2_MISSING_SAMPLING_DIAGNOSTIC')
+    diagnostic=read_saved({**ref,'pointer':''},root=root)
+    require(type(diagnostic) is dict and diagnostic.get('version')=='jev_jm_sampling_diagnostic_v1' and
+            diagnostic.get('scope')=='CONSTRUCTED_ONLY' and diagnostic.get('execution_authorized') is False and
+            diagnostic.get('policy_sha256')==public.POLICY_SHA256 and
+            diagnostic.get('epsilon_status')=='DIAGNOSTIC_NOT_FORMAL_FROZEN_VALUE' and
+            diagnostic.get('real_epsilon')=='NOT_MATERIALIZED_DEFER_C1','B2_DIAGNOSTIC_IDENTITY_CHANGED')
+    epsilon=_saved_ratio(diagnostic.get('diagnostic_epsilon'),'B2_INVALID_DIAGNOSTIC_EPSILON')
+    require(0<=epsilon<=Fraction(1,10),'B2_INVALID_DIAGNOSTIC_EPSILON')
+    rows=diagnostic.get('rows')
+    require(type(rows) is list,'B2_MISSING_DIAGNOSTIC_ROWS')
+    positive=[]
+    for row in rows:
+        require(type(row) is dict,'B2_INVALID_DIAGNOSTIC_ROW')
+        if row.get('min_positive_gap') is not None:
+            gap=_saved_ratio(row['min_positive_gap'],'B2_INVALID_DIAGNOSTIC_GAP')
+            require(gap>0 and row.get('probability_complete') is True,'B2_INVALID_DIAGNOSTIC_GAP')
+            positive.append(gap)
+    positive.sort()
+    expected=min(positive[(len(positive)+3)//4-1],Fraction(1,10)) if positive else Fraction(0)
+    require(type(diagnostic.get('positive_gap_denominator')) is int and
+            diagnostic['positive_gap_denominator']==len(positive) and epsilon==expected,
+            'B2_DIAGNOSTIC_EPSILON_PROCEDURE_CHANGED')
+    matches=[r for r in rows if r.get('projection_digest')==public.digest(projection)]
+    require(len(matches)==1,'B2_DIAGNOSTIC_PROJECTION_NOT_UNIQUE')
+    row=matches[0]
+    require(row.get('selected') is True and row.get('status')=='ELIGIBLE' and
+            row.get('task_id')==projection['task_id'] and row.get('decision_id')==projection['decision_id'] and
+            row.get('stage')==point['stage'] and row.get('stratum')==point['stratum'],
+            'B2_DIAGNOSTIC_POINT_CHANGED')
+    native=facts['native'];groups=facts['groups'];gaps=facts['gaps']
+    _same_fact(row.get('native_lexemes'),native['lexemes'],'B2_DIAGNOSTIC_NATIVE_CHANGED')
+    require(row.get('raw_sha256')==native['raw_sha256'],'B2_DIAGNOSTIC_RAW_CHANGED')
+    expected_groups=[{k:v for k,v in g.items() if k!='score'}|{'score':public._ratio(g['score'])}
+                     for _,g in sorted(groups.items())]
+    _same_fact(row.get('groups'),expected_groups,'B2_DIAGNOSTIC_GROUPS_CHANGED')
+    _same_fact(row.get('gaps'),{k:public._ratio(v) for k,v in sorted(gaps.items())},'B2_DIAGNOSTIC_GAPS_CHANGED')
+    positives=[v for v in gaps.values() if v>0]
+    _same_fact(row.get('min_positive_gap'),public._ratio(min(positives)) if positives else None,
+               'B2_DIAGNOSTIC_MIN_GAP_CHANGED')
+    layer=sorted(k for k,v in gaps.items() if v<=epsilon)
+    _same_fact(row.get('registered_layer'),layer,'B2_DIAGNOSTIC_LAYER_CHANGED')
+    require(all(b['exact_action_digest'] in layer for b in point['branches']),'B2_BRANCH_OUTSIDE_SAVED_LAYER')
+
+
 def _branch_facts(projection,point):
     require(point['task_id']==projection['task_id'] and point['decision_id']==projection['decision_id'] and
             point['projection_digest']==public.digest(projection),'B2_POINT_PROJECTION_CHANGED')
@@ -129,6 +211,10 @@ def _branch_facts(projection,point):
     require(point['raw_sha256']==projection['probability_evidence']['raw_sha256'],'B2_POINT_RAW_CHANGED')
     stage='NONEMPTY' if projection['public_state']['placed_objects'] else 'OPENING'
     require(point['stage']==stage,'B2_STAGE_CHANGED')
+    facts=_probability_facts(projection)
+    require(point['raw_sha256']==facts['native']['raw_sha256'],'B2_POINT_RAW_CHANGED')
+    require(point['stratum'] in ('OBSERVED_EXACT_TOP_TIE','RELATIVE_NEAR_TOP') and
+            point['stratum']==facts['stratum'],'B2_STRATUM_CHANGED')
     branches=point['branches'];kinds=[b['kind'] for b in branches]
     require(2<=len(branches)<=3 and kinds[0]=='ORIGINAL_ACTION_REFERENCE' and
             len(set(kinds))==len(kinds) and set(kinds)<={'ORIGINAL_ACTION_REFERENCE','SAME_BOX_DIFFERENT_POSE','CROSS_BOX_SELECTION'},
@@ -153,7 +239,24 @@ def _branch_facts(projection,point):
             require(all(b[k]==original[k] for k in ('label','candidate_id','exact_action_digest')),'B2_ORIGINAL_CHANGED')
         else:
             require((c['pick_item_id']==original_item)==(b['kind']=='SAME_BOX_DIFFERENT_POSE'),'B2_INTERVENTION_CHANGED')
-    return stage,branches
+        group=facts['groups'][b['exact_action_digest']]
+        _same_fact(b['native_lexeme'],facts['native']['lexemes'][b['label']],'B2_NATIVE_LEXEME_CHANGED')
+        _same_fact(b['members'],group['members'],'B2_GROUP_MEMBERS_CHANGED')
+        _same_fact(b['group_score'],public._ratio(group['score']),'B2_GROUP_SCORE_CHANGED')
+        gap=facts['gaps'][b['exact_action_digest']]
+        _same_fact(b['relative_gap'],public._ratio(gap),'B2_RELATIVE_GAP_CHANGED')
+        require(b['layer']==('EXACT_TOP' if gap==0 else 'RELATIVE_NEAR_TOP'),'B2_BRANCH_LAYER_CHANGED')
+        if b['kind']=='SAME_BOX_DIFFERENT_POSE':
+            original_pose=pool[original['candidate_id']]['pose'];alternative_pose=c['pose']
+            _same_fact(b['position_changed'],any(original_pose[k]!=alternative_pose[k]
+                       for k in ('x_mm','y_mm','z_base_mm')),'B2_POSITION_FLAG_CHANGED')
+            _same_fact(b['orientation_changed'],original_pose['yaw_deg']!=alternative_pose['yaw_deg'],
+                       'B2_ORIENTATION_FLAG_CHANGED')
+        elif b['kind']=='CROSS_BOX_SELECTION':
+            attributes={item['item_id']:item for item in projection['public_state']['buffer']}
+            _same_fact(b['public_attribute_contrast'],{'original':attributes[original_item],
+                       'alternative':attributes[c['pick_item_id']]},'B2_PUBLIC_ATTRIBUTE_CONTRAST_CHANGED')
+    return stage,branches,facts
 
 
 def validate_template(template, *, root):
@@ -189,12 +292,14 @@ def validate_template(template, *, root):
         p=read_saved(binding['projection_ref'],root=root)
         require(p['evidence_scope']=='CONSTRUCTED_ONLY','B2_REAL_PROJECTION_NOT_ADMITTED')
         public.validate_saved_evidence(p,root=root)
+        require(p['probability_evidence'] is not None,'MISSING_NATIVE_PROBABILITIES')
         require(p['probability_evidence']['origin']=='CONSTRUCTED_ONLY','B2_CONSTRUCTED_RAW_REQUIRED')
         selected=read_saved(binding['selected_point_ref'],root=root)
         # Closed binding: the saved point must have exactly the existing B1 shape.
         require(set(selected)=={'task_id','decision_id','projection_digest','stage','stratum','pool_ref','prefix_ref','raw_sha256','branches'},
                 'B2_SELECTED_POINT_SHAPE')
-        stage,branches=_branch_facts(p,selected)
+        stage,branches,probability_facts=_branch_facts(p,selected)
+        _validate_point_diagnostic(binding['selected_point_ref'],p,selected,probability_facts,root=root)
         require(binding['point_id']==public.digest({'projection':public.digest(p),'decision_id':p['decision_id']}) and
                 binding['stage']==stage and binding['task_id']==p['task_id'],'B2_POINT_ID_CHANGED')
         key=(p['task_id'],stage)
@@ -234,7 +339,7 @@ def validate_template(template, *, root):
     baseline=sum(j['send_upper'] for j in jobs if j['allocation']=='TRAIN_BASELINE')
     suffix=sum(j['send_upper'] for j in jobs if j['allocation']=='TRAIN_SUFFIX')
     complete=not unbound and template['evidence_kind']=='CONSTRUCTED_ONLY'
-    return {'version':'jev_jm_training_template_check_v1','state':'TEMPLATE_ONLY','execution_state':'NOT_EXECUTABLE',
+    return {'version':'jev_jm_training_template_check_v2','state':'TEMPLATE_ONLY','execution_state':'NOT_EXECUTABLE',
             'execution_authorized':False,'evidence_kind':template['evidence_kind'],'status':'PASS_TEMPLATE_ONLY',
             'task_order':order,'unbound_slots':unbound,'points':len(facts),'initial_suffixes':initial,
             'repeat_points':expected,'repeat_suffixes':repeated,'total_suffixes':initial+repeated,

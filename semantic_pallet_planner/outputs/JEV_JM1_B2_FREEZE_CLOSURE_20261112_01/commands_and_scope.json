@@ -1,0 +1,13 @@
+{
+  "commands": [
+    "PYTHONPATH=semantic_pallet_planner/src python -m pytest semantic_pallet_planner/tests/unit/test_packaging_jev_training_plan.py semantic_pallet_planner/tests/unit/test_packaging_jev_training_freeze.py -q --junitxml=semantic_pallet_planner/outputs/JEV_JM1_B2_FREEZE_CLOSURE_20261112_01/offline_junit.xml",
+    "PYTHONPATH=semantic_pallet_planner/src python -m pytest semantic_pallet_planner/tests/unit/test_packaging_jev_training_freeze.py::test_full_qa_freeze_and_drift_rejections -q --junitxml=semantic_pallet_planner/outputs/JEV_JM1_B2_FREEZE_CLOSURE_20261112_01/targeted_junit.xml",
+    "PYTHONPATH=semantic_pallet_planner/src python semantic_pallet_planner/outputs/JEV_JM1_B2_FREEZE_CLOSURE_20261112_01/prepare_delivery.py",
+    "python semantic_pallet_planner/outputs/JEV_JM1_B2_FREEZE_CLOSURE_20261112_01/finalize_delivery.py",
+    "PYTHONPATH=semantic_pallet_planner/src python semantic_pallet_planner/outputs/JEV_JM1_B2_FREEZE_CLOSURE_20261112_01/verify_delivery.py",
+    "git diff --check"
+  ],
+  "initial_failure": "See test_receipt.json; initial log preserved.",
+  "verification_scope": "Saved bytes/identity/schema/arithmetic/offline configuration and refusal tests only. No original verifier invoked and no historical artifact writes.",
+  "version": "jm_b2_closure_commands_v1"
+}

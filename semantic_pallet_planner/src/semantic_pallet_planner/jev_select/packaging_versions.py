@@ -35,3 +35,7 @@ JM_V13_PROTOCOLS={JM_V13_EXECUTION:'packaging_jev_v13'}
 # B2 actual saved-byte plan preparation; no dispatch or permit issuance.
 JM_TRAINING_PLAN_VERSION='jev_jm_training_plan_v1'
 JM_TRAINING_PLAN_PROTOCOLS={JM_TRAINING_PLAN_VERSION:'packaging_jev_training_plan'}
+
+# B2 final offline freeze/admission receipt, separate from the v1 preparation.
+JM_TRAINING_FREEZE_VERSION='jev_jm_training_freeze_v1'
+JM_TRAINING_FREEZE_PROTOCOLS={JM_TRAINING_FREEZE_VERSION:'packaging_jev_training_freeze'}

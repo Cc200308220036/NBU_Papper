@@ -63,7 +63,7 @@ def test_actual_saved_plan(prepared):
     ('authorized', 'PLAN_SCHEMA'),
     ('wave', 'PLAN_SLOT_ORDER'),
     ('model', 'PLAN_MODEL_CHANGED'),
-    ('missing_qa_erased', 'PLAN_QA_INVENTORY'),
+    ('qa_inventory_inconsistent', 'PLAN_QA_INVENTORY'),
 ])
 def test_refuse_mutations(prepared, case, code):
     value = copy.deepcopy(prepared)
@@ -76,7 +76,13 @@ def test_refuse_mutations(prepared, case, code):
     elif case == 'authorized': value['execution_authorized'] = True
     elif case == 'wave': value['assignments'][0]['wave'] = 2
     elif case == 'model': value['model_declaration']['requested_model'] = 'changed'
-    elif case == 'missing_qa_erased': value['missing_qa'] = []
+    elif case == 'qa_inventory_inconsistent':
+        # Remove one declared inventory member, regardless of the host's files.
+        # This is always a real mutation, including when all QA has arrived.
+        if value['qa_refs']:
+            value['qa_refs'].pop()
+        else:
+            value['missing_qa'].pop()
     with pytest.raises(sampling.SamplingError, match=code):
         plan.validate_plan(reseal(value), root=ROOT)
 
@@ -86,6 +92,27 @@ def test_identity_drift(prepared, monkeypatch):
     monkeypatch.setattr(v13, 'identity', lambda:{**identity, 'source':'0'*64})
     with pytest.raises(sampling.SamplingError, match='PLAN_RUNTIME_DRIFT'):
         plan.validate_plan(prepared, root=ROOT)
+
+
+def test_complete_qa_positive(prepared):
+    # These materials are prerequisites of this closure, not invented QA.
+    value = copy.deepcopy(prepared)
+    value['qa_refs'] = [plan.ref(path, root=ROOT) for path in plan.QA_REQUIRED]
+    value['missing_qa'] = []
+    checked = plan.validate_plan(reseal(value), root=ROOT)
+    assert checked['formal_freeze'] == 'DEFER_INDEPENDENT_PLAN_REVIEW'
+    assert checked['missing_qa'] == [] and checked['execution_authorized'] is False
+
+
+def test_explicit_missing_qa_defer_positive(prepared):
+    # Model a saved missing-material snapshot explicitly, even on a complete host.
+    value = copy.deepcopy(prepared)
+    value['qa_refs'] = []
+    value['missing_qa'] = list(plan.QA_REQUIRED)
+    checked = plan.validate_plan(reseal(value), root=ROOT)
+    assert checked['formal_freeze'] == 'DEFER_MISSING_QA'
+    assert checked['missing_qa'] == plan.QA_REQUIRED
+    assert checked['execution_authorized'] is False
 
 
 def test_saved_bytes_drift_and_missing(prepared):

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="26" time="140.398" timestamp="2026-11-12T17:18:17.633209+08:00" hostname="cyw-R7000P"><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_actual_saved_plan" time="6.519" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_refuse_mutations[duplicate_task-PLAN_DUPLICATE_TASK]" time="3.767" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_refuse_mutations[duplicate_slot-PLAN_DUPLICATE_SLOT]" time="3.414" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_refuse_mutations[budget-PLAN_BUDGET]" time="5.806" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_refuse_mutations[missing_input-PLAN_REQUIRED_INPUTS]" time="3.357" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_refuse_mutations[arrival-PLAN_ARRIVAL_DRIFT]" time="4.730" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_refuse_mutations[epsilon-PLAN_SCHEMA]" time="3.361" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_refuse_mutations[authorized-PLAN_SCHEMA]" time="3.331" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_refuse_mutations[wave-PLAN_SLOT_ORDER]" time="4.569" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_refuse_mutations[model-PLAN_MODEL_CHANGED]" time="5.851" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_refuse_mutations[qa_inventory_inconsistent-PLAN_QA_INVENTORY]" time="3.402" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_identity_drift" time="3.227" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_complete_qa_positive" time="5.739" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_explicit_missing_qa_defer_positive" time="5.662" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_saved_bytes_drift_and_missing" time="5.947" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_old_template_refused" time="3.301" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_send_gates_refuse_even_fake_permit[BASELINE]" time="8.022" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_send_gates_refuse_even_fake_permit[SUFFIX]" time="8.044" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_missing_preparation_materials" time="0.006" /><testcase classname="tests.unit.test_packaging_jev_training_plan" name="test_smaller_scope_budget" time="3.485" /><testcase classname="tests.unit.test_packaging_jev_training_freeze" name="test_full_qa_freeze_and_drift_rejections" time="13.672"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'FREEZE_QA_INVENTORY'&#10; Input: 'FREEZE_IDENTITY_OR_BINDING_DRIFT'">prepared = {'assignments': [{'arrival_digest': 'ad8ed7c82d7fd2a46ec042ecca9469155c7557419d2a2d20bf28641f3b3c9751', 'component': '...ce_candidates.json', 'pointer': '', 'sha256': '7a65900ed42481ae90d92c6a57a90afb3979b41978a5583fb3b0f428e8750726'}, ...}
+
+    def test_full_qa_freeze_and_drift_rejections(prepared):
+        reference = saved_plan_ref(prepared)
+        value = freeze.freeze_plan(reference, root=ROOT)
+        assert value['formal_frozen'] and value['execution_authorized'] is False
+        assert len(value['qa_refs']) == 10
+        assert freeze.validate_frozen_plan(value, root=ROOT)['formal_freeze'] == 'FROZEN_OFFLINE'
+        assert plan.load(reference, root=ROOT)['formal_frozen'] is False
+        assert [value['budget'][k] for k in ('baseline_send_upper', 'initial_suffix_send_upper',
+               'repeat_suffix_send_upper', 'suffix_send_upper', 'global_send_upper')] == [103,564,210,774,877]
+        assert not Path(value['runtime_root']).exists()
+        for case, code in [('root','FREEZE_OPERATION_ROOT_DRIFT'), ('runtime_path','FREEZE_IDENTITY_OR_BINDING_DRIFT'),
+                           ('qa_hash','FREEZE_REFERENCE_BYTES_DRIFT'), ('qa_inventory','FREEZE_QA_INVENTORY'),
+                           ('budget','FREEZE_IDENTITY_OR_BINDING_DRIFT'), ('authorization','FREEZE_SCHEMA')]:
+            changed = copy.deepcopy(value)
+            if case == 'root': changed['operation_root'] += '_different'
+            elif case == 'runtime_path': changed['runtime_root'] += '_different'
+            elif case == 'qa_hash': changed['qa_refs'][0]['sha256'] = '0'*64
+            elif case == 'qa_inventory': changed['qa_refs'][0] = copy.deepcopy(changed['qa_refs'][1])
+            elif case == 'budget': changed['budget']['global_send_upper'] += 1
+            elif case == 'authorization': changed['execution_authorized'] = True
+            with pytest.raises(SamplingError, match=code):
+&gt;               freeze.validate_frozen_plan(receipt_seal(changed), root=ROOT)
+
+semantic_pallet_planner/tests/unit/test_packaging_jev_training_freeze.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_training_freeze.py:178: in validate_frozen_plan
+    require(receipt == freeze_plan(receipt['plan_ref'], root=root), 'FREEZE_IDENTITY_OR_BINDING_DRIFT')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ok = False, code = 'FREEZE_IDENTITY_OR_BINDING_DRIFT'
+
+    def require(ok, code):
+        if not ok:
+&gt;           raise SamplingError(code)
+E           semantic_pallet_planner.jev_select.packaging_jev_sampling.SamplingError: FREEZE_IDENTITY_OR_BINDING_DRIFT
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_sampling.py:33: SamplingError
+
+During handling of the above exception, another exception occurred:
+
+prepared = {'assignments': [{'arrival_digest': 'ad8ed7c82d7fd2a46ec042ecca9469155c7557419d2a2d20bf28641f3b3c9751', 'component': '...ce_candidates.json', 'pointer': '', 'sha256': '7a65900ed42481ae90d92c6a57a90afb3979b41978a5583fb3b0f428e8750726'}, ...}
+
+    def test_full_qa_freeze_and_drift_rejections(prepared):
+        reference = saved_plan_ref(prepared)
+        value = freeze.freeze_plan(reference, root=ROOT)
+        assert value['formal_frozen'] and value['execution_authorized'] is False
+        assert len(value['qa_refs']) == 10
+        assert freeze.validate_frozen_plan(value, root=ROOT)['formal_freeze'] == 'FROZEN_OFFLINE'
+        assert plan.load(reference, root=ROOT)['formal_frozen'] is False
+        assert [value['budget'][k] for k in ('baseline_send_upper', 'initial_suffix_send_upper',
+               'repeat_suffix_send_upper', 'suffix_send_upper', 'global_send_upper')] == [103,564,210,774,877]
+        assert not Path(value['runtime_root']).exists()
+        for case, code in [('root','FREEZE_OPERATION_ROOT_DRIFT'), ('runtime_path','FREEZE_IDENTITY_OR_BINDING_DRIFT'),
+                           ('qa_hash','FREEZE_REFERENCE_BYTES_DRIFT'), ('qa_inventory','FREEZE_QA_INVENTORY'),
+                           ('budget','FREEZE_IDENTITY_OR_BINDING_DRIFT'), ('authorization','FREEZE_SCHEMA')]:
+            changed = copy.deepcopy(value)
+            if case == 'root': changed['operation_root'] += '_different'
+            elif case == 'runtime_path': changed['runtime_root'] += '_different'
+            elif case == 'qa_hash': changed['qa_refs'][0]['sha256'] = '0'*64
+            elif case == 'qa_inventory': changed['qa_refs'][0] = copy.deepcopy(changed['qa_refs'][1])
+            elif case == 'budget': changed['budget']['global_send_upper'] += 1
+            elif case == 'authorization': changed['execution_authorized'] = True
+&gt;           with pytest.raises(SamplingError, match=code):
+E           AssertionError: Regex pattern did not match.
+E            Regex: 'FREEZE_QA_INVENTORY'
+E            Input: 'FREEZE_IDENTITY_OR_BINDING_DRIFT'
+
+semantic_pallet_planner/tests/unit/test_packaging_jev_training_freeze.py:44: AssertionError</failure></testcase><testcase classname="tests.unit.test_packaging_jev_training_freeze" name="test_missing_qa_defer_without_dispatch" time="3.079" /><testcase classname="tests.unit.test_packaging_jev_training_freeze" name="test_receipt_is_never_sending_permission" time="15.128" /><testcase classname="tests.unit.test_packaging_jev_training_freeze" name="test_runtime_identity_drift" time="6.143" /><testcase classname="tests.unit.test_packaging_jev_training_freeze" name="test_resigned_different_execution_path_refused" time="7.306" /><testcase classname="tests.unit.test_packaging_jev_training_freeze" name="test_historical_preparation_cannot_be_frozen_in_place" time="3.302" /></testsuite></testsuites>

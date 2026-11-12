@@ -1,0 +1,58 @@
+{
+  "version": "jm_c1_original_entry_admission_v1",
+  "status": "READY",
+  "scope": "JM1-C1真实基线与具体分叉计划物化，仅技术准入；非发送授权",
+  "matrix": [
+    {
+      "prerequisite": "B2正式离线冻结保存事实",
+      "evidence": "冻结原件摘要与505源码、六job、预算一致",
+      "status": "PASS",
+      "impact": "无需重做冻结"
+    },
+    {
+      "prerequisite": "原解释器完整前检及两发送门保护",
+      "evidence": "原操作端成功/预期拒绝原始日志，本轮保存事实核对",
+      "status": "PASS",
+      "impact": "PRE-C1-ENV-01关闭"
+    },
+    {
+      "prerequisite": "本次独立质检",
+      "evidence": "本包static_checks和逐项复核",
+      "status": "PASS",
+      "impact": "本单元退出完成，C1技术READY"
+    },
+    {
+      "prerequisite": "明确C1真实调用授权",
+      "evidence": "当前授权0；原清单P2 NOT_GRANTED",
+      "status": "NOT_RUN",
+      "impact": "尚不能签许可或开始运行；不是本次只读任务缺陷"
+    },
+    {
+      "prerequisite": "授权后的真实服务协议/外部许可与发送前身份检查",
+      "evidence": "原清单P3/P4 NOT_RUN",
+      "status": "NOT_RUN",
+      "impact": "真实执行前仍须完成，不能把离线冻结收据当许可"
+    },
+    {
+      "prerequisite": "C1真实基线与具体分叉计划",
+      "evidence": "六基线NOT_RUN，材料未物化",
+      "status": "NOT_RUN",
+      "impact": "C1未完成，C2 NOT_READY"
+    }
+  ],
+  "C2": "NOT_READY",
+  "real_calls_authorized": 0,
+  "allowed_now": [
+    "同步本QA，读取结论及现有待授权清单；无漂移不重复已通过的同轮前检。",
+    "用户未另行明确真实范围前保持停止；本次没有新增实现整改项。"
+  ],
+  "requires_separate_authorization": [
+    "C1真实六基线两波3+3及实际发送范围，合计最多103；是否授权必须来自用户明确指令。",
+    "授权后核实当时官方协议，使用既有凭证加载及外部逐execution许可；不改永久拒绝的冻结门。"
+  ],
+  "prohibited_now": [
+    "凭证读取、签许可、模型调用、订单/LP/候选重建/分叉执行",
+    "后缀/C2、改变冻结阈值或任务、重签旧身份"
+  ],
+  "post_authorization_exit": "仅C1基线＋公开概率采点/覆盖＋具体fork_plan/重复/预算冻结，停止，后缀0。"
+}

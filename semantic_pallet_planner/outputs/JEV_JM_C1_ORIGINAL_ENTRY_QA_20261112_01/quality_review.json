@@ -1,0 +1,99 @@
+{
+  "version": "jm_c1_original_entry_qa_v1",
+  "date": "2026-11-12",
+  "plan": "JM-plan-v2 / revision 2026-11-10",
+  "unit": "JM1-C1冻结原解释器入口只读复验",
+  "reviewed_head": "3095ad4437b367f9dc217b75f0871ee1b85f73ce",
+  "development_entry_head": "3315f36c5b4983509ad5f2305cbda82d0f7f5d3a",
+  "reviewed_package": "semantic_pallet_planner/outputs/JEV_JM1_C1_ORIGINAL_PYTHON_RECHECK_20261112_01/",
+  "scope": "静态与标准库保存事实独立核查；不实施前检或真实执行",
+  "four_layers": {
+    "report_claim": "原入口原验证器通过，37项检查及两发送门拒绝；旧STOP与首轮收集失败保留。",
+    "source": "原验证器及冻结门未变；门先validate_frozen_plan后require(False)。本提交仅报告/证据/索引。",
+    "archived_evidence": "原入口/home/cyw/anaconda3/bin/python；原validator exit0；两门exit1预期SamplingError；六job完整身份匹配。",
+    "current_review": "stdlib脚本实际成功：29manifest条目、613保护输入、505源码、90引用/指针、六job/103、原始stderr和首轮修正差异；Linux生产路径NOT_RUN。"
+  },
+  "acceptance": [
+    {
+      "id": "ORIG-PRE-01",
+      "status": "PASS",
+      "evidence": "六job完整监测身份与actual_monitor_identity一致；原入口与同步记录。"
+    },
+    {
+      "id": "ORIG-PRE-02",
+      "status": "PASS",
+      "evidence": "原validator归档exit0、stdout成功收据、stderr空；脚本未变。"
+    },
+    {
+      "id": "ORIG-PRE-03",
+      "status": "PASS",
+      "evidence": "29交付/613受保护输入/505运行文件/90引用本轮核对；无运行源码漂移。"
+    },
+    {
+      "id": "ORIG-PRE-04",
+      "status": "PASS",
+      "evidence": "逐job绑定及19/14/18/19/15/18，合计103；预留877非授权。"
+    },
+    {
+      "id": "ORIG-PRE-05",
+      "status": "PASS",
+      "evidence": "两原始stderr及源码顺序一致：有效前检后显式FREEZE_NOT_A_SEND_PERMIT；归档exit1为预期拒绝。"
+    },
+    {
+      "id": "ORIG-PRE-06",
+      "status": "PASS",
+      "evidence": "完整待授权清单；六NOT_RUN，execution_authorized=false、authorized_sends=0。"
+    },
+    {
+      "id": "REAL-C1-C2",
+      "status": "NOT_RUN",
+      "evidence": "本任务禁止真实执行；基线/恢复/LP/epsilon/覆盖及具体fork_plan均未完成，不能由只读通过替代。"
+    }
+  ],
+  "issues": [
+    {
+      "id": "PRE-C1-ENV-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED_FOR_ORIGINAL_ENTRY_READONLY_PREFLIGHT",
+      "blocking": false,
+      "contract": "冻结身份与ORIG-PRE-01/02/05",
+      "location": "semantic_pallet_planner/outputs/JEV_JM1_C1_ORIGINAL_PYTHON_RECHECK_20261112_01/actual_monitor_identity.json#/execution_environment/executable",
+      "original_difference": "旧调用python3，冻结python，jm13_monitor_identity早停。",
+      "resolution": "新增归档证明使用冻结原入口通过完整原validator及两发送门预期拒绝；未放宽保护或重签历史。",
+      "impact": "只读前检阻断解除；不证明真实C1已执行。",
+      "minimal_remaining_remediation": "NONE_FOR_THIS_UNIT",
+      "validation_boundary": "本轮独立复核保存事实；未在Mac复现Linux行为。"
+    }
+  ],
+  "nonblocking_observations": [
+    {
+      "id": "OBS-C1-COLLECTOR-01",
+      "severity": "LOW",
+      "status": "RESOLVED_IN_NEW_EVIDENCE_SCRIPT",
+      "location": "semantic_pallet_planner/outputs/JEV_JM1_C1_ORIGINAL_PYTHON_RECHECK_20261112_01/first_attempt/collect_recheck.py:85",
+      "actual": "首轮误写预期异常类JevSelectError，保存FAIL；最终仅改成实际SamplingError，完整复验通过。",
+      "impact": "不构成运行源码缺陷或本轮未闭合项；旧失败必须保留。"
+    }
+  ],
+  "engineering_status": "PASS_READONLY_SUBUNIT_COMPLETE; REAL_C1_NOT_RUN",
+  "evidence_readiness": "PASS_FOR_READONLY_EXIT_AND_TECHNICAL_ADMISSION; LIVE_PROVIDER_AND_PERMIT_NOT_VERIFIED",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "READY",
+  "admission_scope": "C1真实基线与具体分叉计划的技术准入建议；真实授权仍0，不能自动启动。C2 NOT_READY。",
+  "real_calls_authorized": 0,
+  "current_review_operations": {
+    "credentials": 0,
+    "permits": 0,
+    "requests": 0,
+    "orders": 0,
+    "forks": 0,
+    "candidate_rebuilds": 0,
+    "LP": 0
+  },
+  "limitations": [
+    "归档零发送系保存记录/声明一致性核查，不是独立网络审计。",
+    "Mac本轮未运行Linux原validator、Schema/依赖动态验证、真实恢复或求解；这些通过结论限于操作端归档。",
+    "完整C1的M12-01—07实际材料尚未验收，父阶段不因本单元PASS而完成。"
+  ],
+  "stop": true
+}

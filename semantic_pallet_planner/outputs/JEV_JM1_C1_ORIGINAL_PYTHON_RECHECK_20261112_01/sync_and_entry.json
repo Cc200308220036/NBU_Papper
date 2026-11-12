@@ -1,0 +1,33 @@
+{
+  "version": "jm_c1_original_entry_sync_v1",
+  "root": "/home/cyw/NBU_Papper",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "entry_and_post_pull_head": "3315f36c5b4983509ad5f2305cbda82d0f7f5d3a",
+  "entry_worktree": "CLEAN",
+  "pull": [
+    {
+      "command": "git pull --ff-only",
+      "sandbox": "default",
+      "exit_code": 1,
+      "stderr": "error: 不能打开 .git/FETCH_HEAD: 只读文件系统\n"
+    },
+    {
+      "command": "git pull --ff-only",
+      "sandbox": "require_escalated",
+      "exit_code": 0,
+      "stdout": "已经是最新的。\n",
+      "stderr": ""
+    }
+  ],
+  "frozen_entry": "/home/cyw/anaconda3/bin/python",
+  "entry_note": "existing symlink python -> python3.13; no replacement or new link created",
+  "applicable_agents": [
+    "AGENTS.md"
+  ],
+  "subdirectory_agents": "NONE_FOUND",
+  "side_effect_review": "verify_delivery.py reads and asserts saved files/source manifest then invokes read-only validate_frozen_plan. validate_plan checks saved refs/schemas/runtime_task projection/schedule/execution identity; no candidates/episode/transport/assess_candidate/LP. Gates validate frozen receipt then require(False).",
+  "plan_version": "JM-plan-v2",
+  "plan_revision": "2026-11-10",
+  "historical_stop_preserved": true
+}

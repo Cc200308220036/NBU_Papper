@@ -1,0 +1,54 @@
+{
+  "version": "jm_c1_original_entry_acceptance_v1",
+  "items": [
+    {
+      "id": "ORIG-PRE-01",
+      "status": "PASS",
+      "item": "原入口存在可执行；实际sys.executable与完整环境身份吻合",
+      "evidence": "actual_monitor_identity.json; checks monitor_full_identity:1..6"
+    },
+    {
+      "id": "ORIG-PRE-02",
+      "status": "PASS",
+      "item": "原verify_delivery.py实际exit0并输出成功收据",
+      "evidence": "original_validator.stdout/stderr; commands_and_results.json"
+    },
+    {
+      "id": "ORIG-PRE-03",
+      "status": "PASS",
+      "item": "冻结字节/505源码/Schema/依赖/操作根/job根/QA引用/配置",
+      "evidence": "preflight_receipt.json; protected_inputs.json"
+    },
+    {
+      "id": "ORIG-PRE-04",
+      "status": "PASS",
+      "item": "六基线19/14/18/19/15/18，51+52=103；非授权",
+      "evidence": "budget check"
+    },
+    {
+      "id": "ORIG-PRE-05",
+      "status": "PASS",
+      "item": "有效身份后BASELINE与SUFFIX门无许可实际拒绝",
+      "evidence": "baseline_gate.stderr; suffix_gate.stderr; exit1 SamplingError FREEZE_NOT_A_SEND_PERMIT"
+    },
+    {
+      "id": "ORIG-PRE-06",
+      "status": "PASS",
+      "item": "完整待授权清单；六NOT_RUN/授权0",
+      "evidence": "pending_execution_checklist.json"
+    },
+    {
+      "id": "REAL-C1-C2",
+      "status": "NOT_RUN",
+      "item": "真实服务、订单、恢复、分叉、LP及具体fork_plan",
+      "evidence": "no runtime root; no credentials or permits"
+    }
+  ],
+  "first_collector_attempt": "FAIL_ASSERTION_EXPECTED_WRONG_EXCEPTION_CLASS; preserved first_attempt; production identity passed and gate actually refused",
+  "final_collector": "PASS_37_CHECKS",
+  "issue": {
+    "id": "PRE-C1-ENV-01",
+    "status": "RESOLVED_BY_ORIGINAL_ENTRY_PENDING_INDEPENDENT_QA"
+  },
+  "real_calls_authorized": 0
+}

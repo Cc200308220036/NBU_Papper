@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_training_freeze.py", line 203, in <module>
+    main()
+    ~~~~^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_training_freeze.py", line 199, in main
+    require_send_authorization(value, root=args.root, stage='BASELINE' if args.mode == 'baseline-gate' else 'SUFFIX')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_training_freeze.py", line 187, in require_send_authorization
+    require(False, 'FREEZE_NOT_A_SEND_PERMIT')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_sampling.py", line 33, in require
+    raise SamplingError(code)
+semantic_pallet_planner.jev_select.packaging_jev_sampling.SamplingError: FREEZE_NOT_A_SEND_PERMIT

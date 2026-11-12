@@ -1,0 +1,27 @@
+{
+  "version": "jm_c1_original_entry_commands_v1",
+  "commands": [
+    {
+      "label": "original_validator",
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src /home/cyw/anaconda3/bin/python semantic_pallet_planner/outputs/JEV_JM1_B2_FREEZE_CLOSURE_20261112_01/verify_delivery.py",
+      "exit_code": 0,
+      "stdout": "original_validator.stdout",
+      "stderr": "original_validator.stderr"
+    },
+    {
+      "label": "baseline_gate",
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src /home/cyw/anaconda3/bin/python -m semantic_pallet_planner.jev_select.packaging_jev_training_freeze baseline-gate semantic_pallet_planner/outputs/JEV_JM1_B2_FREEZE_CLOSURE_20261112_01/formal_freeze.json --root .",
+      "exit_code": 1,
+      "stdout": "baseline_gate.stdout",
+      "stderr": "baseline_gate.stderr"
+    },
+    {
+      "label": "suffix_gate",
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src /home/cyw/anaconda3/bin/python -m semantic_pallet_planner.jev_select.packaging_jev_training_freeze suffix-gate semantic_pallet_planner/outputs/JEV_JM1_B2_FREEZE_CLOSURE_20261112_01/formal_freeze.json --root .",
+      "exit_code": 1,
+      "stdout": "suffix_gate.stdout",
+      "stderr": "suffix_gate.stderr"
+    }
+  ],
+  "collector_entry": "/home/cyw/anaconda3/bin/python"
+}

@@ -1,0 +1,71 @@
+{
+  "version": "jm1_c1_technical_admission_v1",
+  "next_unit": "JM1-C1 baseline and concrete fork-plan materialization",
+  "status": "READY",
+  "status_scope": "TECHNICAL_HANDOFF_ONLY_NOT_EXECUTION_AUTHORIZATION",
+  "prerequisites": [
+    {
+      "requirement": "complete B2 frozen plan/QA/jobs/budget",
+      "evidence": "formal_freeze plus this independent audit",
+      "status": "PASS",
+      "impact": "technical C1 handoff ready"
+    },
+    {
+      "requirement": "v13 execution/recovery/public adapter prerequisite engineering",
+      "evidence": "prior engineering and fix QA; runtime core not changed",
+      "status": "PASS_CONSTRUCTED_SCOPE",
+      "impact": "real service/LP remain NOT_RUN, not falsely marked tested"
+    },
+    {
+      "requirement": "pre-send validation on frozen Linux host/root/environment",
+      "evidence": "local review is Mac/stdlb only",
+      "status": "REQUIRED_BEFORE_DISPATCH",
+      "impact": "run original read-only validator on intended host; identity mismatch stops, never reseal"
+    },
+    {
+      "requirement": "explicit user C1 execution authority",
+      "evidence": "no new real authorization; calls0",
+      "status": "NOT_GRANTED",
+      "impact": "do not read credentials/create permits/send until concrete user authorization"
+    },
+    {
+      "requirement": "concrete C1 fork plan and C2 authorization",
+      "evidence": "not materialized",
+      "status": "NOT_MET_FOR_C2",
+      "impact": "C2 NOT_READY; suffix sends0"
+    }
+  ],
+  "formal_freeze_identity": "255afe2a80736838105c759a46597aa8853bdba736b7795672a491b86bbbcce1",
+  "authorized_real_calls": 0,
+  "execution_authorized": false,
+  "C2": "NOT_READY",
+  "scope_after_separate_authorization": {
+    "baseline_tasks": 6,
+    "waves": [
+      3,
+      3
+    ],
+    "per_job_send_upper": [
+      19,
+      14,
+      18,
+      19,
+      15,
+      18
+    ],
+    "baseline_global_upper": 103,
+    "point_upper": 12,
+    "suffix_sends": 0,
+    "stop": "after frozen concrete fork/repeat/budget materialization or technical batch stop"
+  },
+  "allowed_without_authorization": [
+    "same-host read-only identity/schema/byte/gate checks and reviewable execution list"
+  ],
+  "not_allowed": [
+    "interpret QA READY as send permit",
+    "modify frozen runtime source/model/prompt/algorithms/data",
+    "C2/suffix dispatch or extra tasks/seeds/retries",
+    "re-sign identity after mismatch"
+  ],
+  "stop": true
+}

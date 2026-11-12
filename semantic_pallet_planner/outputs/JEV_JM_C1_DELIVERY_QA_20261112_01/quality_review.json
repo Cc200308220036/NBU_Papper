@@ -1,0 +1,37 @@
+{
+  "version": "jm_c1_precheck_stop_review_v1",
+  "date": "2026-11-12",
+  "head": "9cd053e474be9fc3e8a252c420258dc388ffacb1",
+  "plan": "JM-plan-v2",
+  "engineering_status": "PRE_SEND_CHECK_INCOMPLETE_HEAD_ONLY_STOP_RESOLVED",
+  "evidence_readiness": "SOURCE_BYTES_CONFIRMED_FULL_LINUX_PREFLIGHT_PENDING",
+  "research_result": "NOT_RUN_OPERATOR_REPORTED",
+  "next_stage_admission": "NOT_ASSESSED",
+  "report": "docs/03_阶段产出分析/Jev/Jev_JM1-C1交付定位核查与证据待补_20261112_01.md",
+  "acceptance": [
+    {
+      "id": "HEAD_difference_classification",
+      "status": "PASS",
+      "scope": "direct successor,8 QA-only files;505 frozen runtime bytes match"
+    },
+    {
+      "id": "full_Linux_presend_preflight",
+      "status": "NOT_RUN",
+      "basis": "operator stopped before checks"
+    },
+    {
+      "id": "C1_completion",
+      "status": "NOT_RUN",
+      "basis": "operator reports no execution; full C1 not reviewed"
+    },
+    {
+      "id": "M12_actual_C1/C2",
+      "status": "NOT_APPLICABLE",
+      "basis": "this turn only stop diagnosis; no actual running evidence supplied"
+    }
+  ],
+  "findings": [],
+  "decision": "Allow same-unit read-only continuation on9cd while preserving frozen source/config/dependency identities and authority0",
+  "previous_B2_technical_C1_admission": "PRESERVED_READY_TECHNICAL_ONLY",
+  "stop": true
+}

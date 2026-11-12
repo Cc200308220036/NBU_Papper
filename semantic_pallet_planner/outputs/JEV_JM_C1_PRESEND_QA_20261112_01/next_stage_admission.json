@@ -1,0 +1,45 @@
+{
+  "version": "jm_c1_presend_admission_v1",
+  "target": "C1真实发送/订单；C2",
+  "status": "NOT_READY",
+  "matrix": [
+    {
+      "prerequisite": "冻结字节/源码/六job/预算",
+      "evidence": "static_checks.json及原收据",
+      "status": "PASS",
+      "impact": "无此项已知漂移阻断"
+    },
+    {
+      "prerequisite": "原入口完整前检通过",
+      "evidence": "原validator exit1；仅可执行路径字段差异",
+      "status": "PARTIAL",
+      "impact": "发送NOT_READY"
+    },
+    {
+      "prerequisite": "有效身份后两发送门实际拒绝",
+      "evidence": "原收据未验证清单",
+      "status": "NOT_RUN",
+      "impact": "须在只读复验补齐"
+    },
+    {
+      "prerequisite": "用户具体发送授权",
+      "evidence": "当前授权0",
+      "status": "NOT_RUN",
+      "impact": "即使前检通过也不许发请求"
+    }
+  ],
+  "allowed_same_unit_work": [
+    "新增独立只读复验：确认冻结原解释器存在且可执行，以该原入口运行既有离线验证器，按实际结果形成新收据。",
+    "成功后补齐两发送门预期拒绝和待授权清单；所有六基线保持NOT_RUN。"
+  ],
+  "prohibited": [
+    "修改冻结配置、旧收据/脚本或身份摘要",
+    "假定解释器别名等价、伪造sys.executable、创建软链或安装依赖迁就身份",
+    "凭证读取、许可签发、模型请求、订单/分叉/候选重建/LP、C2"
+  ],
+  "release_conditions": [
+    "原冻结入口完整校验实际成功；全字段环境身份吻合；两发送门预期拒绝证据齐全。",
+    "交回质检；任何真实执行另需明确授权。"
+  ],
+  "real_calls_authorized": 0
+}

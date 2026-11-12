@@ -1,0 +1,90 @@
+{
+  "version": "jm_c1_presend_quality_review_v1",
+  "date": "2026-11-12",
+  "unit": "JM1-C1发送前只读检查与身份停点交付",
+  "plan": "JM-plan-v2",
+  "reviewed_head": "0db8ef4012f76c67ff9ffd1f194034662077b977",
+  "operation_delivery_head": "67c36e85 (见原handoff)",
+  "requested_historical_head": "9cd053e474be9fc3e8a252c420258dc388ffacb1",
+  "reviewed_package": "semantic_pallet_planner/outputs/JEV_JM1_C1_PRESEND_CHECK_20261112_01/",
+  "freeze_package": "semantic_pallet_planner/outputs/JEV_JM1_B2_FREEZE_CLOSURE_20261112_01/",
+  "scope": "独立静态与标准库保存事实核查；不实施前检整改或C1执行",
+  "four_layers": {
+    "report_claim": "STOP；依赖/505源码/逐job/103检查通过；六基线NOT_RUN、0发送。",
+    "source": "环境身份包含sys.executable；v13要求整个监测身份相等；两发送门保留。",
+    "archived_evidence": "原validator exit1 jm13_monitor_identity；补充收集器exit0但结果STOP。仅解释器路径字段不同。",
+    "current_review": "verify_review.py成功，六manifest文件、505运行文件、摘要/六job/103/错误字段核对；未在Linux执行原validator。"
+  },
+  "acceptance_ids_note": "C1-PRE-QA-*为本次公共合同核查编号，不替代主方案阶段验收ID。",
+  "acceptance": [
+    {
+      "id": "C1-PRE-QA-01",
+      "contract": "交付、归档与停止保护",
+      "status": "PASS",
+      "evidence": "原manifest六项字节吻合；原失败及六任务NOT_RUN保留；未以收集脚本exit0冒充validator通过。"
+    },
+    {
+      "id": "C1-PRE-QA-02",
+      "contract": "冻结源码与计划保存事实",
+      "status": "PASS",
+      "evidence": "505运行文件集合/字节匹配；正式冻结摘要及六逐job引用、根、预算103核对。"
+    },
+    {
+      "id": "C1-PRE-QA-03",
+      "contract": "完整原验证器与环境身份",
+      "status": "PARTIAL",
+      "evidence": "操作端原验证器FAIL(jm13_monitor_identity)，只读补充核查不等于原验证器成功；本轮生产入口NOT_RUN。"
+    },
+    {
+      "id": "C1-PRE-QA-04",
+      "contract": "有效身份后的两发送门拒绝",
+      "status": "NOT_RUN",
+      "evidence": "原验证器早停，尚无身份通过后的实际拒绝结果。"
+    },
+    {
+      "id": "C1-PRE-QA-05",
+      "contract": "C1真实执行、恢复与研究结果",
+      "status": "NOT_RUN",
+      "evidence": "六基线均未运行；未授权且本单元不要求补做真实执行。"
+    }
+  ],
+  "issues": [
+    {
+      "id": "PRE-C1-ENV-01",
+      "severity": "MEDIUM",
+      "type": "ENVIRONMENT_IDENTITY_STOP_NOT_PROVEN_CODE_DEFECT",
+      "blocking": true,
+      "contract": "C1-PRE-QA-03 / 冻结身份匹配",
+      "location": {
+        "identity_source": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/runtime.py:21-23",
+        "guard": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_v13.py:49",
+        "receipt_pointer": "/checks (check=monitor_environment_identity)/details/0",
+        "execution_pointer": "/config/stability_monitor/execution_environment/executable"
+      },
+      "actual": "冻结/home/cyw/anaconda3/bin/python，本次/home/cyw/anaconda3/bin/python3；全字段严格比较拒绝。",
+      "impact": "完整前检未完成，不能发送；不是已证明的源码或算法缺陷。",
+      "minimal_action": "以冻结原入口新增独立只读复验；原入口缺失或身份仍不符则停止，不改原件、不重签、不创建替代链接。",
+      "validation_boundary": "Mac本轮未确认Linux路径可执行、二进制等价或生产验证器成功。"
+    }
+  ],
+  "engineering_status": "PARTIAL_FULL_PRESEND; PASS_STOP_HANDOFF; C1_NOT_RUN",
+  "evidence_readiness": "PASS_FOR_DOCUMENTED_STOP; PARTIAL_FOR_SEND_READINESS",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "NOT_READY",
+  "real_calls_authorized": 0,
+  "current_operations": {
+    "credentials": 0,
+    "permits": 0,
+    "model_requests": 0,
+    "orders": 0,
+    "forks": 0,
+    "candidate_rebuilds": 0,
+    "LP": 0
+  },
+  "limitations": [
+    "归档零发送为操作端保存记录及声明的一致性核查，不是独立外部流量审计。",
+    "Mac未复现Linux身份校验；不推定python与python3等价。",
+    "旧收集器verify_preflight.py:68固定写STOP；新状态必须从实际结果推导。"
+  ],
+  "stop": true
+}

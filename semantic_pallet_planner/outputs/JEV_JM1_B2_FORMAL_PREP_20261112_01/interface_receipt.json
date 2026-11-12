@@ -1,0 +1,42 @@
+{
+  "baseline_gate": "Always refuses in this offline protocol; separate execution admission required.",
+  "budget_bound": "Initial: 3*(N-1) OPENING + 3*max(0,N-2) NONEMPTY per task. Repeats: sum four largest per-stage 3*remaining caps; concrete C1 budgets must be <= reserved envelope. No refill/transfer.",
+  "epsilon_rule": "B1 pinned policy SHA; nearest-rank Q25 smallest positive relative native gaps, capped at 1/10; no imputation; NOT_MATERIALIZED_DEFER_C1",
+  "interfaces": [
+    "prepare_plan(root,output,catalog_path,inputs,count=6)",
+    "validate_plan(plan,root)",
+    "require_send_authorization(plan,root,stage,permit=None)",
+    "budgets(assignments)",
+    "select_tasks(audit,count)"
+  ],
+  "materialization_contract": {
+    "C1": "Only real saved baseline public projection may materialize real epsilon/points/actions; full private task counts only budget side; freeze complete pools/actions/repeats and per-job integer sends before C2; C1 may stop.",
+    "C2": "Must consume separately frozen concrete plan and v13 execution-specific permits. Cannot consume this prepared plan or old template as authorization."
+  },
+  "module": "semantic_pallet_planner.jev_select.packaging_jev_training_plan",
+  "no_calls": [
+    "run_episode",
+    "run_execution",
+    "run_scheduled",
+    "sample",
+    "capture_start",
+    "candidate generation",
+    "monitor assessment",
+    "LP",
+    "transport",
+    "credentials"
+  ],
+  "protocol": "jev_jm_training_plan_v1",
+  "registry": "packaging_versions.JM_TRAINING_PLAN_PROTOCOLS (independent offline route)",
+  "repeat_rule": "B2.repeat_priority alternating OPENING/NONEMPTY, unseen conservative component first then task order/decision digest; all existing branches at <=4 selected points repeat once; freeze before any suffix result.",
+  "reuse": [
+    "v13.load_config/preflight/identity/freeze_execution/validate_execution/freeze_schedule/validate_schedule",
+    "packaging_runtime.runtime_task (saved input conversion only)",
+    "B2.read_saved/relation_components/repeat_priority",
+    "B1 policy identity and closed public projection protocol"
+  ],
+  "schema": "jm_training_plan_v1.schema.json",
+  "schema_validation": "Existing jsonschema Draft202012Validator; closed nested plan fields; separate from old B2 stdlib subset schema",
+  "suffix_gate": "Always refuses; C1 concrete fork plan remains unmaterialized and C2 is separate.",
+  "version": "jm_training_plan_interface_receipt_v1"
+}

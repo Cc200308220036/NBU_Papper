@@ -1,0 +1,26 @@
+{
+  "actual_operations": {
+    "LP": 0,
+    "candidate_rebuilds": 0,
+    "commit": 0,
+    "credential_reads": 0,
+    "downloads": 0,
+    "epsilon_materialization": 0,
+    "git_add": 0,
+    "installs": 0,
+    "network": 0,
+    "new_training_evaluation_data": 0,
+    "orders": 0,
+    "push": 0,
+    "real_model_calls": 0,
+    "subagents": 0,
+    "suffixes": 0,
+    "third_party_updates": 0
+  },
+  "commands": [
+    "PYTHONPATH=semantic_pallet_planner/src python -m pytest semantic_pallet_planner/tests/unit/test_packaging_jev_training_plan.py -q --junitxml=semantic_pallet_planner/outputs/JEV_JM1_B2_FORMAL_PREP_20261112_01/constructed_junit.xml",
+    "PYTHONPATH=semantic_pallet_planner/src python semantic_pallet_planner/outputs/JEV_JM1_B2_FORMAL_PREP_20261112_01/prepare_delivery.py",
+    "PYTHONPATH=semantic_pallet_planner/src python semantic_pallet_planner/outputs/JEV_JM1_B2_FORMAL_PREP_20261112_01/verify_delivery.py"
+  ],
+  "test_scope": "Offline actual saved task conversion/config/schedule construction and refusal tests only; traps forbid execution and solver."
+}

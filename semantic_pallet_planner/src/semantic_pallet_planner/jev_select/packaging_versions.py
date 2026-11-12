@@ -31,3 +31,7 @@ JM_SAVED_BYTES_AUDIT_VERSION='jev_jm_saved_bytes_audit_v1'
 JM_V13='jev_packaging_jm_no_memory_v13'
 JM_V13_EXECUTION='jev_jm_v13_execution_v1'
 JM_V13_PROTOCOLS={JM_V13_EXECUTION:'packaging_jev_v13'}
+
+# B2 actual saved-byte plan preparation; no dispatch or permit issuance.
+JM_TRAINING_PLAN_VERSION='jev_jm_training_plan_v1'
+JM_TRAINING_PLAN_PROTOCOLS={JM_TRAINING_PLAN_VERSION:'packaging_jev_training_plan'}

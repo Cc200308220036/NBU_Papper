@@ -1,0 +1,33 @@
+{
+  "version": "jm_c2_qa_check_attempts_v1",
+  "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/JEV_JM_C2_REAL_QA_20261113_01/verify_review.py",
+  "attempts": [
+    {
+      "result": "FAIL",
+      "stage": "parent QA README hash",
+      "cause": "QA initially used current README instead of historical Git blob under existing navigation policy"
+    },
+    {
+      "result": "FAIL",
+      "stage": "parent event lookup",
+      "cause": "arrival event has no decision_id; QA changed lookup to get"
+    },
+    {
+      "result": "FAIL",
+      "stage": "denominator equality",
+      "cause": "binary floating sum difference about1e-14; QA switched numeric checks to explicit tolerances"
+    },
+    {
+      "result": "PASS",
+      "stage": "saved identity/request/metric/label audit"
+    },
+    {
+      "result": "PASS",
+      "stage": "added complete numeric delta, latency sample and source group audit"
+    }
+  ],
+  "correction_scope": "this independent QA script only; no original records changed",
+  "development_defect_from_QA_assertions": false,
+  "current_calls": 0,
+  "current_LP": 0
+}

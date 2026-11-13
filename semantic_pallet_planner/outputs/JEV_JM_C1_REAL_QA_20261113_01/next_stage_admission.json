@@ -1,0 +1,67 @@
+{
+  "version": "jm_c1_real_next_admission_v1",
+  "target": "JM1-C2既定后缀/重复与全比较",
+  "status": "READY",
+  "meaning": "仅技术建议，不构成真实调用或下一任务授权",
+  "matrix": [
+    {
+      "prerequisite": "C1身份和账目闭环",
+      "evidence": "44请求/选择/稳定提交；505源码及294journal一致",
+      "status": "PASS",
+      "impact": "可消费既定前缀"
+    },
+    {
+      "prerequisite": "公开采点与计划冻结",
+      "evidence": "44投影复算及独立epsilon核算；5点18job完整绑定",
+      "status": "PASS",
+      "impact": "不补跑基线或重新采点"
+    },
+    {
+      "prerequisite": "覆盖不足明示",
+      "evidence": "7阶段及5类别缺口，开局0/6",
+      "status": "PARTIAL",
+      "impact": "限制结论，依方案不阻断已有点"
+    },
+    {
+      "prerequisite": "C2具体范围预算",
+      "evidence": "10初次/130+8重复/112=18job/242",
+      "status": "PASS",
+      "impact": "不能使用旧774预留扩容"
+    },
+    {
+      "prerequisite": "用户C2明确授权与逐job许可",
+      "evidence": "历史仅C1授权，后缀授权0",
+      "status": "NOT_RUN",
+      "impact": "技术READY不能发送"
+    },
+    {
+      "prerequisite": "C2比较与材料准入",
+      "evidence": "尚无后缀结果",
+      "status": "NOT_RUN",
+      "impact": "不能提前推进JM2"
+    }
+  ],
+  "allowed_scope": {
+    "points": 5,
+    "initial_jobs": 10,
+    "repeat_jobs": 8,
+    "total_jobs": 18,
+    "initial_send_upper": 130,
+    "repeat_send_upper": 112,
+    "suffix_send_upper": 242
+  },
+  "authorized_sends": 0,
+  "allowed_now": [
+    "同步本QA和现有计划，等待用户明确C2授权；不重复C1基线或采点。"
+  ],
+  "requires_before_sending": [
+    "用户明确授权18job/242以内实际范围；新增收据，不覆盖历史。",
+    "核对实际Linux完整身份和协议，按既有合同保存逐job外部许可，不修改离线冻结门。"
+  ],
+  "prohibited": [
+    "自动执行C2、补基线或补开局点、换任务/降阈值",
+    "扩大至旧预留48后缀/774发送或转移额度",
+    "把重复当独立来源、泛化到未覆盖条件或提前进入JM2"
+  ],
+  "exit": "交付全18job终态/失败/未运行分母、同点参考/替代/重复比较及材料证据等级与经验输入准入后停止。"
+}

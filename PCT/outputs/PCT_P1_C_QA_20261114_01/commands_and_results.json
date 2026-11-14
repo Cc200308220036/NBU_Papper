@@ -1,0 +1,32 @@
+{
+  "commands": [
+    {
+      "command": "python3 PCT/outputs/PCT_P1_C_QA_20261114_01/check_saved.py",
+      "exit_code": 0,
+      "result": "1201文件/83源码匹配；12比较；15新进程只读验证"
+    },
+    {
+      "command": "python3 PCT/outputs/PCT_P1_C_QA_20261114_01/check_negative_saved.py",
+      "exit_code": 0,
+      "result": "13损坏归档被拒绝且文件未变"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "qa_initial_failure": "qa_initial_failure.json：本轮QA脚本起初误要求COMMITTED接续PID出现在业务调用日志，已改为核对原子进程stdout；非被审实现失败",
+  "developer_scripts_review": {
+    "audit_p1c.py": "完整阅读：会写原P1-C包、source snapshots、manifest；本轮不执行",
+    "test_p1c_recovery.py/p1c_worker.py": "完整阅读；只执行worker verify分支，未执行prepare/run/probe/hold-lock或业务测试"
+  },
+  "not_run": [
+    "新订单/候选/LP",
+    "开发6+31测试重跑",
+    "新中断恢复/锁争用",
+    "安装",
+    "模型调用",
+    "训练"
+  ],
+  "credential_reads": 0
+}

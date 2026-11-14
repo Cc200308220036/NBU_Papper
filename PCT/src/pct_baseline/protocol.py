@@ -4,6 +4,9 @@ from .contracts import require, digest
 VERSION = 'pct_b1_config_v1'
 SUFFIX = 'b1_v1'
 PAIRS = {
+    'recovery_execution': ('pct_b1_recovery_execution_v1', 'recovery_execution_b1_v1'),
+    'recovery_journal': ('pct_b1_recovery_journal_v1', 'recovery_journal_b1_v1'),
+    'recovery_header': ('pct_b1_recovery_header_v1', 'recovery_header_b1_v1'),
     'selection_result': ('jev_selection_result_b1_v1', 'selection_result_b1_v1'),
     'checkpoint': ('jev_checkpoint_b1_v1', 'checkpoint_b1_v1'),
     'constructed_execution': ('pct_b1_constructed_execution_v1', 'constructed_execution_b1_v1'),
@@ -76,7 +79,10 @@ def validate_observed(observation):
 # P1-B: only a separately bound, persisted construction route. P1-C resume and
 # official task/matrix admission remain absent; the P1-A flag stays False.
 def admit_execution(*args, **kwargs):
-    from .execution import admit_execution as admit
+    if (kwargs.get('execution') or {}).get('version') == 'pct_b1_recovery_execution_v1':
+        from .recovery import admit_execution as admit
+    else:
+        from .execution import admit_execution as admit
     return admit(*args, **kwargs)
 
 

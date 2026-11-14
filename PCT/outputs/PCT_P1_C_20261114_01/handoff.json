@@ -1,0 +1,25 @@
+{
+  "version": "pct_p1c_handoff_v1",
+  "unit": "P1-C B16-B18",
+  "status": "DEVELOPMENT_PASS_PENDING_INDEPENDENT_QA",
+  "stopped": true,
+  "recipient": "independent quality review window",
+  "report": "PCT/docs/PCT_P1C持久化跨进程恢复与验收_20261114_01.md",
+  "acceptance": "PCT/outputs/PCT_P1_C_20261114_01/acceptance.json",
+  "manifest": "PCT/outputs/PCT_P1_C_20261114_01/delivery_manifest.json",
+  "implemented": [
+    "pct_baseline.recovery.create_job/run_job",
+    "persistence atomic numbered journal and flock",
+    "saved.validate_checkpoint/validate_job",
+    "CLI prepare-recovery/resume-recovery/verify-saved"
+  ],
+  "evidence": "12 durable-phase cross-process comparisons +3 baselines, actual PID/call logs, source/dependency/drift/lock/save/corruption negatives, saved-only guard probes; 6 P1C+31 regression methods pass",
+  "P1B_resume_false": "preserved",
+  "models_weights_features": "NOT_IMPLEMENTED (closed placeholders, no fake acceptance)",
+  "P2_P3": "NOT_STARTED",
+  "official_matrix": "NOT_RUN",
+  "real_model_requests": 0,
+  "training": 0,
+  "subagents": 0,
+  "next_action": "independent QA only, no next-stage authorization inferred"
+}

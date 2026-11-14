@@ -1,0 +1,69 @@
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
+index e455f81b..9da266af 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
+@@ -62,7 +62,7 @@ def run_episode(task, selector, config, *, job_id, method, resume=None, on_check
+             expected_events=expected_events, training_fork=training_fork,
+             memory_snapshot=memory_snapshot, memory_view=memory_view, memory_driver=memory_driver)
+         return _run_episode_v2(task, selector, copy.deepcopy(config), job_id=job_id, method=method,
+-            on_checkpoint=on_checkpoint, hook=hook, event_limit=event_limit)
++            on_checkpoint=on_checkpoint, hook=hook, event_limit=event_limit, resume=resume)
+     if extension_execution is not None:
+         raise JevSelectError('pct_b1_execution_protocol_mismatch')
+     if config.get('version')=='jev_packaging_jm_no_memory_v13' and (training_fork is None or training_fork.get('version')!='jev_jm_v13_execution_v1'):
+@@ -438,7 +438,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+         try:
+             saved_context = (pending['context'] if pending is not None and phase=='DECISION_READY' else
+                 expected_events[len(events)].get('context') if expected_events is not None and len(events)<len(expected_events) else None)
+-            if monitored and pending is not None and phase in (('DECISION_READY','SELECTED','MONITORED') if is_driven(config) or jm_recovery or jm_v13 else ('SELECTED','MONITORED')):
++            if monitored and pending is not None and phase in (('DECISION_READY','SELECTED','MONITORED') if is_driven(config) or jm_recovery or jm_v13 or extension is not None else ('SELECTED','MONITORED')):
+                 from .contracts import CandidateBundle, DecisionContext
+                 from .packaging_runtime import no_policy
+                 req = copy.deepcopy(pending['observation'])
+@@ -448,11 +448,12 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+             else:
+                 req,policy,bundle,context = decision_inputs(state,task,config,job_id,did,timings=times,memory_snapshot=memory_snapshot,
+                     saved_retrieval=saved_context.get('retrieval') if saved_context else None,memory_view=memory_view,memory_driver=memory_driver)
+-            if is_driven(config) and pending is not None and phase=='DECISION_READY':
++            if (is_driven(config) or extension is not None) and pending is not None and phase=='DECISION_READY':
+                 event=copy.deepcopy(pending);times=event['timings']
++                if extension is not None: decision_started=None
+             route = decision_route(bundle)
+             event.update(route=route,observation=req,bundle=bundle.data,context=context.data)
+-            if ((jm_recovery or jm_v13 or extension is not None) and (pending is None or phase=='DECISION_READY')) or is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
++            if ((jm_recovery or jm_v13) and (pending is None or phase=='DECISION_READY')) or (extension is not None and pending is None) or is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
+                 pending=copy.deepcopy(event);phase='DECISION_READY';persist()
+             if hook: hook('decision_ready',event)
+             if route == 'STOP_NO_PHYSICAL_CANDIDATE':
+@@ -493,7 +494,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+                             if hook: hook('after_monitored_checkpoint',checkpoint())
+                         else:
+                             validate_monitor(event['monitor'],state,chosen,event,config)
+-                            event['monitor_result_reuses'] += 1
++                            if extension is None: event['monitor_result_reuses'] += 1
+                         if (jm_first or jm_continuation or jm_recovery or jm_v13) and event['monitor']['status'] not in ('STABLE','UNSTABLE','UNASSESSABLE','ERROR'):
+                             raise JevSelectError('jm_monitor_status_not_authorized')
+                         reason = TERMINATIONS.get(event['monitor']['status'])
+@@ -529,7 +530,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+         business = evaluate_committed_state(state,task['reference_policy'],task['regions'])
+         event['business_after'] = business; event['reference_after'] = business['raw']
+         times['independent_evaluation_s'] = time.perf_counter()-started
+-        times['decision_wall_s'] = time.perf_counter()-decision_started
++        times['decision_wall_s'] = None if decision_started is None else time.perf_counter()-decision_started
+         times['decision_segments_s'] = sum(times.get(k,0.) for k in ('public_parse_s','physical_generation_s','facts_context_s','public_business_s','selection_s','physical_commit_s','independent_evaluation_s','checkpoint_io_s'))
+         decision += 1; append(event)
+     if reason is None and state['end_of_stream'] and not state['pending_items']:
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py
+index 16b2a394..59be1b42 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py
+@@ -224,6 +224,9 @@ def validate_checkpoint(cp, task, config, job_id, method):
+     This only reconstructs private copies. The returned durable state is reused;
+     no committed event is dispatched again by the episode.
+     """
++    if config.get('version') == 'pct_b1_config_v1':
++        from pct_baseline.saved import validate_checkpoint as validate_pct_checkpoint
++        return validate_pct_checkpoint(cp, task, config, job_id, method)
+     from semantic_pallet_planner.o4.buffer.buffer_state import initial,receive
+     from semantic_pallet_planner.o4.extensions.e2.protocol import observation
+     from semantic_pallet_planner.o4.extensions.e2.planning import action_for

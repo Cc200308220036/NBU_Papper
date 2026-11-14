@@ -1,0 +1,6 @@
+{
+  "command": "python3 PCT/outputs/PCT_P1_C_QA_20261114_01/check_saved.py",
+  "exit_code": 1,
+  "cause": "QA脚本误要求COMMITTED恢复进程在业务调用日志中出现；该恢复可能没有任何业务调用，应核对原子进程命令stdout中的PID。被审实现未失败。",
+  "fix": "旧PID核对calls，新PID核对归档子进程退出0的stdout。"
+}

@@ -1,0 +1,72 @@
+{
+  "version": "pct_p1c_quality_review_v1",
+  "date": "2026-11-14",
+  "review_scope": {
+    "unit": "P1-C B16-B18",
+    "kind": "STAGE",
+    "package": "PCT/outputs/PCT_P1_C_20261114_01",
+    "plan": "PCT-plan-v1 §9.2"
+  },
+  "baseline": {
+    "branch": "dev/PCT",
+    "head": "68c80a9b8efd47f378767565865b16a90ae1bdf5",
+    "staged": "EMPTY",
+    "worktree": "P1-C生产改动及未跟踪交付，保留"
+  },
+  "four_layer_acceptance": [
+    {
+      "id": "B16",
+      "status": "PASS",
+      "claim": "12组四阶段新进程恢复与3基线一致",
+      "code": "recovery.run_job/admit_execution；公共episode传resume、复用DECISION_READY/SELECTED/MONITORED及COMMITTED接续",
+      "archive": "attempt_02跨进程比较、原始命令、calls.jsonl及journal",
+      "qa": "独立重算12组角色累计调用数、逻辑事件、终态及装入账目；PID核对日志/原子进程退出收据；正常15包只读validator通过",
+      "boundary": "本轮未新做中断恢复或LP；独立baseline比较排除耗时和其派生封印，单包链摘要仍逐项核对"
+    },
+    {
+      "id": "B17",
+      "status": "PASS",
+      "claim": "锁、漂移、损坏、部分写入和提交不明明确拒绝",
+      "code": "POSIX flock；编号journal原子rename/fsync；check_header当前源码环境核对；commit intent保守停单",
+      "archive": "11类负例、真实锁持有进程、intent补验、source probe及依赖漂移注入",
+      "qa": "静态检查顺序和门控；83当前源码/配置与1201交付摘要匹配；损坏归档拒绝复验，不重做锁/写失败业务",
+      "boundary": "限同job目录、遵守API的POSIX写入者；不是实物设备/断电事务；真实模型权重/网络特征为明确未实现"
+    },
+    {
+      "id": "B18",
+      "status": "PASS",
+      "claim": "verify-saved只读且无业务/LP",
+      "code": "saved.validate_job/validate_checkpoint独立副本重建与原几何账本核验；CLI延迟分派",
+      "archive": "每阶段只读验证、五禁业务探针、额外summary/终态/占位身份负例",
+      "qa": "15份正常包verify-only新进程通过、13份损坏包拒绝；输入文件摘要不变；forbidden_calls为空且未导入SciPy",
+      "boundary": "未执行开发audit_p1c.py封存脚本，不修改原包；只读验证不等于恢复当前身份检查或重求解"
+    }
+  ],
+  "findings": [
+    {
+      "id": "P1C-Q01",
+      "severity": "LOW",
+      "blocking": false,
+      "acceptance": "未来恢复成本与监测统计口径",
+      "location": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py:497；stability/metrics.py:20；attempt_02/stable_MONITORED/episode.json",
+      "fact": "为保持保存事件不可变，extension恢复不再增加monitor_result_reuses；实际从MONITORED恢复后summary.monitor.saved_result_reuses仍0。",
+      "impact": "不能把该字段0解释为未发生恢复复用；跨进程calls日志支持本阶段不重复求解，故不阻断B16—B18或独立P2-A。",
+      "minimum_fix": "在未来独立恢复会话收据中记录复用次数，或显式区分逻辑订单统计与恢复会话统计；不修改已保存事件/监测凭证或重签原包。",
+      "verification": "P3成本分析前，以MONITORED保存后新进程恢复验证会话复用1、实际新求解0，并与原不可变事件分别记账。"
+    }
+  ],
+  "engineering_status": "PASS_P1_C_BOUNDED_POSIX_CONSTRUCTIONS",
+  "evidence_readiness": "SUFFICIENT_FOR_B16_B18_WITH_METRIC_CAVEAT",
+  "research_result": "NOT_RUN_NO_POLICY_BENEFIT",
+  "next_stage_admission": "READY",
+  "authorization_scope": {
+    "QA": "read-only saved checks, new QA artifacts",
+    "current_install": false,
+    "business_runs": false,
+    "models": 0,
+    "training": 0,
+    "P2_A": "not authorized by this review",
+    "git_commit_push": false
+  },
+  "stop": true
+}

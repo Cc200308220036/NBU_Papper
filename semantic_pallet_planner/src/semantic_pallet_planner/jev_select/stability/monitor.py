@@ -224,6 +224,9 @@ def validate_checkpoint(cp, task, config, job_id, method):
     This only reconstructs private copies. The returned durable state is reused;
     no committed event is dispatched again by the episode.
     """
+    if config.get('version') == 'pct_b1_config_v1':
+        from pct_baseline.saved import validate_checkpoint as validate_pct_checkpoint
+        return validate_pct_checkpoint(cp, task, config, job_id, method)
     from semantic_pallet_planner.o4.buffer.buffer_state import initial,receive
     from semantic_pallet_planner.o4.extensions.e2.protocol import observation
     from semantic_pallet_planner.o4.extensions.e2.planning import action_for

@@ -1,0 +1,56 @@
+{
+  "version": "pct_p1c_acceptance_v1",
+  "status": "PASS",
+  "kind": "DEVELOPMENT_PENDING_INDEPENDENT_QA",
+  "tests": {
+    "P1C_main_methods": 4,
+    "P1C_supplemental_methods": 2,
+    "P1C_unique_methods": 6,
+    "P1A_regression": 20,
+    "P1B_regression": 11,
+    "skips": 0
+  },
+  "matrix": [
+    {
+      "id": "B16",
+      "status": "PASS",
+      "implementation": "independent recovery permit; original public loop; saved context/selection/monitor reuse and COMMITTED skip",
+      "local_recheck": "12 cross-process combinations: real completion, real instability, control stub x four durable phases; 3 baselines; final state/logical events/loading/termination and cumulative call counts match",
+      "archive": [
+        "attempt_02/cross_process_comparisons.json",
+        "attempt_02.log",
+        "attempt_02/command_*.json",
+        "attempt_02/*/calls.jsonl"
+      ],
+      "boundary": "event comparison excludes recorded timing fields and their derived result/credential digests across independent baseline runs; each saved journal/monitor payload itself remains byte unchanged on resume"
+    },
+    {
+      "id": "B17",
+      "status": "PASS",
+      "implementation": "file+directory fsync and atomic numbered journal, stable-inode flock, frozen identity checks and conservative commit-intent stop",
+      "local_recheck": "task/config/strategy/candidate/monitor tampering, actual source-byte drift, injected current dependency drift, lock contention, sequence gaps, bad JSON, rename failure/pending file and unknown commit all rejected; known COMMITTED intent cleanup causes no business call",
+      "archive": [
+        "attempt_02/negative_results.json",
+        "attempt_02/lock_holder.json",
+        "intent_supplement.log",
+        "intent_supplement/"
+      ],
+      "boundary": "same archive-directory single-writer API, POSIX; real model weight/network-feature restoration NOT_IMPLEMENTED"
+    },
+    {
+      "id": "B18",
+      "status": "PASS",
+      "implementation": "saved validator and CLI; copied-state geometry/ledger reconstruction, no policy or numerical dispatch",
+      "local_recheck": "fresh-process verification at all tested stages and terminals is read-only; positive checks do not import SciPy; selector/transport/candidate/order/LP guard probes blocked; summary/final-state/termination/extra fields/model placeholder corruption rejected",
+      "archive": [
+        "attempt_02/command_*.json",
+        "saved_supplement/saved_ledger_negatives.json",
+        "final_audit/saved_cli.json"
+      ],
+      "boundary": "checks saved facts, not a new solver certification; current-source drift enforced by recovery, offline saved-only validation deliberately separate"
+    }
+  ],
+  "P2_P3": "NOT_RUN_NOT_ADMITTED",
+  "models_training": "NOT_RUN",
+  "independent_QA": "PENDING"
+}

@@ -1,0 +1,1648 @@
+{
+  "version": "pct_p1c_commands_v1",
+  "actual_test_invocations": [
+    {
+      "command": "PCT_P1C_EVIDENCE_DIR=PCT/outputs/PCT_P1_C_20261114_01/attempt_01 PYTHONPATH=PCT/tests:PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p1c_recovery.py -v",
+      "exit_code": 1,
+      "raw_log": "attempt_01.log",
+      "note": "actual main methods loaded at invocation:4; later two supplemental methods separately executed"
+    },
+    {
+      "command": "PCT_P1C_EVIDENCE_DIR=PCT/outputs/PCT_P1_C_20261114_01/attempt_02 PYTHONPATH=PCT/tests:PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p1c_recovery.py -v",
+      "exit_code": 0,
+      "raw_log": "attempt_02.log",
+      "note": "actual main methods loaded at invocation:4; later two supplemental methods separately executed"
+    },
+    {
+      "command": "PCT_P1C_EVIDENCE_DIR=<new supplemental directory> PCT_P1C_REFERENCE_JOB=PCT/outputs/PCT_P1_C_20261114_01/attempt_02/validator PYTHONPATH=PCT/tests:PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -m unittest test_p1c_recovery.RecoveryTests.test_additional_saved_ledger_and_terminal_negatives -v",
+      "exit_code": 0,
+      "raw_log": "saved_supplement.log"
+    },
+    {
+      "command": "PCT_P1C_EVIDENCE_DIR=<new supplemental directory> PCT_P1C_REFERENCE_JOB=PCT/outputs/PCT_P1_C_20261114_01/attempt_02/validator PYTHONPATH=PCT/tests:PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -m unittest test_p1c_recovery.RecoveryTests.test_committed_intent_cleanup_never_recommits -v",
+      "exit_code": 0,
+      "raw_log": "intent_supplement.log"
+    },
+    {
+      "command": "PYTHONPATH=PCT/tests:PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_b1_*.py -v",
+      "exit_code": 0,
+      "raw_log": "p1a_regression.log"
+    },
+    {
+      "command": "PYTHONPATH=PCT/tests:PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p1b_execution.py -v",
+      "exit_code": 0,
+      "raw_log": "p1b_regression.log"
+    }
+  ],
+  "raw_subprocesses": [
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/negative_parent --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_000.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/negative_parent --cut DECISION_READY",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_001.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/negative_task ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_002.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/negative_config ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_003.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/negative_candidate ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_004.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/negative_strategy ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_005.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/negative_sequence ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_006.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/negative_json ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_007.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/negative_monitor ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_008.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/negative_monitor --cut MONITORED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_009.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/negative_monitor ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_010.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/negative_partial ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_011.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/negative_parent --dependency-drift",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_012.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/baseline_stable --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_013.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/baseline_stable ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_014.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/baseline_stable ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_015.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_DECISION_READY --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_016.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_DECISION_READY --cut DECISION_READY",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_017.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_018.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_019.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_020.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_021.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_SELECTED --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_022.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_SELECTED --cut SELECTED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_023.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_024.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_025.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_026.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_027.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_MONITORED --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_028.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_MONITORED --cut MONITORED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_029.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_030.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_031.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_032.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_033.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_COMMITTED --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_034.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_COMMITTED --cut COMMITTED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_035.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_036.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_037.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_038.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_039.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/baseline_unstable --scenario unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_040.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/baseline_unstable ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_041.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/baseline_unstable ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_042.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_DECISION_READY --scenario unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_043.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_DECISION_READY --cut DECISION_READY",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_044.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_045.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_DECISION_READY ",
+      "exit_code": 1,
+      "expected_exit": 0,
+      "result": "FAILED_FIXED_IN_NEW_RUN",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_046.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_SELECTED --scenario unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_047.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_SELECTED --cut SELECTED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_048.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_049.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_050.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_051.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_052.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_MONITORED --scenario unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_053.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_MONITORED --cut MONITORED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_054.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_055.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_056.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_057.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_058.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_COMMITTED --scenario unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_059.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_COMMITTED --cut COMMITTED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_060.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_061.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_062.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_063.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_064.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/baseline_stub_unstable --scenario stub_unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_065.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/baseline_stub_unstable ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_066.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/baseline_stub_unstable ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_067.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_DECISION_READY --scenario stub_unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_068.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_DECISION_READY --cut DECISION_READY",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_069.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_070.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_DECISION_READY ",
+      "exit_code": 1,
+      "expected_exit": 0,
+      "result": "FAILED_FIXED_IN_NEW_RUN",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_071.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_SELECTED --scenario stub_unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_072.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_SELECTED --cut SELECTED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_073.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_074.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_075.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_076.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_077.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_MONITORED --scenario stub_unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_078.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_MONITORED --cut MONITORED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_079.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_080.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_081.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_082.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_083.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_COMMITTED --scenario stub_unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_084.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_COMMITTED --cut COMMITTED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_085.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_086.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_087.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_088.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/stub_unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_089.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/lock --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_090.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/lock ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_091.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/lock ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_092.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/lock ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_093.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/validator --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_094.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/validator ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_095.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/validator ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_096.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py probe --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/validator --probe selector",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_097.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py probe --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/validator --probe transport",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_098.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py probe --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/validator --probe candidate",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_099.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py probe --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/validator --probe order",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_100.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py probe --root PCT/outputs/PCT_P1_C_20261114_01/attempt_01/validator --probe lp",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_01/command_101.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/negative_parent --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_000.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/negative_parent --cut DECISION_READY",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_001.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/negative_task ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_002.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/negative_config ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_003.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/negative_candidate ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_004.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/negative_strategy ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_005.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/negative_sequence ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_006.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/negative_json ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_007.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/negative_monitor ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_008.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/negative_monitor --cut MONITORED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_009.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/negative_monitor ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_010.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/negative_partial ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_011.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/negative_parent --dependency-drift",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_012.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/source_drift --scenario stable --extra-source-file PCT/outputs/PCT_P1_C_20261114_01/attempt_02/frozen_probe.py",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_013.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/source_drift --cut DECISION_READY",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_014.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/source_drift ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_015.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unknown_commit --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_016.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unknown_commit --cut MONITORED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_017.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unknown_commit ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_018.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/baseline_stable --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_019.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/baseline_stable ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_020.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/baseline_stable ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_021.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_DECISION_READY --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_022.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_DECISION_READY --cut DECISION_READY",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_023.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_024.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_025.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_026.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_027.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_SELECTED --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_028.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_SELECTED --cut SELECTED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_029.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_030.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_031.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_032.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_033.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_MONITORED --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_034.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_MONITORED --cut MONITORED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_035.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_036.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_037.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_038.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_039.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_COMMITTED --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_040.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_COMMITTED --cut COMMITTED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_041.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_042.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_043.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_044.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_045.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/baseline_unstable --scenario unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_046.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/baseline_unstable ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_047.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/baseline_unstable ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_048.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_DECISION_READY --scenario unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_049.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_DECISION_READY --cut DECISION_READY",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_050.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_051.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_052.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_053.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_054.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_SELECTED --scenario unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_055.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_SELECTED --cut SELECTED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_056.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_057.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_058.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_059.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_060.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_MONITORED --scenario unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_061.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_MONITORED --cut MONITORED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_062.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_063.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_064.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_065.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_066.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_COMMITTED --scenario unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_067.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_COMMITTED --cut COMMITTED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_068.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_069.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_070.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_071.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_072.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/baseline_stub_unstable --scenario stub_unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_073.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/baseline_stub_unstable ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_074.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/baseline_stub_unstable ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_075.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_DECISION_READY --scenario stub_unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_076.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_DECISION_READY --cut DECISION_READY",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_077.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_078.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_079.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_080.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_DECISION_READY ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_081.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_SELECTED --scenario stub_unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_082.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_SELECTED --cut SELECTED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_083.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_084.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_085.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_086.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_SELECTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_087.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_MONITORED --scenario stub_unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_088.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_MONITORED --cut MONITORED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_089.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_090.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_091.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_092.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_MONITORED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_093.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_COMMITTED --scenario stub_unstable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_094.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_COMMITTED --cut COMMITTED",
+      "exit_code": 75,
+      "expected_exit": 75,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_095.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_096.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_097.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_098.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/stub_unstable_COMMITTED ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_099.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/lock --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_100.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/lock ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_101.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/lock ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_102.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/lock ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_103.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py prepare --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/validator --scenario stable",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_104.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/validator ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_105.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/validator ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_106.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py probe --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/validator --probe selector",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_107.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py probe --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/validator --probe transport",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_108.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py probe --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/validator --probe candidate",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_109.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py probe --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/validator --probe order",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_110.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py probe --root PCT/outputs/PCT_P1_C_20261114_01/attempt_02/validator --probe lp",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/attempt_02/command_111.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/saved_supplement/saved_summary ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/saved_supplement/command_000.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/saved_supplement/saved_episode_state ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/saved_supplement/command_001.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/saved_supplement/saved_terminal_reason ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/saved_supplement/command_002.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/saved_supplement/saved_model_placeholder ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/saved_supplement/command_003.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/saved_supplement/saved_unknown_field ",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/saved_supplement/command_004.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/intent_supplement/known_commit_intent ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/intent_supplement/command_000.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py run --root PCT/outputs/PCT_P1_C_20261114_01/intent_supplement/known_commit_intent ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/intent_supplement/command_001.json"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/tests/p1c_worker.py verify --root PCT/outputs/PCT_P1_C_20261114_01/intent_supplement/known_commit_intent ",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "EXPECTED",
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/intent_supplement/command_002.json"
+    }
+  ],
+  "final_audit_commands": [
+    {
+      "command": "git branch --show-current",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/final_audit/branch.json"
+    },
+    {
+      "command": "git rev-parse HEAD",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/final_audit/head.json"
+    },
+    {
+      "command": "git diff --cached --stat",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/final_audit/staged.json"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/final_audit/diff_check.json"
+    },
+    {
+      "command": "\"$NBU_PY\" -m pip check",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/final_audit/pip_check.json"
+    },
+    {
+      "command": "\"$NBU_PY\" -m pip freeze --all",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/final_audit/pip_freeze.json"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -m pct_baseline.cli verify-saved --run PCT/outputs/PCT_P1_C_20261114_01/attempt_02/validator",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_C_20261114_01/final_audit/saved_cli.json"
+    }
+  ],
+  "preparation": [
+    {
+      "command": "python3 PCT/scripts/build_schemas_p1c.py",
+      "exit_code": 0,
+      "scope": "initial new recovery permit/header schemas; P1C journal/environment Schema completed in stage, old resource bytes unchanged"
+    },
+    {
+      "command": "python3 - <temporary own Schema edit helper>",
+      "exit_code": 1,
+      "observed_diagnostic": "NameError: name '__file__' is not defined",
+      "fix": "explicit trusted generator __file__ supplied; no business dispatch or old schema mutation"
+    }
+  ],
+  "no_installation": true,
+  "real_model_requests": 0,
+  "training": 0,
+  "cost_scope": "raw logs include initial failures/repeats; final12 combinations are not the full development cost denominator",
+  "audit_script": "PCT/scripts/audit_p1c.py: byte/metadata/saved-only checks, not business tests"
+}

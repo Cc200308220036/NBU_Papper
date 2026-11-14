@@ -1,0 +1,126 @@
+{
+  "interpreter": "/Library/Developer/CommandLineTools/usr/bin/python3",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "exit_code": 0,
+      "stdout": "dev/PCT\n",
+      "scope": "read-only Git"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "exit_code": 0,
+      "stdout": "?? PCT/\n",
+      "scope": "read-only Git"
+    },
+    {
+      "argv": [
+        "git",
+        "log",
+        "-5",
+        "--oneline"
+      ],
+      "exit_code": 0,
+      "stdout": "2e4edb32 Jev—JM1—C2可视化页面展示\n3fbb0169 完成JM1-C2独立质检并交接JM2-A1特征工程技术准入\n8e617b4d 完成JM1-C2既定18后缀重复与全比较并交接质检\nb986eb4b 完成JM1-C1真实基线与分叉计划独立质检并交接限定C2\n585639b6 JM1-C1真实六基线与具体分叉计划物化验收\n",
+      "scope": "read-only Git"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "2e4edb3215100f862a9e5c46fc03324ed1f41cb8\n",
+      "scope": "read-only Git"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "Online-3D-BPP-PCT",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "5e7b4238b18310af4529e0f85157d17de605850c\n",
+      "scope": "read-only Git"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "Online-3D-BPP-PCT",
+        "status",
+        "--short"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "scope": "read-only Git"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "Online-3D-BPP-PCT",
+        "log",
+        "-5",
+        "--oneline"
+      ],
+      "exit_code": 0,
+      "stdout": "5e7b423 Add MIT License to the project\ncbda220 Update README.md\n5e088f2 Update givenData.py\n0caf883 Update storage.py\na89afbf Update evaluation.py and fix a eval bug\n",
+      "scope": "read-only Git"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--stage",
+        "Online-3D-BPP-PCT"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "scope": "read-only Git"
+    },
+    {
+      "argv": [
+        "python3",
+        "PCT/outputs/PCT_P0_CONTRACT_20261114_01/audit.py"
+      ],
+      "exit_code": 0,
+      "scope": "AST/JSON/SHA256/package metadata only",
+      "results": [
+        "identity.json",
+        "data_audit.json",
+        "environment_evidence.json"
+      ]
+    },
+    {
+      "argv": [
+        "python3",
+        "PCT/outputs/PCT_P0_CONTRACT_20261114_01/verify.py"
+      ],
+      "exit_code": 0,
+      "scope": "JSON/links/SHA256/field dimensions/matrix/Git scope",
+      "stdout": "PASS: delivery, source and task digests, links, JSON, feature dimensions, matrix, Git scope"
+    },
+    {
+      "argv": [
+        "python3",
+        "PCT/outputs/PCT_P0_CONTRACT_20261114_01/audit.py"
+      ],
+      "exit_code": 1,
+      "scope": "initial overly narrow AST assertion",
+      "stdout": "AssertionError before recording two AST findings; assertion corrected and collection rerun"
+    }
+  ],
+  "credential_reads": 0
+}

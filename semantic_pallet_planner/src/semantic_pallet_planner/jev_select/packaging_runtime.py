@@ -4,7 +4,7 @@ No new physical solver or candidate generator. Local smoke selectors are test
 substitutes only, with no remote transport or memory loading route.
 """
 from __future__ import annotations
-from .packaging_versions import EXACT_CONTEXT, EXACT_VERSION
+from .packaging_versions import EXACT_CONTEXT, EXACT_VERSION, resolve_extension
 import copy
 import math
 import random
@@ -26,6 +26,9 @@ METHODS = ('local_geometry_test_double','local_first_test_double')
 
 
 def is_packaging(config):
+    if config.get('version') == 'pct_b1_config_v1':
+        resolve_extension(config['version'])
+        return True
     return config.get('version') in ('jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
 
 
@@ -157,6 +160,13 @@ def length_unit(values,source,target):
 
 
 def public_facts(config,observation,bundle,policy):
+    extension = resolve_extension(config.get('version'))
+    if extension is not None:
+        extension.validate_observed(observation)
+    return _public_facts(config, observation, bundle, policy, capacity=1 if extension else 3)
+
+
+def _public_facts(config,observation,bundle,policy,*,capacity):
     from semantic_pallet_planner.o4.extensions.e2.protocol import BINDINGS,validate_observation
     from semantic_pallet_planner.evaluation.state import apply_candidate
     from semantic_pallet_planner.planner.scoring import geometry_score
@@ -165,7 +175,7 @@ def public_facts(config,observation,bundle,policy):
     validate_observation(observation)
     require(policy.data==no_policy(observation).data,'runtime_policy')
     require(bundle.data==PublicBusinessGuard().filter(observation,policy,bundle,config).data,'runtime_candidate_filter')
-    require(observation['buffer_context']['capacity']==3,'runtime_buffer_capacity')
+    require(observation['buffer_context']['capacity']==capacity,'runtime_buffer_capacity')
     value=validate_bundle(observation,bundle)
     objects=observation['placed_objects']+observation['available_objects']
     aliases={o['object_id']:f'B{i:03d}' for i,o in enumerate(objects,1)}
@@ -191,7 +201,7 @@ def public_facts(config,observation,bundle,policy):
             'support_model':'70% area plus local center in actual contact rectangle; area-proportional load sharing'},
         'placed_objects':[public_object(o,True) for o in observation['placed_objects']],
         'available_objects':[public_object(o,False) for o in observation['available_objects']],
-        'buffer':{'capacity':3,'end_of_stream':buffer['end_of_stream'],
+        'buffer':{'capacity':capacity,'end_of_stream':buffer['end_of_stream'],
             'pending':[{**p,'object_id':aliases[p['object_id']]} for p in buffer['pending']]},
         'objective':OBJECTIVE,'memories':[]}
     ordered=sorted(value['selectable_candidates'],key=lambda c:(c['pose']['x_mm'],c['pose']['y_mm'],
@@ -251,7 +261,7 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
         validate_receipt(retrieval_receipt,memory_view,config,state,criteria)
         memory_fields={'memory_view':mv,'retrieval_receipt':retrieval_receipt}
     route=decision_route(bundle)
-    body=None if route!='CHOICE_REQUIRED' else {'model':config['model'],'state':state,
+    body=None if route!='CHOICE_REQUIRED' or (config.get('version')=='pct_b1_config_v1' and config['selector']!='jev_none_b1') else {'model':config['model'],'state':state,
         'questions':{'next_action':{'type':'choice','instructions':QUESTION,'criteria':criteria}}}
     binding={**{k:observation[k] for k in BINDINGS},'event_index':buffer['event_index'],
         'physical_digest':value['physical_digest'],'selectable_digest':value['selectable_digest'],
@@ -301,7 +311,9 @@ def validate_runtime_context(context,observation=None,bundle=None,config=None):
         ('criteria_digest','criteria'),('request_body_digest','request_body')]:
         require(binding[field]==digest(value[key]),'runtime_context_digest')
     body=value['request_body'];route=value['route']
-    if route=='CHOICE_REQUIRED':
+    if route=='CHOICE_REQUIRED' and value['version']=='jev_decision_context_b1_v1' and body is None:
+        require(len(labels)>=2 and config is not None and config['selector']!='jev_none_b1','runtime_local_request_binding')
+    elif route=='CHOICE_REQUIRED':
         require(len(labels)>=2 and body is not None and body['state']==value['model_state'] and
             body['model']==(config['model'] if config else body['model']) and body['questions']=={'next_action':{'type':'choice','instructions':QUESTION,'criteria':value['criteria']}},'runtime_request_binding')
     else:require(body is None and ((route=='SINGLETON_BYPASS' and len(labels)==1) or

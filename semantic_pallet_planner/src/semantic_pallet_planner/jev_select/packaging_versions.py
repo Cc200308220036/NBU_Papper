@@ -39,3 +39,21 @@ JM_TRAINING_PLAN_PROTOCOLS={JM_TRAINING_PLAN_VERSION:'packaging_jev_training_pla
 # B2 final offline freeze/admission receipt, separate from the v1 preparation.
 JM_TRAINING_FREEZE_VERSION='jev_jm_training_freeze_v1'
 JM_TRAINING_FREEZE_PROTOCOLS={JM_TRAINING_FREEZE_VERSION:'packaging_jev_training_freeze'}
+
+# P1-A exact, lazy registration. No order/monitor/recovery admission.
+PCT_B1_VERSIONS = frozenset({'pct_b1_config_v1', 'pct_b1_task_v1',
+    'pct_b1_execution_spec_v1', 'jev_candidate_bundle_b1_v1', 'jev_decision_context_b1_v1'})
+PCT_B1_SCHEMAS = frozenset({'config_b1_v1', 'task_b1_v1', 'execution_spec_b1_v1',
+    'candidate_bundle_b1_v1', 'decision_context_b1_v1'})
+
+
+def resolve_extension(identifier):
+    if not isinstance(identifier, str) or identifier not in PCT_B1_VERSIONS | PCT_B1_SCHEMAS:
+        return None
+    from importlib import import_module
+    try:
+        return import_module('pct_baseline.protocol')
+    except ModuleNotFoundError as exc:
+        if exc.name == 'pct_baseline':
+            raise ModuleNotFoundError('PCT_B1_EXTENSION_MISSING: add PCT/src to the frozen source path', name='pct_baseline') from exc
+        raise

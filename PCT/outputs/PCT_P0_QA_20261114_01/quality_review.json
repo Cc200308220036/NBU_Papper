@@ -1,0 +1,109 @@
+{
+  "version": "pct_joint_quality_review_v1",
+  "date": "2026-11-14",
+  "review_scope": {
+    "kind": "JOINT",
+    "plan": "PCT-plan-v1",
+    "stage": "P0",
+    "package": "PCT/outputs/PCT_P0_CONTRACT_20261114_01"
+  },
+  "baseline": {
+    "branch": "dev/PCT",
+    "head": "2e4edb3215100f862a9e5c46fc03324ed1f41cb8",
+    "initial_status": "?? PCT/",
+    "staged": "EMPTY",
+    "upstream": "NONE"
+  },
+  "acceptance_matrix": [
+    {
+      "id": "B00",
+      "status": "PASS",
+      "claim": "身份与环境调查通过，运行环境未知",
+      "code": "77 项来源摘要；contracts.py:54 的同引号 f-string；pyproject Python>=3.11",
+      "archive": "identity/environment_evidence/environment_review",
+      "recheck": "verify.py exit 0；独立 77 摘要匹配、37 个第三方 AST；当前 3.9.6 下两处预期语法错误",
+      "boundary": "未安装或导入运行依赖；解释器搜索覆盖仅归档声明"
+    },
+    {
+      "id": "B01",
+      "status": "PASS",
+      "claim": "静态调用与分派设计完整",
+      "code": "config/contracts/candidates/context/selector/episode/monitor/execution 逐路径阅读",
+      "archive": "p0_contract.json call_graph/interface_existing/interface_proposed",
+      "recheck": "静态核对；不是新协议运行测试",
+      "boundary": "新接口均待实现，transport/指标由 PCT 包承接，P1-B/C 仍需验收"
+    },
+    {
+      "id": "B02",
+      "status": "PASS",
+      "claim": "九文件拟议改动未应用",
+      "code": "六个 P1-A 路由文件、selector、episode、monitor；execution 使用 suffix 比较可复用",
+      "archive": "external_changes.json；handoff.external_review",
+      "recheck": "清单路径存在；无已跟踪主工程变更；未应用补丁",
+      "boundary": "P1-A candidates 补丁是否可省需保留物理池不变量；目录外实施授权尚无"
+    },
+    {
+      "id": "B03",
+      "status": "PASS",
+      "claim": "两版特征、方法、数据和固定 P3 已冻结",
+      "code": "连续 bin3D:96–99/139、tools.observation_decode_leaf_node、attention_model/model/train_tools；public_facts 载荷来源",
+      "archive": "p0_contract.json；data_audit.json",
+      "recheck": "22任务428箱，两个父身份重算；72个登记文件库存相等；verify 特征维度和预算算术通过",
+      "boundary": "P0 仅规格验收；P0-Q01/Q02 在相应后续阶段落实；无研究收益证据"
+    }
+  ],
+  "plan_findings": [
+    {
+      "id": "P0-Q01",
+      "severity": "LOW",
+      "blocking": false,
+      "source": "PLAN",
+      "acceptance": "B03",
+      "location": "方案 §8.1；p0_contract.json training.returns/loss",
+      "difference": "方案公式使用固定 n，critic 公式未显式 detach；P0 补充实际剩余长度和 detach(G)，两者须有明确消费优先级。",
+      "impact": "影响未来训练实现；不阻断 P1-A 数据与上下文。",
+      "minimum_fix": "后续增补版本化勘误，明确 P0 训练补充覆盖旧公式，给末段、terminal/truncated 数值例；保留原件。",
+      "verification": "P3 前完成手算回报和梯度边界测试。"
+    },
+    {
+      "id": "P0-Q02",
+      "severity": "LOW",
+      "blocking": false,
+      "source": "P0_CONTRACT",
+      "acceptance": "B03",
+      "location": "p0_contract.json model.differences/encoding.mask；Online-3D-BPP-PCT/attention_model.py:201–219",
+      "difference": "合同称 graph、glimpse、logit 三处严格 mask；上游 _one_to_many_logits 直接用 query 与 glimpse_K 点积后截取叶 logits，未执行独立 glimpse softmax/value 聚合。",
+      "impact": "术语可能诱导增加新 attention 路径，使 all-valid 一致性失效；尚无适配代码，未证实实现错误。",
+      "minimum_fix": "P2-A 前说明保持原点积指针路径，按实际图 attention/池化/叶 logits 分别定义屏蔽；若新增 glimpse 运算须另记算法变更。",
+      "verification": "同权重 all-valid 概率、value、参数梯度及 padded 反例。"
+    }
+  ],
+  "implementation_findings": [],
+  "evidence_gaps": [
+    {
+      "id": "P0-Q03",
+      "severity": "LOW",
+      "blocking": false,
+      "source": "EVIDENCE",
+      "acceptance": "B00",
+      "location": "environment_review.json interpreter_search",
+      "difference": "限定解释器搜索有文字结论但无逐条搜索命令/原始输出；当前 python3 元数据有归档。",
+      "impact": "不能独立复核搜索覆盖；不影响源码语法障碍及当前解释器缺包事实。",
+      "minimum_fix": "环境准备时保存实际解释器定位命令、版本、AST/import 结果与依赖锁；不要求整机搜索。",
+      "verification": "在获得环境准备授权后限定检查。"
+    }
+  ],
+  "engineering_status": "P0_DESIGN_PASS_RUNTIME_NOT_IMPLEMENTED",
+  "evidence_readiness": "SUFFICIENT_FOR_P0_DESIGN_WITH_ENVIRONMENT_SEARCH_LIMIT",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "CONDITIONAL",
+  "authorization_scope": {
+    "qa_only": true,
+    "external_edits": false,
+    "install": false,
+    "training": false,
+    "requests": 0,
+    "git_commit_push": false
+  },
+  "stopped": true
+}

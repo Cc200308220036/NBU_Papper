@@ -1,0 +1,57 @@
+{
+  "version": "pct_qa_admission_v1",
+  "next_stage": "P1-A",
+  "status": "CONDITIONAL",
+  "scope": "仅 PCT 内合同/Schema/数据派生与公开上下文实现、未应用补丁；整体验收需环境与外部授权",
+  "prerequisites": [
+    {
+      "requirement": "可审查的新协议/数据/公开字段规格",
+      "evidence": "p0_contract schemas/data/registry 与本轮源码核对",
+      "status": "SATISFIED",
+      "impact": "允许限定目录内实现"
+    },
+    {
+      "requirement": "两类父数据身份与原件可用",
+      "evidence": "saved_checks.json，16+6任务、264+164箱",
+      "status": "SATISFIED",
+      "impact": "不等于 B10 派生已通过"
+    },
+    {
+      "requirement": "六文件外部修改范围授权",
+      "evidence": "README §1 与 external_changes 的 P1-A 六条；本轮只授权QA",
+      "status": "MISSING_AUTHORIZATION",
+      "impact": "不能应用主工程补丁；技术设计充分与授权分开"
+    },
+    {
+      "requirement": "公共模块可解析且所需依赖可导入",
+      "evidence": "Python3.9.6；contracts.py PEP701语法；缺 jsonschema/numpy 等",
+      "status": "NOT_READY_FOR_INTEGRATION_TEST",
+      "impact": "完整 B10–B12 集成关闭前需 3.12+ 与锁定必要依赖；纯标准库材料工作不必等待"
+    },
+    {
+      "requirement": "保护旧协议与缺扩展边界",
+      "evidence": "external_changes 的延迟分派及回归设计",
+      "status": "DESIGN_READY_BEHAVIOR_NOT_RUN",
+      "impact": "P1-A 验收工作，不能提前算已满足"
+    },
+    {
+      "requirement": "监测、恢复、网络、训练、真实请求",
+      "evidence": "阶段依赖表",
+      "status": "NOT_REQUIRED_FOR_P1_A",
+      "impact": "不得作为P0失败；不授权提前执行"
+    }
+  ],
+  "allowed": "用户指定后可完成目录内限定工作；当前QA不实施",
+  "forbidden": [
+    "未获授权修改PCT外文件",
+    "未获环境准备授权安装依赖",
+    "订单/候选生成/LP/模型请求/训练",
+    "提前关闭完整B10–B12"
+  ],
+  "release_conditions": [
+    "用户明确授权P1-A及六文件范围（candidates可证明不需改时省略）",
+    "准备并记录能解析实际公共源码的解释器及所需依赖",
+    "完成B10–B12与旧协议回归"
+  ],
+  "real_calls_authorized": 0
+}

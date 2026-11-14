@@ -1,0 +1,62 @@
+{
+  "actual": {
+    "executable": "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "python": "3.9.6",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "machine": "arm64",
+    "executable_sha256": "de598544fe9820c083bc3e8dbbf0f658dbcfe08f71c3280e3bdb96c694179b19",
+    "packages": {
+      "torch": "NOT_FOUND_IN_THIS_INTERPRETER",
+      "gym": "NOT_FOUND_IN_THIS_INTERPRETER",
+      "gymnasium": "NOT_FOUND_IN_THIS_INTERPRETER",
+      "numpy": "NOT_FOUND_IN_THIS_INTERPRETER",
+      "scipy": "NOT_FOUND_IN_THIS_INTERPRETER",
+      "jsonschema": "NOT_FOUND_IN_THIS_INTERPRETER",
+      "pytest": "NOT_FOUND_IN_THIS_INTERPRETER",
+      "matplotlib": "NOT_FOUND_IN_THIS_INTERPRETER",
+      "Pillow": "NOT_FOUND_IN_THIS_INTERPRETER",
+      "PyYAML": "NOT_FOUND_IN_THIS_INTERPRETER",
+      "setuptools": "58.0.4",
+      "semantic-pallet-planner": "NOT_FOUND_IN_THIS_INTERPRETER"
+    },
+    "historical_identity": {
+      "dependencies": {
+        "jsonschema": "4.23.0",
+        "numpy": "2.1.3",
+        "scipy": "1.15.3"
+      },
+      "python": "3.13.5",
+      "source": "ada483de66bbe2d045a7e3ff4e1f13f5bb56d8c5fda45cc940b3d191950d6346"
+    }
+  },
+  "status": "METADATA_CHECKED_RUNTIME_NOT_VERIFIED",
+  "interpreter_search": {
+    "result": "仅 PATH 的 python3 被定位；常见 Homebrew、Frameworks、用户缓存、桌面与 tmp 的限定深度搜索未发现候选环境",
+    "scope": "不据此推断整机没有其他解释器；历史 Linux 环境仅档案"
+  },
+  "planner": {
+    "requirements": "pyproject: Python >=3.11, numpy matplotlib Pillow jsonschema PyYAML; optional stability numpy==2.1.3 scipy==1.15.3; pytest>=8 for tests",
+    "proposed": "CPython 3.13.x CPU 首选，3.12+ 须实测；候选锁定 numpy 2.1.3, scipy 1.15.3, jsonschema 4.23.0 与归档对照；其余版本通过锁文件固定"
+  },
+  "upstream": {
+    "source": "fixed README + LICENSE",
+    "recommendation": "Ubuntu 16.04 Python 3.7 gym 0.13 torch 1.10 (README historical suggestion)",
+    "risk": "旧 Gym reset/step 形状、注册与 NumPy 兼容、旧 Torch wheel 架构；保持独立参考进程与环境；先测纯网络，不引入 Gym 到适配核心",
+    "weights": "README 外链可用性/权重许可和 tensor 键 UNKNOWN；源码 MIT；PCT 副本保留声明和补丁；随机权重为 P3，正式从头训练。外部权重先验证独立许可、来源、SHA256、安全张量读取和 strict load"
+  },
+  "hardware": {
+    "cpu_arch": "arm64",
+    "cpu_torch_runtime": "UNKNOWN",
+    "cuda": "UNKNOWN",
+    "mps": "UNKNOWN"
+  },
+  "proposed_steps": [
+    "后续获准后选择 3.12+ 解释器，在 PCT 下建独立 venv",
+    "按目标平台锁精确版本、wheel/hash 与 Torch CPU 发行物；安装 planner stability/test extras、PCT editable；或固定双源码路径与资源清单",
+    "记录解释器二进制摘要、版本、ABI、架构、包版本及锁文件；独立跑 AST/导入检查和新旧协议资源解析",
+    "P2 另建历史参考环境或经登记的兼容副本，记录 Torch/Gym 与平台；权重下载另行按阶段执行",
+    "验证 CPU 后按实际设备检查 CUDA/MPS 可用性，再冻 dtype、线程、确定性与版本"
+  ],
+  "resume": "路径移动允许仅在解释器版本/二进制摘要、平台ABI与冻结依赖、设备、线程及确定性一致时；历史运行按自身旧身份规则",
+  "install": "NOT_RUN"
+}

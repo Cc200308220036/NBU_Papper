@@ -1,0 +1,164 @@
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py
+index e33af55f..f3e6ad0f 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py
+@@ -41,6 +41,10 @@ def business_evaluation_mode(config: dict) -> bool:
+ 
+ def protocol_suffix(config: dict) -> str:
+     validate_schema("config", config)
++    from .packaging_versions import resolve_extension
++    extension = resolve_extension(config.get('version'))
++    if extension is not None:
++        return extension.SUFFIX
+     from .packaging_runtime import is_packaging
+     from .packaging_versions import EXACT_VERSION
+     return "v13" if config.get("version")=="jev_packaging_jm_no_memory_v13" else "v12" if config.get("version")==EXACT_VERSION else "v11" if config.get("version")=="jev_packaging_synthetic_v11" else "v10" if config.get("version")=="jev_packaging_evaluation_v10" else "v9" if config.get("version") == "jev_packaging_memory_orders_v9" else "v8" if config.get("version") == "jev_packaging_contrast_v8" else "v7" if config.get("version") == "jev_packaging_memory_v7" else "v6" if config.get("version") == "jev_packaging_remote_v6" else "v5" if config.get("version") == "jev_packaging_monitored_v5" else "v4" if is_packaging(config) else "v3" if is_v3(config) else "v2" if is_v2(config) else "v1"
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py
+index a598389f..7383520b 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py
+@@ -244,7 +244,7 @@ class ContextBuilder:
+ def validate_context(context: DecisionContext, observation: dict | None = None,
+                      bundle: CandidateBundle | None = None, config: dict | None = None) -> dict:
+     from .packaging_runtime import is_packaging, validate_runtime_context
+-    if context.data.get('version') in ('jev_decision_context_v13','jev_decision_context_v4','jev_decision_context_v5','jev_decision_context_v6','jev_decision_context_v7','jev_decision_context_v8','jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT) or (config is not None and is_packaging(config)):
++    if context.data.get('version') in ('jev_decision_context_b1_v1','jev_decision_context_v13','jev_decision_context_v4','jev_decision_context_v5','jev_decision_context_v6','jev_decision_context_v7','jev_decision_context_v8','jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT) or (config is not None and is_packaging(config)):
+         return validate_runtime_context(context, observation, bundle, config)
+     value = context.data
+     validate_schema("decision_context", value)
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py
+index d3df6585..0f78e2b7 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py
+@@ -30,6 +30,13 @@ def digest(value: object) -> str:
+ 
+ @lru_cache(maxsize=64)
+ def schema_validator(name: str) -> Draft202012Validator:
++    from .packaging_versions import PCT_B1_SCHEMAS, resolve_extension
++    if name in PCT_B1_SCHEMAS:
++        extension = resolve_extension(name)
++        from pct_baseline.contracts import schema
++        document = schema(name)
++        Draft202012Validator.check_schema(document)
++        return Draft202012Validator(document)
+     if name not in {'jm_v13_schedule','config_v13','candidate_bundle_v13','decision_context_v13','selection_result_v13','checkpoint_v13','jm_v13_start','jm_v13_execution','jm_v13_journal','jm_v13_metrics','jm_activation_v1','jm_checkpoint_journal_v1','jm_recovery_v1','jm_recovery_checkpoint_v1','jm_repeat_schedule_v1','jm_continuation_v1','jm_fork_start_v1','jm_fork_binding_v1','jm_forced_selection_v1','synthetic_remainder_plan_v3','config_v12','candidate_bundle_v12','decision_context_v12','selection_result_v12','checkpoint_v12','synthetic_supplement_plan_v2','synthetic_supplement_run_v2','synthetic_registration_v1','config_v11','candidate_bundle_v11','decision_context_v11','selection_result_v11','checkpoint_v11','synthetic_dataset_v1','synthetic_orders_plan_v1','synthetic_orders_run_v1',"evaluation_dataset_v1", "evaluation_orders_plan_v1", "evaluation_orders_run_v1", "evaluation_order_metrics_v1", "evaluation_packaging_task_v1", "source_provenance_v1", "source_trust_policy_v1", "config_v10", "candidate_bundle_v10", "decision_context_v10", "selection_result_v10", "checkpoint_v10", "evaluation_memory_view_v1", "evaluation_retrieval_v1", "evaluation_episode_metrics_v1", "evaluation_control_v1", "evaluation_plan_blocked_v1", "config_v9", "candidate_bundle_v9", "decision_context_v9", "selection_result_v9", "checkpoint_v9", "pilot_memory_view_v1", "pilot_retrieval_v1", "pilot_order_metrics_v1", "pilot_plan_v1", "pilot_run_v1", "pilot_decision_v1", "config_v8", "candidate_bundle_v8", "decision_context_v8", "selection_result_v8", "checkpoint_v8", "contrast_order_metrics_v1", "packaging_contrast_generation_v1", "packaging_contrast_fact_pack_v1", "packaging_contrast_card_v1", "packaging_contrast_snapshot_v1", "packaging_contrast_view_v1", "packaging_contrast_public_v1", "memory_order_metrics_v1", "packaging_public_fragment_v1", "config_v7", "candidate_bundle_v7", "decision_context_v7", "selection_result_v7", "checkpoint_v7", "packaging_evidence_v1", "packaging_trajectory_v1", "packaging_memory_snapshot_v1", "packaging_memory_view_v1", "packaging_memory_query_v1", "packaging_reanalysis_plan_v2", "packaging_comparison_record_v2", "packaging_comparison_plan_v1", "packaging_comparison_record_v1", "packaging_fork_snapshot_v1", "packaging_fork_binding_v1", "packaging_fork_plan_v1", "packaging_branch_receipt_v1", "packaging_full_order_decision_v1", "packaging_full_order_plan_v2", "packaging_full_order_run_v2", "config_v6", "candidate_bundle_v6", "decision_context_v6", "selection_result_v6", "checkpoint_v6", "remote_order_metrics_v1", "packaging_full_order_plan_v1", "monitored_order_metrics_v1", "config_v5", "candidate_bundle_v5", "decision_context_v5", "selection_result_v5", "checkpoint_v5", "config_v4", "candidate_bundle_v4", "decision_context_v4", "selection_result_v4", "checkpoint_v4", "packaging_order_metrics_v1", "packaging_load_config_v1", "packaging_load_task_v1", "business_spec_v2", "config", "candidate_bundle", "decision_context", "selection_result", "transport_result", "config_v2", "candidate_bundle_v2", "decision_context_v2", "selection_result_v2", "business_state", "plan_v2", "checkpoint_v2", "order_metrics_v2", "metrics_v2",
+                     "config_v3", "candidate_bundle_v3", "decision_context_v3", "selection_result_v3", "plan_v3", "checkpoint_v3", "order_metrics_v3", "metrics_v3", "memory_card", "memory_snapshot", "memory_episode_export", "memory_query", "memory_index", "memory_retrieval", "memory_generation_result", "memory_review", "memory_generator_config", "memory_review_authorization"}:
+         raise JevSelectError("unknown_schema", name)
+@@ -41,6 +48,16 @@ def schema_validator(name: str) -> Draft202012Validator:
+ 
+ def validate_schema(name: str, value: dict) -> None:
+     canonical(value)
++    from .packaging_versions import resolve_extension, PCT_B1_SCHEMAS
++    extension = resolve_extension(value.get('version'))
++    if extension is not None or name in PCT_B1_SCHEMAS:
++        extension = extension or resolve_extension(name)
++        name = extension.schema_name(name, value.get('version'))
++        errors = list(schema_validator(name).iter_errors(value))
++        if errors:
++            raise JevSelectError('invalid_' + name, errors[0].message[:240])
++        extension.validate_value(name, value)
++        return
+     if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+         name = 'jm_forced_selection_v1'
+     if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py
+index cb84da81..ee29c420 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py
+@@ -4,7 +4,7 @@ No new physical solver or candidate generator. Local smoke selectors are test
+ substitutes only, with no remote transport or memory loading route.
+ """
+ from __future__ import annotations
+-from .packaging_versions import EXACT_CONTEXT, EXACT_VERSION
++from .packaging_versions import EXACT_CONTEXT, EXACT_VERSION, resolve_extension
+ import copy
+ import math
+ import random
+@@ -26,6 +26,9 @@ METHODS = ('local_geometry_test_double','local_first_test_double')
+ 
+ 
+ def is_packaging(config):
++    if config.get('version') == 'pct_b1_config_v1':
++        resolve_extension(config['version'])
++        return True
+     return config.get('version') in ('jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
+ 
+ 
+@@ -157,6 +160,13 @@ def length_unit(values,source,target):
+ 
+ 
+ def public_facts(config,observation,bundle,policy):
++    extension = resolve_extension(config.get('version'))
++    if extension is not None:
++        extension.validate_observed(observation)
++    return _public_facts(config, observation, bundle, policy, capacity=1 if extension else 3)
++
++
++def _public_facts(config,observation,bundle,policy,*,capacity):
+     from semantic_pallet_planner.o4.extensions.e2.protocol import BINDINGS,validate_observation
+     from semantic_pallet_planner.evaluation.state import apply_candidate
+     from semantic_pallet_planner.planner.scoring import geometry_score
+@@ -165,7 +175,7 @@ def public_facts(config,observation,bundle,policy):
+     validate_observation(observation)
+     require(policy.data==no_policy(observation).data,'runtime_policy')
+     require(bundle.data==PublicBusinessGuard().filter(observation,policy,bundle,config).data,'runtime_candidate_filter')
+-    require(observation['buffer_context']['capacity']==3,'runtime_buffer_capacity')
++    require(observation['buffer_context']['capacity']==capacity,'runtime_buffer_capacity')
+     value=validate_bundle(observation,bundle)
+     objects=observation['placed_objects']+observation['available_objects']
+     aliases={o['object_id']:f'B{i:03d}' for i,o in enumerate(objects,1)}
+@@ -191,7 +201,7 @@ def public_facts(config,observation,bundle,policy):
+             'support_model':'70% area plus local center in actual contact rectangle; area-proportional load sharing'},
+         'placed_objects':[public_object(o,True) for o in observation['placed_objects']],
+         'available_objects':[public_object(o,False) for o in observation['available_objects']],
+-        'buffer':{'capacity':3,'end_of_stream':buffer['end_of_stream'],
++        'buffer':{'capacity':capacity,'end_of_stream':buffer['end_of_stream'],
+             'pending':[{**p,'object_id':aliases[p['object_id']]} for p in buffer['pending']]},
+         'objective':OBJECTIVE,'memories':[]}
+     ordered=sorted(value['selectable_candidates'],key=lambda c:(c['pose']['x_mm'],c['pose']['y_mm'],
+@@ -251,7 +261,7 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
+         validate_receipt(retrieval_receipt,memory_view,config,state,criteria)
+         memory_fields={'memory_view':mv,'retrieval_receipt':retrieval_receipt}
+     route=decision_route(bundle)
+-    body=None if route!='CHOICE_REQUIRED' else {'model':config['model'],'state':state,
++    body=None if route!='CHOICE_REQUIRED' or (config.get('version')=='pct_b1_config_v1' and config['selector']!='jev_none_b1') else {'model':config['model'],'state':state,
+         'questions':{'next_action':{'type':'choice','instructions':QUESTION,'criteria':criteria}}}
+     binding={**{k:observation[k] for k in BINDINGS},'event_index':buffer['event_index'],
+         'physical_digest':value['physical_digest'],'selectable_digest':value['selectable_digest'],
+@@ -301,7 +311,9 @@ def validate_runtime_context(context,observation=None,bundle=None,config=None):
+         ('criteria_digest','criteria'),('request_body_digest','request_body')]:
+         require(binding[field]==digest(value[key]),'runtime_context_digest')
+     body=value['request_body'];route=value['route']
+-    if route=='CHOICE_REQUIRED':
++    if route=='CHOICE_REQUIRED' and value['version']=='jev_decision_context_b1_v1' and body is None:
++        require(len(labels)>=2 and config is not None and config['selector']!='jev_none_b1','runtime_local_request_binding')
++    elif route=='CHOICE_REQUIRED':
+         require(len(labels)>=2 and body is not None and body['state']==value['model_state'] and
+             body['model']==(config['model'] if config else body['model']) and body['questions']=={'next_action':{'type':'choice','instructions':QUESTION,'criteria':value['criteria']}},'runtime_request_binding')
+     else:require(body is None and ((route=='SINGLETON_BYPASS' and len(labels)==1) or
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py
+index be7da9a1..ba975c40 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py
+@@ -39,3 +39,21 @@ JM_TRAINING_PLAN_PROTOCOLS={JM_TRAINING_PLAN_VERSION:'packaging_jev_training_pla
+ # B2 final offline freeze/admission receipt, separate from the v1 preparation.
+ JM_TRAINING_FREEZE_VERSION='jev_jm_training_freeze_v1'
+ JM_TRAINING_FREEZE_PROTOCOLS={JM_TRAINING_FREEZE_VERSION:'packaging_jev_training_freeze'}
++
++# P1-A exact, lazy registration. No order/monitor/recovery admission.
++PCT_B1_VERSIONS = frozenset({'pct_b1_config_v1', 'pct_b1_task_v1',
++    'pct_b1_execution_spec_v1', 'jev_candidate_bundle_b1_v1', 'jev_decision_context_b1_v1'})
++PCT_B1_SCHEMAS = frozenset({'config_b1_v1', 'task_b1_v1', 'execution_spec_b1_v1',
++    'candidate_bundle_b1_v1', 'decision_context_b1_v1'})
++
++
++def resolve_extension(identifier):
++    if not isinstance(identifier, str) or identifier not in PCT_B1_VERSIONS | PCT_B1_SCHEMAS:
++        return None
++    from importlib import import_module
++    try:
++        return import_module('pct_baseline.protocol')
++    except ModuleNotFoundError as exc:
++        if exc.name == 'pct_baseline':
++            raise ModuleNotFoundError('PCT_B1_EXTENSION_MISSING: add PCT/src to the frozen source path', name='pct_baseline') from exc
++        raise

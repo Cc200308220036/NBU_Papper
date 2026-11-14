@@ -1,0 +1,88 @@
+{
+  "commands": [
+    {
+      "command": "git status --short",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification/baseline.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "git branch --show-current",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification/branch.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "git rev-parse HEAD",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification/head.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "git diff --cached --stat",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification/staged.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "git -C Online-3D-BPP-PCT status --short",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification/upstream.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "git -C Online-3D-BPP-PCT rev-parse HEAD",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification/upstream_head.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification/diff_check.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src:semantic_pallet_planner/src \"$PCT_PY\" -m unittest discover -s PCT/tests -v",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification/tests.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src \"$PCT_PY\" -m pct_baseline.cli validate-data --dataset PCT/outputs/PCT_P1_A_20261114_01/data",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification/data.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src \"$PCT_PY\" -m pct_baseline.cli validate-data --dataset PCT/outputs/PCT_P1_A_20261114_01/data --full-schema",
+      "exit_code": 1,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification/full_schema.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src \"$PCT_PY\" -c \"import semantic_pallet_planner.jev_select.contracts\"",
+      "exit_code": 1,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification/public_import.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src \"$PCT_PY\" -c <recorded import_boundary guard>",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification/import_boundary.json",
+      "result": "EXPECTED"
+    }
+  ],
+  "ast": "ast.json",
+  "legacy_byte_checks": "legacy_resources.json",
+  "notes": [
+    "11 stdlib tests PASS; 5 integration tests skipped (NOT_RUN), unittest exit 0 is not full acceptance",
+    "initial interpreter probe used unsupported zsh command -v -a and unmatched glob, then corrected to which -a; no mutation",
+    "initial targeted rg used a nonexistent schema pathname; subsequent source reading located actual validation; no mutation"
+  ],
+  "credential_reads": 0,
+  "model_requests": 0,
+  "orders": 0,
+  "candidate_generation": 0,
+  "LP": 0
+}

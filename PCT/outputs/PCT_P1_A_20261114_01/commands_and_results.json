@@ -1,0 +1,114 @@
+{
+  "commands": [
+    {
+      "command": "git status --short",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification_final/baseline.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "git branch --show-current",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification_final/branch.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "git rev-parse HEAD",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification_final/head.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "git diff --cached --stat",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification_final/staged.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "git -C Online-3D-BPP-PCT status --short",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification_final/upstream.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "git -C Online-3D-BPP-PCT rev-parse HEAD",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification_final/upstream_head.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification_final/diff_check.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src:semantic_pallet_planner/src \"$PCT_PY\" -m unittest discover -s PCT/tests -v",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification_final/tests.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src \"$PCT_PY\" -m pct_baseline.cli validate-data --dataset PCT/outputs/PCT_P1_A_20261114_01/data",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification_final/data.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src \"$PCT_PY\" -m pct_baseline.cli validate-data --dataset PCT/outputs/PCT_P1_A_20261114_01/data --full-schema",
+      "exit_code": 1,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification_final/full_schema.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src \"$PCT_PY\" -c \"import semantic_pallet_planner.jev_select.contracts\"",
+      "exit_code": 1,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification_final/public_import.json",
+      "result": "EXPECTED"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src \"$PCT_PY\" -c <recorded import_boundary guard>",
+      "exit_code": 0,
+      "log": "PCT/outputs/PCT_P1_A_20261114_01/verification_final/import_boundary.json",
+      "result": "EXPECTED"
+    }
+  ],
+  "ast": "ast.json",
+  "legacy_byte_checks": "legacy_resources.json",
+  "notes": [
+    "13 stdlib tests PASS; 5 integration tests skipped (NOT_RUN), unittest exit 0 is not full acceptance",
+    "initial interpreter probe used unsupported zsh command -v -a and unmatched glob, then corrected to which -a; no mutation",
+    "initial targeted rg used a nonexistent schema pathname; subsequent source reading located actual validation; no mutation"
+  ],
+  "credential_reads": 0,
+  "model_requests": 0,
+  "orders": 0,
+  "candidate_generation": 0,
+  "LP": 0,
+  "additional_actual_commands": [
+    {
+      "command": "python3 PCT/scripts/build_schemas.py",
+      "exit_code": 0,
+      "scope": "writes new PCT schema resources only"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src python3 -m pct_baseline.cli prepare-data --spec PCT/configs/data_b1_v1.json --output PCT/outputs/PCT_P1_A_20261114_01/data",
+      "exit_code": 0,
+      "scope": "stdlib Python3.9; 22 tasks/428 items, full_schema NOT_RUN; exclusive new directory"
+    },
+    {
+      "command": "which -a python3 python3.12 python3.13",
+      "exit_code": 0,
+      "stdout": "/usr/bin/python3\n"
+    },
+    {
+      "command": "rg --files -g pyvenv.cfg -g \"python3*\" . \"$USER_LOCAL\" \"$USER_CACHE\"",
+      "scope": "limited discovery; located existing codex runtime Python3.12; initial nonexistent glob / zsh command error retained in notes, no machine-wide claim"
+    },
+    {
+      "command": "\"$PCT_PY\" PCT/scripts/verify_p1a.py --output PCT/outputs/PCT_P1_A_20261114_01/verification_final",
+      "exit_code": 0,
+      "scope": "logs include two expected missing-dependency exits and five NOT_RUN integration skips; no aggregate acceptance PASS"
+    }
+  ]
+}

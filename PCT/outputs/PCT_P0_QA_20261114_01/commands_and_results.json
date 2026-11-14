@@ -1,0 +1,27 @@
+{
+  "commands": [
+    {
+      "command": "python3 PCT/outputs/PCT_P0_CONTRACT_20261114_01/verify.py",
+      "exit_code": 0,
+      "stdout": "PASS: delivery, source and task digests, links, JSON, feature dimensions, matrix, Git scope"
+    },
+    {
+      "command": "python3 PCT/outputs/PCT_P0_QA_20261114_01/check_saved.py > PCT/outputs/PCT_P0_QA_20261114_01/saved_checks.json",
+      "exit_code": 0
+    }
+  ],
+  "script_review": {
+    "verify": "完整阅读：标准库、文件读取及只读 git；执行无写入业务或求解",
+    "audit": "完整阅读：标准库、AST/JSON/SHA和只读Git；write会覆写原交付5个JSON，未运行"
+  },
+  "not_run": [
+    "业务导入",
+    "订单",
+    "候选重建",
+    "LP",
+    "训练",
+    "模型请求",
+    "安装依赖"
+  ],
+  "credential_reads": 0
+}

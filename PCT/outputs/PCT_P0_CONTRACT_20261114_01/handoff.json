@@ -1,0 +1,54 @@
+{
+  "version": "pct_p0_handoff_v1",
+  "status": "P0_DESIGN_COMPLETE",
+  "repo": "NBU_Papper",
+  "branch": "dev/PCT",
+  "stop": true,
+  "next_stage": "P1-A",
+  "entry": [
+    "AGENTS.md",
+    "PCT/README.md",
+    "PCT/docs/PCT容量1公共候选基线接入与实验分阶段实施方案_20261113.md",
+    "p0_contract.json",
+    "external_changes.json",
+    "data_audit.json",
+    "environment_review.json"
+  ],
+  "next_steps": [
+    {
+      "file": "PCT/pyproject.toml + src/pct_baseline/contracts.py + schemas/*.schema.json",
+      "work": "stdlib-light packaging; closed task/config/bundle/context resources, field/type and semantic validation"
+    },
+    {
+      "file": "PCT/src/pct_baseline/dataset.py",
+      "work": "verify two manifests, project task, compare all fields and persist only after checks"
+    },
+    {
+      "file": "PCT/src/pct_baseline/protocol.py",
+      "work": "descriptor + capacity1 context, canonical binding and whitelist"
+    },
+    {
+      "file": "PCT/src/pct_baseline/cli.py + configs/data_b1_v1.json",
+      "work": "prepare-data and validate-data; no model or transport"
+    },
+    {
+      "file": "PCT/tests/test_b1_{data,context,dispatch}.py",
+      "work": "B10–B12 and dual protocol absence/unknown cases"
+    },
+    {
+      "file": "external_changes.json P1-A entries",
+      "work": "apply only after scope authorized; reject official run until P1-B/C"
+    }
+  ],
+  "admission": "P1-A 集成须用户明确指定阶段与 P1-A 跨目录范围；仅 PCT 内可先写适配包与未应用补丁；需可用 CPython 3.12+ 执行 B10–B12",
+  "external_review": [
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py"
+  ],
+  "existing": "仅主工程原接口与本次静态 audit.py；pct_baseline CLI、协议与网络均待实现",
+  "transport_admitted": false
+}

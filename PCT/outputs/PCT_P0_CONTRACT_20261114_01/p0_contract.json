@@ -1,0 +1,1214 @@
+{
+  "version": "pct_p0_contract_v1",
+  "status": "DESIGN_FROZEN_RUNTIME_NOT_RUN",
+  "call_graph": [
+    {
+      "file": "dataset.py / dataset_packaging.py / packaging_synthetic_data.py",
+      "chain": "DatasetOrderAdapter.load → load_packaging_delivery / load_dataset",
+      "contract": "校验父数据，派生前使用原封闭任务 Schema。合成 loader 返回的是运行投影，派生应从已认证原文件取字段。"
+    },
+    {
+      "file": "contracts.py / config.py",
+      "chain": "validate_schema → schema_validator / protocol_suffix / business_evaluation_mode",
+      "contract": "按精确对象版本解析封闭 Schema，显式新物理模式。"
+    },
+    {
+      "file": "episode.py",
+      "chain": "run_episode → _run_episode_v2 → buffer_state.initial/can_wait/receive → E2 observation",
+      "contract": "按 items 游标到货，容量满时决策，最后成功提交之后才观察到 EOS。"
+    },
+    {
+      "file": "candidates.py",
+      "chain": "CandidateProvider.build → E2 generate → validate_bundle → PublicBusinessGuard.filter → decision_route",
+      "contract": "物理候选使用 per_box=16、joint=48；无规则使 selectable 与 physical 相等；空池停，单动作自动执行。"
+    },
+    {
+      "file": "packaging_runtime.py / context.py",
+      "chain": "public_facts → build_context → ContextBuilder.build → bind_decision → validate_context / resolve_display_id",
+      "contract": "公开别名、候选事实和私有映射；绑定候选摘要和精确姿态。"
+    },
+    {
+      "file": "selector.py / packaging_remote.py",
+      "chain": "result / baseline_label / CandidateSelector.select → RequestLedger / transport",
+      "contract": "共用选择记录；远程通过新适配器校验冻结额度与实际请求，P4-C 才接通。"
+    },
+    {
+      "file": "stability/monitor.py",
+      "chain": "is_monitored → preflight → exact_freeze / kernel_interface → monitor_selected_action → validate_monitor",
+      "contract": "先持久化选择，监测独立状态副本，精确 v3。"
+    },
+    {
+      "file": "execution.py",
+      "chain": "commit_physical → resolve_display_id → geometry_oracle.check_candidate → buffer_state.place",
+      "contract": "校验监测和精确动作，复核原物理检查后单次提交。"
+    },
+    {
+      "file": "episode.py / packaging_jev_v13.py / ledger.py",
+      "chain": "checkpoint / persist → atomic write + exclusive → validate_saved_checkpoint",
+      "contract": "v13 为可借鉴的保存事实链，新协议在 P1-C 绑定独立 journal 和恢复校验。"
+    },
+    {
+      "file": "packaging_metrics.py / packaging_runtime.py / packaging_protocol.py",
+      "chain": "job_metrics / summary / termination_category → aggregate / paired",
+      "contract": "复用计算语义，另建有真实账目的指标和分母；experiment.run_experiment 保留旧入口。"
+    }
+  ],
+  "findings": [
+    {
+      "evidence": "packaging_runtime.py:159–226",
+      "observed": "public_facts 要求 capacity=3 并公开写3",
+      "disposition": "抽取显式容量 helper，旧调用继续固定3"
+    },
+    {
+      "evidence": "contracts.py:32–54 / config.py:42 / episode.py:55–82",
+      "observed": "封闭名字、后缀、方法与 task 绑定",
+      "disposition": "集中描述器及精确名称配对"
+    },
+    {
+      "evidence": "packaging_jev_v13.py:42–55,93–136,291–365",
+      "observed": "train、jev_no_memory、独占账本及许可绑定",
+      "disposition": "复用通用 ledger，禁止套用 JM train route"
+    },
+    {
+      "evidence": "Online-3D-BPP-PCT/evaluation.py:36–37",
+      "observed": "shuffle 缺逗号，独立 AST 失败",
+      "disposition": "仅隔离副本修补"
+    },
+    {
+      "evidence": "Online-3D-BPP-PCT/distributions.py:8–37",
+      "observed": "重绑全局 Categorical/Normal/Bernoulli 方法",
+      "disposition": "只提取实际需要的局部 Categorical；验证全局方法身份"
+    },
+    {
+      "evidence": "Online-3D-BPP-PCT/pct_envs/{PctContinuous0,PctDiscrete0}/space.py:372,385",
+      "observed": "连续第7槽为0，离散为 density；两者 Box.mass 均为尺寸乘积×density",
+      "disposition": "几何已放仅六角点；承载版使用公共实际质量 kg"
+    },
+    {
+      "evidence": "Online-3D-BPP-PCT/pct_envs/{PctContinuous0,PctDiscrete0}/bin3D.py:get_possible_position/step",
+      "observed": "虚拟检查筛叶，step 维护原生状态，Space.drop_box 重算高度",
+      "disposition": "仅消费公共叶节点与精确姿态"
+    },
+    {
+      "evidence": "Online-3D-BPP-PCT/tools.py:99–105 / attention_model.py:91–177 / graph_encoder.py:95–109",
+      "observed": "第9槽 1=有效；候选第6槽是容器H；evaluate=True 注意力用-inf，默认-30，与 deterministic、.eval() 独立",
+      "disposition": "独立 bool mask，保留H几何槽和精确实际顶面；适配固定严格 mask"
+    },
+    {
+      "evidence": "Online-3D-BPP-PCT/pct_envs/PctContinuous0/bin3D.py:14–23,53",
+      "observed": "shuffle 真实消费，LNES 硬设 EMS；binCreator.LoadBoxCreator 使用 sentinel",
+      "disposition": "原生参考记录参数生效，公共按 EOS"
+    },
+    {
+      "evidence": "packaging_metrics.py:42,70,87",
+      "observed": "来源和费用/调用数为测试替身默认",
+      "disposition": "新账目根据实际推理、请求与已发送状态；未知费用 UNKNOWN"
+    },
+    {
+      "evidence": "contracts.py:54",
+      "observed": "默认 Python 3.9 AST 在同引号 f-string 报错；pyproject >=3.11 不能单独保证可解析",
+      "disposition": "优先 3.12+，旧表达式不在 P0 改动范围，P1 验证整树 AST 和安装"
+    }
+  ],
+  "schemas": {
+    "execution_spec": {
+      "version": "pct_b1_execution_spec_v1",
+      "additionalProperties": false,
+      "fields": [
+        "buffer_capacity=1",
+        "yaw_deg=[0,90]",
+        "per_box=16",
+        "joint=48",
+        "candidate_manifest_digest",
+        "display_order_seed",
+        "monitor_algorithm=pct_exact_pose_network_v3"
+      ]
+    },
+    "config": {
+      "version": "pct_b1_config_v1",
+      "additionalProperties": false,
+      "fields": [
+        "execution_spec_digest",
+        "buffer_capacity=1",
+        "selector",
+        "model_identity",
+        "runtime_identity",
+        "stability_monitor",
+        "display_order_seed",
+        "memory_mode=none",
+        "model",
+        "candidate_backend",
+        "per_object_top_k",
+        "joint_candidates_max",
+        "selectable_pool",
+        "policy_source",
+        "feature_version",
+        "prompt_version",
+        "max_request_bytes",
+        "experiment_protocol",
+        "business_mode",
+        "execution_version",
+        "evaluation_version"
+      ],
+      "constants": {
+        "candidate_backend": "e2_original_v1",
+        "per_object_top_k": 16,
+        "joint_candidates_max": 48,
+        "selectable_pool": "physical_feasible",
+        "policy_source": "packaging_physical_only",
+        "business_mode": "physical_only",
+        "execution_version": "physical_commit_v1",
+        "display_order_seed": 20261102
+      },
+      "conditional": "远程新增 transport 子对象仅允许 Jev；非 Jev model 可为 null，但 context.request_body 必为 null。新 protocol id 需与 candidates 比较同一常量。"
+    },
+    "task": {
+      "version": "pct_b1_task_v1",
+      "additionalProperties": false,
+      "fields": [
+        "task_id",
+        "parent_data_identity",
+        "parent_task_sha256",
+        "parent_task_digest",
+        "execution_spec_digest",
+        "derived_task_digest",
+        "parent_partition",
+        "source_component_id",
+        "exposure_status",
+        "layer",
+        "container",
+        "arrival_order",
+        "items",
+        "attributes",
+        "regions=[]",
+        "reference_policy",
+        "instruction_text",
+        "buffer_capacity=1",
+        "candidate_limits",
+        "parent_layer",
+        "partition"
+      ],
+      "parent_partition_rule": "partition 与 parent_partition 相等，运行用途仅在 job/plan；两者均不公开",
+      "field_types": {
+        "task_id": "nonempty string",
+        "parent_data_identity": "sha256 lowercase hex",
+        "parent_task_sha256": "sha256 lowercase hex",
+        "parent_task_digest": "sha256 lowercase hex",
+        "execution_spec_digest": "sha256 lowercase hex",
+        "derived_task_digest": "sha256 lowercase hex",
+        "source_component_id": "sha256 lowercase hex",
+        "container": "parent physical container shape",
+        "items": "ordered nonempty legacy runtime item projection",
+        "attributes": "object keyed by item_id, closed values follow runtime_task",
+        "arrival_order": "unique string array equal to items IDs",
+        "regions": "empty array",
+        "reference_policy": "exact old DATA_VERSION empty rules",
+        "instruction_text": "shared physical-only instruction"
+      }
+    },
+    "selection_result": {
+      "version": "jev_selection_result_b1_v1",
+      "additionalProperties": false,
+      "fields": [
+        "version",
+        "status",
+        "selected_display_id",
+        "selected_candidate_id",
+        "source",
+        "requested_model",
+        "served_model",
+        "probabilities",
+        "confidence",
+        "attempt_ids",
+        "usage",
+        "latency_s",
+        "local_binding_digest",
+        "raw_response_digest",
+        "error",
+        "network_attempted",
+        "error_stage",
+        "error_code",
+        "inference_receipt"
+      ],
+      "shape_reference": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v13.schema.json",
+      "shape_rule": "独立 Schema，沿用现有调用字段和类型，按本合同替换版本/方法/容量；旧资源字节不变",
+      "source_enum": [
+        "pct_local",
+        "local_baseline",
+        "jev",
+        "singleton"
+      ],
+      "inference_receipt": "null for non-PCT, otherwise closed {feature_digest,weights_sha256,leaf_index,inference_s}; failure may have null leaf index; probabilities indexed by label"
+    },
+    "checkpoint": {
+      "version": "jev_checkpoint_b1_v1",
+      "additionalProperties": false,
+      "fields": [
+        "version",
+        "job_id",
+        "method",
+        "task_digest",
+        "config_digest",
+        "state",
+        "cursor",
+        "decision",
+        "events",
+        "reason",
+        "phase",
+        "pending_event",
+        "runtime_identity",
+        "record_digest"
+      ],
+      "shape_reference": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v13.schema.json",
+      "shape_rule": "独立 Schema，沿用现有调用字段和类型，按本合同替换版本/方法/容量；旧资源字节不变",
+      "phases": [
+        "READY",
+        "DECISION_READY",
+        "SELECTED",
+        "MONITORED",
+        "COMMITTED",
+        "TERMINATED"
+      ],
+      "seal": "record_digest via seal_checkpoint; journal checkpoint_digest binds sealed object"
+    },
+    "journal": {
+      "version": "pct_b1_journal_v1",
+      "additionalProperties": false,
+      "fields": [
+        "job_id",
+        "sequence",
+        "previous_digest",
+        "checkpoint_digest",
+        "decision_id",
+        "phase",
+        "identities"
+      ]
+    },
+    "model": {
+      "version": "pct_b1_model_v1",
+      "additionalProperties": false,
+      "fields": [
+        "architecture",
+        "feature_contract_digest",
+        "tensor_manifest",
+        "weights_sha256",
+        "provenance",
+        "device",
+        "dtype",
+        "seed",
+        "optimizer_identity"
+      ]
+    },
+    "training": {
+      "version": "pct_b1_training_v1",
+      "additionalProperties": false,
+      "fields": [
+        "data_digest",
+        "execution_spec_digest",
+        "model_id",
+        "seeds",
+        "epochs",
+        "batch_orders",
+        "n",
+        "gamma",
+        "checkpoint_epochs",
+        "rng_identity"
+      ]
+    },
+    "plan": {
+      "version": "pct_b1_plan_v1",
+      "additionalProperties": false,
+      "fields": [
+        "data_identity",
+        "jobs",
+        "sending_admitted",
+        "global_max_sends",
+        "stop_policy"
+      ]
+    },
+    "job": {
+      "version": "pct_b1_job_v1",
+      "additionalProperties": false,
+      "fields": [
+        "job_id",
+        "task_digest",
+        "method",
+        "training_seed",
+        "repeat_slot",
+        "max_sends",
+        "weight_binding",
+        "execution_spec_digest"
+      ]
+    },
+    "metrics": {
+      "version": "pct_b1_metrics_v1",
+      "additionalProperties": false,
+      "fields": [
+        "status",
+        "loading",
+        "layout",
+        "monitor",
+        "timing",
+        "accounting",
+        "denominators"
+      ]
+    },
+    "candidate_bundle": {
+      "version": "jev_candidate_bundle_b1_v1",
+      "additionalProperties": false,
+      "fields": [
+        "version",
+        "observation_digest",
+        "candidate_backend",
+        "generator_config_digest",
+        "physical_candidates",
+        "physical_digest",
+        "generation_counts",
+        "selectable_pool",
+        "selectable_candidates",
+        "selectable_digest",
+        "policy_digest",
+        "experiment_protocol",
+        "business_mode"
+      ],
+      "shape_reference": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v13.schema.json",
+      "shape_rule": "独立 Schema，沿用现有调用字段和类型，按本合同替换版本/方法/容量；旧资源字节不变",
+      "invariant": "build 中 selectable 为空且 selectable_pool=unfiltered；filter 后 physical_feasible 且 selectable_candidates == physical_candidates；两阶段摘要按现有校验"
+    },
+    "decision_context": {
+      "version": "jev_decision_context_b1_v1",
+      "additionalProperties": false,
+      "fields": [
+        "version",
+        "route",
+        "model_state",
+        "criteria",
+        "request_body",
+        "display_mapping",
+        "local_binding"
+      ],
+      "shape_reference": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v13.schema.json",
+      "shape_rule": "独立 Schema，沿用现有调用字段和类型，按本合同替换版本/方法/容量；旧资源字节不变",
+      "invariant": "criteria/display_mapping 标签集合一致；request_body 只在 Jev 多候选构造；bind_decision 追加 job/decision 到私有 binding，正式请求只允许 state/questions/model"
+    }
+  },
+  "registry": {
+    "suffix": "b1_v1",
+    "package": "pct_baseline.protocol",
+    "lazy": true,
+    "missing": "PCT_B1_EXTENSION_MISSING",
+    "unknown": "unknown_schema",
+    "methods": {
+      "geometry_b1": {
+        "source": "local_baseline",
+        "replicates": [
+          null
+        ],
+        "rule": "baseline_label(context, shared_geometry)"
+      },
+      "pct_geo_b1": {
+        "source": "pct_local",
+        "seeds": [
+          11,
+          23,
+          37
+        ],
+        "model": "pct_adapted_geo_v1"
+      },
+      "pct_load_b1": {
+        "source": "pct_local",
+        "seeds": [
+          11,
+          23,
+          37
+        ],
+        "model": "pct_adapted_load_v1"
+      },
+      "jev_none_b1": {
+        "source": "jev",
+        "repeats": [
+          "r0",
+          "r1",
+          "r2"
+        ],
+        "memories": []
+      }
+    }
+  },
+  "data": {
+    "audit": "data_audit.json",
+    "parent_schemas": [
+      "packaging_load_task_v1",
+      "evaluation_packaging_task_v1"
+    ],
+    "identity": "SHA256 canonical JSON UTF-8 sorted keys compact finite only；derived_task_digest 自身排除；config.runtime_identity.task_identity 绑定完整含封印任务；文件字节摘要独立",
+    "derivation": "父任务原件保留；复用 runtime_task 的 items/attributes 投影，完整原件通过父摘要引用；运行字段单独版本化；核对 alias 物理字段、容量、顺序、完整集合和容器；合成 layer=synthetic_combo，parent_layer 保留于审计；用途在 plan/job 与原分区分开",
+    "failures": [
+      "DATA_IDENTITY_DRIFT",
+      "TASK_IDENTITY_DRIFT",
+      "DUPLICATE_ITEM",
+      "EMPTY_TASK",
+      "ARRIVAL_ORDER_MISMATCH",
+      "PHYSICAL_FIELD_DRIFT"
+    ],
+    "denominators": "完整父箱数、实际质量和几何体积，包含未到货；技术/未运行槽位进入计划分母",
+    "private": [
+      "source/order IDs",
+      "future items and total counts",
+      "witness",
+      "private mapping and digests",
+      "monitor/reactions",
+      "test outcomes"
+    ],
+    "public": [
+      "units/coordinate convention/container physical fields",
+      "current alias dimensions mass stackable capacity",
+      "placed aliases pose size load support fractions",
+      "buffer.capacity/pending public aliases/EOS",
+      "candidate labels and public criteria with pose/size/support/load_changes",
+      "empty memories"
+    ],
+    "independent_holdout": "0 admitted; separately freeze sources/weights/plan"
+  },
+  "features": {
+    "pct_adapted_geo_v1": {
+      "placed": [
+        {
+          "index": 0,
+          "name": "x0",
+          "source": "model_state.placed_objects.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 1,
+          "name": "y0",
+          "source": "model_state.placed_objects.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 2,
+          "name": "z0",
+          "source": "model_state.placed_objects.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 3,
+          "name": "x1",
+          "source": "model_state.placed_objects.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 4,
+          "name": "y1",
+          "source": "model_state.placed_objects.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 5,
+          "name": "z1",
+          "source": "model_state.placed_objects.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        }
+      ],
+      "leaf": [
+        {
+          "index": 0,
+          "name": "x0",
+          "source": "criteria.pose/oriented_size_mm + model_state.container.max_height_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 1,
+          "name": "y0",
+          "source": "criteria.pose/oriented_size_mm + model_state.container.max_height_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 2,
+          "name": "z0",
+          "source": "criteria.pose/oriented_size_mm + model_state.container.max_height_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 3,
+          "name": "x1",
+          "source": "criteria.pose/oriented_size_mm + model_state.container.max_height_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 4,
+          "name": "y1",
+          "source": "criteria.pose/oriented_size_mm + model_state.container.max_height_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 5,
+          "name": "H",
+          "source": "criteria.pose/oriented_size_mm + model_state.container.max_height_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 6,
+          "name": "reserved_0",
+          "source": "constant zero",
+          "unit": "1",
+          "divide_by": 1
+        },
+        {
+          "index": 7,
+          "name": "reserved_1",
+          "source": "constant zero",
+          "unit": "1",
+          "divide_by": 1
+        }
+      ],
+      "current": [
+        {
+          "index": 0,
+          "name": "nominal_density",
+          "source": "constant 1",
+          "unit": "legacy nominal",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 1,
+          "name": "reserved_0",
+          "source": "constant zero",
+          "unit": "1",
+          "divide_by": 1
+        },
+        {
+          "index": 2,
+          "name": "reserved_1",
+          "source": "constant zero",
+          "unit": "1",
+          "divide_by": 1
+        },
+        {
+          "index": 3,
+          "name": "sorted_d0",
+          "source": "model_state.available_objects.dimensions_mm ascending",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 4,
+          "name": "sorted_d1",
+          "source": "model_state.available_objects.dimensions_mm ascending",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 5,
+          "name": "sorted_d2",
+          "source": "model_state.available_objects.dimensions_mm ascending",
+          "unit": "mm",
+          "divide_by": "Lref"
+        }
+      ]
+    },
+    "pct_adapted_load_v1": {
+      "placed": [
+        {
+          "index": 0,
+          "name": "x0",
+          "source": "model_state.placed_objects.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 1,
+          "name": "y0",
+          "source": "model_state.placed_objects.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 2,
+          "name": "z0",
+          "source": "model_state.placed_objects.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 3,
+          "name": "x1",
+          "source": "model_state.placed_objects.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 4,
+          "name": "y1",
+          "source": "model_state.placed_objects.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 5,
+          "name": "z1",
+          "source": "model_state.placed_objects.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 6,
+          "name": "mass",
+          "source": "mass_kg",
+          "unit": "kg",
+          "divide_by": "Mref"
+        },
+        {
+          "index": 7,
+          "name": "stackable",
+          "source": "stackable boolean",
+          "unit": "1",
+          "divide_by": 1
+        },
+        {
+          "index": 8,
+          "name": "capacity",
+          "source": "max_top_load_kg/current_top_load_kg/remaining_top_load_kg",
+          "unit": "kg",
+          "divide_by": "Mref"
+        },
+        {
+          "index": 9,
+          "name": "current_top_load",
+          "source": "max_top_load_kg/current_top_load_kg/remaining_top_load_kg",
+          "unit": "kg",
+          "divide_by": "Mref"
+        },
+        {
+          "index": 10,
+          "name": "remaining_top_load",
+          "source": "max_top_load_kg/current_top_load_kg/remaining_top_load_kg",
+          "unit": "kg",
+          "divide_by": "Mref"
+        }
+      ],
+      "current": [
+        {
+          "index": 0,
+          "name": "l",
+          "source": "model_state.available_objects.dimensions_mm original order",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 1,
+          "name": "w",
+          "source": "model_state.available_objects.dimensions_mm original order",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 2,
+          "name": "h",
+          "source": "model_state.available_objects.dimensions_mm original order",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 3,
+          "name": "mass",
+          "source": "mass_kg",
+          "unit": "kg",
+          "divide_by": "Mref"
+        },
+        {
+          "index": 4,
+          "name": "stackable",
+          "source": "stackable boolean",
+          "unit": "1",
+          "divide_by": 1
+        },
+        {
+          "index": 5,
+          "name": "capacity",
+          "source": "max_top_load_kg",
+          "unit": "kg",
+          "divide_by": "Mref"
+        }
+      ],
+      "leaf": [
+        {
+          "index": 0,
+          "name": "x0",
+          "source": "criteria.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 1,
+          "name": "y0",
+          "source": "criteria.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 2,
+          "name": "z0",
+          "source": "criteria.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 3,
+          "name": "x1",
+          "source": "criteria.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 4,
+          "name": "y1",
+          "source": "criteria.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 5,
+          "name": "z1",
+          "source": "criteria.pose+oriented_size_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 6,
+          "name": "support_ratio",
+          "source": "criteria.features.support_ratio",
+          "unit": "1",
+          "divide_by": 1
+        },
+        {
+          "index": 7,
+          "name": "com_margin",
+          "source": "criteria.features.com_margin_mm/resulting_max_height_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 8,
+          "name": "resulting_max_height",
+          "source": "criteria.features.com_margin_mm/resulting_max_height_mm",
+          "unit": "mm",
+          "divide_by": "Lref"
+        },
+        {
+          "index": 9,
+          "name": "max_after_area_load_utilization",
+          "source": "max(after_top_load_kg/max_top_load_kg) over positive increments",
+          "unit": "1",
+          "divide_by": 1
+        },
+        {
+          "index": 10,
+          "name": "min_affected_remaining",
+          "source": "min(remaining_top_load_kg) over positive increments",
+          "unit": "kg",
+          "divide_by": "Mref"
+        },
+        {
+          "index": 11,
+          "name": "affected_support_applicable",
+          "source": "positive-increment set nonempty",
+          "unit": "1",
+          "divide_by": 1
+        }
+      ]
+    }
+  },
+  "encoding": {
+    "Lref": "max(container L,W,H) in mm",
+    "Mref_kg": 9,
+    "coord": [
+      "x0=x-l/2+L/2",
+      "y0=y-w/2+W/2",
+      "z0=z",
+      "x1=x0+l",
+      "y1=y0+w",
+      "z1=z0+h"
+    ],
+    "calculation": "float64 → float32, no clipping; geo native normFactor=1",
+    "capacities": {
+      "placed": 40,
+      "leaf": 16,
+      "current": 1
+    },
+    "empty": "placed slot 0 all zero valid only when empty; padding zero invalid; current valid",
+    "mask": "true=valid; strictly mask padding in graph, glimpse and categorical; zero probability; no empty policy forward",
+    "mapping": "C numeric display order → index (zero-based) → candidate ID/digest/exact pose+size/label; internal binding never network input",
+    "ties": "smallest valid index for exact tie, evaluation argmax",
+    "symmetric": "use original public dedup, no dedup in network",
+    "failure": "reject duplicate/missing mapping, NaN, Inf, invalid index, bounds and shape mismatch",
+    "load_edges": "only strictly positive increments; zero capacity with positive increment is contract error; empty set -> 0,0,false; floor without affected supports uses same",
+    "example": {
+      "max_utilization": "5/9",
+      "remaining_kg": 4,
+      "applicable": true
+    }
+  },
+  "model": {
+    "embedding": 64,
+    "token_hidden": 32,
+    "graph_layers": 1,
+    "heads": 1,
+    "tanh_clip": 10,
+    "critic": "linear on masked pooled projected context",
+    "geo_dims": [
+      6,
+      8,
+      6
+    ],
+    "load_dims": [
+      11,
+      12,
+      6
+    ],
+    "dim_order": [
+      "placed",
+      "leaf",
+      "current"
+    ],
+    "strict": "verify manifest and byte SHA before loading; exact keys/shapes/dtype with strict=True; record upstream key mapping; geo/load incompatible, reject mismatches",
+    "reference": "same keys weights and packed [B,57,9] all-valid fixtures, normFactor=1, CPU float32, identical deterministic settings; capture categorical probs directly plus value/logprob/argmax/parameter gradients with fixed actions; atol=1e-6 rtol=1e-5; separately test padded attention/glimpse changes and B=1/B>1",
+    "differences": "shared candidate set and no native step; geo nominal density convention, load adds actual kg and load features; strict attention/glimpse/logit masking and zero epsilon on invalid leaves differ from native padded forward"
+  },
+  "training": {
+    "algorithm": "PCT-adapted + A2C",
+    "seeds": [
+      11,
+      23,
+      37
+    ],
+    "models": 6,
+    "epochs": 125,
+    "attempts_per_model": 2000,
+    "action_cap_per_model": 33000,
+    "total_action_cap": 198000,
+    "batch_orders": 8,
+    "updates_per_model": 250,
+    "optimizer": "Adam lr=0.0001 clip global grad norm=0.5",
+    "n": 5,
+    "gamma": 1,
+    "entropy_coef": 0,
+    "actor_coef": 1,
+    "critic_coef": 1,
+    "checkpoint_epochs": [
+      25,
+      50,
+      75,
+      100,
+      125
+    ],
+    "selected_epoch": 125,
+    "order": "SHA256 canonical [seed,epoch,task_id], tie task_id; each train task once per epoch",
+    "collect": "fixed policy snapshot for 8 complete attempts; technical errors stop and preserve partial batch; no update for invalid batch",
+    "reward": "10*successful committed volume/fixed container volume; natural terminal failed action reward zero",
+    "returns": "disjoint chunks <=5 physical transitions, reverse recursion with bootstrap at chunk boundary from frozen collection critic; terminal bootstrap 0, truncation uses next public state, empty pool attaches terminal to preceding transition; each transition once; explicit t+actual length exponent",
+    "loss": "choice mean -detach(G-V)*logpi; valid-transition mean (detach(G)-V)^2; no-choice actor zero; singleton included in value and return, excluded from actor/policy inference accounting",
+    "singleton_critic": "training value-only forward on saved singleton context when needed, separately count from policy choice inference; zero-transition batch has no defined critic update and stops with explicit no-update diagnostic",
+    "resume": "atomic model+optimizer+all RNG states and snapshot/update ID, traversal position, batch shards, decision sampling state; restore RNG before action; no resume across identity drift",
+    "upstream_difference": "upstream vector rollout 5 steps with masks and Adam optional/default ACKTR; full-order batch changes collection and per-batch update size"
+  },
+  "p3": {
+    "tasks": [
+      "NEW_00100027_controlled_base",
+      "NEW_00100090_controlled_heterogeneous"
+    ],
+    "boxes": 33,
+    "models_seed": 0,
+    "local_jobs": 6,
+    "monitor_cap": 99,
+    "network_choice_cap": 66,
+    "training_attempts": 16,
+    "training_actions": 264,
+    "training_updates": 2,
+    "training_model": "pct_adapted_load_v1",
+    "training_alternates": true
+  },
+  "evaluation": {
+    "methods": {
+      "geometry_b1": {
+        "source": "local_baseline",
+        "replicates": [
+          null
+        ],
+        "rule": "baseline_label(context, shared_geometry)"
+      },
+      "pct_geo_b1": {
+        "source": "pct_local",
+        "seeds": [
+          11,
+          23,
+          37
+        ],
+        "model": "pct_adapted_geo_v1"
+      },
+      "pct_load_b1": {
+        "source": "pct_local",
+        "seeds": [
+          11,
+          23,
+          37
+        ],
+        "model": "pct_adapted_load_v1"
+      },
+      "jev_none_b1": {
+        "source": "jev",
+        "repeats": [
+          "r0",
+          "r1",
+          "r2"
+        ],
+        "memories": []
+      }
+    },
+    "rows": [
+      {
+        "tasks": 16,
+        "slots": 160
+      },
+      {
+        "tasks": 6,
+        "slots": 60
+      }
+    ],
+    "slots": 220,
+    "boxes": 428,
+    "jev_send_cap": 1284,
+    "pct_choice_cap": 2568,
+    "sending_admitted": false,
+    "first": "NEW_00100027_controlled_base/jev_none_b1/r0 includes P4-C at most one request",
+    "dependencies": [
+      "P1–P3 completed",
+      "P4-A preregister order and template",
+      "P4-B bind six epoch125 real weight digests",
+      "P4-C separately authorized official protocol and limited send"
+    ],
+    "statistics": "task means by method then order and conservative component; technical failures excluded from strategy ranks but included in full matrix accounting"
+  },
+  "interface_existing": [
+    "DatasetOrderAdapter.load → load_packaging_delivery / load_dataset",
+    "validate_schema → schema_validator / protocol_suffix / business_evaluation_mode",
+    "run_episode → _run_episode_v2 → buffer_state.initial/can_wait/receive → E2 observation",
+    "CandidateProvider.build → E2 generate → validate_bundle → PublicBusinessGuard.filter → decision_route",
+    "public_facts → build_context → ContextBuilder.build → bind_decision → validate_context / resolve_display_id",
+    "result / baseline_label / CandidateSelector.select → RequestLedger / transport",
+    "is_monitored → preflight → exact_freeze / kernel_interface → monitor_selected_action → validate_monitor",
+    "commit_physical → resolve_display_id → geometry_oracle.check_candidate → buffer_state.place",
+    "checkpoint / persist → atomic write + exclusive → validate_saved_checkpoint",
+    "job_metrics / summary / termination_category → aggregate / paired"
+  ],
+  "interface_proposed": {
+    "derive_task": {
+      "status": "待实现",
+      "signature": "(parent_task, execution_spec, parent_identity) → closed derived task；双源身份不符/物理漂移/空单/重复ID报 JevSelectError；prepare-data 调用"
+    },
+    "build_config": {
+      "status": "待实现",
+      "signature": "(derived_task, method, model_manifest, run_spec) → sealed config；拒绝不匹配模型、非精确 v3、关闭监测；run_job 调用"
+    },
+    "encode_decision": {
+      "status": "待实现",
+      "signature": "(context, model_manifest) → tokens+bool masks+leaf mapping+input digest；字段缺失/超限/非有限报 FeatureContractError；PCTSelector 调用"
+    },
+    "PCTSelector.select": {
+      "status": "待实现",
+      "signature": "(context, decision_id) → SelectionResult；输出非法技术终止；公共多候选路径调用"
+    },
+    "freeze_plan": {
+      "status": "待实现",
+      "signature": "(tasks, methods, repetitions, identities, limits) → sealed unsendable plan；重复/额度/身份不一致拒绝"
+    },
+    "run_job": {
+      "status": "待实现",
+      "signature": "(plan, job_id, output_root, transport=None) → terminal receipt or checkpoint；锁争用/身份漂移拒绝；CLI 调用"
+    },
+    "validate_saved_run": {
+      "status": "待实现",
+      "signature": "(output_root, identity) → saved-facts receipt；无 selector/transport/LP；链损坏拒绝"
+    },
+    "train_policy": {
+      "status": "待实现",
+      "signature": "(training_plan, output_root) → model/training receipt；非有限/技术失败停批并保存分母"
+    }
+  },
+  "cli": {
+    "existing": "python3 PCT/outputs/PCT_P0_CONTRACT_20261114_01/audit.py",
+    "proposed": [
+      "inspect",
+      "prepare-data",
+      "validate-data",
+      "prepare-smoke",
+      "run-local",
+      "prepare-training",
+      "train",
+      "prepare-evaluation",
+      "run-job",
+      "resume-job",
+      "verify-saved",
+      "analyze"
+    ]
+  },
+  "p1a": [
+    {
+      "file": "PCT/pyproject.toml + src/pct_baseline/contracts.py + schemas/*.schema.json",
+      "work": "stdlib-light packaging; closed task/config/bundle/context resources, field/type and semantic validation"
+    },
+    {
+      "file": "PCT/src/pct_baseline/dataset.py",
+      "work": "verify two manifests, project task, compare all fields and persist only after checks"
+    },
+    {
+      "file": "PCT/src/pct_baseline/protocol.py",
+      "work": "descriptor + capacity1 context, canonical binding and whitelist"
+    },
+    {
+      "file": "PCT/src/pct_baseline/cli.py + configs/data_b1_v1.json",
+      "work": "prepare-data and validate-data; no model or transport"
+    },
+    {
+      "file": "PCT/tests/test_b1_{data,context,dispatch}.py",
+      "work": "B10–B12 and dual protocol absence/unknown cases"
+    },
+    {
+      "file": "external_changes.json P1-A entries",
+      "work": "apply only after scope authorized; reject official run until P1-B/C"
+    }
+  ],
+  "future_acceptance": {
+    "B10": {
+      "status": "NOT_RUN",
+      "expected": "两数据身份与逐字段物理/到货相等，派生仅改执行信息"
+    },
+    "B11": {
+      "status": "NOT_RUN",
+      "expected": "容量1、未到货隔离、EOS、最后一箱、空单和重复ID"
+    },
+    "B12": {
+      "status": "NOT_RUN",
+      "expected": "封闭双协议；缺包只阻塞新协议；拒绝未知后缀"
+    },
+    "B13": {
+      "status": "NOT_RUN",
+      "expected": "空、单、多、0/90、stackable、承载和四种 monitor 状态"
+    },
+    "B14": {
+      "status": "NOT_RUN",
+      "expected": "STABLE 一次提交；其余箱留 buffer、统计不变"
+    },
+    "B15": {
+      "status": "NOT_RUN",
+      "expected": "v3 数值和依赖身份冻结；拒绝关闭"
+    },
+    "B16": {
+      "status": "NOT_RUN",
+      "expected": "四处断点恢复，不重选/重监测/重提交"
+    },
+    "B17": {
+      "status": "NOT_RUN",
+      "expected": "各身份漂移拒绝、锁争用拒绝"
+    },
+    "B18": {
+      "status": "NOT_RUN",
+      "expected": "保存事实验证无 LP、选择或 transport"
+    },
+    "B20": {
+      "status": "NOT_RUN",
+      "expected": "原件、MIT 副本、patch 及来源摘要"
+    },
+    "B21": {
+      "status": "NOT_RUN",
+      "expected": "同权重 all-valid 概率/价值/梯度比较"
+    },
+    "B22": {
+      "status": "NOT_RUN",
+      "expected": "语法、分布、mask、density、参数生效逐项处置"
+    },
+    "B23": {
+      "status": "NOT_RUN",
+      "expected": "叶唯一回映且候选与动作字节相等"
+    },
+    "B24": {
+      "status": "NOT_RUN",
+      "expected": "padding 0、非法输出/超限拒绝、B=1及B>1"
+    },
+    "B25": {
+      "status": "NOT_RUN",
+      "expected": "同环境可重建、严格加载、权重标记"
+    },
+    "B26": {
+      "status": "NOT_RUN",
+      "expected": "公共载荷可追溯及 5/9、4kg 算例"
+    },
+    "B27": {
+      "status": "NOT_RUN",
+      "expected": "同几何异载荷仅改变承载 token"
+    },
+    "B28": {
+      "status": "NOT_RUN",
+      "expected": "未来/来源/诊断/终态变动不改变相同公开输入"
+    },
+    "B30": {
+      "status": "NOT_RUN",
+      "expected": "六 job 保存自然及技术终态，布局重算"
+    },
+    "B31": {
+      "status": "NOT_RUN",
+      "expected": "两次有限更新及恢复、有限损失和参数变更"
+    },
+    "B32": {
+      "status": "NOT_RUN",
+      "expected": "监测/推理次数、时延、峰值内存与产物量"
+    },
+    "B33": {
+      "status": "NOT_RUN",
+      "expected": "如实记录零 choice 或覆盖不足，固定任务不替换"
+    }
+  },
+  "revisions": [
+    {
+      "scope": "implementation",
+      "evidence": "selector.py:25 suffix rsplit returns v1 for b1_v1",
+      "resolution": "use exact descriptor lookup for result version"
+    },
+    {
+      "scope": "implementation",
+      "evidence": "CandidateProvider.build emits temporary empty selectable pool",
+      "resolution": "enforce equality only after physical guard; retain both schema-valid shapes"
+    },
+    {
+      "scope": "implementation",
+      "evidence": "graph_encoder.py:95–108 and attention_model.py:136–145,201–219",
+      "resolution": "strict masking in graph, glimpse and logits; all-valid comparison, padded behavior deliberately diverges"
+    },
+    {
+      "scope": "implementation",
+      "evidence": "Section 8.1 return formula written with n for all steps",
+      "resolution": "actual chunk remainder k and terminal/truncated bootstrap; singleton value-only forward counted separately, formal choice budget unchanged"
+    },
+    {
+      "scope": "environment",
+      "evidence": "contracts.py:54 same-quote nested f-string and project metadata Python >=3.11",
+      "resolution": "target Python 3.12+; no planner source edit proposed for P0"
+    },
+    {
+      "scope": "research scope/physics/budget",
+      "resolution": "no changes proposed to source cohorts, action semantics, monitor tolerances, seeds or run limits"
+    }
+  ]
+}

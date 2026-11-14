@@ -1,0 +1,8 @@
+{
+  "command": "PYTHONPATH=PCT/src \"$PCT_PY\" -m pct_baseline.cli validate-data --dataset PCT/outputs/PCT_P1_A_20261114_01/data --full-schema",
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/Users/cyw/Desktop/NBU_Papper/PCT/src/pct_baseline/cli.py\", line 17, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/Users/cyw/Desktop/NBU_Papper/PCT/src/pct_baseline/cli.py\", line 13, in main\n    result=prepare(args.repo,args.spec,args.output) if args.command=='prepare-data' else validate_data(args.repo,args.dataset,full_schema=args.full_schema)\n                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/cyw/Desktop/NBU_Papper/PCT/src/pct_baseline/dataset.py\", line 133, in validate_data\n    validate('execution_spec_b1_v1',spec)\n  File \"/Users/cyw/Desktop/NBU_Papper/PCT/src/pct_baseline/contracts.py\", line 48, in validate\n    from jsonschema import Draft202012Validator\nModuleNotFoundError: No module named 'jsonschema'\n",
+  "expected_exit": "nonzero",
+  "result": "EXPECTED"
+}

@@ -1,0 +1,128 @@
+{
+  "status": "NOT_APPLIED",
+  "entries": [
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py",
+      "functions": "新增 resolve_extension",
+      "evidence": "旧常量是封闭注册",
+      "proposed_patch": "精确匹配版本与 schema 名称到延迟协议描述器；旧路径返回 None",
+      "necessity": "现有公共路由无法通过该版本或容量边界",
+      "extension_call": "resolve_extension(精确版本) → pct_baseline.protocol 描述器",
+      "legacy_protection": "旧分支保持，旧 Schema 字节不变，旧路径不 import 扩展",
+      "regression": "无扩展时旧协议照常解析；新协议缺包报 PCT_B1_EXTENSION_MISSING；缺子依赖保留原诊断",
+      "identity_impact": "路径字节及源码快照变化，旧恢复需旧冻结代码；禁止重签历史身份",
+      "phase": "P1-A",
+      "application_status": "NOT_APPLIED"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py",
+      "functions": "schema_validator / validate_schema",
+      "evidence": "33–54，封闭名称和版本后缀",
+      "proposed_patch": "先验证新对象精确版本与 base name 配对，再读取 pct_baseline.schemas；旧分支照旧",
+      "necessity": "现有公共路由无法通过该版本或容量边界",
+      "extension_call": "resolve_extension(精确版本) → pct_baseline.protocol 描述器",
+      "legacy_protection": "旧分支保持，旧 Schema 字节不变，旧路径不 import 扩展",
+      "regression": "伪造 _v1 后缀及额外字段拒绝",
+      "identity_impact": "路径字节及源码快照变化，旧恢复需旧冻结代码；禁止重签历史身份",
+      "phase": "P1-A",
+      "application_status": "NOT_APPLIED"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py",
+      "functions": "load_config / protocol_suffix / business_evaluation_mode",
+      "evidence": "11–46，固定后缀与业务模式",
+      "proposed_patch": "新描述器公开 suffix=b1_v1、physical-only；无须改旧 config 资源",
+      "necessity": "现有公共路由无法通过该版本或容量边界",
+      "extension_call": "resolve_extension(精确版本) → pct_baseline.protocol 描述器",
+      "legacy_protection": "旧分支保持，旧 Schema 字节不变，旧路径不 import 扩展",
+      "regression": "容量3原配置和坏配置行为对照",
+      "identity_impact": "路径字节及源码快照变化，旧恢复需旧冻结代码；禁止重签历史身份",
+      "phase": "P1-A",
+      "application_status": "NOT_APPLIED"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py",
+      "functions": "is_packaging / public_facts / build_context / validate_runtime_context",
+      "evidence": "28–29、159–330，容量3及版本路由",
+      "proposed_patch": "is_packaging 注册新族；把事实构造抽成私有 helper，旧入口固定3、新协议明确传1；runtime_task 原样消费两个父 Schema",
+      "necessity": "现有公共路由无法通过该版本或容量边界",
+      "extension_call": "resolve_extension(精确版本) → pct_baseline.protocol 描述器",
+      "legacy_protection": "旧分支保持，旧 Schema 字节不变，旧路径不 import 扩展",
+      "regression": "旧 context 字节等价；容量不符拒绝",
+      "identity_impact": "路径字节及源码快照变化，旧恢复需旧冻结代码；禁止重签历史身份",
+      "phase": "P1-A",
+      "application_status": "NOT_APPLIED"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py",
+      "functions": "CandidateProvider.build / validate_bundle / PublicBusinessGuard.filter",
+      "evidence": "50–109，版本及校验路由",
+      "proposed_patch": "统一 schema/版本描述器；保留现有候选几何与 ID，核对后缀可否消去本文件独立补丁",
+      "necessity": "现有公共路由无法通过该版本或容量边界",
+      "extension_call": "resolve_extension(精确版本) → pct_baseline.protocol 描述器",
+      "legacy_protection": "旧分支保持，旧 Schema 字节不变，旧路径不 import 扩展",
+      "regression": "相同输入物理池一致、TopK、空池、单动作、多位置",
+      "identity_impact": "路径字节及源码快照变化，旧恢复需旧冻结代码；禁止重签历史身份",
+      "phase": "P1-A",
+      "application_status": "NOT_APPLIED"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py",
+      "functions": "ContextBuilder.build / validate_context / resolve_display_id",
+      "evidence": "88、244、325，包装枚举/分派",
+      "proposed_patch": "按新版本分派 PCT context 编解码，保留共同映射完整性检查",
+      "necessity": "现有公共路由无法通过该版本或容量边界",
+      "extension_call": "resolve_extension(精确版本) → pct_baseline.protocol 描述器",
+      "legacy_protection": "旧分支保持，旧 Schema 字节不变，旧路径不 import 扩展",
+      "regression": "篡改姿态、label 或摘要均拒绝",
+      "identity_impact": "路径字节及源码快照变化，旧恢复需旧冻结代码；禁止重签历史身份",
+      "phase": "P1-A",
+      "application_status": "NOT_APPLIED"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py",
+      "functions": "result / bind_decision",
+      "evidence": "21–44、116，结果版本和绑定",
+      "proposed_patch": "按描述器查结果版本，保留 result 接口及 singleton；新来源 pct_local/local_baseline/jev/singleton",
+      "necessity": "现有公共路由无法通过该版本或容量边界",
+      "extension_call": "resolve_extension(精确版本) → pct_baseline.protocol 描述器",
+      "legacy_protection": "旧分支保持，旧 Schema 字节不变，旧路径不 import 扩展",
+      "regression": "同一箱多位置需调用；假 label 不得提交",
+      "identity_impact": "路径字节及源码快照变化，旧恢复需旧冻结代码；禁止重签历史身份",
+      "phase": "P1-B",
+      "application_status": "NOT_APPLIED"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py",
+      "functions": "run_episode / _run_episode_v2",
+      "evidence": "55–82、198起，方法与任务绑定、checkpoint 和恢复条件",
+      "proposed_patch": "独立 extension 准入回调；同一循环；描述器给出 checkpoint 版本、DECISION_READY 保存和恢复行为，不使用 training_fork 冒充",
+      "necessity": "现有公共路由无法通过该版本或容量边界",
+      "extension_call": "resolve_extension(精确版本) → pct_baseline.protocol 描述器",
+      "legacy_protection": "旧分支保持，旧 Schema 字节不变，旧路径不 import 扩展",
+      "regression": "B13–B18；旧 v13 守卫不变",
+      "identity_impact": "路径字节及源码快照变化，旧恢复需旧冻结代码；禁止重签历史身份",
+      "phase": "P1-B/P1-C",
+      "application_status": "NOT_APPLIED"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py",
+      "functions": "is_monitored / preflight / validate_checkpoint",
+      "evidence": "20、62、211，封闭监测分派",
+      "proposed_patch": "识别新描述器；直接复用 exact_freeze/kernel_interface/validate_monitor；P1-C 使用新保存事实校验器",
+      "necessity": "现有公共路由无法通过该版本或容量边界",
+      "extension_call": "resolve_extension(精确版本) → pct_baseline.protocol 描述器",
+      "legacy_protection": "旧分支保持，旧 Schema 字节不变，旧路径不 import 扩展",
+      "regression": "禁用/版本漂移拒绝，监测各结果及保存恢复",
+      "identity_impact": "路径字节及源码快照变化，旧恢复需旧冻结代码；禁止重签历史身份",
+      "phase": "P1-B/P1-C",
+      "application_status": "NOT_APPLIED"
+    }
+  ],
+  "excluded": {
+    "execution.py": "config/selection/schema/context/monitor 注册后，现有 f-string 版本比较可直接消费 b1_v1，P1-B 验证",
+    "experiment.py": "沿 PCT 独立计划入口，复用 ledger 与公共循环",
+    "packaging_jev_v13.py": "train/Jev/账本约束保留，PCT 自己提供执行包装",
+    "旧 Schema、物理、第三方源码": "沿用原实现及冻结字节"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "version": "pct_b1_task_v1",
+  "task_id": "CONSTRUCTED_nonstackable",
+  "parent_data_identity": "8a14e8de856b8cc8a8f438e1d05abb42924f1896d54bc9f80ecf5702ba7a2584",
+  "parent_task_sha256": "3cdb7912abfad675c82f762efcde5f9c72a7c20ae9a0e629fce825873a8f7ad2",
+  "parent_task_digest": "3cdb7912abfad675c82f762efcde5f9c72a7c20ae9a0e629fce825873a8f7ad2",
+  "execution_spec_digest": "79e80ffa329b22a025ac487962c8d5804f35212c07220ef83fc76fef3a0c4b2b",
+  "source_component_id": "aaa44d1768ccc4ce8a4c66c37ffee94cb0c77c00ef97e56e7f09c5fd1b299f4b",
+  "exposure_status": "CONSTRUCTED_P1B_ONLY",
+  "partition": "constructed",
+  "parent_partition": "constructed",
+  "parent_layer": "constructed",
+  "layer": "constructed",
+  "container": {
+    "container_id": "CONSTRUCTED",
+    "coordinate_frame": "container_bottom_center",
+    "length_mm": 100,
+    "width_mm": 100,
+    "max_height_mm": 200,
+    "max_payload_kg": 1000
+  },
+  "arrival_order": [
+    "base",
+    "upper"
+  ],
+  "items": [
+    {
+      "item_id": "base",
+      "dimensions_mm": {
+        "length": 100,
+        "width": 100,
+        "height": 100
+      },
+      "mass_kg": 1,
+      "stackable": false,
+      "top_load_limit_kg_synthetic": 100,
+      "fragile": false,
+      "weight_class": "medium",
+      "product_category": "general"
+    },
+    {
+      "item_id": "upper",
+      "dimensions_mm": {
+        "length": 100,
+        "width": 100,
+        "height": 100
+      },
+      "mass_kg": 1,
+      "stackable": true,
+      "top_load_limit_kg_synthetic": 1000,
+      "fragile": false,
+      "weight_class": "medium",
+      "product_category": "general"
+    }
+  ],
+  "attributes": {
+    "base": {
+      "object_id": "base",
+      "cargo_category": "general",
+      "packaging": {
+        "reinforced": false
+      },
+      "labels": {
+        "no_top_load": true,
+        "max_top_load_kg": 100
+      },
+      "physical_top_load_limit_kg": 100
+    },
+    "upper": {
+      "object_id": "upper",
+      "cargo_category": "general",
+      "packaging": {
+        "reinforced": false
+      },
+      "labels": {
+        "no_top_load": false,
+        "max_top_load_kg": 1000
+      },
+      "physical_top_load_limit_kg": 1000
+    }
+  },
+  "regions": [],
+  "reference_policy": {
+    "version": "jev_packaging_load_dataset_v1",
+    "rules": []
+  },
+  "instruction_text": "Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.",
+  "buffer_capacity": 1,
+  "candidate_limits": {
+    "per_box": 16,
+    "joint": 48
+  },
+  "derived_task_digest": "a66ab61a88c7d0973ec0721f4f37efc0c24de4a6fd428c94f3821aa5b80d28c2"
+}

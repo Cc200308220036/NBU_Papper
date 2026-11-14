@@ -1,0 +1,61 @@
+{
+  "version": "pct_p1c_admission_v1",
+  "next_unit": "P1-C B16-B18",
+  "status": "READY",
+  "scope": "容量1同一公共循环的持久化、限定构造中断恢复、锁与漂移拒绝及纯保存事实验证；非正式矩阵准入",
+  "prerequisites": [
+    {
+      "requirement": "B10—B12数据/公开输入基础",
+      "status": "SATISFIED",
+      "evidence": "父P1-A QA及开发20项必要回归收据；本轮原包摘要核对",
+      "impact": "复用容量1输入与映射"
+    },
+    {
+      "requirement": "B13—B15选择/监测/提交基础",
+      "status": "SATISFIED",
+      "evidence": "本轮源码、保存事实和Schema核验；开发11项测试及追加数值补验",
+      "impact": "可进入P1-C实现"
+    },
+    {
+      "requirement": "可定位的四阶段快照",
+      "status": "SATISFIED_AS_INPUT",
+      "evidence": "DECISION_READY、SELECTED、MONITORED、COMMITTED归档存在且顺序一致",
+      "impact": "是恢复开发输入，不是恢复已通过"
+    },
+    {
+      "requirement": "精确v3环境及身份",
+      "status": "SATISFIED",
+      "evidence": "NBU3.12.16；NumPy2.3.5/SciPy1.15.3/jsonschema4.23.0，HiGHS二进制匹配",
+      "impact": "本轮未安装；后续身份漂移须拒绝"
+    },
+    {
+      "requirement": "journal/原子恢复/锁/保存事实validator",
+      "status": "NEXT_STAGE_WORK",
+      "evidence": "P1-B显式拒绝resume；CheckpointSink无完整恢复/锁承诺",
+      "impact": "必须P1-C完成，不提前作为P1-B缺陷"
+    },
+    {
+      "requirement": "P1-C实施和外部范围授权",
+      "status": "NOT_GRANTED_BY_QA",
+      "evidence": "本轮只审查；历史P1-B范围授权不能自动扩展",
+      "impact": "READY为技术建议，用户指定下一任务后再实施"
+    }
+  ],
+  "required": [
+    "独立版本化恢复准入，不放宽旧P1-B resume=false",
+    "四阶段跨新进程恢复不重复工作",
+    "任务/候选/源码/配置/依赖/策略身份漂移与锁争用拒绝",
+    "未实现模型权重/特征不伪造已完成验收，预留明确冻结接口并标适用范围",
+    "纯保存事实validator无候选重建/selector/transport/LP"
+  ],
+  "forbidden": [
+    "自动P2/P3",
+    "22任务矩阵",
+    "模型调用",
+    "训练",
+    "权重下载",
+    "修改内核/容差提高成绩",
+    "重签历史身份"
+  ],
+  "model_calls_authorized": 0
+}

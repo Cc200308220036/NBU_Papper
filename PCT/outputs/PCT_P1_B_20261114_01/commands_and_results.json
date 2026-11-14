@@ -1,0 +1,88 @@
+{
+  "commands": [
+    {
+      "command": "PYTHONPATH=PCT/src:semantic_pallet_planner/src PCT_P1B_EVIDENCE_DIR=<new cases> \"$NBU_PY\" -c <reviewed unittest runner: test_p1b_execution.py>",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_B_20261114_01/final_verification/p1b_tests.json",
+      "reused_completed_test_receipt": true
+    },
+    {
+      "command": "PYTHONPATH=PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -c <reviewed unittest runner: test_b1_*.py>",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_B_20261114_01/final_verification/p1a_regression.json",
+      "reused_completed_test_receipt": true
+    },
+    {
+      "command": "\"$NBU_PY\" -m pip check",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_B_20261114_01/final_verification/pip_check.json",
+      "reused_completed_test_receipt": true
+    },
+    {
+      "command": "\"$NBU_PY\" -m pip freeze --all",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_B_20261114_01/final_verification/pip_freeze.json",
+      "reused_completed_test_receipt": true
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_B_20261114_01/final_verification/git_diff_check.json"
+    }
+  ],
+  "local_p1b": "p1b_tests.json",
+  "local_regression": "p1a_regression.json",
+  "installation": "Not repeated; parent actual pip records",
+  "models": 0,
+  "training": 0,
+  "credential_reads": 0,
+  "scope": "Only constructions, no historical-order run, P1-C resume/locks NOT_RUN",
+  "guards": "Each P1-B test blocks socket.connect/connect_ex and transport.credential in its process; subprocess contents separately reviewed (Git read-only and old extension diagnosis only); not a whole-process formal proof",
+  "additional_actual_commands": [
+    {
+      "command": "\"$NBU_PY\" -m pip install --disable-pip-version-check --only-binary=:all: --report PCT/outputs/PCT_P1_B_20261114_01/pip_install_report.json scipy==1.15.3",
+      "exit_code": 0,
+      "stdout_log": "pip_install.log",
+      "installation": "actual installation, user-authorized"
+    },
+    {
+      "command": "python3 PCT/scripts/build_schemas_p1b.py",
+      "exit_code": 0,
+      "scope": "exclusive new Schema resources, old resources unchanged"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p1b_execution.py -v",
+      "exit_code": 1,
+      "evidence": "tests_initial.log",
+      "state": "fixed test exception expectation; no production tolerance change"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p1b_execution.py -v",
+      "exit_code": 0,
+      "evidence": "tests_second.log",
+      "tests": 8
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/scripts/verify_p1b.py --output PCT/outputs/PCT_P1_B_20261114_01/final_verification",
+      "exit_code": 1,
+      "evidence": "verification_failure.json",
+      "tests": "31 passed before metadata-stage import error"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/scripts/verify_p1b.py --output PCT/outputs/PCT_P1_B_20261114_01/final_verification --complete-checks",
+      "exit_code": 0,
+      "scope": "only metadata/AST/old-resource/old-output checks; no test rerun"
+    },
+    {
+      "command": "PCT_P1B_EVIDENCE_DIR=PCT/outputs/PCT_P1_B_20261114_01/numeric_recheck PYTHONPATH=PCT/tests:PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -m unittest test_p1b_execution.ExecutionTests.test_real_kernel_boundaries_and_residuals -v",
+      "exit_code": 0,
+      "evidence": "numeric_recheck.log",
+      "scope": "one targeted same numeric test after adding independent force/moment arithmetic"
+    },
+    {
+      "command": "\"$NBU_PY\" PCT/scripts/seal_p1b.py",
+      "exit_code": 0,
+      "scope": "read completed receipts; AST/hash/link checks and new delivery metadata only"
+    }
+  ]
+}

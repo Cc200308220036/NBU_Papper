@@ -1,0 +1,41 @@
+{
+  "commands": [
+    {
+      "command": "PYTHONPATH=PCT/src:semantic_pallet_planner/src PCT_P1B_EVIDENCE_DIR=<new cases> \"$NBU_PY\" -c <reviewed unittest runner: test_p1b_execution.py>",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_B_20261114_01/final_verification/p1b_tests.json",
+      "reused_completed_test_receipt": true
+    },
+    {
+      "command": "PYTHONPATH=PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -c <reviewed unittest runner: test_b1_*.py>",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_B_20261114_01/final_verification/p1a_regression.json",
+      "reused_completed_test_receipt": true
+    },
+    {
+      "command": "\"$NBU_PY\" -m pip check",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_B_20261114_01/final_verification/pip_check.json",
+      "reused_completed_test_receipt": true
+    },
+    {
+      "command": "\"$NBU_PY\" -m pip freeze --all",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_B_20261114_01/final_verification/pip_freeze.json",
+      "reused_completed_test_receipt": true
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_B_20261114_01/final_verification/git_diff_check.json"
+    }
+  ],
+  "local_p1b": "p1b_tests.json",
+  "local_regression": "p1a_regression.json",
+  "installation": "Not repeated; parent actual pip records",
+  "models": 0,
+  "training": 0,
+  "credential_reads": 0,
+  "scope": "Only constructions, no historical-order run, P1-C resume/locks NOT_RUN",
+  "guards": "Each P1-B test blocks socket.connect/connect_ex and transport.credential in its process; subprocess contents separately reviewed (Git read-only and old extension diagnosis only); not a whole-process formal proof"
+}

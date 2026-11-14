@@ -1,0 +1,180 @@
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
+index d3155329..e455f81b 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
+@@ -1,6 +1,6 @@
+ """Fill-then-plan direct-selection simulator. Checkpoints own durable state."""
+ from __future__ import annotations
+-from .packaging_versions import EXACT_VERSION
++from .packaging_versions import EXACT_VERSION, resolve_extension
+ 
+ import copy
+ import time
+@@ -53,8 +53,18 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
+ 
+ 
+ def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
+-                hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None):
++                hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None, extension_execution=None):
+     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
++    extension = resolve_extension(config.get('version'))
++    if extension is not None:
++        extension.admit_execution(task, selector, config, execution=extension_execution,
++            job_id=job_id, method=method, resume=resume, on_checkpoint=on_checkpoint,
++            expected_events=expected_events, training_fork=training_fork,
++            memory_snapshot=memory_snapshot, memory_view=memory_view, memory_driver=memory_driver)
++        return _run_episode_v2(task, selector, copy.deepcopy(config), job_id=job_id, method=method,
++            on_checkpoint=on_checkpoint, hook=hook, event_limit=event_limit)
++    if extension_execution is not None:
++        raise JevSelectError('pct_b1_execution_protocol_mismatch')
+     if config.get('version')=='jev_packaging_jm_no_memory_v13' and (training_fork is None or training_fork.get('version')!='jev_jm_v13_execution_v1'):
+         raise JevSelectError('jm13_explicit_execution_route_required')
+     if memory_driver is not None and not is_driven(config):
+@@ -207,6 +217,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+     decision_started = None
+ 
+     from .stability.monitor import is_monitored, preflight, seal_checkpoint, validate_checkpoint
++    extension = resolve_extension(config.get('version'))
+     monitored = is_monitored(config)
+     if monitored:
+         preflight(config)
+@@ -441,7 +452,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+                 event=copy.deepcopy(pending);times=event['timings']
+             route = decision_route(bundle)
+             event.update(route=route,observation=req,bundle=bundle.data,context=context.data)
+-            if ((jm_recovery or jm_v13) and (pending is None or phase=='DECISION_READY')) or is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
++            if ((jm_recovery or jm_v13 or extension is not None) and (pending is None or phase=='DECISION_READY')) or is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
+                 pending=copy.deepcopy(event);phase='DECISION_READY';persist()
+             if hook: hook('decision_ready',event)
+             if route == 'STOP_NO_PHYSICAL_CANDIDATE':
+@@ -462,6 +473,8 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+                 if not recovering:
+                     if method == 'shared_business_lexicographic': times['public_business_s'] = elapsed
+                     else: times['selection_s'] = elapsed
++                if extension is not None:
++                    extension.validate_selection(context,selection,config)
+                 event['selection'] = selection.data
+                 if selection.data['status'] not in ('selected','singleton'):
+                     reason = selection.data['status'].upper()
+@@ -475,7 +488,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+                             pending = copy.deepcopy(event); phase = 'SELECTED'; persist()
+                             if hook: hook('after_selected_checkpoint',checkpoint())
+                         if event['monitor'] is None:
+-                            event['monitor'] = monitor_selected_action(state,chosen,event,config)
++                            event['monitor'] = monitor_selected_action(copy.deepcopy(state),copy.deepcopy(chosen),copy.deepcopy(event),config) if extension is not None else monitor_selected_action(state,chosen,event,config)
+                             pending = copy.deepcopy(event); phase = 'MONITORED'; persist()
+                             if hook: hook('after_monitored_checkpoint',checkpoint())
+                         else:
+@@ -524,7 +537,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+     if monitored and reason is not None:
+         phase = 'TERMINATED'
+         persist()
+-    summary = summarize_v2(task,config,method,state,events,reason) if reason is not None else None
++    summary = (extension.summarize_episode(task,config,method,state,events,reason) if extension is not None else summarize_v2(task,config,method,state,events,reason)) if reason is not None else None
+     if summary is not None and is_v3(config):
+         from .memory_retrieval import memory_statistics
+         summary.update(version='jev_order_metrics_v3', memory_snapshot_digest=digest(memory_snapshot.data),memory_statistics=memory_statistics(events))
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py
+index ba975c40..cfedaa84 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py
+@@ -42,9 +42,11 @@ JM_TRAINING_FREEZE_PROTOCOLS={JM_TRAINING_FREEZE_VERSION:'packaging_jev_training
+ 
+ # P1-A exact, lazy registration. No order/monitor/recovery admission.
+ PCT_B1_VERSIONS = frozenset({'pct_b1_config_v1', 'pct_b1_task_v1',
+-    'pct_b1_execution_spec_v1', 'jev_candidate_bundle_b1_v1', 'jev_decision_context_b1_v1'})
++    'pct_b1_execution_spec_v1', 'jev_candidate_bundle_b1_v1', 'jev_decision_context_b1_v1',
++    'jev_selection_result_b1_v1', 'jev_checkpoint_b1_v1'})
+ PCT_B1_SCHEMAS = frozenset({'config_b1_v1', 'task_b1_v1', 'execution_spec_b1_v1',
+-    'candidate_bundle_b1_v1', 'decision_context_b1_v1'})
++    'candidate_bundle_b1_v1', 'decision_context_b1_v1',
++    'selection_result_b1_v1', 'checkpoint_b1_v1'})
+ 
+ 
+ def resolve_extension(identifier):
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py
+index 4b61afd8..65912da0 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py
+@@ -1,6 +1,6 @@
+ """Choice validation and same-pool selectors. No reference policy or future stream."""
+ from __future__ import annotations
+-from .packaging_versions import EXACT_CONTEXT
++from .packaging_versions import EXACT_CONTEXT, resolve_extension
+ 
+ import math
+ from typing import Protocol
+@@ -20,10 +20,11 @@ class CandidateSelector(Protocol):
+ 
+ def result(context, *, status, source, label=None, attempt=None, payload=None, error=None):
+     value = context.data
++    extension = resolve_extension(value['version'])
+     metadata = payload or {}
+     answer = metadata.get("answers", {}).get("next_action", {})
+     saved = attempt["transport"] if attempt else None
+-    selection = {"version": "jev_selection_result_" + value["version"].rsplit("_", 1)[1], "status": status,
++    selection = {"version": extension.PAIRS["selection_result"][0] if extension else "jev_selection_result_" + value["version"].rsplit("_", 1)[1], "status": status,
+                  "selected_display_id": label,
+                  "selected_candidate_id": None if label is None else value["display_mapping"][label]["candidate_id"],
+                  "source": source, "requested_model": value["request_body"]["model"] if value["request_body"] and source in ("jev", "test_double") else None,
+@@ -32,13 +33,15 @@ def result(context, *, status, source, label=None, attempt=None, payload=None, e
+                  "usage": metadata.get("usage"), "latency_s": saved["latency_s"] if saved else None,
+                  "local_binding_digest": digest(value["local_binding"]),
+                  "raw_response_digest": saved["raw_sha256"] if saved else None, "error": error}
+-    if value['version'] in ('jev_decision_context_v13','jev_decision_context_v6','jev_decision_context_v7','jev_decision_context_v8','jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT):
++    if extension is not None or value['version'] in ('jev_decision_context_v13','jev_decision_context_v6','jev_decision_context_v7','jev_decision_context_v8','jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT):
+         selection.update(network_attempted=saved['network_attempted'] if saved else False,
+                          error_stage=('response_validation' if status=='invalid_response' else (saved or {}).get('error_stage')) if error else None,
+                          error_code=error)
+     if value['version'] == 'jev_decision_context_v3' and error is not None:
+         selection['error_stage'] = 'response_validation' if status == 'invalid_response' else (saved or {}).get('error_stage', 'selection')
+         selection['error_code'] = error
++    if extension is not None:
++        selection['inference_receipt'] = None
+     validate_schema("selection_result", selection)
+     return SelectionResult.from_dict(selection)
+ 
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py
+index c41c275b..16b2a394 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py
+@@ -4,7 +4,7 @@ Durability belongs to the shared episode checkpoint. This module owns frozen
+ monitor identity, exact-action credentials and validation without reassessment.
+ """
+ from __future__ import annotations
+-from ..packaging_versions import EXACT_VERSION
++from ..packaging_versions import EXACT_VERSION, resolve_extension
+ 
+ import copy
+ import time
+@@ -18,6 +18,9 @@ TERMINATIONS = {'UNSTABLE':'PREDICTED_STATIC_INSTABILITY',
+ 
+ 
+ def is_monitored(config):
++    if config.get('version') == 'pct_b1_config_v1':
++        resolve_extension(config['version'])
++        return True
+     return config.get('version') in ('jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
+ 
+ 
+@@ -61,6 +64,9 @@ def load_monitor_config(*, data_identity, task_digest, method='local_geometry_te
+ 
+ def preflight(config):
+     validate_schema('config', config)
++    if config['version']=='pct_b1_config_v1':
++        resolve_extension(config['version']).preflight(config)
++        return
+     if config['version']=='jev_packaging_jm_no_memory_v13':
+         from ..packaging_jev_v13 import preflight
+         preflight(config)
+@@ -171,6 +177,10 @@ def monitor_selected_action(state, candidate, event, config):
+ 
+ 
+ def validate_monitor(row, state, candidate, event, config, *, require_stable=False):
++    if config.get('version') == 'pct_b1_config_v1':
++        # Reject disabling even for callers that bypassed episode preflight.
++        if config['stability_monitor']['enabled'] is not True or config['stability_monitor']['algorithm'] != 'pct_exact_pose_network_v3':
++            raise JevSelectError('pct_b1_exact_monitor_required')
+     expected_keys = {'version','binding','status','result','attempted','committed','result_digest','credential_digest'}
+     if set(row) != expected_keys or row['version'] != 'selected_action_monitor_v1':
+         raise JevSelectError('invalid_monitor_record')

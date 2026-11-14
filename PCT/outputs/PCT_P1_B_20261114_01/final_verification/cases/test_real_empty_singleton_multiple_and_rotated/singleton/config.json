@@ -1,0 +1,103 @@
+{
+  "version": "pct_b1_config_v1",
+  "model": null,
+  "buffer_capacity": 1,
+  "candidate_backend": "e2_original_v1",
+  "per_object_top_k": 16,
+  "joint_candidates_max": 48,
+  "selectable_pool": "physical_feasible",
+  "policy_source": "packaging_physical_only",
+  "selector": "geometry_b1",
+  "feature_version": "packaging_physical_facts_v1",
+  "prompt_version": "packaging_load_en_v1",
+  "display_order_seed": 20261102,
+  "max_request_bytes": 96000,
+  "memory_mode": "none",
+  "experiment_protocol": "jev_packaging_runtime_v1",
+  "business_mode": "physical_only",
+  "execution_version": "physical_commit_v1",
+  "evaluation_version": "packaging_loading_metrics_v1",
+  "execution_spec_digest": "79e80ffa329b22a025ac487962c8d5804f35212c07220ef83fc76fef3a0c4b2b",
+  "model_identity": null,
+  "stability_monitor": {
+    "enabled": true,
+    "algorithm": "pct_exact_pose_network_v3",
+    "kernel_config": {
+      "algorithm": "pct_exact_pose_network_v3",
+      "setting": 1,
+      "height_tolerance_mm": 1e-06,
+      "mass_atol_kg": 1e-09,
+      "mass_rtol": 1e-09,
+      "moment_atol_kg_mm": 1e-06,
+      "moment_rtol": 1e-09,
+      "solver_tolerance": 1e-10,
+      "scaled_residual_tolerance": 1e-09,
+      "strict_interior_slack": 1e-10,
+      "certificate_gap": 1e-08,
+      "presolve": false,
+      "solver": "highs-ds",
+      "selection": "max_network_interior_then_lexicographic_forces"
+    },
+    "algorithm_identity": {
+      "algorithm": "pct_exact_pose_network_v3",
+      "upstream_commit": "5e7b4238b18310af4529e0f85157d17de605850c",
+      "semantic_revision": "exact_pose_contacts_global_equilibrium_v3",
+      "files_sha256": {
+        "balance_contracts.py": "3337a88ec4ffccacba29bf47efd5c3989fec45d9ec0b01bd4c533d39459b9d85",
+        "balance_network.py": "f792d46136fb6f7d94dc26da6816912cf20361f8e893a9c13155207148aec96a",
+        "balance_adapter.py": "34295011c5eaebfdbd723a3de7510fccc858abf3bc7b6e742fb48b818276c4bc",
+        "contracts.py": "997a33ecec9672b9c2134b128203cc6c64c61811cc56b8f25f532337353d37e5",
+        "geometry.py": "e0c7a631f4c301e72bad11b1dc58c3eb180df2e2e972d066b2adbe849a60dc00",
+        "__init__.py": "8d7d6133025039e06c347b4f7c7fa7b7324ad0a329b74c9296c5288ea3e974f4",
+        "vendor/__init__.py": "cbdac086937385282bead97cf5202ad7d2b4e3a0649bf9d9fdd7812020782ec8",
+        "vendor/pct/__init__.py": "37b74d6bc0ea7c33a76f02bf5bfa48ef5ecd6999441b437cf40a1b714fb8e8e8",
+        "vendor/pct/space.py": "ba0d5268463eb280006582b43cff83d935bdeb33950e5f8161c1a46e12f2fef7",
+        "vendor/pct/convex_hull.py": "b86f2726fec797814db3e785ce00b4e7ebe9376b389226bb843c1a9599eeb1d8",
+        "vendor/pct/PctTools.py": "e23d4bbb7e4997734212c9f0bd902bd06b18ac964a0e7fd6585bc040febc0ea8",
+        "vendor/pct/LICENSE": "064dff533bd13cc3e33b6ff3bf1639ba1d74d116e1955e9bfd94329fa083787a",
+        "vendor/pct/upstream_manifest.json": "56c8046d76dc639da843b1e936ddef8ebc529adfd31f6c8eac891d80a03765b8",
+        "vendor/pct/compatibility.patch": "46d0adfc32c35b509565c6bc9dfb94a4236f912e80c19b295963e9921d855ff4",
+        "vendor/pct/UPSTREAM.md": "6afdcd0adc7f92e845871d6095ada5b17cb24886407ae38d73b439e49fc9b037",
+        "BALANCE_DESIGN.md": "03ba8f54e3a4abe0f1695e7e25ea56a4c759a6c3ac9bb593d54a717ebe812bfc",
+        "BALANCE_CHANGES.md": "8b2837174a51d08a3e0364c47951f2e6dfa2da3c92392f868bbfe4ff7853abe6",
+        "configs/pct_contact_network_v2.json": "2649cf80610c86dbc07b939c45f0575cc4329afb93cdd83ae38d859b2e353c52",
+        "schemas/stability_config_v2.schema.json": "df4936256679122f902d9985f8123984e3e23584747a6446a740361fd5fcec80",
+        "schemas/stability_result_v2.schema.json": "e5b57386ba603f126cb6ece48e3a21903b7c225bafb972c615db3bda9da09631",
+        "exact_contracts.py": "1f95d20400a0f1a8784826da108094ebf1b18f0ab4bf4cc87b8031561044d3ef",
+        "exact_adapter.py": "e1b21d9b5ed7a68849b7db4144798903bc103fef37fe9a40d6bc01713149ac7b",
+        "schemas/stability_result_v3.schema.json": "6fbd354cd35af1d7b2eacae3a0eb371f9910eccc7310004e10f7744b8097ed1e"
+      },
+      "source_digest": "976f7279a6066b9d720d861e9b962eddd1d449b237c3c05d48404556f1d93384",
+      "dependencies": {
+        "numpy": "2.3.5",
+        "scipy": "1.15.3",
+        "highs_version": "1.8.0",
+        "highs_core_sha256": "fd2429cd52ae8f7cd4aaf0c68dcd71e3b8989be98f6d489af07de1daf607fb1c",
+        "scipy_python_sha256": {
+          "_linprog.py": "4c697d93d22887e8601d882d9dd37904d714e2fa9fa599bcc2144ad9fe1e8504",
+          "_linprog_highs.py": "c8df70ef51eceaa15804d836d4bea0cfad7eb339662cf51a7db95912bcb2cf2d"
+        }
+      },
+      "dependency_digest": "53c562b9460fa8fa5581e711594163d8578c79fac1dbe3957bfc0ad44eb51acd",
+      "units": {
+        "length": "mm",
+        "mass": "kg",
+        "moment": "kg*mm"
+      }
+    },
+    "execution_environment": {
+      "python": "3.12.16 (main, Oct 26 2026, 11:31:43) [Clang 21.1.8 ]",
+      "executable": "/Users/cyw/miniconda3/envs/NBU/bin/python",
+      "platform": "macOS-27.2-arm64-arm-64bit",
+      "numpy": "2.3.5",
+      "numpy_core_sha256": "96ce8cda1e4f1a3107e5c945b68bcd970c3de09019fc19beda4cc0319609de09"
+    }
+  },
+  "runtime_identity": {
+    "data_identity": "8a14e8de856b8cc8a8f438e1d05abb42924f1896d54bc9f80ecf5702ba7a2584",
+    "physical_identity": "5dba6225adb6e75b52efe28af23abfdb8632307c33390fc361e9ca1839b159b2",
+    "strategy_identity": "2223a858e56c7d168bca431ecf3edeac93a76dce86b9b35692859dc15314d6e5",
+    "task_identity": "19c0575b79db838ee65de778b1fb5ecf0ad858a5def82ff71841225025af29fb",
+    "monitor_identity": "00d75cc86f7e5b58412952ffb59f2e023fc9b6e6ee411a9ce48cef66baac1c9c"
+  }
+}

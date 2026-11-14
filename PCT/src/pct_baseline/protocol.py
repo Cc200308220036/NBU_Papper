@@ -4,6 +4,9 @@ from .contracts import require, digest
 VERSION = 'pct_b1_config_v1'
 SUFFIX = 'b1_v1'
 PAIRS = {
+    'selection_result': ('jev_selection_result_b1_v1', 'selection_result_b1_v1'),
+    'checkpoint': ('jev_checkpoint_b1_v1', 'checkpoint_b1_v1'),
+    'constructed_execution': ('pct_b1_constructed_execution_v1', 'constructed_execution_b1_v1'),
     'config': ('pct_b1_config_v1', 'config_b1_v1'),
     'candidate_bundle': ('jev_candidate_bundle_b1_v1', 'candidate_bundle_b1_v1'),
     'decision_context': ('jev_decision_context_b1_v1', 'decision_context_b1_v1'),
@@ -68,3 +71,25 @@ def validate_observed(observation):
     require([o['object_id'] for o in available] == [p['object_id'] for p in buffer['pending']], 'PCT_B1_PENDING')
     require(all(p['slot'] == 0 for p in buffer['pending']), 'PCT_B1_SLOT')
     require(not (available and buffer['end_of_stream']), 'PCT_B1_EARLY_EOS')
+
+
+# P1-B: only a separately bound, persisted construction route. P1-C resume and
+# official task/matrix admission remain absent; the P1-A flag stays False.
+def admit_execution(*args, **kwargs):
+    from .execution import admit_execution as admit
+    return admit(*args, **kwargs)
+
+
+def preflight(config):
+    from .execution import preflight as check
+    return check(config)
+
+
+def summarize_episode(*args):
+    from .execution import summarize_episode as summarize
+    return summarize(*args)
+
+
+def validate_selection(*args):
+    from .execution import validate_selection as check
+    return check(*args)

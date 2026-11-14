@@ -42,9 +42,11 @@ JM_TRAINING_FREEZE_PROTOCOLS={JM_TRAINING_FREEZE_VERSION:'packaging_jev_training
 
 # P1-A exact, lazy registration. No order/monitor/recovery admission.
 PCT_B1_VERSIONS = frozenset({'pct_b1_config_v1', 'pct_b1_task_v1',
-    'pct_b1_execution_spec_v1', 'jev_candidate_bundle_b1_v1', 'jev_decision_context_b1_v1'})
+    'pct_b1_execution_spec_v1', 'jev_candidate_bundle_b1_v1', 'jev_decision_context_b1_v1',
+    'jev_selection_result_b1_v1', 'jev_checkpoint_b1_v1'})
 PCT_B1_SCHEMAS = frozenset({'config_b1_v1', 'task_b1_v1', 'execution_spec_b1_v1',
-    'candidate_bundle_b1_v1', 'decision_context_b1_v1'})
+    'candidate_bundle_b1_v1', 'decision_context_b1_v1',
+    'selection_result_b1_v1', 'checkpoint_b1_v1'})
 
 
 def resolve_extension(identifier):

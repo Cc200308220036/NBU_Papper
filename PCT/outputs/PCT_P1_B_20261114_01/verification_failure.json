@@ -1,0 +1,9 @@
+{
+  "command": "\"$NBU_PY\" PCT/scripts/verify_p1b.py --output PCT/outputs/PCT_P1_B_20261114_01/final_verification",
+  "exit_code": 1,
+  "stage": "after 11 P1-B tests,20 P1-A tests and pip check/freeze completed successfully",
+  "error": "ModuleNotFoundError: No module named 'semantic_pallet_planner' in verification parent process",
+  "cause": "runner configured PYTHONPATH for subprocesses but omitted public source path for its own metadata imports",
+  "fix": "add explicit public source path; --complete-checks resumes only unfinished metadata/AST/byte checks without repeating business tests",
+  "existing_receipts": "preserved, not overwritten"
+}

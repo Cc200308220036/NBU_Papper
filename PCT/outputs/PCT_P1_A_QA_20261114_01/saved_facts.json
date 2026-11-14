@@ -1,0 +1,799 @@
+{
+  "source_hashes": {
+    "PCT/configs/data_b1_v1.json": true,
+    "PCT/pyproject.toml": true,
+    "PCT/scripts/build_schemas.py": true,
+    "PCT/scripts/seal_p1a.py": true,
+    "PCT/scripts/verify_p1a.py": true,
+    "PCT/scripts/verify_p1a_nbu.py": true,
+    "PCT/src/pct_baseline/__init__.py": true,
+    "PCT/src/pct_baseline/cli.py": true,
+    "PCT/src/pct_baseline/contracts.py": true,
+    "PCT/src/pct_baseline/dataset.py": true,
+    "PCT/src/pct_baseline/protocol.py": true,
+    "PCT/src/pct_baseline/schemas/candidate_bundle_b1_v1.schema.json": true,
+    "PCT/src/pct_baseline/schemas/config_b1_v1.schema.json": true,
+    "PCT/src/pct_baseline/schemas/decision_context_b1_v1.schema.json": true,
+    "PCT/src/pct_baseline/schemas/execution_spec_b1_v1.schema.json": true,
+    "PCT/src/pct_baseline/schemas/task_b1_v1.schema.json": true,
+    "PCT/tests/test_b1_context.py": true,
+    "PCT/tests/test_b1_data.py": true,
+    "PCT/tests/test_b1_dispatch.py": true,
+    "PCT/tests/test_b1_integration.py": true,
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py": true,
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py": true,
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py": true,
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py": true,
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py": true,
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py": true
+  },
+  "delivery_hashes": {
+    "PCT/README.md": true,
+    "PCT/configs/data_b1_v1.json": true,
+    "PCT/docs/PCT_P1A_NBU环境补验_20261114_02.md": true,
+    "PCT/docs/README.md": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/acceptance.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/ast.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/baseline.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/commands_and_results.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/dataset.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100027_controlled_base.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100027_controlled_capacity_tight.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100027_controlled_heterogeneous.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100027_source_difficult.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100090_controlled_base.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100090_controlled_capacity_tight.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100090_controlled_heterogeneous.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100090_source_difficult.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100150_controlled_base.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100150_controlled_capacity_tight.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100150_controlled_heterogeneous.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100150_source_difficult.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100153_controlled_base.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100153_controlled_capacity_tight.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100153_controlled_heterogeneous.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/NEW_00100153_source_difficult.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/SYN_COMBO_01.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/SYN_COMBO_02.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/SYN_COMBO_03.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/SYN_COMBO_04.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/SYN_COMBO_05.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/data/tasks/SYN_COMBO_06.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/dispatch_guard_source.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/environment.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/external_changes.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/full_schema.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/git_diff_check.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/guarded_tests.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/handoff.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/historical_packages.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/identity.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/installation.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/legacy_resources.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/limitations.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/package_records.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/pip_check.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/pip_freeze.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/prepare_data.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/public_import.json": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/tests_final.log": true,
+    "PCT/outputs/PCT_P1_A_NBU_20261114_02/tests_initial.log": true,
+    "PCT/pyproject.toml": true,
+    "PCT/scripts/build_schemas.py": true,
+    "PCT/scripts/seal_p1a.py": true,
+    "PCT/scripts/verify_p1a.py": true,
+    "PCT/scripts/verify_p1a_nbu.py": true,
+    "PCT/src/pct_baseline/__init__.py": true,
+    "PCT/src/pct_baseline/cli.py": true,
+    "PCT/src/pct_baseline/contracts.py": true,
+    "PCT/src/pct_baseline/dataset.py": true,
+    "PCT/src/pct_baseline/protocol.py": true,
+    "PCT/src/pct_baseline/schemas/candidate_bundle_b1_v1.schema.json": true,
+    "PCT/src/pct_baseline/schemas/config_b1_v1.schema.json": true,
+    "PCT/src/pct_baseline/schemas/decision_context_b1_v1.schema.json": true,
+    "PCT/src/pct_baseline/schemas/execution_spec_b1_v1.schema.json": true,
+    "PCT/src/pct_baseline/schemas/task_b1_v1.schema.json": true,
+    "PCT/tests/test_b1_context.py": true,
+    "PCT/tests/test_b1_data.py": true,
+    "PCT/tests/test_b1_dispatch.py": true,
+    "PCT/tests/test_b1_integration.py": true,
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py": true,
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py": true,
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py": true,
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py": true,
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py": true,
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py": true
+  },
+  "legacy_resources": [
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/business_spec_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/business_state.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v10.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v11.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v12.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v13.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v3.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v4.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v5.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v6.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v7.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v8.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v9.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v10.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v11.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v12.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v13.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v3.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v4.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v5.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v6.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v7.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v8.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v9.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v10.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v11.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v12.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v13.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v3.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v4.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v5.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v6.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v7.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v8.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/config_v9.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/contrast_order_metrics_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v10.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v11.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v12.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v13.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v3.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v4.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v5.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v6.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v7.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v8.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v9.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_control_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_dataset_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_episode_metrics_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_memory_view_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_order_metrics_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_orders_plan_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_orders_run_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_packaging_task_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_plan_blocked_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/evaluation_retrieval_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_activation_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_checkpoint_journal_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_constructed_budget_metadata_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_continuation_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_forced_selection_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_fork_binding_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_fork_start_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_recovery_checkpoint_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_recovery_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_repeat_schedule_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_sampling_public_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_saved_bytes_audit_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_training_freeze_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_training_plan_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_training_template_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_v13_execution.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_v13_journal.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_v13_metrics.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_v13_schedule.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/jm_v13_start.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/memory_card.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/memory_episode_export.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/memory_generation_result.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/memory_generator_config.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/memory_index.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/memory_order_metrics_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/memory_query.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/memory_retrieval.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/memory_review.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/memory_review_authorization.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/memory_snapshot.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/metrics_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/metrics_v3.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/monitored_order_metrics_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/order_metrics_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/order_metrics_v3.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_branch_receipt_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_comparison_plan_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_comparison_record_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_comparison_record_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_contrast_card_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_contrast_fact_pack_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_contrast_generation_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_contrast_public_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_contrast_snapshot_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_contrast_view_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_evidence_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_fork_binding_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_fork_plan_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_fork_snapshot_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_full_order_decision_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_full_order_plan_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_full_order_plan_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_full_order_run_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_load_config_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_load_task_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_memory_query_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_memory_snapshot_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_memory_view_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_order_metrics_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_public_fragment_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_reanalysis_plan_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/packaging_trajectory_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/pilot_decision_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/pilot_memory_view_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/pilot_order_metrics_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/pilot_plan_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/pilot_retrieval_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/pilot_run_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/plan_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/plan_v3.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/remote_order_metrics_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v10.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v11.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v12.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v13.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v3.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v4.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v5.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v6.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v7.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v8.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v9.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/source_provenance_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/source_trust_policy_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/synthetic_dataset_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/synthetic_orders_plan_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/synthetic_orders_run_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/synthetic_registration_v1.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/synthetic_remainder_plan_v3.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/synthetic_supplement_plan_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/synthetic_supplement_run_v2.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/transport_result.schema.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/configs/business_spec_v1.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/configs/business_spec_v2.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/configs/generator_v1.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/configs/jev_direct_v1.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/configs/jev_orders_business_eval_v2.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/configs/jev_public_memory_v3.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/configs/memory_generation_prompt_v1.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/configs/memory_generation_prompt_v2.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/configs/memory_generation_prompt_v3.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/configs/memory_generation_prompt_v4.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/configs/memory_generation_v1.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/configs/packaging_load_v1.json",
+      "same": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/configs/packaging_runtime_v4.json",
+      "same": true
+    }
+  ],
+  "interpreter_hash_matches": true,
+  "head": "25be41c789407abc3a7be48bbe80094127b44649"
+}

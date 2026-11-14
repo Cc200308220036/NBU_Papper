@@ -1,0 +1,33 @@
+{
+  "commands": [
+    {
+      "command": "python3 PCT/outputs/PCT_P1_B_QA_20261114_01/check_saved.py",
+      "exit_code": 0,
+      "result": "33源码/322交付/172旧资源匹配；16episodes、21monitor、16commit；阶段/绑定/账目/反力残差重算通过"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 \"$NBU_PY\" PCT/outputs/PCT_P1_B_QA_20261114_01/check_schemas.py",
+      "exit_code": 0,
+      "result": "241次保存对象Schema验证；23内核文件、当前依赖元数据、解释器/HiGHS二进制摘要匹配"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "script_review": {
+    "verify_p1b.py": "完整审查：会执行构造订单、候选生成及真实LP，并写新收据；本轮未运行。complete-checks也非必要独立QA入口。",
+    "test_p1b_execution.py": "完整阅读，仅用于核对归档行为和测试范围；本轮未执行。",
+    "QA_scripts": "只读文件/摘要/Schema/依赖元数据与算术，不导入planner或numpy/scipy，不执行业务。"
+  },
+  "not_run_this_QA": [
+    "开发31项业务/回归测试重跑",
+    "订单",
+    "候选生成",
+    "LP",
+    "安装",
+    "模型请求",
+    "训练"
+  ],
+  "credential_reads": 0
+}

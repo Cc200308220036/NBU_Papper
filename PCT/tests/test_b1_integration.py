@@ -132,15 +132,15 @@ class PublicIntegrationTests(unittest.TestCase):
         self.assertTrue(context.data['model_state']['buffer']['end_of_stream'])
         self.assertEqual(context.data['model_state']['available_objects'],[])
 
-    def test_legacy_capacity3_context_identical_to_head_source(self):
+    def test_legacy_capacity3_context_identical_to_original_source(self):
         from semantic_pallet_planner.jev_select.packaging_runtime import no_policy,build_context
         from semantic_pallet_planner.jev_select.config import protocol_suffix
         config,req,bundle,context=self.context(self.config(new=False))
         self.assertEqual(protocol_suffix(config),'v4')
-        original=subprocess.run(['git','show','HEAD:semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py'],cwd=ROOT,text=True,capture_output=True,check=True).stdout
+        original=subprocess.run(['git','show','2e4edb3215100f862a9e5c46fc03324ed1f41cb8:semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py'],cwd=ROOT,text=True,capture_output=True,check=True).stdout
         baseline=types.ModuleType('baseline_packaging_runtime')
         baseline.__package__='semantic_pallet_planner.jev_select'
-        exec(compile(original,'HEAD/packaging_runtime.py','exec'),baseline.__dict__)
+        exec(compile(original,'2e4edb32/packaging_runtime.py','exec'),baseline.__dict__)
         self.assertEqual(context.data,baseline.build_context(config,req,bundle,no_policy(req)).data)
         req1,bundle1=self.constructed(1)
         with self.assertRaises(ValueError):build_context(config,req1,bundle1,no_policy(req1))
@@ -155,3 +155,44 @@ class PublicIntegrationTests(unittest.TestCase):
         code="from semantic_pallet_planner.jev_select.packaging_versions import resolve_extension; resolve_extension('pct_b1_config_v1')"
         new=subprocess.run([sys.executable,'-c',code],cwd=ROOT,env=env,text=True,capture_output=True)
         self.assertNotEqual(new.returncode,0);self.assertIn('PCT_B1_EXTENSION_MISSING',new.stderr)
+
+    def test_real_missing_internal_dependency_is_not_extension_missing(self):
+        import os,sys,tempfile
+        with tempfile.TemporaryDirectory() as directory:
+            package=Path(directory)/'pct_baseline';package.mkdir()
+            (package/'__init__.py').write_text('')
+            (package/'protocol.py').write_text('import pct_b1_intentionally_missing_dependency\n')
+            env=dict(os.environ,PYTHONPATH=directory+os.pathsep+str(ROOT/'semantic_pallet_planner/src'),PYTHONDONTWRITEBYTECODE='1')
+            code="from semantic_pallet_planner.jev_select.packaging_versions import resolve_extension; resolve_extension('pct_b1_config_v1')"
+            result=subprocess.run([sys.executable,'-c',code],cwd=directory,env=env,text=True,capture_output=True)
+            self.assertNotEqual(result.returncode,0)
+            self.assertIn("No module named 'pct_b1_intentionally_missing_dependency'",result.stderr)
+            self.assertNotIn('PCT_B1_EXTENSION_MISSING',result.stderr)
+
+    def test_jev_public_body_no_transport_and_physical_pool_exact_order(self):
+        from semantic_pallet_planner.jev_select.packaging_runtime import no_policy
+        from semantic_pallet_planner.jev_select.candidates import PublicBusinessGuard,validate_bundle
+        from semantic_pallet_planner.jev_select.context import ContextBuilder,validate_context
+        from semantic_pallet_planner.jev_select.contracts import CandidateBundle,digest,validate_schema
+        config=self.config();config.update(selector='jev_none_b1',model='jev-1.14.0')
+        req,raw=self.constructed();before=raw.data['physical_candidates']
+        filtered=PublicBusinessGuard().filter(req,no_policy(req),raw,config)
+        self.assertEqual(filtered.data['physical_candidates'],before)
+        self.assertEqual(filtered.data['selectable_candidates'],before)
+        context=ContextBuilder(config).build(req,filtered,no_policy(req))
+        body=context.data['request_body'];self.assertEqual(set(body),{'model','state','questions'})
+        self.assertEqual(body['state']['memories'],[])
+        self.assertEqual([o['object_id'] for o in body['state']['available_objects']],['B001'])
+        validate_context(context,req,filtered,config)
+        for kind in ('reorder','subset'):
+            bad=filtered.data
+            bad['selectable_candidates']=before[::-1] if kind=='reorder' else before[:1]
+            bad['selectable_digest']=digest(bad['selectable_candidates'])
+            with self.subTest(kind=kind),self.assertRaises(ValueError):validate_bundle(req,CandidateBundle.from_dict(bad))
+        bad=context.data;bad['model_state']['future_items']=[]
+        with self.assertRaises(ValueError):validate_schema('decision_context',bad)
+        bad=config.copy();bad['buffer_capacity']=3
+        with self.assertRaises(ValueError):validate_schema('config',bad)
+        # Original capacity-three entry also rejects capacity-one configuration.
+        old=self.config(new=False);old['buffer_capacity']=1
+        with self.assertRaises(ValueError):validate_schema('config',old)

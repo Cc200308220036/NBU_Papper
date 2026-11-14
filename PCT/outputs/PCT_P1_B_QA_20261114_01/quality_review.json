@@ -1,0 +1,85 @@
+{
+  "version": "pct_p1b_qa_v1",
+  "date": "2026-11-14",
+  "review_scope": {
+    "kind": "STAGE",
+    "unit": "P1-B B13-B15",
+    "package": "PCT/outputs/PCT_P1_B_20261114_01",
+    "plan": "PCT-plan-v1 §9.2"
+  },
+  "baseline": {
+    "branch": "dev/PCT",
+    "head": "25be41c789407abc3a7be48bbe80094127b44649",
+    "staged": "EMPTY",
+    "worktree": "P1-A补验/QA及P1-B源码/报告/产物修改和未跟踪材料，完整现场见baseline.json"
+  },
+  "acceptance_matrix": [
+    {
+      "id": "B13",
+      "status": "PASS",
+      "report_claim": "空池/单候选/多位置/旋转/stackable/承载与四状态覆盖",
+      "implementation": "四公共文件桥接；独立显式构造准入；GeometrySelector；原公共循环/候选器",
+      "archive": [
+        "final_verification/p1b_tests.json",
+        "final_verification/cases/",
+        "case_index.json"
+      ],
+      "qa_recheck": "源码逐路径核对；16次归档构造的阶段、选择/候选绑定及Schema核验；未重新生成候选或执行订单",
+      "limits": "几何方法构造；非PCT/Jev模型，受控失稳例的候选池人工规定"
+    },
+    {
+      "id": "B14",
+      "status": "PASS",
+      "report_claim": "稳定提交一次，失败无件数/质量/体积增量；独立副本",
+      "implementation": "原commit_physical未改；SELECTED/MONITORED先保存，监测输入deepcopy；非稳定原停单分派",
+      "archive": [
+        "final_verification/cases/",
+        "final_verification/p1b_tests.json"
+      ],
+      "qa_recheck": "16次构造21监测/16成功提交；阶段先后、失败before=after/action=null、完整装入分母与质量体积重新计算一致",
+      "limits": "未中断执行；断点/锁/跨重启重复防护未实现，不推导恰好一次"
+    },
+    {
+      "id": "B15",
+      "status": "PASS",
+      "report_claim": "精确v3冻结、真实内核与漂移拒绝；stub与注入分离",
+      "implementation": "exact_freeze/kernel_interface复用；preflight配置/算法/物理/源码冻结比较；禁用拒绝",
+      "archive": [
+        "final_verification/exact_freeze.json",
+        "final_verification/environment.json",
+        "numeric_recheck/",
+        "numeric_recheck.log",
+        "final_verification/p1b_tests.json"
+      ],
+      "qa_recheck": "23内核文件+依赖元数据/解释器与HiGHS二进制匹配；归档stable反力逐箱质量及水平力矩独立重算通过",
+      "limits": "本轮未运行LP/单测；开发初轮断言错误和聚合脚本失败均保留，不称全部命令一次成功"
+    }
+  ],
+  "findings": [
+    {
+      "id": "P1B-Q01",
+      "severity": "LOW",
+      "blocking": false,
+      "acceptance": "B15 evidence completeness",
+      "location": "PCT/tests/test_p1b_execution.py:test_real_kernel_boundaries_and_residuals；numeric_recheck/.../real_kernel.json",
+      "fact": "纯内核补验JSON保存candidate输入与结果，未独立保存完整PlacedState/container；固定ground和容器需结合冻结测试源码恢复。",
+      "impact": "不会否定当前可复核的数值证据；脱离测试源码的单文件复现不完整。",
+      "minimum_fix": "未来新数值/恢复交付保存完整已放输入、容器、配置及身份；保留本包不改写。",
+      "verification": "本轮按冻结测试中的ground质量1、中心(0,0)、容器(1000,800,600)独立重算反力残差；不调用LP。"
+    }
+  ],
+  "engineering_status": "PASS_P1_B_BOUNDED_CONSTRUCTION_ONLY",
+  "evidence_readiness": "SUFFICIENT_FOR_B13_B15",
+  "research_result": "NOT_ESTABLISHED_NO_MODEL_EXPERIMENT",
+  "next_stage_admission": "READY",
+  "authorization_scope": {
+    "current": "independent QA only",
+    "developer_extra_authorization": "P1-B报告声明已有四文件及构造/安装追加授权，本轮不据此实施新工作",
+    "P1_C": "not authorized by QA",
+    "model_requests": 0,
+    "training": 0,
+    "install_this_QA": false,
+    "git_commit_push": false
+  },
+  "stop": true
+}

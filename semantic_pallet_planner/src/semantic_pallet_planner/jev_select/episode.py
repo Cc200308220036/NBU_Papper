@@ -1,6 +1,6 @@
 """Fill-then-plan direct-selection simulator. Checkpoints own durable state."""
 from __future__ import annotations
-from .packaging_versions import EXACT_VERSION
+from .packaging_versions import EXACT_VERSION, resolve_extension
 
 import copy
 import time
@@ -53,8 +53,18 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
 
 
 def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
-                hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None):
+                hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None, extension_execution=None):
     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
+    extension = resolve_extension(config.get('version'))
+    if extension is not None:
+        extension.admit_execution(task, selector, config, execution=extension_execution,
+            job_id=job_id, method=method, resume=resume, on_checkpoint=on_checkpoint,
+            expected_events=expected_events, training_fork=training_fork,
+            memory_snapshot=memory_snapshot, memory_view=memory_view, memory_driver=memory_driver)
+        return _run_episode_v2(task, selector, copy.deepcopy(config), job_id=job_id, method=method,
+            on_checkpoint=on_checkpoint, hook=hook, event_limit=event_limit)
+    if extension_execution is not None:
+        raise JevSelectError('pct_b1_execution_protocol_mismatch')
     if config.get('version')=='jev_packaging_jm_no_memory_v13' and (training_fork is None or training_fork.get('version')!='jev_jm_v13_execution_v1'):
         raise JevSelectError('jm13_explicit_execution_route_required')
     if memory_driver is not None and not is_driven(config):
@@ -207,6 +217,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
     decision_started = None
 
     from .stability.monitor import is_monitored, preflight, seal_checkpoint, validate_checkpoint
+    extension = resolve_extension(config.get('version'))
     monitored = is_monitored(config)
     if monitored:
         preflight(config)
@@ -441,7 +452,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                 event=copy.deepcopy(pending);times=event['timings']
             route = decision_route(bundle)
             event.update(route=route,observation=req,bundle=bundle.data,context=context.data)
-            if ((jm_recovery or jm_v13) and (pending is None or phase=='DECISION_READY')) or is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
+            if ((jm_recovery or jm_v13 or extension is not None) and (pending is None or phase=='DECISION_READY')) or is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
                 pending=copy.deepcopy(event);phase='DECISION_READY';persist()
             if hook: hook('decision_ready',event)
             if route == 'STOP_NO_PHYSICAL_CANDIDATE':
@@ -462,6 +473,8 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                 if not recovering:
                     if method == 'shared_business_lexicographic': times['public_business_s'] = elapsed
                     else: times['selection_s'] = elapsed
+                if extension is not None:
+                    extension.validate_selection(context,selection,config)
                 event['selection'] = selection.data
                 if selection.data['status'] not in ('selected','singleton'):
                     reason = selection.data['status'].upper()
@@ -475,7 +488,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                             pending = copy.deepcopy(event); phase = 'SELECTED'; persist()
                             if hook: hook('after_selected_checkpoint',checkpoint())
                         if event['monitor'] is None:
-                            event['monitor'] = monitor_selected_action(state,chosen,event,config)
+                            event['monitor'] = monitor_selected_action(copy.deepcopy(state),copy.deepcopy(chosen),copy.deepcopy(event),config) if extension is not None else monitor_selected_action(state,chosen,event,config)
                             pending = copy.deepcopy(event); phase = 'MONITORED'; persist()
                             if hook: hook('after_monitored_checkpoint',checkpoint())
                         else:
@@ -524,7 +537,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
     if monitored and reason is not None:
         phase = 'TERMINATED'
         persist()
-    summary = summarize_v2(task,config,method,state,events,reason) if reason is not None else None
+    summary = (extension.summarize_episode(task,config,method,state,events,reason) if extension is not None else summarize_v2(task,config,method,state,events,reason)) if reason is not None else None
     if summary is not None and is_v3(config):
         from .memory_retrieval import memory_statistics
         summary.update(version='jev_order_metrics_v3', memory_snapshot_digest=digest(memory_snapshot.data),memory_statistics=memory_statistics(events))

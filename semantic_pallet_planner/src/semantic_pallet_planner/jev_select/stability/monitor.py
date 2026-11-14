@@ -4,7 +4,7 @@ Durability belongs to the shared episode checkpoint. This module owns frozen
 monitor identity, exact-action credentials and validation without reassessment.
 """
 from __future__ import annotations
-from ..packaging_versions import EXACT_VERSION
+from ..packaging_versions import EXACT_VERSION, resolve_extension
 
 import copy
 import time
@@ -18,6 +18,9 @@ TERMINATIONS = {'UNSTABLE':'PREDICTED_STATIC_INSTABILITY',
 
 
 def is_monitored(config):
+    if config.get('version') == 'pct_b1_config_v1':
+        resolve_extension(config['version'])
+        return True
     return config.get('version') in ('jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
 
 
@@ -61,6 +64,9 @@ def load_monitor_config(*, data_identity, task_digest, method='local_geometry_te
 
 def preflight(config):
     validate_schema('config', config)
+    if config['version']=='pct_b1_config_v1':
+        resolve_extension(config['version']).preflight(config)
+        return
     if config['version']=='jev_packaging_jm_no_memory_v13':
         from ..packaging_jev_v13 import preflight
         preflight(config)
@@ -171,6 +177,10 @@ def monitor_selected_action(state, candidate, event, config):
 
 
 def validate_monitor(row, state, candidate, event, config, *, require_stable=False):
+    if config.get('version') == 'pct_b1_config_v1':
+        # Reject disabling even for callers that bypassed episode preflight.
+        if config['stability_monitor']['enabled'] is not True or config['stability_monitor']['algorithm'] != 'pct_exact_pose_network_v3':
+            raise JevSelectError('pct_b1_exact_monitor_required')
     expected_keys = {'version','binding','status','result','attempted','committed','result_digest','credential_digest'}
     if set(row) != expected_keys or row['version'] != 'selected_action_monitor_v1':
         raise JevSelectError('invalid_monitor_record')

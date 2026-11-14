@@ -1,0 +1,63 @@
+{
+  "commands": [
+    {
+      "command": "\"$NBU_PY\" -m pip freeze --all",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_A_NBU_20261114_02/pip_freeze.json"
+    },
+    {
+      "command": "\"$NBU_PY\" -m pip check",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_A_NBU_20261114_02/pip_check.json"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src \"$NBU_PY\" -c <recorded public import check>",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_A_NBU_20261114_02/public_import.json"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -c <dispatch_guard_source.json>",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_A_NBU_20261114_02/guarded_tests.json"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src \"$NBU_PY\" -m pct_baseline.cli prepare-data --spec PCT/configs/data_b1_v1.json --output PCT/outputs/PCT_P1_A_NBU_20261114_02/data",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_A_NBU_20261114_02/prepare_data.json"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src \"$NBU_PY\" -m pct_baseline.cli validate-data --dataset PCT/outputs/PCT_P1_A_NBU_20261114_02/data --full-schema",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_A_NBU_20261114_02/full_schema.json"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "evidence": "PCT/outputs/PCT_P1_A_NBU_20261114_02/git_diff_check.json"
+    }
+  ],
+  "unit": "P1-A follow-up only",
+  "installation": "environment.json",
+  "boundary": "No credentials/model calls/order/candidate generation/LP; dispatch guard violations zero",
+  "initial_tests": "tests_initial.log:18 passed before pinning original comparison; tests_final.log:20 passed after fixing test baseline and adding negative cases",
+  "ast": "ast.json",
+  "legacy_resource_bytes": "legacy_resources.json",
+  "historical_outputs": "historical_packages.json",
+  "additional_completed_commands": [
+    {
+      "command": "\"$NBU_PY\" -m pip install --disable-pip-version-check jsonschema==4.23.0 numpy==2.3.5",
+      "exit_code": 0,
+      "evidence": "installation.json, pip_freeze.json, pip_check.json"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src:semantic_pallet_planner/src PYTHONDONTWRITEBYTECODE=1 \"$NBU_PY\" -m unittest discover -s PCT/tests -v",
+      "exit_code": 0,
+      "evidence": "tests_initial.log (18/18) and tests_final.log (20/20)"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 \"$NBU_PY\" PCT/scripts/verify_p1a_nbu.py --output PCT/outputs/PCT_P1_A_NBU_20261114_02",
+      "exit_code": 0,
+      "scope": "See individual recorded subprocess commands; original package verification script with expected missing-dependency exits was not reused"
+    }
+  ]
+}

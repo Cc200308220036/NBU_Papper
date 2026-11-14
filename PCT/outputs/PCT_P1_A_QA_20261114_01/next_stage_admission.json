@@ -1,0 +1,55 @@
+{
+  "version": "pct_admission_v1",
+  "next_unit": "P1-B",
+  "status": "READY",
+  "scope": "技术准入仅指B13—B15实现及限定构造验证；不代表正式矩阵执行或当前已授权实施",
+  "prerequisites": [
+    {
+      "requirement": "B10双父派生与完整分母",
+      "status": "SATISFIED",
+      "evidence": "本轮data.json与测试日志",
+      "impact": "可消费冻结容量1任务"
+    },
+    {
+      "requirement": "B11容量1公开上下文与精确映射",
+      "status": "SATISFIED",
+      "evidence": "本轮tests.json及源码",
+      "impact": "可接公共选后动作链"
+    },
+    {
+      "requirement": "B12封闭分派与旧协议保护",
+      "status": "SATISFIED",
+      "evidence": "tests.json、saved_facts.json",
+      "impact": "具备P1-B开发基础"
+    },
+    {
+      "requirement": "P1-B实现及B13—B15验证",
+      "status": "NEXT_STAGE_WORK",
+      "evidence": "selector/episode/monitor仍为旧准入，EXECUTION_ADMITTED=false",
+      "impact": "必须下一阶段实现，不能提前算完成"
+    },
+    {
+      "requirement": "精确v3所需SciPy/HiGHS运行环境",
+      "status": "PREPARE_BEFORE_NUMERICAL_VALIDATION",
+      "evidence": "NBU安装包清单无SciPy；balance_adapter导入scipy.optimize._highspy._core",
+      "impact": "不推翻P1-A；P1-B真实内核构造验证前需另行明确环境授权并冻结，stub不能替代"
+    },
+    {
+      "requirement": "P1-B目录外修改及构造物理验证授权",
+      "status": "NOT_AUTHORIZED_THIS_TURN",
+      "evidence": "现有授权只涵盖P1-A六文件和其环境补验；本轮仅QA",
+      "impact": "READY仅技术建议；用户指定下一任务前不实施"
+    }
+  ],
+  "work": "公共选择结果、精确v3选后监测、提交或停止；空单候选/单候选/多位置共同入口",
+  "forbidden": [
+    "未授权实施P1-B",
+    "无前置内核验证即声称B15通过",
+    "P1-C恢复验收",
+    "P3整单诊断",
+    "训练",
+    "模型请求",
+    "正式22任务矩阵"
+  ],
+  "real_requests_authorized": 0
+}

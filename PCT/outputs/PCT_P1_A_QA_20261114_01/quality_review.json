@@ -1,0 +1,90 @@
+{
+  "version": "pct_p1a_quality_review_v1",
+  "date": "2026-11-14",
+  "review_scope": {
+    "kind": "STAGE_AND_FOLLOWUP",
+    "unit": "P1-A",
+    "packages": [
+      "PCT/outputs/PCT_P1_A_20261114_01",
+      "PCT/outputs/PCT_P1_A_NBU_20261114_02"
+    ]
+  },
+  "baseline": {
+    "branch": "dev/PCT",
+    "head": "25be41c789407abc3a7be48bbe80094127b44649",
+    "initial_modified": [
+      "PCT/README.md",
+      "PCT/docs/README.md",
+      "PCT/tests/test_b1_integration.py"
+    ],
+    "initial_untracked": [
+      "PCT/docs/PCT_P1A_NBU环境补验_20261114_02.md",
+      "PCT/outputs/PCT_P1_A_NBU_20261114_02",
+      "PCT/scripts/verify_p1a_nbu.py"
+    ],
+    "staged": "EMPTY"
+  },
+  "acceptance_matrix": [
+    {
+      "id": "B10",
+      "status": "PASS",
+      "report_claim": "原交付PARTIAL，NBU补验PASS",
+      "implementation": "dataset.authenticate/derive/validate_data；五封闭资源中的task/execution_spec",
+      "archived_evidence": "NBU/full_schema.json、guarded_tests.json、data/",
+      "local_recheck": "22任务428箱full-schema、两父认证/逐字段投影/重签漂移反例实际通过",
+      "limit": "仅认证与派生，不证明订单可装完或可满足性"
+    },
+    {
+      "id": "B11",
+      "status": "PASS",
+      "report_claim": "补验当前箱、EOS、映射及公开白名单通过",
+      "implementation": "packaging_runtime.public_facts/_public_facts；protocol.validate_observed；context重构",
+      "archived_evidence": "NBU/guarded_tests.json",
+      "local_recheck": "当前pending≤1、最后一箱/EOS构造、私有字段隔离、空单/重复/顺序错误、原ID/摘要和篡改拒绝均通过",
+      "limit": "无真实到货循环运行；该行为属于P1-B及后续"
+    },
+    {
+      "id": "B12",
+      "status": "PASS",
+      "report_claim": "补验双协议与缺依赖诊断通过",
+      "implementation": "packaging_versions.resolve_extension；contracts精确配对；config后缀；protocol物理池相等",
+      "archived_evidence": "NBU/legacy_resources.json、identity.json、guarded_tests.json",
+      "local_recheck": "20/20全套；真实子进程缺扩展/缺内部依赖；未知/伪后缀/额外字段拒绝；172旧资源相等",
+      "limit": "旧容量3行为等价样本为空托盘构造，不代表旧全历史回放"
+    }
+  ],
+  "findings": [
+    {
+      "id": "P1A-Q01",
+      "severity": "INFO",
+      "blocking": false,
+      "location": "PCT/scripts/verify_p1a_nbu.py environment.json构造",
+      "fact": "脚本重跑会将历史安装成功字段写进新环境收据，并重新派生数据；QA未执行整个脚本。",
+      "impact": "聚合脚本不是纯只读，也不能仅靠重跑证明发生了新安装。归档installation.json与当前元数据分开消费。",
+      "minimum_fix": "未来通用化该脚本时分开既往安装声明和本次实际操作；本阶段无需为此改冻结包。",
+      "validation": "本轮直接复验已审查guard与只读validate-data，保留独立命令。"
+    },
+    {
+      "id": "P1A-Q02",
+      "severity": "INFO",
+      "blocking": false,
+      "location": "guarded_tests.json / dispatch_guard_source.json",
+      "fact": "sys.setprofile只约束测试主进程；测试中的子进程不继承profile。",
+      "impact": "零违规应解释为受guard进程；子进程安全性另由实际源码审查支持，不能称全进程形式证明。",
+      "minimum_fix": "报告准确限定覆盖；后续业务验证按阶段设置适当禁网与调用边界。",
+      "validation": "已阅读全部测试子进程代码：仅旧配置加载、扩展诊断，无订单/求解/请求。"
+    }
+  ],
+  "engineering_status": "PASS_P1_A_ONLY",
+  "evidence_readiness": "SUFFICIENT_FOR_B10_B12",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "READY",
+  "authorization_scope": {
+    "current": "QA only",
+    "future_P1_B": "not authorized by this review",
+    "model_requests": 0,
+    "dependency_install": false,
+    "git_commit_push": false
+  },
+  "stop": true
+}

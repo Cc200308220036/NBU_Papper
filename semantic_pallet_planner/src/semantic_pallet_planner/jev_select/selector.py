@@ -1,6 +1,6 @@
 """Choice validation and same-pool selectors. No reference policy or future stream."""
 from __future__ import annotations
-from .packaging_versions import EXACT_CONTEXT
+from .packaging_versions import EXACT_CONTEXT, resolve_extension
 
 import math
 from typing import Protocol
@@ -20,10 +20,11 @@ class CandidateSelector(Protocol):
 
 def result(context, *, status, source, label=None, attempt=None, payload=None, error=None):
     value = context.data
+    extension = resolve_extension(value['version'])
     metadata = payload or {}
     answer = metadata.get("answers", {}).get("next_action", {})
     saved = attempt["transport"] if attempt else None
-    selection = {"version": "jev_selection_result_" + value["version"].rsplit("_", 1)[1], "status": status,
+    selection = {"version": extension.PAIRS["selection_result"][0] if extension else "jev_selection_result_" + value["version"].rsplit("_", 1)[1], "status": status,
                  "selected_display_id": label,
                  "selected_candidate_id": None if label is None else value["display_mapping"][label]["candidate_id"],
                  "source": source, "requested_model": value["request_body"]["model"] if value["request_body"] and source in ("jev", "test_double") else None,
@@ -32,13 +33,15 @@ def result(context, *, status, source, label=None, attempt=None, payload=None, e
                  "usage": metadata.get("usage"), "latency_s": saved["latency_s"] if saved else None,
                  "local_binding_digest": digest(value["local_binding"]),
                  "raw_response_digest": saved["raw_sha256"] if saved else None, "error": error}
-    if value['version'] in ('jev_decision_context_v13','jev_decision_context_v6','jev_decision_context_v7','jev_decision_context_v8','jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT):
+    if extension is not None or value['version'] in ('jev_decision_context_v13','jev_decision_context_v6','jev_decision_context_v7','jev_decision_context_v8','jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT):
         selection.update(network_attempted=saved['network_attempted'] if saved else False,
                          error_stage=('response_validation' if status=='invalid_response' else (saved or {}).get('error_stage')) if error else None,
                          error_code=error)
     if value['version'] == 'jev_decision_context_v3' and error is not None:
         selection['error_stage'] = 'response_validation' if status == 'invalid_response' else (saved or {}).get('error_stage', 'selection')
         selection['error_code'] = error
+    if extension is not None:
+        selection['inference_receipt'] = None
     validate_schema("selection_result", selection)
     return SelectionResult.from_dict(selection)
 

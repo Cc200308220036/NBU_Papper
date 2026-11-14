@@ -1,0 +1,15 @@
+[
+  {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 PCT/scripts/verify_p2a.py --static-only",
+    "exit_code": 0,
+    "result": "static_checks.json; numerical NOT_RUN"
+  },
+  {
+    "command": "git diff --check",
+    "exit_code": 0
+  },
+  {
+    "command": "<NBU_PY> importlib metadata/find_spec environment check",
+    "result": "Torch MISSING; numpy2.3.5 scipy1.15.3; environment_before.json"
+  }
+]

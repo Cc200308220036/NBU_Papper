@@ -1,0 +1,138 @@
+{
+  "version": "pct_p2a_b22_v1",
+  "items": [
+    {
+      "item": "evaluation.py语法",
+      "source": "Online-3D-BPP-PCT/evaluation.py:36",
+      "observed": "shuffle后缺逗号；原件AST失败。",
+      "disposition": "仅交付隔离副本逗号patch，修补文本AST通过；不执行评价环境。",
+      "status": "STATIC_PATCH_VERIFIED"
+    },
+    {
+      "item": "全局分布修改",
+      "source": "Online-3D-BPP-PCT/distributions.py:8-37",
+      "observed": "Categorical/Normal/Bernoulli类方法被全局替换。",
+      "disposition": "原始分布只在独立参考子进程导入；兼容侧局部Categorical子类；worker比较导入前后方法身份。",
+      "status": "PASS_LIMITED_FIXTURES",
+      "evidence": [
+        "numerical_summary.json",
+        "numerical_comparisons.json",
+        "padding_differences.json",
+        "compatibility_negatives.json",
+        "key_diagnostics.json"
+      ]
+    },
+    {
+      "item": "图注意力mask",
+      "source": "Online-3D-BPP-PCT/graph_encoder.py:96-110",
+      "observed": "evaluate=False将无效key置-30后softmax再清零，evaluate=True用-inf；query未屏蔽，pool前清零。",
+      "disposition": "兼容核心保留；独立safe扩展强制-inf key屏蔽，pool仍使用原生有效节点分母；不增加glimpse聚合。",
+      "status": "PASS_LIMITED_FIXTURES",
+      "evidence": [
+        "numerical_summary.json",
+        "numerical_comparisons.json",
+        "padding_differences.json",
+        "compatibility_negatives.json",
+        "key_diagnostics.json"
+      ]
+    },
+    {
+      "item": "池化mask",
+      "source": "Online-3D-BPP-PCT/attention_model.py:151-164",
+      "observed": "原生将无效节点清零，再除有效节点数；critic使用project_fixed_context后的pool。",
+      "disposition": "原样保留；safe要求current有效和至少一个有效叶，防止空分母。",
+      "status": "PASS_LIMITED_FIXTURES",
+      "evidence": [
+        "numerical_summary.json",
+        "numerical_comparisons.json",
+        "padding_differences.json",
+        "compatibility_negatives.json",
+        "key_diagnostics.json"
+      ]
+    },
+    {
+      "item": "叶logits与epsilon",
+      "source": "Online-3D-BPP-PCT/attention_model.py:119-131,216-219",
+      "observed": "mask_logits默认false；叶softmax后乘有效mask；随机路径加1e-20导致padding非零，确定性全空时也加epsilon。",
+      "disposition": "兼容核心保留；safe在softmax前屏蔽叶logits并不加epsilon；全空拒绝；差异另存padding_differences。",
+      "status": "PASS_LIMITED_FIXTURES",
+      "evidence": [
+        "numerical_summary.json",
+        "numerical_comparisons.json",
+        "padding_differences.json",
+        "compatibility_negatives.json",
+        "key_diagnostics.json"
+      ]
+    },
+    {
+      "item": "连续/离散密度槽",
+      "source": "Online-3D-BPP-PCT/pct_envs/PctContinuous0/space.py:372; pct_envs/PctDiscrete0/space.py:385",
+      "observed": "连续已放第7槽=0；离散=density；两者Box.mass均为体积*density。",
+      "disposition": "本阶段internal_node_length=6，不消费该槽；next首槽仍按原生解码。无公共质量或承载编码，留给另阶段。",
+      "status": "REGISTERED_STATIC"
+    },
+    {
+      "item": "当前箱排序与叶H",
+      "source": "Online-3D-BPP-PCT/pct_envs/PctContinuous0/bin3D.py:96-99,140; pct_envs/PctDiscrete0/bin3D.py:89-92,128",
+      "observed": "当前箱尺寸sorted；叶第6字段是容器H，不是箱顶。",
+      "disposition": "fixture保留排序/H/next密度字段；完整packed输入归档。未接公共候选编码，不推断动作语义已验收。",
+      "status": "REGISTERED_STATIC"
+    },
+    {
+      "item": "shuffle/LNES参数",
+      "source": "Online-3D-BPP-PCT/pct_envs/PctContinuous0/bin3D.py:23,53,126; pct_envs/PctDiscrete0/bin3D.py:21,45,114",
+      "observed": "shuffle两环境均实际控制np.random.shuffle；连续LNES硬设EMS，离散消费传入LNES。",
+      "disposition": "仅静态登记，不运行环境或候选生成；网络无shuffle/LNES参数，不声称环境参数行为复验。",
+      "status": "REGISTERED_STATIC"
+    },
+    {
+      "item": "B=1 squeeze风险",
+      "source": "Online-3D-BPP-PCT/attention_model.py:98; train_tools.py:62",
+      "observed": "current_inputs.squeeze()在B=1去batch维；Linear能接受但后续形状易误用；训练selectedIdx.squeeze()也去batch维。",
+      "disposition": "兼容核心只移除next MLP前squeeze，输出固定[B,1]；训练源码只读登记；B1/B3固定动作前向/梯度验收。",
+      "status": "PASS_LIMITED_FIXTURES",
+      "evidence": [
+        "numerical_summary.json",
+        "numerical_comparisons.json",
+        "padding_differences.json",
+        "compatibility_negatives.json",
+        "key_diagnostics.json"
+      ]
+    },
+    {
+      "item": "点积指针P0-Q02",
+      "source": "Online-3D-BPP-PCT/attention_model.py:201-219",
+      "observed": "context投影为query，与glimpse_key做缩放点积，tanh裁剪取叶logits；glimpse_val/logit_key实际不参与输出。",
+      "disposition": "保留参数键和全部投影结构；不用论文术语添加softmax加权glimpse；unused梯度以null记录且逐项对齐。",
+      "status": "PASS_LIMITED_FIXTURES",
+      "evidence": [
+        "numerical_summary.json",
+        "numerical_comparisons.json",
+        "padding_differences.json",
+        "compatibility_negatives.json",
+        "key_diagnostics.json"
+      ]
+    },
+    {
+      "item": "结构参数实际生效",
+      "source": "Online-3D-BPP-PCT/model.py:9-17; graph_encoder.py:13-28",
+      "observed": "model固定heads=1；hidden_size在AttentionModel存储但不进入MLP层宽；MLP隐藏32，图FF隐藏128；多图层时SkipConnection丢evaluate字段。",
+      "disposition": "冻结embedding64/层数1/heads1/placed40/leaf16/current1/internal6；不声称任意结构参数支持；多层缺陷未修改。",
+      "status": "REGISTERED_LIMITATION"
+    },
+    {
+      "item": "原生完整成绩",
+      "source": "Online-3D-BPP-PCT/train_tools.py; README.md",
+      "observed": "原生训练可走ACKTR或A2C；环境候选与虚拟稳定性过滤属于完整系统。",
+      "disposition": "只做随机初始化工程一致性；训练、权重下载、完整论文成绩、22任务和订单均NOT_RUN。",
+      "status": "NOT_RUN"
+    },
+    {
+      "item": "LoadBoxCreator sentinel",
+      "source": "Online-3D-BPP-PCT/pct_envs/PctContinuous0/binCreator.py",
+      "observed": "原生装载路径使用游标和大箱sentinel，不能代表公共EOS。",
+      "disposition": "只读登记；未运行原生环境、未接公共到货。",
+      "status": "REGISTERED_STATIC"
+    }
+  ]
+}

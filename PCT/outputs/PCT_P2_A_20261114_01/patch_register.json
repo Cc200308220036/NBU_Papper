@@ -1,0 +1,69 @@
+{
+  "version": "pct_p2a_patch_register_v1",
+  "patches": [
+    {
+      "id": "C01",
+      "files": [
+        "model.py",
+        "attention_model.py"
+      ],
+      "reason": "包内相对导入",
+      "impact": "命名隔离；不改变算术",
+      "validation": "source diff, all-valid output and gradient comparison"
+    },
+    {
+      "id": "C02",
+      "files": [
+        "tools.py"
+      ],
+      "reason": "仅提取init和observation_decode_leaf_node纯函数，避免Gym/CLI/givenData导入",
+      "impact": "函数体原字节保留；不执行环境",
+      "validation": "source diff and decoded packed input evidence"
+    },
+    {
+      "id": "C03",
+      "files": [
+        "distributions.py"
+      ],
+      "reason": "局部Categorical子类替代全局Torch monkey patch",
+      "impact": "保留sample/log_probs/mode形状；不消费Normal/Bernoulli",
+      "validation": "global method identities; probabilities/logprob/gradients"
+    },
+    {
+      "id": "C04",
+      "files": [
+        "attention_model.py"
+      ],
+      "reason": "去掉current_inputs.squeeze以固定B=1时MLP二维输入",
+      "impact": "相同线性函数，可能有浮点舍入差别，按冻结容差验收",
+      "validation": "B1/B3 all-valid full numerical comparison"
+    },
+    {
+      "id": "S01",
+      "files": [
+        "network_safety.py"
+      ],
+      "reason": "显式padding安全扩展",
+      "impact": "严格attention key及leaf logits屏蔽、无epsilon、空叶和非法张量拒绝；改变padding输出，不称原生完全一致",
+      "validation": "separate padded deltas, zero invalid probability and invalid payload invariance"
+    },
+    {
+      "id": "E01",
+      "files": [
+        "evaluation_syntax.patch"
+      ],
+      "reason": "原生evaluation漏逗号",
+      "impact": "只修语法，不运行环境；原件保留",
+      "validation": "original AST failure and repaired AST pass"
+    },
+    {
+      "id": "C05",
+      "files": [
+        "attention_model.py"
+      ],
+      "reason": "Python3.12 NamedTuple metaclass rejects __classcell__ created by super inside class",
+      "impact": "explicit tuple.__getitem__(self,key) replaces super lookup; same tuple indexing, no network arithmetic; applied identically to native runtime and compat",
+      "validation": "attempt_01 import failure retained; runtime patch separate; numeric comparison after patch"
+    }
+  ]
+}

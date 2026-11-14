@@ -1,0 +1,52 @@
+{
+  "version": "pct_p2a_acceptance_v1",
+  "status": "DEVELOPMENT_PASS_PENDING_INDEPENDENT_QA",
+  "matrix": [
+    {
+      "id": "B20",
+      "status": "PASS",
+      "scope": "fixed-source MIT minimal copy; source/destination SHA; per-patch reason, behavior and test evidence",
+      "evidence": [
+        "PCT/src/pct_baseline/vendor/pct/upstream_manifest.json",
+        "PCT/src/pct_baseline/vendor/pct/LICENSE",
+        "patch_register.json",
+        "reference_python312.patch",
+        "static_checks.json"
+      ]
+    },
+    {
+      "id": "B21",
+      "status": "PASS",
+      "scope": "CPU float32 frozen single-layer structure; all-valid B1/B3; identical weights/input; probability/value/fixed-action logprob and every parameter gradient; 4 flag combinations; process-isolated native reference",
+      "evidence": [
+        "numerical_summary.json",
+        "numerical_comparisons.json",
+        "key_diagnostics.json",
+        "weight_identity.json",
+        "weight_tensors.json",
+        "commands_and_results.json",
+        "*_input.json",
+        "*_results.json"
+      ],
+      "compat_all_valid_max_absolute_error": 0.0,
+      "atol": 1e-06,
+      "rtol": 1e-05
+    },
+    {
+      "id": "B22",
+      "status": "PASS",
+      "scope": "enumerated compatibility issues patched/tested or explicitly registered; environment execution and paper performance NOT_RUN",
+      "evidence": [
+        "compatibility_register.json",
+        "compatibility_negatives.json",
+        "padding_differences.json",
+        "evaluation_syntax.patch",
+        "attempt_01/"
+      ]
+    }
+  ],
+  "independent_QA": "PENDING",
+  "remote_requests": 0,
+  "training_updates": 0,
+  "P2B_P2C_P3": "NOT_RUN_NOT_AUTHORIZED"
+}

@@ -1,0 +1,66 @@
+{
+  "scope": "P2-A only",
+  "interpreter_alias": "NBU_PY; exact identity environment.json",
+  "operations": [
+    {
+      "command": "<NBU_PY> -m pip install --dry-run --report <P2A>/torch_install_plan.json torch",
+      "exit_code": 1,
+      "reason": "sandbox proxy network denied; pip default connection retries; no installation"
+    },
+    {
+      "command": "<NBU_PY> -m pip install --dry-run --retries 0 --report <P2A>/torch_install_plan.json torch",
+      "exit_code": 0,
+      "sandbox": "escalated",
+      "evidence": "torch_install_plan.json"
+    },
+    {
+      "command": "<NBU_PY> -m pip install --retries 0 --report <P2A>/torch_install_actual.json -r <P2A>/torch_install_requirements.txt",
+      "exit_code": 0,
+      "evidence": "torch_install.log"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src PYTHONDONTWRITEBYTECODE=1 <NBU_PY> PCT/scripts/verify_p2a.py",
+      "exit_code": 1,
+      "evidence": "attempt_01/numerical_run.log",
+      "reason": "NamedTuple Python3.12 class construction; no weights generated"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src PYTHONDONTWRITEBYTECODE=1 <NBU_PY> PCT/scripts/verify_p2a.py",
+      "exit_code": 0,
+      "evidence": [
+        "numerical_run.log",
+        "commands_and_results.json"
+      ],
+      "result": "22 successful fresh processes; original import failure remains separate"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 PCT/scripts/verify_p2a.py --static-only",
+      "exit_code": 0,
+      "evidence": "static_checks.json"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src PYTHONDONTWRITEBYTECODE=1 <NBU_PY> PCT/scripts/verify_p2a.py --output PCT/outputs/PCT_P2_A_20261114_01/harness_static_probe --static-only",
+      "exit_code": 0,
+      "result": "new-directory source preparation and static checks"
+    },
+    {
+      "command": "PYTHONPATH=PCT/src PYTHONDONTWRITEBYTECODE=1 <NBU_PY> PCT/scripts/verify_p2a.py",
+      "exit_code": 1,
+      "expected": true,
+      "reason": "archive overwrite rejected before numerical work",
+      "evidence": "archive_overwrite_rejection.log"
+    },
+    {
+      "command": "<NBU_PY> complete JSON weight export and float32 round-trip equality check",
+      "exit_code": 0,
+      "evidence": "weight_tensors.json"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "no_remote_models": true,
+  "no_order_or_solver_execution": true,
+  "executed_vs_delivered_verifier": "numerical_source_snapshot restores executed source by removing later guard/source-prepare block. Final source additionally exports full JSON weights. Later changes only archive preparation/export; AST and guard/source-prepare checks performed, numerical arithmetic unchanged."
+}

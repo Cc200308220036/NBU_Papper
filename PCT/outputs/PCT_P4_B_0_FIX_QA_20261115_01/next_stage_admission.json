@@ -1,0 +1,55 @@
+{
+  "version": "pct_p4bfix_qa_admission_v1",
+  "status": "NOT_READY",
+  "next_stage": "实际预检/六模型正式训练",
+  "recommended_task": "当前P4-B-0随机状态续接最小整改",
+  "prerequisites": [
+    {
+      "requirement": "P4-B-0恢复整改关闭",
+      "status": "UNMET",
+      "evidence": "P4B0-FIX-Q01",
+      "impact": "只给本单元最小整改，下一阶段NOT_READY"
+    },
+    {
+      "requirement": "真实公共链路/恢复与资源预检",
+      "status": "NOT_RUN",
+      "evidence": "报告、测试均无订单/LP/真实前向/更新",
+      "impact": "工程缺口关闭后再冻明确数值预算与授权"
+    },
+    {
+      "requirement": "实际磁盘/时间/内存及吞吐",
+      "status": "UNKNOWN",
+      "evidence": "fallback601166756537字节保留，运行每写后保留整门槛，实际需求可能更大",
+      "impact": "资源预检需核对全程剩余/热副本/回滚/检查点，不直接准入长跑"
+    },
+    {
+      "requirement": "限定实际预检独立协议",
+      "status": "NOT_ASSESSED_FOR_EXECUTION",
+      "evidence": "当前admission只接受FORMAL_TRAINING，validate_slot仅正式训练任务；旧4尝试含SYN的建议不可直接当正式任务执行",
+      "impact": "未来实际预检需专门明确任务/槽位与许可，不伪造正式训练授权"
+    },
+    {
+      "requirement": "六最终权重及派生计划",
+      "status": "NOT_RUN",
+      "impact": "不准入P4-C/D"
+    }
+  ],
+  "allowed_recommendation": [
+    "PCT内持久化适用RNG/引用绑定/恢复消费整改",
+    "纯构造随机序列和保存结果复用一致性检查",
+    "必要离线回归"
+  ],
+  "not_allowed": [
+    "执行实际资源预检",
+    "订单/候选/LP/真实前向/optimizer",
+    "六模型长跑或220槽评价",
+    "伪造FORMAL_TRAINING授权以运行限定预检",
+    "旧档重签/放宽P3保护"
+  ],
+  "release_conditions": [
+    "新增RNG问题独立复验关闭",
+    "再评估限定实际预检协议/数值矩阵/资源条件",
+    "实际实施另行明确授权"
+  ],
+  "remote_authorization": 0
+}

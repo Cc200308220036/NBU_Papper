@@ -18,7 +18,7 @@ TERMINATIONS = {'UNSTABLE':'PREDICTED_STATIC_INSTABILITY',
 
 
 def is_monitored(config):
-    if config.get('version') in ('pct_b1_config_v1','pct_p3_config_v1'):
+    if config.get('version') in ('pct_b1_config_v1','pct_p3_config_v1','pct_p4b_config_v2'):
         resolve_extension(config['version'])
         return True
     return config.get('version') in ('jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
@@ -64,7 +64,7 @@ def load_monitor_config(*, data_identity, task_digest, method='local_geometry_te
 
 def preflight(config):
     validate_schema('config', config)
-    if config['version'] in ('pct_b1_config_v1','pct_p3_config_v1'):
+    if config['version'] in ('pct_b1_config_v1','pct_p3_config_v1','pct_p4b_config_v2'):
         resolve_extension(config['version']).preflight(config)
         return
     if config['version']=='jev_packaging_jm_no_memory_v13':
@@ -177,7 +177,7 @@ def monitor_selected_action(state, candidate, event, config):
 
 
 def validate_monitor(row, state, candidate, event, config, *, require_stable=False):
-    if config.get('version') in ('pct_b1_config_v1','pct_p3_config_v1'):
+    if config.get('version') in ('pct_b1_config_v1','pct_p3_config_v1','pct_p4b_config_v2'):
         # Reject disabling even for callers that bypassed episode preflight.
         if config['stability_monitor']['enabled'] is not True or config['stability_monitor']['algorithm'] != 'pct_exact_pose_network_v3':
             raise JevSelectError('pct_b1_exact_monitor_required')
@@ -224,8 +224,10 @@ def validate_checkpoint(cp, task, config, job_id, method):
     This only reconstructs private copies. The returned durable state is reused;
     no committed event is dispatched again by the episode.
     """
-    if config.get('version') in ('pct_b1_config_v1','pct_p3_config_v1'):
-        if config['version']=='pct_p3_config_v1':
+    if config.get('version') in ('pct_b1_config_v1','pct_p3_config_v1','pct_p4b_config_v2'):
+        if config['version']=='pct_p4b_config_v2':
+            from pct_baseline.saved import validate_checkpoint as validate_pct_checkpoint
+        elif config['version']=='pct_p3_config_v1':
             from pct_baseline.p3_runtime import validate_checkpoint as validate_pct_checkpoint
         else:
             from pct_baseline.saved import validate_checkpoint as validate_pct_checkpoint

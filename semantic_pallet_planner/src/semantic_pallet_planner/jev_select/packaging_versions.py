@@ -50,6 +50,9 @@ PCT_B1_SCHEMAS = frozenset({'config_b1_v1', 'task_b1_v1', 'execution_spec_b1_v1'
 
 
 def resolve_extension(identifier):
+    if identifier in ("pct_p4b_config_v2", "config_p4b_v2"):
+        from importlib import import_module
+        return import_module("pct_baseline.p4b_protocol")
     if identifier in ('pct_p3_config_v1', 'config_p3_v1'):
         from importlib import import_module
         return import_module('pct_baseline.p3_protocol')

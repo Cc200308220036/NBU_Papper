@@ -1,0 +1,109 @@
+{
+  "version": "pct_p4bfix_quality_review_v1",
+  "date": "2026-11-15",
+  "review_scope": "STAGE_REMEDIATION",
+  "unit": "P4-B-0整改",
+  "baseline": {
+    "branch": "dev/PCT",
+    "head": "d316ce83a4cfceb69a2146468f126a6d436aefb7",
+    "index": "EMPTY",
+    "entry_worktree": "PCT整改新文件及两导航、3个公共文件修改，保留"
+  },
+  "package": "PCT/outputs/PCT_P4_B_0_FIX_20261115_01",
+  "four_layers": {
+    "report": "开发声称Q01/Q02工程修复，14+12+7离线测试，无业务",
+    "code": "正式接入/采集梯度/状态保存载入/Session实现存在，但RNG前缀续接缺口静态可见",
+    "archive": "保存构造测试、身份、3公共改动范围记录；真实业务未运行",
+    "current": "14+12+7通过、198/2795/61身份核对；新增合成RNG探针复现不一致"
+  },
+  "criteria": [
+    {
+      "id": "Q01_IMPLEMENTATION",
+      "parent": "P4B0-Q01",
+      "status": "PASS",
+      "scope": "离线工程实现范围",
+      "facts": "正式v2 config/schema/extension与3处公共识别、run_job/train_model/launch控制流已存在；构造准入通过",
+      "limits": "公共订单/梯度路径未执行，不等于端到端业务通过"
+    },
+    {
+      "id": "Q02_STATE_AND_SESSION",
+      "parent": "P4B0-Q02",
+      "status": "PARTIAL",
+      "facts": "真实geo/load模型和填充Adam/RNG往返、Session调用收据/commit与optimizer intent实现及构造测试通过",
+      "limits": "跨已完成采集前缀的RNG恢复存在P4B0-FIX-Q01，父问题不能完全关闭"
+    },
+    {
+      "id": "RNG_PREFIX",
+      "status": "FAIL",
+      "scope": "受限构造控制流探针",
+      "facts": "恢复BatchController跳过前2结果，但第3回调读取第1随机数",
+      "evidence": "batch_rng_probe.json",
+      "limits": "手工保存前缀与合成collector，未运行实际生产订单/崩溃"
+    },
+    {
+      "id": "HISTORY_AND_PLAN",
+      "status": "PASS",
+      "facts": "198清单条目/2795历史保护/3登记live漂移/61源码身份；原P4-A计划模板不可执行",
+      "limits": "共享导航追加单列，旧身份不重签"
+    },
+    {
+      "id": "TESTS",
+      "status": "PASS",
+      "scope": "开发现有构造/序列化覆盖",
+      "facts": "本轮14整改+12组件+7计划回归通过0跳过",
+      "limits": "不覆盖新增RNG失败探针，不能据总数覆盖FAIL"
+    },
+    {
+      "id": "B43",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "B44",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "B45",
+      "status": "NOT_RUN"
+    }
+  ],
+  "issues": [
+    {
+      "id": "P4B0-FIX-Q01",
+      "severity": "HIGH",
+      "blocks": "P4-B-0退出及后续实际预检/正式训练准入",
+      "parent_issue": "P4B0-Q02",
+      "requirement": "完整适用RNG、批内策略固定和中途中断恢复的一致性",
+      "location": [
+        "PCT/src/pct_baseline/p4b_training.py:139-166",
+        "PCT/src/pct_baseline/p4b_training.py:198-201",
+        "PCT/src/pct_baseline/p4b_formal.py:Selector.record/run_job"
+      ],
+      "actual": "train_model从最近已发布更新/initial载入RNG；BatchController跳过已保存attempt但没有恢复其采集结束RNG；保存选择/监测/整单复用同样缺明确后继随机游标接续",
+      "evidence": "batch_rng_probe.json，真实BatchController+手工保存前缀/合成采集回调；非生产崩溃复现",
+      "observed": {
+        "saved_attempts": 2,
+        "expected_third_draw": 0.9242105840237294,
+        "resumed_third_draw": 0.4523795535098186
+      },
+      "impact": "即使权重一致且不重跑订单，中断续接后的随机选择可能改变，无法宣称与连续执行一致；实际模型轨迹影响未运行",
+      "minimum_fix": "按operation/decision/attempt/batch边界封存适用RNG及绑定摘要，恢复到最后已消费状态；保存结果复用接续正确post-RNG，未知状态停止，不重签旧证据",
+      "verification": "纯构造比较不中断与部分批/各保存阶段恢复的Python NumPy Torch CPU随机序列、结果、计数、游标；加入缺失/漂移/模糊RNG拒绝及原必要回归；无订单/LP/前向/optimizer"
+    }
+  ],
+  "engineering_status": "PARTIAL_BLOCKING_RECOVERY_GAP",
+  "evidence_readiness": "SUFFICIENT_FOR_OFFLINE_IMPLEMENTATION_AND_SYNTHETIC_FAILURE_NOT_BUSINESS",
+  "research_result": "NOT_ESTABLISHED_NO_NEW_BUSINESS_EXPERIMENT",
+  "next_stage_admission": "NOT_READY",
+  "authorization_scope": {
+    "current": "Independent QA only",
+    "public_scope_evidence": "开发归档记录用户授权两额外最小补丁；本轮核对实际差异与登记一致，不追加公共改动",
+    "git": "no add/commit/push/pull"
+  },
+  "limits": [
+    "未重跑历史订单/训练",
+    "合成collector读取random不是实际网络采样，实际模型后果仅机制推断",
+    "CPU对象序列化通过不证明实际更新恢复",
+    "当前真实资源UNKNOWN"
+  ],
+  "stop": true
+}

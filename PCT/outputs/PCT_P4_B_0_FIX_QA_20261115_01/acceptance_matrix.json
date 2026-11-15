@@ -1,0 +1,54 @@
+{
+  "version": "pct_p4bfix_qa_matrix_v1",
+  "overall": "PARTIAL_WITH_BLOCKING_RNG_FAILURE",
+  "criteria": [
+    {
+      "id": "Q01_IMPLEMENTATION",
+      "parent": "P4B0-Q01",
+      "status": "PASS",
+      "scope": "离线工程实现范围",
+      "facts": "正式v2 config/schema/extension与3处公共识别、run_job/train_model/launch控制流已存在；构造准入通过",
+      "limits": "公共订单/梯度路径未执行，不等于端到端业务通过"
+    },
+    {
+      "id": "Q02_STATE_AND_SESSION",
+      "parent": "P4B0-Q02",
+      "status": "PARTIAL",
+      "facts": "真实geo/load模型和填充Adam/RNG往返、Session调用收据/commit与optimizer intent实现及构造测试通过",
+      "limits": "跨已完成采集前缀的RNG恢复存在P4B0-FIX-Q01，父问题不能完全关闭"
+    },
+    {
+      "id": "RNG_PREFIX",
+      "status": "FAIL",
+      "scope": "受限构造控制流探针",
+      "facts": "恢复BatchController跳过前2结果，但第3回调读取第1随机数",
+      "evidence": "batch_rng_probe.json",
+      "limits": "手工保存前缀与合成collector，未运行实际生产订单/崩溃"
+    },
+    {
+      "id": "HISTORY_AND_PLAN",
+      "status": "PASS",
+      "facts": "198清单条目/2795历史保护/3登记live漂移/61源码身份；原P4-A计划模板不可执行",
+      "limits": "共享导航追加单列，旧身份不重签"
+    },
+    {
+      "id": "TESTS",
+      "status": "PASS",
+      "scope": "开发现有构造/序列化覆盖",
+      "facts": "本轮14整改+12组件+7计划回归通过0跳过",
+      "limits": "不覆盖新增RNG失败探针，不能据总数覆盖FAIL"
+    },
+    {
+      "id": "B43",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "B44",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "B45",
+      "status": "NOT_RUN"
+    }
+  ]
+}

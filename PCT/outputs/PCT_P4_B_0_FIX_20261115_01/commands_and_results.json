@@ -1,0 +1,29 @@
+{
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p4b_remediation.py -v",
+      "result": "14 PASS",
+      "log": "tests_complete.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p4b.py -v",
+      "result": "12 PASS",
+      "log": "v1_regression_integrated.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p4a.py -v",
+      "result": "7 PASS",
+      "log": "p4a_regression_integrated.log"
+    },
+    {
+      "command": "python3 PCT/scripts/check_p4b_fix_saved.py",
+      "result": "PASS_SAVED_ONLY after final manifest build"
+    },
+    {
+      "command": "git diff --check",
+      "result": "exit0"
+    }
+  ],
+  "forbidden_business_actions_executed": false,
+  "public_patch_failure": "failures.json"
+}

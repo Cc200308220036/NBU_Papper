@@ -1,0 +1,50 @@
+{
+  "version": "pct_p4bfix_qa_commands_v1",
+  "side_effect_review": "先完整读取新增4模块、整改测试、保存checker及现有Store/StageJournal导入路径；整改测试patch禁止torch Module前向和Adam.step，网络guard；仅临时目录构造/可信本地序列化。新probe仅调用BatchController和random合成回调，无业务派发",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src:semantic_pallet_planner/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p4b_remediation.py -v",
+      "result": "14 PASS,0 skipped",
+      "log": "current_remediation_tests.log"
+    },
+    {
+      "command": "same unittest environment, -p test_p4b.py",
+      "result": "12 PASS,0 skipped",
+      "log": "current_component_tests.log"
+    },
+    {
+      "command": "same unittest environment, -p test_p4a.py",
+      "result": "7 PASS,0 skipped",
+      "log": "current_p4a_tests.log"
+    },
+    {
+      "command": "python3 PCT/scripts/check_p4b_fix_saved.py",
+      "result": "PASS_SAVED_ONLY",
+      "log": "developer_checker.log"
+    },
+    {
+      "command": "python3 PCT/outputs/PCT_P4_B_0_FIX_QA_20261115_01/audit_saved.py",
+      "result": "PASS_SAVED_HASHES",
+      "receipt": "independent_saved_checks.json"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src:semantic_pallet_planner/src \"$NBU_PY\" PCT/outputs/PCT_P4_B_0_FIX_QA_20261115_01/probe_batch_rng.py",
+      "result": "REPRODUCED_SYNTHETIC_RNG_CONTINUATION_MISMATCH",
+      "receipt": "batch_rng_probe.json"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "environment": "现有NBU Python解释器及系统python3，无安装",
+  "business_counts": {
+    "orders": 0,
+    "candidates": 0,
+    "LP": 0,
+    "real_forwards": 0,
+    "optimizer_updates": 0,
+    "remote": 0
+  },
+  "git_mutations": false
+}

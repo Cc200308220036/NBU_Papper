@@ -1,0 +1,31 @@
+{
+  "current": "saved fact/reference audit only; no behavior or historical execution rerun",
+  "historical_QA_probe_results": {
+    "path": "semantic_pallet_planner/outputs/JEV_JM2_B1_FIX_QA_20261116_01/probe_results.json",
+    "pointer": "",
+    "sha256": "c3fe1db204e7ab85859a50a22ac68db82503cd97f366700e0cff3aafa3da1c2f"
+  },
+  "historical_tests": "archived51 and QA24 remain historical; not claimed as local reruns",
+  "not_run": [
+    "trusted human/independent approval",
+    "generation",
+    "candidate or geometric feature reconstruction",
+    "hypothetical deletion execution",
+    "model/order/fork/replay/LP"
+  ],
+  "unexpected_failures": [
+    {
+      "attempt": "saved_attempt_01.log",
+      "cause": "A2 two registry source entries predate later B1 implementation; live code differs by already documented historical changes",
+      "correction": "compare A2 original registry bytes from existing B1 entry_source_bytes; current517 verified independently against FIX source manifest; no source or digest changed",
+      "error": "parent manifest exact-byte assertion"
+    },
+    {
+      "attempt": "delivery_attempt_01.log",
+      "cause": "shell redirected builder stdout to a file captured before its final print",
+      "correction": "finish logs, then finalize manifest without redirecting stdout into a captured file; no parent files affected",
+      "error": "own stdout log changed after manifest capture"
+    }
+  ],
+  "version": "jm2_b1_content_check_attempts_v1"
+}

@@ -1,0 +1,49 @@
+{
+  "version": "jm2_b1_remediation_admission_v1",
+  "target": "minimal JM2-B1 limited rejection and provenance remediation only",
+  "status": "NOT_READY",
+  "matrix": [
+    {
+      "prerequisite": "delivery bytes/source identity",
+      "status": "PASS",
+      "evidence": "100 entries/1818 refs/517 source"
+    },
+    {
+      "prerequisite": "explicit malformed reference rejection",
+      "status": "FAIL",
+      "evidence": "QA-JM2B1-01",
+      "impact": "blocks limited engineering exit"
+    },
+    {
+      "prerequisite": "case-review evidence binding",
+      "status": "FAIL",
+      "evidence": "QA-JM2B1-02",
+      "impact": "blocks limited engineering exit"
+    },
+    {
+      "prerequisite": "qualified true content",
+      "status": "PARTIAL",
+      "evidence": "5 ARCHIVE_ONLY;approval0",
+      "impact": "full B1/B2/C still not ready"
+    }
+  ],
+  "allowed": [
+    "fix QA-JM2B1-01/02 in limited module and necessary new protocol schema; preserve old versions",
+    "small QA-JM2B1-03 structure correction",
+    "focused tests and new remediation report/package"
+  ],
+  "forbidden": [
+    "B2/C or new stage",
+    "opening real admission",
+    "model calls, order/fork/candidate rebuild/LP",
+    "editing audited historical artifacts or digest resigning"
+  ],
+  "release_conditions": [
+    "malformed shapes produce stable NOT_READY without unhandled exceptions",
+    "cross-card/source mismatch rejected; legitimate real packs still valid archives and NOT_READY",
+    "fixture structurally valid only; all permissions false",
+    "report all full B1 and real-content gaps remain"
+  ],
+  "real_calls_authorized": 0,
+  "stop": true
+}

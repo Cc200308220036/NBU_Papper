@@ -1,0 +1,95 @@
+{
+  "version": "jm2_b1_limited_qa_v1",
+  "date": "2026-11-15",
+  "plan": "JM-plan-v2",
+  "unit": "JM2-B1 limited offline contracts only",
+  "reviewed_head": "6be30b182ab75e6593b17cc8dbfcdbfc69900c94",
+  "developer_entry_head": "97eab64c03c9eaf0ff5344b1a0dbad7f67f67fe7",
+  "source_identity": "semantic_pallet_planner/outputs/JEV_JM2_B1_LIMITED_20261115_01/source_identity.json",
+  "facts": {
+    "report_claims": "limited engineering complete; real NOT_READY; full B1 not closed",
+    "implementation": "new offline contracts; all real admission false; no transport/engine/lifecycle",
+    "archived_evidence": "20 constructed checks, central routes and legacy guard passed in developer3.13; initial parent mismatch preserved",
+    "local_recheck": "original verifier100/1818 PASS;517 source hashes; entry bytes verified against Git;5 real rejects and fixture plus4 baseline cases locally confirmed;4 adverse probes reveal2 blocking findings and1 nonblocking"
+  },
+  "acceptance": [
+    {
+      "id": "M22-01",
+      "status": "PARTIAL",
+      "scope": "versions/closed schemas present; malformed and cross-card provenance paths incomplete"
+    },
+    {
+      "id": "M22-03",
+      "status": "PARTIAL",
+      "scope": "expression separation present; source binding incomplete and true content pending"
+    },
+    {
+      "id": "M22-07",
+      "status": "PARTIAL",
+      "scope": "synthetic directional expression and generic reminder refusal only; genuine content NOT_RUN"
+    },
+    {
+      "id": "M22-02/M22-04 full closure",
+      "status": "NOT_APPLICABLE",
+      "scope": "outside limited task; no full stage acceptance"
+    }
+  ],
+  "findings": [
+    {
+      "id": "QA-JM2B1-01",
+      "severity": "MEDIUM",
+      "blocking": true,
+      "acceptance": [
+        "M22-01",
+        "limited prerequisite rejection contract"
+      ],
+      "location": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience_contract.py:97-120",
+      "actual": "Valid saved JSON reference pointing to a list for review/source passes validate_pack then raises uncaught AttributeError in prerequisite_gate",
+      "expected": "validate referenced object shape before .get; explicit NOT_READY for malformed semantic reference",
+      "impact": "rejection result and audit reasons absent; technical exception, not false approval",
+      "minimal_fix": "validate review/source object shape and required fields; handle malformed nested input before dereference; stable rejection code, not generic catch-only concealment",
+      "probe": "review_ref_list_reference and review_source_ref_list_reference"
+    },
+    {
+      "id": "QA-JM2B1-02",
+      "severity": "MEDIUM",
+      "blocking": true,
+      "acceptance": [
+        "M22-01",
+        "M22-03 fact/source binding"
+      ],
+      "location": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience_contract.py:97-98",
+      "actual": "P01 fact pack with P02 review_ref is accepted by validate_pack; gate reasons taken from wrong card",
+      "expected": "review binds exact case and source; SHA/pointer validity alone not enough",
+      "impact": "case-specific provenance and UNKNOWN/review reasons can be misattributed; real gate remains closed",
+      "minimal_fix": "verify referenced review card identity/content against pack case; verify declared review-source linkage; preserve explicit synthetic binding without real approval",
+      "probe": "cross_card_review_binding"
+    },
+    {
+      "id": "QA-JM2B1-03",
+      "severity": "LOW",
+      "blocking": false,
+      "acceptance": [
+        "M22-03 expression structure"
+      ],
+      "location": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience_contract.py:169-170",
+      "actual": "distinguishing_attributes [x_over_length,mass_kg] passes although mass unchanged; nonempty intersection only",
+      "expected": "every listed distinguishing attribute actually changes",
+      "impact": "STRUCTURE_VALID_CONTENT_PENDING overstates structure accuracy; content remains PENDING and permissions false",
+      "minimal_fix": "nonempty subset of actual changed attributes, with mixed changed/unchanged negative test",
+      "probe": "unchanged_extra_distinguishing_attribute"
+    }
+  ],
+  "limitations": [
+    "local Python3.9.6; central contracts legacy f-string prevents compatible local route test; not rerun",
+    "original check_contracts/finalize write original package and were not run",
+    "no service, model, order, fork, candidate rebuild, prefix replay or LP",
+    "probes are in-memory sealed mutations using actual functions; not production execution/recovery; no historical digest resigned"
+  ],
+  "real_calls_authorized": 0,
+  "stop": true,
+  "engineering_status": "PARTIAL_LIMITED_CONTRACT_AND_GATE",
+  "evidence_readiness": "SUFFICIENT_FOR_MINIMAL_REMEDIATION_NOT_GENERATION",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "NOT_READY"
+}

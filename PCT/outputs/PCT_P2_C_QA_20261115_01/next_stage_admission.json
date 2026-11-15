@@ -1,0 +1,63 @@
+{
+  "version": "pct_p3_admission_v1",
+  "next_unit": "P3 B30-B33",
+  "status": "READY",
+  "scope": "进入P3工程开发：先模型执行/训练合同实现及冻结，再按用户指定范围执行固定6jobs及16尝试2updates；不是现有入口已可运行",
+  "prerequisites": [
+    {
+      "requirement": "P2-A/P2-B/P2-C模型表达和严格加载",
+      "status": "SATISFIED_SINGLE_STEP",
+      "evidence": "前序QA及本轮B26—B28 PASS"
+    },
+    {
+      "requirement": "正式数据、固定任务及预算",
+      "status": "DESIGN_AVAILABLE",
+      "evidence": "两父数据与容量1派生身份；P3两任务33箱，6jobs/99监测/66选择，训练16尝试/264动作/2更新"
+    },
+    {
+      "requirement": "模型整单执行与模型身份恢复",
+      "status": "P3_IMPLEMENT_BEFORE_RUN",
+      "evidence": "现有P1入口只geometry_b1；不能直接调用即认为PCT已准入"
+    },
+    {
+      "requirement": "可训练rollout、A2C、optimizer/RNG恢复",
+      "status": "P3_IMPLEMENT_BEFORE_UPDATE",
+      "evidence": "当前Loaded模型仅inference_mode推理接口；训练/采集尚未实现"
+    },
+    {
+      "requirement": "P1C-Q01恢复会话统计",
+      "status": "P3_REQUIRED_CLOSURE",
+      "evidence": "P3明确需要成本/调用量；旧0不能作为无复用事实"
+    },
+    {
+      "requirement": "P3执行与必要公共文件范围授权",
+      "status": "NOT_GRANTED_BY_QA",
+      "evidence": "本轮仅审查；本地整单/候选/LP/两次训练更新需用户指定本任务范围"
+    }
+  ],
+  "execution_bounds": {
+    "tasks": [
+      "NEW_00100027_controlled_base",
+      "NEW_00100090_controlled_heterogeneous"
+    ],
+    "boxes": 33,
+    "local_jobs": 6,
+    "monitor_cap_local_matrix": 99,
+    "network_choice_cap_local_matrix": 66,
+    "training_model": "pct_adapted_load_v1",
+    "training_seed": 0,
+    "training_attempts": 16,
+    "training_action_cap": 264,
+    "training_updates": 2,
+    "batch_orders": 8
+  },
+  "forbidden": [
+    "直接用旧geometry_b1准入冒充PCT运行",
+    "未完成新执行预检即跑固定job",
+    "正式22任务比较/六模型正式训练",
+    "私自增加任务/种子/动作/更新",
+    "远程调用",
+    "重签历史身份"
+  ],
+  "remote_requests_authorized": 0
+}

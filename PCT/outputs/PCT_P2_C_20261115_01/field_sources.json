@@ -1,0 +1,276 @@
+{
+  "producer": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py",
+  "producer_functions": [
+    "resources lines134-140",
+    "public_facts/_public_facts lines169-233"
+  ],
+  "public_context_dispatch": "semantic_pallet_planner.jev_select.context.ContextBuilder.build delegates packaging protocol",
+  "fields": [
+    {
+      "token": "placed",
+      "index": 0,
+      "name": "x0",
+      "public_path": "model_state.placed_objects[].pose + oriented_size_mm + container",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "placed",
+      "index": 1,
+      "name": "y0",
+      "public_path": "model_state.placed_objects[].pose + oriented_size_mm + container",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "placed",
+      "index": 2,
+      "name": "z0",
+      "public_path": "model_state.placed_objects[].pose + oriented_size_mm + container",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "placed",
+      "index": 3,
+      "name": "x1",
+      "public_path": "model_state.placed_objects[].pose + oriented_size_mm + container",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "placed",
+      "index": 4,
+      "name": "y1",
+      "public_path": "model_state.placed_objects[].pose + oriented_size_mm + container",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "placed",
+      "index": 5,
+      "name": "z1",
+      "public_path": "model_state.placed_objects[].pose + oriented_size_mm + container",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "placed",
+      "index": 6,
+      "name": "mass",
+      "public_path": "model_state.placed_objects[].mass_kg",
+      "unit": "kg",
+      "divide_by": 9,
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "placed",
+      "index": 7,
+      "name": "stackable",
+      "public_path": "model_state.placed_objects[].stackable",
+      "unit": "bool",
+      "divide_by": 1,
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "placed",
+      "index": 8,
+      "name": "capacity",
+      "public_path": "model_state.placed_objects[].max_top_load_kg",
+      "unit": "kg",
+      "divide_by": 9,
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "placed",
+      "index": 9,
+      "name": "current_top_load",
+      "public_path": "model_state.placed_objects[].current_top_load_kg",
+      "unit": "kg",
+      "divide_by": 9,
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "placed",
+      "index": 10,
+      "name": "remaining_top_load",
+      "public_path": "model_state.placed_objects[].remaining_top_load_kg",
+      "unit": "kg",
+      "divide_by": 9,
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "leaf",
+      "index": 0,
+      "name": "x0",
+      "public_path": "criteria[Cxx].pose + oriented_size_mm + model_state.container",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "leaf",
+      "index": 1,
+      "name": "y0",
+      "public_path": "criteria[Cxx].pose + oriented_size_mm + model_state.container",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "leaf",
+      "index": 2,
+      "name": "z0",
+      "public_path": "criteria[Cxx].pose + oriented_size_mm + model_state.container",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "leaf",
+      "index": 3,
+      "name": "x1",
+      "public_path": "criteria[Cxx].pose + oriented_size_mm + model_state.container",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "leaf",
+      "index": 4,
+      "name": "y1",
+      "public_path": "criteria[Cxx].pose + oriented_size_mm + model_state.container",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "leaf",
+      "index": 5,
+      "name": "z1",
+      "public_path": "criteria[Cxx].pose + oriented_size_mm + model_state.container",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "leaf",
+      "index": 6,
+      "name": "support_ratio",
+      "public_path": "criteria[Cxx].features.support_ratio",
+      "unit": "1",
+      "divide_by": 1,
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "leaf",
+      "index": 7,
+      "name": "com_margin",
+      "public_path": "criteria[Cxx].features.com_margin_mm",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "leaf",
+      "index": 8,
+      "name": "resulting_max_height",
+      "public_path": "criteria[Cxx].features.resulting_max_height_mm",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "leaf",
+      "index": 9,
+      "name": "max_after_area_load_utilization",
+      "public_path": "criteria[Cxx].load_changes: max(after/max_top) over increment>0",
+      "unit": "1",
+      "divide_by": 1,
+      "applicability": "leaf aggregate columns9/10 use column11; empty 0/0/false"
+    },
+    {
+      "token": "leaf",
+      "index": 10,
+      "name": "min_affected_remaining",
+      "public_path": "criteria[Cxx].load_changes: min(remaining_top_load_kg) over increment>0",
+      "unit": "kg",
+      "divide_by": 9,
+      "applicability": "leaf aggregate columns9/10 use column11; empty 0/0/false"
+    },
+    {
+      "token": "leaf",
+      "index": 11,
+      "name": "affected_support_applicable",
+      "public_path": "criteria[Cxx].load_changes: positive set nonempty",
+      "unit": "bool",
+      "divide_by": 1,
+      "applicability": "leaf aggregate columns9/10 use column11; empty 0/0/false"
+    },
+    {
+      "token": "current",
+      "index": 0,
+      "name": "l",
+      "public_path": "model_state.available_objects[0].dimensions_mm.length",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "current",
+      "index": 1,
+      "name": "w",
+      "public_path": "model_state.available_objects[0].dimensions_mm.width",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "current",
+      "index": 2,
+      "name": "h",
+      "public_path": "model_state.available_objects[0].dimensions_mm.height",
+      "unit": "mm",
+      "divide_by": "Lref",
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "current",
+      "index": 3,
+      "name": "mass",
+      "public_path": "model_state.available_objects[0].mass_kg",
+      "unit": "kg",
+      "divide_by": 9,
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "current",
+      "index": 4,
+      "name": "stackable",
+      "public_path": "model_state.available_objects[0].stackable",
+      "unit": "bool",
+      "divide_by": 1,
+      "applicability": "required on valid real node; no missing-value fill"
+    },
+    {
+      "token": "current",
+      "index": 5,
+      "name": "capacity",
+      "public_path": "model_state.available_objects[0].max_top_load_kg",
+      "unit": "kg",
+      "divide_by": 9,
+      "applicability": "required on valid real node; no missing-value fill"
+    }
+  ],
+  "capacity": "synthetic max_top_load_kg; stackable false retains capacity token but effective permission0",
+  "aggregation": "positive increments only including affected ancestors, not only direct contacts; no PCT reaction/LP",
+  "geometry": "float64 actual corner then scale; actual z1 retained, not H",
+  "effective_validation_tolerance_kg": 1e-09,
+  "no_denominator_epsilon": true
+}

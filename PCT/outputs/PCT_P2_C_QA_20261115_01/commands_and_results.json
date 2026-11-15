@@ -1,0 +1,27 @@
+{
+  "commands": [
+    {
+      "command": "python3 PCT/outputs/PCT_P2_C_QA_20261115_01/check_saved.py",
+      "exit_code": 0,
+      "result": "195交付/31执行前源码；16编码；25参数；四载荷变体、7信息隔离声明、52负例归档与保存绑定通过"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "script_review": {
+    "verify_p2c.py/test_p2c_load.py": "完整阅读；会生成工程权重、加载并推理及写新目录，本轮不运行",
+    "load_encoding/load_network/load_model/load_selector": "完整静态阅读；结构维度、资源账本、mask、严格加载及保存复用核对",
+    "QA script": "仅标准库JSON/struct/算术和摘要；无Torch/NumPy/planner导入"
+  },
+  "not_run": [
+    "网络前向/开发单测",
+    "订单/候选/LP",
+    "监测提交恢复",
+    "训练",
+    "安装",
+    "远程请求"
+  ],
+  "credential_reads": 0
+}

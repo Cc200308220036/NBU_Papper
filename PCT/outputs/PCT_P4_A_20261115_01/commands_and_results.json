@@ -1,0 +1,63 @@
+{
+  "commands": [
+    {
+      "command": "git branch --show-current; git rev-parse HEAD; git status --short; git diff --cached --stat",
+      "exit_code": 0,
+      "result": "dev/PCT;4019735d; initial clean worktree/index"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src $NBU_PY -m unittest discover -s PCT/tests -p test_p4a.py -v",
+      "exit_code": 0,
+      "tests": 7,
+      "log": "preflight_tests.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 $NBU_PY PCT/scripts/freeze_p4a.py build --output PCT/outputs/PCT_P4_A_20261115_01/build_01",
+      "exit_code": 0,
+      "log": "build_01.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 $NBU_PY PCT/scripts/freeze_p4a.py verify --output PCT/outputs/PCT_P4_A_20261115_01/build_01",
+      "exit_code": 0,
+      "result": "PASS_OFFLINE_PLAN_ONLY;220 slots; no execution"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src $NBU_PY -m unittest discover -s PCT/tests -p test_p4a.py -v",
+      "exit_code": 0,
+      "tests": 7,
+      "log": "final_tests.log"
+    },
+    {
+      "command": "python3 PCT/scripts/check_p4a_saved.py --package PCT/outputs/PCT_P4_A_20261115_01/build_01 --receipt PCT/outputs/PCT_P4_A_20261115_01/independent_saved_checks.json",
+      "exit_code": 0,
+      "receipt": "independent_saved_checks.json"
+    },
+    {
+      "command": "python3 PCT/scripts/seal_p4a.py",
+      "exit_code": 0,
+      "result": "local AST/old source/history/input identities/scope/index/link checks"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "failures": [],
+  "read_only_lookup_notes": [
+    "No Online-3D-BPP-PCT/arguments.py; actual defaults found and pinned in Tools.py; no third-party edits"
+  ],
+  "expected_negative_checks": "resigned budget/source/order/duplicate/unknown-field/fake-weight mutations, drift, non-dispatch, gzip corruption/unsafe paths rejected by tests",
+  "business_activity": {
+    "orders": 0,
+    "candidate_generations": 0,
+    "LP_calls": 0,
+    "network_forwards": 0,
+    "optimizer_updates": 0,
+    "remote_requests": 0
+  },
+  "credentials_reads": false,
+  "dependency_install_or_upgrade": false,
+  "weight_downloads": false,
+  "subagents": 0,
+  "git_mutations": false
+}

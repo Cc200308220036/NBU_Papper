@@ -1,0 +1,120 @@
+{
+  "version": "pct_p4a_method_cards_v1",
+  "models": [
+    {
+      "kind": "geometry",
+      "method": "PCT-adapted",
+      "model_version": "pct_adapted_geo_v1",
+      "source_manifest": "PCT/outputs/PCT_P2_B_20261115_01/attempt_06/tests/model_manifest.json",
+      "manifest_sha256": "9e5cb87a661cfab9d3277d28fa0271e037e552bd068efa209071a81dcaa38ba1",
+      "features": {
+        "version": "pct_adapted_geo_v1",
+        "placed": 40,
+        "leaves": 16,
+        "current": 1,
+        "dims": [
+          6,
+          8,
+          6
+        ],
+        "coordinates": "container_bottom_center_mm_to_corner_mm",
+        "Lref": "max(length_mm,width_mm,max_height_mm)",
+        "placed_fields": "x0,y0,z0,x1,y1,z1",
+        "leaf_fields": "x0,y0,z0,x1,y1,H,0,0",
+        "current_fields": "1,0,0,sorted(l,w,h)",
+        "numeric": "float64 transform then divide once then float32; normFactor=1",
+        "mask": "slot8 true=valid, unscaled; empty placed slot0 valid zero",
+        "order": "public display_mapping insertion order; no reorder/dedup/filter",
+        "tie": "smallest valid index, exact probability tie"
+      },
+      "architecture": {
+        "embedding_size": 64,
+        "hidden_size": 128,
+        "gat_layer_num": 1,
+        "internal_node_holder": 40,
+        "internal_node_length": 6,
+        "leaf_node_holder": 16,
+        "heads": 1,
+        "token_hidden": 32,
+        "graph_ff_hidden": 128,
+        "tanh_clipping": 10
+      },
+      "formal_weight_status": "PENDING_TRAINING; P2 seed0 and P3 small-step weights are engineering artifacts only"
+    },
+    {
+      "kind": "load",
+      "method": "PCT-adapted",
+      "model_version": "pct_adapted_load_v1",
+      "source_manifest": "PCT/outputs/PCT_P2_C_20261115_01/attempt_03/tests/model_manifest.json",
+      "manifest_sha256": "447d6cc4eca057761f5023a577357e6e4e3126b138bde8d83a11e8e8e68e444f",
+      "features": {
+        "version": "pct_adapted_load_v1",
+        "placed": 40,
+        "leaves": 16,
+        "current": 1,
+        "dims": [
+          11,
+          12,
+          6
+        ],
+        "layout": "packed13: fields 0:11 placed, 0:12 leaf, 0:6 current; slot12 valid; unused slots zero",
+        "placed_fields": "x0,y0,z0,x1,y1,z1,mass,stackable,capacity,current_top_load,remaining_top_load",
+        "leaf_fields": "x0,y0,z0,x1,y1,z1,support_ratio,com_margin,resulting_max_height,max_after_area_load_utilization,min_affected_remaining,affected_support_applicable",
+        "current_fields": "original_l,original_w,original_h,mass,stackable,capacity",
+        "Lref": "max(length_mm,width_mm,max_height_mm)",
+        "Mref_kg": 9,
+        "numeric": "float64 transform and scale once then float32; no clipping",
+        "aggregate": "strictly positive increment only; empty=0,0,false; zero capacity positive increment error",
+        "mask": "slot12 true=valid; empty placed slot0 valid zero; padding zero invalid",
+        "order": "public display_mapping insertion order; no reorder/dedup/filter",
+        "tie": "smallest valid index, exact probability tie"
+      },
+      "architecture": {
+        "embedding_size": 64,
+        "hidden_size": 128,
+        "gat_layer_num": 1,
+        "internal_node_holder": 40,
+        "internal_node_length": 11,
+        "leaf_node_holder": 16,
+        "heads": 1,
+        "token_hidden": 32,
+        "graph_ff_hidden": 128,
+        "tanh_clipping": 10,
+        "leaf_node_length": 12,
+        "current_node_length": 6,
+        "packed_width": 13
+      },
+      "formal_weight_status": "PENDING_TRAINING; P2 seed0 and P3 small-step weights are engineering artifacts only"
+    }
+  ],
+  "common_mechanism": "three token types, separate token MLPs, graph attention, valid-node global context, dot-product candidate pointer and critic; no new independent glimpse head",
+  "native_differences": [
+    "public feasible candidate pool replaces native EMS/virtual stability candidate generation; no native step/drop/environment truth",
+    "strict valid/padding masks and padding-safe context differ from upstream default finite masking",
+    "exact original candidate ID and pose, upright yaw0/90; public post-selection exact-v3 monitor, original commit checks",
+    "capacity1 public observation only; no future boxes/source IDs/reference actions/monitor prelabels/reaction data in input"
+  ],
+  "feature_comparison": "whole feature packages, not one-factor load ablation: geo leaf top slot uses container H, load uses real z1 plus support/COM/height; geo current sorted dimensions/constant slots vs load original dimensions/mass/stackable/capacity",
+  "load_boundaries": "area-ledger positive-increment affected set (including ancestors), kg/9 and Lref; no PCT reaction prediction; synthetic packaging attributes",
+  "a2c": {
+    "algorithm": "PCT-adapted+A2C",
+    "optimizer": "Adam lr1e-4 clip0.5 vs upstream use_acktr default True/KFAC",
+    "upstream_source": "Online-3D-BPP-PCT/Tools.py:143-145",
+    "source_sha256": "b0682aca4f993ea9b421dadcd73e8c0f692ff22301af0f5dbc7f7153fd3ea393",
+    "collection_difference": "upstream default64 vector environments x5 steps; here8 complete orders/fixed snapshot, disjoint <=5 segments,250 updates/model; changed update size and training amount, not native reproduction",
+    "loss": "choice mean actor with detached advantage + valid-transition mean detached-target critic MSE; singleton actor0; entropy coefficient0 and entropy tracked",
+    "training_budget": "six seeds/models,125epochs,2000orders/33000actions/250updates per model; fixed final epoch125"
+  },
+  "adequacy_review": {
+    "selection": "never choose best epoch/seed using evaluation; all six final seeds retained incl failed/incomplete",
+    "evidence": "per-epoch reward/completion/loading, actor/critic loss, entropy, gradients, technical rates, seed variability and wall/resources; evaluate convergence/stability and comparison with fixed geometry",
+    "negative_results": "report nonconvergence, collapse, seed failures, worse-than-geometry and weak baseline explicitly; completing budget is not sufficient strong-baseline evidence",
+    "conclusion_limits": [
+      "training16 retest is in-sample; six exposed prototype combinations are not independent generalization",
+      "predicted static instability is not real collapse rate",
+      "full loading gives equal fixed-container utilization; layout needs height/envelope/additional audited metrics",
+      "capacity1 position-selection conclusions do not substitute capacity3 experience effects",
+      "no native original-paper score replication or global optimality claim"
+    ]
+  }
+}

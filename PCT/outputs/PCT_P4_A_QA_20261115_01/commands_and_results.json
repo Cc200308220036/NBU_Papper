@@ -1,0 +1,43 @@
+{
+  "version": "pct_p4a_qa_checks_v1",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p4a.py -v",
+      "result": "7 passed,0 skipped",
+      "evidence": "current_tests.log"
+    },
+    {
+      "command": "python3 PCT/scripts/check_p4a_saved.py --package PCT/outputs/PCT_P4_A_20261115_01/build_01 --receipt PCT/outputs/PCT_P4_A_QA_20261115_01/developer_checker_recheck.json",
+      "result": "PASS",
+      "evidence": "developer_checker_recheck.json"
+    },
+    {
+      "command": "python3 PCT/outputs/PCT_P4_A_QA_20261115_01/audit_saved.py",
+      "result": "PASS",
+      "evidence": "independent_saved_recheck.json"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "side_effect_review": {
+    "tests": "已读完整测试、p4a/storage/contracts/dataset/protocol导入路径；仅只读数据、内存构造及临时目录写入；导入及网络guard",
+    "checker": "完整审查；stdlib只读输入，唯一写入指定QA receipt",
+    "independent_audit": "stdlib读取已存JSON/gzip与摘要，唯一写QA结果",
+    "not_executed": "freeze build会创建包/复制源/压缩还原；seal会写原交付，不执行"
+  },
+  "environment": "现有NBU Python3.12.16用于7测试，系统python3用于stdlib；未安装依赖",
+  "read_only_lookup_notes": [
+    "初查geo_encoder.py/load_encoder.py不存在，随后定位实际geo_encoding.py/load_encoding.py并完整静态阅读；无业务执行"
+  ],
+  "not_run": [
+    "orders",
+    "LP",
+    "candidate generation",
+    "network/optimizer",
+    "remote",
+    "formal crash recovery"
+  ],
+  "git_mutations": false
+}

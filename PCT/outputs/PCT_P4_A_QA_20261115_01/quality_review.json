@@ -1,0 +1,94 @@
+{
+  "version": "pct_p4a_quality_review_v1",
+  "date": "2026-11-15",
+  "review_scope": "STAGE_WITH_PLAN_DEPENDENCY_REVIEW",
+  "unit": "P4-A",
+  "baseline": {
+    "branch": "dev/PCT",
+    "head": "4019735db9ec9169a8119a88e45c396884805605",
+    "upstream": "origin/dev/PCT",
+    "index": "EMPTY",
+    "entry_worktree": "P4-A开发未提交文件与两个导航修改；原样保留"
+  },
+  "reviewed_package": "PCT/outputs/PCT_P4_A_20261115_01",
+  "plan": "PCT/docs/PCT容量1公共候选基线接入与实验分阶段实施方案_20261113.md",
+  "facts": {
+    "report_claims": "B40—B42计划开发完成；7测试；无业务执行",
+    "code_implemented": "离线认证、计划/模板、封闭Schema+完全重建、无条件拒绝执行、审计gzip往返；正式执行器未实现",
+    "archived_evidence": "计划12000尝试/220评价槽全部NOT_RUN，7测试日志、326原JSON审计胶囊",
+    "current_recheck": "7测试通过0跳过；开发保存checker通过；独立523清单/96输入/49保护源码/326字节往返与资源算术通过"
+  },
+  "criteria": [
+    {
+      "id": "B40",
+      "status": "PASS",
+      "scope": "训练计划冻结，不是训练完成",
+      "requirement": "来源组件、容量1身份、六模型预算和选择规则事前冻结",
+      "code": "p4a.authenticated_catalog/build_training/validate_plan",
+      "archive": "PCT/outputs/PCT_P4_A_20261115_01/build_01/training_plan.json",
+      "current": "96输入身份、12000尝试槽、配对顺序、来源和预算重算通过",
+      "limits": "六模型均待训练；1500为更新槽，异常/零transition不伪造实际更新"
+    },
+    {
+      "id": "B41",
+      "status": "PASS",
+      "scope": "220槽不可发送模板",
+      "requirement": "逐槽task/method/seed/repeat/额度/顺序/待完成权重",
+      "code": "p4a.build_evaluation/require_executable",
+      "archive": "PCT/outputs/PCT_P4_A_20261115_01/build_01/evaluation_template.json",
+      "current": "220唯一组合、1284发送/2568网络选择/4280监测上界、首槽与哈希顺序核验；重签篡改与执行拒绝测试通过",
+      "limits": "权重SHA为空，所有槽NOT_RUN；不可作为执行许可"
+    },
+    {
+      "id": "B42",
+      "status": "PASS",
+      "scope": "方法卡与训练充分性限制",
+      "requirement": "两版输入、A2C差异、训练量与结论范围",
+      "code": "geo_encoding/load_encoding; freeze_p4a.cards",
+      "archive": "PCT/outputs/PCT_P4_A_20261115_01/build_01/method_cards.json",
+      "current": "与两版原manifest完全一致；静态核对实际字段、缩放、上游Tools.py默认ACKTR/64x5",
+      "limits": "完整特征包差异不是单因素承载消融；无收敛或研究收益证据"
+    }
+  ],
+  "implementation_findings": [],
+  "plan_findings": [],
+  "evidence_gaps": [
+    {
+      "id": "P3-Q01",
+      "severity": "MEDIUM",
+      "origin": "历史证据缺口延续",
+      "blocks": "正式长跑，非P4-A退出",
+      "location": "PCT/scripts/freeze_p4a.py:gates/P3-Q01_OBSERVER,STOP_RESUME",
+      "actual": "P4-A仅明确每阶段持久观察器、计数与恢复要求，未在新正式入口产生实际执行证据",
+      "minimum_action": "新正式协议实现真实落盘观察、计数、停批和恢复；先构造断点/故障测试，再另行登记限定前瞻业务预检",
+      "verification": "READY/DECISION_READY/SELECTED/MONITORED/COMMITTED及漂移/锁；复用不重复推理/求解/提交；保留原P3 FAIL与身份差异"
+    },
+    {
+      "id": "P3-Q02",
+      "severity": "HIGH_FOR_FORMAL_RUN",
+      "origin": "历史资源/存储缺口延续",
+      "blocks": "正式长跑，非P4-A退出",
+      "location": "PCT/src/pct_baseline/p4a_storage.py; build_01/formal_prerequisites.json:capacity_gate/storage_contract",
+      "actual": "326 JSON审计胶囊无损不等于正式WAL、更新事务和崩溃恢复；fallback需601166756537字节而现场367001600000字节",
+      "minimum_action": "实现有界分片/索引/WAL/原子更新发布及容量预检；用独立验收的新写者实测申请新门槛，或获得足够存储；不得用本次约7倍样例压缩率直接降门槛",
+      "verification": "构造写入故障、孤儿分片、并发和重复更新拒绝；真实磁盘增长/峰值/吞吐另按冻结额度前瞻验证，禁止改旧归档/删证据/暗减预算"
+    }
+  ],
+  "engineering_status": "PASS_P4A_PLAN_ONLY",
+  "evidence_readiness": "SUFFICIENT_FOR_B40_B42_NOT_FORMAL_EXECUTION",
+  "research_result": "NOT_ESTABLISHED_NO_NEW_EXPERIMENT",
+  "next_stage_admission": "CONDITIONAL_P4B_LIMITED_ENGINEERING_ONLY",
+  "authorization_scope": {
+    "current": "QA artifacts only",
+    "next_stage": "technical recommendation not implementation authorization",
+    "remote": 0,
+    "git": "no add/commit/push/pull performed"
+  },
+  "limits": [
+    "未复跑历史订单/训练/LP",
+    "未运行freeze build或seal（会写新包/封存原交付）",
+    "未将已有P3结果视为正式训练结果",
+    "压缩样例不含累计journal和optimizer二进制，不反序列化权重"
+  ],
+  "stop": true
+}

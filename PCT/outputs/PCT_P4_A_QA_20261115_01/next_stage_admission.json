@@ -1,0 +1,78 @@
+{
+  "version": "pct_p4a_qa_admission_v1",
+  "stage": "P4-B",
+  "status": "CONDITIONAL",
+  "limited_unit": "P4-B-0 正式执行器与存储恢复工程开发（新增交接单元，不是原方案验收ID）",
+  "limited_development_status": "READY",
+  "formal_training_status": "NOT_READY",
+  "prerequisites": [
+    {
+      "requirement": "P4-A B40—B42",
+      "evidence": "本轮验收矩阵及复验",
+      "status": "SATISFIED",
+      "impact": "可进入限定执行器开发"
+    },
+    {
+      "requirement": "正式训练/恢复协议与执行器",
+      "evidence": "PCT/outputs/PCT_P4_A_20261115_01/handoff.json:formal_training_executor",
+      "status": "NOT_IMPLEMENTED",
+      "impact": "B43—B45无法关闭；允许作为下一限定开发目标"
+    },
+    {
+      "requirement": "观察器、计数、锁、停止/恢复",
+      "evidence": "PCT/outputs/PCT_P4_A_20261115_01/build_01/formal_prerequisites.json",
+      "status": "SPECIFIED_NOT_EXECUTED",
+      "impact": "必须先构造验证，后限定实际预检"
+    },
+    {
+      "requirement": "有界写者/WAL/更新事务",
+      "evidence": "326文件147transition往返仅审计格式",
+      "status": "DESIGN_PLUS_CAPSULE_ONLY",
+      "impact": "不支持正式运行恢复/容量承诺"
+    },
+    {
+      "requirement": "实际容量与资源预算",
+      "evidence": "fallback601166756537 > observed367001600000 bytes；全量wall UNKNOWN",
+      "status": "UNMET",
+      "impact": "禁止长跑，需新写者实测验收或足够存储"
+    },
+    {
+      "requirement": "六份最终epoch125权重",
+      "evidence": "六model均PENDING_TRAINING/null SHA",
+      "status": "NOT_RUN",
+      "impact": "未来B44/B45产出，并非P4-A缺陷"
+    },
+    {
+      "requirement": "正式派生评价计划",
+      "evidence": "仅不可发送模板",
+      "status": "NOT_IMPLEMENTED",
+      "impact": "依赖真实权重，不准入P4-C/D"
+    },
+    {
+      "requirement": "本轮授权",
+      "evidence": "用户要求独立审查与提示词；历史完整集成不自动扩展为正式训练/远程请求",
+      "status": "QA_ONLY_CURRENT_TURN",
+      "impact": "本轮不实施下一阶段；提示词供下一窗口明确指定任务"
+    }
+  ],
+  "allowed": [
+    "PCT内独立版本正式协议/执行器/有界写者/事务实现",
+    "纯构造与既有保存事实的离线格式、锁、故障和恢复测试",
+    "形成前瞻预检及更新事务实际验证的明确数值申请"
+  ],
+  "not_allowed": [
+    "12000尝试/1500更新正式训练",
+    "新订单/候选/LP/真实网络前向或optimizer更新",
+    "执行所建议4尝试资源预检",
+    "220槽评价或真实请求",
+    "替换P3硬上限或重签历史"
+  ],
+  "release_conditions": [
+    "限定执行器及故障测试通过独立QA",
+    "另冻结并授权前瞻预检的任务/动作/网络/监测/更新数",
+    "容量与总资源预算独立验收",
+    "再取得正式训练明确实施指令"
+  ],
+  "remote_call_authorization": 0,
+  "execution_authorization_this_turn": "QA only"
+}

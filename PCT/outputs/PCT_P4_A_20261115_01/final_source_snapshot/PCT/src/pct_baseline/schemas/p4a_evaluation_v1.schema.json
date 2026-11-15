@@ -1,0 +1,294 @@
+{
+  "type": "object",
+  "properties": {
+    "sending_admitted": {
+      "const": false
+    },
+    "execution_admitted": {
+      "const": false
+    },
+    "catalog_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "input_identity": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "status_values": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "version": {
+      "const": "pct_p4a_evaluation_template_v1"
+    },
+    "executor_status": {
+      "const": "TEMPLATE_ONLY_NO_DISPATCH"
+    },
+    "training_plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "ordering_seed": {
+      "const": 20261113
+    },
+    "ordering_rule": {
+      "type": "string"
+    },
+    "jobs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string"
+          },
+          "block": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "task_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "source_component": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "source_layer": {
+            "enum": [
+              "training_in_sample",
+              "exposed_familiar_prototype"
+            ]
+          },
+          "parent_partition": {
+            "type": "string"
+          },
+          "method": {
+            "enum": [
+              "geometry_b1",
+              "pct_geo_b1",
+              "pct_load_b1",
+              "jev_none_b1"
+            ]
+          },
+          "seed": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "repeat": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "model_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "model_status": {
+            "enum": [
+              "PENDING_TRAINING",
+              "NA"
+            ]
+          },
+          "weights_sha256": {
+            "type": "null"
+          },
+          "box_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "action_cap": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "monitor_cap": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "send_cap": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "network_choice_cap": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sending_admitted": {
+            "const": false
+          },
+          "execution_admitted": {
+            "const": false
+          },
+          "status": {
+            "const": "NOT_RUN"
+          },
+          "p4c_probe_budget": {
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "order_index": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "job_id",
+          "block",
+          "task_id",
+          "task_digest",
+          "source_component",
+          "source_layer",
+          "parent_partition",
+          "method",
+          "seed",
+          "repeat",
+          "model_id",
+          "model_status",
+          "weights_sha256",
+          "box_count",
+          "action_cap",
+          "monitor_cap",
+          "send_cap",
+          "network_choice_cap",
+          "sending_admitted",
+          "execution_admitted",
+          "status",
+          "p4c_probe_budget",
+          "order_index"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 220,
+      "maxItems": 220
+    },
+    "denominators": {
+      "type": "object",
+      "properties": {
+        "tasks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "boxes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "slots": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "training_in_sample_slots": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "exposed_familiar_slots": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "jev_send_cap": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "local_network_choice_cap": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "monitor_cap": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "tasks",
+        "boxes",
+        "slots",
+        "training_in_sample_slots",
+        "exposed_familiar_slots",
+        "jev_send_cap",
+        "local_network_choice_cap",
+        "monitor_cap"
+      ],
+      "additionalProperties": false
+    },
+    "resume_and_failure": {
+      "type": "string"
+    },
+    "derived_plan_contract": {
+      "type": "string"
+    },
+    "analysis": {
+      "type": "object",
+      "properties": {
+        "primary_direction": {
+          "type": "string"
+        },
+        "secondary": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aggregation": {
+          "type": "string"
+        },
+        "ranking": {
+          "type": "string"
+        },
+        "independence": {
+          "type": "string"
+        },
+        "full_loading": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "primary_direction",
+        "secondary",
+        "aggregation",
+        "ranking",
+        "independence",
+        "full_loading"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "sending_admitted",
+    "execution_admitted",
+    "catalog_digest",
+    "input_identity",
+    "plan_digest",
+    "status_values",
+    "version",
+    "executor_status",
+    "training_plan_digest",
+    "ordering_seed",
+    "ordering_rule",
+    "jobs",
+    "denominators",
+    "resume_and_failure",
+    "derived_plan_contract",
+    "analysis"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

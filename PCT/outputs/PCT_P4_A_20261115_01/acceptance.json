@@ -1,0 +1,58 @@
+{
+  "version": "pct_p4a_acceptance_v1",
+  "status": "DEVELOPMENT_DELIVERED_PENDING_INDEPENDENT_QA",
+  "criteria": [
+    {
+      "id": "B40",
+      "status": "PASS_PLAN_FREEZE_ONLY",
+      "facts": {
+        "tasks": 16,
+        "boxes": 264,
+        "original_orders": 4,
+        "conservative_training_components": 3,
+        "models": 6,
+        "attempt_slots": 12000,
+        "update_slots": 1500,
+        "action_cap": 198000,
+        "final_epoch": 125
+      },
+      "evidence": [
+        "build_01/data_catalog.json",
+        "build_01/training_plan.json",
+        "independent_saved_checks.json"
+      ]
+    },
+    {
+      "id": "B41",
+      "status": "PASS_UNSENDABLE_TEMPLATE_ONLY",
+      "facts": {
+        "slots": 220,
+        "jev_send_cap": 1284,
+        "network_choice_cap": 2568,
+        "sending_admitted": false,
+        "execution_admitted": false,
+        "weights": "PENDING_TRAINING_IDS_WITH_NULL_SHA"
+      },
+      "evidence": [
+        "build_01/evaluation_template.json",
+        "final_tests.log"
+      ]
+    },
+    {
+      "id": "B42",
+      "status": "PASS_METHOD_AND_LIMITS_FREEZE_ONLY",
+      "facts": "geo6/8/6 and load11/12/6 are full feature-package differences; public pool/post-monitor/strict-mask/A2C/native default differences and adequacy/negative-result review frozen",
+      "evidence": [
+        "build_01/method_cards.json",
+        "PCT/docs/PCT_P4A训练计划与不可发送模板冻结验收_20261115_01.md"
+      ]
+    }
+  ],
+  "carryforward": {
+    "P3-Q01": "PLAN_REQUIREMENTS_ADDRESSED; new formal observer/stop/resume evidence still required",
+    "P3-Q02": "DESIGN_AND_SAVED_CAPSULE_ROUNDTRIP_DONE; formal writer, crash/throughput and capacity gate still unmet"
+  },
+  "formal_training_executor": "NOT_IMPLEMENTED",
+  "formal_execution_admitted": false,
+  "independent_QA": "PENDING"
+}

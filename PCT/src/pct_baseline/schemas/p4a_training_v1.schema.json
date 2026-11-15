@@ -1,0 +1,389 @@
+{
+  "type": "object",
+  "properties": {
+    "sending_admitted": {
+      "const": false
+    },
+    "execution_admitted": {
+      "const": false
+    },
+    "catalog_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "input_identity": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "status_values": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "version": {
+      "const": "pct_p4a_training_plan_v1"
+    },
+    "executor_status": {
+      "const": "NOT_IMPLEMENTED_FORMAL_PROTOCOL"
+    },
+    "build_spec": {
+      "const": {
+        "version": "pct_p4a_build_spec_v1",
+        "ordering_seed": 20261113,
+        "training_seeds": [
+          11,
+          23,
+          37
+        ],
+        "epochs": 125,
+        "batch_orders": 8,
+        "selected_epoch": 125,
+        "sending_admitted": false,
+        "execution_admitted": false,
+        "storage_validation": "saved_P3_training_16_attempts_only"
+      }
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "model_id": {
+            "type": "string"
+          },
+          "method": {
+            "enum": [
+              "pct_geo_b1",
+              "pct_load_b1"
+            ]
+          },
+          "seed": {
+            "enum": [
+              11,
+              23,
+              37
+            ]
+          },
+          "feature_version": {
+            "type": "string"
+          },
+          "selected_epoch": {
+            "const": 125
+          },
+          "status": {
+            "const": "PENDING_TRAINING"
+          },
+          "weights_sha256": {
+            "type": "null"
+          },
+          "epochs": {
+            "const": 125
+          },
+          "attempts": {
+            "const": 2000
+          },
+          "action_cap": {
+            "const": 33000
+          },
+          "updates": {
+            "const": 250
+          }
+        },
+        "required": [
+          "model_id",
+          "method",
+          "seed",
+          "feature_version",
+          "selected_epoch",
+          "status",
+          "weights_sha256",
+          "epochs",
+          "attempts",
+          "action_cap",
+          "updates"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "schedules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "model_id": {
+            "type": "string"
+          },
+          "attempts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "attempt_index": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "epoch": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 125
+                },
+                "task_id": {
+                  "type": "string"
+                },
+                "task_digest": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "action_cap": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "batch_id": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "policy_snapshot_id": {
+                  "type": "string"
+                },
+                "status": {
+                  "const": "NOT_RUN"
+                }
+              },
+              "required": [
+                "attempt_index",
+                "epoch",
+                "task_id",
+                "task_digest",
+                "action_cap",
+                "batch_id",
+                "policy_snapshot_id",
+                "status"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 2000,
+            "maxItems": 2000
+          }
+        },
+        "required": [
+          "model_id",
+          "attempts"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "rules": {
+      "type": "object",
+      "properties": {
+        "algorithm": {
+          "type": "string"
+        },
+        "sampling": {
+          "type": "string"
+        },
+        "task_sampling": {
+          "type": "string"
+        },
+        "traversal": {
+          "type": "string"
+        },
+        "batch": {
+          "type": "string"
+        },
+        "reward": {
+          "type": "string"
+        },
+        "returns": {
+          "type": "string"
+        },
+        "terminal": {
+          "type": "string"
+        },
+        "truncated": {
+          "type": "string"
+        },
+        "detach": {
+          "type": "string"
+        },
+        "singleton": {
+          "type": "string"
+        },
+        "empty": {
+          "type": "string"
+        },
+        "finite": {
+          "type": "string"
+        },
+        "technical_failure": {
+          "type": "string"
+        },
+        "denominators": {
+          "type": "string"
+        },
+        "selection": {
+          "type": "string"
+        },
+        "metrics": {
+          "type": "string"
+        },
+        "resume": {
+          "type": "string"
+        },
+        "optimizer": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "const": "Adam"
+            },
+            "lr": {
+              "const": 0.0001
+            },
+            "max_grad_norm": {
+              "const": 0.5
+            }
+          },
+          "required": [
+            "name",
+            "lr",
+            "max_grad_norm"
+          ],
+          "additionalProperties": false
+        },
+        "n": {
+          "const": 5
+        },
+        "gamma": {
+          "const": 1
+        },
+        "actor_coef": {
+          "const": 1
+        },
+        "critic_coef": {
+          "const": 1
+        },
+        "entropy_coef": {
+          "const": 0
+        },
+        "checkpoint_epochs": {
+          "const": [
+            25,
+            50,
+            75,
+            100,
+            125
+          ]
+        }
+      },
+      "required": [
+        "algorithm",
+        "sampling",
+        "task_sampling",
+        "traversal",
+        "batch",
+        "reward",
+        "returns",
+        "terminal",
+        "truncated",
+        "detach",
+        "singleton",
+        "empty",
+        "finite",
+        "technical_failure",
+        "denominators",
+        "selection",
+        "metrics",
+        "resume",
+        "optimizer",
+        "n",
+        "gamma",
+        "actor_coef",
+        "critic_coef",
+        "entropy_coef",
+        "checkpoint_epochs"
+      ],
+      "additionalProperties": false
+    },
+    "denominators": {
+      "type": "object",
+      "properties": {
+        "models": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tasks_per_epoch": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "boxes_per_epoch": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "attempts_per_model": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "updates_per_model": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "actions_per_model": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_attempts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_updates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_action_cap": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "models",
+        "tasks_per_epoch",
+        "boxes_per_epoch",
+        "attempts_per_model",
+        "updates_per_model",
+        "actions_per_model",
+        "total_attempts",
+        "total_updates",
+        "total_action_cap"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "sending_admitted",
+    "execution_admitted",
+    "catalog_digest",
+    "input_identity",
+    "plan_digest",
+    "status_values",
+    "version",
+    "executor_status",
+    "build_spec",
+    "models",
+    "schedules",
+    "rules",
+    "denominators"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

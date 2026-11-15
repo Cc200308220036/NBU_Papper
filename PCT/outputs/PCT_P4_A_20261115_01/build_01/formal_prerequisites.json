@@ -1,0 +1,106 @@
+{
+  "version": "pct_p4a_formal_prerequisites_v1",
+  "formal_execution_admitted": false,
+  "training_executor": "NOT_IMPLEMENTED",
+  "preconditions": [
+    {
+      "id": "FORMAL_PROTOCOL",
+      "status": "NOT_IMPLEMENTED",
+      "requirement": "new formal training/execution/recovery schemas and APIs, immutable versions; keep P3 2-task/16-attempt/2-update guards unchanged"
+    },
+    {
+      "id": "P3-Q01_OBSERVER",
+      "status": "SPECIFIED_NOT_EXECUTED",
+      "requirement": "observe every JournalSink durable stage; actual candidate/choice/singleton/critic/monitor/commit and reuse receipts independent of immutable events; verify READY/DECISION_READY/SELECTED/MONITORED/COMMITTED cuts, identity drift/lock/error stop on NEW protocol before long run; do not claim final P3 rerun"
+    },
+    {
+      "id": "STOP_RESUME",
+      "status": "SPECIFIED_NOT_EXECUTED",
+      "requirement": "no re-inference after SELECTED, no re-monitor after MONITORED, no re-commit after COMMITTED; local forward before durable selection reconstruct from saved RNG; commit intent unknown stops; UNKNOWN_SEND no retry; halt campaign on technical/nonfinite errors"
+    },
+    {
+      "id": "TRAINING_RECOVERY",
+      "status": "NOT_IMPLEMENTED_FORMAL",
+      "requirement": "exclusive campaign/job/update writers, fsync/hash/atomic publication; all applicable RNG, model+Adam+policy/update/cursors+batch refs; ambiguous update publication stops; never apply a published update twice or re-sign older orders"
+    },
+    {
+      "id": "P3-Q02_STORAGE",
+      "status": "PLAN_PLUS_SAVED_ROUNDTRIP_ONLY",
+      "requirement": "bounded shards, attempt index, immutable manifests and crash-safe journal/update transaction integration; P4-A gzip audit capsules are NOT a runtime resume format"
+    },
+    {
+      "id": "RESOURCES",
+      "status": "BLOCKED_PENDING_PROSPECTIVE_PREFLIGHT",
+      "requirement": "measure NEW writer on worst registered task sizes and updated observers with bounded separate authorization; profile collection/gradient/optimizer/checkpoint wall and RSS separately, disk growth, crash recovery; actual formal budget still UNKNOWN"
+    },
+    {
+      "id": "MODEL_COMPLETION",
+      "status": "NOT_RUN",
+      "requirement": "all six genuine final epoch125 models with source/feature/tensor/weights identities, seed statuses and adequate convergence review; no P3 random/small-step substitution"
+    },
+    {
+      "id": "EVALUATION_DERIVATION",
+      "status": "NOT_IMPLEMENTED",
+      "requirement": "new child plan adds genuine weights/approval/runtime identities; exact original220 slots/caps/order and first Jev r0 prefix retained; original template remains false"
+    },
+    {
+      "id": "REMOTE",
+      "status": "NOT_ADMITTED",
+      "requirement": "later authorized P4-C verifies official API and credentials loading; max1 send in original first slot, no extra success sample; P4-A never reads credentials"
+    }
+  ],
+  "P3_original_failure": "preserved without rewrite; corrected final source not fully rerun on six jobs/training",
+  "baseline_resource": {
+    "198000_action_collection_seconds_estimate": 108644.11502601745,
+    "198000_action_storage_bytes_estimate": 469685180081.6326,
+    "basis": "observed training collection only; no claim of formal budget approval; wall includes persistence and verification",
+    "bytes_per_monitored_training_action": 2372147.3741496596,
+    "optimizer_and_gradient_cost": "separately recorded; exclude from collection rate; no linear convergence claim",
+    "seconds_per_monitored_training_action": 0.5487076516465528
+  },
+  "collection_hours_approx": 30.1789208405604,
+  "cost_scope": "30.2h/470GB is P3 collection-only linear extrapolation; optimizer/gradient/longer-state cost and all-in wall UNKNOWN",
+  "capacity_gate": {
+    "basis": "conservative uncompressed P3 training+4280 evaluation action fallback,1.25 safety,2 hot batch shards,36 checkpoints x2 measured P3 state.pt maximum,retain entire P3",
+    "required_free_bytes_fallback": 601166756537,
+    "observed_free_bytes": 367001600000,
+    "observed_free_sufficient_for_fallback": false,
+    "checkpoint_size_reference": 724789,
+    "hot_shard_reserve_bytes": 721132802,
+    "compression_policy": "do not lower capacity threshold from P4-A observed gzip ratio; a new formally accepted worst-case writer benchmark is required",
+    "runtime_stop": "reserve free space before each shard/update; when next atomic write+hot rollback+checkpoint reserve unavailable stop at safe boundary, preserve remaining NOT_RUN; never delete archived evidence or silently reduce epochs"
+  },
+  "storage_contract": {
+    "version": "pct_formal_storage_design_v1",
+    "implementation": "DESIGN_ONLY",
+    "units": "per attempt header+event/transition stream and bounded <=8-order or64MiB uncompressed shards (whichever first); split oversized attempt into indexed segments without splitting transition records",
+    "representation": "canonical UTF8 JSONL gzip deterministic header; exact coordinate/float facts and explicit field/schema versions, no quantization; content digest on both plain and compressed bytes",
+    "index": "campaign/model/seed/epoch/attempt/decision/segment -> shard+record offset, hashes, policy/config/task/source identities; each transition once, no cumulative full-history duplication",
+    "audit_retention": "retain full denominators and failures, current public contexts/candidate IDs/actions, monitor receipts, before/after state refs, reward/done/truncated/next value, update input logprob/value, source/model/optimizer/RNG identities; no winner-only retention",
+    "hot_durable": "active attempt WAL stores READY/DECISION_READY/SELECTED/MONITORED/COMMITTED; fsync before each external/physical action, immutable finalized capsules referenced by batch manifest; checkpoint optimizer states as separate hashed binary blobs",
+    "transaction": "write .pending then fsync bytes/index/directory then publish immutable manifest atomically under lock; orphan pending/quarantine never counted as completed; incomplete commit/update intent stops for diagnosis",
+    "resume": "last committed manifest and validated hot WAL establish cursors; validate all identity/hash chains; no old source resigning; references to earlier frozen policy remain immutable",
+    "validation_scope": "P4-A pack/unpack only preserves existing saved JSON bytes and semantics, not formal WAL/step/update crash integration or throughput",
+    "retention_policy": "no automatic history deletion/GC; disk-limited stop rather than purge; future archive migration must retain hashes and source locators"
+  },
+  "prospective_preflight_proposal": {
+    "authorization": "NOT_GRANTED_NOT_RUN",
+    "scope": "proposal only: new formal protocol, engineering seed11, geo/load each one attempt on NEW_00100027_controlled_base(19) and SYN_COMBO_06(40), four attempts,118 action/monitor/choice cap; four saved one-action prefix cases stop at next READY",
+    "tasks": [
+      "NEW_00100027_controlled_base",
+      "SYN_COMBO_06"
+    ],
+    "caps": {
+      "complete_attempts": 4,
+      "actions": 118,
+      "candidate_generations_including_empty_pools": 122,
+      "monitors_including_prefixes": 120,
+      "network_choices_including_prefixes": 119,
+      "prefix_physical_commits": 3,
+      "remote_requests": 0,
+      "optimizer_updates": 0
+    },
+    "training_update_budget": "NOT_GRANTED; separate explicit numerical cap needed if optimizer crash/throughput testing requires updates",
+    "purpose": "worst-size writer/observer/timing/RSS/disk and update-transaction verification, not performance tuning or repeating P3 matrix"
+  }
+}

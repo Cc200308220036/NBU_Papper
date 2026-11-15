@@ -1,0 +1,40 @@
+{
+  "version": "pct_p4a_qa_acceptance_v1",
+  "criteria": [
+    {
+      "id": "B40",
+      "status": "PASS",
+      "scope": "训练计划冻结，不是训练完成",
+      "requirement": "来源组件、容量1身份、六模型预算和选择规则事前冻结",
+      "code": "p4a.authenticated_catalog/build_training/validate_plan",
+      "archive": "PCT/outputs/PCT_P4_A_20261115_01/build_01/training_plan.json",
+      "current": "96输入身份、12000尝试槽、配对顺序、来源和预算重算通过",
+      "limits": "六模型均待训练；1500为更新槽，异常/零transition不伪造实际更新"
+    },
+    {
+      "id": "B41",
+      "status": "PASS",
+      "scope": "220槽不可发送模板",
+      "requirement": "逐槽task/method/seed/repeat/额度/顺序/待完成权重",
+      "code": "p4a.build_evaluation/require_executable",
+      "archive": "PCT/outputs/PCT_P4_A_20261115_01/build_01/evaluation_template.json",
+      "current": "220唯一组合、1284发送/2568网络选择/4280监测上界、首槽与哈希顺序核验；重签篡改与执行拒绝测试通过",
+      "limits": "权重SHA为空，所有槽NOT_RUN；不可作为执行许可"
+    },
+    {
+      "id": "B42",
+      "status": "PASS",
+      "scope": "方法卡与训练充分性限制",
+      "requirement": "两版输入、A2C差异、训练量与结论范围",
+      "code": "geo_encoding/load_encoding; freeze_p4a.cards",
+      "archive": "PCT/outputs/PCT_P4_A_20261115_01/build_01/method_cards.json",
+      "current": "与两版原manifest完全一致；静态核对实际字段、缩放、上游Tools.py默认ACKTR/64x5",
+      "limits": "完整特征包差异不是单因素承载消融；无收敛或研究收益证据"
+    }
+  ],
+  "future_criteria": {
+    "B43": "NOT_RUN",
+    "B44": "NOT_RUN",
+    "B45": "NOT_RUN"
+  }
+}

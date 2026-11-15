@@ -1,0 +1,33 @@
+{
+  "version": "jm2_b1_content_stop_admission_v1",
+  "target": "full B1 and B2/C",
+  "status": "NOT_READY",
+  "matrix": [
+    {
+      "prerequisite": "requested saved-content supplement",
+      "status": "PASS",
+      "evidence": "static_checks.json;original_verifier.log"
+    },
+    {
+      "prerequisite": "credible per-card content review",
+      "status": "NOT_RUN",
+      "evidence": "five PENDING,approved0",
+      "impact": "full B1/B2/C unavailable"
+    }
+  ],
+  "allowed": [
+    "minimal prerequisite check: locate already authorized genuine content review source and define its scope from existing records",
+    "if no genuine source, stop and report missing input without another duplicate supplement package",
+    "if source is already explicitly authorized and review is purely local, retain genuine approve/reject/archive/PENDING records for independent QA;no automatic gate change"
+  ],
+  "forbidden": [
+    "repeat same matrix as purported progress",
+    "new production code, B2/C implementation or opening admission",
+    "paid/model calls without separate user authorization",
+    "mandatory approval of every card or proof of causal mechanism",
+    "invent human/external authorization"
+  ],
+  "stop_condition": "No source: stop awaiting user-designated review source/scope;do not install/run external review automatically",
+  "real_calls_authorized": 0,
+  "stop": true
+}

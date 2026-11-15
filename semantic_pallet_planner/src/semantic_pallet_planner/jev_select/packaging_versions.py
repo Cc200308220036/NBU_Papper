@@ -39,3 +39,13 @@ JM_TRAINING_PLAN_PROTOCOLS={JM_TRAINING_PLAN_VERSION:'packaging_jev_training_pla
 # B2 final offline freeze/admission receipt, separate from the v1 preparation.
 JM_TRAINING_FREEZE_VERSION='jev_jm_training_freeze_v1'
 JM_TRAINING_FREEZE_PROTOCOLS={JM_TRAINING_FREEZE_VERSION:'packaging_jev_training_freeze'}
+
+# JM2-A1 is offline public feature/role engineering, never an execution route.
+JM_SCENARIO_INPUT='jev_jm_scenario_input_v1'
+JM_SCENARIO_SIGNATURE='jev_jm_scenario_signature_v1'
+JM_ACTION_CONTRAST='jev_jm_action_contrast_v1'
+JM_SCENARIO_PROTOCOLS={v:'packaging_scenario_features' for v in
+                       (JM_SCENARIO_INPUT,JM_SCENARIO_SIGNATURE,JM_ACTION_CONTRAST)}
+JM_SCENARIO_SCHEMAS={JM_SCENARIO_INPUT:'jm_scenario_input_v1',
+                     JM_SCENARIO_SIGNATURE:'jm_scenario_signature_v1',
+                     JM_ACTION_CONTRAST:'jm_action_contrast_v1'}

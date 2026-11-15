@@ -1,0 +1,361 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_jm_scenario_input_v1"
+    },
+    "coordinate": {
+      "const": "bottom_center_x_right_y_back_z_up_v1"
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "container": {
+          "type": "object",
+          "properties": {
+            "length_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "width_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "max_height_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "max_payload_kg": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "length_mm",
+            "width_mm",
+            "max_height_mm",
+            "max_payload_kg"
+          ],
+          "additionalProperties": false
+        },
+        "buffer": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "item_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "size_mm": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "mass_kg": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "max_top_load_kg": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "stackable": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "item_id"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 256
+        },
+        "placed_objects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "item_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "size_mm": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "mass_kg": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "max_top_load_kg": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "stackable": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "pose": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "x_mm": {
+                        "type": "number"
+                      },
+                      "y_mm": {
+                        "type": "number"
+                      },
+                      "z_base_mm": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "yaw_deg": {
+                        "type": "integer",
+                        "enum": [
+                          0,
+                          90
+                        ]
+                      }
+                    },
+                    "required": [
+                      "x_mm",
+                      "y_mm",
+                      "z_base_mm",
+                      "yaw_deg"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "oriented_size_mm": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "area_current_top_load_kg": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "area_remaining_top_load_kg": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "item_id"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 256
+        }
+      },
+      "required": [
+        "container",
+        "buffer",
+        "placed_objects"
+      ],
+      "additionalProperties": false
+    },
+    "pool": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "candidate_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "pick_item_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "pose": {
+                "type": "object",
+                "properties": {
+                  "x_mm": {
+                    "type": "number"
+                  },
+                  "y_mm": {
+                    "type": "number"
+                  },
+                  "z_base_mm": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "yaw_deg": {
+                    "type": "integer",
+                    "enum": [
+                      0,
+                      90
+                    ]
+                  }
+                },
+                "required": [
+                  "x_mm",
+                  "y_mm",
+                  "z_base_mm",
+                  "yaw_deg"
+                ],
+                "additionalProperties": false
+              },
+              "oriented_size_mm": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              }
+            },
+            "required": [
+              "candidate_id",
+              "pick_item_id",
+              "pose",
+              "oriented_size_mm"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 512
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "pool_receipt": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "complete": {
+              "const": true
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "complete",
+            "count",
+            "digest"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "version",
+    "coordinate",
+    "state",
+    "pool",
+    "pool_receipt"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "jm_scenario_input_v1"
+}

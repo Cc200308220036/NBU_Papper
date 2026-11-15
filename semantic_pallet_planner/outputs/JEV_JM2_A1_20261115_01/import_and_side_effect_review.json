@@ -1,0 +1,75 @@
+{
+  "actual_LP": 0,
+  "actual_candidate_generation": 0,
+  "actual_credentials_read": 0,
+  "actual_model_calls": 0,
+  "actual_orders": 0,
+  "blocked_imports": [
+    "semantic_pallet_planner.o4",
+    "semantic_pallet_planner.planner",
+    "semantic_pallet_planner.jev_select.episode",
+    "semantic_pallet_planner.jev_select.transport",
+    "semantic_pallet_planner.jev_select.execution",
+    "semantic_pallet_planner.jev_select.selector",
+    "semantic_pallet_planner.jev_select.packaging_runtime",
+    "semantic_pallet_planner.jev_select.stability",
+    "numpy",
+    "scipy"
+  ],
+  "feature_module": "stdlib + existing stdlib-only sampling helpers and version constants",
+  "files": [
+    {
+      "file": {
+        "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_scenario_features.py",
+        "sha256": "7980f8e3edf95a5f3589ec65266d43d198c1bb2c37f285d5fa858f1dd1cd2d86"
+      },
+      "top_level_imports": [
+        "__future__",
+        "copy",
+        "decimal",
+        "functools",
+        "json",
+        "math",
+        "pathlib",
+        "packaging_versions",
+        "packaging_jev_sampling"
+      ]
+    },
+    {
+      "file": {
+        "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_sampling.py",
+        "sha256": "86594f810e4210f32c547e0d8e60ebfdff1ba16c6130e2f99137eb81bb9524f2"
+      },
+      "top_level_imports": [
+        "__future__",
+        "argparse",
+        "base64",
+        "copy",
+        "decimal",
+        "fractions",
+        "hashlib",
+        "json",
+        "math",
+        "pathlib",
+        "re",
+        "packaging_versions"
+      ]
+    },
+    {
+      "file": {
+        "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py",
+        "sha256": "d6801c4be0e846288b93702cedba99e22eb2eb455000abd354d4bbb891c13e63"
+      },
+      "top_level_imports": []
+    }
+  ],
+  "forbidden_operations": [
+    "credential file reads",
+    "socket connect/bind",
+    "subprocess",
+    "os.system"
+  ],
+  "static_schema_reads": "only package-local closed schema JSON; no dynamic execution at import",
+  "verification": "tests install meta-path import blocker and audit hook before importing A1 module",
+  "version": "jm2_a1_import_review_v1"
+}

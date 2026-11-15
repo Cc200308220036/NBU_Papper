@@ -1,0 +1,43 @@
+{
+  "attempts": [
+    {
+      "correction": "A1 adapter now derives area remaining from observed max_top_load_kg-current_top_load_kg; added targeted test; originals untouched",
+      "exit_code": 1,
+      "failures": 1,
+      "name": "tests_attempt_01",
+      "reason": "P03 historical/current area remaining capacity mismatch: current effective permission is zero for nonstackable boxes",
+      "status": "FAIL",
+      "tests": 13
+    },
+    {
+      "exit_code": 0,
+      "name": "tests_attempt_02",
+      "status": "PASS",
+      "tests": 14
+    },
+    {
+      "correction": "verify historical binding against entry Git blob with exact saved SHA; explicitly record new source identity, never re-sign old freeze",
+      "exit_code": 1,
+      "name": "saved_public_attempt_01",
+      "reason": "B2 manifest pins old packaging_versions.py; authorized A1 additive registration changes live source",
+      "status": "FAIL"
+    },
+    {
+      "exit_code": 0,
+      "name": "tests_final",
+      "status": "PASS",
+      "tests": 14
+    },
+    {
+      "exit_code": 0,
+      "name": "saved_public",
+      "real_saved_points": 5,
+      "status": "PASS"
+    }
+  ],
+  "initial_stderr_raw_archive": "tests_attempt_01.stderr.raw.json",
+  "model_or_order_failures_from_these_checks": 0,
+  "retained_logs": true,
+  "text_log_normalization": "trailing line whitespace only; exact original raw bytes/SHA/base64 retained",
+  "version": "jm2_a1_check_attempts_v1"
+}

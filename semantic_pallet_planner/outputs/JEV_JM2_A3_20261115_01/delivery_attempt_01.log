@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JM2_A3_20261115_01/verify_delivery.py", line 33, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JM2_A3_20261115_01/verify_delivery.py", line 21, in main
+    for name in ['projection_sufficiency_review.json','evidence_mapping.json','review_source.json','inherited_boundaries.json','check_attempts.json','handoff.json']:walk(read(OUT/name))
+                                                                                                                                                                     ~~~~^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JM2_A3_20261115_01/verify_delivery.py", line 18, in walk
+    for x in v.values():walk(x)
+                        ~~~~^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JM2_A3_20261115_01/verify_delivery.py", line 20, in walk
+    for x in v:walk(x)
+               ~~~~^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JM2_A3_20261115_01/verify_delivery.py", line 16, in walk
+    if {'path','sha256','pointer'}<=set(v):resolve(v);refs.append(v)
+                                           ~~~~~~~^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JM2_A3_20261115_01/review_saved.py", line 24, in resolve
+    assert p.resolve().is_relative_to(ROOT) and sha(p)==r['sha256'];v=read(p)
+                                                                      ~~~~^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JM2_A3_20261115_01/review_saved.py", line 15, in read
+    if p not in CACHE:CACHE[p]=json.loads(p.read_text())
+                               ~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/cyw/anaconda3/lib/python3.13/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/cyw/anaconda3/lib/python3.13/json/decoder.py", line 348, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 3 (char 2)

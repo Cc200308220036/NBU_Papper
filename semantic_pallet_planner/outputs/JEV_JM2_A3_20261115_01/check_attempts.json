@@ -1,0 +1,54 @@
+{
+  "current_run": [
+    {
+      "check": "saved review initial",
+      "log": "review_attempt_01.log",
+      "status": "PASS"
+    },
+    {
+      "check": "saved review final with per-card unknown distinctions",
+      "log": "review_final.log",
+      "status": "PASS"
+    },
+    {
+      "check": "original A2 tests current3.13",
+      "log": "original_tests_current_environment.log",
+      "status": "PASS_6"
+    },
+    {
+      "check": "original A1 necessary constructed tests",
+      "log": "original_A1_constructed_tests.log",
+      "status": "PASS_4"
+    }
+  ],
+  "current_unexpected_failures": [
+    {
+      "cause": "empty-pointer source refs included Python/log text; verifier assumed JSON for every source",
+      "check": "delivery verifier original and immediate unchanged retry",
+      "final": "delivery_final.log",
+      "fix": "all source types use exact SHA; only JSON or nonempty JSON pointers are parsed",
+      "log": "delivery_attempt_01.log",
+      "status": "FAIL_JSONDecodeError"
+    }
+  ],
+  "historical_failures_retained": {
+    "checks": {
+      "path": "semantic_pallet_planner/outputs/JEV_JM2_A2_QA_20261115_01/static_checks.json",
+      "pointer": "",
+      "sha256": "9e15d8cd21ff284a869987dae041e0b6e614c122b11d1d85c9fa6d4ca049e03f"
+    },
+    "log": {
+      "path": "semantic_pallet_planner/outputs/JEV_JM2_A2_QA_20261115_01/tests.log",
+      "pointer": "",
+      "sha256": "63edce4007dbec27f13c39d46185c6cceeb46d50d0800ba5cb9660c90bb5736e"
+    },
+    "summary": "QA Python3.9:3PASS/1FAIL/2ERROR; not overwritten or upgraded by current3.13 PASS"
+  },
+  "not_run": [
+    "historical frozen execution",
+    "cross-environment digest equivalence",
+    "trusted external content approval",
+    "model generation/retrieval/injection/evaluation"
+  ],
+  "version": "jm2_a3_attempts_v1"
+}

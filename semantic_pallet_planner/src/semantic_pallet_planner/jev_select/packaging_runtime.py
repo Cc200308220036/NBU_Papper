@@ -26,7 +26,7 @@ METHODS = ('local_geometry_test_double','local_first_test_double')
 
 
 def is_packaging(config):
-    if config.get('version') == 'pct_b1_config_v1':
+    if config.get('version') in ('pct_b1_config_v1', 'pct_p3_config_v1'):
         resolve_extension(config['version'])
         return True
     return config.get('version') in ('jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
@@ -261,7 +261,7 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
         validate_receipt(retrieval_receipt,memory_view,config,state,criteria)
         memory_fields={'memory_view':mv,'retrieval_receipt':retrieval_receipt}
     route=decision_route(bundle)
-    body=None if route!='CHOICE_REQUIRED' or (config.get('version')=='pct_b1_config_v1' and config['selector']!='jev_none_b1') else {'model':config['model'],'state':state,
+    body=None if route!='CHOICE_REQUIRED' or (config.get('version') in ('pct_b1_config_v1','pct_p3_config_v1') and config['selector']!='jev_none_b1') else {'model':config['model'],'state':state,
         'questions':{'next_action':{'type':'choice','instructions':QUESTION,'criteria':criteria}}}
     binding={**{k:observation[k] for k in BINDINGS},'event_index':buffer['event_index'],
         'physical_digest':value['physical_digest'],'selectable_digest':value['selectable_digest'],

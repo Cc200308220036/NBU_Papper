@@ -1,0 +1,53 @@
+{
+  "version": "pct_p4a_admission_v1",
+  "next_unit": "P4-A B40-B42",
+  "status": "READY",
+  "scope": "训练计划/数据来源与预算冻结、220槽不可发送评价模板、方法卡和资源/存储合同；不授权正式训练或调用",
+  "prerequisites": [
+    {
+      "requirement": "有限模型执行、真实监测提交及训练更新可行性",
+      "status": "SATISFIED_WITH_SCOPE",
+      "evidence": "B30—B33本轮通过；自然停单而非全装完"
+    },
+    {
+      "requirement": "来源/数据/训练种子/预算与最终模型规则",
+      "status": "DESIGN_AVAILABLE",
+      "evidence": "16训练任务264箱；两版各seed11/23/37，epoch125，2000attempt/250updates/33000actions每模型"
+    },
+    {
+      "requirement": "220槽不可发送模板与方法卡",
+      "status": "P4_A_WORK",
+      "evidence": "22任务×10，权重引用待完成模型ID，sending_admitted=false；原始未实现不提前验收"
+    },
+    {
+      "requirement": "长期资源与存储、最终观察器合同",
+      "status": "P4_A_MUST_EXPLICITLY_RESOLVE_PLAN",
+      "evidence": "P3-Q01/Q02；不授权现在做长跑"
+    },
+    {
+      "requirement": "P4-B正式训练及P4-C请求准入",
+      "status": "NOT_ASSESSED_NOT_GRANTED",
+      "evidence": "需P4-A完整验收及独立任务授权；P3硬上限不得解除冒充正式协议"
+    },
+    {
+      "requirement": "当前用户授权",
+      "status": "QA_ONLY",
+      "evidence": "下一窗口须由用户指定P4-A范围，不自动实施"
+    }
+  ],
+  "required": [
+    "B40完整16任务、来源组件/衍生身份/六模型预算与固定最终epoch规则",
+    "B41展开220槽/逐job上限/顺序/占位模型ID及sending_admitted=false",
+    "B42geo/load特征包与A2C差异/训练充分性限制方法卡",
+    "P3-Q01/Q02在正式执行准入前显式处理"
+  ],
+  "forbidden": [
+    "运行正式六模型训练",
+    "复用P3固定2task/2update限制后直接解除上限",
+    "当前调用Jev或读取凭证",
+    "运行22任务矩阵",
+    "因P3成绩挑epoch/任务/种子",
+    "重签历史身份"
+  ],
+  "remote_requests_authorized": 0
+}

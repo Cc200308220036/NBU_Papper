@@ -1,0 +1,48 @@
+{
+  "version": "pct_p3_acceptance_v1",
+  "status": "DEVELOPMENT_DELIVERED_PENDING_INDEPENDENT_QA",
+  "criteria": [
+    {
+      "id": "B30",
+      "status": "PASS",
+      "scope": "6/6 archived; complete orders 0/6, natural empty pool 6/6, technical failures 0; metrics saved-fact verified",
+      "evidence": [
+        "attempt_02/matrix_results.json",
+        "final_saved_audit.json"
+      ]
+    },
+    {
+      "id": "B31",
+      "status": "PASS_BOUNDED_UPDATE_BOUNDARY",
+      "scope": "16 attempts,147 transitions,2 updates; finite losses/gradients/parameters, reward/public commit alignment, exact populated Adam and RNG roundtrip; arbitrary mid-batch recovery NOT_RUN",
+      "evidence": [
+        "attempt_02/training/update_1.json",
+        "attempt_02/training/update_2.json",
+        "attempt_02/training/snapshots",
+        "final_tests.log"
+      ]
+    },
+    {
+      "id": "B32",
+      "status": "PASS_WITH_CORRECTION",
+      "scope": "original bad zeros and failed cuts retained, supplementary immutable-stage accounting, four prefix recoveries, fixed JournalSink observer; pure-forward/optimizer-only timing NOT_MEASURED",
+      "evidence": [
+        "saved_audit.json",
+        "final_saved_audit.json",
+        "prefix_recovery/results.json",
+        "final_tests.log",
+        "resource_metrics.json"
+      ]
+    },
+    {
+      "id": "B33",
+      "status": "PASS_LIMITED_COVERAGE",
+      "scope": "matrix60 and training147 natural choices, no natural singleton; no task/seed substitution; source independence not established",
+      "evidence": [
+        "final_saved_audit.json"
+      ]
+    }
+  ],
+  "independent_QA": "PENDING",
+  "P4_admitted": false
+}

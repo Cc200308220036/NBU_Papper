@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "pct_b1_execution_spec_v1"
+    },
+    "buffer_capacity": {
+      "const": 1
+    },
+    "yaw_deg": {
+      "const": [
+        0,
+        90
+      ]
+    },
+    "per_box": {
+      "const": 16
+    },
+    "joint": {
+      "const": 48
+    },
+    "candidate_manifest_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "display_order_seed": {
+      "const": 20261102
+    },
+    "monitor_algorithm": {
+      "const": "pct_exact_pose_network_v3"
+    }
+  },
+  "required": [
+    "version",
+    "buffer_capacity",
+    "yaw_deg",
+    "per_box",
+    "joint",
+    "candidate_manifest_digest",
+    "display_order_seed",
+    "monitor_algorithm"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,96 @@
+{
+  "version": "pct_p3_qa_v1",
+  "date": "2026-11-15",
+  "review_scope": {
+    "unit": "P3 B30-B33",
+    "kind": "STAGE",
+    "package": "PCT/outputs/PCT_P3_20261115_01",
+    "plan": "PCT-plan-v1 §9.4"
+  },
+  "baseline": {
+    "branch": "dev/PCT",
+    "head": "116f022e81cd782975436bfa5906b23b18cde64a",
+    "initial_staged": "EMPTY",
+    "worktree": "P3四公共文件修改及PCT新交付，保留"
+  },
+  "acceptance_matrix": [
+    {
+      "id": "B30",
+      "status": "PASS",
+      "claim": "六job全部归档，自然空池6/6，整单完成0/6",
+      "implementation": "独立P3配置/准入/模型绑定；复用公共候选/循环/精确v3/commit与journal",
+      "archive": "attempt_02/plan、六job header/journal/episode/records和matrix_results",
+      "qa": "独立重算六终态、件数/质量/体积/利用率及模型精确动作/监测绑定；完整分母一致",
+      "scope": "仅两已暴露任务、工程权重；自然停单不等于技术失败，也不证明全局不可行"
+    },
+    {
+      "id": "B31",
+      "status": "PASS",
+      "claim": "16采集尝试、147transition、两次更新及更新边界Adam/RNG精确恢复",
+      "implementation": "batch固定policy；分段实际长度/terminal/detach；启用autograd；atomic模型/optimizer/RNG快照；后批实际使用恢复对象",
+      "archive": "training16任务、update_1/2、snapshot0/1/2、模型导出及数学/恢复断言日志",
+      "qa": "奖励由保存提交体积重算；n5目标与actor/critic/总loss独立重算匹配；参数变化及快照pin/二进制摘要核对；未反序列化或重做训练/optimizer恢复",
+      "scope": "仅两步及更新边界；任意midbatch/optimizer-step中断自动恢复NOT_RUN，singleton自然覆盖0、fixture覆盖"
+    },
+    {
+      "id": "B32",
+      "status": "PASS",
+      "claim": "原埋点FAIL保留，日志补算及四前缀验证后资源统计可用",
+      "implementation": "最终JournalSink落盘观察器替代错误hook；独立session计数；writer lock及实测inference时间修正",
+      "archive": "saved_audit原FAIL、final_saved_audit、prefix_recovery、final_tests和resource_metrics；最终源码与执行源码分封",
+      "qa": "矩阵66候选/60监测/42网络，训练163候选/147监测/147选择重算；四前缀字节与新增阶段/计数核对",
+      "scope": "计数含重建修正，未伪称原埋点正确；纯forward/optimizer独立时延NOT_MEASURED，最终源码未重跑矩阵"
+    },
+    {
+      "id": "B33",
+      "status": "PASS",
+      "claim": "自然choice覆盖存在，无换任务/种子追求成绩",
+      "implementation": "两任务固定上界，失败停批和分母保留",
+      "archive": "矩阵60choice/6空池、训练147choice/16空池；池大小3—16",
+      "qa": "从22保存episode独立统计，与汇总一致；没有自然singleton，不填虚假自然覆盖",
+      "scope": "有限已暴露任务，非独立泛化或训练收益证据"
+    }
+  ],
+  "findings": [
+    {
+      "id": "P3-Q01",
+      "severity": "MEDIUM",
+      "blocking_for": "正式长期执行前确认；不阻断P4-A计划开发",
+      "acceptance": "B32/未来运行可观测性",
+      "location": "p3_runtime.checkpoint_observer；attempt_02原sessions；identity.execution_source_differences",
+      "fact": "原执行埋点计数0和计划cut未命中；已保留FAIL并据不可变journal补统计/四前缀验证；最终观察器仅必要测试，未重跑六job/训练。",
+      "impact": "不能称最终源码已有同一套完整实单运行证据；正式长跑应使用新冻结版本并验证真实落盘回调/停止/计数。",
+      "minimum_fix": "P4-A在计划中明确回调与资源口径、执行前准入检查；P4-B前新协议针对性预检，不重签或重跑历史矩阵。",
+      "verification": "新冻结执行器实际保存阶段和计数与独立journal核对；无须为消除历史差异全量复验"
+    },
+    {
+      "id": "P3-Q02",
+      "severity": "MEDIUM",
+      "blocking_for": "正式训练资源/执行准入；不阻断P4-A",
+      "acceptance": "P4-A资源与存储合同",
+      "location": "resource_metrics.json / final_saved_audit.resource_estimate / 方案§7.4",
+      "fact": "详细journal采集线性外推198000动作约30.2小时、470GB，尚不含完整更新成本；正式分片存储和规模预算未验收。",
+      "impact": "不得把P3小步通过推导六模型长期训练已可承受或已获执行授权。",
+      "minimum_fix": "P4-A明确存储分片/身份/故障恢复/审计保留规则、资源测算和容量门槛；只用保存数据做可逆格式验证，必要后续预检另登记。",
+      "verification": "完整分母/transition可追溯、数据往返及身份不变，正式训练前具备具体资源准入证据"
+    }
+  ],
+  "engineering_status": "PASS_P3_BOUNDED_DIAGNOSIS_WITH_DISCLOSED_CORRECTIONS",
+  "evidence_readiness": "SUFFICIENT_FOR_B30_B33_NOT_FOR_FORMAL_LONG_RUN",
+  "research_result": "NO_POLICY_BENEFIT_ESTABLISHED_0_OF_6_COMPLETE",
+  "next_stage_admission": "READY",
+  "authorization_scope": {
+    "current": "Independent saved-fact QA",
+    "business_runs": 0,
+    "new_network_calls": 0,
+    "new_optimizer_updates": 0,
+    "remote_requests": 0,
+    "install": false,
+    "git_commit_push": false,
+    "P4_A": "not authorized by QA"
+  },
+  "carryforward": {
+    "P1C-Q01": "CLOSED_FOR_P3_SUPPLEMENTAL_SESSION_ACCOUNTING_ONLY; historical events unchanged; future protocol must implement truthful counting"
+  },
+  "stop": true
+}

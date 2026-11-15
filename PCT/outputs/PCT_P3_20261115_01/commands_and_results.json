@@ -1,0 +1,77 @@
+{
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src $NBU_PY -m unittest discover -s PCT/tests -p test_p3_training.py -v",
+      "exit_code": 0,
+      "tests": 4,
+      "purpose": "initial math and initial optimizer/RNG preflight"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 $NBU_PY PCT/scripts/run_p3.py run --output PCT/outputs/PCT_P3_20261115_01/attempt_01",
+      "exit_code": 1,
+      "result": "preflight missing geometric weight path; no plan/jobs/monitor/update"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src:semantic_pallet_planner/src $NBU_PY -m unittest discover -s PCT/tests -p 'test_p3*.py' -v",
+      "exit_code": 0,
+      "tests": 6,
+      "purpose": "pre-dispatch integration and math"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 $NBU_PY PCT/scripts/run_p3.py run --output PCT/outputs/PCT_P3_20261115_01/attempt_02",
+      "exit_code": 0,
+      "result": "six jobs and 16 attempts/two updates"
+    },
+    {
+      "command": "$NBU_PY PCT/scripts/audit_p3.py --run PCT/outputs/PCT_P3_20261115_01/attempt_02 --output PCT/outputs/PCT_P3_20261115_01/saved_audit.json",
+      "exit_code": 1,
+      "result": "22 saved audit count assertions failed; original hook missed intermediate stages; not 22 execution failures"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 $NBU_PY PCT/scripts/verify_p3_prefix_recovery.py",
+      "exit_code": 0,
+      "result": "four one-pending-action prefix tests; no new full orders"
+    },
+    {
+      "command": "$NBU_PY PCT/scripts/audit_p3.py --run PCT/outputs/PCT_P3_20261115_01/attempt_02 --output PCT/outputs/PCT_P3_20261115_01/saved_audit_corrected.json",
+      "exit_code": 0,
+      "result": "supplemented stage counts; originals preserved"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src:semantic_pallet_planner/src $NBU_PY -m unittest discover -s PCT/tests -p 'test_p3*.py' -v",
+      "exit_code": 0,
+      "tests": 7,
+      "purpose": "corrected JournalSink observer"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src:semantic_pallet_planner/src $NBU_PY -m unittest discover -s PCT/tests -p 'test_p3*.py' -v",
+      "exit_code": 0,
+      "tests": 8,
+      "log": "final_tests.log",
+      "purpose": "add real singleton value-only precheck; no optimizer update"
+    },
+    {
+      "command": "PCT_P3_FROZEN_SOURCE=PCT/outputs/PCT_P3_20261115_01/attempt_02/source_snapshot/PCT/src PYTHONDONTWRITEBYTECODE=1 $NBU_PY PCT/scripts/audit_p3.py --run PCT/outputs/PCT_P3_20261115_01/attempt_02 --output PCT/outputs/PCT_P3_20261115_01/final_saved_audit.json",
+      "exit_code": 0,
+      "log": "final_saved_audit.log",
+      "purpose": "frozen execution source, no re-signing"
+    },
+    {
+      "command": "python3 PCT/scripts/seal_p3.py",
+      "exit_code": 1,
+      "result": "system Python3.9 AST cannot parse existing public Python3.12 f-string; before seal records or model execution"
+    },
+    {
+      "command": "$NBU_PY PCT/scripts/seal_p3.py",
+      "exit_code": 0,
+      "purpose": "AST/source/link/scope/index/hash checks and final seal"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "remote_requests": 0,
+  "fixed_matrix_reruns": 0,
+  "extra_optimizer_steps": 0
+}

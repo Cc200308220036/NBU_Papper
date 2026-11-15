@@ -1,0 +1,28 @@
+{
+  "commands": [
+    {
+      "command": "python3 PCT/outputs/PCT_P3_QA_20261115_01/check_saved.py",
+      "exit_code": 0,
+      "result": "2257文件/49最终源码/47执行快照匹配；22episode账目/奖励；两loss与四前缀保存事实核对"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "script_review": {
+    "run_p3.py/verify_p3_prefix_recovery.py": "完整审查，会运行订单/LP/网络/optimizer或保存前缀接续，本轮不执行",
+    "audit_p3.py": "完整审查，虽不业务派发但会构造并加载网络且写新audit，未执行；独立标准库脚本补充事实，不冒充原validator本轮运行",
+    "p3_training.py/p3_runtime.py/tests": "完整相关控制流/训练数学/保存恢复检查路径阅读"
+  },
+  "not_run": [
+    "业务测试重跑",
+    "订单/候选/LP",
+    "网络推理或梯度",
+    "optimizer恢复/step",
+    "完整当前版本矩阵",
+    "安装",
+    "模型远程请求"
+  ],
+  "credential_reads": 0
+}

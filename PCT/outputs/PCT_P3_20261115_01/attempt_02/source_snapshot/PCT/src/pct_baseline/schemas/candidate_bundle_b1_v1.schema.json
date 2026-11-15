@@ -1,0 +1,499 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_candidate_bundle_b1_v1"
+    },
+    "observation_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "candidate_backend": {
+      "const": "e2_original_v1"
+    },
+    "generator_config_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "physical_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "candidate_fingerprint": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pick_item_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pose": {
+            "type": "object",
+            "properties": {
+              "x_mm": {
+                "type": "number"
+              },
+              "y_mm": {
+                "type": "number"
+              },
+              "z_base_mm": {
+                "type": "number",
+                "minimum": 0
+              },
+              "yaw_deg": {
+                "enum": [
+                  0,
+                  90
+                ]
+              }
+            },
+            "required": [
+              "x_mm",
+              "y_mm",
+              "z_base_mm",
+              "yaw_deg"
+            ],
+            "additionalProperties": false
+          },
+          "oriented_size_mm": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "ems": {
+            "type": "object",
+            "properties": {
+              "ems_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ems_type": {
+                "enum": [
+                  "floor_space",
+                  "supported_space"
+                ]
+              }
+            },
+            "required": [
+              "ems_id",
+              "ems_type"
+            ],
+            "additionalProperties": false
+          },
+          "support": {
+            "type": "object",
+            "properties": {
+              "support_item_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "support_ratio": {
+                "type": "number",
+                "minimum": 0
+              },
+              "com_margin_mm": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "support_item_ids",
+              "support_ratio",
+              "com_margin_mm"
+            ],
+            "additionalProperties": false
+          },
+          "load": {
+            "type": "object",
+            "properties": {
+              "downward_load_kg": {
+                "type": "number",
+                "minimum": 0
+              },
+              "minimum_remaining_capacity_kg": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "downward_load_kg",
+              "minimum_remaining_capacity_kg"
+            ],
+            "additionalProperties": false
+          },
+          "resulting_geometry": {
+            "type": "object",
+            "properties": {
+              "max_height_mm": {
+                "type": "number",
+                "minimum": 0
+              },
+              "volume_utilization": {
+                "type": "number",
+                "minimum": 0
+              },
+              "center_of_mass_offset_mm": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "max_height_mm",
+              "volume_utilization",
+              "center_of_mass_offset_mm"
+            ],
+            "additionalProperties": false
+          },
+          "geometry_score_components": {
+            "type": "object",
+            "properties": {
+              "compactness": {
+                "type": "number"
+              },
+              "height": {
+                "type": "number"
+              },
+              "stability": {
+                "type": "number"
+              },
+              "balance": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "compactness",
+              "height",
+              "stability",
+              "balance"
+            ],
+            "additionalProperties": false
+          },
+          "physical_valid": {
+            "const": true
+          },
+          "physical_rejection_reasons": {
+            "const": []
+          }
+        },
+        "required": [
+          "candidate_id",
+          "candidate_fingerprint",
+          "pick_item_id",
+          "pose",
+          "oriented_size_mm",
+          "ems",
+          "support",
+          "load",
+          "resulting_geometry",
+          "geometry_score_components",
+          "physical_valid",
+          "physical_rejection_reasons"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 48
+    },
+    "physical_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "generation_counts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pick_item_id": {
+            "type": "string"
+          },
+          "returned": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16
+          },
+          "sampled_physical": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "rejections": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "enumeration_attempts": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "pick_item_id",
+          "returned",
+          "sampled_physical",
+          "rejections",
+          "enumeration_attempts"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 1
+    },
+    "selectable_pool": {
+      "enum": [
+        "unfiltered",
+        "physical_feasible"
+      ]
+    },
+    "selectable_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "candidate_fingerprint": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pick_item_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pose": {
+            "type": "object",
+            "properties": {
+              "x_mm": {
+                "type": "number"
+              },
+              "y_mm": {
+                "type": "number"
+              },
+              "z_base_mm": {
+                "type": "number",
+                "minimum": 0
+              },
+              "yaw_deg": {
+                "enum": [
+                  0,
+                  90
+                ]
+              }
+            },
+            "required": [
+              "x_mm",
+              "y_mm",
+              "z_base_mm",
+              "yaw_deg"
+            ],
+            "additionalProperties": false
+          },
+          "oriented_size_mm": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "ems": {
+            "type": "object",
+            "properties": {
+              "ems_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ems_type": {
+                "enum": [
+                  "floor_space",
+                  "supported_space"
+                ]
+              }
+            },
+            "required": [
+              "ems_id",
+              "ems_type"
+            ],
+            "additionalProperties": false
+          },
+          "support": {
+            "type": "object",
+            "properties": {
+              "support_item_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "support_ratio": {
+                "type": "number",
+                "minimum": 0
+              },
+              "com_margin_mm": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "support_item_ids",
+              "support_ratio",
+              "com_margin_mm"
+            ],
+            "additionalProperties": false
+          },
+          "load": {
+            "type": "object",
+            "properties": {
+              "downward_load_kg": {
+                "type": "number",
+                "minimum": 0
+              },
+              "minimum_remaining_capacity_kg": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "downward_load_kg",
+              "minimum_remaining_capacity_kg"
+            ],
+            "additionalProperties": false
+          },
+          "resulting_geometry": {
+            "type": "object",
+            "properties": {
+              "max_height_mm": {
+                "type": "number",
+                "minimum": 0
+              },
+              "volume_utilization": {
+                "type": "number",
+                "minimum": 0
+              },
+              "center_of_mass_offset_mm": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "max_height_mm",
+              "volume_utilization",
+              "center_of_mass_offset_mm"
+            ],
+            "additionalProperties": false
+          },
+          "geometry_score_components": {
+            "type": "object",
+            "properties": {
+              "compactness": {
+                "type": "number"
+              },
+              "height": {
+                "type": "number"
+              },
+              "stability": {
+                "type": "number"
+              },
+              "balance": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "compactness",
+              "height",
+              "stability",
+              "balance"
+            ],
+            "additionalProperties": false
+          },
+          "physical_valid": {
+            "const": true
+          },
+          "physical_rejection_reasons": {
+            "const": []
+          }
+        },
+        "required": [
+          "candidate_id",
+          "candidate_fingerprint",
+          "pick_item_id",
+          "pose",
+          "oriented_size_mm",
+          "ems",
+          "support",
+          "load",
+          "resulting_geometry",
+          "geometry_score_components",
+          "physical_valid",
+          "physical_rejection_reasons"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 48
+    },
+    "selectable_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "policy_digest": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "experiment_protocol": {
+      "const": "jev_packaging_runtime_v1"
+    },
+    "business_mode": {
+      "const": "physical_only"
+    }
+  },
+  "required": [
+    "version",
+    "observation_digest",
+    "candidate_backend",
+    "generator_config_digest",
+    "physical_candidates",
+    "physical_digest",
+    "generation_counts",
+    "selectable_pool",
+    "selectable_candidates",
+    "selectable_digest",
+    "policy_digest",
+    "experiment_protocol",
+    "business_mode"
+  ],
+  "additionalProperties": false
+}

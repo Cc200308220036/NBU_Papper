@@ -1,0 +1,34 @@
+{
+  "version": "pct_p4b_rng_resume_v3",
+  "rngs": [
+    "Python random full state",
+    "NumPy MT19937 keys+position+Gaussian cache",
+    "Torch CPU full generator state"
+  ],
+  "ownership": [
+    "model snapshot",
+    "batch-start",
+    "attempt pre/result",
+    "job WAL durable boundary",
+    "decision pre/selection result",
+    "operation pre/completed output",
+    "whole job result"
+  ],
+  "binding": [
+    "Store identity includes source/config/data/dependency identities",
+    "policy snapshot",
+    "owner cursor/slot/context",
+    "canonical result digest",
+    "canonical envelope seal"
+  ],
+  "rules": [
+    "load prior model snapshot, validate batch start and restore each saved attempt post in order",
+    "restore job last durable WAL RNG without executing selection/monitor/commit again",
+    "completed operation output+post are atomically saved and reused before selection publication",
+    "selection and whole result reuse consumes exact saved post",
+    "no synthetic random draws to catch up",
+    "duplicate advancement, drift, gaps, missing/ambiguous data stop"
+  ],
+  "legacy": "no automatic upgrade/re-sign/recollection; missing v3 RNG records and unmarked snapshot RNG rejected",
+  "business_validation": "NOT_RUN"
+}

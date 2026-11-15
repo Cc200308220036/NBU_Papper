@@ -32,11 +32,12 @@ class StageJournal:
     All counters describe durable facts, never presumed callback executions.
     """
     def __init__(self,store):
+        self.rng_binding=None
         self.store=store;self.rows=[];self.events=[];self.counts=Counter()
         self.indexed={v['key']:v['record'] for v in store.records()}
         for path in sorted((store.root/'wal').glob('*.json')):
             row=checked(path)
-            require(path.stem==f'{len(self.rows):08d}' and row['version']==WAL and
+            require(path.stem==f'{len(self.rows):08d}' and row['version'] in (WAL,'pct_p4b_rng_wal_v3') and
                     row['previous']==(self.rows[-1]['seal'] if self.rows else digest(store.identity)), 'P4B_WAL_CHAIN')
             self._accept(row)
         indexed=self.indexed
@@ -85,6 +86,14 @@ class StageJournal:
         if phase=='COMMITTED':counts['commits_persisted']=1
         row=seal({'version':WAL,'identity':self.store.identity,'checkpoint':cp,'events':refs,'counts':counts,
                   'previous':self.rows[-1]['seal'] if self.rows else digest(self.store.identity)})
+        if self.rng_binding is not None:
+            from . import p4b_rng as rng
+            row.pop('seal');row['version']=rng.WAL
+            owner={'sequence':len(self.rows),'phase':phase,'previous':row['previous']}
+            state=rng.capture()
+            row['rng']=rng.envelope(state,state,binding=self.rng_binding,owner=owner,
+                    result={'checkpoint':cp,'events':refs})
+            row=seal(row)
         self.store.put(self.store.root/'wal'/f'{len(self.rows):08d}.json',row)
         self._accept(row)
 

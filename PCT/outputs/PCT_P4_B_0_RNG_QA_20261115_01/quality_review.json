@@ -1,0 +1,85 @@
+{
+  "version": "pct_p4b_rng_quality_review_v1",
+  "date": "2026-11-15",
+  "review_scope": "STAGE_REMEDIATION",
+  "unit": "P4-B-0 RNG整改",
+  "package": "PCT/outputs/PCT_P4_B_0_RNG_20261115_01",
+  "baseline": {
+    "branch": "dev/PCT",
+    "head": "c675e6b1b7e3bf4084dcbf132d3ba0b79e141c31",
+    "upstream": "origin/dev/PCT",
+    "index": "EMPTY",
+    "entry_worktree": "4个PCT已跟踪模块修改、新RNG模块/测试/交付/报告与两个导航；保留"
+  },
+  "facts": {
+    "report_claims": "v3恢复合同接通，10+14+12+7离线测试，无业务",
+    "code_implemented": "所有权/result绑定pre/post；批次连续前缀、操作/选择/整单复用、同事务WAL、旧格式拒绝",
+    "archived_evidence": "7前缀进程退出比较、5阶段构造、原反例、当前源码与历史保护；非真实订单",
+    "current_recheck": "43测试通过0跳过，收据写独立QA；150条目/213保护/3公共/62源码核对通过；当前归档收据逐值一致"
+  },
+  "criteria": [
+    {
+      "id": "P4B0-FIX-Q01",
+      "status": "PASS",
+      "closure": "CLOSED_OFFLINE_ENGINEERING",
+      "requirement": "中途保存前缀与完成结果复用的随机状态续接",
+      "code": "p4b_rng.Consumer、BatchController、Session/Selector及v3快照/WAL",
+      "archive": "原反例+7前缀+5阶段收据",
+      "current": "10专项通过；当前/归档收据相等；独立Python第3值核对0.9242105840237294",
+      "limits": "合成collector/actor与进程退出，不是实际订单/网络恢复"
+    },
+    {
+      "id": "P4B0-Q02",
+      "status": "PASS",
+      "closure": "CLOSED_OFFLINE_ENGINEERING_ONLY",
+      "requirement": "真实对象状态载入与会话恢复工程",
+      "code": "真实模型/填充Adam/RNG往返、operation/selection/job-result post状态、intent与消费收据",
+      "current": "10专项+14工程+12组件回归通过",
+      "limits": "真实更新/实际业务恢复NOT_RUN，P3-Q01/Q02实际验收义务延续"
+    },
+    {
+      "id": "P4B0-Q01",
+      "status": "PASS",
+      "closure": "PRIOR_OFFLINE_IMPLEMENTATION_RETAINED",
+      "requirement": "正式配置/公共接入/执行循环",
+      "current": "14工程回归通过；三个公共文件未变；当前62执行源码身份一致",
+      "limits": "正式完整订单执行仍NOT_RUN"
+    },
+    {
+      "id": "HISTORY_AND_BUDGET",
+      "status": "PASS",
+      "requirement": "旧FAIL/计划/保护保持",
+      "current": "150清单/213保护/3公共文件/62源码；原错误0.4523795535098186及旧FAIL保留；7计划回归",
+      "limits": "当前保护范围不冒充全历史重跑"
+    },
+    {
+      "id": "B43",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "B44",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "B45",
+      "status": "NOT_RUN"
+    }
+  ],
+  "new_blocking_findings": [],
+  "carryforward": [
+    "P3-Q01实际观察器/真实恢复预检NOT_RUN",
+    "P3-Q02实际资源/吞吐/存储验收NOT_RUN"
+  ],
+  "engineering_status": "PASS_P4B0_OFFLINE_ENGINEERING",
+  "evidence_readiness": "SUFFICIENT_FOR_CURRENT_EXIT_NOT_REAL_EXECUTION",
+  "research_result": "NOT_ESTABLISHED_NO_NEW_BUSINESS_EXPERIMENT",
+  "next_stage_admission": "CONDITIONAL_LIMITED_PREFLIGHT_TOOL_DEVELOPMENT",
+  "authorization_scope": "本轮独立QA；无业务、Git同步、公共源码修改、凭证读取或安装",
+  "limits": [
+    "不把os._exit合成worker称为生产崩溃复验",
+    "填充Adam未执行step，合成actor不是真实模型前向",
+    "旧恢复记录不自动升级，源码变化拒绝旧Store不要求重签",
+    "实际资源UNKNOWN，正式训练未准入"
+  ],
+  "stop": true
+}

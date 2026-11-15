@@ -12,6 +12,7 @@ from .contracts import digest, require, read, sha
 from .p4b_storage import Store, seal
 from .p4b_runtime import StageJournal
 from .p4b_protocol import VERSION
+from . import p4b_rng as rng
 
 EXECUTION='pct_p4b_execution_v2'
 
@@ -95,10 +96,14 @@ class Session:
         require(all(k.replace('op-start-','op-end-',1) in self.values for k in starts),'P4B_OPERATION_OUTCOME_UNKNOWN')
         require(all(self.values[k.replace('op-start-','op-end-',1)]['state']=='RETURNED' for k in starts),'P4B_PREVIOUS_OPERATION_FAILED_NO_RETRY')
         require(not any(k.startswith('session-end-') and v.get('status')=='TECHNICAL_FAILURE' for k,v in self.values.items()),'P4B_JOB_STOPPED')
+        self.rng_binding={'store_identity':store.identity,'contract':rng.VERSION}
+        self.rng_consumer=rng.Consumer()
+        self._resume_rng(journal)
         self.sid=sum(k.startswith('session-start-') for k in self.values)
         self.counts=Counter();self.next_op=len(starts);self.reused=set()
         self.start=journal.session();self.initial=journal.checkpoint
-        self.save(f'session-start-{self.sid:06d}',{'version':EXECUTION,'resume':self.start,'started':time.time()})
+        self.save(f'session-start-{self.sid:06d}',{'version':EXECUTION,'resume':self.start,'rng_contract':rng.VERSION,'start_rng_digest':digest(rng.capture()),
+                  'rng_resume_reference':journal.rows[-1]['rng']['seal'] if journal.rows else self.values['rng-entry']['seal'],'started':time.time()})
         self.wall=time.perf_counter()
         for previous in range(self.sid):
             if f'session-end-{previous:06d}' not in self.values:
@@ -108,16 +113,81 @@ class Session:
     def save(self,key,row):
         result=self.store.append(row,key=key);self.values[key]=copy.deepcopy(row);return result
 
-    def call(self,kind,fn):
-        i=self.next_op;self.next_op+=1
-        self.save(f'op-start-{i:08d}',{'session':self.sid,'kind':kind,'state':'INTENT'})
+    def _resume_rng(self,journal):
+        entry=self.values.get('rng-entry')
+        if entry is None:
+            require(not journal.rows and not any(k.startswith(('session-','op-','selection-','job-result')) for k in self.values),
+                    'P4B_RNG_LEGACY_JOB')
+            state=rng.capture()
+            entry=rng.envelope(state,state,binding=self.rng_binding,owner={'boundary':'job-entry'},result={'store':digest(self.store.identity)})
+            self.save('rng-entry',entry)
+        rng.validate(entry,binding=self.rng_binding,owner={'boundary':'job-entry'},result={'store':digest(self.store.identity)})
+        known={digest(entry['post'])};tail=entry['post']
+        for i,row in enumerate(journal.rows):
+            require(row['version']==rng.WAL and 'rng' in row,'P4B_RNG_LEGACY_WAL')
+            rng.validate(row['rng'],binding=self.rng_binding,
+                owner={'sequence':i,'phase':row['checkpoint']['phase'],'previous':row['previous']},
+                result={'checkpoint':row['checkpoint'],'events':row['events']})
+            known.add(digest(row['rng']['post']));tail=row['rng']['post']
+        for key,row in self.values.items():
+            if key.startswith('op-end-'):
+                require(row.get('version')=='pct_p4b_operation_v3' and 'rng' in row,'P4B_RNG_LEGACY_OPERATION')
+                start=self.values[key.replace('op-end-','op-start-',1)]
+                owner={'operation':int(key[len('op-end-'):]),'kind':row['kind'],'request':start['owner']}
+                self.validate_result(row,owner)
+                require(row['rng']['pre']==start['rng_pre'],'P4B_RNG_OPERATION_PRE_DRIFT')
+                known.add(digest(row['rng']['post']))
+            if key=='job-result':
+                self.validate_result(row,{'boundary':'job-result'})
+                known.add(digest(row['rng']['post']))
+        require(digest(rng.capture()) in known,'P4B_RNG_JOB_ENTRY_DRIFT')
+        rng.restore(tail);journal.rng_binding=self.rng_binding
+
+    def validate_result(self,row,owner):
+        require('rng' in row,'P4B_RNG_RESULT_MISSING')
+        return rng.validate(row['rng'],binding=self.rng_binding,owner=owner,
+                            result={k:v for k,v in row.items() if k!='rng'})
+
+    def pack_result(self,row,owner,pre):
+        result=copy.deepcopy(row)
+        result['rng']=rng.envelope(pre,rng.capture(),binding=self.rng_binding,owner=owner,result=row)
+        return result
+
+    def consume_result(self,row,owner):
+        self.validate_result(row,owner)
+        if row['rng']['seal'] in self.rng_consumer.consumed:
+            # Re-reading the same result is idempotent only at exactly its post
+            # position. It must not rewind randomness consumed by later work.
+            require(digest(rng.capture())==digest(row['rng']['post']),'P4B_RNG_DUPLICATE_CONSUMPTION')
+            return False
+        self.rng_consumer.advance(row['rng'],binding=self.rng_binding,owner=owner,
+                                  result={k:v for k,v in row.items() if k!='rng'})
+        self.counts['rng_post_consumptions']+=1
+        return True
+
+    def call(self,kind,fn,*,owner=None):
+        if owner is not None:
+            matches=[(k,v) for k,v in self.values.items() if k.startswith('op-start-') and v.get('owner')==owner]
+            require(len(matches)<=1,'P4B_RNG_AMBIGUOUS_OPERATION')
+            if matches:
+                key,start=matches[0];require(start['kind']==kind,'P4B_RNG_OPERATION_KIND_DRIFT')
+                i=int(key[len('op-start-'):]);end=self.values.get(f'op-end-{i:08d}')
+                require(end is not None and end['state']=='RETURNED','P4B_OPERATION_OUTCOME_UNKNOWN')
+                self.consume_result(end,{'operation':i,'kind':kind,'request':owner})
+                self.reuse('operation_result_reuses',str(i));return copy.deepcopy(end['result'])
+        i=self.next_op;self.next_op+=1;pre=rng.capture()
+        self.save(f'op-start-{i:08d}',{'version':'pct_p4b_operation_v3','session':self.sid,'kind':kind,
+                  'state':'INTENT','owner':owner,'rng_pre':pre})
         self.counts[kind+'_calls']+=1
         started=time.perf_counter()
         try:result=fn()
         except BaseException as exc:
             self.save(f'op-end-{i:08d}',{'session':self.sid,'kind':kind,'state':'FAILED','error':type(exc).__name__})
             self.counts[kind+'_failures']+=1;raise
-        self.save(f'op-end-{i:08d}',{'session':self.sid,'kind':kind,'state':'RETURNED','elapsed_s':time.perf_counter()-started})
+        row={'version':'pct_p4b_operation_v3','session':self.sid,'kind':kind,'state':'RETURNED',
+             'result':copy.deepcopy(result),'elapsed_s':time.perf_counter()-started}
+        row=self.pack_result(row,{'operation':i,'kind':kind,'request':owner},pre)
+        self.save(f'op-end-{i:08d}',row)
         self.counts[kind+'_returns']+=1;return result
 
     def reuse(self,kind,did):
@@ -165,6 +235,19 @@ class Session:
                         cp['pending_event']['decision_id']==key[len('commit-intent-'):],'P4B_COMMIT_OUTCOME_UNKNOWN')
                 self.resolve_commit(cp)
 
+    def save_job_result(self,checkpoint,summary):
+        require(self.journal.rows and self.journal.checkpoint==checkpoint,'P4B_RESULT_CHECKPOINT_DRIFT')
+        pre=self.journal.rows[-1]['rng']['post']
+        self.save('job-result',self.pack_result({'version':'pct_p4b_job_result_v3',
+                  'checkpoint':digest(checkpoint),'summary':summary},{'boundary':'job-result'},pre))
+
+    def saved_job_result(self,checkpoint,job_id):
+        saved=self.values['job-result']
+        require(checkpoint and digest(checkpoint)==saved['checkpoint'],'P4B_RESULT_DRIFT')
+        self.consume_result(saved,{'boundary':'job-result'})
+        self.reuse('saved_episode_result_reuses',job_id)
+        return saved
+
     def finish(self,status,error=None):
         self.save(f'session-end-{self.sid:06d}',{'version':EXECUTION,'status':status,'error':error,
                   'counts':dict(self.counts),'durable_counts':dict(self.journal.counts),
@@ -172,7 +255,8 @@ class Session:
                     'unresolved_dispatch_intents':max(0,self.counts['monitor_dispatch_intents']-self.counts['monitor_returns_confirmed']),
                     'exact_total':'UNKNOWN' if self.counts['monitor_dispatch_intents']!=self.counts['monitor_returns_confirmed'] else self.counts['monitor_returns_confirmed']}),
                   'planned_reuses':self.start['planned_reuses'],'elapsed_s':time.perf_counter()-self.wall,
-                  'end_checkpoint':digest(self.journal.checkpoint)})
+                  'end_checkpoint':digest(self.journal.checkpoint),'rng_contract':rng.VERSION,
+                  'end_rng_digest':digest(rng.capture()),'rng_consumed_references':sorted(self.rng_consumer.consumed)})
 
 
 class Selector:
@@ -202,9 +286,10 @@ class Selector:
         by_id=self.encoding.verify_candidates(e,event['bundle']['selectable_candidates'])
         key='selection-'+event['decision_id'];require(key in self.session.values,'P4B_SAVED_RECORD_MISSING')
         row=self.session.values[key]
-        require(row['version']=='pct_p4b_selection_v2' and row['policy']==self.config['policy_snapshot'] and
+        require(row['version']=='pct_p4b_selection_v3' and row['policy']==self.config['policy_snapshot'] and
                 row['context_digest']==digest(ctx.data) and row['encoding']==e.data and
                 row['selection']==event['selection'],'P4B_SAVED_RECORD_DRIFT')
+        self.session.validate_result(row,{'decision':event['decision_id'],'context':digest(ctx.data),'policy':self.config['policy_snapshot']})
         output=row['output'];i=output['leaf_index'];mapped=e.resolve(i)
         require(row['exact_candidate']==by_id[mapped['candidate_id']] and
                 event['selection']['selected_candidate_id']==mapped['candidate_id'],'P4B_SAVED_ACTION_DRIFT')
@@ -226,23 +311,31 @@ class Selector:
         key='selection-'+did;session=self.session
         if key in session.values:
             r=session.values[key]
-            require(r['version']=='pct_p4b_selection_v2' and r['context_digest']==digest(ctx.data) and
+            require(r['version']=='pct_p4b_selection_v3' and r['context_digest']==digest(ctx.data) and
                     r['policy']==self.config['policy_snapshot'] and r['encoding']==e.data,'P4B_SELECTION_RECORD_DRIFT')
             selected=SelectionResult.from_dict(r['selection']);validate_selection(ctx,selected,self.config)
             require(r['exact_candidate']==by_id[selected.data['selected_candidate_id']],'P4B_SELECTION_ACTION_DRIFT')
+            session.consume_result(r,{'decision':did,'context':digest(ctx.data),'policy':self.config['policy_snapshot']})
             session.reuse('selection_record_reuses',did);return selected
+        decision_owner={'decision':did,'context':digest(ctx.data),'policy':self.config['policy_snapshot']}
         rng_key='decision-rng-'+did
         if rng_key in session.values:
-            # A started operation without a result has already stopped Session.
-            torch.set_rng_state(torch.tensor(session.values[rng_key]['torch_cpu'],dtype=torch.uint8))
-        else:session.save(rng_key,{'torch_cpu':torch.get_rng_state().tolist()})
+            decision_rng=session.values[rng_key]
+            rng.validate(decision_rng,binding=session.rng_binding,owner=decision_owner,result={'boundary':'decision-pre'})
+            # Session restored the saved WAL; a completed operation, when
+            # present, owns post-state advancement and is reused below.
+            require(rng.capture()==decision_rng['pre'],'P4B_RNG_DECISION_PRE_DRIFT')
+        else:
+            before=rng.capture()
+            decision_rng=rng.envelope(before,before,binding=session.rng_binding,owner=decision_owner,result={'boundary':'decision-pre'})
+            session.save(rng_key,decision_rng)
         def forward():
             with torch.no_grad():
                 _,index,entropy,hidden,dist=self.core.actor(e.tensor(),deterministic=singleton,normFactor=1,evaluate=True)
                 value=self.core.critic(hidden)
             return {'probabilities':dist.probs[0].tolist(),'value':float(value.item()),
                     'leaf_index':0 if singleton else int(index.item()),'entropy':float(entropy.item())}
-        output=session.call('singleton_critic' if singleton else 'policy_choice',forward)
+        output=session.call('singleton_critic' if singleton else 'policy_choice',forward,owner=decision_owner)
         p=output['probabilities'];i=output['leaf_index'];n=e.data['candidate_count']
         require(len(p)==16 and all(math.isfinite(x) and 0<=x<=1 for x in p) and
                 abs(sum(p)-1)<1e-5 and all(x==0 for x in p[n:]) and math.isfinite(output['value']),'P4B_NONFINITE_OUTPUT')
@@ -252,11 +345,13 @@ class Selector:
                     confidence=p[i],inference_receipt={'feature_digest':e.data['feature_digest'],'weights_sha256':self.config['policy_snapshot'],
                     'leaf_index':i,'inference_s':0.0})
         # Actual measured forward duration is in op-end; no fabricated latency.
-        if not singleton:value['inference_receipt']['inference_s']=session.values[f'op-end-{session.next_op-1:08d}']['elapsed_s']
+        if not singleton:value['inference_receipt']['inference_s']=next(v['elapsed_s'] for k,v in session.values.items() if k.startswith('op-end-') and
+            session.values[k.replace('op-end-','op-start-',1)]['owner']==decision_owner)
         selected=SelectionResult.from_dict(value);validate_selection(ctx,selected,self.config)
-        session.save(key,{'version':'pct_p4b_selection_v2','policy':self.config['policy_snapshot'],
+        selection_row={'version':'pct_p4b_selection_v3','policy':self.config['policy_snapshot'],
                      'context_digest':digest(ctx.data),'encoding':e.data,'output':output,
-                     'selection':value,'exact_candidate':by_id[row['candidate_id']]})
+                     'selection':value,'exact_candidate':by_id[row['candidate_id']]}
+        session.save(key,session.pack_result(selection_row,decision_owner,decision_rng['pre']))
         session.counts['selection_results_persisted']+=1;return selected
 
 
@@ -296,7 +391,7 @@ def run_job(root,task,config,core,receipt,*,formal,slot,model_spec):
     root=Path(root);existing=root if root.exists() else root.parent
     admission(receipt,identity,shutil.disk_usage(existing).free)
     preflight(config);public_compatibility(config)
-    header={'version':EXECUTION,'identity':identity,'task':task,'config':config,'job_id':root.name}
+    header={'version':EXECUTION,'rng_contract':rng.VERSION,'identity':identity,'task':task,'config':config,'job_id':root.name}
     with Store(root,{'header':digest(header)},reserve=receipt['resources']['required_free_bytes']) as store:
         records={r['key']:r['record'] for r in store.records()}
         if 'header' in records:require(records['header']==header,'P4B_HEADER_DRIFT')
@@ -314,13 +409,12 @@ def run_job(root,task,config,core,receipt,*,formal,slot,model_spec):
             if phase=='before_commit':session.before_commit(value)
         try:
             if 'job-result' in session.values:
-                saved=session.values['job-result'];require(cp and digest(cp)==saved['checkpoint'],'P4B_RESULT_DRIFT')
-                session.reuse('saved_episode_result_reuses',header['job_id']);session.finish('SAVED_RESULT_REUSED')
+                saved=session.saved_job_result(cp,header['job_id']);session.finish('SAVED_RESULT_REUSED')
                 return {'checkpoint':cp,'events':cp['events'],'final_state':cp['state'],'summary':saved['summary']},session.values
             from semantic_pallet_planner.jev_select.episode import run_episode
             ep=run_episode(task,selector,config,job_id=root.name,method=config['selector'],resume=cp,on_checkpoint=sink,
                            hook=hook,extension_execution={'version':EXECUTION,'header_digest':digest(header)})
-            session.save('job-result',{'checkpoint':digest(ep['checkpoint']),'summary':ep['summary']})
+            session.save_job_result(ep['checkpoint'],ep['summary'])
             session.finish('FINISHED');return ep,session.values
         except BaseException as exc:
             session.finish('TECHNICAL_FAILURE',{'type':type(exc).__name__,'detail':str(exc)[:300]});raise

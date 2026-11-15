@@ -1,0 +1,61 @@
+{
+  "overall": "DEVELOPMENT_FIXED_OFFLINE_ONLY_PENDING_INDEPENDENT_QA",
+  "issues": {
+    "P4B0-FIX-Q01": "DEVELOPMENT_FIXED_PENDING_QA",
+    "P4B0-Q02": "RNG_ENGINEERING_GAP_CLOSED_IN_CONSTRUCTED_SCOPE_PENDING_QA"
+  },
+  "criteria": [
+    {
+      "id": "original-prefix-two",
+      "status": "PASS_CONSTRUCTED",
+      "evidence": "original_counterexample_recheck.json"
+    },
+    {
+      "id": "variable-prefix",
+      "status": "PASS_CONSTRUCTED",
+      "prefixes": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        7,
+        8
+      ],
+      "evidence": "batch_prefix_comparison.json"
+    },
+    {
+      "id": "five-stages",
+      "status": "PASS_CONSTRUCTED",
+      "evidence": "five_stage_rng_comparison.json"
+    },
+    {
+      "id": "operation-selection-job-reuse",
+      "status": "PASS_CONSTRUCTED_NO_REAL_FORWARD",
+      "evidence": "rng_tests_verified.log"
+    },
+    {
+      "id": "missing-drift-duplicate-ambiguous-legacy",
+      "status": "PASS_CONSTRUCTED",
+      "evidence": "rng_tests_verified.log"
+    },
+    {
+      "id": "P3-P4A-and-public-protection",
+      "status": "PASS_LOCAL_RECHECK",
+      "evidence": "historical_protection.json"
+    }
+  ],
+  "tests": {
+    "rng": 10,
+    "formal_regression": 14,
+    "component_regression": 12,
+    "plan_regression": 7,
+    "failures": 0,
+    "skips": 0
+  },
+  "real_business_resume": "NOT_RUN",
+  "resources_throughput": "NOT_RUN",
+  "B43": "NOT_RUN",
+  "B44": "NOT_RUN",
+  "B45": "NOT_RUN"
+}

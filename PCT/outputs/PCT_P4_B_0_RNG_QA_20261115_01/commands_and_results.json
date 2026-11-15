@@ -1,0 +1,51 @@
+{
+  "version": "pct_p4b_rng_qa_commands_v1",
+  "side_effect_review": "完整读取rng模块、4模块差异、专项测试、worker及checker。测试patch禁止真实Module前向/Adam.step；worker仅临时Linear/Adam保存载入、合成draw和进程退出。归档环境变量显式改QA目录，不覆盖开发收据。保存checker/audit仅stdlib读取，输出QA。旧probe会写旧QA，未执行",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src:semantic_pallet_planner/src PCT_RNG_EVIDENCE_DIR=PCT/outputs/PCT_P4_B_0_RNG_QA_20261115_01 \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p4b_rng.py -v",
+      "result": "10 PASS,0 skipped",
+      "log": "current_rng_tests.log"
+    },
+    {
+      "command": "same unittest environment, -p test_p4b_remediation.py",
+      "result": "14 PASS",
+      "log": "current_remediation_tests.log"
+    },
+    {
+      "command": "same unittest environment, -p test_p4b.py",
+      "result": "12 PASS",
+      "log": "current_component_tests.log"
+    },
+    {
+      "command": "same unittest environment, -p test_p4a.py",
+      "result": "7 PASS",
+      "log": "current_plan_tests.log"
+    },
+    {
+      "command": "python3 PCT/scripts/check_p4b_rng_saved.py",
+      "result": "PASS_SAVED_ONLY",
+      "log": "developer_checker.log"
+    },
+    {
+      "command": "python3 PCT/outputs/PCT_P4_B_0_RNG_QA_20261115_01/audit_saved.py",
+      "result": "PASS_SAVED_IDENTITIES_AND_INDEPENDENT_ARITHMETIC",
+      "receipt": "independent_saved_checks.json"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "environment": "现有NBU解释器与系统python3，无安装",
+  "business_counts": {
+    "orders": 0,
+    "candidates": 0,
+    "LP": 0,
+    "real_model_forwards": 0,
+    "optimizer_updates": 0,
+    "remote": 0
+  },
+  "synthetic_activity": "执行了构造采集回调、随机抽样及临时子进程，不计为业务全0",
+  "git_mutations": false
+}

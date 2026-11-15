@@ -1,0 +1,58 @@
+{
+  "version": "pct_p4b_rng_qa_admission_v1",
+  "status": "CONDITIONAL",
+  "next_unit": "P4-B-1限定实际预检合同与工具开发（本次交接子单元，非原方案B编号）",
+  "limited_development_status": "READY",
+  "actual_preflight_status": "NOT_READY_PENDING_RUNNER_BUDGET_QA_AND_AUTHORIZATION",
+  "formal_training_status": "NOT_READY",
+  "prerequisites": [
+    {
+      "requirement": "P4-B-0限定工程退出",
+      "status": "SATISFIED_OFFLINE",
+      "evidence": "上述问题关闭和43项当前测试",
+      "impact": "可开发下一限定预检工具"
+    },
+    {
+      "requirement": "实际预检独立入口/许可/任务槽与数值cap",
+      "status": "NOT_IMPLEMENTED_ACCEPTED",
+      "evidence": "现有admission仅FORMAL_TRAINING且validate_slot绑定16训练任务，旧建议含SYN",
+      "impact": "先实现并冻结有限预检协议，不能伪造正式训练身份"
+    },
+    {
+      "requirement": "新源码实际observer/公共链路/恢复",
+      "status": "NOT_RUN",
+      "evidence": "本轮无订单/LP/真实forward",
+      "impact": "未来经独立QA且获明确授权的限定实际预检核验"
+    },
+    {
+      "requirement": "实际磁盘/IO/时间/RSS门槛",
+      "status": "UNKNOWN",
+      "evidence": "fallback601166756537字节及逐写保留整门槛不变；旧367GB非当前实测",
+      "impact": "有限预检须另冻自身容量/停止合同；正式长跑NOT_READY"
+    },
+    {
+      "requirement": "真实更新与六最终模型",
+      "status": "NOT_RUN",
+      "evidence": "B43—B45未开展",
+      "impact": "optimizer真实验证另定数值预算；不准入P4-C/D"
+    }
+  ],
+  "allowed_recommendation": [
+    "开发独立有界预检协议/runner与不可执行冻结清单",
+    "离线准入/硬cap/恢复构造测试",
+    "明确独立容量、停止和资源记录合同"
+  ],
+  "not_allowed": [
+    "本轮或下一限定开发任务运行实际4尝试预检",
+    "真实前向/订单/候选/LP/optimizer",
+    "六模型训练/220槽评价/远程调用",
+    "重签旧身份或降低正式fallback门槛"
+  ],
+  "release_conditions": [
+    "预检入口和全部数值上界/容量合同经独立QA",
+    "用户另行指定实际预检任务和额度",
+    "后续真实更新另冻预算"
+  ],
+  "remote_authorization": 0,
+  "technical_vs_authorization": "技术建议不自动授权实施；本轮QA only"
+}

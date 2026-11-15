@@ -10,6 +10,7 @@ from .contracts import digest, require
 from .p4b_storage import Store, seal, checked
 from .p4b_state import tensor_digest, save_initial, save_update, load
 from .p4b_formal import admission, current_identity, build_config, run_job
+from . import p4b_rng as rng
 
 VERSION='pct_p4b_training_v2'
 NATURAL={'ALL_ITEMS_PLACED':'COMPLETED','STOP_NO_PHYSICAL_CANDIDATE':'NATURAL_EMPTY_POOL',
@@ -101,6 +102,8 @@ class BatchController:
         self.store=store;self.schedule=schedule;self.policy=policy
         self.records={r['key']:r['record'] for r in store.records()}
         self.stopped=any(k.startswith('stop-') for k in self.records)
+        self.rng_batches_consumed=set()
+        self.rng_counts={'actual_attempts':0,'saved_attempt_reuses':0,'rng_post_consumptions':0}
 
     def stop(self,batch,reason):
         self.stopped=True
@@ -131,28 +134,65 @@ class BatchController:
         require(len(slots)==8 and all(s['batch_id']==batch_id for s in slots),'P4B_BATCH_SCHEDULE')
         require(not (self.store.root/f'updates/u{batch_id+1:06d}').exists() and
                 f'optimizer-intent-{batch_id+1:04d}' not in self.records,'P4B_UPDATE_ALREADY_STARTED_NO_REAPPLY')
+        require(batch_id not in self.rng_batches_consumed,'P4B_RNG_DUPLICATE_BATCH_CONSUMPTION')
+        self.rng_batches_consumed.add(batch_id)
         policy=self.policy;require(policy_digest()==policy,'P4B_BATCH_POLICY_DRIFT')
-        binding={'scheduled_policy_id':slots[0].get('policy_snapshot_id'),'tensor_digest':policy,'batch_id':batch_id}
+        binding={'scheduled_policy_id':slots[0].get('policy_snapshot_id'),'tensor_digest':policy,'batch_id':batch_id,
+                 'rng_contract':rng.VERSION}
+        rng_binding={'store_identity':self.store.identity,'batch_binding':binding}
         key=f'batch-binding-{batch_id:04d}'
-        if key in self.records:require(self.records[key]==binding,'P4B_POLICY_BINDING_DRIFT')
-        else:self.store.append(binding,key=key);self.records[key]=binding
+        existing=[f'attempt-{s["attempt_index"]:04d}' in self.records for s in slots]
+        require(not any(existing[i] and not all(existing[:i]) for i in range(8)),'P4B_RNG_ATTEMPT_GAP')
+        for slot in slots:
+            saved=self.records.get(f'attempt-{slot["attempt_index"]:04d}')
+            if saved is not None:
+                require(saved.get('version')=='pct_p4b_attempt_result_v3' and 'rng' in saved,'P4B_RNG_LEGACY_ATTEMPT')
+        if key in self.records:
+            stored=self.records[key]
+            require(stored.get('binding')==binding and 'rng_start' in stored,'P4B_RNG_LEGACY_OR_BINDING_DRIFT')
+            rng.validate(stored['rng_start'],binding=rng_binding,owner={'boundary':'batch-start'},result=binding)
+            require(rng.capture()==stored['rng_start']['pre'],'P4B_RNG_BATCH_START_DRIFT')
+        else:
+            require(not any(existing),'P4B_RNG_BATCH_START_MISSING')
+            before=rng.capture();stored={'binding':binding,'rng_start':rng.envelope(before,before,
+                    binding=rng_binding,owner={'boundary':'batch-start'},result=binding)}
+            self.store.append(stored,key=key);self.records[key]=stored
+        consumer=rng.Consumer()
         trajectories=[];refs=[]
         try:
             for slot in slots:
                 key=f'attempt-{slot["attempt_index"]:04d}'
+                owner={'attempt':slot['attempt_index'],'next_attempt':slot['attempt_index']+1,'slot_digest':digest(slot)}
+                pre_key=f'attempt-pre-{slot["attempt_index"]:04d}'
                 if key in self.records:
                     value=self.records[key]
                     require(value['slot_digest']==digest(slot) and value['policy']==policy,'P4B_ATTEMPT_DRIFT')
+                    require(pre_key in self.records,'P4B_RNG_ATTEMPT_PRE_MISSING')
+                    rng.validate(self.records[pre_key],binding=rng_binding,owner=owner,result={'boundary':'attempt-pre'})
+                    require(value['rng']['pre']==self.records[pre_key]['pre'],'P4B_RNG_ATTEMPT_PRE_DRIFT')
+                    consumer.advance(value['rng'],binding=rng_binding,owner=owner,result={k:v for k,v in value.items() if k!='rng'})
+                    self.rng_counts['saved_attempt_reuses']+=1;self.rng_counts['rng_post_consumptions']+=1
                 else:
+                    pre=rng.capture()
+                    if pre_key in self.records:
+                        rng.validate(self.records[pre_key],binding=rng_binding,owner=owner,result={'boundary':'attempt-pre'})
+                        require(pre==self.records[pre_key]['pre'],'P4B_RNG_ATTEMPT_ENTRY_DRIFT')
+                    else:
+                        saved_pre=rng.envelope(pre,pre,binding=rng_binding,owner=owner,result={'boundary':'attempt-pre'})
+                        self.store.append(saved_pre,key=pre_key);self.records[pre_key]=saved_pre
+                    self.rng_counts['actual_attempts']+=1
                     try:
                         value=collect(copy.deepcopy(slot),policy)
                         require(policy_digest()==policy,'P4B_BATCH_POLICY_DRIFT')
                     except BaseException as exc:
                         value={'status':'TECHNICAL_FAILURE','transitions':[],
                                'error':{'type':type(exc).__name__,'detail':str(exc)[:300]}}
-                        value.update(slot_digest=digest(slot),policy=policy)
+                        value.update(version='pct_p4b_attempt_result_v3',slot_digest=digest(slot),policy=policy)
+                        value['rng']=rng.envelope(pre,rng.capture(),binding=rng_binding,owner=owner,result=value)
                         self.store.append(value,key=key);self.records[key]=value;raise
-                    value=dict(value,slot_digest=digest(slot),policy=policy)
+                    require('rng' not in value,'P4B_RNG_RESERVED_FIELD')
+                    value=dict(value,version='pct_p4b_attempt_result_v3',slot_digest=digest(slot),policy=policy)
+                    value['rng']=rng.envelope(pre,rng.capture(),binding=rng_binding,owner=owner,result=value)
                     require(value['status'] in ('COMPLETED','NATURAL_EMPTY_POOL','PREDICTED_STATIC_INSTABILITY','UNASSESSABLE','TECHNICAL_FAILURE'),'P4B_ATTEMPT_STATUS')
                     self.store.append(value,key=key);self.records[key]=value
                 require(value['status'] in NATURAL.values(),'P4B_ATTEMPT_TECHNICAL_STOP')
@@ -189,7 +229,7 @@ def train_model(root,formal,model_spec,tasks,receipt):
     from .p4b_formal import public_compatibility
     public_compatibility({'version':'pct_p4b_config_v2'})
     core,optimizer=initialize(model_spec['method'],model_spec['seed'])
-    with Store(root,{'formal_descriptor':formal['seal'],'model_id':model_spec['model_id'],'identity':identity},
+    with Store(root,{'formal_descriptor':formal['seal'],'model_id':model_spec['model_id'],'identity':identity,'rng_contract':rng.VERSION},
                reserve=receipt['resources']['required_free_bytes']) as store:
         records=check_update_intents(store)
         if not (root/'initial').exists():save_initial(store,core,optimizer,tensor_digest(core))

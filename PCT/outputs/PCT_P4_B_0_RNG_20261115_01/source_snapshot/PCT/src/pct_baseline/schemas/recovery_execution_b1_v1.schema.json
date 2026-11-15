@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "pct_b1_recovery_execution_v1"
+    },
+    "scope": {
+      "const": "P1C_CONSTRUCTED_ONLY"
+    },
+    "job_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "config_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "identity_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "max_items": {
+      "const": 3
+    },
+    "resume_admitted": {
+      "const": true
+    },
+    "network_admitted": {
+      "const": false
+    }
+  },
+  "required": [
+    "version",
+    "scope",
+    "job_id",
+    "task_digest",
+    "config_digest",
+    "identity_digest",
+    "max_items",
+    "resume_admitted",
+    "network_admitted"
+  ],
+  "additionalProperties": false
+}

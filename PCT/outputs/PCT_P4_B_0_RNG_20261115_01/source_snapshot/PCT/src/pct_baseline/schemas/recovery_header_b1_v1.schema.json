@@ -1,0 +1,845 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "pct_b1_recovery_header_v1"
+    },
+    "task": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "pct_b1_task_v1"
+        },
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parent_data_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "parent_task_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "parent_task_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "execution_spec_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "derived_task_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_component_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "parent_partition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "partition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exposure_status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parent_layer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "container": {
+          "type": "object",
+          "properties": {
+            "container_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "coordinate_frame": {
+              "const": "container_bottom_center"
+            },
+            "length_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "width_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "max_height_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "max_payload_kg": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "container_id",
+            "coordinate_frame",
+            "length_mm",
+            "width_mm",
+            "max_height_mm",
+            "max_payload_kg"
+          ],
+          "additionalProperties": false
+        },
+        "arrival_order": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "item_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "dimensions_mm": {
+                "type": "object",
+                "properties": {
+                  "length": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "width": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "height": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                },
+                "required": [
+                  "length",
+                  "width",
+                  "height"
+                ],
+                "additionalProperties": false
+              },
+              "mass_kg": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "stackable": {
+                "type": "boolean"
+              },
+              "top_load_limit_kg_synthetic": {
+                "type": "number",
+                "minimum": 0
+              },
+              "fragile": {
+                "type": "boolean"
+              },
+              "weight_class": {
+                "enum": [
+                  "light",
+                  "medium",
+                  "heavy"
+                ]
+              },
+              "product_category": {
+                "const": "general"
+              }
+            },
+            "required": [
+              "item_id",
+              "dimensions_mm",
+              "mass_kg",
+              "stackable",
+              "top_load_limit_kg_synthetic",
+              "fragile",
+              "weight_class",
+              "product_category"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "object_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "cargo_category": {
+                "const": "general"
+              },
+              "packaging": {
+                "const": {
+                  "reinforced": false
+                }
+              },
+              "labels": {
+                "type": "object",
+                "properties": {
+                  "no_top_load": {
+                    "type": "boolean"
+                  },
+                  "max_top_load_kg": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "no_top_load",
+                  "max_top_load_kg"
+                ],
+                "additionalProperties": false
+              },
+              "physical_top_load_limit_kg": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "object_id",
+              "cargo_category",
+              "packaging",
+              "labels",
+              "physical_top_load_limit_kg"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "regions": {
+          "const": []
+        },
+        "reference_policy": {
+          "const": {
+            "version": "jev_packaging_load_dataset_v1",
+            "rules": []
+          }
+        },
+        "instruction_text": {
+          "const": "Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only."
+        },
+        "buffer_capacity": {
+          "const": 1
+        },
+        "candidate_limits": {
+          "const": {
+            "per_box": 16,
+            "joint": 48
+          }
+        }
+      },
+      "required": [
+        "version",
+        "task_id",
+        "parent_data_identity",
+        "parent_task_sha256",
+        "parent_task_digest",
+        "execution_spec_digest",
+        "derived_task_digest",
+        "source_component_id",
+        "parent_partition",
+        "partition",
+        "exposure_status",
+        "layer",
+        "parent_layer",
+        "container",
+        "arrival_order",
+        "items",
+        "attributes",
+        "regions",
+        "reference_policy",
+        "instruction_text",
+        "buffer_capacity",
+        "candidate_limits"
+      ],
+      "additionalProperties": false
+    },
+    "config": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "pct_b1_config_v1"
+        },
+        "model": {
+          "enum": [
+            null,
+            "jev-1.14.0"
+          ]
+        },
+        "buffer_capacity": {
+          "const": 1
+        },
+        "candidate_backend": {
+          "const": "e2_original_v1"
+        },
+        "per_object_top_k": {
+          "const": 16
+        },
+        "joint_candidates_max": {
+          "const": 48
+        },
+        "selectable_pool": {
+          "const": "physical_feasible"
+        },
+        "policy_source": {
+          "const": "packaging_physical_only"
+        },
+        "selector": {
+          "enum": [
+            "geometry_b1",
+            "pct_geo_b1",
+            "pct_load_b1",
+            "jev_none_b1"
+          ]
+        },
+        "feature_version": {
+          "const": "packaging_physical_facts_v1"
+        },
+        "prompt_version": {
+          "const": "packaging_load_en_v1"
+        },
+        "display_order_seed": {
+          "const": 20261102
+        },
+        "max_request_bytes": {
+          "const": 96000
+        },
+        "memory_mode": {
+          "const": "none"
+        },
+        "experiment_protocol": {
+          "const": "jev_packaging_runtime_v1"
+        },
+        "business_mode": {
+          "const": "physical_only"
+        },
+        "execution_version": {
+          "const": "physical_commit_v1"
+        },
+        "evaluation_version": {
+          "const": "packaging_loading_metrics_v1"
+        },
+        "runtime_identity": {
+          "type": "object",
+          "properties": {
+            "data_identity": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "physical_identity": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "strategy_identity": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "task_identity": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "monitor_identity": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "data_identity",
+            "physical_identity",
+            "strategy_identity",
+            "task_identity",
+            "monitor_identity"
+          ],
+          "additionalProperties": false
+        },
+        "stability_monitor": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "enabled",
+            "algorithm",
+            "kernel_config",
+            "algorithm_identity",
+            "execution_environment"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "algorithm": {
+              "enum": [
+                "pct_exact_pose_network_v3",
+                null
+              ]
+            },
+            "kernel_config": {
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            "algorithm_identity": {
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            "execution_environment": {
+              "type": [
+                "object",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "enabled": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "algorithm": {
+                    "const": "pct_exact_pose_network_v3"
+                  },
+                  "kernel_config": {
+                    "$schema": "https://json-schema.org/draft/2020-12/schema",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "algorithm",
+                      "setting",
+                      "height_tolerance_mm",
+                      "mass_atol_kg",
+                      "mass_rtol",
+                      "moment_atol_kg_mm",
+                      "moment_rtol",
+                      "solver_tolerance",
+                      "scaled_residual_tolerance",
+                      "strict_interior_slack",
+                      "certificate_gap",
+                      "presolve",
+                      "solver",
+                      "selection"
+                    ],
+                    "properties": {
+                      "algorithm": {
+                        "const": "pct_exact_pose_network_v3"
+                      },
+                      "setting": {
+                        "const": 1
+                      },
+                      "height_tolerance_mm": {
+                        "const": 1e-06
+                      },
+                      "mass_atol_kg": {
+                        "const": 1e-09
+                      },
+                      "mass_rtol": {
+                        "const": 1e-09
+                      },
+                      "moment_atol_kg_mm": {
+                        "const": 1e-06
+                      },
+                      "moment_rtol": {
+                        "const": 1e-09
+                      },
+                      "solver_tolerance": {
+                        "const": 1e-10
+                      },
+                      "scaled_residual_tolerance": {
+                        "const": 1e-09
+                      },
+                      "strict_interior_slack": {
+                        "const": 1e-10
+                      },
+                      "certificate_gap": {
+                        "const": 1e-08
+                      },
+                      "presolve": {
+                        "const": false
+                      },
+                      "solver": {
+                        "const": "highs-ds"
+                      },
+                      "selection": {
+                        "const": "max_network_interior_then_lexicographic_forces"
+                      }
+                    }
+                  },
+                  "algorithm_identity": {
+                    "type": "object"
+                  },
+                  "execution_environment": {
+                    "type": "object"
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "algorithm": {
+                    "type": "null"
+                  },
+                  "kernel_config": {
+                    "type": "null"
+                  },
+                  "algorithm_identity": {
+                    "type": "null"
+                  },
+                  "execution_environment": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "execution_spec_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "model_identity": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "model",
+        "buffer_capacity",
+        "candidate_backend",
+        "per_object_top_k",
+        "joint_candidates_max",
+        "selectable_pool",
+        "policy_source",
+        "selector",
+        "feature_version",
+        "prompt_version",
+        "display_order_seed",
+        "max_request_bytes",
+        "memory_mode",
+        "experiment_protocol",
+        "business_mode",
+        "execution_version",
+        "evaluation_version",
+        "runtime_identity",
+        "stability_monitor",
+        "execution_spec_digest",
+        "model_identity"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "selector": {
+                "const": "jev_none_b1"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "model": {
+                "const": "jev-1.14.0"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "model": {
+                "const": null
+              }
+            }
+          }
+        }
+      ]
+    },
+    "admission": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "pct_b1_recovery_execution_v1"
+        },
+        "scope": {
+          "const": "P1C_CONSTRUCTED_ONLY"
+        },
+        "job_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "config_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "identity_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "max_items": {
+          "const": 3
+        },
+        "resume_admitted": {
+          "const": true
+        },
+        "network_admitted": {
+          "const": false
+        }
+      },
+      "required": [
+        "version",
+        "scope",
+        "job_id",
+        "task_digest",
+        "config_digest",
+        "identity_digest",
+        "max_items",
+        "resume_admitted",
+        "network_admitted"
+      ],
+      "additionalProperties": false
+    },
+    "identities": {
+      "type": "object",
+      "properties": {
+        "files": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "environment": {
+          "type": "object",
+          "properties": {
+            "python": {
+              "type": "string"
+            },
+            "abi": {
+              "type": "string"
+            },
+            "executable_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "packages": {
+              "type": "object",
+              "properties": {
+                "numpy": {
+                  "type": "string"
+                },
+                "scipy": {
+                  "type": "string"
+                },
+                "jsonschema": {
+                  "type": "string"
+                },
+                "attrs": {
+                  "type": "string"
+                },
+                "referencing": {
+                  "type": "string"
+                },
+                "jsonschema-specifications": {
+                  "type": "string"
+                },
+                "rpds-py": {
+                  "type": "string"
+                },
+                "typing-extensions": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numpy",
+                "scipy",
+                "jsonschema",
+                "attrs",
+                "referencing",
+                "jsonschema-specifications",
+                "rpds-py",
+                "typing-extensions"
+              ],
+              "additionalProperties": false
+            },
+            "highs_core_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "numpy_core_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "package_records": {
+              "type": "object",
+              "properties": {
+                "numpy": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "scipy": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "jsonschema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "attrs": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "referencing": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "jsonschema-specifications": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "rpds-py": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "typing-extensions": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "numpy",
+                "scipy",
+                "jsonschema",
+                "attrs",
+                "referencing",
+                "jsonschema-specifications",
+                "rpds-py",
+                "typing-extensions"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "python",
+            "abi",
+            "executable_sha256",
+            "packages",
+            "highs_core_sha256",
+            "numpy_core_sha256",
+            "package_records"
+          ],
+          "additionalProperties": false
+        },
+        "model_weights": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "const": "NOT_IMPLEMENTED"
+            },
+            "sha256": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "status",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "network_features": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "const": "NOT_IMPLEMENTED"
+            },
+            "sha256": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "status",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "public_feature_version": {
+          "type": "string"
+        },
+        "policy": {
+          "type": "object",
+          "properties": {
+            "method": {
+              "const": "geometry_b1"
+            },
+            "strategy_identity": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "method",
+            "strategy_identity"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "files",
+        "environment",
+        "model_weights",
+        "network_features",
+        "public_feature_version",
+        "policy"
+      ],
+      "additionalProperties": false
+    },
+    "header_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "task",
+    "config",
+    "admission",
+    "identities",
+    "header_digest"
+  ],
+  "additionalProperties": false
+}

@@ -14,7 +14,7 @@ from .p3_training import rng_state, restore_rng
 from .p4b_storage import seal, checked, publish, encoded
 from .persistence import fsync_dir
 
-VERSION='pct_p4b_state_v2'
+VERSION='pct_p4b_state_v3'
 
 
 def finite(value):
@@ -35,7 +35,7 @@ def payload(model,optimizer):
     require(all(g['lr']==1e-4 for g in optimizer.param_groups),'P4B_LR_DRIFT')
     m=copy.deepcopy(model.state_dict());a=copy.deepcopy(optimizer.state_dict())
     require(finite(m) and finite(a),'P4B_STATE_NONFINITE')
-    return {'model':dump(m),'adam':dump(a),'rng':dump(rng_state())}
+    return {'model':dump(m),'adam':dump(a),'rng':dump({'version':'pct_p4b_rng_resume_v3','state':rng_state()})}
 
 
 def tensor_digest(model):
@@ -77,6 +77,8 @@ def load(store,model,optimizer,*,update_id,expected_seal):
     require(set(row['files'])=={'model','adam','rng'},'P4B_STATE_COMPONENTS')
     for n,h in row['files'].items():require(sha(root/n)==h,'P4B_STATE_BYTES')
     state={n:torch.load(root/n,map_location='cpu',weights_only=False) for n in row['files']}
+    require(type(state['rng']) is dict and set(state['rng'])=={'version','state'} and
+            state['rng']['version']=='pct_p4b_rng_resume_v3','P4B_RNG_LEGACY_SNAPSHOT')
     require(finite(state['model']) and finite(state['adam']),'P4B_STATE_NONFINITE')
     require(all(p.device.type=='cpu' for p in model.parameters()) and isinstance(optimizer,torch.optim.Adam),'P4B_CPU_ADAM_REQUIRED')
     # Load into a disposable validation copy first; on any error caller discards objects.
@@ -90,4 +92,4 @@ def load(store,model,optimizer,*,update_id,expected_seal):
             require(moments['exp_avg'].shape==parameter.shape and moments['exp_avg_sq'].shape==parameter.shape
                     and moments['step'].numel()==1,'P4B_ADAM_SHAPE')
     model.load_state_dict(state['model'],strict=True);optimizer.load_state_dict(state['adam'])
-    restore_rng(state['rng']);return copy.deepcopy(row)
+    restore_rng(state['rng']['state']);return copy.deepcopy(row)

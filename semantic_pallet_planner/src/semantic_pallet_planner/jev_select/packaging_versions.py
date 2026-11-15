@@ -55,3 +55,12 @@ JM_T_PROJECTION='jev_jm_t_projection_v1'
 JM_T_QUERY='jev_jm_t_query_v1'
 JM_T_PROTOCOLS={v:'packaging_t_projection' for v in (JM_T_PROJECTION,JM_T_QUERY)}
 JM_T_SCHEMAS={JM_T_PROJECTION:'jm_t_projection_v1',JM_T_QUERY:'jm_t_query_v1'}
+
+# JM2-B1 limited offline contracts; deliberately no real admission or IO route.
+JM_E_FACT_PACK='jev_jm_e_fact_pack_v1'
+JM_E_GENERATION='jev_jm_e_generation_v1'
+JM_E_GATE='jev_jm_e_gate_v1'
+JM_E_PROMPT='jev_jm_e_prompt_contract_v1'
+JM_E_RULES='jev_jm_e_prerequisite_rules_v1'
+JM_E_PROTOCOLS={v:'packaging_experience_contract' for v in (JM_E_FACT_PACK,JM_E_GENERATION,JM_E_GATE,JM_E_PROMPT,JM_E_RULES)}
+JM_E_SCHEMAS={JM_E_FACT_PACK:'jm_e_fact_pack_v1',JM_E_GENERATION:'jm_e_generation_v1',JM_E_GATE:'jm_e_gate_v1'}

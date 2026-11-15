@@ -1,0 +1,552 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_jm_e_generation_v1"
+    },
+    "origin": {
+      "enum": [
+        "SYNTHETIC_FIXTURE",
+        "UNTRUSTED_MODEL_OUTPUT"
+      ]
+    },
+    "pack_digest": {
+      "type": "string",
+      "pattern": "[0-9a-f]{64}"
+    },
+    "decision": {
+      "enum": [
+        "PROPOSE",
+        "INSUFFICIENT_EVIDENCE"
+      ]
+    },
+    "fact_claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fact_id": {
+            "type": "string",
+            "pattern": "F[0-9]{4}"
+          },
+          "value_digest": {
+            "type": "string",
+            "pattern": "[0-9a-f]{64}"
+          }
+        },
+        "required": [
+          "fact_id",
+          "value_digest"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "proposal": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "usage_scenario": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "preconditions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "field": {
+                        "enum": [
+                          "features.buffer_count",
+                          "features.buffer_mean_capacity_kg",
+                          "features.buffer_mean_height_mm",
+                          "features.buffer_mean_length_mm",
+                          "features.buffer_mean_mass_kg",
+                          "features.buffer_mean_width_mm",
+                          "features.buffer_stackable_fraction",
+                          "features.candidate_count",
+                          "features.candidate_distinct_box_count",
+                          "features.candidate_floor_fraction",
+                          "features.candidate_mean_base_mm",
+                          "features.candidate_mean_top_mm",
+                          "features.candidate_yaw90_fraction",
+                          "features.placed_area_remaining_top_load_sum_kg",
+                          "features.placed_bbox_span_x_mm",
+                          "features.placed_bbox_span_y_mm",
+                          "features.placed_count",
+                          "features.placed_exact_face_contact_count",
+                          "features.placed_gross_stackable_face_area_mm2",
+                          "features.placed_max_top_mm",
+                          "features.placed_mean_center_x_mm",
+                          "features.placed_mean_center_y_mm",
+                          "features.placed_projection_union_ratio",
+                          "features.placed_top_level_count",
+                          "features.placed_volume_ratio",
+                          "actions.A.length_mm",
+                          "actions.A.width_mm",
+                          "actions.A.height_mm",
+                          "actions.A.mass_kg",
+                          "actions.A.max_top_load_kg",
+                          "actions.A.stackable",
+                          "actions.A.oriented_length_mm",
+                          "actions.A.oriented_width_mm",
+                          "actions.A.oriented_height_mm",
+                          "actions.A.x_over_length",
+                          "actions.A.y_over_width",
+                          "actions.A.base_over_height",
+                          "actions.A.yaw_deg",
+                          "actions.B.length_mm",
+                          "actions.B.width_mm",
+                          "actions.B.height_mm",
+                          "actions.B.mass_kg",
+                          "actions.B.max_top_load_kg",
+                          "actions.B.stackable",
+                          "actions.B.oriented_length_mm",
+                          "actions.B.oriented_width_mm",
+                          "actions.B.oriented_height_mm",
+                          "actions.B.x_over_length",
+                          "actions.B.y_over_width",
+                          "actions.B.base_over_height",
+                          "actions.B.yaw_deg"
+                        ]
+                      },
+                      "op": {
+                        "enum": [
+                          "LT",
+                          "LE",
+                          "EQ",
+                          "GE",
+                          "GT"
+                        ]
+                      },
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "boolean"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "field",
+                      "op",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1
+                },
+                "exclusions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "field": {
+                        "enum": [
+                          "features.buffer_count",
+                          "features.buffer_mean_capacity_kg",
+                          "features.buffer_mean_height_mm",
+                          "features.buffer_mean_length_mm",
+                          "features.buffer_mean_mass_kg",
+                          "features.buffer_mean_width_mm",
+                          "features.buffer_stackable_fraction",
+                          "features.candidate_count",
+                          "features.candidate_distinct_box_count",
+                          "features.candidate_floor_fraction",
+                          "features.candidate_mean_base_mm",
+                          "features.candidate_mean_top_mm",
+                          "features.candidate_yaw90_fraction",
+                          "features.placed_area_remaining_top_load_sum_kg",
+                          "features.placed_bbox_span_x_mm",
+                          "features.placed_bbox_span_y_mm",
+                          "features.placed_count",
+                          "features.placed_exact_face_contact_count",
+                          "features.placed_gross_stackable_face_area_mm2",
+                          "features.placed_max_top_mm",
+                          "features.placed_mean_center_x_mm",
+                          "features.placed_mean_center_y_mm",
+                          "features.placed_projection_union_ratio",
+                          "features.placed_top_level_count",
+                          "features.placed_volume_ratio",
+                          "actions.A.length_mm",
+                          "actions.A.width_mm",
+                          "actions.A.height_mm",
+                          "actions.A.mass_kg",
+                          "actions.A.max_top_load_kg",
+                          "actions.A.stackable",
+                          "actions.A.oriented_length_mm",
+                          "actions.A.oriented_width_mm",
+                          "actions.A.oriented_height_mm",
+                          "actions.A.x_over_length",
+                          "actions.A.y_over_width",
+                          "actions.A.base_over_height",
+                          "actions.A.yaw_deg",
+                          "actions.B.length_mm",
+                          "actions.B.width_mm",
+                          "actions.B.height_mm",
+                          "actions.B.mass_kg",
+                          "actions.B.max_top_load_kg",
+                          "actions.B.stackable",
+                          "actions.B.oriented_length_mm",
+                          "actions.B.oriented_width_mm",
+                          "actions.B.oriented_height_mm",
+                          "actions.B.x_over_length",
+                          "actions.B.y_over_width",
+                          "actions.B.base_over_height",
+                          "actions.B.yaw_deg"
+                        ]
+                      },
+                      "op": {
+                        "enum": [
+                          "LT",
+                          "LE",
+                          "EQ",
+                          "GE",
+                          "GT"
+                        ]
+                      },
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "boolean"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "field",
+                      "op",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "description",
+                "preconditions",
+                "exclusions"
+              ],
+              "additionalProperties": false
+            },
+            "decision_contrast": {
+              "type": "object",
+              "properties": {
+                "intervention": {
+                  "enum": [
+                    "SAME_BOX_TRANSLATION",
+                    "SAME_BOX_ROTATION",
+                    "SAME_BOX_TRANSLATION_AND_ROTATION",
+                    "CROSS_BOX_SELECTION"
+                  ]
+                },
+                "distinguishing_attributes": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "length_mm",
+                      "width_mm",
+                      "height_mm",
+                      "mass_kg",
+                      "max_top_load_kg",
+                      "stackable",
+                      "oriented_length_mm",
+                      "oriented_width_mm",
+                      "oriented_height_mm",
+                      "x_over_length",
+                      "y_over_width",
+                      "base_over_height",
+                      "yaw_deg"
+                    ]
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "intervention",
+                "distinguishing_attributes"
+              ],
+              "additionalProperties": false
+            },
+            "advice": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "CONDITIONAL_HYPOTHESIS"
+                },
+                "preferred_role": {
+                  "enum": [
+                    "A",
+                    "B"
+                  ]
+                },
+                "resource_tradeoff": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "failure_conditions": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "basis_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "F[0-9]{4}"
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "status",
+                "preferred_role",
+                "resource_tradeoff",
+                "failure_conditions",
+                "basis_refs"
+              ],
+              "additionalProperties": false
+            },
+            "observed_facts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "F[0-9]{4}"
+              },
+              "minItems": 1
+            },
+            "mechanism_hypothesis": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "HYPOTHESIS"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "basis_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "F[0-9]{4}"
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "status",
+                "text",
+                "basis_refs"
+              ],
+              "additionalProperties": false
+            },
+            "falsifiable_prediction": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "support_observation": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "refuting_observation": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "basis_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "F[0-9]{4}"
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "text",
+                "support_observation",
+                "refuting_observation",
+                "basis_refs"
+              ],
+              "additionalProperties": false
+            },
+            "evidence_grade": {
+              "enum": [
+                "CONFLICTING_LOCAL_OBSERVATIONS",
+                "REPLICATED_LOCAL_OBSERVATION",
+                "PROVISIONAL_CASE"
+              ]
+            },
+            "continuation_identity": {
+              "type": "string",
+              "pattern": "[0-9a-f]{64}"
+            },
+            "support_and_conflict": {
+              "type": "object",
+              "properties": {
+                "labels": {
+                  "type": "object",
+                  "properties": {
+                    "improved": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "degraded": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "neutral": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "trade_off": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "invalid": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "not_run": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "improved",
+                    "degraded",
+                    "neutral",
+                    "trade_off",
+                    "invalid",
+                    "not_run"
+                  ],
+                  "additionalProperties": false
+                },
+                "registered_pairs": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "starts": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "source_components": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "cross_start_support": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "independent_unseen_sources": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "coverage": {
+                  "enum": [
+                    "PARTIAL",
+                    "COMPLETE",
+                    "SYNTHETIC_FIXTURE"
+                  ]
+                }
+              },
+              "required": [
+                "labels",
+                "registered_pairs",
+                "starts",
+                "source_components",
+                "cross_start_support",
+                "independent_unseen_sources",
+                "coverage"
+              ],
+              "additionalProperties": false
+            },
+            "limitations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1
+            },
+            "review": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "PROGRAM_STRUCTURE_ONLY"
+                },
+                "status": {
+                  "const": "PENDING"
+                },
+                "human_signature": {
+                  "type": "null"
+                },
+                "independent_reviewer": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "type",
+                "status",
+                "human_signature",
+                "independent_reviewer"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "usage_scenario",
+            "decision_contrast",
+            "advice",
+            "observed_facts",
+            "mechanism_hypothesis",
+            "falsifiable_prediction",
+            "evidence_grade",
+            "continuation_identity",
+            "support_and_conflict",
+            "limitations",
+            "review"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "insufficient_reason": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "version",
+    "origin",
+    "pack_digest",
+    "decision",
+    "fact_claims",
+    "proposal",
+    "insufficient_reason"
+  ],
+  "additionalProperties": false
+}

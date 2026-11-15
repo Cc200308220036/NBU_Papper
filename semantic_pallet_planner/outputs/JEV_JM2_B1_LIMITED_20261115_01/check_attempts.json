@@ -1,0 +1,35 @@
+{
+  "attempts": [
+    {
+      "cause": "new registry edits differ from original parent source hashes",
+      "fix": "verify original registry bytes from entry Git blob and separately record new source identity; no old digest rewritten",
+      "log": "check_attempt_01.log",
+      "status": "FAIL_ASSERTION",
+      "step": "initial parent-byte verifier"
+    },
+    {
+      "log": "check_attempt_02.log",
+      "status": "PASS_18_CONSTRUCTED",
+      "step": "corrected archive comparison"
+    },
+    {
+      "log": "check_final.log",
+      "status": "PASS_20_CONSTRUCTED",
+      "step": "final fixture-origin binding and constructor checks"
+    },
+    {
+      "log": "legacy_guard.log",
+      "status": "PASS_1",
+      "step": "legacy nonempty refusal"
+    }
+  ],
+  "inherited_failures": "Original A2/A3/QA failures retained in their original packages; not relabelled by this pass",
+  "not_run": [
+    "real generation",
+    "trusted real content review",
+    "B2 lifecycle or freeze",
+    "orders/forks/LP/model",
+    "full B1 exit"
+  ],
+  "version": "jm2_b1_limited_attempts_v1"
+}

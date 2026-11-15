@@ -1,0 +1,136 @@
+{
+  "version": "pct_p4b0_quality_review_v1",
+  "date": "2026-11-15",
+  "review_scope": "STAGE",
+  "unit": "P4-B-0",
+  "baseline": {
+    "branch": "dev/PCT",
+    "head": "96d71caa360f4950ae943e0ce9045c70f534b1bf",
+    "upstream": "origin/dev/PCT",
+    "index": "EMPTY",
+    "worktree": "P4-B-0未跟踪开发交付及两导航修改，保留"
+  },
+  "reviewed_package": "PCT/outputs/PCT_P4_B_0_20261115_01",
+  "four_layers": {
+    "report": "开发明确PARTIAL、正式链路和真实恢复适配未完成",
+    "implementation": "存储/WAL/事务/账目组件存在；launch无业务循环且最终必拒绝",
+    "archive": "12构造+7回归日志、初始guard失败保留；业务NOT_RUN",
+    "current": "12构造+7回归测试通过；开发checker通过；独立23清单/2761保护/5快照及AST准入核对通过"
+  },
+  "criteria": [
+    {
+      "id": "E01",
+      "requirement": "正式协议与公共链路集成",
+      "status": "PARTIAL",
+      "code": "独立版本描述符存在，config Schema/extension接口/注册/执行循环缺失",
+      "archive": "报告与handoff已披露",
+      "current": "静态核对launch及resolver，仍拒绝运行",
+      "issue": "P4B0-Q01"
+    },
+    {
+      "id": "E02",
+      "requirement": "存储、索引、WAL、有界发布",
+      "status": "PASS",
+      "scope": "组件构造范围",
+      "code": "规范JSON单记录gzip、双摘要、索引、pending/fsync/link、WAL事件增量引用",
+      "archive": "tests_final.log",
+      "current": "本轮12测试中的损坏/孤儿/上界/容量/中断项通过",
+      "limits": "大记录拒绝、不含聚合/分段和长期性能证明"
+    },
+    {
+      "id": "E03",
+      "requirement": "五阶段恢复与实际会话计数",
+      "status": "PARTIAL",
+      "code": "五阶段组件、保存事实保护、手工forward/reuse接口",
+      "archive": "合成checkpoint测试",
+      "current": "构造项通过；实际hook/消费生命周期缺失",
+      "issue": "P4B0-Q02"
+    },
+    {
+      "id": "E04",
+      "requirement": "更新事务与真实状态载入",
+      "status": "PARTIAL",
+      "code": "blob事务、7故障边界、顺序update ID",
+      "archive": "合成model/adam/rng bytes",
+      "current": "构造事务、重复ID和损坏拒绝通过；真实状态恢复未实现",
+      "issue": "P4B0-Q02"
+    },
+    {
+      "id": "E05",
+      "requirement": "身份/锁/容量/停批/分母",
+      "status": "PASS",
+      "scope": "组件构造范围",
+      "code": "Store与Campaign有限组件",
+      "archive": "12000槽，技术失败1/11999 NOT_RUN的fixture",
+      "current": "字段漂移/锁竞争/容量不足/停批与重建测试通过",
+      "limits": "fixture不等于12000真实尝试；实时身份/资源采集未验收"
+    },
+    {
+      "id": "E06",
+      "requirement": "冻结计划与历史保护",
+      "status": "PASS",
+      "code": "descriptor复用P4-A完整校验，不改计划",
+      "archive": "protected_identity.json",
+      "current": "7项回归，2761保护文件、5源码快照、23清单条目核对通过"
+    },
+    {
+      "id": "B43",
+      "requirement": "六模型真实训练账目",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "B44",
+      "requirement": "最终权重与训练恢复一致",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "B45",
+      "requirement": "完整分母/收益/真实权重派生计划",
+      "status": "NOT_RUN"
+    }
+  ],
+  "issues": [
+    {
+      "id": "P4B0-Q01",
+      "severity": "HIGH",
+      "blocks": "P4-B-0退出、正式预检与B43—B45",
+      "requirement": "上一QA限定工程任务：正式协议/执行器复用公共链路",
+      "location": "PCT/src/pct_baseline/p4b_executor.py:59; p4b_runtime.py:117-123; semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py:resolve_extension",
+      "actual": "launch只调用准入函数，后者最终无条件抛错；未提供正式config Schema/注册、完整采集/梯度循环。公共路由只识别P3/旧b1",
+      "minimum_fix": "补正式封闭协议、执行器及公共extension接口；公共注册最小候选范围为packaging_versions.py，在下一任务显式指定范围后新增独立路由。不能只删最终raise或只加路由",
+      "validation": "离线协议/路由/准入负例、冻结排程和batch策略控制流构造验证；真实订单/LP留待另冻预检。保留P3/旧协议保护"
+    },
+    {
+      "id": "P4B0-Q02",
+      "severity": "HIGH",
+      "blocks": "P4-B-0退出及正式恢复准入",
+      "requirement": "P3-Q01/Q02延续：实际生命周期与状态恢复适配",
+      "location": "p4b_runtime.py:StageJournal.session/record_reuse/record_forward; p4b_storage.py:publish_update",
+      "actual": "仅有手动计数接口与planned_reuses；没有接实际selector/JournalSink生命周期；事务保存不透明合成blob，缺真实model/Adam/适用RNG载入与commit intent",
+      "minimum_fix": "接入精确持久阶段/选择收据/复用消费，完成可核对会话结束收据、commit intent、模型Adam/RNG/游标适配；明确模糊发布停止策略",
+      "validation": "构造生命周期与计数对账、保存事实不覆盖、漂移/并发/断点、真实对象序列化往返但不运行前向/optimizer.step；真实业务恢复仍需独立限定预检"
+    },
+    {
+      "id": "P3-Q02",
+      "severity": "HIGH_FOR_FORMAL_RUN",
+      "blocks": "实际资源预检的运行条件及正式长跑，非允许的离线整改",
+      "requirement": "正式存储/资源验收",
+      "location": "PCT/outputs/PCT_P4_B_0_20261115_01/resource_gaps.json; p4b_storage.py:Store.guard",
+      "actual": "单条分片边界和临时reserve=0测试通过；长期最大尺寸/吞吐未测。fallback601166756537字节保留，本轮未作实时资源预检",
+      "minimum_fix": "完善最大记录/超限安全停机、checkpoint和回滚reserve；工程通过后另冻任务与动作/更新额度，独立测写者增长和资源或提供足额存储",
+      "validation": "不使用旧压缩比下调门槛，不删除证据；历史367001600000字节是旧观测，不能当本轮可用容量"
+    }
+  ],
+  "engineering_status": "PARTIAL_P4B0",
+  "evidence_readiness": "SUFFICIENT_COMPONENT_ONLY_NOT_FORMAL_EXECUTOR",
+  "research_result": "NOT_ESTABLISHED_NO_NEW_BUSINESS_EXPERIMENT",
+  "next_stage_admission": "NOT_READY",
+  "authorization_scope": "本轮QA；没有实施整改、修改公共文件、真实预检、训练或请求；未执行Git同步",
+  "limits": [
+    "没有重跑P3业务",
+    "事务测试blob不是实际模型/Adam恢复",
+    "手工stage fixture不等于实际run_episode生命周期",
+    "资源旧观测与本轮实测区分"
+  ],
+  "stop": true
+}

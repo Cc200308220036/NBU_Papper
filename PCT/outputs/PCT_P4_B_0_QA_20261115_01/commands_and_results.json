@@ -1,0 +1,45 @@
+{
+  "version": "pct_p4b0_qa_checks_v1",
+  "side_effect_review": "执行前完整阅读test_p4b、check_p4b_delivery、p4b三模块、persistence及p4a导入链；测试仅临时目录构造、禁止模型/planner导入和网络；checker只读，shell重定向到QA；独立脚本stdlib读保存文件及AST",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p4b.py -v",
+      "result": "12 PASS,0 skipped",
+      "log": "current_p4b_tests.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p4a.py -v",
+      "result": "7 PASS,0 skipped",
+      "log": "current_p4a_regression.log"
+    },
+    {
+      "command": "python3 PCT/scripts/check_p4b_delivery.py",
+      "result": "PASS_SAVED_BYTES_ONLY",
+      "log": "developer_checker.log"
+    },
+    {
+      "command": "python3 PCT/outputs/PCT_P4_B_0_QA_20261115_01/audit_saved.py",
+      "result": "PASS_SAVED_FACTS_AND_STATIC_BOUNDARY",
+      "receipt": "independent_saved_checks.json"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "environment": "现有NBU Python3.12解释器、stdlib python3，无安装",
+  "not_run": [
+    "orders",
+    "candidate generation",
+    "LP",
+    "real model forward",
+    "optimizer",
+    "remote",
+    "actual resource preflight"
+  ],
+  "git_mutations": false,
+  "QA_delivery_notes": [
+    "临时交付生成器在系统python3解析长中文行失败；现有NBU解释器成功解析",
+    "首次交付链接检查在尚未创建manifest时失败，随后限定允许该未来清单并完成最终全链接核验；不涉及业务测试失败"
+  ]
+}

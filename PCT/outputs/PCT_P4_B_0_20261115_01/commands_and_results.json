@@ -1,0 +1,24 @@
+{
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p4b.py -v",
+      "result": "12 PASS; prior guard failure preserved",
+      "log": "tests_final.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=PCT/src \"$NBU_PY\" -m unittest discover -s PCT/tests -p test_p4a.py -v",
+      "result": "7 PASS",
+      "log": "p4a_regression.log"
+    },
+    {
+      "command": "python3 PCT/scripts/check_p4b_delivery.py",
+      "result": "PASS_SAVED_BYTES_ONLY; 2761 protected historical files byte equal"
+    },
+    {
+      "command": "git diff --check",
+      "result": "exit 0"
+    }
+  ],
+  "python_used": "existing NBU Python3.12; initial stdlib-only 11 checks also ran system Python3.9",
+  "credentials_install_weights_agents": false
+}

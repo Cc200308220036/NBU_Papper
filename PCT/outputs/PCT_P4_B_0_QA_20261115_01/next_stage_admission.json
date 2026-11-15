@@ -1,0 +1,58 @@
+{
+  "version": "pct_p4b0_qa_admission_v1",
+  "status": "NOT_READY",
+  "next_stage": "实际预检/六模型正式训练",
+  "authorized_current_work": "Independent QA only",
+  "recommended_task": "P4-B-0整改补齐，不是下一阶段实施",
+  "prerequisites": [
+    {
+      "requirement": "P4-B-0工程退出",
+      "status": "UNMET",
+      "evidence": "E01/E03/E04 PARTIAL",
+      "impact": "下一阶段NOT_READY，只补本单元"
+    },
+    {
+      "requirement": "公共独立注册范围",
+      "status": "NEEDS_EXPLICIT_TASK_SCOPE",
+      "evidence": "PCT/README及resolver",
+      "impact": "下一整改指令应明确列出packaging_versions.py，不扩大为任意公共改动"
+    },
+    {
+      "requirement": "观察器/状态恢复/commit intent",
+      "status": "UNMET",
+      "evidence": "P4B0-Q02",
+      "impact": "构造接口不能替代真实业务恢复证据"
+    },
+    {
+      "requirement": "资源/容量与明确实际预检额度",
+      "status": "NOT_ASSESSED_CURRENT_RESOURCES",
+      "evidence": "PCT/outputs/PCT_P4_B_0_20261115_01/resource_gaps.json",
+      "impact": "本轮只离线整改；4尝试/1更新建议均未授权未运行"
+    },
+    {
+      "requirement": "六模型/正式评价计划",
+      "status": "NOT_RUN",
+      "evidence": "B43—B45",
+      "impact": "不准入P4-C/D"
+    }
+  ],
+  "allowed_recommendation": [
+    "PCT内执行器/协议/真实状态适配/计数和恢复工程整改",
+    "下一任务明确范围后公共packaging_versions.py最小独立注册",
+    "离线构造与序列化往返；保持真实前向/optimizer/订单为0"
+  ],
+  "not_allowed": [
+    "仅删除准入raise后开跑",
+    "4尝试资源预检",
+    "真实optimizer验证",
+    "六模型训练",
+    "220槽评价/远程请求",
+    "旧P3/P4-A重签或放宽保护"
+  ],
+  "release_conditions": [
+    "P4B0-Q01/Q02工程整改通过独立QA",
+    "实际业务预检另有冻结任务和明确数值预算及授权",
+    "资源门槛通过独立验收后才考虑长跑"
+  ],
+  "remote_authorization": 0
+}

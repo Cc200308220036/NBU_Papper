@@ -1,0 +1,77 @@
+{
+  "version": "pct_p4b0_qa_acceptance_v1",
+  "note": "E01—E06为上轮工程要求的本轮审查行号，不冒充原方案B编号",
+  "overall": "PARTIAL",
+  "criteria": [
+    {
+      "id": "E01",
+      "requirement": "正式协议与公共链路集成",
+      "status": "PARTIAL",
+      "code": "独立版本描述符存在，config Schema/extension接口/注册/执行循环缺失",
+      "archive": "报告与handoff已披露",
+      "current": "静态核对launch及resolver，仍拒绝运行",
+      "issue": "P4B0-Q01"
+    },
+    {
+      "id": "E02",
+      "requirement": "存储、索引、WAL、有界发布",
+      "status": "PASS",
+      "scope": "组件构造范围",
+      "code": "规范JSON单记录gzip、双摘要、索引、pending/fsync/link、WAL事件增量引用",
+      "archive": "tests_final.log",
+      "current": "本轮12测试中的损坏/孤儿/上界/容量/中断项通过",
+      "limits": "大记录拒绝、不含聚合/分段和长期性能证明"
+    },
+    {
+      "id": "E03",
+      "requirement": "五阶段恢复与实际会话计数",
+      "status": "PARTIAL",
+      "code": "五阶段组件、保存事实保护、手工forward/reuse接口",
+      "archive": "合成checkpoint测试",
+      "current": "构造项通过；实际hook/消费生命周期缺失",
+      "issue": "P4B0-Q02"
+    },
+    {
+      "id": "E04",
+      "requirement": "更新事务与真实状态载入",
+      "status": "PARTIAL",
+      "code": "blob事务、7故障边界、顺序update ID",
+      "archive": "合成model/adam/rng bytes",
+      "current": "构造事务、重复ID和损坏拒绝通过；真实状态恢复未实现",
+      "issue": "P4B0-Q02"
+    },
+    {
+      "id": "E05",
+      "requirement": "身份/锁/容量/停批/分母",
+      "status": "PASS",
+      "scope": "组件构造范围",
+      "code": "Store与Campaign有限组件",
+      "archive": "12000槽，技术失败1/11999 NOT_RUN的fixture",
+      "current": "字段漂移/锁竞争/容量不足/停批与重建测试通过",
+      "limits": "fixture不等于12000真实尝试；实时身份/资源采集未验收"
+    },
+    {
+      "id": "E06",
+      "requirement": "冻结计划与历史保护",
+      "status": "PASS",
+      "code": "descriptor复用P4-A完整校验，不改计划",
+      "archive": "protected_identity.json",
+      "current": "7项回归，2761保护文件、5源码快照、23清单条目核对通过"
+    },
+    {
+      "id": "B43",
+      "requirement": "六模型真实训练账目",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "B44",
+      "requirement": "最终权重与训练恢复一致",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "B45",
+      "requirement": "完整分母/收益/真实权重派生计划",
+      "status": "NOT_RUN"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "version": "jm2_a3_admission_v1",
+  "target": "JM2-A3 offline per-card projection sufficiency review",
+  "status": "READY",
+  "matrix": [
+    {
+      "prerequisite": "nonempty candidates and provenance",
+      "status": "PASS",
+      "evidence": "5 cards,9 pairs,2838 refs"
+    },
+    {
+      "prerequisite": "sufficiency/observable conditions",
+      "status": "NOT_RUN",
+      "impact": "A3 target; never assume A2 implies sufficient"
+    },
+    {
+      "prerequisite": "real generation/execution",
+      "status": "NOT_RUN",
+      "impact": "not authorized"
+    }
+  ],
+  "real_calls_authorized": 0,
+  "allowed": [
+    "M21-07 per-card review and M21-01..06 consistency recheck",
+    "projection_sufficiency_review with genuine review source and missing/unknown outcomes"
+  ],
+  "forbidden": [
+    "model calls",
+    "new experiments/LP/candidate rebuild",
+    "A/B generation or memory execution",
+    "invent reviewer identity",
+    "overwrite original evidence"
+  ],
+  "stop": true
+}

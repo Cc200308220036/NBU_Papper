@@ -1,0 +1,44 @@
+test_central_closed_schema_routes (test_packaging_t_projection.ProjectionTests) ... ERROR
+test_conflict_neutral_negative_and_single_remain (test_packaging_t_projection.ProjectionTests) ... ok
+test_coordinate_orientation_identity_and_result_tampering_refused (test_packaging_t_projection.ProjectionTests) ... ok
+test_old_nonempty_guard_still_refuses (test_packaging_t_projection.ProjectionTests) ... ERROR
+test_real_alias_relationship_matches_exact_object_identity (test_packaging_t_projection.ProjectionTests) ... ok
+test_saved_coordinates_roles_and_all_results (test_packaging_t_projection.ProjectionTests) ... FAIL
+
+======================================================================
+ERROR: test_central_closed_schema_routes (test_packaging_t_projection.ProjectionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/tests/unit/test_packaging_t_projection.py", line 62, in test_central_closed_schema_routes
+    from semantic_pallet_planner.jev_select.contracts import schema_validator
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 54
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+                                                                                                                                   ^
+SyntaxError: f-string: unmatched '('
+
+======================================================================
+ERROR: test_old_nonempty_guard_still_refuses (test_packaging_t_projection.ProjectionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/tests/unit/test_packaging_t_projection.py", line 88, in test_old_nonempty_guard_still_refuses
+    from semantic_pallet_planner.jev_select import packaging_experience as old
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py", line 12, in <module>
+    from .contracts import Snapshot, JevSelectError, canonical, digest, validate_schema
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 54
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+                                                                                                                                   ^
+SyntaxError: f-string: unmatched '('
+
+======================================================================
+FAIL: test_saved_coordinates_roles_and_all_results (test_packaging_t_projection.ProjectionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/tests/unit/test_packaging_t_projection.py", line 31, in test_saved_coordinates_roles_and_all_results
+    self.assertEqual(m.query_projection(h)['features'],card['features'])
+AssertionError: {'buffer_count': {'status': 'VALUE', 'value': 3, 'reason': '[2508 chars]TS'}} != {'buffer_count': {'reason': 'OBSERVED_PUBLIC_FACTS', 'status[2497 chars]647}}
+Diff is 4378 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.049s
+
+FAILED (failures=1, errors=2)

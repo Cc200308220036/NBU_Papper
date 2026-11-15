@@ -1,0 +1,28 @@
+{
+  "commands": [
+    {
+      "command": "python3 PCT/outputs/PCT_P2_A_QA_20261114_01/check_saved.py",
+      "exit_code": 0,
+      "result": "162交付、15源码、15上游来源匹配；25权重float32摘要；1116比较/620差异；padding行为保存事实检查"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "script_review": {
+    "PCT/scripts/verify_p2a.py": "完整审查：会运行随机权重网络前向/梯度并写产物；static-only也会写reference/static_checks；本轮不执行",
+    "PCT/tests/p2a_worker.py": "完整阅读：隔离进程、strict load、fixed loss backward、输出完整保存；本轮不执行",
+    "QA/check_saved.py": "仅标准库文件/AST/struct float32/算术和只读Git；不导入Torch/planner、不执行业务"
+  },
+  "not_run": [
+    "网络前向/反向",
+    "安装",
+    "订单",
+    "候选生成",
+    "LP",
+    "训练",
+    "远程模型请求"
+  ],
+  "credential_reads": 0
+}

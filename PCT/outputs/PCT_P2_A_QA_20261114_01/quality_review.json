@@ -1,0 +1,68 @@
+{
+  "version": "pct_p2a_qa_v1",
+  "date": "2026-11-14",
+  "review_scope": {
+    "kind": "STAGE",
+    "unit": "P2-A B20-B22",
+    "package": "PCT/outputs/PCT_P2_A_20261114_01",
+    "plan": "PCT-plan-v1 §9.3"
+  },
+  "baseline": {
+    "branch": "dev/PCT",
+    "head": "b1a4ffbbcbf56f8ade8bd928f3ffaf9e4d40fe21",
+    "initial_worktree": "CLEAN",
+    "initial_staged": "EMPTY"
+  },
+  "acceptance_matrix": [
+    {
+      "id": "B20",
+      "status": "PASS",
+      "claim": "固定MIT最小副本与逐项兼容补丁",
+      "implementation": "vendor/pct相对导入、局部分布、纯工具提取、squeeze及NamedTuple修补；独立network_safety",
+      "archive": "upstream_manifest、LICENSE、upstream.patch、patch_register、reference/runtime",
+      "qa": "15来源文件、原始/消费副本摘要及MIT字节核对；init/decode AST等价；162交付与15当前源码匹配",
+      "boundary": "原生参考含明确的Python3.12补丁与工具函数AST提取，不是完整原生环境"
+    },
+    {
+      "id": "B21",
+      "status": "PASS",
+      "claim": "全有效B1/B3同权重概率/value/logprob/梯度一致",
+      "implementation": "隔离native/compat/safe进程；完整固定动作logprob+value反向；同键严格加载；无optimizer",
+      "archive": "7输入JSON、21结果JSON、完整权重JSON、数值比较与命令",
+      "qa": "标准库重算1116应一致记录及620单列差异；25权重张量float32字节摘要一致；shape/有限性/零padding/payload不变性/并列索引核对",
+      "boundary": "未重跑网络前向反向；是保存张量复验，非几何编码/训练/论文成绩验收"
+    },
+    {
+      "id": "B22",
+      "status": "PASS",
+      "claim": "已知兼容问题修补或准确登记",
+      "implementation": "局部Categorical不改全局；独立严格mask和无epsilon；未添加新glimpse聚合；单层结构合同",
+      "archive": "compatibility_register、negatives、padding_differences、static_checks、attempt_01",
+      "qa": "完整阅读worker/core/safe和验证器副作用；原生/兼容全局方法变动记录分离；源码与静态字段来源一致",
+      "boundary": "参数生效/原生环境部分仅静态阅读；多图层、原生训练与成绩未运行且不承诺"
+    }
+  ],
+  "new_blocking_findings": [],
+  "carryforward_findings": [
+    "P1C-Q01 OPEN，P3成本分析前澄清；不阻断P2-B"
+  ],
+  "evidence_limits": [
+    "本轮只做保存JSON/摘要/算术复验，无网络前向或反向",
+    "执行版聚合脚本快照由最终版本逆除追加改动重建；可核对其差异，但不能由此独立证明运行时脚本字节；worker/网络核心最终身份及完整输出可核验",
+    "二进制.pt本地保留/被既有Git规则忽略；JSON完整权重及结果支持可移植证据，已核对float32参数摘要"
+  ],
+  "engineering_status": "PASS_P2_A_PURE_NETWORK_ONLY",
+  "evidence_readiness": "SUFFICIENT_FOR_B20_B22",
+  "research_result": "NOT_RUN_NO_TRAINED_POLICY_OR_PACKING_BENEFIT",
+  "next_stage_admission": "READY",
+  "authorization_scope": {
+    "current": "Independent QA only",
+    "model_forward_this_QA": 0,
+    "optimizer_updates": 0,
+    "remote_requests": 0,
+    "installation": false,
+    "git_commit_push": false,
+    "next_stage": "requires user designation"
+  },
+  "stop": true
+}

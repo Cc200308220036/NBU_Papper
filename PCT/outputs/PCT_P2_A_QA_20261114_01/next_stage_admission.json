@@ -1,0 +1,52 @@
+{
+  "version": "pct_p2b_admission_v1",
+  "next_unit": "P2-B B23-B25",
+  "status": "READY",
+  "scope": "几何公开状态/候选编码、精确映射、掩码/边界、严格权重及重复性；不含承载扩展/训练/正式订单",
+  "prerequisites": [
+    {
+      "requirement": "P1数据/执行/恢复基础",
+      "status": "SATISFIED_IN_LIMITED_SCOPE",
+      "evidence": "前序独立验收及本轮父交付链"
+    },
+    {
+      "requirement": "P2-A核心和独立安全扩展",
+      "status": "SATISFIED",
+      "evidence": "本轮B20—B22 PASS"
+    },
+    {
+      "requirement": "几何字段和原动作合同",
+      "status": "DESIGN_AVAILABLE",
+      "evidence": "P0 geo6/8/6、坐标平移、Lref、empty placeholder、mask、显示顺序及不可变映射"
+    },
+    {
+      "requirement": "公开候选编码、PCTSelector、严格模型manifest",
+      "status": "NEXT_STAGE_WORK",
+      "evidence": "当前仅packed fixture，无公共候选/订单接口"
+    },
+    {
+      "requirement": "P2-B实际实施/外部修改范围",
+      "status": "NOT_AUTHORIZED_BY_QA",
+      "evidence": "本轮仅审查；先PCT内实现，公共集成如需修改单列范围"
+    },
+    {
+      "requirement": "P1C-Q01恢复会话统计",
+      "status": "OPEN_NON_BLOCKING",
+      "evidence": "与几何编码无依赖；P3成本解释前澄清"
+    }
+  ],
+  "required": [
+    "B23原候选叶索引唯一映射与精确动作/摘要一致",
+    "B24 padding零概率、非法输出/节点超限拒绝、B1/B>1",
+    "B25严格模型身份、随机工程权重标签及同权重同输入可重复"
+  ],
+  "forbidden": [
+    "自动P2-C/P3",
+    "正式22任务矩阵",
+    "训练",
+    "远程请求",
+    "未经授权改公共准入/旧Schema",
+    "重签旧模型/运行身份"
+  ],
+  "remote_requests_authorized": 0
+}

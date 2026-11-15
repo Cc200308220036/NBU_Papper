@@ -1,0 +1,78 @@
+{
+  "version": "pct_p2b_identity_v1",
+  "head": "52510de38d5d61f8c0165af6d558a2932cb8fa55",
+  "source_sha256": {
+    "PCT/src/pct_baseline/geo_encoding.py": "fbe911134a0aa6b556c2dee35da72e5df4e616409b6ebcdf2b286a9935baa97f",
+    "PCT/src/pct_baseline/geo_model.py": "aa800d2747351c1b669c32fa4a1f04d481860e0bb217a1d44f2d43d42a26540e",
+    "PCT/src/pct_baseline/geo_selector.py": "39e734a31e245bb75d4fdd87783c9320cc2f37332d875ae2c430fd9b7634fe2d",
+    "PCT/tests/test_p2b_geometry.py": "905ec78c7ef67443152e0e3cc78648052b7d2c658c6f33ca4b1931472d26f778",
+    "PCT/tests/p2b_fixtures.py": "5f3056c19050089ba702d8d79aa7fb84945b8288ae3f632f12dbaae9c3ae1675",
+    "PCT/tests/p2b_repeat_worker.py": "fcfd78140d7dc26b6eb8e73bbc5a450dd7d31836922ee501ace20ae3f167cf7f",
+    "PCT/scripts/verify_p2b.py": "2e59d18d118a82802f0f95a411b54dff54c77cdd06940ffb0691384d9018d157",
+    "PCT/scripts/seal_p2b.py": "0b4abbd87a8c10e8d2e1caaad498fa329272ce6f219c2b3427f9b395235e02ca"
+  },
+  "pre_execution_identity": "attempt_06/pre_execution_identity.json",
+  "public_and_previous_code_sha256": {
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py": "3a66b35ada3c51dedada53e2e649eaf5e3cc17ac9f8acad5e096beca44249f62",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py": "4a8f4261e2cd3f423c2c344d6fbca89abcceb078799a0977e55e8968f93c0c8d",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py": "59e36db86ebc72e453b0b00463c34d206e626aa4ffcfedaafb3794c1ed9de7e0",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/execution.py": "23b671315adea0dc40735534d46a21a252a46d910409be5ed7cfc17f47164c8e",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py": "4953a92c9ceb54704097d8791a3ce4db9a5e1a44ae1a382e7d77535baa9b18e0",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py": "cf8da30e65cf87c10f8d7b6dd4f46f8c18f86db3a1c1c859a2efce868105dbbd",
+    "PCT/src/pct_baseline/execution.py": "756fbc5eae7b515bd5c2b63aaebb1f76daa479cff5fcd14992d5441953d75811",
+    "PCT/src/pct_baseline/recovery.py": "f57c5e708dc454083a838b4a8f3c38bfc34556365b33c0d6b9928b4de75f6073",
+    "PCT/src/pct_baseline/protocol.py": "50eb063d34e5df9c2f1883b833a1a2cb035b84a76322b81244f50a76e91c512a",
+    "PCT/src/pct_baseline/network_safety.py": "6c691d664c67eeada7f48fffe901d22527f5bcc5aad50bb4dbf3f89deaee6088"
+  },
+  "p2a_frozen_source_files_unchanged": 15,
+  "model_version": "pct_adapted_geo_v1",
+  "model_manifest_sha256": "9e5cb87a661cfab9d3277d28fa0271e037e552bd068efa209071a81dcaa38ba1",
+  "weights_sha256": "b06b0f6c313744096afa89ea744c42408452a3746eb332d9343cf39981e57e3a",
+  "weight_origin": "PCT/outputs/PCT_P2_A_20261114_01/weight_tensors.json",
+  "weight_origin_label": "RANDOM_INITIALIZATION_ENGINEERING_ONLY",
+  "feature_contract": {
+    "version": "pct_adapted_geo_v1",
+    "placed": 40,
+    "leaves": 16,
+    "current": 1,
+    "dims": [
+      6,
+      8,
+      6
+    ],
+    "coordinates": "container_bottom_center_mm_to_corner_mm",
+    "Lref": "max(length_mm,width_mm,max_height_mm)",
+    "placed_fields": "x0,y0,z0,x1,y1,z1",
+    "leaf_fields": "x0,y0,z0,x1,y1,H,0,0",
+    "current_fields": "1,0,0,sorted(l,w,h)",
+    "numeric": "float64 transform then divide once then float32; normFactor=1",
+    "mask": "slot8 true=valid, unscaled; empty placed slot0 valid zero",
+    "order": "public display_mapping insertion order; no reorder/dedup/filter",
+    "tie": "smallest valid index, exact probability tie"
+  },
+  "architecture": {
+    "embedding_size": 64,
+    "hidden_size": 128,
+    "gat_layer_num": 1,
+    "internal_node_holder": 40,
+    "internal_node_length": 6,
+    "leaf_node_holder": 16,
+    "heads": 1,
+    "token_hidden": 32,
+    "graph_ff_hidden": 128,
+    "tanh_clipping": 10
+  },
+  "runtime": {
+    "dtype": "torch.float32",
+    "device": "cpu",
+    "normFactor": 1,
+    "eval_mode": true,
+    "deterministic_selection": true,
+    "deterministic_algorithms": true,
+    "threads": 1,
+    "torch_version": "2.15.0",
+    "atol": 1e-06,
+    "rtol": 1e-05
+  },
+  "environment": "environment.json"
+}

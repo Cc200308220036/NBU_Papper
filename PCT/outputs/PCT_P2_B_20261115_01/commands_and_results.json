@@ -1,0 +1,48 @@
+{
+  "version": "pct_p2b_commands_v1",
+  "operations": [
+    {
+      "attempt": "attempt_01",
+      "command": "PYTHONPATH=PCT/src:PCT/tests:semantic_pallet_planner/src PYTHONDONTWRITEBYTECODE=1 PCT_P2B_EVIDENCE_DIR=PCT/outputs/PCT_P2_B_20261115_01/attempt_01 <NBU_PY> -m unittest -v test_p2b_geometry",
+      "exit_code": 1,
+      "log": "attempt_01.log"
+    },
+    {
+      "attempt": "attempt_02",
+      "receipt": "attempt_02/commands_and_results.json",
+      "exit_code": 0
+    },
+    {
+      "attempt": "attempt_03",
+      "receipt": "attempt_03/commands_and_results.json",
+      "exit_code": 1
+    },
+    {
+      "attempt": "attempt_04",
+      "receipt": "attempt_04/commands_and_results.json",
+      "exit_code": 0
+    },
+    {
+      "attempt": "attempt_05",
+      "receipt": "attempt_05/commands_and_results.json",
+      "exit_code": 0
+    },
+    {
+      "attempt": "attempt_06",
+      "receipt": "attempt_06/commands_and_results.json",
+      "exit_code": 0
+    }
+  ],
+  "fresh_processes": [
+    "attempt_05/fresh_process_commands.json",
+    "attempt_06/fresh_process_commands.json"
+  ],
+  "final_status": "6 methods and 2 fresh single-step processes PASS; 65 expected rejections",
+  "failures_preserved": {
+    "attempt_01": "test helper omitted expected FileExistsError",
+    "attempt_03": "test incorrectly expected noncanonical Snapshot key order"
+  },
+  "later_successful_runs": "attempt_02 four methods; attempt_04 six; attempt_05 six+2 fresh; attempt_06 stores complete empty input/singleton reuse and runtime mutation negatives",
+  "no_models_remote": true,
+  "no_dependency_changes": true
+}

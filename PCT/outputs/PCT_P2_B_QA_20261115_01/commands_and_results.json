@@ -1,0 +1,29 @@
+{
+  "commands": [
+    {
+      "command": "python3 PCT/outputs/PCT_P2_B_QA_20261115_01/check_saved.py",
+      "exit_code": 0,
+      "result": "346交付/18源码公共/15执行前源码匹配；13几何记录；25权重张量；65拒绝归档；两新进程输出一致"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "script_review": {
+    "verify_p2b.py/test_p2b_geometry.py/p2b_repeat_worker.py": "完整阅读；会创建模型并运行推理/写产物，本轮不执行；前置build_config会加载冻结内核身份，不能仅凭标题当作无副作用。",
+    "geo_encoding/geo_model/geo_selector": "完整静态阅读，包括模型manifest、运行身份、绑定及保存复用",
+    "QA script": "只读JSON/摘要/struct float32/算术；无NumPy/Torch/planner导入"
+  },
+  "not_run": [
+    "网络前向",
+    "开发单测重跑",
+    "订单",
+    "候选生成",
+    "LP",
+    "安装",
+    "训练",
+    "模型远程请求"
+  ],
+  "credential_reads": 0
+}

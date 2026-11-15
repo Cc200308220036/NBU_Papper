@@ -1,0 +1,59 @@
+{
+  "version": "pct_p2b_acceptance_v1",
+  "status": "DEVELOPMENT_PASS_PENDING_INDEPENDENT_QA",
+  "matrix": [
+    {
+      "id": "B23",
+      "status": "PASS",
+      "scope": "geo6/8/6, float64 corner/Lref then float32, exact original candidate mapping, no sort/dedup/filter",
+      "evidence": [
+        "attempt_06/tests/coordinates_False.json",
+        "attempt_06/tests/coordinates_True.json",
+        "attempt_06/tests/identical_symmetric_leaves.json",
+        "attempt_06/tests/empty_pallet.json",
+        "attempt_06/tests/capacity40_and_display_order.json"
+      ]
+    },
+    {
+      "id": "B24",
+      "status": "PASS",
+      "scope": "B1/B3, valid counts1/3/16, placed40 accepted and41 rejected,17 leaves rejected, padding exactly0, empty/singleton no inference, illegal outputs rejected",
+      "evidence": [
+        "attempt_06/tests/batch.json",
+        "attempt_06/tests/route_0.json",
+        "attempt_06/tests/route_1.json",
+        "attempt_06/tests/route_3.json",
+        "attempt_06/tests/rejections.json"
+      ]
+    },
+    {
+      "id": "B25",
+      "status": "PASS",
+      "scope": "strict pinned model/feature/structure/core/file/parameter identities; repeat/reload and two fresh processes; saved single-step binding reuse without forward",
+      "evidence": [
+        "model_manifest.json",
+        "weight_tensors.json",
+        "attempt_06/tests/repeatability.json",
+        "attempt_06/repeat_0.json",
+        "attempt_06/repeat_1.json",
+        "attempt_06/tests/saved_selection.json",
+        "attempt_06/tests/saved_public_inputs.json",
+        "attempt_06/tests/public_context_builder.json",
+        "attempt_06/tests/rejections.json"
+      ]
+    }
+  ],
+  "final_tests": {
+    "methods": 6,
+    "skips": 0,
+    "expected_rejections": 65,
+    "fresh_single_step_processes": 2
+  },
+  "weights": "RANDOM_INITIALIZATION_ENGINEERING_ONLY",
+  "order_execution": "NOT_RUN_NOT_ADMITTED",
+  "P2C_P3": "NOT_RUN_NOT_AUTHORIZED",
+  "remote_requests_authorized": 0,
+  "remote_requests": 0,
+  "training_updates": 0,
+  "independent_QA": "PENDING"
+}

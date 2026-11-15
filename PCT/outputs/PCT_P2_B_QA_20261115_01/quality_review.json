@@ -1,0 +1,64 @@
+{
+  "version": "pct_p2b_qa_v1",
+  "date": "2026-11-15",
+  "review_scope": {
+    "unit": "P2-B B23-B25",
+    "kind": "STAGE",
+    "package": "PCT/outputs/PCT_P2_B_20261115_01",
+    "plan": "PCT-plan-v1 §9.3"
+  },
+  "baseline": {
+    "branch": "dev/PCT",
+    "head": "52510de38d5d61f8c0165af6d558a2932cb8fa55",
+    "initial_staged": "EMPTY",
+    "initial_worktree": "PCT README/docs索引修改及P2-B新代码/测试/报告/包未跟踪"
+  },
+  "acceptance_matrix": [
+    {
+      "id": "B23",
+      "status": "PASS",
+      "claim": "公开几何6/8/6与原动作唯一绑定",
+      "implementation": "geo_encoding.encode_geometry/resolve/verify_candidates，显示顺序、不重排/去重/过滤、float64角点平移后单次归一化转float32",
+      "archive": "attempt_06/tests坐标/对称/空托盘/容量40、public_context_builder与保存单步记录",
+      "qa": "13份编码独立标准库重算：坐标、packed、mask、feature/mapping摘要及原candidate完整摘要/pose/size一致",
+      "boundary": "人工几何fixture非全部物理可行；公共池来自已有保存材料，无新候选生成或订单"
+    },
+    {
+      "id": "B24",
+      "status": "PASS",
+      "claim": "B1/B3、40/16上限、空池/singleton及非法输入输出拒绝",
+      "implementation": "strict packing、safe核心和checked_outputs，空池返回None，单候选不infer，多候选独立推理",
+      "archive": "6测试日志、65拒绝记录、batch/route/容量边界完整JSON",
+      "qa": "保存输出概率范围/和/padding零、批量与单样本容差、路由及索引映射核对；拒绝边界源码与归档对照",
+      "boundary": "未运行新的网络/单测；不把65拒绝当65独立研究样本"
+    },
+    {
+      "id": "B25",
+      "status": "PASS",
+      "claim": "pin manifest+参数身份严格加载、重复/重载与新进程一致，已存选择可无推理复用",
+      "implementation": "geo_model strict_read/load_model/check_identity；geo_selector保存绑定及reuse_saved",
+      "archive": "model_manifest、完整权重、执行前源码快照、repeat0/1、saved_selection、运行身份负例",
+      "qa": "25参数float32字节摘要；模型核心/文件身份；两个PID的完整编码/输出/原动作逐值一致；保存单步封印/context/模型/选择绑定一致",
+      "boundary": "随机工程权重；TRAINED/EXTERNAL仅测试声明，不是训练认证；无模型订单准入或整单模型恢复"
+    }
+  ],
+  "new_blocking_findings": [],
+  "carryforward_findings": [
+    "P1C-Q01恢复会话统计OPEN，P3前澄清"
+  ],
+  "engineering_status": "PASS_P2_B_SINGLE_STEP_GEOMETRY_ONLY",
+  "evidence_readiness": "SUFFICIENT_FOR_B23_B25",
+  "research_result": "NOT_RUN_RANDOM_ENGINEERING_WEIGHTS",
+  "next_stage_admission": "READY",
+  "authorization_scope": {
+    "current": "QA only",
+    "network_forward": 0,
+    "order_candidate_LP": 0,
+    "install": false,
+    "training": 0,
+    "remote_requests": 0,
+    "git_commit_push": false,
+    "P2_C": "not authorized by QA"
+  },
+  "stop": true
+}

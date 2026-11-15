@@ -49,3 +49,9 @@ JM_SCENARIO_PROTOCOLS={v:'packaging_scenario_features' for v in
 JM_SCENARIO_SCHEMAS={JM_SCENARIO_INPUT:'jm_scenario_input_v1',
                      JM_SCENARIO_SIGNATURE:'jm_scenario_signature_v1',
                      JM_ACTION_CONTRAST:'jm_action_contrast_v1'}
+
+# JM2-A2 archive-only nonempty projection; no retrieval/execution permit.
+JM_T_PROJECTION='jev_jm_t_projection_v1'
+JM_T_QUERY='jev_jm_t_query_v1'
+JM_T_PROTOCOLS={v:'packaging_t_projection' for v in (JM_T_PROJECTION,JM_T_QUERY)}
+JM_T_SCHEMAS={JM_T_PROJECTION:'jm_t_projection_v1',JM_T_QUERY:'jm_t_query_v1'}

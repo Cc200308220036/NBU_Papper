@@ -1,0 +1,24 @@
+{
+  "attempts": [
+    {
+      "result": "PASS_5_CARDS_9_PAIRS",
+      "step": "initial saved builder"
+    },
+    {
+      "cause": "substring item_ matched metric key placed_item_ratio; no original identifier was exposed",
+      "fix": "inspect string leaf values for original item_ identifiers, separately reject candidate_id keys",
+      "result": "FAIL_ASSERTION_FALSE_POSITIVE",
+      "step": "added placed_item_ratio metric; public identifier leakage check"
+    },
+    {
+      "evidence": [
+        "saved_checks.log",
+        "unit_tests.log",
+        "check_attempts.json"
+      ],
+      "result": "PASS",
+      "step": "corrected guard and final validation"
+    }
+  ],
+  "version": "jm2_a2_development_attempts_v1"
+}

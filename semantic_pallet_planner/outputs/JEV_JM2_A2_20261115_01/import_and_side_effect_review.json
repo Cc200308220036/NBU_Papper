@@ -1,0 +1,184 @@
+{
+  "assessment": "stdlib + audited A1 helpers; no dispatch at module top level; schema reads only on validation",
+  "dependency_install": false,
+  "extra_import_review": "contracts: jsonschema + stdlib; legacy experience: contracts/ledger + stdlib; ledger has function-only writes, no import-time dispatch",
+  "files": [
+    {
+      "file": "__init__.py",
+      "imports": []
+    },
+    {
+      "file": "packaging_t_projection.py",
+      "imports": [
+        "from __future__ import annotations",
+        "import copy",
+        "import json",
+        "from pathlib import Path",
+        "from . import packaging_scenario_features as scenario",
+        "from .packaging_jev_sampling import _validate, digest",
+        "from .packaging_versions import JM_T_PROJECTION, JM_T_QUERY, JM_T_SCHEMAS"
+      ]
+    },
+    {
+      "file": "packaging_scenario_features.py",
+      "imports": [
+        "from __future__ import annotations",
+        "import copy",
+        "from decimal import Decimal",
+        "from functools import lru_cache",
+        "import json",
+        "import math",
+        "from pathlib import Path",
+        "from .packaging_versions import JM_SCENARIO_INPUT, JM_SCENARIO_SIGNATURE, JM_ACTION_CONTRAST, JM_SCENARIO_SCHEMAS",
+        "from .packaging_jev_sampling import _validate, digest, SamplingError"
+      ]
+    },
+    {
+      "file": "packaging_jev_sampling.py",
+      "imports": [
+        "from __future__ import annotations",
+        "import argparse",
+        "import base64",
+        "import copy",
+        "from decimal import Decimal",
+        "from fractions import Fraction",
+        "import hashlib",
+        "import json",
+        "import math",
+        "from pathlib import Path",
+        "import re",
+        "from .packaging_versions import JM_SAMPLING_VERSION"
+      ]
+    },
+    {
+      "file": "packaging_versions.py",
+      "imports": []
+    }
+  ],
+  "final_static_imports": [
+    {
+      "file": {
+        "bytes": 98,
+        "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/__init__.py",
+        "sha256": "c61345cadfb95bae914b2aad9d71509147d2b1c357bf30ac27de82550e8cb6be"
+      },
+      "imports": []
+    },
+    {
+      "file": {
+        "bytes": 6633,
+        "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_t_projection.py",
+        "sha256": "09a882563cc373fde68991aa3d643cb4704d4dd9255535d75048630412a18c1f"
+      },
+      "imports": [
+        "from __future__ import annotations",
+        "import copy",
+        "import json",
+        "from pathlib import Path",
+        "from . import packaging_scenario_features as scenario",
+        "from .packaging_jev_sampling import _validate, digest",
+        "from .packaging_versions import JM_T_PROJECTION, JM_T_QUERY, JM_T_SCHEMAS"
+      ]
+    },
+    {
+      "file": {
+        "bytes": 23316,
+        "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_scenario_features.py",
+        "sha256": "7980f8e3edf95a5f3589ec65266d43d198c1bb2c37f285d5fa858f1dd1cd2d86"
+      },
+      "imports": [
+        "from __future__ import annotations",
+        "import copy",
+        "from decimal import Decimal",
+        "from functools import lru_cache",
+        "import json",
+        "import math",
+        "from pathlib import Path",
+        "from .packaging_versions import JM_SCENARIO_INPUT, JM_SCENARIO_SIGNATURE, JM_ACTION_CONTRAST, JM_SCENARIO_SCHEMAS",
+        "from .packaging_jev_sampling import _validate, digest, SamplingError"
+      ]
+    },
+    {
+      "file": {
+        "bytes": 22308,
+        "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_sampling.py",
+        "sha256": "86594f810e4210f32c547e0d8e60ebfdff1ba16c6130e2f99137eb81bb9524f2"
+      },
+      "imports": [
+        "from __future__ import annotations",
+        "import argparse",
+        "import base64",
+        "import copy",
+        "from decimal import Decimal",
+        "from fractions import Fraction",
+        "import hashlib",
+        "import json",
+        "import math",
+        "from pathlib import Path",
+        "import re",
+        "from .packaging_versions import JM_SAMPLING_VERSION"
+      ]
+    },
+    {
+      "file": {
+        "bytes": 2932,
+        "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py",
+        "sha256": "15ffbf7778516e6dcaa354fac1eb1f3d07223919590eb067d50151c0f53aa847"
+      },
+      "imports": []
+    },
+    {
+      "file": {
+        "bytes": 6514,
+        "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py",
+        "sha256": "12b5053109ba091bb3b734cfe71837fc4044014ae42e7b0ba0fca16166e67984"
+      },
+      "imports": [
+        "from __future__ import annotations",
+        "from dataclasses import dataclass",
+        "from functools import lru_cache",
+        "import hashlib",
+        "from importlib.resources import files",
+        "import json",
+        "from jsonschema import Draft202012Validator"
+      ]
+    },
+    {
+      "file": {
+        "bytes": 15856,
+        "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_experience.py",
+        "sha256": "12a8e1a5a4a8a193507299ebc2dfe7ffff0279b914d259d9a0fb8905c1ca1d14"
+      },
+      "imports": [
+        "from __future__ import annotations",
+        "import copy",
+        "import hashlib",
+        "import math",
+        "from datetime import datetime, timezone",
+        "from pathlib import Path",
+        "from .contracts import Snapshot, JevSelectError, canonical, digest, validate_schema",
+        "from .ledger import read"
+      ]
+    },
+    {
+      "file": {
+        "bytes": 6081,
+        "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/ledger.py",
+        "sha256": "f3c4d4aee7d126c594444953a7a9c05ef1ba6bb0f8f81c942b497eeeecf26404"
+      },
+      "imports": [
+        "from __future__ import annotations",
+        "from contextlib import contextmanager",
+        "import fcntl",
+        "import json",
+        "import os",
+        "from pathlib import Path",
+        "import tempfile",
+        "import time",
+        "from .contracts import JevSelectError, canonical, digest"
+      ]
+    }
+  ],
+  "review": "BEFORE_FIRST_IMPORT",
+  "runtime_guard": "reuse A1 test meta-path and audit hooks before importing new module"
+}

@@ -1,0 +1,234 @@
+{
+  "type": "object",
+  "properties": {
+    "A": {
+      "type": "object",
+      "properties": {
+        "placed_items": {
+          "type": "number"
+        },
+        "placed_volume_ratio": {
+          "type": "number"
+        },
+        "placed_mass_kg": {
+          "type": "number"
+        },
+        "actual_height_mm": {
+          "type": "number"
+        },
+        "envelope_utilization": {
+          "type": "number"
+        },
+        "elapsed_s": {
+          "type": "number"
+        },
+        "requests": {
+          "type": "number"
+        },
+        "input_tokens": {
+          "type": "number"
+        },
+        "output_tokens": {
+          "type": "number"
+        },
+        "model_cost_usd": {
+          "const": "UNKNOWN"
+        },
+        "placed_volume_mm3": {
+          "type": "number"
+        },
+        "placed_item_ratio": {
+          "type": "number"
+        },
+        "placed_mass_ratio": {
+          "type": "number"
+        },
+        "fixed_container_utilization": {
+          "type": "number"
+        },
+        "stable_complete": {
+          "type": "boolean"
+        },
+        "category": {
+          "enum": [
+            "COMPLETE",
+            "EMPTY_POOL",
+            "PREDICTED_STATIC_INSTABILITY"
+          ]
+        }
+      },
+      "required": [
+        "placed_items",
+        "placed_volume_ratio",
+        "placed_mass_kg",
+        "actual_height_mm",
+        "envelope_utilization",
+        "elapsed_s",
+        "requests",
+        "input_tokens",
+        "output_tokens",
+        "model_cost_usd",
+        "placed_volume_mm3",
+        "placed_item_ratio",
+        "placed_mass_ratio",
+        "fixed_container_utilization",
+        "stable_complete",
+        "category"
+      ],
+      "additionalProperties": false
+    },
+    "B": {
+      "type": "object",
+      "properties": {
+        "placed_items": {
+          "type": "number"
+        },
+        "placed_volume_ratio": {
+          "type": "number"
+        },
+        "placed_mass_kg": {
+          "type": "number"
+        },
+        "actual_height_mm": {
+          "type": "number"
+        },
+        "envelope_utilization": {
+          "type": "number"
+        },
+        "elapsed_s": {
+          "type": "number"
+        },
+        "requests": {
+          "type": "number"
+        },
+        "input_tokens": {
+          "type": "number"
+        },
+        "output_tokens": {
+          "type": "number"
+        },
+        "model_cost_usd": {
+          "const": "UNKNOWN"
+        },
+        "placed_volume_mm3": {
+          "type": "number"
+        },
+        "placed_item_ratio": {
+          "type": "number"
+        },
+        "placed_mass_ratio": {
+          "type": "number"
+        },
+        "fixed_container_utilization": {
+          "type": "number"
+        },
+        "stable_complete": {
+          "type": "boolean"
+        },
+        "category": {
+          "enum": [
+            "COMPLETE",
+            "EMPTY_POOL",
+            "PREDICTED_STATIC_INSTABILITY"
+          ]
+        }
+      },
+      "required": [
+        "placed_items",
+        "placed_volume_ratio",
+        "placed_mass_kg",
+        "actual_height_mm",
+        "envelope_utilization",
+        "elapsed_s",
+        "requests",
+        "input_tokens",
+        "output_tokens",
+        "model_cost_usd",
+        "placed_volume_mm3",
+        "placed_item_ratio",
+        "placed_mass_ratio",
+        "fixed_container_utilization",
+        "stable_complete",
+        "category"
+      ],
+      "additionalProperties": false
+    },
+    "label": {
+      "enum": [
+        "improved",
+        "degraded",
+        "neutral",
+        "trade_off",
+        "invalid",
+        "not_run"
+      ]
+    },
+    "delta_B_minus_A": {
+      "type": "object",
+      "properties": {
+        "placed_items": {
+          "type": "number"
+        },
+        "placed_volume_ratio": {
+          "type": "number"
+        },
+        "placed_mass_kg": {
+          "type": "number"
+        },
+        "actual_height_mm": {
+          "type": "number"
+        },
+        "envelope_utilization": {
+          "type": "number"
+        },
+        "elapsed_s": {
+          "type": "number"
+        },
+        "requests": {
+          "type": "number"
+        },
+        "input_tokens": {
+          "type": "number"
+        },
+        "output_tokens": {
+          "type": "number"
+        },
+        "placed_volume_mm3": {
+          "type": "number"
+        },
+        "placed_item_ratio": {
+          "type": "number"
+        },
+        "placed_mass_ratio": {
+          "type": "number"
+        },
+        "fixed_container_utilization": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "placed_items",
+        "placed_volume_ratio",
+        "placed_mass_kg",
+        "actual_height_mm",
+        "envelope_utilization",
+        "elapsed_s",
+        "requests",
+        "input_tokens",
+        "output_tokens",
+        "placed_volume_mm3",
+        "placed_item_ratio",
+        "placed_mass_ratio",
+        "fixed_container_utilization"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "A",
+    "B",
+    "label",
+    "delta_B_minus_A"
+  ],
+  "additionalProperties": false
+}

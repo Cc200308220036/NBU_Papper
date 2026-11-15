@@ -64,3 +64,7 @@ JM_E_PROMPT='jev_jm_e_prompt_contract_v1'
 JM_E_RULES='jev_jm_e_prerequisite_rules_v1'
 JM_E_PROTOCOLS={v:'packaging_experience_contract' for v in (JM_E_FACT_PACK,JM_E_GENERATION,JM_E_GATE,JM_E_PROMPT,JM_E_RULES)}
 JM_E_SCHEMAS={JM_E_FACT_PACK:'jm_e_fact_pack_v1',JM_E_GENERATION:'jm_e_generation_v1',JM_E_GATE:'jm_e_gate_v1'}
+
+# Bug-fix validation revision; existing v1 wire schemas remain unchanged.
+JM_E_VALIDATION_REVISION='jev_jm_e_validation_v2'
+JM_E_PROTOCOLS[JM_E_VALIDATION_REVISION]='packaging_experience_contract'

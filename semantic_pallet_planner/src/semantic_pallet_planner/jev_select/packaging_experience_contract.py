@@ -14,7 +14,7 @@ from functools import lru_cache
 from .packaging_jev_sampling import _validate,digest,SamplingError
 from . import packaging_t_projection as projection
 from .packaging_versions import (JM_E_FACT_PACK,JM_E_GENERATION,JM_E_GATE,
-                                JM_E_PROMPT,JM_E_RULES,JM_E_SCHEMAS)
+                                JM_E_PROMPT,JM_E_RULES,JM_E_SCHEMAS,JM_E_VALIDATION_REVISION)
 
 class ContractError(ValueError):pass
 
@@ -22,7 +22,7 @@ def require(ok,code):
     if not ok:raise ContractError(code)
 
 def schema_validate(value):
-    require(type(value) is dict and value.get('version') in JM_E_SCHEMAS,'UNKNOWN_E_CONTRACT')
+    require(type(value) is dict and type(value.get('version')) is str and value['version'] in JM_E_SCHEMAS,'UNKNOWN_E_CONTRACT')
     schema=json.loads((Path(__file__).with_name('schemas')/(JM_E_SCHEMAS[value['version']]+'.schema.json')).read_text())
     try:digest(value);_validate(value,schema)
     except (SamplingError,ValueError,TypeError) as e:raise ContractError('E_CONTRACT_SCHEMA') from e
@@ -48,6 +48,7 @@ def _parsed_json(raw):
 
 def checked_reference(repo,ref):
     require(type(ref) is dict and set(ref)=={'path','sha256','pointer'},'MISSING_SOURCE')
+    require(all(type(ref[k]) is str for k in ('path','sha256','pointer')),'INVALID_REFERENCE_FIELDS')
     root=Path(repo).resolve();relative=Path(ref['path'])
     require(not relative.is_absolute() and relative.as_posix().startswith('semantic_pallet_planner/outputs/') and relative.suffix=='.json','SOURCE_OUTSIDE_SAVED_JSON')
     require(not any(word in relative.as_posix().lower() for word in ('credentials','api_key','api key','.aws','.env')),'CREDENTIAL_SOURCE_FORBIDDEN')
@@ -73,6 +74,66 @@ def build_fact_pack(repo,*,case_ref,review_ref,review_source_ref,denominator_ref
     validate_pack(pack,repo)
     return pack
 
+def validation_contract():
+    return dict(version=JM_E_VALIDATION_REVISION,wire_compatibility='unchanged v1 schemas; correct historical archives and fixture accepted',
+                semantics='strict review/source shapes and exact case/source binding; all listed distinctions must change',
+                real_admission='CLOSED',historical_execution='never re-sign or resume old frozen execution with this revision')
+
+def _review_shapes(review,source):
+    require(type(review) is dict,'INVALID_REVIEW_TYPE')
+    require(type(source) is dict,'INVALID_REVIEW_SOURCE_TYPE')
+    require(review.get('disposition') in ('ARCHIVE_ONLY','APPROVED','REJECTED','SYNTHETIC_CONTRACT_TEST_ONLY') and
+            type(review.get('unknown_critical_conditions')) is list and
+            all(type(x) is str and bool(x) for x in review['unknown_critical_conditions']) and
+            review.get('trusted_content_approval') in ('PENDING','APPROVED','REJECTED'),'INVALID_REVIEW_FIELDS')
+    require(type(source.get('actual_author')) is str and bool(source['actual_author']) and
+            source.get('external_review_status') in ('PENDING','APPROVED','REJECTED','SYNTHETIC_NOT_REVIEWED') and
+            all(k in source and (source[k] is None or type(source[k]) is str and bool(source[k]))
+                for k in ('human_signature','independent_reviewer')),'INVALID_REVIEW_SOURCE_FIELDS')
+
+def _case_reference(pack):
+    # Bind identity to the actual case-bearing source, not equal-looking text.
+    first=pack['fact_claims'][0];suffix=first['case_pointer'];r=first['evidence'][0]
+    require(r['pointer'].endswith(suffix),'CASE_SOURCE_BINDING_MISMATCH')
+    base=dict(r,pointer=r['pointer'][:-len(suffix)])
+    for fact in pack['fact_claims']:
+        require(fact['evidence'][0]==dict(base,pointer=base['pointer']+fact['case_pointer']),
+                'CASE_SOURCE_BINDING_MISMATCH')
+    return base
+
+def _bind_review(pack,repo,review,source):
+    _review_shapes(review,source)
+    case_ref=_case_reference(pack)
+    require(digest(checked_reference(repo,case_ref))==digest(pack['case']),'REVIEW_CASE_MISMATCH')
+    if pack['origin']=='SYNTHETIC_FIXTURE':
+        document=checked_reference(repo,dict(case_ref,pointer=''))
+        require(type(document) is dict and document.get('origin')=='SYNTHETIC_FIXTURE_NOT_RESEARCH_EVIDENCE',
+                'FIXTURE_ORIGIN_NOT_BOUND_TO_SOURCE')
+        # Existing synthetic fixture binds its case/review/source by named sections
+        # of the same saved synthetic document, without inventing approval fields.
+        require(case_ref['pointer']=='/case' and
+                pack['review_ref']==dict(case_ref,pointer='/review') and
+                pack['review_source_ref']==dict(case_ref,pointer='/review_source'),
+                'FIXTURE_REVIEW_BINDING_MISMATCH')
+        require(review['disposition']=='SYNTHETIC_CONTRACT_TEST_ONLY' and
+                review['trusted_content_approval']=='PENDING' and
+                source['external_review_status']=='SYNTHETIC_NOT_REVIEWED' and
+                source['human_signature'] is None and source['independent_reviewer'] is None,
+                'INVALID_FIXTURE_REVIEW_FIELDS')
+    else:
+        require(type(review.get('card_ref')) is dict and
+                type(review.get('content_assessment_source')) is dict and
+                type(review.get('card_index')) is int and review['card_index']>=0 and
+                type(review.get('point_id')) is str and bool(review['point_id']),
+                'INVALID_REVIEW_BINDING_FIELDS')
+        require(review['card_ref']==case_ref and case_ref['pointer']=='/cards/'+str(review['card_index']),
+                'REVIEW_CASE_MISMATCH')
+        require(digest(checked_reference(repo,review['card_ref']))==digest(pack['case']),
+                'REVIEW_CASE_MISMATCH')
+        require(review['content_assessment_source']==pack['review_source_ref'],'REVIEW_SOURCE_MISMATCH')
+        require(digest(checked_reference(repo,review['content_assessment_source']))==digest(source),
+                'REVIEW_SOURCE_MISMATCH')
+
 def validate_pack(pack,repo):
     schema_validate(pack);require(pack['version']==JM_E_FACT_PACK,'WRONG_PACK_VERSION')
     require(pack['pack_digest']==digest({k:v for k,v in pack.items() if k!='pack_digest'}),'PACK_IDENTITY_MISMATCH')
@@ -90,21 +151,22 @@ def validate_pack(pack,repo):
     counts={k:0 for k in pack['denominators']['labels']}
     for row in pack['case']['observations']:counts[row['label']]+=1
     require(counts==pack['denominators']['labels'] and sum(counts.values())==pack['denominators']['registered_pairs'],'DENOMINATOR_COUNT_MISMATCH')
-    if pack['origin']=='SYNTHETIC_FIXTURE':
-        root_ref=dict(facts[0]['evidence'][0],pointer='')
-        source_document=checked_reference(repo,root_ref)
-        require(source_document.get('origin')=='SYNTHETIC_FIXTURE_NOT_RESEARCH_EVIDENCE','FIXTURE_ORIGIN_NOT_BOUND_TO_SOURCE')
     review=checked_reference(repo,pack['review_ref']);source=checked_reference(repo,pack['review_source_ref'])
+    _bind_review(pack,repo,review,source)
     return review,source
 
 def prerequisite_gate(pack,repo):
     reasons=[];pd=None
     try:
-        if isinstance(pack,dict):
-            if any(k not in pack for k in ('review_ref','review_source_ref','denominator_ref')):reasons.append('MISSING_SOURCE')
-            for row in pack.get('case',{}).get('observations',[]):
-                for r in ('A','B'):
-                    if any(k not in row.get(r,{}) for k in ('elapsed_s','requests','input_tokens','output_tokens','model_cost_usd')):reasons.append('MISSING_COST')
+        require(type(pack) is dict,'INVALID_PACK_TYPE')
+        if any(k not in pack for k in ('review_ref','review_source_ref','denominator_ref')):reasons.append('MISSING_SOURCE')
+        case=pack.get('case');require(type(case) is dict,'INVALID_CASE_TYPE')
+        rows=case.get('observations');require(type(rows) is list,'INVALID_OBSERVATIONS_TYPE')
+        for row in rows:
+            require(type(row) is dict,'INVALID_OBSERVATION_TYPE')
+            for r in ('A','B'):
+                branch=row.get(r);require(type(branch) is dict,'INVALID_OUTCOME_TYPE')
+                if any(k not in branch for k in ('elapsed_s','requests','input_tokens','output_tokens','model_cost_usd')):reasons.append('MISSING_COST')
         review,source=validate_pack(pack,repo);pd=pack['pack_digest']
         if review.get('disposition')=='ARCHIVE_ONLY':reasons.append('ARCHIVE_ONLY')
         if review.get('unknown_critical_conditions'):reasons.append('CRITICAL_CONDITION_UNKNOWN')
@@ -162,7 +224,8 @@ def review_expression(candidate,pack,repo):
         require(p['observed_facts']==[f['fact_id'] for f in pack['fact_claims']],'RESULTS_OR_COSTS_OMITTED')
         require(p['decision_contrast']['intervention']==case['intervention'],'INTERVENTION_CHANGED')
         changed=[k for k,v in case['attribute_directions'].items() if v!='EQUAL']
-        require(bool(set(p['decision_contrast']['distinguishing_attributes']) & set(changed)),'NO_OBSERVABLE_ACTION_DISTINCTION')
+        distinctions=set(p['decision_contrast']['distinguishing_attributes'])
+        require(bool(distinctions) and distinctions<=set(changed),'NO_OBSERVABLE_ACTION_DISTINCTION')
         refs=[]
         for node in [p['advice'],p['mechanism_hypothesis'],p['falsifiable_prediction']]:refs+=node['basis_refs']
         require(set(refs)<=ids,'UNKNOWN_FACT_REFERENCE')

@@ -1,0 +1,43 @@
+{
+  "version": "jm2_b1_limited_admission_v1",
+  "target": "JM2-B1 offline contract and blocked-readiness engineering only",
+  "status": "CONDITIONAL",
+  "matrix": [
+    {
+      "prerequisite": "A3 audit records and provenance",
+      "status": "PASS",
+      "evidence": "original_verifier.log; static_checks.json"
+    },
+    {
+      "prerequisite": "qualified real-card content",
+      "status": "PARTIAL",
+      "evidence": "5 archive-only; approval0",
+      "impact": "No qualified generation input or full B1 closure"
+    },
+    {
+      "prerequisite": "independent generic contract development",
+      "status": "PASS",
+      "evidence": "JM-plan-v2 7.2 B1 is offline; no generation required",
+      "impact": "limited engineering can use explicitly synthetic fixtures and archived cards as rejection cases only"
+    }
+  ],
+  "allowed": [
+    "versioned E fact-package/schema/prompt contracts",
+    "explicit prerequisite gate and INSUFFICIENT_EVIDENCE/PENDING/ARCHIVE_ONLY rejection",
+    "synthetic contract fixtures; actual five cards as negative gate cases",
+    "readiness receipt explicitly NOT_READY for real-card generation; M22-07 PARTIAL/NOT_RUN as applicable"
+  ],
+  "forbidden": [
+    "real calls",
+    "admit the five cards for generation",
+    "fabricate independent reviewer or approval",
+    "full B1 acceptance or B2/C/JM3/JM4 execution",
+    "rewrite old snapshots/identities; fill missing evidence by replay"
+  ],
+  "release_conditions": [
+    "genuine per-card review with observable conditions and justified approve/reject/archive disposition",
+    "qualified card for real-content M22-07 or retain NOT_READY; no requirement all five pass"
+  ],
+  "real_calls_authorized": 0,
+  "stop": true
+}

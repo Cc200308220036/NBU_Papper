@@ -1,0 +1,33 @@
+{
+  "version": "jm2_a3_qa_attempts_v1",
+  "original_verifier": {
+    "status": "PASS",
+    "result": "61 manifests entries;164 references;513 source files",
+    "side_effect_review": "imports review_saved definitions only; main not executed; bytecode disabled"
+  },
+  "independent_checker": {
+    "status": "PASS",
+    "initial_errors": [
+      {
+        "stage": "QA checker only",
+        "error": "AssertionError: compared full candidate objects to reduced A1 pool projection"
+      },
+      {
+        "stage": "QA checker only",
+        "error": "KeyError candidate_id: exact_action has no candidate_id"
+      },
+      {
+        "stage": "QA checker only",
+        "error": "AssertionError: archived exact-action numeric strings vs pool numeric types"
+      }
+    ],
+    "correction": "compare reduced candidate projection; candidate ID from branch; exact Decimal equality for numeric representation, no tolerance; no audited files modified",
+    "result": "5 cards/9 comparisons/18 branches/2824 field refs"
+  },
+  "not_run": [
+    "10 original behavior tests (known local Python incompatibility; no need to repeat old failure)",
+    "review_saved.py main and finalize_delivery.py (write original package)",
+    "model/LP/order/fork/candidate rebuild/prefix replay"
+  ],
+  "historical_failures": "Original A2 QA logs and A3 delivery_attempt_01.log retained unchanged"
+}

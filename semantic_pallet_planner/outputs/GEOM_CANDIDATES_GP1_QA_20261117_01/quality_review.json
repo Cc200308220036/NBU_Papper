@@ -1,0 +1,214 @@
+{
+  "version": "geometry_gp1_independent_quality_review_v1",
+  "date": "2026-11-17",
+  "timezone": "Asia/Shanghai",
+  "stage": "GP1",
+  "plan": {
+    "path": "docs/02_阶段实施方案/几何规划模块/几何候选器PCT与GOPT融合改进方案_20261116.md",
+    "version": "geometry_candidate_upgrade_design_v1"
+  },
+  "authorization": "审查已同步GP1、必要本地构造与保存事实复验、QA记录和整改交接；不执行修复或GP2",
+  "identities": {
+    "developer_entry_and_worktree_delivery_head": "f38e3e53e3abf0067b57a5da7f2a1c867a44c318",
+    "archival_and_qa_entry_head": "5c1891438e58f5252c6a0b76a923693627b1c98d",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "initial_worktree": "CLEAN",
+    "initial_index": "EMPTY",
+    "package_files_excluding_manifest": 33,
+    "external_delivery_files": 7,
+    "current_source_files": 524,
+    "old_source_files_unchanged": 520,
+    "new_source_files": 4,
+    "source_delivery_drift": "NONE_OBSERVED",
+    "protected_and_entry_refs": 41,
+    "shared_navigation": "原validator及独立核验在QA导航更新前完成；交付时字节由同步Git blob核对，不重签原清单。"
+  },
+  "four_fact_layers": {
+    "reported": "开发12方法自验及六构造归档完成",
+    "source": "4空间模块存在，旧520文件/物理/E2/provider/监测未改；异常处理漏Decimal解析类别",
+    "archive": "33包内/7外部及41保护引用一致，日志与错误替身保留",
+    "local": "原validator和12测试均exit0；独立六归档几何PASS；未修改公开入口数值反例FAIL且exit1"
+  },
+  "acceptance_items": [
+    {
+      "item": "容器内且不穿占据物",
+      "status": "PASS",
+      "reported": "PASS_CONSTRUCTED",
+      "source": "精确AABB、free复核和发布前校验",
+      "archive": "六场景索引",
+      "local": "原12测试+独立Fraction端点/分区检查",
+      "limits": "限定小构造"
+    },
+    {
+      "item": "六向slab、去重、包含",
+      "status": "PASS",
+      "reported": "PASS_CONSTRUCTED",
+      "source": "六slab、先去重后有向包含，精确分离",
+      "archive": "overhead等六构造",
+      "local": "原手算测试+独立归档无包含与集合覆盖",
+      "limits": "不声称全局最大EMS完备"
+    },
+    {
+      "item": "表面补充与下方空腔",
+      "status": "PASS",
+      "reported": "PASS_CONSTRUCTED",
+      "source": "事件高度与双轴序，表面不删除EMS",
+      "archive": "平台/台阶/悬空/对角",
+      "local": "原测试及独立归档核对",
+      "limits": "有限角点的对角省略已披露，不作为缺陷"
+    },
+    {
+      "item": "精确数值、不变及确定性",
+      "status": "PASS",
+      "reported": "PASS_CONSTRUCTED",
+      "source": "bytes->Decimal->Fraction，私有不可变几何；源字节与语义摘要分离",
+      "archive": "索引/输入及原日志",
+      "local": "非整数、负零、重复及反序测试，归档语义摘要独立核对",
+      "limits": "后续浮点物理接口NOT_RUN"
+    },
+    {
+      "item": "共享预算及已测超限",
+      "status": "PASS",
+      "reported": "PASS_CONSTRUCTED",
+      "source": "arena计峰值，计数先于操作，公开入口无覆盖参数",
+      "archive": "四类缩限替身明确标记",
+      "local": "原测试真实运行，归档错误原件核对",
+      "limits": "复杂数据充分性UNKNOWN，性能未证明"
+    },
+    {
+      "item": "公共数值错误返回",
+      "status": "FAIL",
+      "reported": "非法/数值输入返回ERROR",
+      "source": "未捕获Decimal解析InvalidOperation",
+      "archive": "原12测试缺此类",
+      "local": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/independent_checks.json#/numeric_error_probe",
+      "issue_id": "QA-GP1-E01",
+      "limits": "单一解析异常类别，不泛化正常几何错误"
+    }
+  ],
+  "acceptance_summary": {
+    "A01": "PARTIAL",
+    "numeric_public_error_contract": "FAIL",
+    "A02": "NOT_RUN",
+    "A03": "NOT_RUN",
+    "A04": "NOT_RUN",
+    "A05": "NOT_RUN",
+    "A06": "NOT_RUN"
+  },
+  "issues": [
+    {
+      "id": "QA-GP1-E01",
+      "severity": "MEDIUM",
+      "blocking": true,
+      "status": "OPEN",
+      "origin": "IMPLEMENTATION_PUBLIC_NUMERIC_FAILURE_CONTRACT",
+      "acceptance_ids": [
+        "A01_ERROR_BOUNDARY",
+        "PLAN_SECTION_6"
+      ],
+      "locations": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/contracts.py",
+          "symbol": "parse_input",
+          "line": 112,
+          "end_line": 117
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/__init__.py",
+          "symbol": "_build_space_index",
+          "line": 37,
+          "end_line": 39
+        }
+      ],
+      "requirement": {
+        "path": "docs/02_阶段实施方案/几何规划模块/几何候选器PCT与GOPT融合改进方案_20261116.md",
+        "line": 180,
+        "text": "非法输入、数值异常、超预算应归为ERROR；公开GP1接口声明完整空间或原子技术ERROR。"
+      },
+      "observed": "Decimal无法解析超出范围指数时抛decimal.InvalidOperation，parse_input与公开包装均未转成GeometryError，未返回结构化结果。",
+      "expected": "正确拒绝输入并返回ERROR、spaces=[]、surface=null及明确技术错误；不要求支持该容器尺寸。",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/independent_checks.json#/numeric_error_probe",
+      "reproduction": {
+        "entry": "build_space_index(raw)",
+        "source": "UNMODIFIED_PRODUCTION_ENTRY",
+        "budget_override": false,
+        "schema_replacement": false,
+        "stubs": false,
+        "python": "3.14.10",
+        "stage": "JSON input parsing before space generation"
+      },
+      "impact": "公开调用方得不到约定错误对象；正常六构造几何结果未被反例推翻。",
+      "not_claimed": [
+        "未证明普通样本受影响",
+        "未证明部分空间被发布",
+        "没有订单失败率或生产部署复现"
+      ],
+      "blocking_reason": "GP2依赖公开空间入口；此失败分类是现行公共合同，先完成局部修复并复核，不无条件推进。",
+      "minimal_remedy": "在合理解析/数值边界归类预期Decimal异常，增加公开入口回归与正常控制；保持旧几何/预算/物理/Schema及原证据。",
+      "validation_boundary": "原12构造与该数值失败类别；不扩大矩阵、不运行候选/物理/LP/订单/模型。"
+    }
+  ],
+  "conclusions": {
+    "engineering_status": {
+      "status": "PARTIAL",
+      "scope": "GP1限定几何和已测预算通过；公共数值错误归类未闭合"
+    },
+    "evidence_readiness": {
+      "status": "PASS",
+      "scope": "支持限定通过与直接反例；不支持生产或订单收益"
+    },
+    "research_result": {
+      "status": "NOT_ESTABLISHED",
+      "candidate_comparison": "NOT_RUN",
+      "whole_order_benefit": "NOT_RUN"
+    },
+    "next_stage_admission": {
+      "status": "NOT_READY",
+      "target": "GP2",
+      "blocking_issue_ids": [
+        "QA-GP1-E01"
+      ],
+      "allowed_next": "GP1_MINIMAL_NUMERIC_ERROR_REPAIR_ONLY"
+    }
+  },
+  "scheme_review": {
+    "blocking_plan_issues_confirmed": [],
+    "finite_corner_rule": "与GP0已明确规则一致，不能要求全局完备角点",
+    "future_compression": "GP2未实现不作为当前新增失败项"
+  },
+  "execution_boundary": {
+    "original_constructed_test_methods": 12,
+    "original_delivery_validator_runs": 1,
+    "independent_archived_scenes": 6,
+    "formal_public_numeric_counterexamples": 1,
+    "exploratory_same_case": "另有一次同例公开入口复现及Decimal解析控制，不合并凑测试数量",
+    "space_index_call_count_within_original_tests": "NOT_COUNTED",
+    "candidate_generation": 0,
+    "physical_admission": 0,
+    "orders": 0,
+    "forks": 0,
+    "LP": 0,
+    "model_calls": 0,
+    "credential_reads": 0,
+    "dependency_installs": 0,
+    "subagents": 0,
+    "git_pull": 0,
+    "git_add": 0,
+    "git_commit": 0,
+    "git_push": 0
+  },
+  "limitations": [
+    "没有证明普通样本、订单、后端运行或真实收益",
+    "未执行一次性collect_evidence覆盖归档",
+    "只验证当前已有Python3.14.10环境的直接反例，不伪称开发端复现",
+    "旧QA-GP0-H01历史缺件沿用，不影响本问题定位"
+  ],
+  "review_independence": "此前参与GP0/GP1任务范围制定，不声称完全盲评",
+  "evidence": [
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/independent_checks.json",
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/command_receipts.json",
+    "docs/03_阶段产出分析/几何规划模块/几何候选器GP1独立质检与数值异常最小整改_20261117_01.md"
+  ],
+  "stopped": true
+}

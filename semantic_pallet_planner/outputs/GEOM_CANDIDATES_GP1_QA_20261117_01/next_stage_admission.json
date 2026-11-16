@@ -1,0 +1,52 @@
+{
+  "version": "geometry_gp2_admission_review_v1",
+  "date": "2026-11-17",
+  "from_stage": "GP1",
+  "target_stage": "GP2",
+  "status": "NOT_READY",
+  "preconditions": [
+    {
+      "requirement": "GP1几何输出及有限覆盖性质",
+      "status": "PASS",
+      "scope": "已测小构造",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/independent_checks.json#/archived_geometry"
+    },
+    {
+      "requirement": "共享预算及已测故障",
+      "status": "PASS",
+      "scope": "原构造和标记的缩限替身",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_20261116_01/budget_fault_injections.json"
+    },
+    {
+      "requirement": "数值异常结构化技术返回",
+      "status": "FAIL",
+      "blocking": true,
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/independent_checks.json#/numeric_error_probe"
+    },
+    {
+      "requirement": "身份和原件保护",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/independent_checks.json"
+    }
+  ],
+  "allowed": [
+    "仅GP1预期数值解析/转换异常归类修复",
+    "必要公开入口回归和原12项构造",
+    "新修复包/报告/源码身份交接"
+  ],
+  "not_allowed": [
+    "GP2动作与压缩实现",
+    "候选生成、原物理准入、LP、订单、模型",
+    "修改冻结旧包/清单/测试日志来消除失败",
+    "修改物理容差/默认预算/.gitignore或静默回退E2"
+  ],
+  "release_conditions": [
+    "QA-GP1-E01公开入口正确返回ERROR、spaces=[]、surface=null",
+    "必要回归通过且原12项未退化",
+    "新身份及原件保护可审查，独立质检追加关闭问题并重新判断GP2"
+  ],
+  "future_gp2_plain_language": "将空间实例化为每箱0/90四角/中心动作，原物理检查后去重并压缩至16/48；当前不执行。",
+  "real_model_calls_authorized": 0,
+  "qa_executed_repair": false,
+  "stopped": true
+}

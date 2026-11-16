@@ -1,0 +1,57 @@
+{
+  "version": "geometry_gp1_qa_issues_v1",
+  "date": "2026-11-17",
+  "issues": [
+    {
+      "id": "QA-GP1-E01",
+      "severity": "MEDIUM",
+      "blocking": true,
+      "status": "OPEN",
+      "origin": "IMPLEMENTATION_PUBLIC_NUMERIC_FAILURE_CONTRACT",
+      "acceptance_ids": [
+        "A01_ERROR_BOUNDARY",
+        "PLAN_SECTION_6"
+      ],
+      "locations": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/contracts.py",
+          "symbol": "parse_input",
+          "line": 112,
+          "end_line": 117
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/__init__.py",
+          "symbol": "_build_space_index",
+          "line": 37,
+          "end_line": 39
+        }
+      ],
+      "requirement": {
+        "path": "docs/02_阶段实施方案/几何规划模块/几何候选器PCT与GOPT融合改进方案_20261116.md",
+        "line": 180,
+        "text": "非法输入、数值异常、超预算应归为ERROR；公开GP1接口声明完整空间或原子技术ERROR。"
+      },
+      "observed": "Decimal无法解析超出范围指数时抛decimal.InvalidOperation，parse_input与公开包装均未转成GeometryError，未返回结构化结果。",
+      "expected": "正确拒绝输入并返回ERROR、spaces=[]、surface=null及明确技术错误；不要求支持该容器尺寸。",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/independent_checks.json#/numeric_error_probe",
+      "reproduction": {
+        "entry": "build_space_index(raw)",
+        "source": "UNMODIFIED_PRODUCTION_ENTRY",
+        "budget_override": false,
+        "schema_replacement": false,
+        "stubs": false,
+        "python": "3.14.10",
+        "stage": "JSON input parsing before space generation"
+      },
+      "impact": "公开调用方得不到约定错误对象；正常六构造几何结果未被反例推翻。",
+      "not_claimed": [
+        "未证明普通样本受影响",
+        "未证明部分空间被发布",
+        "没有订单失败率或生产部署复现"
+      ],
+      "blocking_reason": "GP2依赖公开空间入口；此失败分类是现行公共合同，先完成局部修复并复核，不无条件推进。",
+      "minimal_remedy": "在合理解析/数值边界归类预期Decimal异常，增加公开入口回归与正常控制；保持旧几何/预算/物理/Schema及原证据。",
+      "validation_boundary": "原12构造与该数值失败类别；不扩大矩阵、不运行候选/物理/LP/订单/模型。"
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "version": "geometry_gp1_independent_qa_v1",
+  "date": "2026-11-17",
+  "timezone": "Asia/Shanghai",
+  "head": "5c1891438e58f5252c6a0b76a923693627b1c98d",
+  "python": "3.14.10",
+  "package_files": 33,
+  "external_documents_and_sources": [
+    {
+      "path": "docs/03_阶段产出分析/几何规划模块/几何候选器GP1三维空间与表面补充开发交付_20261116_01.md",
+      "sha256": "001765fab341407290421a1c321e42dbdff312e36a712b84493784cdab5ca600",
+      "verified_before_qa_navigation": true
+    },
+    {
+      "path": "docs/03_阶段产出分析/几何规划模块/README.md",
+      "sha256": "6f190e37a4fae3868f2ba7e7da402d38ce16f7adbfa379e0d6f5880d98cfb360",
+      "verified_before_qa_navigation": true
+    },
+    {
+      "path": "semantic_pallet_planner/tests/unit/test_space_geometry_gp1.py",
+      "sha256": "8356a42f8c982f1116913aca6e23181b7ea9d742ba39f3746022ef4dae34e295",
+      "verified_before_qa_navigation": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/__init__.py",
+      "sha256": "e94e6b7504efa4b292b4bd33d868565493e447ee291058b3e682b39803fc88db",
+      "verified_before_qa_navigation": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/contracts.py",
+      "sha256": "d03702d8bfdb260a64a0aaa68a3a375aa2b41133b92a3e23aa094626ae0fc932",
+      "verified_before_qa_navigation": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/empty_spaces.py",
+      "sha256": "ef032d91f371620d9ca73482928c72ca22b24445517688c7646722cb45fbb23c",
+      "verified_before_qa_navigation": true
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/surface_spaces.py",
+      "sha256": "7293f1c77a44fa189202b7e5bc29fb3a3a2ae48a4ad4ce54cf79f6ed62fbbefd",
+      "verified_before_qa_navigation": true
+    }
+  ],
+  "source_files": 524,
+  "old_files_unchanged": 520,
+  "new_production_files": [
+    "planner/space_candidates/__init__.py",
+    "planner/space_candidates/contracts.py",
+    "planner/space_candidates/empty_spaces.py",
+    "planner/space_candidates/surface_spaces.py"
+  ],
+  "protected_references_verified": 41,
+  "archived_geometry": [
+    {
+      "scene": "diagonal",
+      "status": "PASS",
+      "spaces": 3,
+      "free_partition_cells": 7,
+      "occupied_partition_cells": 1,
+      "scope": "Six archived constructions only; not global maximal-space enumeration."
+    },
+    {
+      "scene": "empty",
+      "status": "PASS",
+      "spaces": 1,
+      "free_partition_cells": 1,
+      "occupied_partition_cells": 0,
+      "scope": "Six archived constructions only; not global maximal-space enumeration."
+    },
+    {
+      "scene": "full",
+      "status": "PASS",
+      "spaces": 0,
+      "free_partition_cells": 0,
+      "occupied_partition_cells": 1,
+      "scope": "Six archived constructions only; not global maximal-space enumeration."
+    },
+    {
+      "scene": "overhead_cavity",
+      "status": "PASS",
+      "spaces": 6,
+      "free_partition_cells": 26,
+      "occupied_partition_cells": 1,
+      "scope": "Six archived constructions only; not global maximal-space enumeration."
+    },
+    {
+      "scene": "same_height_platform",
+      "status": "PASS",
+      "spaces": 5,
+      "free_partition_cells": 22,
+      "occupied_partition_cells": 2,
+      "scope": "Six archived constructions only; not global maximal-space enumeration."
+    },
+    {
+      "scene": "steps",
+      "status": "PASS",
+      "spaces": 6,
+      "free_partition_cells": 33,
+      "occupied_partition_cells": 3,
+      "scope": "Six archived constructions only; not global maximal-space enumeration."
+    }
+  ],
+  "numeric_error_probe": {
+    "case_id": "numeric_decimal_exponent_out_of_range",
+    "input_utf8": "{\"version\":\"geometry_space_input_v1\",\"container\":{\"length_mm\":1e999999999999999999999999,\"width_mm\":10,\"max_height_mm\":10},\"placed_items\":[]}",
+    "input_sha256": "967761b37e4c3007670df8e689397ce73f3901726f092a83bb9864174cc7a701",
+    "entry": "build_space_index(raw)",
+    "unmodified_production_entry": true,
+    "stubs_or_budget_changes": false,
+    "expected": "Structured technical ERROR, spaces=[], surface=null; no exception escapes.",
+    "contract": "Main plan section 6 numeric error -> ERROR; public GP1 entry atomic error result.",
+    "returned": false,
+    "passed": false,
+    "exception_type": "decimal.InvalidOperation",
+    "exception_message": "[<class 'decimal.InvalidOperation'>]",
+    "traceback": "Traceback (most recent call last):\n  File \"/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/verify_gp1_independent.py\", line 148, in main\n    result = build_space_index(raw)\n  File \"/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/__init__.py\", line 14, in build_space_index\n    return _build_space_index(raw, Budget())\n  File \"/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/__init__.py\", line 22, in _build_space_index\n    state = parse_input(raw)\n  File \"/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/contracts.py\", line 112, in parse_input\n    value = json.loads(raw, parse_float=Decimal, object_pairs_hook=pairs,\n                       parse_constant=invalid_constant)\n  File \"/Users/cyw/miniconda3/lib/python3.14/json/__init__.py\", line 365, in loads\n    return cls(**kw).decode(s)\n           ~~~~~~~~~~~~~~~~^^^\n  File \"/Users/cyw/miniconda3/lib/python3.14/json/decoder.py\", line 345, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/cyw/miniconda3/lib/python3.14/json/decoder.py\", line 361, in raw_decode\n    obj, end = self.scan_once(s, idx)\n               ~~~~~~~~~~~~~~^^^^^^^^\ndecimal.InvalidOperation: [<class 'decimal.InvalidOperation'>]\n"
+  },
+  "status": "FAIL_NUMERIC_ERROR_CONTRACT",
+  "boundary": {
+    "candidates": 0,
+    "physical_admission": 0,
+    "orders": 0,
+    "forks": 0,
+    "LP": 0,
+    "models": 0,
+    "project_import_scope": "new space modules only",
+    "numeric_probe_algorithm_stage": "input parsing, before free-space algorithms"
+  },
+  "limit": "Does not disprove normal construction geometry or establish behavior on real orders."
+}

@@ -1,0 +1,51 @@
+{
+  "version": "geometry_gp1_qa_command_receipts_v1",
+  "date": "2026-11-17",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 \"$HOME/miniconda3/bin/python3.14\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_20261116_01/verify_delivery.py",
+      "result": {
+        "chunk_id": "86f3fb",
+        "wall_time_seconds": 0.081824667,
+        "exit_code": 0,
+        "original_token_count": 89,
+        "output": "{\n  \"status\": \"PASS_READ_ONLY_DELIVERY\",\n  \"source_files\": 524,\n  \"old_files_unchanged\": 520,\n  \"constructed_space_counts\": {\n    \"diagonal\": 3,\n    \"empty\": 1,\n    \"full\": 0,\n    \"overhead_cavity\": 6,\n    \"same_height_platform\": 5,\n    \"steps\": 6\n  },\n  \"scope\": \"hashes, archived geometric properties, budget receipts and links; no algorithm rerun\"\n}\n"
+      },
+      "scope": "原包只读核验，QA导航更新前"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/bin/python3.14\" semantic_pallet_planner/tests/unit/test_space_geometry_gp1.py -v",
+      "result": {
+        "chunk_id": "95190d",
+        "wall_time_seconds": 0.134161,
+        "exit_code": 0,
+        "original_token_count": 387,
+        "output": "test_axis_orders_have_expected_different_expansions (__main__.SpaceGeometryGP1.test_axis_orders_have_expected_different_expansions) ... ok\ntest_budget_boundaries_and_all_error_paths (__main__.SpaceGeometryGP1.test_budget_boundaries_and_all_error_paths) ... ok\ntest_deduplicate_then_containment_and_transient_peak (__main__.SpaceGeometryGP1.test_deduplicate_then_containment_and_transient_peak) ... ok\ntest_diagonal_corner_omission_and_boundary (__main__.SpaceGeometryGP1.test_diagonal_corner_omission_and_boundary) ... ok\ntest_empty_and_source_merge (__main__.SpaceGeometryGP1.test_empty_and_source_merge) ... ok\ntest_exact_noninteger_slot_no_rounding (__main__.SpaceGeometryGP1.test_exact_noninteger_slot_no_rounding) ... ok\ntest_full_container_and_order_determinism (__main__.SpaceGeometryGP1.test_full_container_and_order_determinism) ... ok\ntest_invalid_inputs_are_atomic_errors (__main__.SpaceGeometryGP1.test_invalid_inputs_are_atomic_errors) ... ok\ntest_same_height_platform_crosses_box_boundary (__main__.SpaceGeometryGP1.test_same_height_platform_crosses_box_boundary) ... ok\ntest_shared_arena_and_ems_parent_counted_before_release (__main__.SpaceGeometryGP1.test_shared_arena_and_ems_parent_counted_before_release) ... ok\ntest_single_occupied_cube_six_hand_slabs (__main__.SpaceGeometryGP1.test_single_occupied_cube_six_hand_slabs) ... ok\ntest_steps_and_taller_obstacle (__main__.SpaceGeometryGP1.test_steps_and_taller_obstacle) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 0.018s\n\nOK\n"
+      },
+      "scope": "12个新空间构造测试，不生成候选"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/bin/python3.14\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/verify_gp1_independent.py --output semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/independent_checks.json",
+      "result": {
+        "chunk_id": "e9fd85",
+        "wall_time_seconds": 0.128258917,
+        "exit_code": 1,
+        "original_token_count": 60,
+        "output": "{\"status\": \"FAIL_NUMERIC_ERROR_CONTRACT\", \"source_files\": 524, \"archived_scenes\": 6, \"numeric_exception\": \"decimal.InvalidOperation\", \"output\": \"semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/independent_checks.json\"}\n"
+      },
+      "scope": "六归档集合性质PASS；公开数值错误反例FAIL，exit1为真实失败证据"
+    }
+  ],
+  "other_checks": [
+    "Git状态/分支/上游/差异/近期提交只读查询",
+    "源码和测试、归档脚本副作用及合同文本读取",
+    "Decimal指数解析控制及同例公开入口探索性检查",
+    "保护范围和源文件SHA读取"
+  ],
+  "not_run": [
+    "collect_evidence.py",
+    "候选/原物理/LP/订单/模型",
+    "全仓库测试"
+  ],
+  "final_integrity": "verification.json excluded from own manifest to avoid a digest cycle"
+}

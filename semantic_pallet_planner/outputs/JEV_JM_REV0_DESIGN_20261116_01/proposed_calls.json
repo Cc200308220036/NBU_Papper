@@ -1,0 +1,85 @@
+{
+  "version": "jm_rev0_proposed_calls_v1",
+  "authorization": 0,
+  "historical_balance_reuse": false,
+  "all_future_batches_status": "PROPOSED_NOT_AUTHORIZED_BLOCKED_BY_MATERIALS",
+  "F_R_excluded": true,
+  "two_family_alternative": "<=4 baselines/16 suffixes/2 generations only under new inclusion and authorization",
+  "batches": [
+    {
+      "batch": "REV0",
+      "baseline_or_full_jobs_cap": 0,
+      "suffix_jobs_cap": 0,
+      "scope": "design only",
+      "authorized_calls": 0
+    },
+    {
+      "batch": "REV2_F_S",
+      "baseline_or_full_jobs_cap": 2,
+      "suffix_jobs_cap": 8,
+      "scope": "baseline jobs<=2;suffix jobs<=8;2 starts*2 actions*2 repeats",
+      "authorized_calls": 0
+    },
+    {
+      "batch": "JM2_C_F_S",
+      "baseline_or_full_jobs_cap": 0,
+      "suffix_jobs_cap": 0,
+      "scope": "generation requests<=1;no reviewer API default",
+      "authorized_calls": 0
+    },
+    {
+      "batch": "JM4_A",
+      "baseline_or_full_jobs_cap": 0,
+      "suffix_jobs_cap": 0,
+      "scope": "Jev interface requests<=2",
+      "authorized_calls": 0
+    },
+    {
+      "batch": "JM4_M",
+      "baseline_or_full_jobs_cap": 0,
+      "suffix_jobs_cap": 24,
+      "scope": "20 choice requests;4 states*3 distinct actions*2 suffix repeats",
+      "authorized_calls": 0
+    },
+    {
+      "batch": "JM4_M_OPTION32",
+      "baseline_or_full_jobs_cap": 0,
+      "suffix_jobs_cap": 32,
+      "scope": "optional replacement only before any choice;4*4*2",
+      "authorized_calls": 0
+    },
+    {
+      "batch": "JM4_M_OPTION40",
+      "baseline_or_full_jobs_cap": 0,
+      "suffix_jobs_cap": 40,
+      "scope": "optional replacement only before any choice;4*5*2",
+      "authorized_calls": 0
+    },
+    {
+      "batch": "JM4_B",
+      "baseline_or_full_jobs_cap": 42,
+      "suffix_jobs_cap": 0,
+      "scope": "28 first-round full jobs+14 optional repeats",
+      "authorized_calls": 0
+    },
+    {
+      "batch": "JM5",
+      "baseline_or_full_jobs_cap": null,
+      "suffix_jobs_cap": null,
+      "scope": "N*7*R;N/R NOT_MATERIALIZED",
+      "authorized_calls": 0
+    }
+  ],
+  "request_upper_bound_rule": "sum full planned items for baseline/full jobs;sum remaining items after forced first step for suffix jobs;singleton no send;job count != request count",
+  "mandatory_freeze": [
+    "new source/job/action matrix",
+    "version/digests",
+    "prompt/model",
+    "per-job send permits",
+    "numeric parameters",
+    "new budget approval"
+  ],
+  "no_retry": true,
+  "cost": "UNKNOWN_UNTIL_ACTUAL_AUTHORITATIVE_USAGE_OR_BILLING",
+  "stop": true
+}

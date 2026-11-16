@@ -1,0 +1,48 @@
+{
+  "final_static_conflicts": [],
+  "initial_diagnostics": "initial_audit_diagnostics.json",
+  "resolved_checker_assumptions": [
+    "previous_digest=含封印完整前记录digest",
+    "DECISION_READY after=before而非null",
+    "原task与runtime投影不同，须frozen_task_digest及assignment绑定",
+    "PLACE最终事件增加业务/参考视图和timings，核心提交字段一致"
+  ],
+  "unresolved": [
+    {
+      "id": "D2A-ENV",
+      "status": "UNKNOWN",
+      "input": "历史依赖二进制环境身份",
+      "fact": "activation仅冻结Python/jsonschema/numpy/scipy版本；本机版本相同不证明历史环境复现",
+      "impact": "QA须确认新桥接接受的历史证据粒度；不得宣称环境复验"
+    },
+    {
+      "id": "D2A-PHYSICS",
+      "status": "NOT_RUN",
+      "input": "生产Schema/validator、内核投影验证及物理重新计算",
+      "fact": "仅检查原保存STABLE/result_digest/外层binding与提交连续性；不调用禁止入口",
+      "impact": "不称生产导入或物理复验通过；未来新协议必须封闭验证已准入表示"
+    },
+    {
+      "id": "D2A-BRIDGE",
+      "status": "NOT_IMPLEMENTED",
+      "input": "新archive-prefix协议和当前身份路由",
+      "fact": "旧505文件历史blob全匹配；当前520文件身份不同，不能修改旧签名续跑",
+      "impact": "没有可运行起点，execution NOT_READY"
+    },
+    {
+      "id": "D2A-SLOTS",
+      "status": "NOT_IMPLEMENTED",
+      "input": "新pair/slot/allocation/permit/ledger、整批技术停止与继承指标",
+      "fact": "未构造任何新许可或checkpoint，旧余额不可继承",
+      "impact": "独立工程授权和构造验收仍必需"
+    },
+    {
+      "id": "D2A-EXEC",
+      "status": "NOT_AUTHORIZED_NOT_RUN",
+      "input": "明确4job运行授权及冻结配置服务身份预算",
+      "fact": "4job/68发送仍仅拟议，当前真实发送授权0",
+      "impact": "交QA并停止"
+    }
+  ],
+  "prohibited_fallbacks_used": false
+}

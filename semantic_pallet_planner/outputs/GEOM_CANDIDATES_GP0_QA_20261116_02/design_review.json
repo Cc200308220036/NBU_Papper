@@ -1,0 +1,86 @@
+{
+  "version": "geometry_gp0_design_review_v1",
+  "date": "2026-11-16",
+  "plan": {
+    "path": "docs/02_阶段实施方案/几何规划模块/几何候选器PCT与GOPT融合改进方案_20261116.md",
+    "version": "geometry_candidate_upgrade_design_v1"
+  },
+  "draft": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/protocol_draft.md",
+  "kind": "MANUAL_LOCAL_DOCUMENT_AND_SOURCE_REASONING",
+  "not_blind": "此前参与GP0任务边界制定",
+  "items": [
+    {
+      "topic": "六向slab与集合边界",
+      "status": "PASS",
+      "scope": "DRAFT_REVIEW",
+      "evidence": [
+        "docs/02_阶段实施方案/几何规划模块/几何候选器PCT与GOPT融合改进方案_20261116.md#5.2",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/protocol_draft.md#提案、规范化与host"
+      ],
+      "reason": "保留下方空腔、允许重叠且禁止体积简单求和；不宣称全局完备EMS",
+      "implementation_validation": "NOT_RUN_GP1"
+    },
+    {
+      "topic": "表面角点种子",
+      "status": "PASS",
+      "scope": "FINITE_PROPOSAL_DESIGN_ACCEPTABLE",
+      "evidence": [
+        "docs/02_阶段实施方案/几何规划模块/几何候选器PCT与GOPT融合改进方案_20261116.md#5.3",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/protocol_draft.md#提案、规范化与host"
+      ],
+      "reason": "主方案没有完整角点枚举硬门槛；每象限双邻高变化是显式有限规则，不得描述为所有凹凸角点完备识别。GP1用边界/平台/台阶/对角变化构造展示实际结果。",
+      "implementation_validation": "NOT_RUN_GP1"
+    },
+    {
+      "topic": "联合分组覆盖",
+      "status": "PASS",
+      "scope": "DRAFT_DISAMBIGUATION",
+      "evidence": [
+        "docs/02_阶段实施方案/几何规划模块/几何候选器PCT与GOPT融合改进方案_20261116.md#5.5",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/protocol_draft.md#统计与压缩"
+      ],
+      "reason": "把单一分组键明确为完整联合元组，多来源覆盖多个键；不承诺各维独立覆盖。",
+      "implementation_validation": "NOT_RUN_GP2"
+    },
+    {
+      "topic": "精确数值与旧浮点边界",
+      "status": "PASS",
+      "scope": "CONTRACT_DEFINITION_ONLY",
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/protocol_draft.md#坐标、数值、动作与排序",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/config_snapshot.json#/new_generator_draft"
+      ],
+      "reason": "内部精确、发布一次0.001mm HALF_EVEN，原提案及发布复核和host引用明确；未证明转换稳健性，后续不得修改旧容差补救。",
+      "implementation_validation": "NOT_RUN_GP1_GP2"
+    },
+    {
+      "topic": "预算/错误/恢复",
+      "status": "PASS",
+      "scope": "DRAFT_REVIEW",
+      "reason": "中间峰值及每次包含/扩展计数、先查预算、原子ERROR、无回退、选后监测和身份拒绝明确；预算充分性未知。",
+      "implementation_validation": "NOT_RUN",
+      "performance": "NOT_MEASURED"
+    },
+    {
+      "topic": "F0公平性及原始池/展示池",
+      "status": "PASS",
+      "scope": "DRAFT_REVIEW",
+      "reason": "原字段/seed与同新协议比较、精确动作键、raw/final分离、无PCT预评和来源质量标签泄露。",
+      "implementation_validation": "NOT_RUN_GP2_GP3_GP4"
+    },
+    {
+      "topic": "生产协议完整实现",
+      "status": "NOT_APPLICABLE",
+      "scope": "GP0_EXCLUSION",
+      "reason": "GP0要求草案而非完整生产Schema/路由，不能作为当前阻断。",
+      "future_stage": "GP3"
+    }
+  ],
+  "blocking_design_issues": [],
+  "limits": [
+    "未查询或认证上游PCT/GOPT论文复现一致性；本路线为项目新有限设计",
+    "未执行任何空间或候选算法",
+    "不以工程合同通过推导覆盖或收益"
+  ],
+  "result": "GP0_DRAFT_ACCEPTABLE_FOR_GP1_IMPLEMENTATION"
+}

@@ -1,0 +1,48 @@
+{
+  "version": "geometry_gp0_qa_command_receipts_v2",
+  "date": "2026-11-16",
+  "execution_order": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/verify_gp0.py",
+      "result": {
+        "chunk_id": "00cdc9",
+        "wall_time_seconds": 0.035843292,
+        "exit_code": 1,
+        "original_token_count": 205,
+        "output": "Traceback (most recent call last):\n  File \"/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/verify_gp0.py\", line 66, in <module>\n    p=check_ref(r); tree=ast.parse(p.read_text()); n=tree\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ast.py\", line 50, in parse\n    return compile(source, filename, mode, flags,\n  File \"<unknown>\", line 54\n    raise JevSelectError(f\"invalid_{name}\", f\"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in (\"anyOf\", \"oneOf\") else \"value does not match the versioned contract\")}\")\n                                                                                                                                   ^\nSyntaxError: f-string: unmatched '('\n"
+      },
+      "classification": "ENVIRONMENT_AST_SYNTAX_INCOMPATIBILITY",
+      "reason": "默认3.9.6不能解析已有contracts.py的新版f-string；不改源码或原validator"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 \"$HOME/miniconda3/bin/python3.14\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/verify_gp0.py",
+      "result": {
+        "chunk_id": "dfc75a",
+        "wall_time_seconds": 0.781195125,
+        "exit_code": 0,
+        "original_token_count": 275,
+        "output": "{\n  \"status\": \"PASS_STATIC_SAVED_FACTS_ONLY\",\n  \"mode\": \"SEALED_READ_ONLY\",\n  \"python\": \"3.14.10\",\n  \"source_files\": 520,\n  \"symbols\": 39,\n  \"states\": 5,\n  \"field_records\": 1409,\n  \"checks\": {\n    \"all_package_json_parse_no_duplicate_or_nonfinite\": \"PASS\",\n    \"complete_source_universe_unchanged\": \"PASS\",\n    \"39_symbol_spans_calls_and_file_hashes\": \"PASS\",\n    \"old_contracts_physical_manifest_and_unregistered_names\": \"PASS\",\n    \"draft_closed_fields_fixed_versions_budgets_and_zero_authorization\": \"PASS\",\n    \"five_sources_hashes_complete_fields_pointers_lexemes_and_saved_bindings\": \"PASS\",\n    \"comparison_plan_frozen_five_F0_zero_execution\": \"PASS\",\n    \"draft_required_semantics_present_not_production_schema_validation\": \"PASS\",\n    \"verifier_stdlib_imports_only_no_project_entrypoints\": \"PASS\",\n    \"handoff_A00_only_and_new_document_links\": \"PASS\",\n    \"delivery_manifest_complete_no_self_hash_no_cycles\": \"PASS\"\n  },\n  \"excluded\": [\n    \"production imports\",\n    \"candidate generation\",\n    \"order execution\",\n    \"LP\",\n    \"model calls\",\n    \"support/load physics recomputation\"\n  ]\n}\n"
+      },
+      "classification": "ORIGINAL_VALIDATOR_PASS_BEFORE_QA_NAVIGATION_EDITS"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 \"$HOME/miniconda3/bin/python3.14\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/verify_independent.py --output semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/independent_checks.json",
+      "result": {
+        "chunk_id": "cf8dba",
+        "wall_time_seconds": 0.267538458,
+        "exit_code": 0,
+        "original_token_count": 45,
+        "output": "{\"status\": \"PASS_STATIC_SAVED_FACTS_ONLY\", \"package_files\": 24, \"production_files\": 520, \"states\": 5, \"field_records\": 1409, \"previous_qa_missing\": 6, \"previous_qa_changed\": 2}\n"
+      },
+      "classification": "INDEPENDENT_SAVED_FACTS_AUDIT_PASS_BEFORE_QA_NAVIGATION_EDITS"
+    }
+  ],
+  "interpreter_discovery": "初次command选项有shell警告；按实际文件路径找到已有Python3.14.10，无安装或环境修改。",
+  "other_readonly_checks": [
+    "Git status/index/branch/upstream/log/show/diff及源码文本读取",
+    "主方案/技能/原合同和日志读取",
+    "当前源码物理与F0/公共执行路径静态核对"
+  ],
+  "navigation_identity_policy": "原3份外部文档以cae1a401 Git blob和原SHA记录；之后QA仅追加导航，不重签开发manifest。",
+  "final_qa_validation": "verification.json excluded from own delivery_manifest to avoid circular hash"
+}

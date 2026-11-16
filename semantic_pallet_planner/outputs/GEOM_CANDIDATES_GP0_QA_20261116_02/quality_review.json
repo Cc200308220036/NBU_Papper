@@ -1,0 +1,202 @@
+{
+  "version": "geometry_gp0_independent_quality_review_v2",
+  "date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "stage": "GP0",
+  "acceptance_id": "A00",
+  "plan": {
+    "path": "docs/02_阶段实施方案/几何规划模块/几何候选器PCT与GOPT融合改进方案_20261116.md",
+    "version": "geometry_candidate_upgrade_design_v1"
+  },
+  "authorization": "对已同步GP0原包补交进行独立审查、必要只读核查及QA交接；不执行GP1",
+  "identities": {
+    "developer_entry_head": "26b279fba19a406d714373979326e0e1aadfea02",
+    "original_worktree_delivery_head": "26b279fba19a406d714373979326e0e1aadfea02",
+    "report_sync_commit": "2f27636bcda2b6169af03e439eaae0444e2ac5ff",
+    "package_sync_and_qa_entry_head": "cae1a401ae524212dedb49afb72ee690f96f0a9f",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "initial_index": "EMPTY",
+    "initial_worktree_existing": [
+      "?? semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_01/"
+    ],
+    "source_check": "520 production py/json match delivered SHA256 and developer-entry Git blobs",
+    "delivery_drift": "GP0 artifacts and archival .gitignore change; no production file drift",
+    "historical_metadata": "Original uncommitted/ignored fields describe authoring time; no re-signing"
+  },
+  "reviewed_delivery": {
+    "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01",
+    "manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/delivery_manifest.json",
+    "package_files_excluding_manifest": 24,
+    "external_documents": 3,
+    "availability": "PRESENT_AND_VERIFIED"
+  },
+  "four_fact_layers": {
+    "report": "开发自验声明与归档日志分别记录",
+    "source": "520生产文件身份相同，关键旧路径静态核对，新能力未实现",
+    "archive": "24包内文件、3外部原文档、五快照及字段映射、成功/失败日志原摘要匹配",
+    "local": "原validator默认3.9 AST解析失败；已有3.14.10原脚本通过；独立1409指针/精确值及源码Git字节验证通过"
+  },
+  "acceptance_items": [
+    {
+      "id": "A00-1",
+      "status": "PASS",
+      "kind": "STATIC_BYTES_AND_CLOSED_LEGACY_CONTRACT",
+      "reported": "PASS_STATIC",
+      "source": "520文件无漂移，旧E2/Schema/config保留",
+      "archived": "source_manifest/baseline_inventory/legacy config/历史pool",
+      "local": "原validator+独立SHA256及Git blob",
+      "limits": "旧输出行为重跑NOT_RUN"
+    },
+    {
+      "id": "A00-2",
+      "status": "PASS",
+      "kind": "STATIC_AST_AND_SEMANTIC_REVIEW",
+      "reported": "39处符号",
+      "source": "39源码跨度/调用表达式；关键provider/physical/F0/episode/execution/monitor语义人工核对",
+      "archived": "baseline_inventory",
+      "local": "原validator AST及源码文本审阅",
+      "limits": "AST同一不替代运行行为证明"
+    },
+    {
+      "id": "A00-3",
+      "status": "PASS",
+      "kind": "DRAFT_CONTRACT_REVIEW",
+      "reported": "新旧/F0/统计分开",
+      "source": "新后端和v14未生产注册",
+      "archived": "protocol_draft/config_snapshot/comparison_plan",
+      "local": "原validator+人工字段/侧车/动作键语义核对",
+      "limits": "生产Schema/路由实现NOT_RUN"
+    },
+    {
+      "id": "A00-4",
+      "status": "PASS",
+      "kind": "DRAFT_CONTRACT_REVIEW",
+      "reported": "数值、预算、错误及恢复明确",
+      "source": "旧物理及exact v3保留",
+      "archived": "protocol_draft/config_snapshot",
+      "local": "具名边界顺序、0.001mm、预后检查、host、原子ERROR及选后流程审阅",
+      "limits": "算法、float边界稳健性和性能NOT_RUN/NOT_MEASURED"
+    },
+    {
+      "id": "A00-5",
+      "status": "PASS",
+      "kind": "EXACT_SAVED_PROVENANCE",
+      "reported": "5快照/1409来源",
+      "source": "STATE_KEYS/ITEM_KEYS源码读取",
+      "archived": "input_manifest/五snapshot/原episode/prefix/pool/A1",
+      "local": "1409指针完整唯一且严格同事件before/observation，精确typed值相等",
+      "limits": "不证明物理正确或整段历史真实性"
+    },
+    {
+      "id": "A00-6",
+      "status": "PASS",
+      "kind": "FROZEN_COMPARISON_PLAN_AND_SAVED_HASH",
+      "reported": "固定五状态无当前执行",
+      "source": "源码无漂移/不借旧permit",
+      "archived": "comparison_plan/原manifest/日志",
+      "local": "原validator及独立内容/身份检查",
+      "limits": "GP4比较及GP5-GP6 NOT_RUN"
+    }
+  ],
+  "acceptance_summary": {
+    "A00": "PASS",
+    "scope": "GP0_STATIC_AND_SAVED_FACTS_ONLY",
+    "A01": "NOT_RUN",
+    "A02": "NOT_RUN",
+    "A03": "NOT_RUN",
+    "A04": "NOT_RUN",
+    "A05": "NOT_RUN",
+    "A06": "NOT_RUN"
+  },
+  "issue_closures": [
+    {
+      "id": "QA-GP0-E01",
+      "previous_status": "OPEN_BLOCKING",
+      "status": "CLOSED",
+      "scope": "GP0原包可用性及必要独立复核",
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/independent_checks.json#/checks/0",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/command_receipts.json",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/independent_checks.json#/point_checks"
+      ],
+      "reason": "原包24个受封存文件、外部3文档及输入来源核实；原validator和独立检查完成。",
+      "historical_record": "旧local_checks#/delivery保留缺包事实；本轮追加关闭，不覆盖旧状态"
+    }
+  ],
+  "open_issues": [
+    {
+      "id": "QA-GP0-H01",
+      "severity": "LOW",
+      "blocking": false,
+      "status": "OPEN_ARCHIVAL_GAP",
+      "origin": "HISTORICAL_QA_AVAILABILITY",
+      "acceptance_scope": "历史归档保护，非GP1实现前置",
+      "location": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_01/delivery_manifest.json#/files",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/independent_checks.json#/previous_qa_archive_availability",
+      "observed": "旧QA目录当前3文件；按原清单6文件缺失、2共享索引变化，1文件原摘要仍匹配。",
+      "impact": "不能声称旧QA包完整；本轮从开发原件独立取得当前A00全部必要证据，故不阻断GP1。",
+      "attribution": "UNKNOWN，不推断由谁或何操作移除",
+      "minimum_action": "保留现存文件；有原备份时原样补回，不补造、不重签。",
+      "validation_boundary": "仅历史原件定位及原摘要核对，无业务执行。"
+    }
+  ],
+  "conclusions": {
+    "engineering_status": {
+      "status": "PASS",
+      "scope": "GP0_STATIC_CONTRACTS_BASELINE_INPUT_INVENTORY_ONLY",
+      "not_implemented": "new geometry backend and GP1-GP6"
+    },
+    "evidence_readiness": {
+      "status": "PARTIAL",
+      "current_gp0_delivery": "PASS",
+      "previous_qa_archive": "PARTIAL",
+      "scope": "当前GP0所需证据充分；旧QA的6文件缺失/2导航变化单列，不依赖缺失旧QA来证明本轮。"
+    },
+    "research_result": {
+      "status": "NOT_ESTABLISHED",
+      "candidate_comparison": "NOT_RUN",
+      "whole_orders": "NOT_RUN"
+    },
+    "next_stage_admission": {
+      "status": "READY",
+      "scope": "GP1_ONLY_SPACE_GEOMETRY_AND_NECESSARY_LOCAL_CONSTRUCTED_CHECKS",
+      "qa_execution": false,
+      "real_model_calls_authorized": 0
+    }
+  },
+  "execution_boundary": {
+    "project_imports": 0,
+    "space_generation": 0,
+    "candidate_generation": 0,
+    "physics_or_load_recomputation": 0,
+    "orders": 0,
+    "forks": 0,
+    "stability_solves": 0,
+    "model_calls": 0,
+    "credential_reads": 0,
+    "dependency_installations": 0,
+    "subagents": 0,
+    "developer_validator_attempts": 2,
+    "developer_validator_successes": 1,
+    "developer_validator_environment_failures": 1,
+    "independent_audit_runs": 1,
+    "git_pull": 0,
+    "git_add": 0,
+    "git_commit": 0,
+    "git_push": 0
+  },
+  "limitations": [
+    "默认Python3.9无法解析已有新语法，不等于生产缺陷；现有3.14已完成所需核查",
+    "预算充分性及性能NOT_MEASURED，空间/动作/运行行为未执行",
+    "旧QA归档6文件缺失，保留PARTIAL，未重造",
+    "原validator在QA导航更新前通过；更新后共享导航不同，按同步Git blob核对原字节，不重签原manifest"
+  ],
+  "evidence": [
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/independent_checks.json",
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/command_receipts.json",
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/design_review.json",
+    "docs/03_阶段产出分析/几何规划模块/几何候选器GP0补交独立复核与GP1技术准入_20261116_02.md"
+  ],
+  "stopped": true
+}

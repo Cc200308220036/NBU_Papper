@@ -1,0 +1,89 @@
+{
+  "version": "geometry_gp0_qa_handoff_v2",
+  "date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "stage": "GP0",
+  "parent_report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP0基线版本配置与输入合同开发交付_20261116_01.md",
+  "parent_handoff": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/handoff.json",
+  "parent_delivery_manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/delivery_manifest.json",
+  "source_identity": {
+    "developer_entry_head": "26b279fba19a406d714373979326e0e1aadfea02",
+    "original_worktree_delivery_head": "26b279fba19a406d714373979326e0e1aadfea02",
+    "report_sync_commit": "2f27636bcda2b6169af03e439eaae0444e2ac5ff",
+    "package_sync_and_qa_entry_head": "cae1a401ae524212dedb49afb72ee690f96f0a9f",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "initial_index": "EMPTY",
+    "initial_worktree_existing": [
+      "?? semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_01/"
+    ],
+    "source_check": "520 production py/json match delivered SHA256 and developer-entry Git blobs",
+    "delivery_drift": "GP0 artifacts and archival .gitignore change; no production file drift",
+    "historical_metadata": "Original uncommitted/ignored fields describe authoring time; no re-signing"
+  },
+  "previous_qa": {
+    "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_01",
+    "availability": "PARTIAL",
+    "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/independent_checks.json#/previous_qa_archive_availability",
+    "original_report_missing": true,
+    "do_not_reconstruct_history": true
+  },
+  "reviewed_delivery": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01",
+  "qa_report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP0补交独立复核与GP1技术准入_20261116_02.md",
+  "quality_review": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/quality_review.json",
+  "design_review": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/design_review.json",
+  "next_stage_admission": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/next_stage_admission.json",
+  "delivery_manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/delivery_manifest.json",
+  "evidence": [
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/independent_checks.json",
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/command_receipts.json"
+  ],
+  "conclusions": {
+    "engineering_status": {
+      "status": "PASS",
+      "scope": "GP0_STATIC_CONTRACTS_BASELINE_INPUT_INVENTORY_ONLY",
+      "not_implemented": "new geometry backend and GP1-GP6"
+    },
+    "evidence_readiness": {
+      "status": "PARTIAL",
+      "current_gp0_delivery": "PASS",
+      "previous_qa_archive": "PARTIAL",
+      "scope": "当前GP0所需证据充分；旧QA的6文件缺失/2导航变化单列，不依赖缺失旧QA来证明本轮。"
+    },
+    "research_result": {
+      "status": "NOT_ESTABLISHED",
+      "candidate_comparison": "NOT_RUN",
+      "whole_orders": "NOT_RUN"
+    },
+    "next_stage_admission": {
+      "status": "READY",
+      "scope": "GP1_ONLY_SPACE_GEOMETRY_AND_NECESSARY_LOCAL_CONSTRUCTED_CHECKS",
+      "qa_execution": false,
+      "real_model_calls_authorized": 0
+    }
+  },
+  "closed_issue_ids": [
+    "QA-GP0-E01"
+  ],
+  "open_nonblocking_issue_ids": [
+    "QA-GP0-H01"
+  ],
+  "not_verified": [
+    "空间算法/精确动作/压缩/生产Schema和路由行为",
+    "旧候选重新生成一致性",
+    "预算性能、订单、模型或整单收益",
+    "旧QA缺失6文件及整段历史真实性"
+  ],
+  "prompt_delivery": "INLINE_FINAL_ONLY",
+  "next_stage": "GP1_ONLY",
+  "next_stage_qa_execution": false,
+  "git": {
+    "actual_upload": "NONE",
+    "pull": "NOT_RUN",
+    "add": "NOT_RUN",
+    "commit": "NOT_RUN",
+    "push": "NOT_RUN",
+    "existing_gitignore_changes": "PRESERVED_NOT_MODIFIED_BY_QA"
+  },
+  "stopped": true
+}

@@ -1,0 +1,55 @@
+{
+  "version": "geometry_gp1_admission_v2",
+  "date": "2026-11-16",
+  "from_stage": "GP0",
+  "target_stage": "GP1",
+  "status": "READY",
+  "scope": "GP1_ONLY",
+  "preconditions": [
+    {
+      "requirement": "旧基线及原包身份可定位",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/independent_checks.json#/checks"
+    },
+    {
+      "requirement": "空间/数值/预算/错误合同明确且无已确认阻断",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/design_review.json"
+    },
+    {
+      "requirement": "输入来源及比较边界固定",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/independent_checks.json#/point_checks"
+    },
+    {
+      "requirement": "A00必要独立核查完成",
+      "status": "PASS",
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/command_receipts.json",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/independent_checks.json"
+      ]
+    },
+    {
+      "requirement": "历史QA归档",
+      "status": "PARTIAL",
+      "blocking": false,
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_QA_20261116_02/independent_checks.json#/previous_qa_archive_availability",
+      "impact": "当前证据独立取得，不阻断GP1，保留归档缺口"
+    }
+  ],
+  "allowed_work": [
+    "独立contracts/三维空闲空间/表面补充模块",
+    "必要的小范围构造检查、少量示意、计数及新身份报告"
+  ],
+  "not_allowed": [
+    "GP2动作生成/压缩",
+    "GP3公共循环/Schema路由接入",
+    "GP4五状态候选比较",
+    "GP5-GP6订单/模型",
+    "PCT预评/求解、变更旧物理容差、回退E2或重签GP0"
+  ],
+  "expected_exit": "A01空间不越界不穿箱、去重包含、保留下方空腔、输入不变、确定及预算有界；交付空间索引/构造证据/报告后回质检",
+  "execution_authorization": "TECHNICAL_ADMISSION_ONLY_USER_MUST_ASSIGN_DEVELOPMENT",
+  "real_model_calls_authorized": 0,
+  "qa_executed_gp1": false
+}

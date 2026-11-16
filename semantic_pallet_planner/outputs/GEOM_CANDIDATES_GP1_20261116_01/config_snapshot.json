@@ -1,0 +1,56 @@
+{
+  "version": "geometry_gp1_config_snapshot_v1",
+  "stage": "GP1",
+  "gp0_config": {
+    "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/config_snapshot.json",
+    "sha256": "f120d09c01876e934267b7eb121345aa4ce2ff7a6a6b7096bd1d2926ee23aa64"
+  },
+  "budgets": {
+    "active_spaces": 4096,
+    "space_containment_comparisons": 2000000,
+    "surface_event_cells": 16384,
+    "surface_expansion_cell_checks": 2000000,
+    "raw_point_attempts_per_item": 32768
+  },
+  "budget_counting_rules": {
+    "active_spaces": "simultaneously live 3D/surface/intermediate records peak; copies count, ID references do not; pre-allocation check",
+    "space_containment_comparisons": "each directed predicate invocation, including early failure and all branches",
+    "surface_event_cells": "(nx-1)*(ny-1), check before allocation",
+    "surface_expansion_cell_checks": "each actually read added cell, including repeat and failed strips, both orders/quadrants/directions",
+    "raw_point_attempts_per_item": "before dedup, both sources/yaws/all generated point slots; per item cumulative; ineligible host skips separate",
+    "scope": "state-wide spaces/containment/surface budgets; per-item point budget; no reset by source or branch",
+    "failure": "check next operation before exceeding; atomic ERROR no partial pool or fallback",
+    "wall_clock": "observation only, never truncation",
+    "performance": "NOT_MEASURED"
+  },
+  "algorithm": "ems_surface_geometry_v1",
+  "output_version": "geometry_space_index_v1",
+  "input_version": "geometry_space_input_v1",
+  "numeric": "JSON decimal lexemes -> Decimal -> Fraction; no round3 in spaces; exact decimal text; float mapping rejected",
+  "space_order": [
+    "xmin",
+    "ymin",
+    "zmin",
+    "xmax",
+    "ymax",
+    "zmax"
+  ],
+  "unit": "mm",
+  "source_merge": "boundary-interned records, union source types; surface never prunes EMS",
+  "active_counting": "arena-owned records; aliases share references; parents retained through child allocation; retained EMS and surface share arena",
+  "containment_counting": "each directed redundancy AND output container-containment predicate; occupancy/AABB intersection separately audited",
+  "authorization": {
+    "basis": "CURRENT_USER_GP1_INSTRUCTION_NOT_GP0_AUTHORIZATION",
+    "constructed_space_checks": true,
+    "model_calls": 0,
+    "candidate_generations": 0,
+    "physical_admission": 0,
+    "lp_solves": 0,
+    "orders": 0,
+    "forks": 0
+  },
+  "raw_point_attempts": "NOT_RUN_GP2",
+  "budget_adjustment": "NONE",
+  "budget_sufficiency": "UNKNOWN_OUTSIDE_SMALL_CONSTRUCTIONS",
+  "runtime_registration": false
+}

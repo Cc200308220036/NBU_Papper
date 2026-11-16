@@ -1,0 +1,93 @@
+{
+  "version": "geometry_gp1_checks_v1",
+  "A01": {
+    "status": "PASS_DEVELOPER_SELF_CHECK_PENDING_INDEPENDENT_QA",
+    "items": [
+      {
+        "item": "容器包含和不穿箱",
+        "status": "PASS_CONSTRUCTED",
+        "evidence": "tests_final; constructed/*_index.json; direct endpoint properties"
+      },
+      {
+        "item": "去重/包含和手算slab",
+        "status": "PASS_CONSTRUCTED",
+        "evidence": "test_deduplicate_then_containment_and_transient_peak; test_single_occupied_cube_six_hand_slabs"
+      },
+      {
+        "item": "表面与空腔互补",
+        "status": "PASS_CONSTRUCTED",
+        "evidence": "test_single_occupied_cube_six_hand_slabs; overhead_cavity_index.json"
+      },
+      {
+        "item": "输入不变/确定性/精确数值",
+        "status": "PASS_CONSTRUCTED",
+        "evidence": "run_scene; test_full_container_and_order_determinism; test_exact_noninteger_slot_no_rounding"
+      },
+      {
+        "item": "预算原子失败及状态共享",
+        "status": "PASS_CONSTRUCTED",
+        "evidence": "test_budget_boundaries_and_all_error_paths; test_shared_arena_and_ems_parent_counted_before_release; budget_fault_injections.json"
+      }
+    ]
+  },
+  "test_methods": 12,
+  "test_failures": 0,
+  "test_runs": "two overlapping 12-method runs, do not add",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/tests/unit/test_space_geometry_gp1.py -v",
+      "exit_code": 0,
+      "stdout": "logs/tests_attempt_01.stdout.log",
+      "stderr": "logs/tests_attempt_01.stderr.log",
+      "scope": "12 constructed test methods; final adds shared-budget boundary assertions"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/tests/unit/test_space_geometry_gp1.py -v",
+      "exit_code": 0,
+      "stdout": "logs/tests_final.stdout.log",
+      "stderr": "logs/tests_final.stderr.log",
+      "scope": "12 constructed test methods; final adds shared-budget boundary assertions"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_20261116_01/collect_evidence.py",
+      "exit_code": 0,
+      "stdout": "logs/constructs.stdout.log",
+      "stderr": "logs/constructs.stderr.log",
+      "scope": "same six constructed geometries, guarded imports/IO; no saved orders"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "stdout": "logs/git_diff_check.log",
+      "scope": "tracked diff plus separate new-file whitespace checks"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_20261116_01/verify_delivery.py",
+      "scope": "read-only hashes/geometric archived properties/links; final invocation recorded via caller output",
+      "exit_code": 0,
+      "stdout": "logs/delivery_verification.log",
+      "log_scope": "actual sealed verification; final resealed read-only invocation also returned to caller"
+    }
+  ],
+  "other_acceptance": {
+    "A02": "NOT_RUN",
+    "A03": "NOT_RUN",
+    "A04": "NOT_RUN",
+    "A05": "NOT_RUN",
+    "A06": "NOT_RUN"
+  },
+  "python": "3.13.5",
+  "not_run": [
+    "candidate generation",
+    "evaluate_pose",
+    "geometry_oracle",
+    "LP",
+    "orders",
+    "forks",
+    "models",
+    "saved five-state comparisons",
+    "whole-repository tests"
+  ],
+  "history_issue": "QA-GP0-H01_PARTIAL_NONBLOCKING_UNCHANGED",
+  "performance": "small observations only; no general sufficiency or latency claim"
+}

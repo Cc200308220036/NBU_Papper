@@ -68,3 +68,10 @@ JM_E_SCHEMAS={JM_E_FACT_PACK:'jm_e_fact_pack_v1',JM_E_GENERATION:'jm_e_generatio
 # Bug-fix validation revision; existing v1 wire schemas remain unchanged.
 JM_E_VALIDATION_REVISION='jev_jm_e_validation_v2'
 JM_E_PROTOCOLS[JM_E_VALIDATION_REVISION]='packaging_experience_contract'
+
+# REV1 pure F-S geometry; no transport, memory or execution registration.
+JM_FS_INPUT='jev_jm_fs_input_v1'
+JM_FS_RESULT='jev_jm_fs_result_v1'
+JM_FS_ALGORITHM='jm_fs_floor_grid_neighbor_v1'
+JM_FS_PROTOCOLS={v:'packaging_fs_geometry' for v in (JM_FS_INPUT,JM_FS_RESULT)}
+JM_FS_SCHEMAS={JM_FS_INPUT:'jm_fs_input_v1',JM_FS_RESULT:'jm_fs_result_v1'}

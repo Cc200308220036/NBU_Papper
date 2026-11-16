@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JM_REV1_FS_ENGINEERING_20261116_01/check_saved_states.py", line 82, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/JEV_JM_REV1_FS_ENGINEERING_20261116_01/check_saved_states.py", line 57, in main
+    raw,identity=g.from_saved_public(sraw,praw,state_sha256=entry['state']['sha256'],
+                 ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+           pool_sha256=entry['pool']['sha256'],mode=mode,contrast=entry['contrast'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_fs_geometry.py", line 178, in from_saved_public
+    validate_schema(old, 'jm_scenario_input_v1')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_fs_geometry.py", line 153, in validate_schema
+    check(value, spec)
+    ~~~~~^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_fs_geometry.py", line 140, in check
+    check(x, s['properties'][k])
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_fs_geometry.py", line 140, in check
+    check(x, s['properties'][k])
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_fs_geometry.py", line 144, in check
+    check(x, s['items'])
+    ~~~~~^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_fs_geometry.py", line 140, in check
+    check(x, s['properties'][k])
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_fs_geometry.py", line 121, in check
+    raise GeometryError('SCHEMA')
+semantic_pallet_planner.jev_select.packaging_fs_geometry.GeometryError: SCHEMA

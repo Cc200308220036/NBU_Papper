@@ -1,0 +1,24 @@
+test_all_categories_denominator_and_order (test_diagnostic.DiagnosticTests) ... ok
+test_exact_height_dedup_area_and_no_fit_relabel (test_diagnostic.DiagnosticTests) ... ok
+test_numeric_and_read_allowlist_failure (test_diagnostic.DiagnosticTests) ... FAIL
+test_permutations_canonical_inventory (test_diagnostic.DiagnosticTests) ... ok
+test_seals_members_bindings_and_tamper (test_diagnostic.DiagnosticTests) ... ok
+test_set_identity_empty_unknown (test_diagnostic.DiagnosticTests) ... ok
+test_unknown_and_missing_not_false (test_diagnostic.DiagnosticTests) ... ok
+
+======================================================================
+FAIL: test_numeric_and_read_allowlist_failure (test_diagnostic.DiagnosticTests)
+----------------------------------------------------------------------
+diagnose.Invalid: PATH_OUTSIDE_ROOT
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/outputs/JEV_JM_DESC_D0_20261116_01/test_diagnostic.py", line 102, in test_numeric_and_read_allowlist_failure
+    with self.assertRaisesRegex(d.Invalid,'MISSING'):reader.read('absent.json')
+AssertionError: "MISSING" does not match "PATH_OUTSIDE_ROOT"
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.006s
+
+FAILED (failures=1)

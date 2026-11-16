@@ -1,0 +1,100 @@
+{
+  "version": "geometry_gp0_configuration_snapshot_v1",
+  "legacy_source": {
+    "path": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/configs/generator_v1.json",
+    "sha256": "3b3da91953a5a839a06f961b507d77e66d061bfaaf19f377eb9d37c563f6f4bb",
+    "pointer": ""
+  },
+  "legacy_generator": {
+    "support_ratio_min": 0.7,
+    "candidate_generator": {
+      "name": "extreme_point_ems_style",
+      "version": "0.1.0",
+      "top_k": 16,
+      "yaw_degrees": [
+        0,
+        90
+      ],
+      "geometry_score_weights": {
+        "compactness": 0.35,
+        "height": 0.25,
+        "stability": 0.25,
+        "balance": 0.15
+      },
+      "epsilon": 0.05,
+      "pose_tolerance_mm": 1
+    }
+  },
+  "new_generator_draft": {
+    "version": "geometry_generator_config_draft_v1",
+    "candidate_backend": "ems_surface_hybrid_v1",
+    "production_registered": false,
+    "runtime_protocol": "jev_packaging_geometry_compare_v14",
+    "geometry_version": "geometry_space_index_v1",
+    "audit_version": "geometry_generation_audit_v1",
+    "buffer_capacity": 3,
+    "yaw_degrees": [
+      0,
+      90
+    ],
+    "per_item_top_k": 16,
+    "joint_top_k": 48,
+    "feature_profile": "F0_existing_facts",
+    "feature_version": "packaging_physical_facts_v1",
+    "prompt_version": "packaging_load_en_v1",
+    "display_order_seed": 20261102,
+    "max_request_bytes": 96000,
+    "numerical_profile": "exact_decimal_rational_then_binary64_original_checks_v1",
+    "publish_quantum_mm": "0.001",
+    "rounding": "HALF_EVEN",
+    "negative_zero": "0",
+    "reducer": "yaw_floor_required_then_joint_group_coverage_v1",
+    "budgets": {
+      "active_spaces": 4096,
+      "space_containment_comparisons": 2000000,
+      "surface_event_cells": 16384,
+      "surface_expansion_cell_checks": 2000000,
+      "raw_point_attempts_per_item": 32768
+    },
+    "source_types": [
+      "EMS_STYLE_3D",
+      "SURFACE_CORNER"
+    ],
+    "points_per_host_yaw_max": 5,
+    "physical_checks": "unchanged evaluate_pose then published-pose evaluate_pose then independent check_candidate",
+    "original_support_ratio_min": 0.7,
+    "geometry_score_weights": {
+      "compactness": 0.35,
+      "height": 0.25,
+      "stability": 0.25,
+      "balance": 0.15
+    },
+    "monitor_algorithm": "pct_exact_pose_network_v3",
+    "monitor_invocation": "SELECTED_ONLY; GP0 NOT_RUN",
+    "cache": "NONE_FOR_NEW_BACKEND",
+    "fallback": "FORBIDDEN",
+    "partial_pool": "FORBIDDEN",
+    "wall_clock_cutoff": false,
+    "authorization": {
+      "stage": "GP0_ONLY",
+      "model_calls": 0,
+      "candidate_generations": 0,
+      "orders": 0,
+      "lp_solves": 0
+    }
+  },
+  "draft_semantic_digest": "8908b37ad1a0993f37b51cf89fbe66aafc3e5479060e60cb5a32ec7aa38421f2",
+  "budget_performance_sufficiency": "NOT_MEASURED",
+  "budget_adjustment": "NONE; retained design initial values; no candidate or benefit evaluation",
+  "budget_counting_rules": {
+    "active_spaces": "simultaneously live 3D/surface/intermediate records peak; copies count, ID references do not; pre-allocation check",
+    "space_containment_comparisons": "each directed predicate invocation, including early failure and all branches",
+    "surface_event_cells": "(nx-1)*(ny-1), check before allocation",
+    "surface_expansion_cell_checks": "each actually read added cell, including repeat and failed strips, both orders/quadrants/directions",
+    "raw_point_attempts_per_item": "before dedup, both sources/yaws/all generated point slots; per item cumulative; ineligible host skips separate",
+    "scope": "state-wide spaces/containment/surface budgets; per-item point budget; no reset by source or branch",
+    "failure": "check next operation before exceeding; atomic ERROR no partial pool or fallback",
+    "wall_clock": "observation only, never truncation",
+    "performance": "NOT_MEASURED"
+  }
+}

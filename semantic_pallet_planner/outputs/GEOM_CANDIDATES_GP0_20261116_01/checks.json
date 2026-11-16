@@ -1,0 +1,122 @@
+{
+  "version": "geometry_gp0_checks_v1",
+  "A00": [
+    {
+      "id": "A00-1",
+      "item": "旧源码/配置/保存输出合同可追溯",
+      "status": "PASS",
+      "kind": "STATIC",
+      "evidence": [
+        "source_manifest.json",
+        "baseline_inventory.json",
+        "config_snapshot.json",
+        "input_manifest.json"
+      ]
+    },
+    {
+      "id": "A00-2",
+      "item": "实际调用链和待修改点清楚",
+      "status": "PASS",
+      "kind": "STATIC_AST_AND_REVIEW",
+      "evidence": [
+        "baseline_inventory.json"
+      ]
+    },
+    {
+      "id": "A00-3",
+      "item": "新旧身份/F0/统计口径分离",
+      "status": "PASS",
+      "kind": "DRAFT_CONSTRAINTS",
+      "evidence": [
+        "protocol_draft.md",
+        "config_snapshot.json"
+      ]
+    },
+    {
+      "id": "A00-4",
+      "item": "数值/预算/失败/恢复合同明确",
+      "status": "PASS",
+      "kind": "DRAFT_CONSTRAINTS",
+      "evidence": [
+        "protocol_draft.md",
+        "config_snapshot.json"
+      ]
+    },
+    {
+      "id": "A00-5",
+      "item": "五状态逐字段来源/缺口/冲突核对",
+      "status": "PASS",
+      "kind": "SAVED_FACTS_ONLY",
+      "evidence": [
+        "input_manifest.json",
+        "inputs/"
+      ]
+    },
+    {
+      "id": "A00-6",
+      "item": "比较计划固定且历史未改写",
+      "status": "PASS",
+      "kind": "STATIC_SAVED_FACTS",
+      "evidence": [
+        "comparison_plan.json",
+        "source_manifest.json",
+        "logs/verification_preseal.log",
+        "logs/git_diff_check.txt"
+      ]
+    }
+  ],
+  "A01": "NOT_RUN",
+  "A02": "NOT_RUN",
+  "A03": "NOT_RUN",
+  "A04": "NOT_RUN",
+  "A05": "NOT_RUN",
+  "A06": "NOT_RUN",
+  "conclusion": "PASS_DEVELOPER_SELF_CHECK_PENDING_INDEPENDENT_QA",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/verify_gp0.py --pre-seal",
+      "scope": "stdlib static and saved-fact verification; no production imports",
+      "log": "logs/verification_preseal.log",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "scope": "tracked textual whitespace; new docs separately checked in seal step",
+      "log": "logs/git_diff_check.txt",
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/verify_gp0.py",
+      "scope": "same checks plus complete delivery seal; read only",
+      "log": "logs/verification_sealed.log",
+      "exit_code": 0
+    }
+  ],
+  "verification_type": "JSON_HASH_AST_POINTER_DRAFT_CONSTRAINTS_ONLY",
+  "production_behavior_tests": "NOT_RUN",
+  "old_regeneration_equivalence": "NOT_RUN",
+  "budget_sufficiency": "NOT_MEASURED",
+  "research_benefit": "NOT_ESTABLISHED",
+  "actual_executable": "/home/cyw/anaconda3/bin/python3",
+  "python": "3.13.5",
+  "forbidden_work_executed": false,
+  "check_attempts": [
+    {
+      "attempt": 1,
+      "status": "FAIL_VERIFICATION_HARNESS",
+      "exit_code": 1,
+      "reason": "shell pre-created redirected .json stdout; verifier tried parsing its own empty log",
+      "correction": "capture stdout as .log outside JSON artifact scan; preserve original stdout/stderr",
+      "stdout": "logs/attempt_01.stdout.txt",
+      "stderr": "logs/attempt_01.stderr.txt"
+    },
+    {
+      "attempt": 2,
+      "status": "PASS_STATIC_SAVED_FACTS_ONLY",
+      "exit_code": 0,
+      "stdout": "logs/verification_preseal.log",
+      "stderr": "logs/verification_preseal.stderr"
+    }
+  ],
+  "verified_field_records": 1409
+}

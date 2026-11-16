@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/verify_gp0.py", line 58, in <module>
+    for p in json_files: load(p)
+                         ~~~~^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/verify_gp0.py", line 32, in load
+    return json.loads(p.read_text(), object_pairs_hook=pairs,
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      parse_float=Decimal if exact else float,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      parse_constant=lambda x: (_ for _ in ()).throw(ValueError(x)))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/anaconda3/lib/python3.13/json/__init__.py", line 359, in loads
+    return cls(**kw).decode(s)
+           ~~~~~~~~~~~~~~~~^^^
+  File "/home/cyw/anaconda3/lib/python3.13/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/anaconda3/lib/python3.13/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)

@@ -1,0 +1,26 @@
+test_hand_rotation_identity_and_sets (test_packaging_fs_geometry.GeometryTests) ... ok
+test_invalid_missing_unknown_and_bindings (test_packaging_fs_geometry.GeometryTests) ... ok
+test_native_budget_and_unknown_does_not_mask_invalid (test_packaging_fs_geometry.GeometryTests) ... ok
+test_order_cache_and_scope_atomic_budget (test_packaging_fs_geometry.GeometryTests) ... ok
+test_output_schema_and_old_interfaces (test_packaging_fs_geometry.GeometryTests) ... ERROR
+test_precision_and_no_floor_snap (test_packaging_fs_geometry.GeometryTests) ... ok
+test_reference_all_maximal_and_ties (test_packaging_fs_geometry.GeometryTests) ... ok
+test_result_maximum_ties_and_rotation_only_fit (test_packaging_fs_geometry.GeometryTests) ... ok
+test_saved_adapter_and_raw_precision (test_packaging_fs_geometry.GeometryTests) ... ok
+test_suspended_clearance_touching_and_height (test_packaging_fs_geometry.GeometryTests) ... ok
+
+======================================================================
+ERROR: test_output_schema_and_old_interfaces (test_packaging_fs_geometry.GeometryTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/tests/unit/test_packaging_fs_geometry.py", line 210, in test_output_schema_and_old_interfaces
+    from semantic_pallet_planner.jev_select import contracts
+  File "/Users/cyw/Desktop/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 54
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+                                                                                                                                   ^
+SyntaxError: f-string: unmatched '('
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.074s
+
+FAILED (errors=1)

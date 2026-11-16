@@ -1,0 +1,84 @@
+{
+  "version": "geometry_gp1_fix_qa_handoff_v1",
+  "date": "2026-11-17",
+  "timezone": "Asia/Shanghai",
+  "stage": "GP1_MINIMAL_FIX",
+  "parent_report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP1数值异常最小整改开发交付_20261117_01.md",
+  "parent_handoff": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_20261117_01/handoff.json",
+  "parent_manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_20261117_01/delivery_manifest.json",
+  "previous_qa": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/handoff.json",
+  "reviewed_delivery": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_20261117_01",
+  "identity": {
+    "developer_entry_and_worktree_delivery_head": "17e13b0153167d854396a9113a683aa5aad841a8",
+    "archival_and_qa_entry_head": "4140f89729191710ccdc447307e14ab752193a1b",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "initial_worktree": "CLEAN",
+    "initial_index": "EMPTY",
+    "source_files": 524,
+    "changed_production_files": [
+      "planner/space_candidates/__init__.py",
+      "planner/space_candidates/contracts.py"
+    ],
+    "unchanged_geometry_files": [
+      "planner/space_candidates/empty_spaces.py",
+      "planner/space_candidates/surface_spaces.py"
+    ],
+    "package_files_excluding_manifest": 15,
+    "external_files": 5,
+    "protected_files": 47,
+    "revision": "numeric_error_boundary_fix_v1",
+    "source_drift_after_delivery": "NONE_OBSERVED",
+    "navigation_policy": "原validator及外部摘要在QA导航更新前核实；其后用4140f897 Git blob定位交付字节，不重签原manifest。"
+  },
+  "qa_report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP1整改独立复核与GP2技术准入_20261117_01.md",
+  "quality_review": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/quality_review.json",
+  "issue_closure": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/issue_closure.json",
+  "next_stage_admission": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/next_stage_admission.json",
+  "delivery_manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/delivery_manifest.json",
+  "evidence": [
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/independent_checks.json",
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/command_receipts.json"
+  ],
+  "conclusions": {
+    "engineering_status": {
+      "status": "PASS",
+      "scope": "GP1/A01限定构造及QA-GP1-E01修复；GP2尚未实现"
+    },
+    "evidence_readiness": {
+      "status": "PASS",
+      "scope": "当前关闭和GP2技术准入所需证据",
+      "historical_archive_gap": "QA-GP0-H01_PARTIAL_NONBLOCKING_UNCHANGED"
+    },
+    "research_result": {
+      "status": "NOT_ESTABLISHED",
+      "candidate_comparison": "NOT_RUN",
+      "whole_order_benefit": "NOT_RUN"
+    },
+    "next_stage_admission": {
+      "status": "READY",
+      "scope": "GP2_ONLY",
+      "qa_executed_gp2": false,
+      "real_model_calls_authorized": 0
+    }
+  },
+  "closed_issue_ids": [
+    "QA-GP1-E01"
+  ],
+  "open_historical_nonblocking": "QA-GP0-H01",
+  "prompt_delivery": "INLINE_FINAL_ONLY",
+  "git": {
+    "commit": "NOT_CREATED",
+    "push": "NOT_RUN",
+    "pull": "NOT_RUN",
+    "add": "NOT_RUN"
+  },
+  "developer_instruction_start": "确认工程/分支/upstream/工作区/暂存区后先git pull --ff-only；确认实际QA文件已同步；不把本地未推送材料声称为已同步。",
+  "not_run": [
+    "GP2-GP6",
+    "公共运行/恢复链路",
+    "候选/原物理/LP/订单/模型"
+  ],
+  "stop": "只完成本轮复核，GP2由用户下发唯一指令；GP2交付后回质检",
+  "stopped": true
+}

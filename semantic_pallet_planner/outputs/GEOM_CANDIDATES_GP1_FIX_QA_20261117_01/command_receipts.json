@@ -1,0 +1,61 @@
+{
+  "version": "geometry_gp1_fix_qa_receipts_v1",
+  "date": "2026-11-17",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 \"$HOME/miniconda3/bin/python3.14\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_20261117_01/verify_fix.py",
+      "result": {
+        "chunk_id": "05e56a",
+        "wall_time_seconds": 0.173094958,
+        "exit_code": 0,
+        "original_token_count": 65,
+        "output": "{\n  \"status\": \"PASS_READ_ONLY_FIX_DELIVERY\",\n  \"source_files\": 524,\n  \"changed\": [\n    \"planner/space_candidates/__init__.py\",\n    \"planner/space_candidates/contracts.py\"\n  ],\n  \"old_failure_preserved\": true,\n  \"qa\": \"PENDING\",\n  \"no_algorithm_rerun\": true\n}\n"
+      },
+      "scope": "原修复包只读身份校验，导航更新前"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/bin/python3.14\" semantic_pallet_planner/tests/unit/test_space_geometry_numeric_errors.py -v",
+      "result": {
+        "chunk_id": "7f6fe6",
+        "wall_time_seconds": 0.000022583,
+        "exit_code": 0,
+        "original_token_count": 101,
+        "output": "test_decimal_exponent_conversion_failures_are_atomic (__main__.NumericErrorRegression.test_decimal_exponent_conversion_failures_are_atomic) ... ok\ntest_normal_positive_and_negative_exponents_keep_geometry (__main__.NumericErrorRegression.test_normal_positive_and_negative_exponents_keep_geometry) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.002s\n\nOK\n"
+      },
+      "scope": "2项数值回归方法，子用例分开说明"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/bin/python3.14\" semantic_pallet_planner/tests/unit/test_space_geometry_gp1.py -v",
+      "result": {
+        "chunk_id": "093ec8",
+        "wall_time_seconds": 0.013539542,
+        "exit_code": 0,
+        "original_token_count": 387,
+        "output": "test_axis_orders_have_expected_different_expansions (__main__.SpaceGeometryGP1.test_axis_orders_have_expected_different_expansions) ... ok\ntest_budget_boundaries_and_all_error_paths (__main__.SpaceGeometryGP1.test_budget_boundaries_and_all_error_paths) ... ok\ntest_deduplicate_then_containment_and_transient_peak (__main__.SpaceGeometryGP1.test_deduplicate_then_containment_and_transient_peak) ... ok\ntest_diagonal_corner_omission_and_boundary (__main__.SpaceGeometryGP1.test_diagonal_corner_omission_and_boundary) ... ok\ntest_empty_and_source_merge (__main__.SpaceGeometryGP1.test_empty_and_source_merge) ... ok\ntest_exact_noninteger_slot_no_rounding (__main__.SpaceGeometryGP1.test_exact_noninteger_slot_no_rounding) ... ok\ntest_full_container_and_order_determinism (__main__.SpaceGeometryGP1.test_full_container_and_order_determinism) ... ok\ntest_invalid_inputs_are_atomic_errors (__main__.SpaceGeometryGP1.test_invalid_inputs_are_atomic_errors) ... ok\ntest_same_height_platform_crosses_box_boundary (__main__.SpaceGeometryGP1.test_same_height_platform_crosses_box_boundary) ... ok\ntest_shared_arena_and_ems_parent_counted_before_release (__main__.SpaceGeometryGP1.test_shared_arena_and_ems_parent_counted_before_release) ... ok\ntest_single_occupied_cube_six_hand_slabs (__main__.SpaceGeometryGP1.test_single_occupied_cube_six_hand_slabs) ... ok\ntest_steps_and_taller_obstacle (__main__.SpaceGeometryGP1.test_steps_and_taller_obstacle) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 0.017s\n\nOK\n"
+      },
+      "scope": "原12项构造，原测试文件未改"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/bin/python3.14\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/verify_fix_independent.py --output semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/independent_checks.json",
+      "result": {
+        "chunk_id": "f185c9",
+        "wall_time_seconds": 0.161656125,
+        "exit_code": 0,
+        "original_token_count": 73,
+        "output": "{\"status\": \"PASS\", \"source_files\": 524, \"changed\": [\"planner/space_candidates/__init__.py\", \"planner/space_candidates/contracts.py\"], \"issue\": \"QA-GP1-E01\", \"input_sha256\": \"967761b37e4c3007670df8e689397ce73f3901726f092a83bb9864174cc7a701\", \"current_outcome\": \"ERROR\", \"normal_controls\": 2}\n"
+      },
+      "scope": "旧同输入直接复验＋2正常完整语义结果＋字节/差异保护"
+    }
+  ],
+  "other_readonly_checks": [
+    "Git状态、分支/upstream、HEAD和相关提交差异",
+    "修复源码/新测试/validator副作用/方案和父QA读取",
+    "git diff --check"
+  ],
+  "not_run": [
+    "旧GP1宽范围validator（已知源码身份变化，不迁就旧清单）",
+    "一次性归档覆盖脚本",
+    "候选/原物理/LP/订单/模型"
+  ],
+  "post_seal_integrity": "verification.json excluded from own manifest to avoid circular hashing"
+}

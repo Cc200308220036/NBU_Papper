@@ -1,0 +1,184 @@
+{
+  "version": "geometry_gp1_fix_quality_review_v1",
+  "date": "2026-11-17",
+  "timezone": "Asia/Shanghai",
+  "stage": "GP1_MINIMAL_FIX",
+  "plan": {
+    "path": "docs/02_阶段实施方案/几何规划模块/几何候选器PCT与GOPT融合改进方案_20261116.md",
+    "version": "geometry_candidate_upgrade_design_v1"
+  },
+  "authorization": "复核已同步QA-GP1-E01整改、必要限定测试和独立入口复验、关闭及GP2技术判断；不开发GP2",
+  "identity": {
+    "developer_entry_and_worktree_delivery_head": "17e13b0153167d854396a9113a683aa5aad841a8",
+    "archival_and_qa_entry_head": "4140f89729191710ccdc447307e14ab752193a1b",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "initial_worktree": "CLEAN",
+    "initial_index": "EMPTY",
+    "source_files": 524,
+    "changed_production_files": [
+      "planner/space_candidates/__init__.py",
+      "planner/space_candidates/contracts.py"
+    ],
+    "unchanged_geometry_files": [
+      "planner/space_candidates/empty_spaces.py",
+      "planner/space_candidates/surface_spaces.py"
+    ],
+    "package_files_excluding_manifest": 15,
+    "external_files": 5,
+    "protected_files": 47,
+    "revision": "numeric_error_boundary_fix_v1",
+    "source_drift_after_delivery": "NONE_OBSERVED",
+    "navigation_policy": "原validator及外部摘要在QA导航更新前核实；其后用4140f897 Git blob定位交付字节，不重签原manifest。"
+  },
+  "four_fact_layers": {
+    "reported": "修复及2/12回归，开发端待独立质检",
+    "source": "2处预期数值异常处理，其他算法/旧物理/预算/运行路由保留",
+    "archive": "修复前FAIL与后结果、原源码/日志/FAIL及新身份清单保存",
+    "local": "原修复validator、2方法、12方法均通过；独立旧同输入及2正常归档完整比较通过"
+  },
+  "acceptance_items": [
+    {
+      "item": "原QA同输入结构化ERROR",
+      "status": "PASS",
+      "reported": "PASS",
+      "source": "预期数值解析异常转GeometryError及公开入口明确数值兜底",
+      "archive": "修复前后同SHA输入及结果",
+      "local": "从旧QA原字节调用当前入口，完整返回与after_fix归档相等",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/independent_checks.json"
+    },
+    {
+      "item": "按异常类别修复而非词素特判",
+      "status": "PASS",
+      "reported": "4个异常子用例",
+      "source": "DecimalException/OverflowError家族，无任意Exception吞错",
+      "archive": "新增回归及日志",
+      "local": "2方法回归通过，4子例不重复计数",
+      "limits": "未逐一故障注入所有其他数值兜底"
+    },
+    {
+      "item": "正常数值和完整几何结果保持",
+      "status": "PASS",
+      "reported": "3对正常指数控制",
+      "source": "切分/表面/预算未改",
+      "archive": "旧empty/overhead完整结果",
+      "local": "新增正常控制及独立2场景完整语义对象比较（仅source字节哈希另计）",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/independent_checks.json#/normal_result_comparisons"
+    },
+    {
+      "item": "GP1几何/确定性/预算回归",
+      "status": "PASS",
+      "reported": "原12方法通过",
+      "source": "原测试与几何算法SHA不变",
+      "archive": "原GP1及上轮六场景独立证据保留",
+      "local": "本轮原12方法实际通过",
+      "limits": "限定小构造，复杂状态充分性UNKNOWN"
+    },
+    {
+      "item": "原件、差异和冻结身份",
+      "status": "PASS",
+      "reported": "2源码文件变更、不重签旧清单",
+      "source": "524文件相同宇宙、仅2文件改变",
+      "archive": "15包内/5外部/47保护引用一致；旧FAIL保留",
+      "local": "原validator及独立SHA范围核实",
+      "limits": "未认证全部历史执行真实性"
+    }
+  ],
+  "issue_closures": [
+    {
+      "id": "QA-GP1-E01",
+      "previous_status": "OPEN_BLOCKING",
+      "previous_qa": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/issues.json",
+      "previous_evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/independent_checks.json#/numeric_error_probe",
+      "status": "CLOSED",
+      "date": "2026-11-17",
+      "scope": "公开空间入口原Decimal解析反例及同异常类别",
+      "source": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/contracts.py",
+          "symbol": "parse_input",
+          "line": 114
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/__init__.py",
+          "symbol": "_build_space_index",
+          "line": 41
+        }
+      ],
+      "input_sha256": "967761b37e4c3007670df8e689397ce73f3901726f092a83bb9864174cc7a701",
+      "actual": "旧QA原输入在当前公开入口返回ERROR/UNSUPPORTED_GEOMETRY_NUMBER，spaces=[]，surface=null，input_digest=null；与修复后完整归档对象相等。",
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/independent_checks.json",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/command_receipts.json"
+      ],
+      "history_protection": "旧QA FAIL及开发端修复前FAIL原件均保留，不修改旧issues状态或历史清单",
+      "validation_limits": "Decimal解析异常类与正常控制；公开其他数值兜底分支未逐一故障注入，不宣称全数值/OS异常穷尽验证。"
+    }
+  ],
+  "acceptance_summary": {
+    "A01": "PASS",
+    "formal_status": "PASS",
+    "scope": "既定GP1小构造和原数值失败类别",
+    "A02": "NOT_RUN",
+    "A03": "NOT_RUN",
+    "A04": "NOT_RUN",
+    "A05": "NOT_RUN",
+    "A06": "NOT_RUN"
+  },
+  "conclusions": {
+    "engineering_status": {
+      "status": "PASS",
+      "scope": "GP1/A01限定构造及QA-GP1-E01修复；GP2尚未实现"
+    },
+    "evidence_readiness": {
+      "status": "PASS",
+      "scope": "当前关闭和GP2技术准入所需证据",
+      "historical_archive_gap": "QA-GP0-H01_PARTIAL_NONBLOCKING_UNCHANGED"
+    },
+    "research_result": {
+      "status": "NOT_ESTABLISHED",
+      "candidate_comparison": "NOT_RUN",
+      "whole_order_benefit": "NOT_RUN"
+    },
+    "next_stage_admission": {
+      "status": "READY",
+      "scope": "GP2_ONLY",
+      "qa_executed_gp2": false,
+      "real_model_calls_authorized": 0
+    }
+  },
+  "execution_boundary": {
+    "original_fix_validator_runs": 1,
+    "new_numeric_test_methods": 2,
+    "original_gp1_test_methods": 12,
+    "independent_original_input_calls": 1,
+    "independent_normal_archive_comparisons": 2,
+    "space_index_calls_inside_test_suites": "NOT_COUNTED",
+    "candidate_generation": 0,
+    "physical_admission": 0,
+    "LP": 0,
+    "orders": 0,
+    "forks": 0,
+    "models": 0,
+    "credential_reads": 0,
+    "dependency_installs": 0,
+    "subagents": 0,
+    "git_pull": 0,
+    "git_add": 0,
+    "git_commit": 0,
+    "git_push": 0
+  },
+  "limitations": [
+    "仅模块公开入口与限定构造，不是公共订单链路生产复现",
+    "不证明GP2候选、GP3运行或研究收益",
+    "旧QA-GP0-H01历史归档PARTIAL沿用",
+    "其他预期数值兜底路径未逐一故障注入，不宣称全异常穷尽"
+  ],
+  "review_independence": "本窗口曾制定阶段任务和原反例，不声称盲评",
+  "evidence": [
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/independent_checks.json",
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/command_receipts.json",
+    "docs/03_阶段产出分析/几何规划模块/几何候选器GP1整改独立复核与GP2技术准入_20261117_01.md"
+  ],
+  "stopped": true
+}

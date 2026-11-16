@@ -1,0 +1,53 @@
+{
+  "version": "geometry_gp2_admission_after_gp1_fix_v1",
+  "date": "2026-11-17",
+  "from_stage": "GP1",
+  "target_stage": "GP2",
+  "status": "READY",
+  "scope": "GP2_ONLY_ACTIONS_PHYSICAL_CHECKS_AND_REDUCTION",
+  "prerequisites": [
+    {
+      "requirement": "GP0设计/公开输入基线可定位",
+      "status": "PASS",
+      "evidence": "GP0/QA02及保护引用；既有静态范围"
+    },
+    {
+      "requirement": "GP1空间几何和已测预算可用",
+      "status": "PASS",
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/command_receipts.json",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/independent_checks.json#/normal_result_comparisons",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/independent_checks.json#/archived_geometry"
+      ],
+      "limits": "小构造，无复杂性能保证"
+    },
+    {
+      "requirement": "原数值失败合同闭合",
+      "status": "PASS",
+      "issue_id": "QA-GP1-E01",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/independent_checks.json"
+    },
+    {
+      "requirement": "源码/原件保护和后续范围明确",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/independent_checks.json"
+    }
+  ],
+  "allowed_work": [
+    "单独可调用的精确动作生成与原物理检查复用",
+    "语义动作去重、来源/host合并和16/48压缩",
+    "必要独立配置/输入适配/审计合同及小构造验证",
+    "GP2新源码身份/报告/原始有效池和最终池审计"
+  ],
+  "not_allowed": [
+    "GP3公共provider/配置Schema路由/episode/恢复接入",
+    "GP4固定五状态新旧候选比较",
+    "GP5-GP6完整订单/模型",
+    "PCT预评/诊断注入、改旧物理/预算/Schema、回退或重签旧身份"
+  ],
+  "expected_exit": "A02原检查和独立检查同时通过，pose精确一致、无PCT、有界确定无重复、≤16/48、必保留组成立，交回质检",
+  "implementation_authorization": "TECHNICAL_ADMISSION; USER_DISPATCHES_DEVELOPMENT_INSTRUCTION",
+  "real_model_calls_authorized": 0,
+  "qa_executed_gp2": false,
+  "stopped": true
+}

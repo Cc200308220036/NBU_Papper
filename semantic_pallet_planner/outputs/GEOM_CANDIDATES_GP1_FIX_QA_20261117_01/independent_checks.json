@@ -1,0 +1,116 @@
+{
+  "version": "geometry_gp1_fix_independent_closure_v1",
+  "date": "2026-11-17",
+  "timezone": "Asia/Shanghai",
+  "head": "4140f89729191710ccdc447307e14ab752193a1b",
+  "python": "3.14.10",
+  "status": "PASS",
+  "issue_id": "QA-GP1-E01",
+  "package_files": 15,
+  "external_delivery_snapshots": [
+    {
+      "path": "docs/03_阶段产出分析/几何规划模块/几何候选器GP1数值异常最小整改开发交付_20261117_01.md",
+      "sha256": "d76d6a3a3c5a910fc209224c388979cca24bd4374ed322daa456bd604fbcf973",
+      "delivery_commit": "4140f89729191710ccdc447307e14ab752193a1b"
+    },
+    {
+      "path": "docs/03_阶段产出分析/几何规划模块/README.md",
+      "sha256": "c33d50725ea54aa1c6d7eda0dcaefc59b5438709111edd992156c52524402a54",
+      "delivery_commit": "4140f89729191710ccdc447307e14ab752193a1b"
+    },
+    {
+      "path": "semantic_pallet_planner/tests/unit/test_space_geometry_numeric_errors.py",
+      "sha256": "3b5e601349020f5496feeb3b642e3a6373c60bd6305ace43f42e1757c18be749",
+      "delivery_commit": "4140f89729191710ccdc447307e14ab752193a1b"
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/__init__.py",
+      "sha256": "e57e2c19b716d9c90f336a79c975bf0858ea992170a09eb9e6d77b181dcb58ea",
+      "delivery_commit": "4140f89729191710ccdc447307e14ab752193a1b"
+    },
+    {
+      "path": "semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/contracts.py",
+      "sha256": "949d8a493f2abce6927f57d0b4c3ceefd637ddbf9d6b895f5065c15484baba88",
+      "delivery_commit": "4140f89729191710ccdc447307e14ab752193a1b"
+    }
+  ],
+  "source_files": 524,
+  "changed_production_files": [
+    "planner/space_candidates/__init__.py",
+    "planner/space_candidates/contracts.py"
+  ],
+  "protected_files_verified": 47,
+  "old_qa_failure_preserved": true,
+  "developer_before_failure_preserved": true,
+  "input_sha256": "967761b37e4c3007670df8e689397ce73f3901726f092a83bb9864174cc7a701",
+  "current_public_result": {
+    "version": "geometry_space_index_v1",
+    "algorithm": "ems_surface_geometry_v1",
+    "status": "ERROR",
+    "input_digest": null,
+    "config_digest": "8711b223a6634735350a411a3ec1b2391d6f0c4e521f09f57499fbf9acdc499c",
+    "spaces": [],
+    "surface": null,
+    "error": {
+      "code": "UNSUPPORTED_GEOMETRY_NUMBER",
+      "detail": "numeric JSON conversion failed"
+    },
+    "budget_usage": {
+      "limits": {
+        "active_spaces": 4096,
+        "space_containment_comparisons": 2000000,
+        "surface_event_cells": 16384,
+        "surface_expansion_cell_checks": 2000000,
+        "raw_point_attempts_per_item": 32768
+      },
+      "used": {
+        "active_spaces": 0,
+        "space_containment_comparisons": 0,
+        "surface_event_cells": 0,
+        "surface_expansion_cell_checks": 0
+      },
+      "observed": {
+        "aabb_checks": 0,
+        "height_occupancy_checks": 0,
+        "surface_seeds": 0,
+        "surface_zero_height_skips": 0,
+        "surface_proposals": 0,
+        "duplicate_space_references": 0
+      },
+      "raw_point_attempts": "NOT_RUN_GP2",
+      "wall_clock_cutoff": false
+    },
+    "source_bytes_sha256": "967761b37e4c3007670df8e689397ce73f3901726f092a83bb9864174cc7a701",
+    "semantic_digest": "8f3d19905052a4aa7b0b56cf57634d923f75e1bb884da31553215a4ac997d8cd"
+  },
+  "matches_archived_after_fix_result": true,
+  "normal_result_comparisons": [
+    {
+      "scene": "empty",
+      "status": "PASS",
+      "comparison": "complete result except source-byte hash",
+      "saved_input_sha256": "2be463010947912f442ae29e5986de081d5ce8430d0c4232402fdf8121ba2766",
+      "semantic_digest": "5d3f8fd2993683c765ef01eee6e239cf480d5cacff169cee4cedf4476bce002d"
+    },
+    {
+      "scene": "overhead_cavity",
+      "status": "PASS",
+      "comparison": "complete result except source-byte hash",
+      "saved_input_sha256": "49ab0a1682e08299127e4c0a1d674bb2bc6e29d7ac641d1f95fb1fb8a17f0e1c",
+      "semantic_digest": "768d5d6df12033c350b7b7ed8e83e9bad3342f08c6712def570f2e87528151be"
+    }
+  ],
+  "boundary": {
+    "source_entry": "current public build_space_index",
+    "stubs": false,
+    "budget_overrides": false,
+    "schema_replacement": false,
+    "candidate_generation": 0,
+    "physical_admission": 0,
+    "orders": 0,
+    "forks": 0,
+    "LP": 0,
+    "model_calls": 0
+  },
+  "limits": "Closure of the reported Decimal parsing class; not exhaustive numeric/OS exception coverage, production runner integration or order benefit."
+}

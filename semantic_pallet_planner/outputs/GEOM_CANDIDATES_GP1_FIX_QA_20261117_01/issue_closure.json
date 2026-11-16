@@ -1,0 +1,34 @@
+{
+  "version": "geometry_gp1_issue_closure_v1",
+  "closures": [
+    {
+      "id": "QA-GP1-E01",
+      "previous_status": "OPEN_BLOCKING",
+      "previous_qa": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/issues.json",
+      "previous_evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_QA_20261117_01/independent_checks.json#/numeric_error_probe",
+      "status": "CLOSED",
+      "date": "2026-11-17",
+      "scope": "公开空间入口原Decimal解析反例及同异常类别",
+      "source": [
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/contracts.py",
+          "symbol": "parse_input",
+          "line": 114
+        },
+        {
+          "path": "semantic_pallet_planner/src/semantic_pallet_planner/planner/space_candidates/__init__.py",
+          "symbol": "_build_space_index",
+          "line": 41
+        }
+      ],
+      "input_sha256": "967761b37e4c3007670df8e689397ce73f3901726f092a83bb9864174cc7a701",
+      "actual": "旧QA原输入在当前公开入口返回ERROR/UNSUPPORTED_GEOMETRY_NUMBER，spaces=[]，surface=null，input_digest=null；与修复后完整归档对象相等。",
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/independent_checks.json",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_QA_20261117_01/command_receipts.json"
+      ],
+      "history_protection": "旧QA FAIL及开发端修复前FAIL原件均保留，不修改旧issues状态或历史清单",
+      "validation_limits": "Decimal解析异常类与正常控制；公开其他数值兜底分支未逐一故障注入，不宣称全数值/OS异常穷尽验证。"
+    }
+  ]
+}

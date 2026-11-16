@@ -1,5 +1,6 @@
 """Independent GP1 space index; not registered as an online candidate backend."""
 import hashlib
+from decimal import DecimalException
 from .contracts import ALGORITHM, VERSION, Budget, GeometryError, digest, parse_input
 from .empty_spaces import empty_spaces
 from .surface_spaces import surface_spaces
@@ -37,6 +38,12 @@ def _build_space_index(raw, budget):
     except GeometryError as exc:
         result.update(status='ERROR', spaces=[], surface=None,
                       error={'code': exc.code, 'detail': exc.detail})
+    except (DecimalException, OverflowError) as exc:
+        # Expected numeric conversion failures are technical errors, not empty
+        # geometry. Do not catch arbitrary exceptions from algorithm defects.
+        result.update(status='ERROR', spaces=[], surface=None,
+                      error={'code': 'UNSUPPORTED_GEOMETRY_NUMBER',
+                             'detail': 'numeric conversion failed: ' + type(exc).__name__})
     result['budget_usage'] = budget.snapshot()
     # Byte identity separate from normalized, sorted semantic input identity.
     result['source_bytes_sha256'] = hashlib.sha256(raw).hexdigest() if type(raw) is bytes else None

@@ -1,0 +1,78 @@
+{
+  "version": "geometry_gp1_fix_checks_v1",
+  "issue_id": "QA-GP1-E01",
+  "developer_status": "FIXED_PENDING_INDEPENDENT_QA",
+  "items": [
+    {
+      "item": "QA original input after-fix atomic ERROR",
+      "status": "PASS",
+      "evidence": "after_fix_probe.json"
+    },
+    {
+      "item": "class-level positive/negative exponent rejections",
+      "status": "PASS",
+      "evidence": "logs/numeric.stderr.log"
+    },
+    {
+      "item": "normal exponent/plain-value semantic controls",
+      "status": "PASS",
+      "evidence": "logs/numeric.stderr.log"
+    },
+    {
+      "item": "original12 geometry/determinism/budget regression",
+      "status": "PASS",
+      "evidence": "logs/original12.stderr.log"
+    },
+    {
+      "item": "original FAIL/source/protection preserved",
+      "status": "PASS",
+      "evidence": "before_fix_probe.json and source_manifest.json"
+    },
+    {
+      "item": "minimum tracked text diff check",
+      "status": "PASS",
+      "evidence": "logs/git_diff_check.log"
+    }
+  ],
+  "before_fix_status": "FAIL_CONFIRMED_BEFORE_FIX",
+  "independent_qa": "PENDING",
+  "GP2": "NOT_RUN_NOT_ADMITTED",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/tests/unit/test_space_geometry_numeric_errors.py -v",
+      "exit_code": 0,
+      "stdout": "logs/numeric.stdout.log",
+      "stderr": "logs/numeric.stderr.log",
+      "methods": 2
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/tests/unit/test_space_geometry_gp1.py -v",
+      "exit_code": 0,
+      "stdout": "logs/original12.stdout.log",
+      "stderr": "logs/original12.stderr.log",
+      "methods": 12
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "stdout": "logs/git_diff_check.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP1_FIX_20261117_01/verify_fix.py",
+      "scope": "read-only delivery verification; stdout returned to caller",
+      "exit_code": 0,
+      "stdout": "logs/delivery_verification.log",
+      "log_scope": "actual sealed verification; final resealed invocation returned to caller"
+    }
+  ],
+  "python": "3.13.5",
+  "not_run": [
+    "candidate generation",
+    "physical admission",
+    "LP",
+    "orders",
+    "forks",
+    "models",
+    "GP2-GP6"
+  ]
+}

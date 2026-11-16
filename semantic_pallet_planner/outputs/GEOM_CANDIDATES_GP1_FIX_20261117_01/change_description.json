@@ -1,0 +1,22 @@
+{
+  "version": "geometry_gp1_numeric_fix_v1",
+  "issue_id": "QA-GP1-E01",
+  "developer_status": "FIXED_PENDING_INDEPENDENT_QA",
+  "requirement": "Expected numeric parsing/conversion exception -> structured atomic technical ERROR",
+  "implementation": [
+    "parse_input: DecimalException/OverflowError -> GeometryError(UNSUPPORTED_GEOMETRY_NUMBER)",
+    "public try boundary: expected DecimalException/OverflowError -> ERROR, no partial spaces/surface"
+  ],
+  "not_changed": [
+    "geometry algorithms",
+    "default budgets",
+    "physical tolerances",
+    "old schemas/data",
+    "old test",
+    "historical evidence"
+  ],
+  "no_literal_special_case": true,
+  "no_broad_exception_catch": true,
+  "no_fallback": true,
+  "validation_limit": "public JSON Decimal failure class and normal controls plus original12; other public numeric fallback paths not fault-injected"
+}

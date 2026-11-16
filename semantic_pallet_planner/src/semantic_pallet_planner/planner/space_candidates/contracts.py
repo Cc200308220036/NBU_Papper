@@ -4,7 +4,7 @@ Input is a closed geometry-only JSON byte envelope, never a checkpoint.
 All algorithm coordinates are Fractions parsed from original decimal lexemes.
 """
 from dataclasses import dataclass, field
-from decimal import Decimal
+from decimal import Decimal, DecimalException
 from fractions import Fraction
 import hashlib
 import json
@@ -111,6 +111,8 @@ def parse_input(raw):
     try:
         value = json.loads(raw, parse_float=Decimal, object_pairs_hook=pairs,
                            parse_constant=invalid_constant)
+    except (DecimalException, OverflowError) as exc:
+        raise GeometryError('UNSUPPORTED_GEOMETRY_NUMBER', 'numeric JSON conversion failed') from exc
     except (ValueError, UnicodeError) as exc:
         if isinstance(exc, GeometryError):
             raise

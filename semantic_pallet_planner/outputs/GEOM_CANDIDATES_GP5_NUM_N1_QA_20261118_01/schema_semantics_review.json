@@ -1,0 +1,79 @@
+{
+  "issue": "GP5-NUM-N1-SCHEMA-01",
+  "status": "CONFIRMED_STATIC_DEFECT",
+  "old_field": {
+    "type": [
+      "string",
+      "null"
+    ]
+  },
+  "new_field": {
+    "type": [
+      "string",
+      "null"
+    ],
+    "pattern": "^GP5N3_[0-9a-f]{64}$"
+  },
+  "literal": "synth_1",
+  "new_pattern_matches": false,
+  "source_semantics": "monitor.py exception result candidate_id=candidate.pick_item_id; exact adapter/test double box ID unchanged",
+  "published_candidate_id_regex_locations": [
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v17.schema.json",
+      "pointer": "/properties/physical_candidates/items/properties/candidate_id"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/candidate_bundle_v17.schema.json",
+      "pointer": "/properties/selectable_candidates/items/properties/candidate_id"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v17.schema.json",
+      "pointer": "/$defs/bundle/properties/physical_candidates/items/properties/candidate_id"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v17.schema.json",
+      "pointer": "/$defs/bundle/properties/selectable_candidates/items/properties/candidate_id"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v17.schema.json",
+      "pointer": "/$defs/context/properties/display_mapping/patternProperties/^C(?:0[1-9]|[1-3][0-9]|4[0-8])$/properties/candidate_id"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v17.schema.json",
+      "pointer": "/$defs/selection/properties/selected_candidate_id"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v17.schema.json",
+      "pointer": "/$defs/selection/allOf/0/then/properties/selected_candidate_id"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v17.schema.json",
+      "pointer": "/$defs/selection/allOf/0/else/properties/selected_candidate_id"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v17.schema.json",
+      "pointer": "/$defs/action/properties/candidate_id"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/checkpoint_v17.schema.json",
+      "pointer": "/$defs/monitor_result/properties/candidate_id"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/decision_context_v17.schema.json",
+      "pointer": "/properties/display_mapping/patternProperties/^C(?:0[1-9]|[1-3][0-9]|4[0-8])$/properties/candidate_id"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v17.schema.json",
+      "pointer": "/properties/selected_candidate_id"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v17.schema.json",
+      "pointer": "/allOf/0/then/properties/selected_candidate_id"
+    },
+    {
+      "file": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/schemas/selection_result_v17.schema.json",
+      "pointer": "/allOf/0/else/properties/selected_candidate_id"
+    }
+  ],
+  "limits": "stdlib field/regex inspection, not a production monitor or full checkpoint validation; MONITORED in-memory row not reconstructed"
+}

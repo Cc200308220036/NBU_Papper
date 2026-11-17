@@ -4,6 +4,7 @@
 
 | 报告 | 范围与状态 |
 |---|---|
+| [GP5-NUM-N1独立质检与Schema最小整改](几何候选器GP5-NUM-N1独立质检与Schema最小整改_20261118_01.md) | N1 PARTIAL、首合成job FAIL/其余7 NOT_RUN；确认monitor结果箱体ID误套候选ID正则。DOC-01限定关闭；仅Schema修复及独立目录原矩阵限定复验，NUM-01 OPEN、A03 PARTIAL、P2/正式8job NOT_READY。 |
 | [GP5-NUM-N0-R1独立复核与N1限定实现准入](几何候选器GP5-NUM-N0-R1独立复核与N1限定实现准入_20261117_01.md) | ID-01设计限定关闭；先统一清单残留v2字段后，NUM-N1独立v17桥接及合成替身实现CONDITIONAL。NUM-01仍OPEN，A03 PARTIAL，P2/正式8job NOT_READY。 |
 | [GP5-NUM-N0独立质检与身份链最小整改](几何候选器GP5-NUM-N0独立质检与身份链最小整改_20261117_01.md) | N0设计PARTIAL；主体桥接/数值/版本/恢复设计明确，ID-01传递摘要依赖歧义阻断实现。仅身份链设计最小整改CONDITIONAL，NUM-01 OPEN，数值实施/P2/8job NOT_READY。 |
 | [GP5-P1-R1独立复核与数值设计定稿准入](几何候选器GP5-P1-R1独立复核与数值设计定稿准入_20261117_01.md) | R1限定PASS，REC/SCHEMA/MET在实现及合同/替身范围关闭；NUM-01仍OPEN。下一步仅数值边界设计定稿CONDITIONAL，数值代码/P2/8job未准入，A03 PARTIAL。 |

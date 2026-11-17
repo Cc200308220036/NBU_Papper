@@ -1,0 +1,27 @@
+{
+  "failures": [
+    {
+      "category": "TEST_HARNESS",
+      "exit": 1,
+      "finding": "helper tried to build old observation after deleting mass; KeyError before adapter",
+      "fix": "pass an already valid observation to capture against the invalid current state",
+      "log": "n1_tests_01.log"
+    },
+    {
+      "category": "TEST_EXPECTATION",
+      "exit": 1,
+      "finding": "smallest-subnormal scene returned normal OK_EMPTY; it was not guaranteed to reach nonzero-underflow boundary",
+      "fix": "exercise actual exact-to-physical conversion helper; preserve original physics and normal-empty classification",
+      "log": "n1_tests_03.log"
+    }
+  ],
+  "original_physical_tolerance_changes": false,
+  "production_robustness_changes": [
+    "validate config before dereferencing fields",
+    "sanitize unencodable invalid binding audit",
+    "string-key validation for closed native objects"
+  ],
+  "raw_stderr": "unmodified full unittest logs retained",
+  "real_negative_case": "cases/real_height_disagreement/result.json",
+  "version": "geometry_n1_failure_analysis_v1"
+}

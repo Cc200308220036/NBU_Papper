@@ -1,0 +1,108 @@
+{
+  "commands": [
+    {
+      "command": "git pull --ff-only",
+      "exit_code": 0,
+      "from": "6ee35e2976fada67da6edb2c44d1da51544671a6",
+      "mode": "require_escalated; explicit user request, known .git write restriction",
+      "output": "Fast-forward",
+      "to": "0f27f8c0b2e7520ae0c5ddac0b3ddf64e1f2ade0"
+    },
+    {
+      "command": "git diff 6ee35e2976fada67da6edb2c44d1da51544671a6 --stat -- semantic_pallet_planner/src",
+      "exit_code": 0,
+      "output": "",
+      "when": "after pull before edits"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_runtime_n1.py -v",
+      "log_runs": [
+        {
+          "exit_code": 1,
+          "path": "n1_tests_01.log",
+          "reason": "invalid observation test helper ran before adapter"
+        },
+        {
+          "exit_code": 0,
+          "path": "n1_tests_02.log",
+          "tests": 10
+        },
+        {
+          "exit_code": 1,
+          "path": "n1_tests_03.log",
+          "reason": "incorrect assumption that smallest-subnormal scene must hit underflow"
+        },
+        {
+          "exit_code": 0,
+          "path": "n1_tests_04.log",
+          "tests": 13
+        },
+        {
+          "exit_code": 0,
+          "path": "n1_tests_final.log",
+          "tests": 13
+        },
+        {
+          "exit_code": 0,
+          "path": "n1_tests_delivery.log",
+          "tests": 13
+        }
+      ],
+      "redirection": "each run > the listed output-package log 2>&1"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_space_candidates_gp2.py -v",
+      "exit_codes": [
+        0,
+        0,
+        0
+      ],
+      "logs": [
+        "legacy_regression.log",
+        "legacy_regression_final.log",
+        "legacy_regression_delivery.log"
+      ],
+      "tests_each": 13
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N1_20261117_01/collect_evidence.py",
+      "exit_codes": [
+        0,
+        0,
+        0
+      ],
+      "logs": [
+        "collection_01.log",
+        "collection_final.log",
+        "collection_delivery.log"
+      ],
+      "scope_change": "first collection six scenes; final adds negative-zero current-state fixture and capture-only exact conflict; own package overwritten before sealing only"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N1_20261117_01/verify_delivery.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N1_20261117_01/verification.log 2>&1",
+      "exit_code": 0,
+      "scope": "stdlib read-only files/bytes/audit identity, no production calls"
+    }
+  ],
+  "git_add_commit_push": "NOT_RUN",
+  "installs": "NONE",
+  "python": "CPython 3.13.5",
+  "read_only_inspection_notes": [
+    "An initially guessed test filename and o4 schema directory did not exist; rg located actual files, no test was run at guessed paths.",
+    "A tail display command failed due argument parsing; test command exits and full saved logs were inspected independently."
+  ],
+  "repository_preflight": {
+    "branch": "dev/jev-select",
+    "index": "EMPTY",
+    "root": "NBU_Papper",
+    "upstream": "origin/dev/jev-select",
+    "worktree": "CLEAN"
+  },
+  "sensitive_access": "NONE",
+  "subagents": 0,
+  "version": "geometry_n1_commands_v1"
+}

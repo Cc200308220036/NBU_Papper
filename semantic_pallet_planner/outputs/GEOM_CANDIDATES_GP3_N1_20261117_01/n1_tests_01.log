@@ -1,0 +1,41 @@
+test_duplicate_keys_and_numeric_conversion_boundaries (test_geometry_runtime_n1.RuntimeN1.test_duplicate_keys_and_numeric_conversion_boundaries) ... ok
+test_empty_and_real_height_error_not_fallback (test_geometry_runtime_n1.RuntimeN1.test_empty_and_real_height_error_not_fallback) ... ok
+test_external_state_type_sign_and_ulp_drift (test_geometry_runtime_n1.RuntimeN1.test_external_state_type_sign_and_ulp_drift) ... ok
+test_leaf_derivation_even_with_rehashed_geometry (test_geometry_runtime_n1.RuntimeN1.test_leaf_derivation_even_with_rehashed_geometry) ... ok
+test_missing_wrong_types_and_no_defaults (test_geometry_runtime_n1.RuntimeN1.test_missing_wrong_types_and_no_defaults) ... ERROR
+test_native_bits_types_and_closed_projection (test_geometry_runtime_n1.RuntimeN1.test_native_bits_types_and_closed_projection) ... ok
+test_profile_identity_and_each_frozen_dimension_drift (test_geometry_runtime_n1.RuntimeN1.test_profile_identity_and_each_frozen_dimension_drift) ... ok
+test_profile_math_without_snapping (test_geometry_runtime_n1.RuntimeN1.test_profile_math_without_snapping) ... ok
+test_runtime_generation_and_original_entry_is_not_used (test_geometry_runtime_n1.RuntimeN1.test_runtime_generation_and_original_entry_is_not_used) ... ok
+test_saved_and_rebuilt_ledger_are_separate (test_geometry_runtime_n1.RuntimeN1.test_saved_and_rebuilt_ledger_are_separate) ... ok
+
+======================================================================
+ERROR: test_missing_wrong_types_and_no_defaults (test_geometry_runtime_n1.RuntimeN1.test_missing_wrong_types_and_no_defaults)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_runtime_n1.py", line 85, in test_missing_wrong_types_and_no_defaults
+    self.rejected(lambda:snapshot(s),'RUNTIME_INPUT_MISSING_FIELD')
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_runtime_n1.py", line 60, in rejected
+    call()
+    ~~~~^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_runtime_n1.py", line 85, in <lambda>
+    self.rejected(lambda:snapshot(s),'RUNTIME_INPUT_MISSING_FIELD')
+                         ~~~~~~~~^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_runtime_n1.py", line 49, in snapshot
+    return capture(s,observation(s,INSTRUCTION,[]),profile=c.PROFILE,identities=IDENTITIES)
+                     ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/o4/extensions/e2/protocol.py", line 121, in observation
+    req = legacy_observation(state, text)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/o4/buffer/buffer_state.py", line 46, in observation
+    'available_objects':[public_object(i,s['attributes'][i['item_id']]) for i in case['available_items']],
+                         ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/o4/observation.py", line 22, in public_object
+    out = {key: copy.deepcopy(item[key]) for key in ('mass_kg','dimensions_mm','stackable','fragile','weight_class')}
+                              ~~~~^^^^^
+KeyError: 'mass_kg'
+
+----------------------------------------------------------------------
+Ran 10 tests in 1.580s
+
+FAILED (errors=1)

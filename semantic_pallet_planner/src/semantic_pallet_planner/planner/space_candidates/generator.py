@@ -38,6 +38,19 @@ def _finite_tree(value):
         for v in value: _finite_tree(v)
 
 
+def _physical_number(value, runtime):
+    """Runtime exact arithmetic must not silently underflow at original physics."""
+    try:
+        result = float(value)
+    except OverflowError:
+        if runtime:
+            raise GeometryError('RUNTIME_NUMBER_UNREPRESENTABLE', 'geometry binary64 overflow')
+        raise
+    if runtime and (not math.isfinite(result) or (value != 0 and result == 0)):
+        raise GeometryError('RUNTIME_NUMBER_UNREPRESENTABLE', 'geometry binary64 overflow/underflow')
+    return result
+
+
 def generate(raw):
     """geometry_physical_input_v1 JSON bytes -> atomic result and independent sidecar.
 
@@ -49,7 +62,21 @@ def generate(raw):
 
 def _generate(raw, *, _point_limit=None):
     """Reduced point limit is a labelled test-only fault injection, not config."""
-    audit={'version':'geometry_generation_audit_v1','adapter':ADAPTER,
+    return _generation_core(raw, adapt_input=adapt, _point_limit=_point_limit)
+
+
+def _generation_core(raw, *, adapt_input, identity_namespace='original_lexemes_v1',
+                     _point_limit=None):
+    """The sole proposal/check/reduction engine shared by the two source contracts.
+
+    adapt_input returns (exact view, native physical view, exact state, internal
+    geometry bytes, input identity). Runtime wrappers never call the old adapt.
+    """
+    if identity_namespace not in ('original_lexemes_v1','runtime_snapshot_v1'):
+        raise GeometryError('INVALID_GEOMETRY_INPUT', 'unknown core source contract')
+    runtime = identity_namespace == 'runtime_snapshot_v1'
+    audit={'version':'geometry_runtime_generation_audit_v1' if runtime else 'geometry_generation_audit_v1',
+           'adapter':'geometry_runtime_snapshot_adapter_v1' if runtime else ADAPTER,
            'config_digest':digest(CONFIG),'input_digest':None,
            'source_bytes_sha256':hashlib.sha256(raw).hexdigest() if type(raw) is bytes else None,
            'spaces':[], 'items':[], 'space_index_builds':0,
@@ -58,14 +85,22 @@ def _generate(raw, *, _point_limit=None):
            'raw_valid_candidates':'unique actions passing proposal, published and independent checks',
            'final_candidates':'unique per-item reducer output, at most 16; joint at most 48'},
            'test_only_point_limit':_point_limit}
-    result={'version':'geometry_gp2_generation_v1','backend':BACKEND,'status':'ERROR',
+    result={'version':'geometry_runtime_generation_v1' if runtime else 'geometry_gp2_generation_v1',
+            'backend':BACKEND,'status':'ERROR',
             'candidates':[],'audit':audit,'error':None}
     try:
-        exact, physical, state, geometry_bytes, identity=adapt(raw)
+        exact, physical, state, geometry_bytes, identity=adapt_input(raw)
         audit['input_digest']=identity
         settings={k:copy.deepcopy(CONFIG[k]) for k in ('support_ratio_min','candidate_generator')}
         settings['container']=physical['container']
         placed=restore_placed(physical['placed_items'])
+        if runtime:
+            audit['ledger_views'] = {
+                'saved':[{k:copy.deepcopy(p[k]) for k in ('item_id','supported_load_kg','support_fractions')}
+                         for p in physical['placed_items']],
+                'rebuilt':[{'item_id':p['item_id'],'supported_load_kg':p['supported_load_kg'],
+                            'support_fractions':[{'item_id':sid,'fraction':f} for sid,f in p['supports']]}
+                           for p in placed]}
         # Rebuild oracle ledger with domain.restore_placed; do not feed rounded
         # saved ledger values back into either physical admission path.
         oracle_placed=copy.deepcopy(physical['placed_items'])
@@ -91,7 +126,9 @@ def _generate(raw, *, _point_limit=None):
         levels={Fraction(0)} | {box.bounds[5] for box,_ in state.placed}
         out=[]
         for src in sorted(exact['buffer_items'],key=lambda i:i['arrival_index']):
-            item=internal_item(binary(src))
+            physical_src = (next(p for p in physical['buffer_items'] if p['item_id']==src['item_id'])
+                            if runtime else binary(src))
+            item=internal_item(physical_src)
             pool={}; seen=set(); outcomes={}; rejects=Counter()
             ia={'item_id':src['item_id'],'raw_point_attempts':0,'space_skips':0,
                 'unrepresentable_proposals':0,'proposal_rejections':[], 'raw_valid_candidates':[],
@@ -125,29 +162,31 @@ def _generate(raw, *, _point_limit=None):
                                 outcomes.setdefault(key,set()).add(reason)
                                 if unrepresentable:
                                     ia['unrepresentable_proposals']+=1
-                            proposed,reason=evaluate_pose(item,placed,float(x),float(y),float(z),float(l),float(w),yaw,settings)
+                            proposed,reason=evaluate_pose(item,placed,*(_physical_number(v,runtime) for v in (x,y,z,l,w)),yaw,settings)
                             if proposed is None:
                                 reject(reason); continue
                             _finite_tree(proposed)
                             box=AABB((pub[0]-l/2,pub[1]-w/2,pub[2],pub[0]+l/2,pub[1]+w/2,pub[2]+h))
                             if pub[2]!=z or not host.contains(box):
                                 reject('POSE_REPRESENTATION_REJECTED',True); continue
-                            checked,reason=evaluate_pose(item,placed,float(pub[0]-l/2),float(pub[1]-w/2),float(pub[2]),float(l),float(w),yaw,settings)
+                            checked,reason=evaluate_pose(item,placed,*(_physical_number(v,runtime) for v in
+                                (pub[0]-l/2,pub[1]-w/2,pub[2],l,w)),yaw,settings)
                             if checked is None:
                                 reject('POSE_REPRESENTATION_REJECTED',True); continue
                             candidate=checked['visible']
                             _finite_tree(checked)
                             if any(number(Decimal(str(candidate['pose'][k])))!=v for k,v in zip(POSE,pub)):
                                 reject('POSE_REPRESENTATION_REJECTED',True); continue
-                            case={'available_items':[binary(src)],'placed_items':oracle_placed}
+                            case={'available_items':[copy.deepcopy(physical_src)],'placed_items':oracle_placed}
                             errors=check_candidate(case,{'container':physical['container']},candidate)
                             if errors:
                                 ia['check_disagreement']=dict(ref,action_key=list(key),errors=errors)
                                 raise GeometryError('PHYSICAL_CHECK_DISAGREEMENT',','.join(errors))
                             outcomes.setdefault(key,set()).add('VALID')
                             if key not in pool:
-                                fp=digest({'backend':BACKEND,'input':identity,'action':key})
-                                candidate['candidate_id']='G2_'+fp[:24]
+                                fp=digest({'backend':BACKEND,'input':identity,'action':key,
+                                           **({'source_contract':identity_namespace} if runtime else {})})
+                                candidate['candidate_id']=('GR1_' if runtime else 'G2_')+fp[:24]
                                 candidate['candidate_fingerprint']=fp
                                 pool[key]={'action_key':list(key),'candidate':candidate,'geometry_score':checked['geometry_score'],
                                            'sources':set(),'host_ids':set(),'proposal_refs':[]}

@@ -1,0 +1,72 @@
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidate_backends.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidate_backends.py
+index 1a7a6230..b18bf9e4 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidate_backends.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidate_backends.py
+@@ -223,6 +223,25 @@ def build_geometry_bundle(state,observation,generator_config,config,*,common_inp
+     return GeometryCandidateBundle.from_artifacts(value,audit,stats)
+ 
+ 
++def validate_geometry_config_bundle(config,bundle):
++    """Check caller identity against the frozen sidecar; never rebind a pool.
++
++    Keep this check independent of context reconstruction so every public
++    consumer can reject a mixed pair before projecting any F0 facts.
++    """
++    validate_schema('config',config)
++    c.require(isinstance(bundle,GeometryCandidateBundle),'v14 bundle requires its original audit/byte artifacts')
++    audit=bundle.audit
++    frozen=audit['config']; binding=audit['backend_binding']; value=bundle.data
++    if not (c.same_native(config,frozen) and
++            digest(config)==binding['config_digest'] and
++            config.get('candidate_backend')==binding['candidate_backend']==value['candidate_backend'] and
++            config.get('generator_config_digest')==binding['generator_config_digest']==value['generator_config_digest'] and
++            c.same_native(config.get('runtime_identity'),frozen['runtime_identity'])):
++        raise JevSelectError('geometry_config_bundle_mismatch','caller config differs from frozen bundle config')
++    preflight_config(config)
++
++
+ def validate_geometry_bundle(observation,bundle):
+     c.require(isinstance(bundle,GeometryCandidateBundle),'v14 bundle requires its original audit/byte artifacts')
+     value,audit=bundle.data,bundle.audit
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py
+index 332d1602..5a8d0aff 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py
+@@ -148,6 +148,10 @@ class PublicBusinessGuard:
+     def filter(self, req: dict, policy: PublicPolicyContext, bundle: CandidateBundle,
+                config: dict) -> CandidateBundle:
+         validate_schema("config", config)
++        from .packaging_versions import GEOMETRY_VERSION, GEOMETRY_BUNDLE
++        if config['version']==GEOMETRY_VERSION or bundle.data['version']==GEOMETRY_BUNDLE:
++            from .candidate_backends import validate_geometry_config_bundle
++            validate_geometry_config_bundle(config,bundle)
+         value = validate_bundle(req, bundle)
+         candidates = value["physical_candidates"]
+         if business_evaluation_mode(config):
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py
+index 35d72cd1..1be0ab0f 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py
+@@ -157,6 +157,10 @@ def length_unit(values,source,target):
+ 
+ 
+ def public_facts(config,observation,bundle,policy):
++    from .packaging_versions import GEOMETRY_BUNDLE
++    if config['version']==GEOMETRY_VERSION or bundle.data['version']==GEOMETRY_BUNDLE:
++        from .candidate_backends import validate_geometry_config_bundle
++        validate_geometry_config_bundle(config,bundle)
+     from semantic_pallet_planner.o4.extensions.e2.protocol import BINDINGS,validate_observation
+     from semantic_pallet_planner.evaluation.state import apply_candidate
+     from semantic_pallet_planner.planner.scoring import geometry_score
+@@ -275,6 +279,11 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
+ def validate_runtime_context(context,observation=None,bundle=None,config=None):
+     from .candidates import validate_bundle,decision_route
+     value=context.data;validate_schema('decision_context',value)
++    if config is not None and bundle is not None:
++        from .packaging_versions import GEOMETRY_BUNDLE
++        if value['version']==GEOMETRY_CONTEXT or config['version']==GEOMETRY_VERSION or bundle.data['version']==GEOMETRY_BUNDLE:
++            from .candidate_backends import validate_geometry_config_bundle
++            validate_geometry_config_bundle(config,bundle)
+     if value['version'] in ('jev_decision_context_v13',GEOMETRY_CONTEXT):
+         require(value['model_state']['memories']==[] and not any(k in value for k in ('memory_view','retrieval_receipt')), 'jm_v13_memory_forbidden')
+         if bundle is not None: require(bundle.data['selectable_candidates']==bundle.data['physical_candidates'],'jm_v13_full_physical_pool_required')

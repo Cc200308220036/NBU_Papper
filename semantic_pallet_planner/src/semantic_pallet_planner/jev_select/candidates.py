@@ -148,6 +148,10 @@ class PublicBusinessGuard:
     def filter(self, req: dict, policy: PublicPolicyContext, bundle: CandidateBundle,
                config: dict) -> CandidateBundle:
         validate_schema("config", config)
+        from .packaging_versions import GEOMETRY_VERSION, GEOMETRY_BUNDLE
+        if config['version']==GEOMETRY_VERSION or bundle.data['version']==GEOMETRY_BUNDLE:
+            from .candidate_backends import validate_geometry_config_bundle
+            validate_geometry_config_bundle(config,bundle)
         value = validate_bundle(req, bundle)
         candidates = value["physical_candidates"]
         if business_evaluation_mode(config):

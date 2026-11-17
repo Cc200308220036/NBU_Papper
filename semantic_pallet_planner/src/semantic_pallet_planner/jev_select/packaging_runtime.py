@@ -157,6 +157,10 @@ def length_unit(values,source,target):
 
 
 def public_facts(config,observation,bundle,policy):
+    from .packaging_versions import GEOMETRY_BUNDLE
+    if config['version']==GEOMETRY_VERSION or bundle.data['version']==GEOMETRY_BUNDLE:
+        from .candidate_backends import validate_geometry_config_bundle
+        validate_geometry_config_bundle(config,bundle)
     from semantic_pallet_planner.o4.extensions.e2.protocol import BINDINGS,validate_observation
     from semantic_pallet_planner.evaluation.state import apply_candidate
     from semantic_pallet_planner.planner.scoring import geometry_score
@@ -275,6 +279,11 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
 def validate_runtime_context(context,observation=None,bundle=None,config=None):
     from .candidates import validate_bundle,decision_route
     value=context.data;validate_schema('decision_context',value)
+    if config is not None and bundle is not None:
+        from .packaging_versions import GEOMETRY_BUNDLE
+        if value['version']==GEOMETRY_CONTEXT or config['version']==GEOMETRY_VERSION or bundle.data['version']==GEOMETRY_BUNDLE:
+            from .candidate_backends import validate_geometry_config_bundle
+            validate_geometry_config_bundle(config,bundle)
     if value['version'] in ('jev_decision_context_v13',GEOMETRY_CONTEXT):
         require(value['model_state']['memories']==[] and not any(k in value for k in ('memory_view','retrieval_receipt')), 'jm_v13_memory_forbidden')
         if bundle is not None: require(bundle.data['selectable_candidates']==bundle.data['physical_candidates'],'jm_v13_full_physical_pool_required')

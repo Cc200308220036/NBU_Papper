@@ -223,6 +223,25 @@ def build_geometry_bundle(state,observation,generator_config,config,*,common_inp
     return GeometryCandidateBundle.from_artifacts(value,audit,stats)
 
 
+def validate_geometry_config_bundle(config,bundle):
+    """Check caller identity against the frozen sidecar; never rebind a pool.
+
+    Keep this check independent of context reconstruction so every public
+    consumer can reject a mixed pair before projecting any F0 facts.
+    """
+    validate_schema('config',config)
+    c.require(isinstance(bundle,GeometryCandidateBundle),'v14 bundle requires its original audit/byte artifacts')
+    audit=bundle.audit
+    frozen=audit['config']; binding=audit['backend_binding']; value=bundle.data
+    if not (c.same_native(config,frozen) and
+            digest(config)==binding['config_digest'] and
+            config.get('candidate_backend')==binding['candidate_backend']==value['candidate_backend'] and
+            config.get('generator_config_digest')==binding['generator_config_digest']==value['generator_config_digest'] and
+            c.same_native(config.get('runtime_identity'),frozen['runtime_identity'])):
+        raise JevSelectError('geometry_config_bundle_mismatch','caller config differs from frozen bundle config')
+    preflight_config(config)
+
+
 def validate_geometry_bundle(observation,bundle):
     c.require(isinstance(bundle,GeometryCandidateBundle),'v14 bundle requires its original audit/byte artifacts')
     value,audit=bundle.data,bundle.audit

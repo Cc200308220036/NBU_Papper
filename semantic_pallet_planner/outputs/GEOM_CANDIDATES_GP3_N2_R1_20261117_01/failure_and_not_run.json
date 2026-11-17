@@ -1,0 +1,23 @@
+{
+  "issue": "GP3-N2-BIND-01",
+  "pre_fix": "FAIL; four real public consumers accepted exact saved E2-config/new-bundle combination; no generation or request send",
+  "original_QA": "STATIC_ONLY, not mislabelled as production reproduction",
+  "after_fix": "same bytes rejected with explicit mismatch code before historical source preflight; old correct historical pairs still reject source drift",
+  "regression_failures": [],
+  "not_run": [
+    "run_episode/orders",
+    "selection/monitor/commit/checkpoint recovery",
+    "PCT/LP/model",
+    "GP4-GP6/F1/experience"
+  ],
+  "parent_A03": "PARTIAL",
+  "GP4": "NOT_READY",
+  "packaging_check_failure": {
+    "log": "verification_01_failure.log",
+    "script_exit_code": 1,
+    "cause": "original N2 README was compared against post-QA HEAD; navigation had already changed",
+    "resolution": "verify original N2 external navigation at reviewed 2b47a1fa Git blob; QA navigation at synchronized HEAD; no historical manifest edits",
+    "retry_log": "verification.log",
+    "retry_exit_code": 0
+  }
+}

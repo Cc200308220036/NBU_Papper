@@ -1,0 +1,52 @@
+{
+  "version": "geometry_gp5_num_n0_commands_v1",
+  "commands": [
+    {
+      "command": "git rev-parse --show-toplevel; git branch --show-current; git rev-parse --abbrev-ref --symbolic-full-name @{upstream}; git rev-parse HEAD; git status --short; git diff --cached --stat; rg --files -g AGENTS.md",
+      "result": "existing NBU_Papper; dev/jev-select; origin/dev/jev-select; initial worktree clean/index empty; root AGENTS only"
+    },
+    {
+      "command": "git pull --ff-only",
+      "attempt": 1,
+      "exit_code": 1,
+      "result": "FETCH_HEAD sandbox read-only, no sync"
+    },
+    {
+      "command": "git pull --ff-only",
+      "attempt": 2,
+      "mode": "explicit user-authorized escalation",
+      "exit_code": 0,
+      "result": "FAST_FORWARD 0c7cacb2 -> be4ba50a; 12 QA/navigation files"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 /tmp/gp5_num_inventory.py",
+      "preserved_script": "collect_baseline_receipt.py",
+      "exit_code": 0,
+      "result": "QA11/R1 1409 members and production565 match; fixed-revision navigation; no project imports"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N0_20261117_01/check_hand_examples.py",
+      "exit_code": 0,
+      "log": "hand_examples_check.log",
+      "scope": "fixed literal arithmetic only; no proposed API or physical evaluation"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N0_20261117_01/verify_design_delivery.py",
+      "attempt": 1,
+      "exit_code": 1,
+      "reason": "new verifier compared absolute __file__ output path against relative Git untracked paths; scope checker corrected, no source/artifact changes"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N0_20261117_01/verify_design_delivery.py",
+      "attempt": 2,
+      "exit_code": 0,
+      "log": "verification.log"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "business_test_commands": [],
+  "production_imports": 0
+}

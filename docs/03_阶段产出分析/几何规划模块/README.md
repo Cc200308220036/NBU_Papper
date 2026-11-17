@@ -4,6 +4,7 @@
 
 | 报告 | 范围与状态 |
 |---|---|
+| [GP5-P1-R1独立复核与数值设计定稿准入](几何候选器GP5-P1-R1独立复核与数值设计定稿准入_20261117_01.md) | R1限定PASS，REC/SCHEMA/MET在实现及合同/替身范围关闭；NUM-01仍OPEN。下一步仅数值边界设计定稿CONDITIONAL，数值代码/P2/8job未准入，A03 PARTIAL。 |
 | [GP5-P1独立质检与限定整改交接](几何候选器GP5-P1独立质检与限定整改交接_20261117_01.md) | P1整体PARTIAL；接线/替身可达性限定支持，D02替身范围关闭；完成收据、嵌套Schema和计数待整改，整数NUM-01仍OPEN。仅建议P1-R1限定整改及数值设计，P2/8job NOT_READY、A03 PARTIAL。 |
 | [GP5-P0独立质检与P1限定开发准入](几何候选器GP5-P0独立质检与P1限定开发准入_20261117_01.md) | 接口/数据/矩阵准备限定PASS；真实内核样例计划PARTIAL。仅GP5-P1代码与离线替身验证CONDITIONAL，真实内核/8job订单NOT_READY，A03 PARTIAL；GP4-FIG-01按原PNG像素证据更正关闭，历史记录保留。 |
 | [GP4独立质检与GP5准备准入](几何候选器GP4独立质检与GP5准备准入_20261117_01.md) | GP4数值比较限定PASS，旧220/新185/交集52，表面独有0；图示可读性PARTIAL非阻断。仅GP5-P0方案准备及离线补图CONDITIONAL，真实整单NOT_READY，A03 PARTIAL。 |

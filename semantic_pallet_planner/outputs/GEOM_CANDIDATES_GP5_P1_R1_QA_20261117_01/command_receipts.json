@@ -1,0 +1,48 @@
+{
+  "schema": "geometry_gp5_p1_r1_qa_commands_v1",
+  "commands": [
+    {
+      "command": "git status --short; git branch --show-current; git rev-parse HEAD; git rev-parse --abbrev-ref --symbolic-full-name @{upstream}; git diff --cached --stat; git log -7 --oneline",
+      "result": "initial clean/empty, dev/jev-select, 0c7cacb2, upstream origin/dev/jev-select"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_R1_20261117_01/verify_delivery.py",
+      "exit_code": 0,
+      "output": "original_verifier.log",
+      "reviewed_side_effects": "stdlib reads/git show only, stdout; no production imports"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_R1_QA_20261117_01/check_saved_evidence.py",
+      "attempt": 1,
+      "exit_code": 1,
+      "detail": "QA structural scan incorrectly classified intentional empty object maxProperties0 as unconstrained; corrected QA rule"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_R1_QA_20261117_01/check_saved_evidence.py",
+      "attempt": 2,
+      "exit_code": 1,
+      "detail": "QA sum scan included deliberate negative fabricated contract_36.json no_recovery_commit; path identified. Excluded fabricated pure-coverage contract_* files from genuine saved-ledger scan, preserving nine archived rejection outcomes."
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_R1_QA_20261117_01/check_saved_evidence.py",
+      "attempt": 3,
+      "exit_code": 0,
+      "output": "independent_check.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_R1_QA_20261117_01/check_saved_evidence.py",
+      "attempt": 4,
+      "exit_code": 0,
+      "detail": "final check after QA navigation update; sealed developer README at pinned 0c7cacb2, production unchanged"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "production_imports": 0,
+  "business_tests": "NOT_RUN",
+  "candidate_order_kernel_solver_freeze_model": 0,
+  "git_mutations": 0,
+  "dependencies_installed": 0
+}

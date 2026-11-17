@@ -1,0 +1,43 @@
+{
+  "GP3_INPUT_01": "PUBLIC_CANDIDATE_CONSTRUCTION_EVIDENCE_PENDING_QA_PARENT_NOT_CLOSED",
+  "GP4": "NOT_READY",
+  "acceptance": {
+    "N2-01 shared bytes/profile and separate backend binding": "PASS_BOUNDED_CONSTRUCTIONS",
+    "N2-02 common numeric/exact/ledger/original physical preflight": "PASS_BOUNDED_CONSTRUCTIONS",
+    "N2-03 common vs internal error, no empty/fallback": "PASS_REAL_HEIGHT_AND_LEDGER_FAILURE",
+    "N2-04 F0 fields aliases seed audit isolation": "PASS_BOUNDED_REQUESTS",
+    "N2-05 original schema/default/physics and limits": "PASS_LIMITED_REGRESSION_AND_UNCHANGED_HASHES",
+    "N2-06 complete legacy semantics/order/IDs/digests": "PASS_TWO_HAND_STATES_AND_V4_UNIT",
+    "N2-07 unsupported execution": "PASS_SCHEMA_GUARD_TOOL_AND_STATIC_ENTRY_CHECKS_NOT_EXECUTION"
+  },
+  "actual_behavior_logs": {
+    "GP2": "gp2_regression.log (13 tests, exit 0)",
+    "N1": "n1_regression.log (13 tests, exit 0)",
+    "N2": "n2_tests_exit.log (11 tests, exit 0)",
+    "collector": "collection_exit.log, 4 manual states x 2 backends, 4 errors, 4 baseline/current provider calls"
+  },
+  "not_run": [
+    "run_episode",
+    "order execution",
+    "selection",
+    "monitor/PCT/LP",
+    "commit",
+    "actual checkpoint restore",
+    "model calls",
+    "GP4 five saved states",
+    "GP5-GP6",
+    "F1/experience"
+  ],
+  "parent_A03": "PARTIAL",
+  "real_physics": "all N2 candidate generation uses original evaluate_pose/check_candidate; real 2.0004 mismatch retained",
+  "stage": "GP3_N2_ONLY",
+  "status": "DEVELOPER_LIMITED_SELF_CHECK_COMPLETE_PENDING_QA",
+  "test_doubles": [
+    "explicit oversized F0 facts only for request-byte guard",
+    "assertion sentinels ensure common failures precede backend generation",
+    "Random spy delegates to original RNG",
+    "forbidden cache sentinel tests no new-backend E2 cache access",
+    "inherited GP2 fault doubles are labelled in old test source"
+  ],
+  "version": "geometry_n2_checks_v1"
+}

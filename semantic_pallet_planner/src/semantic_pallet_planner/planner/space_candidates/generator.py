@@ -65,6 +65,40 @@ def _generate(raw, *, _point_limit=None):
     return _generation_core(raw, adapt_input=adapt, _point_limit=_point_limit)
 
 
+def physical_prefix_views(physical, *, audit=None):
+    """Original saved-ledger and ordered-physics admission, on private copies.
+
+    Reused by both N2 backends before generation; no new physical rules.
+    """
+    runtime = audit is not None
+    settings={k:copy.deepcopy(CONFIG[k]) for k in ('support_ratio_min','candidate_generator')}
+    settings['container']=physical['container']
+    placed=restore_placed(physical['placed_items'])
+    if runtime:
+        audit['ledger_views'] = {
+            'saved':[{k:copy.deepcopy(p[k]) for k in ('item_id','supported_load_kg','support_fractions')}
+                     for p in physical['placed_items']],
+            'rebuilt':[{'item_id':p['item_id'],'supported_load_kg':p['supported_load_kg'],
+                        'support_fractions':[{'item_id':sid,'fraction':f} for sid,f in p['supports']]}
+                       for p in placed]}
+    # Rebuild oracle ledger with domain.restore_placed; do not feed rounded
+    # saved ledger values back into either physical admission path.
+    oracle_placed=copy.deepcopy(physical['placed_items'])
+    for saved,p in zip(oracle_placed,placed):
+        require(saved['supported_load_kg'] in (p['supported_load_kg'],round(p['supported_load_kg'],3)), 'saved load contradicts restored ledger')
+        expected={sid:frac for sid,frac in p['supports']}
+        edges=saved['support_fractions']
+        require(len(edges)==len(expected) and {e['item_id'] for e in edges}==set(expected), 'saved support IDs contradict restored ledger')
+        require(all(e['fraction'] in (expected[e['item_id']],round(expected[e['item_id']],9)) for e in edges), 'saved support fractions contradict restored ledger')
+        saved['supported_load_kg']=p['supported_load_kg']
+        saved['support_fractions']=[{'item_id':sid,'fraction':f} for sid,f in p['supports']]
+    # Validate the existing ordered prefix using the original admission code.
+    for i,p in enumerate(placed):
+        prior,_=evaluate_pose(p['item'],restore_placed(physical['placed_items'][:i]),p['x0'],p['y0'],p['z0'],p['x1']-p['x0'],p['y1']-p['y0'],p['yaw'],settings)
+        require(prior is not None,'invalid placed physical prefix')
+    return settings, placed, oracle_placed
+
+
 def _generation_core(raw, *, adapt_input, identity_namespace='original_lexemes_v1',
                      _point_limit=None):
     """The sole proposal/check/reduction engine shared by the two source contracts.
@@ -91,31 +125,7 @@ def _generation_core(raw, *, adapt_input, identity_namespace='original_lexemes_v
     try:
         exact, physical, state, geometry_bytes, identity=adapt_input(raw)
         audit['input_digest']=identity
-        settings={k:copy.deepcopy(CONFIG[k]) for k in ('support_ratio_min','candidate_generator')}
-        settings['container']=physical['container']
-        placed=restore_placed(physical['placed_items'])
-        if runtime:
-            audit['ledger_views'] = {
-                'saved':[{k:copy.deepcopy(p[k]) for k in ('item_id','supported_load_kg','support_fractions')}
-                         for p in physical['placed_items']],
-                'rebuilt':[{'item_id':p['item_id'],'supported_load_kg':p['supported_load_kg'],
-                            'support_fractions':[{'item_id':sid,'fraction':f} for sid,f in p['supports']]}
-                           for p in placed]}
-        # Rebuild oracle ledger with domain.restore_placed; do not feed rounded
-        # saved ledger values back into either physical admission path.
-        oracle_placed=copy.deepcopy(physical['placed_items'])
-        for saved,p in zip(oracle_placed,placed):
-            require(saved['supported_load_kg'] in (p['supported_load_kg'],round(p['supported_load_kg'],3)), 'saved load contradicts restored ledger')
-            expected={sid:frac for sid,frac in p['supports']}
-            edges=saved['support_fractions']
-            require(len(edges)==len(expected) and {e['item_id'] for e in edges}==set(expected), 'saved support IDs contradict restored ledger')
-            require(all(e['fraction'] in (expected[e['item_id']],round(expected[e['item_id']],9)) for e in edges), 'saved support fractions contradict restored ledger')
-            saved['supported_load_kg']=p['supported_load_kg']
-            saved['support_fractions']=[{'item_id':sid,'fraction':f} for sid,f in p['supports']]
-        # Validate the existing ordered prefix using the original admission code.
-        for i,p in enumerate(placed):
-            prior,_=evaluate_pose(p['item'],restore_placed(physical['placed_items'][:i]),p['x0'],p['y0'],p['z0'],p['x1']-p['x0'],p['y1']-p['y0'],p['yaw'],settings)
-            require(prior is not None,'invalid placed physical prefix')
+        settings, placed, oracle_placed = physical_prefix_views(physical, audit=audit if runtime else None)
         index=build_space_index(geometry_bytes)
         audit['space_index_builds']=1
         audit['space_index']=index

@@ -6,6 +6,24 @@ EXACT_PLAN='jev_synthetic_supplement_plan_v2'
 EXACT_RUN='jev_synthetic_supplement_run_v2'
 REMAINDER_PLAN='jev_synthetic_remainder_plan_v3'
 
+# GP3-N2 permits candidate/F0 construction only. No execution or checkpoint route.
+GEOMETRY_VERSION='jev_packaging_geometry_compare_v14'
+GEOMETRY_BUNDLE='jev_candidate_bundle_v14'
+GEOMETRY_CONTEXT='jev_decision_context_v14'
+GEOMETRY_SCHEMAS={'config': 'config_v14', 'candidate_bundle':'candidate_bundle_v14',
+                  'decision_context':'decision_context_v14'}
+GEOMETRY_COMMON_BINDING='geometry_common_input_binding_v1'
+GEOMETRY_BACKEND_BINDING='geometry_backend_binding_v1'
+GEOMETRY_ADMISSION='geometry_common_admission_v1'
+GEOMETRY_AUDIT='geometry_provider_audit_v1'
+GEOMETRY_BACKENDS=('e2_original_v1','ems_surface_hybrid_v1')
+
+
+def reject_geometry_execution(config_or_context, operation):
+    if config_or_context.get('version') in (GEOMETRY_VERSION, GEOMETRY_CONTEXT):
+        from .contracts import JevSelectError
+        raise JevSelectError('geometry_construction_only', operation)
+
 # JM1-A1 is an independent fork/forced-selection protocol over saved envelopes.
 JM_FORK_VERSION='jev_jm_fork_binding_v1'
 JM_FORK_PROTOCOLS={JM_FORK_VERSION: 'packaging_jev_forks'}

@@ -4,7 +4,7 @@ No new physical solver or candidate generator. Local smoke selectors are test
 substitutes only, with no remote transport or memory loading route.
 """
 from __future__ import annotations
-from .packaging_versions import EXACT_CONTEXT, EXACT_VERSION
+from .packaging_versions import EXACT_CONTEXT, EXACT_VERSION, GEOMETRY_VERSION, GEOMETRY_CONTEXT
 import copy
 import math
 import random
@@ -26,7 +26,7 @@ METHODS = ('local_geometry_test_double','local_first_test_double')
 
 
 def is_packaging(config):
-    return config.get('version') in ('jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
+    return config.get('version') in (GEOMETRY_VERSION,'jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
 
 
 def no_policy(observation):
@@ -259,6 +259,8 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
         'generator_config_digest':value['generator_config_digest'],'prompt_version':config['prompt_version'],
         'feature_version':config['feature_version'],'model_state_digest':digest(state),'criteria_digest':digest(criteria),
         'request_body_digest':digest(body),'runtime_identity':copy.deepcopy(config['runtime_identity'])}
+    if config['version']==GEOMETRY_VERSION:
+        binding.update(common_input_digest=value['common_input_digest'],backend_binding_digest=value['backend_binding_digest'])
     if memory_fields:
         binding.update(memory_snapshot_digest=config['memory_snapshot_digest'],memory_view_digest=mv['view_digest'])
         if is_driven(config):
@@ -273,7 +275,7 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
 def validate_runtime_context(context,observation=None,bundle=None,config=None):
     from .candidates import validate_bundle,decision_route
     value=context.data;validate_schema('decision_context',value)
-    if value['version']=='jev_decision_context_v13':
+    if value['version'] in ('jev_decision_context_v13',GEOMETRY_CONTEXT):
         require(value['model_state']['memories']==[] and not any(k in value for k in ('memory_view','retrieval_receipt')), 'jm_v13_memory_forbidden')
         if bundle is not None: require(bundle.data['selectable_candidates']==bundle.data['physical_candidates'],'jm_v13_full_physical_pool_required')
     if value['version'] in ('jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT):
@@ -317,6 +319,8 @@ def validate_runtime_context(context,observation=None,bundle=None,config=None):
     if bundle is not None:
         require(observation is not None and config is not None,'runtime_missing_binding_input')
         b=validate_bundle(observation,bundle)
+        if value['version']==GEOMETRY_CONTEXT:
+            require(binding['common_input_digest']==b['common_input_digest'] and binding['backend_binding_digest']==b['backend_binding_digest'], 'geometry_context_binding_changed')
         require(binding['physical_digest']==b['physical_digest'] and binding['selectable_digest']==b['selectable_digest'] and
             route==decision_route(bundle),'runtime_stale_pool')
         # Deterministic reconstruction checks all public facts, deltas and private mapping.

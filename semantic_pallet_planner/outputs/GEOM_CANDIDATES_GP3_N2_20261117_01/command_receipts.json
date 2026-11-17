@@ -1,0 +1,134 @@
+{
+  "PCT_LP_calls": 0,
+  "commands": [
+    {
+      "actual_HEAD": "c82c7d800dd29aaa133bb8baa9f6e4a1d2d98c87",
+      "command": "git pull --ff-only",
+      "exit_code": 0,
+      "mode": "require_escalated; user explicit authorization",
+      "result": "Fast-forward d69d904f -> c82c7d80"
+    },
+    {
+      "command": "git diff d69d904f09686c323edcf949f7e01022a7d564cb --stat -- semantic_pallet_planner/src",
+      "exit_code": 0,
+      "output": "",
+      "when": "after sync, before edits"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python3 - <<PY (two-backend decision_inputs smoke)",
+      "exit_code": 0,
+      "log": "smoke_01.log",
+      "scope": "manual current state, no run_episode"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_public_n2.py -v",
+      "redirection": "each > the listed output-package log 2>&1",
+      "runs": [
+        {
+          "exit_code": 1,
+          "log": "n2_tests_01.log",
+          "tests": 8
+        },
+        {
+          "exit_code": 0,
+          "log": "n2_tests_02.log",
+          "tests": 9
+        },
+        {
+          "exit_code": 1,
+          "log": "n2_tests_final.log",
+          "tests": 10
+        },
+        {
+          "exit_code": 0,
+          "log": "n2_tests_delivery.log",
+          "tests": 10
+        },
+        {
+          "exit_code": 0,
+          "log": "n2_tests_release.log",
+          "tests": 10
+        },
+        {
+          "exit_code": 0,
+          "log": "n2_tests_exit.log",
+          "tests": 11
+        },
+        {
+          "exit_code": 0,
+          "log": "n2_tests_final_source.log",
+          "tests": 11
+        }
+      ]
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_runtime_n1.py -v",
+      "exit_code": 0,
+      "log": "n1_regression.log",
+      "tests": 13
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_space_candidates_gp2.py -v",
+      "exit_code": 0,
+      "log": "gp2_regression.log",
+      "tests": 13
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N2_20261117_01/collect_evidence.py",
+      "redirection": "each > the listed log 2>&1",
+      "runs": [
+        {
+          "exit_code": 0,
+          "log": "collection_01.log",
+          "manual_states": 3
+        },
+        {
+          "exit_code": 0,
+          "log": "collection_exit.log",
+          "manual_states": 4
+        },
+        {
+          "exit_code": 0,
+          "log": "collection_final_source.log",
+          "manual_states": 4
+        }
+      ]
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_runtime_n1.py -v",
+      "exit_code": 0,
+      "log": "n1_regression_final_source.log",
+      "tests": 13
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_space_candidates_gp2.py -v",
+      "exit_code": 0,
+      "log": "gp2_regression_final_source.log",
+      "tests": 13
+    },
+    {
+      "command": "python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N2_20261117_01/verify_delivery.py",
+      "exit_code": 0,
+      "log": "verification_final_source.log",
+      "scope": "stdlib saved bytes only; no production imports"
+    }
+  ],
+  "git_add_commit_push": "NOT_RUN",
+  "model_calls": 0,
+  "no_credentials_or_network_API": "true; pull was the only requested network synchronization",
+  "python": "CPython 3.13.5",
+  "read_only_git_baseline": "git show d69d904f...:.../candidates.py; isolated provider implementation compared under same current dependencies, not replay",
+  "run_episode_calls": 0,
+  "subagents": 0,
+  "version": "geometry_n2_commands_v1",
+  "final_source_logs": [
+    "n2_tests_final_source.log",
+    "n1_regression_final_source.log",
+    "gp2_regression_final_source.log",
+    "collection_final_source.log"
+  ]
+}

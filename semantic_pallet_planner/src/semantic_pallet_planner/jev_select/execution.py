@@ -12,6 +12,8 @@ from .contracts import JevSelectError, digest, validate_schema
 
 
 def commit_physical(state, regions, observation, bundle, context, selection, config, *, monitor=None, monitor_event=None):
+    from .packaging_versions import reject_geometry_execution
+    reject_geometry_execution(config,"commit_physical")
     validate_schema("config", config)
     if not business_evaluation_mode(config):
         raise JevSelectError("physical_commit_requires_v2")

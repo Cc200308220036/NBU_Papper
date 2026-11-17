@@ -50,6 +50,10 @@ def current_state(state: dict, req: dict) -> dict:
 def validate_bundle(req: dict, bundle: CandidateBundle) -> dict:
     value = bundle.data
     validate_schema("candidate_bundle", value)
+    from .packaging_versions import GEOMETRY_BUNDLE
+    if value['version']==GEOMETRY_BUNDLE:
+        from .candidate_backends import validate_geometry_bundle
+        validate_geometry_bundle(req,bundle)
     if value["observation_digest"] != req["observation_digest"]:
         raise JevSelectError("stale_candidate_bundle")
     candidates = value["physical_candidates"]
@@ -69,7 +73,17 @@ def validate_bundle(req: dict, bundle: CandidateBundle) -> dict:
 
 
 class CandidateProvider:
-    def build(self, state: dict, observation: dict, generator_config: dict, *, config: dict | None = None) -> CandidateBundle:
+    def build(self, state: dict, observation: dict, generator_config: dict, *, config: dict | None = None, common_input=None) -> CandidateBundle:
+        from .packaging_versions import GEOMETRY_VERSION
+        if config is not None:
+            validate_schema('config',config)
+        if config is not None and config.get('version')==GEOMETRY_VERSION:
+            from .candidate_backends import build_geometry_bundle
+            result=build_geometry_bundle(state,observation,generator_config,config,common_input=common_input)
+            validate_bundle(observation,result)
+            return result
+        if common_input is not None:
+            raise JevSelectError('common_geometry_input_requires_v14')
         clean = current_state(state, observation)
         if clean["buffer_capacity"] > 3:
             raise JevSelectError("invalid_capacity")
@@ -142,7 +156,8 @@ class PublicBusinessGuard:
             self.validate_policy_context(req, policy)
             value.update(selectable_pool="physical_feasible", selectable_candidates=copy.deepcopy(candidates),
                          selectable_digest=digest(candidates), policy_digest=digest(policy.data))
-            result = CandidateBundle.from_dict(value)
+            from .packaging_versions import GEOMETRY_VERSION
+            result = bundle.with_data(value) if config['version']==GEOMETRY_VERSION else CandidateBundle.from_dict(value)
             validate_bundle(req, result)
             return result
         if value["version"] != "jev_candidate_bundle_v1":

@@ -19,6 +19,11 @@ from .selector import bind_decision, result
 
 
 def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, memory_snapshot=None, saved_retrieval=None, memory_view=None, memory_driver=None):
+    from .packaging_versions import GEOMETRY_VERSION
+    if config.get('version')==GEOMETRY_VERSION:
+        if any(v is not None for v in (memory_snapshot,saved_retrieval,memory_view,memory_driver)):
+            raise JevSelectError('geometry_memory_forbidden')
+        return _geometry_decision_inputs(state,task,config,job_id,decision_id,timings=timings)
     started = time.perf_counter()
     req = observation(state, task["instruction_text"], task["regions"])
     guard = PublicBusinessGuard()
@@ -54,6 +59,8 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
 
 def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
                 hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None):
+    from .packaging_versions import reject_geometry_execution
+    reject_geometry_execution(config,"run_episode")
     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
     if config.get('version')=='jev_packaging_jm_no_memory_v13' and (training_fork is None or training_fork.get('version')!='jev_jm_v13_execution_v1'):
         raise JevSelectError('jm13_explicit_execution_route_required')
@@ -197,6 +204,8 @@ def semantic_record(value):
 
 def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                     on_checkpoint=None, hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None):
+    from .packaging_versions import reject_geometry_execution
+    reject_geometry_execution(config,"_run_episode_v2")
     from .evaluation import evaluate_committed_state, summarize_v2
     from .execution import commit_physical
     from .selector import SelectionResult
@@ -529,3 +538,23 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         from .memory_retrieval import memory_statistics
         summary.update(version='jev_order_metrics_v3', memory_snapshot_digest=digest(memory_snapshot.data),memory_statistics=memory_statistics(events))
     return {'job_id':job_id,'events':events,'final_state':state,'summary':summary,'checkpoint':checkpoint()}
+
+
+def _geometry_decision_inputs(state,task,config,job_id,decision_id,*,timings=None):
+    """N2 construction only; reads only instruction/regions, never future task fields."""
+    from .config import generator_config_for
+    started=time.perf_counter()
+    req=observation(state,task['instruction_text'],task['regions'])
+    guard=PublicBusinessGuard();policy=guard.resolve(req)
+    parsed=time.perf_counter()
+    bundle=CandidateProvider().build(state,req,generator_config_for(config),config=config)
+    generated=time.perf_counter()
+    bundle=guard.filter(req,policy,bundle,config)
+    context=bind_decision(ContextBuilder(config).build(req,bundle,policy),job_id,decision_id,config=config)
+    if timings is not None:
+        stats=bundle.telemetry
+        timings.update(public_parse_s=parsed-started,physical_generation_s=generated-parsed,
+            facts_context_s=time.perf_counter()-generated,generation_backend=stats['backend'],
+            generation_cache_supported=stats['cache_supported'],generation_cache_hits=stats['cache_hits'],
+            generation_cache_misses=stats['cache_misses'])
+    return req,policy,bundle,context

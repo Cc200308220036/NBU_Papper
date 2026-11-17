@@ -197,8 +197,20 @@ def _binding(native_raw, geometry_raw, native, geo, config, identities):
 
 
 def capture_current_public_snapshot_v1(state, observation, *, profile, identities, config=None):
-    c.require(profile == c.PROFILE, 'unsupported numeric profile')
     config = runtime_config() if config is None else config
+    native_raw, geometry_raw = capture_runtime_views_v1(state, observation, profile=profile)
+    binding = _binding(native_raw, geometry_raw, c.decode(native_raw), c.decode(geometry_raw), config, identities)
+    validate_runtime_snapshot_v1(native_raw, geometry_raw, binding, identities=identities,
+                                 current_state=state, observation=observation, config=config)
+    return native_raw, geometry_raw, binding
+
+
+def capture_runtime_views_v1(state, observation, *, profile):
+    """Unbound byte views, shared by separately versioned binding contracts.
+
+    Returning views conveys no backend or execution permission.
+    """
+    c.require(profile == c.PROFILE, 'unsupported numeric profile')
     s = _public(state, observation, project=True)
     native = {'version':c.NATIVE, 'current_state':s, 'observation':copy.deepcopy(observation)}
     native_raw = c.encode(native)
@@ -208,10 +220,8 @@ def capture_current_public_snapshot_v1(state, observation, *, profile, identitie
            'native_snapshot_sha256':c.sha(native_raw), 'effective_state_digest':digest(_effective(s)),
            'observation_digest':observation['observation_digest'], 'payload':_payload(s)}
     geometry_raw = c.encode(geo)
-    binding = _binding(native_raw, geometry_raw, native, geo, config, identities)
-    validate_runtime_snapshot_v1(native_raw, geometry_raw, binding, identities=identities,
-                                 current_state=state, observation=observation, config=config)
-    return native_raw, geometry_raw, binding
+    validate_runtime_views_v1(native_raw, geometry_raw, current_state=state, observation=observation)
+    return native_raw, geometry_raw
 
 
 def validate_runtime_snapshot_v1(native_raw, geometry_raw, binding, *, identities,
@@ -222,6 +232,15 @@ def validate_runtime_snapshot_v1(native_raw, geometry_raw, binding, *, identitie
     artifacts only, not live freshness. A saved binding must be caller-trusted.
     """
     config = runtime_config() if config is None else config
+    views = validate_runtime_views_v1(native_raw, geometry_raw, current_state=current_state, observation=observation)
+    c.closed(binding, c.BINDING_KEYS)
+    c.require(c.same_native(binding, _binding(native_raw,geometry_raw,views['native'],views['geometry'],config,identities)),
+              'frozen binding/source/config/environment differs', 'RUNTIME_SNAPSHOT_MISMATCH')
+    return {**views, 'binding':copy.deepcopy(binding)}
+
+
+def validate_runtime_views_v1(native_raw, geometry_raw, *, current_state=None, observation=None):
+    """Validate exact/native bytes only; does not accept any backend binding."""
     native, geo = c.decode(native_raw), c.decode(geometry_raw)
     c.closed(native, {'version','current_state','observation'})
     c.require(native['version'] == c.NATIVE, 'unregistered native version')
@@ -234,9 +253,6 @@ def validate_runtime_snapshot_v1(native_raw, geometry_raw, binding, *, identitie
                 'native_snapshot_sha256':c.sha(native_raw), 'effective_state_digest':digest(_effective(s)),
                 'observation_digest':native['observation']['observation_digest'], 'payload':_payload(s)}
     c.require(c.same_native(geo, expected), 'geometry leaf derivation/hash differs', 'RUNTIME_SNAPSHOT_MISMATCH')
-    c.closed(binding, c.BINDING_KEYS)
-    c.require(c.same_native(binding, _binding(native_raw,geometry_raw,native,geo,config,identities)),
-              'frozen binding/source/config/environment differs', 'RUNTIME_SNAPSHOT_MISMATCH')
     c.require((current_state is None) == (observation is None), 'external state/observation pair required')
     if current_state is not None:
         fresh = _public(current_state, observation, project=True)
@@ -252,5 +268,4 @@ def validate_runtime_snapshot_v1(native_raw, geometry_raw, binding, *, identitie
     except GeometryError as exc:
         raise GeometryError('RUNTIME_EXACT_STATE_CONFLICT', exc.detail) from exc
     return {'native':native, 'geometry':geo, 'exact':exact, 'physical':physical,
-            'geometry_state':geometry_state, 'geometry_bytes':geometry_bytes,
-            'binding':copy.deepcopy(binding)}
+            'geometry_state':geometry_state, 'geometry_bytes':geometry_bytes}

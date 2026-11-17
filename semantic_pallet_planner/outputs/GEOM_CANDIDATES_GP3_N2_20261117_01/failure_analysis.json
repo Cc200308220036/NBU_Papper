@@ -1,0 +1,23 @@
+{
+  "edit_tool_note": "One automatic apply_patch context did not match contracts.py and made no edit; used exact current source replacement. Not a test run.",
+  "normal_empty": "nonstackable is a complete OK_EMPTY route, not an ERROR",
+  "original_tolerance_changes": false,
+  "real_failures": "failures/ includes actual common saved-ledger error and backend-specific height check disagreement, each for both backends",
+  "test_failures": [
+    {
+      "category": "TEST_MATCHING_KEY",
+      "exit_code": 1,
+      "finding": "JSON text action keys incorrectly distinguished 2 and 2.0, reporting no shared actions",
+      "fix": "mathematical canonical action key; no candidate/F0 change",
+      "log": "n2_tests_01.log"
+    },
+    {
+      "category": "TEST_EXPECTED_ERROR_CODE",
+      "exit_code": 1,
+      "finding": "expected runtime_request_too_large, actual existing require prefix gives packaging_runtime_request_too_large",
+      "fix": "correct test expectation; original error unchanged",
+      "log": "n2_tests_final.log"
+    }
+  ],
+  "version": "geometry_n2_failures_v1"
+}

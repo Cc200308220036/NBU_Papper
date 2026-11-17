@@ -19,6 +19,8 @@ class CandidateSelector(Protocol):
 
 
 def result(context, *, status, source, label=None, attempt=None, payload=None, error=None):
+    from .packaging_versions import reject_geometry_execution
+    reject_geometry_execution(context.data,"selection_result")
     value = context.data
     metadata = payload or {}
     answer = metadata.get("answers", {}).get("next_action", {})

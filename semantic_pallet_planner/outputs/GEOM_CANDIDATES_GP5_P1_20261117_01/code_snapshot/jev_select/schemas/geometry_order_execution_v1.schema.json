@@ -1,0 +1,62 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "geometry_order_execution_v1"
+    },
+    "scope": {
+      "enum": [
+        "DEVELOPMENT_SYNTHETIC_ONLY",
+        "KERNEL_ACCEPTANCE_SYNTHETIC_ONLY",
+        "EXPOSED_TRAIN_LOCAL_ORDER_ONLY"
+      ]
+    },
+    "task_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "config_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_identity": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "environment_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "job_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "admission_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "kernel_receipt_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "version",
+    "scope",
+    "task_digest",
+    "config_digest",
+    "source_identity",
+    "environment_digest",
+    "plan_digest",
+    "job_id",
+    "admission_digest",
+    "kernel_receipt_digest"
+  ],
+  "additionalProperties": false
+}

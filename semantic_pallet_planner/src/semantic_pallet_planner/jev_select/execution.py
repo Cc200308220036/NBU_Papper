@@ -14,10 +14,14 @@ from .contracts import JevSelectError, digest, validate_schema
 def commit_physical(state, regions, observation, bundle, context, selection, config, *, monitor=None, monitor_event=None, geometry_store=None, execution_binding=None):
     from .packaging_versions import reject_geometry_execution
     reject_geometry_execution(config,"commit_physical")
-    from .packaging_versions import GEOMETRY_RUN_VERSION
-    if config.get('version')==GEOMETRY_RUN_VERSION:
+    from .packaging_versions import GEOMETRY_RUN_VERSION, GEOMETRY_ORDER_VERSION, GEOMETRY_EXECUTABLE_CONFIGS
+    if config.get('version') in GEOMETRY_EXECUTABLE_CONFIGS:
         from .geometry_execution import GeometryStore,validate_execution_identity
         validate_execution_identity(execution_binding,config)
+        if config.get('version')==GEOMETRY_ORDER_VERSION:
+            from .geometry_order_execution import OrderStore
+            if type(geometry_store) is not OrderStore or geometry_store.authorize_config(config)!=execution_binding:
+                raise JevSelectError('geometry_order_commit_authority')
         if not isinstance(geometry_store,GeometryStore) or monitor_event is None:
             raise JevSelectError('geometry_commit_requires_durable_binding')
         saved=geometry_store.load_event(monitor_event,config)

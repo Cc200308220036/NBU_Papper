@@ -50,6 +50,10 @@ def load_geometry_config(*, backend, data_identity, task_identity, monitor_ident
 
 
 def preflight_config(config):
+    from .packaging_versions import GEOMETRY_ORDER_VERSION
+    if config.get('version')==GEOMETRY_ORDER_VERSION:
+        from .geometry_order_execution import preflight_order
+        return preflight_order(config)
     if config.get('version')==GEOMETRY_RUN_VERSION:
         from .geometry_execution import preflight_run
         return preflight_run(config)
@@ -216,7 +220,8 @@ def build_geometry_bundle(state,observation,generator_config,config,*,common_inp
     audit['final_candidates_digest']=digest(candidates)
     audit['generation_counts']=copy.deepcopy(counts)
     from .packaging_runtime import no_policy
-    value={'version':GEOMETRY_RUN_BUNDLE if config['version']==GEOMETRY_RUN_VERSION else GEOMETRY_BUNDLE,'observation_digest':observation['observation_digest'],
+    from .packaging_versions import GEOMETRY_ORDER_VERSION, GEOMETRY_ORDER_BUNDLE
+    value={'version':GEOMETRY_ORDER_BUNDLE if config['version']==GEOMETRY_ORDER_VERSION else GEOMETRY_RUN_BUNDLE if config['version']==GEOMETRY_RUN_VERSION else GEOMETRY_BUNDLE,'observation_digest':observation['observation_digest'],
         'candidate_backend':backend,'generator_config_digest':digest(generator_config),
         'physical_candidates':candidates,'physical_digest':digest(candidates),'generation_counts':counts,
         'selectable_pool':'physical_feasible','selectable_candidates':copy.deepcopy(candidates),

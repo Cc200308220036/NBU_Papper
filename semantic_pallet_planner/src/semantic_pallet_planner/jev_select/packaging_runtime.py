@@ -389,6 +389,10 @@ def evaluate_state(state):
 
 
 def summary(task,config,method,state,events,reason):
+    from .packaging_versions import GEOMETRY_ORDER_VERSION
+    if config['version']==GEOMETRY_ORDER_VERSION:
+        from .geometry_order_execution import order_metrics
+        return order_metrics(task,config,method,state,events,reason)
     audit=evaluate_state(state);placed=state['placed_items'];mass=sum(o['mass_kg'] for o in placed)
     volume=sum(math.prod(o['oriented_size_mm']) for o in placed)
     planned_volume=sum(math.prod(o['dimensions_mm'].values()) for o in task['items'])

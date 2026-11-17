@@ -1,0 +1,85 @@
+{
+  "version": "geometry_order_plan_v1",
+  "status": "DRAFT",
+  "scope": "EXPOSED_TRAIN_LOCAL_ORDER_ONLY",
+  "data_identity": "9cf6d039543df402d04d406f45cd8cff00ee0a5ab49540190662e7f0d18f21de",
+  "source_identity": "6ef876a965ba0e7d429fc7280888d4e601f51de35c799b3ad2941e2b79d89ecb",
+  "environment_digest": "7e067024b6cad0efef09ad2e4cc866d4b7758ea403f23875196e0dee8f706415",
+  "tasks": [
+    {
+      "origin": "EXPOSED_TRAIN",
+      "raw_sha256": "230ea8b1d6766fb4898b75da8afcea1738afd27e66a38d1ffa0a82409e332a89",
+      "normalized_digest": "bbb5ffcf0c2e2fe62f8c382bc52d2276e2f117ab6cfa13de2b8caec1f70074f4",
+      "runtime_digest": "9ded736921295aafd50b97e1f54f355c4f53be550a97d6e0f306d766fa100953",
+      "adapter_digest": "329ee2f4aaf1c7d21d468537d0cff6e51fdca422c03a8f98efb1874495b2935d",
+      "task_id": "NEW_00100027_controlled_base",
+      "source_group_id": "SG_901bbb22f834c63f"
+    },
+    {
+      "origin": "EXPOSED_TRAIN",
+      "raw_sha256": "6d4595ba23d8fe6878cb22eacad7bac80cda05150648a0234fe69dff23db4114",
+      "normalized_digest": "d797f7c61a6b616028d69956ac8b26a8400893577690e84729157d6f76622102",
+      "runtime_digest": "56b43f993d4128ff0cff85bfd097e847b0b88172a2b91001ea57eff8ff065798",
+      "adapter_digest": "329ee2f4aaf1c7d21d468537d0cff6e51fdca422c03a8f98efb1874495b2935d",
+      "task_id": "NEW_00100027_controlled_capacity_tight",
+      "source_group_id": "SG_901bbb22f834c63f"
+    }
+  ],
+  "jobs": [
+    {
+      "job_id": "J00",
+      "task_id": "NEW_00100027_controlled_base",
+      "backend": "e2_original_v1",
+      "method": "local_geometry_test_double"
+    },
+    {
+      "job_id": "J01",
+      "task_id": "NEW_00100027_controlled_base",
+      "backend": "e2_original_v1",
+      "method": "local_first_test_double"
+    },
+    {
+      "job_id": "J02",
+      "task_id": "NEW_00100027_controlled_base",
+      "backend": "ems_surface_hybrid_v1",
+      "method": "local_geometry_test_double"
+    },
+    {
+      "job_id": "J03",
+      "task_id": "NEW_00100027_controlled_base",
+      "backend": "ems_surface_hybrid_v1",
+      "method": "local_first_test_double"
+    },
+    {
+      "job_id": "J04",
+      "task_id": "NEW_00100027_controlled_capacity_tight",
+      "backend": "e2_original_v1",
+      "method": "local_geometry_test_double"
+    },
+    {
+      "job_id": "J05",
+      "task_id": "NEW_00100027_controlled_capacity_tight",
+      "backend": "e2_original_v1",
+      "method": "local_first_test_double"
+    },
+    {
+      "job_id": "J06",
+      "task_id": "NEW_00100027_controlled_capacity_tight",
+      "backend": "ems_surface_hybrid_v1",
+      "method": "local_geometry_test_double"
+    },
+    {
+      "job_id": "J07",
+      "task_id": "NEW_00100027_controlled_capacity_tight",
+      "backend": "ems_surface_hybrid_v1",
+      "method": "local_first_test_double"
+    }
+  ],
+  "feature_profile": "F0_existing_facts",
+  "event_limit": null,
+  "extra_seeds": false,
+  "model_calls_max": 0,
+  "assessment_limit": 152,
+  "solver_limit": 8192,
+  "call_ledger_path": null
+}

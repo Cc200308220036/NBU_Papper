@@ -1,0 +1,161 @@
+{
+  "status": "DRAFT_NOT_PERMISSION",
+  "public_jobs": [
+    {
+      "job_id": "J00",
+      "task_id": "GP5_SYNTH_K01",
+      "backend": "e2_original_v1",
+      "method": "local_first_test_double"
+    },
+    {
+      "job_id": "J01",
+      "task_id": "GP5_SYNTH_K01",
+      "backend": "ems_surface_hybrid_v1",
+      "method": "local_first_test_double"
+    },
+    {
+      "job_id": "J02",
+      "task_id": "GP5_SYNTH_K02",
+      "backend": "e2_original_v1",
+      "method": "local_first_test_double"
+    },
+    {
+      "job_id": "J03",
+      "task_id": "GP5_SYNTH_K02",
+      "backend": "ems_surface_hybrid_v1",
+      "method": "local_first_test_double"
+    }
+  ],
+  "public_case_count": 4,
+  "expected_public_assessment_entries": 6,
+  "assessment_entries_hard_max": 12,
+  "actual_solver_calls_hard_max": 512,
+  "counts_authorized_now": {
+    "assessment_entries": 0,
+    "solver_calls": 0
+  },
+  "extra_seeds": 0,
+  "K01": {
+    "items": 1,
+    "container_mm": [
+      600,
+      400,
+      500
+    ],
+    "box_mm": [
+      100.0,
+      80.0,
+      60.0
+    ],
+    "mass_kg": 1,
+    "synthetic_capacity_kg": 10,
+    "evidence_required": "REAL_SELECTED_MONITOR_COMMIT"
+  },
+  "K02": {
+    "items": 2,
+    "container_mm": [
+      100,
+      80,
+      180
+    ],
+    "box_mm": [
+      100.0,
+      80.0,
+      60.0
+    ],
+    "target_pose": [
+      0,
+      0,
+      60,
+      0
+    ],
+    "initial_pool": 2,
+    "second_pool": 1,
+    "selector": "local_first_test_double",
+    "acceptance_specific_selector": "NOT_NEEDED",
+    "P1_evidence": "final_evidence/test_two_backends_two_methods_complete_and_k02_exact_target/K02_reachability.json"
+  },
+  "K03_adapter_only": {
+    "container_mm": [
+      1000,
+      800,
+      1000
+    ],
+    "placed": [
+      {
+        "id": "ground",
+        "size_mm": [
+          60,
+          200,
+          100
+        ],
+        "mass_kg": 1,
+        "pose": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "shelf",
+        "size_mm": [
+          200,
+          200,
+          100
+        ],
+        "mass_kg": 1,
+        "pose": [
+          0,
+          0,
+          100
+        ]
+      }
+    ],
+    "candidate": {
+      "id": "top",
+      "size_mm": [
+        100,
+        100,
+        100
+      ],
+      "mass_kg": 10,
+      "pose": [
+        60,
+        0,
+        200
+      ]
+    },
+    "expected_status_reference": "UNSTABLE analytic upper COM600/11 outside [-30,30]",
+    "scope": "REAL_KERNEL_ADAPTER_ONLY_NOT_PUBLIC_E2E",
+    "max_extra_assessment_entries": 2,
+    "included_in_total_12": true,
+    "P1_execution": "NOT_RUN"
+  },
+  "K03_floating_boundary": {
+    "target_pose": [
+      0,
+      0,
+      60.0004,
+      0
+    ],
+    "original_physics_rejection_means_kernel_calls": 0,
+    "P1_execution": "NOT_RUN"
+  },
+  "recovery": "one saved prefix per case; SELECTED pending assessment counts toward12; MONITORED/COMMITTED no new assessments; no full historical replay",
+  "stop": [
+    "unreachable target",
+    "identity drift",
+    "unexpected numerical/technical error",
+    "budget exhaustion",
+    "UNKNOWN_CALL",
+    "missing/corrupt durable evidence",
+    "test double in real scope"
+  ],
+  "integer_multistep_issue": "GP5-P1-NUM-01 OPEN; real order readiness blocked; float synthetic success not a repair",
+  "formal_8job_bounds_DRAFT_ONLY": {
+    "assessment_entries": 152,
+    "solver_calls": 8192,
+    "jobs": 8,
+    "source_families": 1
+  }
+}

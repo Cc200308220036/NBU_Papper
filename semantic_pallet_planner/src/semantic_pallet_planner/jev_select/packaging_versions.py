@@ -107,3 +107,18 @@ GEOMETRY_BUNDLES=(GEOMETRY_BUNDLE,GEOMETRY_RUN_BUNDLE)
 GEOMETRY_CONTEXTS=(GEOMETRY_CONTEXT,GEOMETRY_RUN_CONTEXT)
 
 GEOMETRY_RUN_SCHEMAS['geometry_metrics']='geometry_metrics_v1'
+
+# GP5: independent real-order plumbing; development, acceptance and order gates.
+GEOMETRY_ORDER_VERSION='jev_packaging_geometry_order_v16'
+GEOMETRY_ORDER_CONTEXT='jev_decision_context_v16'
+GEOMETRY_ORDER_BUNDLE='jev_candidate_bundle_v16'
+GEOMETRY_ORDER_SCHEMAS={k:k+'_v16' for k in
+    ('config','candidate_bundle','decision_context','selection_result','checkpoint')}
+GEOMETRY_ORDER_SCHEMAS.update({k:k for k in ('geometry_order_plan_v1','geometry_order_execution_v1',
+    'geometry_order_metrics_v1','geometry_order_run_v1','geometry_development_binding_v1',
+    'geometry_kernel_launch_v1','geometry_order_admission_v1','geometry_real_kernel_receipt_v1',
+    'geometry_scope_authorization_v1','geometry_scope_review_v1')})
+GEOMETRY_EXECUTABLE_CONFIGS=(GEOMETRY_RUN_VERSION,GEOMETRY_ORDER_VERSION)
+GEOMETRY_CONFIGS=(*GEOMETRY_CONFIGS,GEOMETRY_ORDER_VERSION)
+GEOMETRY_BUNDLES=(*GEOMETRY_BUNDLES,GEOMETRY_ORDER_BUNDLE)
+GEOMETRY_CONTEXTS=(*GEOMETRY_CONTEXTS,GEOMETRY_ORDER_CONTEXT)

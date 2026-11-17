@@ -1,6 +1,6 @@
 """Fill-then-plan direct-selection simulator. Checkpoints own durable state."""
 from __future__ import annotations
-from .packaging_versions import GEOMETRY_CONFIGS, GEOMETRY_RUN_VERSION
+from .packaging_versions import GEOMETRY_CONFIGS, GEOMETRY_RUN_VERSION, GEOMETRY_ORDER_VERSION, GEOMETRY_EXECUTABLE_CONFIGS
 from .packaging_versions import EXACT_VERSION
 
 import copy
@@ -62,11 +62,13 @@ def run_episode(task, selector, config, *, job_id, method, resume=None, on_check
                 hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None, geometry_store=None):
     from .packaging_versions import reject_geometry_execution
     reject_geometry_execution(config,"run_episode")
-    if config.get('version')==GEOMETRY_RUN_VERSION:
+    if config.get('version')==GEOMETRY_ORDER_VERSION and event_limit is not None:
+        raise JevSelectError('geometry_order_no_event_limit')
+    if config.get('version') in GEOMETRY_EXECUTABLE_CONFIGS:
         if any(v is not None for v in (expected_events,memory_snapshot,training_fork,memory_view,memory_driver)):
             raise JevSelectError('geometry_run_unsupported_combination')
         from .geometry_execution import validate_run_request
-        validate_run_request(task,selector,config,method,geometry_store,on_checkpoint)
+        validate_run_request(task,selector,config,method,geometry_store,on_checkpoint,job_id=job_id)
         return _run_episode_v2(task,selector,config,job_id=job_id,method=method,resume=resume,
             on_checkpoint=on_checkpoint,hook=hook,event_limit=event_limit,geometry_store=geometry_store)
     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
@@ -214,15 +216,17 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                     on_checkpoint=None, hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None, geometry_store=None):
     from .packaging_versions import reject_geometry_execution
     reject_geometry_execution(config,"_run_episode_v2")
+    if config.get('version')==GEOMETRY_ORDER_VERSION and event_limit is not None:
+        raise JevSelectError('geometry_order_no_event_limit')
     from .evaluation import evaluate_committed_state, summarize_v2
     from .execution import commit_physical
     from .selector import SelectionResult
-    geometry_run=config.get('version')==GEOMETRY_RUN_VERSION
+    geometry_run=config.get('version') in GEOMETRY_EXECUTABLE_CONFIGS
     if geometry_run:
         from .geometry_execution import validate_run_request
         if any(v is not None for v in (expected_events,training_fork,memory_snapshot,memory_view,memory_driver)):
             raise JevSelectError('geometry_run_unsupported_combination')
-        geometry_execution_binding=validate_run_request(task,selector,config,method,geometry_store,on_checkpoint)
+        geometry_execution_binding=validate_run_request(task,selector,config,method,geometry_store,on_checkpoint,job_id=job_id)
     state = initial(task['container'], config['buffer_capacity'])
     cursor = decision = 0
     events = []; reason = None; pending = None; phase = 'READY'
@@ -581,7 +585,7 @@ def _geometry_decision_inputs(state,task,config,job_id,decision_id,*,timings=Non
     guard=PublicBusinessGuard();policy=guard.resolve(req)
     parsed=time.perf_counter()
     common=None
-    if config['version']==GEOMETRY_RUN_VERSION:
+    if config['version'] in GEOMETRY_EXECUTABLE_CONFIGS:
         if geometry_store is None:raise JevSelectError('geometry_durable_store_required')
         from .candidate_backends import capture_common_input
         common=capture_common_input(state,req,config)

@@ -1,0 +1,157 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "geometry_real_kernel_receipt_v1"
+    },
+    "scope": {
+      "const": "KERNEL_ACCEPTANCE_SYNTHETIC_ONLY"
+    },
+    "status": {
+      "const": "ACCEPTED"
+    },
+    "source_identity": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "environment_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "monitor_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "launch": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "acceptance_plan": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "assessment_entries": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "solver_calls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "test_double_assessments": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "assessment_entries",
+        "solver_calls",
+        "test_double_assessments"
+      ],
+      "additionalProperties": false
+    },
+    "counter_log": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "scope",
+    "status",
+    "source_identity",
+    "environment_digest",
+    "monitor_digest",
+    "launch",
+    "acceptance_plan",
+    "records",
+    "counts",
+    "counter_log",
+    "review"
+  ],
+  "additionalProperties": false
+}

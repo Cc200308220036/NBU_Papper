@@ -44,6 +44,8 @@ def protocol_suffix(config: dict) -> str:
     validate_schema("config", config)
     from .packaging_runtime import is_packaging
     from .packaging_versions import EXACT_VERSION, GEOMETRY_VERSION
+    from .packaging_versions import GEOMETRY_ORDER_VERSION
+    if config.get("version")==GEOMETRY_ORDER_VERSION: return "v16"
     if config.get("version")==GEOMETRY_RUN_VERSION: return "v15"
     if config.get("version")==GEOMETRY_VERSION: return "v14"
     return "v13" if config.get("version")=="jev_packaging_jm_no_memory_v13" else "v12" if config.get("version")==EXACT_VERSION else "v11" if config.get("version")=="jev_packaging_synthetic_v11" else "v10" if config.get("version")=="jev_packaging_evaluation_v10" else "v9" if config.get("version") == "jev_packaging_memory_orders_v9" else "v8" if config.get("version") == "jev_packaging_contrast_v8" else "v7" if config.get("version") == "jev_packaging_memory_v7" else "v6" if config.get("version") == "jev_packaging_remote_v6" else "v5" if config.get("version") == "jev_packaging_monitored_v5" else "v4" if is_packaging(config) else "v3" if is_v3(config) else "v2" if is_v2(config) else "v1"

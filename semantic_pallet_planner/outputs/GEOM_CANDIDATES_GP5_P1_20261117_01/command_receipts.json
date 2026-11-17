@@ -1,0 +1,64 @@
+{
+  "commands": [
+    {
+      "command": "git pull --ff-only",
+      "entry": "0fbb847d66bd72eda8e120682f73e98fd9e86884",
+      "status": "READ_ONLY_FETCH_HEAD_FAILURE_THEN_APPROVED_FF_SUCCESS",
+      "sync": "a0ba4364e7f3f08018d3147b21dfc5a5f674bc7f"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src GP5_P1_EVIDENCE=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_20261117_01/evidence python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_order_p1.py -v",
+      "log": "test_01.log",
+      "runner_status": "FAILED_2_ASSERTIONS",
+      "scope": "first nine methods"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src GP5_P1_EVIDENCE=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_20261117_01/iteration_02 python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_order_p1.py -v",
+      "log": "test_02.log",
+      "runner_status": "FAILED_INTEGER_TYPE_CONFLICT",
+      "scope": "nine methods"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src GP5_P1_EVIDENCE=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_20261117_01/iteration_03 python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_order_p1.py -v",
+      "log": "test_03.log",
+      "runner_status": "OK_9",
+      "scope": "float K02"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src GP5_P1_EVIDENCE=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_20261117_01/iteration_04 python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_order_p1.py -v",
+      "log": "test_04.log",
+      "runner_status": "OK_11",
+      "scope": "integer negative and metrics added"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src GP5_P1_EVIDENCE=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_20261117_01/iteration_06 python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_order_p1.py -v",
+      "log": "p1_final_06.log",
+      "runner_status": "OK_13",
+      "scope": "driver ledger added"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src GP5_P1_EVIDENCE=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_20261117_01/final_evidence python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_order_p1.py -v",
+      "log": "p1_archive_07.log",
+      "runner_status": "OK_13",
+      "scope": "same methods; complete durable archive"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src GP5_P1_EVIDENCE=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_20261117_01/iteration_05 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_20261117_01/run_offline_checks.py",
+      "exit_code": 0,
+      "log": "offline_checks_05.log",
+      "scope": "12 P1 +21 affected old regressions; saved-metadata TEST_DOUBLE freezer"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_20261117_01/prepare_p2_draft.py",
+      "exit_code": 0,
+      "log": "p2_draft_preparation.log",
+      "scope": "draft only; no freezer/loop/assess/solver"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "no_actual_kernel_or_network": true,
+  "raw_log_notes": "initial runner failures preserved; log runner statuses are authoritative even where exploratory shell followed Python with tail"
+}

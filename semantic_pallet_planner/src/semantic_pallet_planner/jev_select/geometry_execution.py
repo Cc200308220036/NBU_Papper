@@ -74,6 +74,10 @@ def execution_binding(task,config):
 
 
 def validate_execution_identity(value,config):
+    from .packaging_versions import GEOMETRY_ORDER_VERSION
+    if config.get('version')==GEOMETRY_ORDER_VERSION:
+        from .geometry_order_execution import validate_order_execution
+        return validate_order_execution(value,config)
     preflight_run(config)
     validate_schema('geometry_execution_v1',value)
     expected={'version':GEOMETRY_EXECUTION,'task_digest':config['fixture_task_digest'],
@@ -82,7 +86,11 @@ def validate_execution_identity(value,config):
     if not same_native(value,expected):raise JevSelectError('geometry_execution_binding_drift')
 
 
-def validate_run_request(task,selector,config,method,store,on_checkpoint):
+def validate_run_request(task,selector,config,method,store,on_checkpoint,*,job_id=None):
+    from .packaging_versions import GEOMETRY_ORDER_VERSION
+    if config.get('version')==GEOMETRY_ORDER_VERSION:
+        from .geometry_order_execution import validate_order_request
+        return validate_order_request(task,selector,config,method,store,on_checkpoint,job_id=job_id)
     from .packaging_runtime import LocalPackagingDouble,METHODS
     binding=execution_binding(task,config)
     if (type(selector) is not LocalPackagingDouble or selector.method!=method or method!=config['selector']
@@ -93,6 +101,7 @@ def validate_run_request(task,selector,config,method,store,on_checkpoint):
 
 class GeometryStore:
     """Content addressed, fsynced atomic bytes; no missing-file regeneration."""
+    decision_version='geometry_durable_decision_v1'
     def __init__(self,root):self.root=Path(root);self.input_ref=None
 
     def put(self,raw):
@@ -145,14 +154,14 @@ class GeometryStore:
         return n,g,v['binding']
 
     def save_event(self,bundle):
-        return self.put_json({'version':'geometry_durable_decision_v1','input':copy.deepcopy(self.input_ref),
+        return self.put_json({'version':self.decision_version,'input':copy.deepcopy(self.input_ref),
             'bundle':bundle.data,'audit':bundle.audit,'telemetry':bundle.telemetry})
 
     def load_event(self,event,config):
         from .candidate_backends import GeometryCandidateBundle,validate_geometry_config_bundle
         from .candidates import validate_bundle
         v=self.get_json(event['geometry_ref'])
-        if set(v)!={'version','input','bundle','audit','telemetry'} or v['version']!='geometry_durable_decision_v1':raise JevSelectError('geometry_decision_blob_contract')
+        if set(v)!={'version','input','bundle','audit','telemetry'} or v['version']!=self.decision_version:raise JevSelectError('geometry_decision_blob_contract')
         n,g,b=self.verify_input(v['input'],config,event['before'],event['observation'])
         bundle=GeometryCandidateBundle.from_artifacts(v['bundle'],v['audit'],v['telemetry'])
         if (not same_native(bundle.data,event['bundle']) or bundle.audit['native_bytes_hex']!=n.hex()
@@ -172,6 +181,19 @@ class GeometryStore:
 
 def validate_saved_checkpoint(cp,task,config,job_id,method,store):
     """Validate saved transitions on private copies; never reselect/reassess/commit."""
+    from .packaging_versions import GEOMETRY_ORDER_VERSION
+    if config.get('version')==GEOMETRY_ORDER_VERSION:
+        from .geometry_order_execution import OrderStore
+        if type(store) is not OrderStore:raise JevSelectError('geometry_order_recovery_store')
+        expected=store.validate_request(task,config)
+        if expected['job_id']!=job_id:raise JevSelectError('geometry_order_recovery_job')
+        return _validate_saved_transitions(cp,task,config,job_id,method,store,
+            schema='checkpoint_v16',expected_execution=expected)
+    return _validate_saved_transitions(cp,task,config,job_id,method,store,
+        schema='checkpoint_v15',expected_execution=execution_binding(task,config))
+
+
+def _validate_saved_transitions(cp,task,config,job_id,method,store,*,schema,expected_execution):
     from semantic_pallet_planner.o4.buffer.buffer_state import initial,receive,place
     from semantic_pallet_planner.o4.extensions.e2.protocol import observation
     from semantic_pallet_planner.o4.extensions.e2.planning import action_for
@@ -179,9 +201,9 @@ def validate_saved_checkpoint(cp,task,config,job_id,method,store):
     from .contracts import DecisionContext
     from .stability.monitor import validate_monitor
     from .packaging_runtime import evaluate_state
-    validate_schema('checkpoint_v15',cp)
+    validate_schema(schema,cp)
     if (cp['record_digest']!=digest({k:v for k,v in cp.items() if k!='record_digest'})
-        or not same_native(cp['execution_binding'],execution_binding(task,config))
+        or not same_native(cp['execution_binding'],expected_execution)
         or cp['config_digest']!=digest(config) or cp['task_digest']!=digest(task)
         or not same_native(cp['runtime_identity'],config['runtime_identity'])
         or cp['job_id']!=job_id or cp['method']!=method):raise JevSelectError('geometry_checkpoint_identity_drift')

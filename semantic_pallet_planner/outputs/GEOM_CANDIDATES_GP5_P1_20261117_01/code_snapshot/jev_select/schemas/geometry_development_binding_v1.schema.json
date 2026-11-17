@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "geometry_development_binding_v1"
+    },
+    "scope": {
+      "const": "DEVELOPMENT_SYNTHETIC_ONLY"
+    },
+    "evidence": {
+      "const": "TEST_DOUBLE"
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "scope",
+    "evidence",
+    "plan_digest"
+  ],
+  "additionalProperties": false
+}

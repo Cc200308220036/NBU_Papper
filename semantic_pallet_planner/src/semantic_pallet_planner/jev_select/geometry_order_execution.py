@@ -7,10 +7,11 @@ import copy
 import math
 from pathlib import Path
 
+from .geometry_native_protocol import wire, is_native, identity_fields, config_fields
 from .contracts import digest,validate_schema
 from .geometry_runtime_contracts import environment,same_native
 from .geometry_execution import GeometryStore
-from .packaging_versions import GEOMETRY_ORDER_VERSION
+from .packaging_versions import GEOMETRY_ORDER_VERSION,GEOMETRY_NATIVE_VERSION
 from .packaging_geometry_protocol import (DEVELOPMENT,ACCEPTANCE,ORDER,require,sha,
     adapt_task,validate_order_plan,validate_admission,draft_run)
 
@@ -48,12 +49,14 @@ def load_order_config(plan,job_id,*,monitor_snapshot,admission,kernel_receipt=No
     from .candidate_backends import load_geometry_config
     cfg=load_geometry_config(backend=job['backend'],data_identity=plan['data_identity'],
         task_identity=task['runtime_digest'],monitor_identity=digest(monitor_snapshot),method=job['method'])
-    cfg.update(version=GEOMETRY_ORDER_VERSION,construction_only=False,
+    cfg.update(version=GEOMETRY_NATIVE_VERSION if is_native(plan) else GEOMETRY_ORDER_VERSION,construction_only=False,
         execution_version='geometry_order_execution_v1',experiment_protocol='geometry_order_run_v1',
         order_task_identity=copy.deepcopy(task),plan_digest=digest(plan),execution_scope=plan['scope'],
         admission_digest=digest(admission),kernel_receipt_digest=digest(kernel_receipt) if kernel_receipt else None,
         monitor_evidence='TEST_DOUBLE' if plan['scope']==DEVELOPMENT else 'REAL_KERNEL',
         stability_monitor=copy.deepcopy(monitor_snapshot))
+    if is_native(plan):
+        cfg.update(config_fields(),execution_version='geometry_order_execution_v2',experiment_protocol='geometry_order_run_v2')
     cfg['runtime_identity']['strategy_identity']=digest({k:v for k,v in cfg.items() if k!='runtime_identity'})
     preflight_order(cfg)
     return cfg
@@ -61,7 +64,7 @@ def load_order_config(plan,job_id,*,monitor_snapshot,admission,kernel_receipt=No
 
 def preflight_order(config):
     from .candidate_backends import load_geometry_config
-    validate_schema('config_v16',config)
+    validate_schema('config_v17' if is_native(config) else 'config_v16',config)
     ids=config['runtime_identity'];task=config['order_task_identity'];snapshot=config['stability_monitor']
     validate_monitor_snapshot(snapshot)
     require(ids['task_identity']==task['runtime_digest'] and ids['monitor_identity']==digest(snapshot),'geometry_order_task_identity')
@@ -72,23 +75,24 @@ def preflight_order(config):
         task_identity=ids['task_identity'],monitor_identity=ids['monitor_identity'],method=config['selector'])
     expected.update({k:copy.deepcopy(config[k]) for k in ('version','construction_only','execution_version','experiment_protocol',
         'order_task_identity','plan_digest','execution_scope','admission_digest','kernel_receipt_digest','monitor_evidence','stability_monitor')})
+    if is_native(config):expected.update(config_fields())
     expected['runtime_identity']['strategy_identity']=digest({k:v for k,v in expected.items() if k!='runtime_identity'})
     require(same_native(expected,config),'geometry_order_config_drift')
 
 
 def execution_for_config(config,job_id):
     preflight_order(config)
-    v={'version':'geometry_order_execution_v1','scope':config['execution_scope'],
+    v={**identity_fields(config),'version':wire(config,'geometry_order_execution_v1'),'scope':config['execution_scope'],
         'task_digest':config['order_task_identity']['runtime_digest'],'config_digest':digest(config),
         'source_identity':config['runtime_identity']['source_identity'],'environment_digest':digest(environment()),
         'plan_digest':config['plan_digest'],'job_id':job_id,'admission_digest':config['admission_digest'],
         'kernel_receipt_digest':config['kernel_receipt_digest']}
-    validate_schema('geometry_order_execution_v1',v)
+    validate_schema(wire(config,'geometry_order_execution_v1'),v)
     return v
 
 
 def validate_order_execution(value,config):
-    validate_schema('geometry_order_execution_v1',value)
+    validate_schema(wire(config,'geometry_order_execution_v1'),value)
     require(same_native(value,execution_for_config(config,value['job_id'])),'geometry_order_execution_drift')
 
 
@@ -96,6 +100,7 @@ class OrderStore(GeometryStore):
     decision_version='geometry_order_durable_decision_v1'
     def __init__(self,root,*,plan,job_id,adapted,monitor_snapshot,admission,kernel_receipt=None):
         super().__init__(root)
+        if is_native(plan):self.decision_version='geometry_order_durable_decision_v2'
         # Frozen copies; mutating a caller's dictionaries never replaces authority.
         self._plan=copy.deepcopy(plan);self._job_id=job_id;self._raw=bytes(adapted['raw'])
         self._identity=copy.deepcopy(adapted['identity']);self._monitor=copy.deepcopy(monitor_snapshot)
@@ -182,7 +187,7 @@ def run_order_job(plan,job_id,adapted,*,monitor_snapshot,admission,root,kernel_r
         metric=result['summary']
         if metric is not None:
             metric['timings'].append({'segment':'invocation_wall_s','seconds':time.perf_counter()-started})
-            validate_schema('geometry_order_metrics_v1',metric)
+            validate_schema(wire(config,'geometry_order_metrics_v1'),metric)
             status='COMPLETE' if metric['completed'] else ('TECHNICAL_FAILURE' if metric['termination_class']=='TECHNICAL_FAILURE' else 'STOPPED')
             write(store.root/'metrics.json',metric)
         else:status='TECHNICAL_FAILURE'
@@ -226,7 +231,7 @@ def order_metrics(task,config,method,state,events,reason):
     for key in sorted({k for e in events for k,v in e.get('timings',{}).items() if k.endswith('_s') and type(v) in (float,int)}):
         timings.append({'segment':key,'seconds':sum(e.get('timings',{}).get(key,0) for e in events)})
     timings.append({'segment':'monitor_result_duration_s','seconds':sum((r.get('result') or {}).get('duration_s',0) for r in rows)})
-    value={'version':'geometry_order_metrics_v1','task_id':task['task_id'],'candidate_backend':config['candidate_backend'],
+    value={**identity_fields(config),'version':wire(config,'geometry_order_metrics_v1'),'task_id':task['task_id'],'candidate_backend':config['candidate_backend'],
         'method':method,'scope':config['execution_scope'],'monitor_evidence':config['monitor_evidence'],
         'runtime_identity':copy.deepcopy(config['runtime_identity']),'planned_items':len(items),'arrived_items':state['arrival_count'],
         'placed_items':len(placed),'planned_volume_mm3':planned_volume,'placed_volume_mm3':volume,'planned_mass_kg':planned_mass,
@@ -245,5 +250,5 @@ def order_metrics(task,config,method,state,events,reason):
         value['kernel_count_scope']={'basis':'PERSISTENT_JOB_CUMULATIVE_AND_INVOCATION_DELTA','cumulative':counts,'invocation_delta':current_increment(config['plan_digest'])}
     else:
         value['kernel_count_scope']={'basis':'DEVELOPMENT_REAL_CALLS_FORBIDDEN','cumulative':{'assessment_entries':0,'solver_calls':0},'invocation_delta':{'assessment_entries':0,'solver_calls':0}}
-    validate_schema('geometry_order_metrics_v1',value)
+    validate_schema(wire(config,'geometry_order_metrics_v1'),value)
     return value

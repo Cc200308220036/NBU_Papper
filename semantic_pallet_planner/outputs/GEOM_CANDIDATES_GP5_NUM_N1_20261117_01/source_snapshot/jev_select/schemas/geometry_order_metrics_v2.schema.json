@@ -1,0 +1,476 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "geometry_order_metrics_v2"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_backend": {
+      "enum": [
+        "e2_original_v1",
+        "ems_surface_hybrid_v1"
+      ]
+    },
+    "method": {
+      "enum": [
+        "local_geometry_test_double",
+        "local_first_test_double"
+      ]
+    },
+    "scope": {
+      "enum": [
+        "DEVELOPMENT_SYNTHETIC_ONLY",
+        "KERNEL_ACCEPTANCE_SYNTHETIC_ONLY",
+        "EXPOSED_TRAIN_LOCAL_ORDER_ONLY"
+      ]
+    },
+    "monitor_evidence": {
+      "enum": [
+        "TEST_DOUBLE",
+        "REAL_KERNEL"
+      ]
+    },
+    "runtime_identity": {
+      "type": "object",
+      "properties": {
+        "data_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "physical_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "strategy_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "task_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "monitor_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "data_identity",
+        "physical_identity",
+        "strategy_identity",
+        "task_identity",
+        "monitor_identity",
+        "source_identity"
+      ],
+      "additionalProperties": false
+    },
+    "planned_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "arrived_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "placed_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "planned_volume_mm3": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_volume_mm3": {
+      "type": "number",
+      "minimum": 0
+    },
+    "planned_mass_kg": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_mass_kg": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_item_ratio": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_volume_ratio": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_mass_ratio": {
+      "type": "number",
+      "minimum": 0
+    },
+    "fixed_container_utilization": {
+      "type": "number",
+      "minimum": 0
+    },
+    "max_height_mm": {
+      "type": "number",
+      "minimum": 0
+    },
+    "envelope_utilization": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "envelope_status": {
+      "enum": [
+        "APPLICABLE",
+        "NA_EMPTY"
+      ]
+    },
+    "completed": {
+      "type": "boolean"
+    },
+    "termination_reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "termination_class": {
+      "enum": [
+        "COMPLETE",
+        "NO_CANDIDATE",
+        "PREDICTED_STATIC_INSTABILITY",
+        "UNASSESSABLE",
+        "TECHNICAL_FAILURE",
+        "CANCELLED"
+      ]
+    },
+    "predicted_instability_progress": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "decision_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "failed_item_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "placed_item_ratio": {
+              "type": "number",
+              "minimum": 0
+            },
+            "placed_volume_ratio": {
+              "type": "number",
+              "minimum": 0
+            },
+            "placed_mass_ratio": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "decision_id",
+            "failed_item_id",
+            "placed_item_ratio",
+            "placed_volume_ratio",
+            "placed_mass_ratio"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "assessment_entries": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "solver_calls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "test_double_assessments": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "assessment_entries",
+        "solver_calls",
+        "test_double_assessments"
+      ],
+      "additionalProperties": false
+    },
+    "timings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "segment": {
+            "type": "string",
+            "minLength": 1
+          },
+          "seconds": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "segment",
+          "seconds"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "cost": {
+      "type": "object",
+      "properties": {
+        "model_calls": {
+          "const": 0
+        },
+        "service_cost": {
+          "const": "NA_NO_SERVICE_CALL"
+        },
+        "local_compute_cost": {
+          "const": "UNKNOWN"
+        }
+      },
+      "required": [
+        "model_calls",
+        "service_cost",
+        "local_compute_cost"
+      ],
+      "additionalProperties": false
+    },
+    "global_infeasibility_proven": {
+      "const": false
+    },
+    "accounting": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "OBSERVED",
+            "UNKNOWN_UNINSTRUMENTED"
+          ]
+        },
+        "cumulative": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "selector_calls": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "singleton_executions": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "monitor_entries": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "monitor_reuses": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "commit_attempts": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "commit_successes": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "selector_calls",
+                "singleton_executions",
+                "monitor_entries",
+                "monitor_reuses",
+                "commit_attempts",
+                "commit_successes"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "invocation_delta": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "selector_calls": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "singleton_executions": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "monitor_entries": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "monitor_reuses": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "commit_attempts": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "commit_successes": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "selector_calls",
+                "singleton_executions",
+                "monitor_entries",
+                "monitor_reuses",
+                "commit_attempts",
+                "commit_successes"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "resume_phase": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "cumulative",
+        "invocation_delta",
+        "resume_phase"
+      ],
+      "additionalProperties": false
+    },
+    "kernel_count_scope": {
+      "type": "object",
+      "properties": {
+        "basis": {
+          "enum": [
+            "PERSISTENT_JOB_CUMULATIVE_AND_INVOCATION_DELTA",
+            "DEVELOPMENT_REAL_CALLS_FORBIDDEN"
+          ]
+        },
+        "cumulative": {
+          "type": "object",
+          "properties": {
+            "assessment_entries": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "solver_calls": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "test_double_assessments": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "assessment_entries",
+            "solver_calls"
+          ],
+          "additionalProperties": false
+        },
+        "invocation_delta": {
+          "type": "object",
+          "properties": {
+            "assessment_entries": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "solver_calls": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "test_double_assessments": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "assessment_entries",
+            "solver_calls"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "basis",
+        "cumulative",
+        "invocation_delta"
+      ],
+      "additionalProperties": false
+    },
+    "runtime_version": {
+      "const": "jev_packaging_geometry_order_v17"
+    },
+    "publication_policy_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "task_id",
+    "candidate_backend",
+    "method",
+    "scope",
+    "monitor_evidence",
+    "runtime_identity",
+    "planned_items",
+    "arrived_items",
+    "placed_items",
+    "planned_volume_mm3",
+    "placed_volume_mm3",
+    "planned_mass_kg",
+    "placed_mass_kg",
+    "placed_item_ratio",
+    "placed_volume_ratio",
+    "placed_mass_ratio",
+    "fixed_container_utilization",
+    "max_height_mm",
+    "envelope_utilization",
+    "envelope_status",
+    "completed",
+    "termination_reason",
+    "termination_class",
+    "predicted_instability_progress",
+    "counts",
+    "timings",
+    "cost",
+    "global_infeasibility_proven",
+    "runtime_version",
+    "publication_policy_digest"
+  ],
+  "additionalProperties": false
+}

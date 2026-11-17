@@ -4,6 +4,7 @@ Durability belongs to the shared episode checkpoint. This module owns frozen
 monitor identity, exact-action credentials and validation without reassessment.
 """
 from __future__ import annotations
+from ..packaging_versions import GEOMETRY_ORDER_CONFIGS, GEOMETRY_NATIVE_VERSION
 from ..packaging_versions import EXACT_VERSION, GEOMETRY_RUN_VERSION, GEOMETRY_ORDER_VERSION, GEOMETRY_EXECUTABLE_CONFIGS
 
 import copy
@@ -18,7 +19,7 @@ TERMINATIONS = {'UNSTABLE':'PREDICTED_STATIC_INSTABILITY',
 
 
 def is_monitored(config):
-    return config.get('version') in (GEOMETRY_ORDER_VERSION,GEOMETRY_RUN_VERSION,'jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
+    return config.get('version') in (*GEOMETRY_ORDER_CONFIGS,GEOMETRY_RUN_VERSION,'jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
 
 
 def freeze(enabled=False):
@@ -61,7 +62,7 @@ def load_monitor_config(*, data_identity, task_digest, method='local_geometry_te
 
 def preflight(config):
     validate_schema('config', config)
-    if config['version']==GEOMETRY_ORDER_VERSION:
+    if config['version'] in GEOMETRY_ORDER_CONFIGS:
         from ..geometry_order_execution import preflight_order
         preflight_order(config)
         return
@@ -150,7 +151,7 @@ def monitor_selected_action(state, candidate, event, config):
     result = None
     if frozen['enabled']:
         assess_candidate,load_config,result_type,_=kernel_interface(frozen['algorithm'])
-        if config['version']==GEOMETRY_ORDER_VERSION and config['monitor_evidence']=='TEST_DOUBLE':
+        if config['version'] in GEOMETRY_ORDER_CONFIGS and config['monitor_evidence']=='TEST_DOUBLE':
             if getattr(assess_candidate,'geometry_test_double',False) is not True:
                 raise JevSelectError('geometry_development_requires_test_monitor')
         from .geometry import state_from_runtime, box_from_runtime
@@ -209,7 +210,7 @@ def validate_monitor(row, state, candidate, event, config, *, require_stable=Fal
             res['state_digest']!=digest(asdict(state_from_runtime(state))) or
             res['candidate_digest']!=digest(asdict(box_from_runtime(selected_box(state,candidate))))):
             raise JevSelectError('kernel_result_binding_changed')
-    if config['version']==GEOMETRY_ORDER_VERSION and enabled:
+    if config['version'] in GEOMETRY_ORDER_CONFIGS and enabled:
         marked=res.get('diagnostics',{}).get('TEST_DOUBLE') is True
         if marked != (config['monitor_evidence']=='TEST_DOUBLE'):
             raise JevSelectError('geometry_monitor_evidence_scope')

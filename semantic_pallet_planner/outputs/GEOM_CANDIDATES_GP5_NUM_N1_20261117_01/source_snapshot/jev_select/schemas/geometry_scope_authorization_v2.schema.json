@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "geometry_scope_authorization_v2"
+    },
+    "scope": {
+      "enum": [
+        "KERNEL_ACCEPTANCE_SYNTHETIC_ONLY",
+        "EXPOSED_TRAIN_LOCAL_ORDER_ONLY"
+      ]
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "status": {
+      "const": "APPROVED"
+    },
+    "runtime_version": {
+      "const": "jev_packaging_geometry_order_v17"
+    },
+    "publication_policy_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "scope",
+    "plan_digest",
+    "status",
+    "runtime_version",
+    "publication_policy_digest"
+  ]
+}

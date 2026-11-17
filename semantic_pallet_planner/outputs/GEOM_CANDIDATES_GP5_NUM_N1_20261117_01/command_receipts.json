@@ -1,0 +1,40 @@
+{
+  "schema": "geometry_num_n1_commands_v1",
+  "entry_head": "f1974261de576944b90910b28dd5b5165427fd08",
+  "actual_head": "f051bab5d87ec86e87e48a3709991fe94ed54389",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "initial_worktree": "CLEAN",
+  "initial_index": "EMPTY",
+  "commands": [
+    {
+      "command": "git pull --ff-only",
+      "initial_exit": 1,
+      "reason": ".git/FETCH_HEAD read-only",
+      "escalated_exit": 0,
+      "result": "FAST_FORWARD"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_20261117_01/run_bounded_verification.py",
+      "exit": 2,
+      "scope": "six C/five X then first E job, stopped; no retries"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_20261117_01/check_saved_delivery.py",
+      "exit": 0,
+      "scope": "post-stop static saved bytes/schema-fragment diagnosis, no production imports"
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    }
+  ],
+  "additional_actual_checks": [
+    "early six-row production pure-conversion sanity (same six fixtures, not new cases)",
+    "eight v17 config preflights, no episodes",
+    "AST and Draft202012 schema syntax",
+    "initial actual old manifest/source SHA verification"
+  ],
+  "python": "python3 existing environment; no dependencies installed",
+  "test_boundary": "do not rerun stateful bounded verification as an implicit retry"
+}

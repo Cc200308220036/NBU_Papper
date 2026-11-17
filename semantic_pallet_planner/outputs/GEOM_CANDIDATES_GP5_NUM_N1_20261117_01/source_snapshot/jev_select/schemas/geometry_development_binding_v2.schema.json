@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "geometry_development_binding_v2"
+    },
+    "scope": {
+      "const": "DEVELOPMENT_SYNTHETIC_ONLY"
+    },
+    "evidence": {
+      "const": "TEST_DOUBLE"
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "runtime_version": {
+      "const": "jev_packaging_geometry_order_v17"
+    },
+    "publication_policy_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "scope",
+    "evidence",
+    "plan_digest",
+    "runtime_version",
+    "publication_policy_digest"
+  ],
+  "additionalProperties": false
+}

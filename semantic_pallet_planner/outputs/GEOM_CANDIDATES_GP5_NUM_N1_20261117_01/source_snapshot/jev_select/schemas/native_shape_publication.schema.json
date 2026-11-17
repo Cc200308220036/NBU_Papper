@@ -1,0 +1,378 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "geometry_candidate_publication_v3"
+    },
+    "policy": {
+      "const": "geometry_native_shape_publication_policy_v3"
+    },
+    "bridge": {
+      "const": "geometry_runtime_native_shape_bridge_v3"
+    },
+    "config_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_identity": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "environment_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "common_binding_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "backend_binding_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "native_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "geometry_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "raw_generation_ref": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "geometry_blob_ref_v1"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "version",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "raw_pool_ref": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "geometry_blob_ref_v1"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "version",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "ordered_mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ordinal": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "proof_core_ref": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "const": "geometry_blob_ref_v1"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "version",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "proof_core_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "published_candidate_id": {
+            "type": "string",
+            "pattern": "^GP5N3_[0-9a-f]{64}$"
+          },
+          "published_fingerprint": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "published_candidate_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "raw_candidate_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "raw_content_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "published_content_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "final_binding_ref": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "const": "geometry_blob_ref_v1"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "version",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "final_binding_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "ordinal",
+          "proof_core_ref",
+          "proof_core_digest",
+          "published_candidate_id",
+          "published_fingerprint",
+          "published_candidate_digest",
+          "raw_candidate_digest",
+          "raw_content_digest",
+          "published_content_digest",
+          "final_binding_ref",
+          "final_binding_digest"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "published_pool_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "validation_counts": {
+      "type": "object",
+      "properties": {
+        "oracle_checks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "shadow_apply_calls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "derived_projection_calls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "status": {
+          "const": "COMPLETED"
+        }
+      },
+      "required": [
+        "oracle_checks",
+        "shadow_apply_calls",
+        "derived_projection_calls",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "identity_contract": {
+      "const": "geometry_gp5_num_n0_identity_dag_design_v1"
+    },
+    "native_ref": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "geometry_blob_ref_v1"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "version",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "geometry_ref": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "geometry_blob_ref_v1"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "version",
+        "sha256"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "policy",
+    "bridge",
+    "config_digest",
+    "source_identity",
+    "environment_digest",
+    "common_binding_digest",
+    "backend_binding_digest",
+    "native_sha256",
+    "geometry_sha256",
+    "raw_generation_ref",
+    "raw_pool_ref",
+    "ordered_mappings",
+    "published_pool_digest",
+    "validation_counts",
+    "identity_contract",
+    "native_ref",
+    "geometry_ref"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "native_tree": {
+      "oneOf": [
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "NULL"
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "BOOL"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "STR"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "INT"
+            },
+            {
+              "type": "string",
+              "pattern": "^-?(0|[1-9][0-9]*)$"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "FLOAT64"
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{16}$"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "LIST"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/native_tree"
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "DICT"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/$defs/native_tree"
+                  }
+                ],
+                "items": false,
+                "minItems": 2,
+                "maxItems": 2
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        }
+      ]
+    }
+  }
+}

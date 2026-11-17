@@ -4,6 +4,7 @@ No new physical solver or candidate generator. Local smoke selectors are test
 substitutes only, with no remote transport or memory loading route.
 """
 from __future__ import annotations
+from .packaging_versions import GEOMETRY_ORDER_CONFIGS, GEOMETRY_NATIVE_VERSION
 from .packaging_versions import GEOMETRY_CONFIGS, GEOMETRY_BUNDLES, GEOMETRY_CONTEXTS, GEOMETRY_RUN_VERSION
 from .packaging_versions import EXACT_CONTEXT, EXACT_VERSION, GEOMETRY_VERSION, GEOMETRY_CONTEXT
 import copy
@@ -172,6 +173,14 @@ def public_facts(config,observation,bundle,policy):
     require(bundle.data==PublicBusinessGuard().filter(observation,policy,bundle,config).data,'runtime_candidate_filter')
     require(observation['buffer_context']['capacity']==3,'runtime_buffer_capacity')
     value=validate_bundle(observation,bundle)
+    return _project_public_facts(config,observation,value)
+
+
+def _project_public_facts(config,observation,value,*,shadow_afters=None):
+    # Private pure projection, reachable publicly only after the original validation.
+    # The publication bridge supplies the already checked R/P and shadow afters.
+    from semantic_pallet_planner.evaluation.state import apply_candidate
+    from semantic_pallet_planner.planner.scoring import geometry_score
     objects=observation['placed_objects']+observation['available_objects']
     aliases={o['object_id']:f'B{i:03d}' for i,o in enumerate(objects,1)}
     placed=[_physical_object(o) for o in observation['placed_objects']]
@@ -205,7 +214,7 @@ def public_facts(config,observation,bundle,policy):
     random.Random(int(seed[:16],16)).shuffle(ordered)
     criteria={};mapping={}
     for i,c in enumerate(ordered,1):
-        label=f'C{i:02d}';after=apply_candidate({'placed_items':placed,'available_items':available},c)
+        label=f'C{i:02d}';after=(shadow_afters[c['candidate_id']] if shadow_afters is not None else apply_candidate({'placed_items':placed,'available_items':available},c))
         after_loads,after_edges,_=layout_facts(after)
         changes=[]
         by_id={o['item_id']:o for o in placed}
@@ -390,7 +399,7 @@ def evaluate_state(state):
 
 def summary(task,config,method,state,events,reason):
     from .packaging_versions import GEOMETRY_ORDER_VERSION
-    if config['version']==GEOMETRY_ORDER_VERSION:
+    if config['version'] in GEOMETRY_ORDER_CONFIGS:
         from .geometry_order_execution import order_metrics
         return order_metrics(task,config,method,state,events,reason)
     audit=evaluate_state(state);placed=state['placed_items'];mass=sum(o['mass_kg'] for o in placed)

@@ -1,0 +1,64 @@
+{
+  "observed_outer_failure": "invalid_checkpoint_v17: /events/3: value does not match the versioned contract",
+  "observed_saved_phase": "SELECTED",
+  "static_verified_defect": {
+    "path": "checkpoint_v17.schema.json#/$defs/monitor_result/properties/candidate_id",
+    "v16_contract": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "v17_contract": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^GP5N3_[0-9a-f]{64}$"
+    },
+    "probe_literal": "synth_1",
+    "old_accepts": true,
+    "new_rejects": true
+  },
+  "causal_assessment": "The new blanket candidate_id restriction incorrectly reaches the unchanged kernel result box item ID. Saved selected checkpoint and test-double call are observed. First MONITORED checkpoint rejection is inferred from the source and schema; the subsequent events/3 error is the observed traceback. The in-memory MONITORED/terminal event was not saved, and is not reconstructed as runtime evidence.",
+  "archived_publication": {
+    "mappings": 2,
+    "blobs": 20,
+    "validation_counts": {
+      "derived_projection_calls": 4,
+      "oracle_checks": 4,
+      "shadow_apply_calls": 4,
+      "status": "COMPLETED"
+    },
+    "sizes": [
+      [
+        100,
+        80,
+        60
+      ],
+      [
+        100,
+        80,
+        60
+      ]
+    ]
+  },
+  "monitor_entries": 1,
+  "actual_test_double_calls": 1,
+  "actual_commit_attempts": 0,
+  "actual_commit_successes": 0,
+  "real_kernel_LP_freeze_model_calls": 0,
+  "retries": 0,
+  "remaining_E_jobs": 7,
+  "R_runs": 0,
+  "unrun_gates": [
+    "new-backend publication",
+    "second integer box",
+    "float full jobs",
+    "saved recovery",
+    "runtime X",
+    "old H behavior",
+    "strong completion behavior"
+  ],
+  "status": "FAIL_STOPPED_PENDING_QA"
+}

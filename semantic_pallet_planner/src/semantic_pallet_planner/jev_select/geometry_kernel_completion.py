@@ -1,4 +1,5 @@
 """Closed completion coverage, independent of launching or issuing permits."""
+from .geometry_native_protocol import wire, is_native, identity_fields, config_fields
 from .contracts import digest,validate_schema
 from .packaging_geometry_protocol import require,read_reference
 from .packaging_versions import GEOMETRY_BACKENDS
@@ -14,7 +15,7 @@ def required_coverage(plan):
             'status':'STABLE','termination':'ALL_ITEMS_PLACED'})
     require(len(rows)==4 and len({r['job_id'] for r in rows})==4 and
         {(r['task_id'],r['backend']) for r in rows}=={(t,b) for t in ('GP5_SYNTH_K01','GP5_SYNTH_K02') for b in GEOMETRY_BACKENDS},'geometry_completion_matrix')
-    return {'version':'geometry_kernel_required_coverage_v1','primary':rows,
+    return {**identity_fields(plan),'version':wire(plan,'geometry_kernel_required_coverage_v1'),'primary':rows,
         'recovery': [{'job_id':r['job_id'],'phase':phase} for r in rows if r['task_id']=='GP5_SYNTH_K01' for phase in ('SELECTED','MONITORED','COMMITTED')],
         'K03':'ADAPTER_ONLY_AND_PUBLIC_NEGATIVE_NOT_RUN_NOT_COMPLETION_CLAIM'}
 
@@ -39,7 +40,7 @@ def check_success(record,expected):
 def validate_completion(receipt,plan,log,validate_record):
     """validate_record must perform genuine identity/durable checks, including resumes."""
     coverage=required_coverage(plan)
-    review=read_reference(receipt['review']);validate_schema('geometry_kernel_completion_review_v1',review)
+    review=read_reference(receipt['review']);validate_schema(wire(plan,'geometry_kernel_completion_review_v1'),review)
     expected={'acceptance_plan_digest':digest(plan),'records_digest':digest(receipt['records']),
         'recovery_digest':digest(receipt['recovery']),'counter_log':receipt['counter_log'],'coverage_digest':digest(coverage)}
     require(all(review[k]==v for k,v in expected.items()),'geometry_completion_review_binding')
@@ -51,7 +52,7 @@ def validate_completion(receipt,plan,log,validate_record):
     require([{'job_id':r['job_id'],'phase':r['phase']} for r in recovery]==coverage['recovery'],'geometry_completion_recovery_set')
     for row in recovery:
         before=read_reference(row['before']);after=read_reference(row['after']);account=read_reference(row['accounting'])
-        validate_schema('geometry_order_accounting_v1',account)
+        validate_schema(wire(plan,'geometry_order_accounting_v1'),account)
         expected=next(r for r in coverage['primary'] if r['job_id']==row['job_id'])
         require(before['phase']==row['phase'] and before['job_id']==row['job_id'],'geometry_completion_recovery_phase')
         # Validate both snapshots with the same shared durable transition validator.

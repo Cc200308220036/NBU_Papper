@@ -1,0 +1,678 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "geometry_candidate_publication_proof_v3"
+    },
+    "backend": {
+      "enum": [
+        "e2_original_v1",
+        "ems_surface_hybrid_v1"
+      ]
+    },
+    "common_binding_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "backend_binding_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "raw_pool_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "raw_candidate_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "raw_candidate_id": {
+      "type": "string"
+    },
+    "raw_candidate_fingerprint": {
+      "type": "string"
+    },
+    "source_item_pointer": {
+      "type": "string"
+    },
+    "source_dimensions_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_signatures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "native_type": {
+            "enum": [
+              "INT",
+              "FLOAT"
+            ]
+          },
+          "integer_text": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "binary64_be_hex": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "numerator": {
+            "type": "string"
+          },
+          "denominator": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "native_type",
+          "integer_text",
+          "binary64_be_hex",
+          "numerator",
+          "denominator"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "target_signatures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "native_type": {
+            "enum": [
+              "INT",
+              "FLOAT"
+            ]
+          },
+          "integer_text": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "binary64_be_hex": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "numerator": {
+            "type": "string"
+          },
+          "denominator": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "native_type",
+          "integer_text",
+          "binary64_be_hex",
+          "numerator",
+          "denominator"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "raw_size_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "target_size_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "axis_equalities": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "properties": {
+          "axis_index": {
+            "type": "integer",
+            "enum": [
+              0,
+              1,
+              2
+            ]
+          },
+          "source_axis": {
+            "enum": [
+              "length",
+              "width",
+              "height"
+            ]
+          },
+          "raw_signature": {
+            "type": "object",
+            "properties": {
+              "native_type": {
+                "enum": [
+                  "INT",
+                  "FLOAT"
+                ]
+              },
+              "integer_text": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "binary64_be_hex": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "numerator": {
+                "type": "string"
+              },
+              "denominator": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "native_type",
+              "integer_text",
+              "binary64_be_hex",
+              "numerator",
+              "denominator"
+            ],
+            "additionalProperties": false
+          },
+          "target_signature": {
+            "type": "object",
+            "properties": {
+              "native_type": {
+                "enum": [
+                  "INT",
+                  "FLOAT"
+                ]
+              },
+              "integer_text": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "binary64_be_hex": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "numerator": {
+                "type": "string"
+              },
+              "denominator": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "native_type",
+              "integer_text",
+              "binary64_be_hex",
+              "numerator",
+              "denominator"
+            ],
+            "additionalProperties": false
+          },
+          "value_equal": {
+            "const": true
+          }
+        },
+        "required": [
+          "axis_index",
+          "source_axis",
+          "raw_signature",
+          "target_signature",
+          "value_equal"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "raw_action_key": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          }
+        }
+      ]
+    },
+    "publication_action_key": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "integer"
+        ]
+      }
+    },
+    "allowed_changed_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "physical_and_derived_equivalence": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "geometry_native_shape_shadow_evidence_v3"
+        },
+        "raw_after_ref": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": "geometry_blob_ref_v1"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "version",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "published_after_ref": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": "geometry_blob_ref_v1"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "version",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "raw_derived_ref": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": "geometry_blob_ref_v1"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "version",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "published_derived_ref": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": "geometry_blob_ref_v1"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "version",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "raw_after_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "published_after_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "raw_derived_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "published_derived_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "raw_oracle_errors": {
+          "const": []
+        },
+        "published_oracle_errors": {
+          "const": []
+        },
+        "allowed_difference_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "derived_equalities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "raw_signature": {
+                "type": "object",
+                "properties": {
+                  "native_type": {
+                    "enum": [
+                      "INT",
+                      "FLOAT"
+                    ]
+                  },
+                  "integer_text": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "binary64_be_hex": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "native_type",
+                  "integer_text",
+                  "binary64_be_hex",
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "published_signature": {
+                "type": "object",
+                "properties": {
+                  "native_type": {
+                    "enum": [
+                      "INT",
+                      "FLOAT"
+                    ]
+                  },
+                  "integer_text": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "binary64_be_hex": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "native_type",
+                  "integer_text",
+                  "binary64_be_hex",
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "comparison": {
+                "const": "E_AND_SAME_BINARY64"
+              },
+              "binary64_be_hex": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{16}$"
+              }
+            },
+            "required": [
+              "path",
+              "raw_signature",
+              "published_signature",
+              "comparison",
+              "binary64_be_hex"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "version",
+        "raw_after_ref",
+        "published_after_ref",
+        "raw_derived_ref",
+        "published_derived_ref",
+        "raw_after_digest",
+        "published_after_digest",
+        "raw_derived_digest",
+        "published_derived_digest",
+        "raw_oracle_errors",
+        "published_oracle_errors",
+        "allowed_difference_paths",
+        "derived_equalities"
+      ],
+      "additionalProperties": false
+    },
+    "ordinal": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "raw_content_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "published_content_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "native_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "geometry_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "raw_generation_ref": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "geometry_blob_ref_v1"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "version",
+        "sha256"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "backend",
+    "common_binding_digest",
+    "backend_binding_digest",
+    "raw_pool_sha256",
+    "raw_candidate_digest",
+    "raw_candidate_id",
+    "raw_candidate_fingerprint",
+    "source_item_pointer",
+    "source_dimensions_digest",
+    "source_signatures",
+    "target_signatures",
+    "raw_size_digest",
+    "target_size_digest",
+    "axis_equalities",
+    "raw_action_key",
+    "publication_action_key",
+    "allowed_changed_paths",
+    "physical_and_derived_equivalence",
+    "ordinal",
+    "raw_content_digest",
+    "published_content_digest",
+    "native_sha256",
+    "geometry_sha256",
+    "raw_generation_ref"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "native_tree": {
+      "oneOf": [
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "NULL"
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "BOOL"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "STR"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "INT"
+            },
+            {
+              "type": "string",
+              "pattern": "^-?(0|[1-9][0-9]*)$"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "FLOAT64"
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{16}$"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "LIST"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/native_tree"
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "DICT"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/$defs/native_tree"
+                  }
+                ],
+                "items": false,
+                "minItems": 2,
+                "maxItems": 2
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        }
+      ]
+    }
+  }
+}

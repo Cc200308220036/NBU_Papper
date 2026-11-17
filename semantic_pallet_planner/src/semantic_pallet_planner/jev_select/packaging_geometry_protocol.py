@@ -8,6 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 
+from .geometry_native_protocol import wire, is_native, identity_fields, config_fields
 from .contracts import JevSelectError, canonical, digest, validate_schema
 from .geometry_runtime_contracts import environment, same_native
 from .packaging_versions import GEOMETRY_BACKENDS
@@ -82,7 +83,7 @@ def adapt_task(raw,*,origin,expected_sha256):
     return {'identity':identity,'raw':raw,'frozen':frozen,'runtime':runtime}
 
 
-def prepare_order_plan(adapted,*,data_identity,scope=ORDER):
+def prepare_order_plan(adapted,*,data_identity,scope=ORDER,native=False):
     """Pure preparation. Formal and acceptance plans are always DRAFT here."""
     from .candidate_backends import _identity
     from .packaging_runtime import METHODS
@@ -96,6 +97,9 @@ def prepare_order_plan(adapted,*,data_identity,scope=ORDER):
         'event_limit':None,'extra_seeds':False,'model_calls_max':0,'assessment_limit':0 if scope==DEVELOPMENT else (152 if scope==ORDER else 12),
         'solver_limit':0 if scope==DEVELOPMENT else (8192 if scope==ORDER else 512),
         'call_ledger_path':None}
+    if native:
+        from .geometry_native_protocol import policy_digest
+        plan.update(version='geometry_order_plan_v2',runtime_version='jev_packaging_geometry_order_v17',publication_policy_digest=policy_digest())
     validate_order_plan(plan)
     return plan
 
@@ -103,7 +107,8 @@ def prepare_order_plan(adapted,*,data_identity,scope=ORDER):
 def validate_order_plan(plan):
     from .candidate_backends import _identity
     from .packaging_runtime import METHODS
-    validate_schema('geometry_order_plan_v1',plan)
+    validate_schema(wire(plan,'geometry_order_plan_v1'),plan)
+    if is_native(plan):require(all(plan.get(k)==v for k,v in identity_fields(plan).items()),'geometry_native_plan_identity')
     require(plan['source_identity']==_identity()['source_identity'] and plan['environment_digest']==digest(environment()),'geometry_order_plan_identity')
     require(1<=len(plan['tasks'])<=2 and len({t['task_id'] for t in plan['tasks']})==len(plan['tasks']),'geometry_order_plan_tasks')
     expected=[{'job_id':'J%02d'%i,'task_id':t['task_id'],'backend':b,'method':m}
@@ -137,19 +142,19 @@ def validate_admission(plan,monitor_snapshot,admission,kernel_receipt=None):
     """
     validate_order_plan(plan)
     if plan['scope']==DEVELOPMENT:
-        validate_schema('geometry_development_binding_v1',admission)
-        require(admission=={'version':'geometry_development_binding_v1','scope':DEVELOPMENT,'evidence':'TEST_DOUBLE','plan_digest':digest(plan)}
+        validate_schema(wire(plan,'geometry_development_binding_v1'),admission)
+        require(admission=={**identity_fields(plan),'version':wire(plan,'geometry_development_binding_v1'),'scope':DEVELOPMENT,'evidence':'TEST_DOUBLE','plan_digest':digest(plan)}
             and kernel_receipt is None,'geometry_development_binding')
         return
     require(plan['status']=='FROZEN','geometry_order_draft_not_executable')
     name='geometry_kernel_launch_v1' if plan['scope']==ACCEPTANCE else 'geometry_order_admission_v1'
-    validate_schema(name,admission)
-    expected={'plan_digest':digest(plan),'source_identity':plan['source_identity'],'environment_digest':plan['environment_digest'],'monitor_digest':digest(monitor_snapshot),'scope':plan['scope']}
+    validate_schema(wire(plan,name),admission)
+    expected={**identity_fields(plan),'plan_digest':digest(plan),'source_identity':plan['source_identity'],'environment_digest':plan['environment_digest'],'monitor_digest':digest(monitor_snapshot),'scope':plan['scope']}
     require(all(admission[k]==v for k,v in expected.items()),'geometry_admission_binding')
     authorization=read_reference(admission['authorization']);review=read_reference(admission['review'])
     # These are distinct external records, not this plan or its numerical result.
-    validate_schema('geometry_scope_authorization_v1',authorization)
-    validate_schema('geometry_scope_review_v1',review)
+    validate_schema(wire(plan,'geometry_scope_authorization_v1'),authorization)
+    validate_schema(wire(plan,'geometry_scope_review_v1'),review)
     for doc in (authorization,review):
         require(doc.get('scope')==plan['scope'] and doc.get('plan_digest')==digest(plan)
             and doc.get('status')=='APPROVED','geometry_external_approval')
@@ -160,11 +165,11 @@ def validate_admission(plan,monitor_snapshot,admission,kernel_receipt=None):
 
 def validate_real_kernel_receipt(receipt,order_plan,monitor_snapshot):
     require(receipt is not None,'geometry_real_kernel_receipt_required')
-    validate_schema('geometry_real_kernel_receipt_v2',receipt)
-    require(all(receipt[k]==v for k,v in {'source_identity':order_plan['source_identity'],
+    validate_schema(wire(order_plan,'geometry_real_kernel_receipt_v2'),receipt)
+    require(all(receipt[k]==v for k,v in {**identity_fields(order_plan),'source_identity':order_plan['source_identity'],
         'environment_digest':order_plan['environment_digest'],'monitor_digest':digest(monitor_snapshot)}.items()),'geometry_kernel_receipt_identity')
     acceptance=read_reference(receipt['acceptance_plan']);launch=read_reference(receipt['launch'])
-    require(acceptance['scope']==ACCEPTANCE,'geometry_kernel_receipt_scope')
+    require(is_native(acceptance)==is_native(order_plan) and acceptance['scope']==ACCEPTANCE,'geometry_kernel_receipt_scope')
     validate_admission(acceptance,monitor_snapshot,launch)
     counts=receipt['counts']
     require(0<counts['assessment_entries']<=acceptance['assessment_limit'] and
@@ -181,7 +186,7 @@ def validate_real_kernel_receipt(receipt,order_plan,monitor_snapshot):
     require(bool(receipt['records']),'geometry_real_records_missing')
     def validate_record(record):
         cp=record['checkpoint'];config=record['config']
-        require(cp['version']=='jev_checkpoint_v16'
+        require(cp['version']==('jev_checkpoint_v17' if is_native(order_plan) else 'jev_checkpoint_v16')
             and config['execution_scope']==ACCEPTANCE and config['monitor_evidence']=='REAL_KERNEL'
             and config['plan_digest']==digest(acceptance),'geometry_real_record_scope')
         from .geometry_order_execution import preflight_order
@@ -210,9 +215,9 @@ def validate_real_kernel_receipt(receipt,order_plan,monitor_snapshot):
 
 def draft_run(plan):
     validate_order_plan(plan)
-    value={'version':'geometry_order_run_v1','plan_digest':digest(plan),
+    value={**identity_fields(plan),'version':wire(plan,'geometry_order_run_v1'),'plan_digest':digest(plan),
         'rows':[{'job_id':j['job_id'],'status':'NOT_RUN','metrics':None} for j in plan['jobs']]}
-    validate_schema('geometry_order_run_v1',value)
+    validate_schema(wire(plan,'geometry_order_run_v1'),value)
     return value
 
 
@@ -226,5 +231,5 @@ def update_run(run,plan,job_id,status,metrics=None):
         require((status=='COMPLETE')==metrics['completed'],'geometry_run_completion_status')
     else:require(status in ('NOT_RUN','RUNNING','TECHNICAL_FAILURE','CANCELLED'),'geometry_run_metrics_required')
     row.update(status=status,metrics=metrics)
-    validate_schema('geometry_order_run_v1',value)
+    validate_schema(wire(plan,'geometry_order_run_v1'),value)
     return value

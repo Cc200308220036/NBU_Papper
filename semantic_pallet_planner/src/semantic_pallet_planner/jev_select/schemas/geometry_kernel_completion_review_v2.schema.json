@@ -1,0 +1,68 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "geometry_kernel_completion_review_v2"
+    },
+    "scope": {
+      "const": "KERNEL_ACCEPTANCE_SYNTHETIC_ONLY"
+    },
+    "status": {
+      "const": "APPROVED"
+    },
+    "acceptance_plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "records_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "recovery_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "counter_log": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "coverage_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "runtime_version": {
+      "const": "jev_packaging_geometry_order_v17"
+    },
+    "publication_policy_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "scope",
+    "status",
+    "acceptance_plan_digest",
+    "records_digest",
+    "recovery_digest",
+    "counter_log",
+    "coverage_digest",
+    "runtime_version",
+    "publication_policy_digest"
+  ],
+  "additionalProperties": false
+}

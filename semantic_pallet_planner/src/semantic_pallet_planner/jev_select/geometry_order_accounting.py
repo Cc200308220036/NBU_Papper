@@ -2,6 +2,7 @@
 import copy
 from contextlib import contextmanager
 from contextvars import ContextVar
+from .geometry_native_protocol import wire, is_native, identity_fields, config_fields
 from .contracts import digest,validate_schema
 from .packaging_geometry_protocol import require
 from .ledger import read,write
@@ -12,11 +13,11 @@ def zero():return dict.fromkeys(FIELDS,0)
 
 def tick(config,kind):
     active=_ACTIVE.get()
-    if config.get('version')!='jev_packaging_geometry_order_v16' or active is None:return
+    if config.get('version') not in ('jev_packaging_geometry_order_v16','jev_packaging_geometry_order_v17') or active is None:return
     path,doc=active
     require(doc['config_digest']==digest(config) and kind in FIELDS,'geometry_accounting_binding')
     doc['invocations'][-1]['delta'][kind]+=1;doc['cumulative'][kind]+=1
-    validate_schema('geometry_order_accounting_v1',doc);write(path,doc)
+    validate_schema(wire(config,'geometry_order_accounting_v1'),doc);write(path,doc)
 
 def snapshot(config):
     active=_ACTIVE.get()
@@ -29,10 +30,10 @@ def snapshot(config):
 
 @contextmanager
 def invocation(path,config,job_id,resume):
-    binding={'version':'geometry_order_accounting_v1','plan_digest':config['plan_digest'],
+    binding={**identity_fields(config),'version':wire(config,'geometry_order_accounting_v1'),'plan_digest':config['plan_digest'],
         'job_id':job_id,'config_digest':digest(config)}
     if path.exists():
-        doc=read(path);validate_schema('geometry_order_accounting_v1',doc)
+        doc=read(path);validate_schema(wire(config,'geometry_order_accounting_v1'),doc)
         require(all(doc[k]==v for k,v in binding.items()),'geometry_accounting_drift')
         require(resume is not None,'geometry_accounting_resume_required')
         require(all(doc['cumulative'][k]==sum(i['delta'][k] for i in doc['invocations']) for k in FIELDS),'geometry_accounting_sum')

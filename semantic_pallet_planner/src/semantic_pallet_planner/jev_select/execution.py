@@ -5,6 +5,7 @@ from semantic_pallet_planner.o4.buffer.buffer_state import physical, place
 from semantic_pallet_planner.o4.extensions.e2.protocol import observation as rebuild_observation
 from semantic_pallet_planner.evaluation.geometry_oracle import check_candidate
 
+from .packaging_versions import GEOMETRY_ORDER_CONFIGS, GEOMETRY_NATIVE_VERSION
 from .candidates import validate_bundle
 from .config import business_evaluation_mode, protocol_suffix
 from .context import resolve_display_id, validate_context
@@ -18,7 +19,7 @@ def commit_physical(state, regions, observation, bundle, context, selection, con
     if config.get('version') in GEOMETRY_EXECUTABLE_CONFIGS:
         from .geometry_execution import GeometryStore,validate_execution_identity
         validate_execution_identity(execution_binding,config)
-        if config.get('version')==GEOMETRY_ORDER_VERSION:
+        if config.get('version') in GEOMETRY_ORDER_CONFIGS:
             from .geometry_order_execution import OrderStore
             if type(geometry_store) is not OrderStore or geometry_store.authorize_config(config)!=execution_binding:
                 raise JevSelectError('geometry_order_commit_authority')

@@ -127,3 +127,21 @@ GEOMETRY_CONTEXTS=(*GEOMETRY_CONTEXTS,GEOMETRY_ORDER_CONTEXT)
 GEOMETRY_ORDER_SCHEMAS.update({k:k for k in (
     "geometry_real_kernel_receipt_v2", "geometry_kernel_completion_review_v1",
     "geometry_order_accounting_v1")})
+
+# NUM-N1: explicit opt-in publication contract; no fallback or suffix guessing.
+GEOMETRY_NATIVE_VERSION='jev_packaging_geometry_order_v17'
+GEOMETRY_NATIVE_CONTEXT='jev_decision_context_v17'
+GEOMETRY_NATIVE_BUNDLE='jev_candidate_bundle_v17'
+GEOMETRY_NATIVE_POLICY='geometry_native_shape_publication_policy_v3'
+GEOMETRY_NATIVE_BRIDGE='geometry_runtime_native_shape_bridge_v3'
+GEOMETRY_NATIVE_SCHEMAS={k:k+'_v17' for k in ('config','candidate_bundle','decision_context','selection_result','checkpoint')}
+GEOMETRY_NATIVE_SCHEMAS.update({k:k for k in ('native_shape_shadow_core','native_shape_derived_core','native_shape_equivalence','native_shape_proof_core','native_shape_shadow_binding','native_shape_final_binding','native_shape_publication')})
+GEOMETRY_NATIVE_CAPABILITIES={GEOMETRY_NATIVE_VERSION:{'policy':GEOMETRY_NATIVE_POLICY,'bridge':GEOMETRY_NATIVE_BRIDGE,'id_pattern':r'^GP5N3_[0-9a-f]{64}$','schemas':GEOMETRY_NATIVE_SCHEMAS}}
+
+GEOMETRY_EXECUTABLE_CONFIGS=(*GEOMETRY_EXECUTABLE_CONFIGS,GEOMETRY_NATIVE_VERSION)
+GEOMETRY_CONFIGS=(*GEOMETRY_CONFIGS,GEOMETRY_NATIVE_VERSION)
+GEOMETRY_BUNDLES=(*GEOMETRY_BUNDLES,GEOMETRY_NATIVE_BUNDLE)
+GEOMETRY_CONTEXTS=(*GEOMETRY_CONTEXTS,GEOMETRY_NATIVE_CONTEXT)
+GEOMETRY_ORDER_CONFIGS=(GEOMETRY_ORDER_VERSION,GEOMETRY_NATIVE_VERSION)
+
+GEOMETRY_NATIVE_SCHEMAS.update({k:k for k in ('geometry_order_plan_v2', 'geometry_order_execution_v2', 'geometry_order_metrics_v2', 'geometry_order_run_v2', 'geometry_order_accounting_v2', 'geometry_development_binding_v2', 'geometry_kernel_launch_v2', 'geometry_order_admission_v2', 'geometry_scope_authorization_v2', 'geometry_scope_review_v2', 'geometry_real_kernel_receipt_v3', 'geometry_kernel_completion_review_v2')})

@@ -1,0 +1,48 @@
+{
+  "version": "geometry_gp2_qa_command_receipts_v1",
+  "date": "2026-11-17",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 \"$HOME/miniconda3/bin/python3.14\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP2_20261117_01/verify_delivery.py",
+      "result": {
+        "chunk_id": "d6f050",
+        "wall_time_seconds": 0.043507917,
+        "exit_code": 0,
+        "original_token_count": 16,
+        "output": "PASS byte identities: 50 delivery files; 527 production sources\n"
+      },
+      "scope": "原只读字节核验，导航更新前"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/bin/python3.14\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP2_QA_20261117_01/verify_saved_gp2.py --output semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP2_QA_20261117_01/independent_checks.json",
+      "result": {
+        "chunk_id": "40b062",
+        "wall_time_seconds": 0.182991542,
+        "exit_code": 0,
+        "original_token_count": 39,
+        "output": "{\"status\": \"PASS_SAVED_ACTIONS_AND_ARITHMETIC\", \"production_files\": 527, \"scenes\": 14, \"saved_unique_oracle_checks\": 138, \"saved_proposal_ref_checks\": 242}\n"
+      },
+      "scope": "归档动作、原独立checker及数学复算；不调用生成器或reducer"
+    }
+  ],
+  "not_run": [
+    {
+      "command": "test_space_candidates_gp2.py",
+      "reason": "SKILL/nbu-jm-review/SKILL.md:66禁止候选重建，测试会生成候选"
+    },
+    {
+      "command": "collect_evidence.py",
+      "reason": "会生成并覆写归档，当前审查禁止"
+    },
+    {
+      "command": "原12+2回归",
+      "reason": "原524文件保持且前序与开发本轮归档可用，不扩大无新疑点检查"
+    }
+  ],
+  "other_completed_checks": [
+    "Git现场/日志/差异/源码与脚本副作用读取",
+    "主方案/冻结合同/原件清单及归档日志读取",
+    "git diff --check"
+  ],
+  "final_qa_integrity": "verification.json excluded from own manifest to avoid circular digest"
+}

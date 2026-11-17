@@ -1,0 +1,61 @@
+{
+  "version": "geometry_gp3_admission_review_v1",
+  "date": "2026-11-17",
+  "from_stage": "GP2",
+  "target_stage": "GP3",
+  "status": "READY",
+  "scope": "GP3_ONLY",
+  "prerequisites": [
+    {
+      "requirement": "前序合同/空间/修复可追溯",
+      "status": "PASS",
+      "evidence": "前序QA及原524字节保持"
+    },
+    {
+      "requirement": "独立候选器与压缩已有实现/审计",
+      "status": "PASS",
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP2_20261117_01/source_manifest.json",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP2_QA_20261117_01/independent_checks.json"
+      ],
+      "scope": "源码、开发构造及独立保存动作范围"
+    },
+    {
+      "requirement": "错误/空池及物理边界明确",
+      "status": "PASS",
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP2_20261117_01/faults",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP2_QA_20261117_01/independent_checks.json"
+      ]
+    },
+    {
+      "requirement": "GP3协议/输入来源/公共循环接入",
+      "status": "NOT_RUN",
+      "blocking": false,
+      "reason": "属于下一阶段实现职责，不作为GP2未完成"
+    }
+  ],
+  "allowed": [
+    "显式双后端注册和新运行协议/封闭Schema",
+    "当前公开输入字节来源和数值语义的独立适配设计与实现",
+    "公共episode、F0上下文、选择、监测、提交、技术停止及恢复接入",
+    "必要少量构造/本地行为和选后监测验证"
+  ],
+  "not_allowed": [
+    "GP4五状态比较",
+    "GP5真实来源整单矩阵",
+    "GP6模型实际调用或F1/经验路线",
+    "PCT预过滤/改选/旧物理容差修改/旧Schema放宽",
+    "重签旧数据/源码/恢复摘要或静默回退"
+  ],
+  "required_handoff_resolutions": [
+    "明确raw-byte契约与公共内存状态之间的来源、精度及白名单，不伪称恢复丢失词素",
+    "错误生成在公共循环保持技术状态，包含已归档高度差异",
+    "同一新协议下两后端均可用，旧默认及旧Schema保护不变"
+  ],
+  "expected_exit": "A03双后端/旧兼容/F0同字段/错误拒绝/选择保存->监测->提交及恢复语义成立后回质检",
+  "real_model_calls_authorized": 0,
+  "qa_executed_gp3": false,
+  "implementation_authorization": "Technical admission only; user dispatches the development instruction.",
+  "stopped": true
+}

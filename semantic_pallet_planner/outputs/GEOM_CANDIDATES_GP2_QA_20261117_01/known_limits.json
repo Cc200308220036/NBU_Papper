@@ -1,0 +1,26 @@
+{
+  "version": "geometry_gp2_qa_known_limits_v1",
+  "known_limits": [
+    {
+      "id": "GP2-LIMIT-01",
+      "kind": "REPORTED_REAL_PHYSICAL_CHECK_DISAGREEMENT",
+      "blocking": false,
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP2_20261117_01/faults/real_height_disagreement.json",
+      "reason": "2.0004mm高度的原max_height舍入与oracle1e-6容差不一致，按合同ERROR不输出候选；这是已披露限制，不以改旧容差解决。",
+      "local_scope": "源码和独立算术；未重跑生成器",
+      "next_stage": "GP3 must persist PHYSICAL_CHECK_DISAGREEMENT as technical stop, not OK_EMPTY or predicted instability."
+    }
+  ],
+  "evidence_notes": [
+    {
+      "id": "GP2-EVIDENCE-NOTE-01",
+      "kind": "EARLY_FIXTURE_CORRECTION_HISTORY_UNKNOWN",
+      "blocking": false,
+      "evidence": "docs/03_阶段产出分析/几何规划模块/几何候选器GP2精确动作原物理检查与压缩开发交付_20261117_01.md",
+      "observed": "报告披露2项早期构造期望修正，包主要保存最终测试日志。",
+      "unknown": "早期是否实际执行失败测试及其原始输出 UNKNOWN/NOT_AVAILABLE，不能填失败0。",
+      "impact": "不阻断当前源码及最终构造已独立核对；不据此认证早期全历史。",
+      "followup": "后续保留真实失败日志；不补造早期输出。"
+    }
+  ]
+}

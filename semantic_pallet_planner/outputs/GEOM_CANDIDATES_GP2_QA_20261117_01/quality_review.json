@@ -1,0 +1,187 @@
+{
+  "version": "geometry_gp2_independent_quality_review_v1",
+  "date": "2026-11-17",
+  "timezone": "Asia/Shanghai",
+  "stage": "GP2",
+  "plan": {
+    "path": "docs/02_阶段实施方案/几何规划模块/几何候选器PCT与GOPT融合改进方案_20261116.md",
+    "version": "geometry_candidate_upgrade_design_v1"
+  },
+  "authorization": "客观审查GP2交付、保存事实和独立算术/归档动作oracle核验、QA记录及GP3准入；不重建候选或执行下一阶段",
+  "identity": {
+    "developer_entry_head": "4140f89729191710ccdc447307e14ab752193a1b",
+    "reported_post_pull_and_worktree_delivery_head": "33f3291bc63a0160e6e3b8be90c73cf45381807c",
+    "archival_and_qa_entry_head": "ea4dab38b11aa8cf7e291e910dd3f4f16a76ab76",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "initial_worktree": "CLEAN",
+    "initial_index": "EMPTY",
+    "production_files": 527,
+    "old_production_files_unchanged": 524,
+    "new_production_files": 3,
+    "delivery_listed_files": 50,
+    "package_total_files": 49,
+    "package_sealed_files": 47,
+    "external_listed_files": 3,
+    "source_coverage": "New production modules transitively covered through sealed source_manifest.json",
+    "delivery_after_drift": "NONE_OBSERVED",
+    "navigation": "Original README snapshot captured at ea4dab38; QA appends navigation only, no original re-signing."
+  },
+  "review_independence": "本窗口曾制定阶段范围和前序设计解释，不声称盲评",
+  "four_fact_layers": {
+    "report": "开发13项GP2及12+2项GP1回归通过，GP3-GP6未运行",
+    "source": "3新模块，原524不变；standalone generate已实现且未在线注册",
+    "archive": "14正常构造完整池及3错误记录/最终日志与清单",
+    "local": "原validator通过；138保存动作oracle、242引用和压缩数学复算通过；本轮生成测试NOT_RUN"
+  },
+  "acceptance_items": [
+    {
+      "item": "精确四角/中心、朝向及发布pose",
+      "status": "PASS",
+      "source": "Fraction提案/HALF_EVEN/原提案及发布复核",
+      "archive": "完整raw records及proposal_refs",
+      "local": "242保存引用逐条端点/中心/量化/z/尺寸核对",
+      "limit": "不重建候选池"
+    },
+    {
+      "item": "原物理双检查及独立oracle",
+      "status": "PASS",
+      "source": "两次evaluate_pose后check_candidate；独立失败原子ERROR",
+      "archive": "13方法开发自验及14构造",
+      "local": "138保存唯一有效动作实际调用未修改oracle通过；最终102为该池子集",
+      "not_run": "本轮原evaluate_pose及生成器NOT_RUN，不能声称双检查已本机重跑"
+    },
+    {
+      "item": "原支撑/中心/stackable/承载",
+      "status": "PASS",
+      "source": "原函数及容差未改，复用internal_item/restore_placed",
+      "archive": "70/60支撑、中心中空、不可堆叠、单层/多层承载构造",
+      "local": "有效池独立checker及保存拒绝记录核对",
+      "limit": "拒绝路径完整行为来自源码及开发归档"
+    },
+    {
+      "item": "唯一动作、来源、host和代表",
+      "status": "PASS",
+      "source": "发布动作键及合法来源合并",
+      "archive": "raw_valid_candidates/host/proposal_refs",
+      "local": "全部host精确包含、引用集合对应、最小体积/边界代表验证"
+    },
+    {
+      "item": "压缩和16/48",
+      "status": "PASS",
+      "source": "必保留yaw-level组与完整联合元组规则",
+      "archive": "完整selection_order与raw/final覆盖",
+      "local": "14场景从保存池独立数学复算全部选择、边际增益与同分；每箱≤16、联合≤48"
+    },
+    {
+      "item": "完整统计、预算和错误区分",
+      "status": "PASS",
+      "source": "按来源/host/yaw/点累计；原子ERROR不回退",
+      "archive": "14正常/空池及3错误记录，测试替身标记明确",
+      "local": "尝试数、拒绝、引用、唯一/有效/最终分母核对；错误记录状态核验",
+      "limit": "不做新生成、真实复杂预算或性能验证"
+    },
+    {
+      "item": "确定性、无PCT及范围保护",
+      "status": "PASS",
+      "source": "规范排序/摘要、无候选监测预评，原524文件不变",
+      "archive": "重复调用断言/最终日志与新源码清单",
+      "local": "字节和语义摘要核对；运行guard只允许oracle",
+      "not_run": "本轮新生成重复性测试NOT_RUN；GP3-GP6 NOT_RUN"
+    }
+  ],
+  "acceptance_summary": {
+    "A02": "PASS",
+    "scope": "SOURCE_AND_ARCHIVED_CONSTRUCTIONS_WITH_INDEPENDENT_SAVED_ACTION_AUDIT",
+    "A03": "NOT_RUN",
+    "A04": "NOT_RUN",
+    "A05": "NOT_RUN",
+    "A06": "NOT_RUN"
+  },
+  "confirmed_blocking_issues": [],
+  "known_limits": [
+    {
+      "id": "GP2-LIMIT-01",
+      "kind": "REPORTED_REAL_PHYSICAL_CHECK_DISAGREEMENT",
+      "blocking": false,
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP2_20261117_01/faults/real_height_disagreement.json",
+      "reason": "2.0004mm高度的原max_height舍入与oracle1e-6容差不一致，按合同ERROR不输出候选；这是已披露限制，不以改旧容差解决。",
+      "local_scope": "源码和独立算术；未重跑生成器",
+      "next_stage": "GP3 must persist PHYSICAL_CHECK_DISAGREEMENT as technical stop, not OK_EMPTY or predicted instability."
+    }
+  ],
+  "evidence_notes": [
+    {
+      "id": "GP2-EVIDENCE-NOTE-01",
+      "kind": "EARLY_FIXTURE_CORRECTION_HISTORY_UNKNOWN",
+      "blocking": false,
+      "evidence": "docs/03_阶段产出分析/几何规划模块/几何候选器GP2精确动作原物理检查与压缩开发交付_20261117_01.md",
+      "observed": "报告披露2项早期构造期望修正，包主要保存最终测试日志。",
+      "unknown": "早期是否实际执行失败测试及其原始输出 UNKNOWN/NOT_AVAILABLE，不能填失败0。",
+      "impact": "不阻断当前源码及最终构造已独立核对；不据此认证早期全历史。",
+      "followup": "后续保留真实失败日志；不补造早期输出。"
+    }
+  ],
+  "conclusions": {
+    "engineering_status": {
+      "status": "PASS",
+      "scope": "GP2_STANDALONE_SOURCE_ARCHIVED_CONSTRUCTIONS_AND_SAVED_ACTION_AUDIT"
+    },
+    "evidence_readiness": {
+      "status": "PASS",
+      "scope": "当前A02限定验收与GP3技术准入",
+      "early_fixture_history": "UNKNOWN_NOT_AVAILABLE",
+      "existing_history_gap": "QA-GP0-H01_PARTIAL_NONBLOCKING_UNCHANGED"
+    },
+    "research_result": {
+      "status": "NOT_ESTABLISHED",
+      "candidate_coverage_gain": "NOT_RUN",
+      "whole_order_benefit": "NOT_RUN"
+    },
+    "next_stage_admission": {
+      "status": "READY",
+      "scope": "GP3_ONLY",
+      "qa_executed_gp3": false,
+      "real_model_calls_authorized": 0
+    }
+  },
+  "execution_boundary": {
+    "developer_gp2_test_methods_archived": 13,
+    "developer_gp1_test_methods_archived": [
+      12,
+      2
+    ],
+    "local_gp2_test_rerun": "NOT_RUN_SKILL_BOUNDARY",
+    "local_gp1_regression_rerun": "NOT_RUN_UNCHANGED_SOURCE_PREVIOUS_EVIDENCE_REFERENCED",
+    "saved_scenes_checked": 14,
+    "saved_unique_oracle_calls": 138,
+    "saved_proposal_refs_arithmetic": 242,
+    "final_saved_candidates": 102,
+    "candidate_generation_or_reconstruction": 0,
+    "original_evaluate_pose_calls": 0,
+    "ledger_restore": 0,
+    "orders": 0,
+    "forks": 0,
+    "PCT_LP": 0,
+    "models": 0,
+    "credentials": 0,
+    "dependency_installs": 0,
+    "subagents": 0,
+    "git_pull": 0,
+    "git_add": 0,
+    "git_commit": 0,
+    "git_push": 0
+  },
+  "skill_execution_limit": {
+    "path": "SKILL/nbu-jm-review/SKILL.md",
+    "line": 66,
+    "quote": "禁止订单、分叉执行、候选重建和静态稳定性求解",
+    "alternative": "只读manifest、保存动作oracle、独立数学复算；不伪称原13方法在本机通过"
+  },
+  "evidence": [
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP2_QA_20261117_01/independent_checks.json",
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP2_QA_20261117_01/command_receipts.json",
+    "docs/03_阶段产出分析/几何规划模块/几何候选器GP2独立质检与GP3技术准入_20261117_01.md"
+  ],
+  "stopped": true
+}

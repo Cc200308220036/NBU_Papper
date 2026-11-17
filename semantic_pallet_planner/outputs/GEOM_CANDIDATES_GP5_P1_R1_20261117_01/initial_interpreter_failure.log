@@ -1,0 +1,235 @@
+EEE.EEE.E.EEE
+======================================================================
+ERROR: test_commit_failure_and_committed_evaluation_recovery (test_geometry_order_p1.OrderP1.test_commit_failure_and_committed_evaluation_recovery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 136, in test_commit_failure_and_committed_evaluation_recovery
+    case=self.setup_job(index=index);calls=[];original=evaluation.evaluate_committed_state
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 74, in setup_job
+    t,plan,adm=development(case);job=plan['jobs'][index];cfg=o.load_order_config(plan,job['job_id'],monitor_snapshot=SNAP,admission=adm)
+                                                             ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 58, in load_order_config
+    preflight_order(cfg)
+    ~~~~~~~~~~~~~~~^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 66, in preflight_order
+    validate_monitor_snapshot(snapshot)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 40, in validate_monitor_snapshot
+    require(same_native(snapshot['execution_environment'],monitor_environment()),'geometry_order_monitor_environment')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py", line 24, in require
+    if not ok:raise JevSelectError(code)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_order_monitor_environment
+
+======================================================================
+ERROR: test_development_without_marked_monitor_and_event_limit_reject (test_geometry_order_p1.OrderP1.test_development_without_marked_monitor_and_event_limit_reject)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 179, in test_development_without_marked_monitor_and_event_limit_reject
+    case=self.setup_job()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 74, in setup_job
+    t,plan,adm=development(case);job=plan['jobs'][index];cfg=o.load_order_config(plan,job['job_id'],monitor_snapshot=SNAP,admission=adm)
+                                                             ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 58, in load_order_config
+    preflight_order(cfg)
+    ~~~~~~~~~~~~~~~^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 66, in preflight_order
+    validate_monitor_snapshot(snapshot)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 40, in validate_monitor_snapshot
+    require(same_native(snapshot['execution_environment'],monitor_environment()),'geometry_order_monitor_environment')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py", line 24, in require
+    if not ok:raise JevSelectError(code)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_order_monitor_environment
+
+======================================================================
+ERROR: test_drift_scope_and_missing_blob_reject (test_geometry_order_p1.OrderP1.test_drift_scope_and_missing_blob_reject)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 149, in test_drift_scope_and_missing_blob_reject
+    case=self.setup_job();t,plan,adm,job,cfg,store=case
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 74, in setup_job
+    t,plan,adm=development(case);job=plan['jobs'][index];cfg=o.load_order_config(plan,job['job_id'],monitor_snapshot=SNAP,admission=adm)
+                                                             ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 58, in load_order_config
+    preflight_order(cfg)
+    ~~~~~~~~~~~~~~~^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 66, in preflight_order
+    validate_monitor_snapshot(snapshot)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 40, in validate_monitor_snapshot
+    require(same_native(snapshot['execution_environment'],monitor_environment()),'geometry_order_monitor_environment')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py", line 24, in require
+    if not ok:raise JevSelectError(code)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_order_monitor_environment
+
+======================================================================
+ERROR: test_integer_multistep_type_conflict_is_preserved_technical_failure (test_geometry_order_p1.OrderP1.test_integer_multistep_type_conflict_is_preserved_technical_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 226, in test_integer_multistep_type_conflict_is_preserved_technical_failure
+    case=self.setup_job('K02_INT',2)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 74, in setup_job
+    t,plan,adm=development(case);job=plan['jobs'][index];cfg=o.load_order_config(plan,job['job_id'],monitor_snapshot=SNAP,admission=adm)
+                                                             ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 58, in load_order_config
+    preflight_order(cfg)
+    ~~~~~~~~~~~~~~~^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 66, in preflight_order
+    validate_monitor_snapshot(snapshot)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 40, in validate_monitor_snapshot
+    require(same_native(snapshot['execution_environment'],monitor_environment()),'geometry_order_monitor_environment')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py", line 24, in require
+    if not ok:raise JevSelectError(code)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_order_monitor_environment
+
+======================================================================
+ERROR: test_metrics_independent_arithmetic_and_complete_run_denominator (test_geometry_order_p1.OrderP1.test_metrics_independent_arithmetic_and_complete_run_denominator)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 236, in test_metrics_independent_arithmetic_and_complete_run_denominator
+    case=self.setup_job('K02');t,plan,adm,j,c,store=case
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 74, in setup_job
+    t,plan,adm=development(case);job=plan['jobs'][index];cfg=o.load_order_config(plan,job['job_id'],monitor_snapshot=SNAP,admission=adm)
+                                                             ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 58, in load_order_config
+    preflight_order(cfg)
+    ~~~~~~~~~~~~~~~^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 66, in preflight_order
+    validate_monitor_snapshot(snapshot)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 40, in validate_monitor_snapshot
+    require(same_native(snapshot['execution_environment'],monitor_environment()),'geometry_order_monitor_environment')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py", line 24, in require
+    if not ok:raise JevSelectError(code)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_order_monitor_environment
+
+======================================================================
+ERROR: test_public_driver_persists_full_denominator_and_refuses_duplicate_start (test_geometry_order_p1.OrderP1.test_public_driver_persists_full_denominator_and_refuses_duplicate_start)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 267, in test_public_driver_persists_full_denominator_and_refuses_duplicate_start
+    with monitor_double(self.calls):out=o.run_order_job(plan,'J00',t,monitor_snapshot=SNAP,admission=adm,root=root)
+                                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 138, in run_order_job
+    config=load_order_config(plan,job_id,monitor_snapshot=monitor_snapshot,admission=admission,kernel_receipt=kernel_receipt)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 58, in load_order_config
+    preflight_order(cfg)
+    ~~~~~~~~~~~~~~~^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 66, in preflight_order
+    validate_monitor_snapshot(snapshot)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 40, in validate_monitor_snapshot
+    require(same_native(snapshot['execution_environment'],monitor_environment()),'geometry_order_monitor_environment')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py", line 24, in require
+    if not ok:raise JevSelectError(code)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_order_monitor_environment
+
+======================================================================
+ERROR: test_resume_selected_monitored_committed_no_duplicate_work (test_geometry_order_p1.OrderP1.test_resume_selected_monitored_committed_no_duplicate_work)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 111, in test_resume_selected_monitored_committed_no_duplicate_work
+    case=self.setup_job(index=i);self.cps=[];calls=[]
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 74, in setup_job
+    t,plan,adm=development(case);job=plan['jobs'][index];cfg=o.load_order_config(plan,job['job_id'],monitor_snapshot=SNAP,admission=adm)
+                                                             ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 58, in load_order_config
+    preflight_order(cfg)
+    ~~~~~~~~~~~~~~~^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 66, in preflight_order
+    validate_monitor_snapshot(snapshot)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 40, in validate_monitor_snapshot
+    require(same_native(snapshot['execution_environment'],monitor_environment()),'geometry_order_monitor_environment')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py", line 24, in require
+    if not ok:raise JevSelectError(code)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_order_monitor_environment
+
+======================================================================
+ERROR: test_stop_classification_failed_box_not_committed (test_geometry_order_p1.OrderP1.test_stop_classification_failed_box_not_committed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 125, in test_stop_classification_failed_box_not_committed
+    case=self.setup_job(index=index);calls=[]
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 74, in setup_job
+    t,plan,adm=development(case);job=plan['jobs'][index];cfg=o.load_order_config(plan,job['job_id'],monitor_snapshot=SNAP,admission=adm)
+                                                             ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 58, in load_order_config
+    preflight_order(cfg)
+    ~~~~~~~~~~~~~~~^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 66, in preflight_order
+    validate_monitor_snapshot(snapshot)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 40, in validate_monitor_snapshot
+    require(same_native(snapshot['execution_environment'],monitor_environment()),'geometry_order_monitor_environment')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py", line 24, in require
+    if not ok:raise JevSelectError(code)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_order_monitor_environment
+
+======================================================================
+ERROR: test_two_backends_two_methods_complete_and_k02_exact_target (test_geometry_order_p1.OrderP1.test_two_backends_two_methods_complete_and_k02_exact_target)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 89, in test_two_backends_two_methods_complete_and_k02_exact_target
+    case=self.setup_job('K02',index);self.cps=[];calls=[]
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 74, in setup_job
+    t,plan,adm=development(case);job=plan['jobs'][index];cfg=o.load_order_config(plan,job['job_id'],monitor_snapshot=SNAP,admission=adm)
+                                                             ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 58, in load_order_config
+    preflight_order(cfg)
+    ~~~~~~~~~~~~~~~^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 66, in preflight_order
+    validate_monitor_snapshot(snapshot)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 40, in validate_monitor_snapshot
+    require(same_native(snapshot['execution_environment'],monitor_environment()),'geometry_order_monitor_environment')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py", line 24, in require
+    if not ok:raise JevSelectError(code)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_order_monitor_environment
+
+======================================================================
+ERROR: test_unknown_send_and_raw_identity_refuse_silent_retry (test_geometry_order_p1.OrderP1.test_unknown_send_and_raw_identity_refuse_silent_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 249, in test_unknown_send_and_raw_identity_refuse_silent_retry
+    case=self.setup_job();t,plan,adm,j,c,store=case
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 74, in setup_job
+    t,plan,adm=development(case);job=plan['jobs'][index];cfg=o.load_order_config(plan,job['job_id'],monitor_snapshot=SNAP,admission=adm)
+                                                             ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 58, in load_order_config
+    preflight_order(cfg)
+    ~~~~~~~~~~~~~~~^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 66, in preflight_order
+    validate_monitor_snapshot(snapshot)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 40, in validate_monitor_snapshot
+    require(same_native(snapshot['execution_environment'],monitor_environment()),'geometry_order_monitor_environment')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py", line 24, in require
+    if not ok:raise JevSelectError(code)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_order_monitor_environment
+
+----------------------------------------------------------------------
+Ran 13 tests in 2.649s
+
+FAILED (errors=10)

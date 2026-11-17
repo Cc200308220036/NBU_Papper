@@ -1,0 +1,281 @@
+EEE.EEE.E.EEE
+======================================================================
+ERROR: test_commit_failure_and_committed_evaluation_recovery (test_geometry_order_p1.OrderP1.test_commit_failure_and_committed_evaluation_recovery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 142, in test_commit_failure_and_committed_evaluation_recovery
+    with monitor_double(calls),patch(target,**failure):out=self.runloop(case)
+                                                           ~~~~~~~~~~~~^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 84, in runloop
+    return episode.run_episode(t['runtime'],LocalPackagingDouble(job['method']),cfg,job_id=job['job_id'],method=job['method'],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        geometry_store=store,on_checkpoint=lambda cp:self.cps.append(copy.deepcopy(cp)),resume=resume,hook=hook)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 72, in run_episode
+    return _run_episode_v2(task,selector,config,job_id=job_id,method=method,resume=resume,
+        on_checkpoint=on_checkpoint,hook=hook,event_limit=event_limit,geometry_store=geometry_store)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 446, in _run_episode_v2
+    append({'event':kind,'before':before,'after':copy.deepcopy(state),'timings':{}})
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 290, in append
+    cp = persist()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 278, in persist
+    cp = checkpoint()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 274, in checkpoint
+    validate_schema('jm_recovery_checkpoint_v1' if jm_recovery else 'checkpoint_' + suffix,value)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 64, in validate_schema
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_checkpoint_v16: /events/0: value does not match the versioned contract
+
+======================================================================
+ERROR: test_development_without_marked_monitor_and_event_limit_reject (test_geometry_order_p1.OrderP1.test_development_without_marked_monitor_and_event_limit_reject)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 180, in test_development_without_marked_monitor_and_event_limit_reject
+    out=self.runloop(case)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 84, in runloop
+    return episode.run_episode(t['runtime'],LocalPackagingDouble(job['method']),cfg,job_id=job['job_id'],method=job['method'],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        geometry_store=store,on_checkpoint=lambda cp:self.cps.append(copy.deepcopy(cp)),resume=resume,hook=hook)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 72, in run_episode
+    return _run_episode_v2(task,selector,config,job_id=job_id,method=method,resume=resume,
+        on_checkpoint=on_checkpoint,hook=hook,event_limit=event_limit,geometry_store=geometry_store)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 446, in _run_episode_v2
+    append({'event':kind,'before':before,'after':copy.deepcopy(state),'timings':{}})
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 290, in append
+    cp = persist()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 278, in persist
+    cp = checkpoint()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 274, in checkpoint
+    validate_schema('jm_recovery_checkpoint_v1' if jm_recovery else 'checkpoint_' + suffix,value)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 64, in validate_schema
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_checkpoint_v16: /events/0: value does not match the versioned contract
+
+======================================================================
+ERROR: test_drift_scope_and_missing_blob_reject (test_geometry_order_p1.OrderP1.test_drift_scope_and_missing_blob_reject)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 153, in test_drift_scope_and_missing_blob_reject
+    with self.assertRaises(Cut):self.runloop(case,hook=hook)
+                                ~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 84, in runloop
+    return episode.run_episode(t['runtime'],LocalPackagingDouble(job['method']),cfg,job_id=job['job_id'],method=job['method'],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        geometry_store=store,on_checkpoint=lambda cp:self.cps.append(copy.deepcopy(cp)),resume=resume,hook=hook)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 72, in run_episode
+    return _run_episode_v2(task,selector,config,job_id=job_id,method=method,resume=resume,
+        on_checkpoint=on_checkpoint,hook=hook,event_limit=event_limit,geometry_store=geometry_store)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 446, in _run_episode_v2
+    append({'event':kind,'before':before,'after':copy.deepcopy(state),'timings':{}})
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 290, in append
+    cp = persist()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 278, in persist
+    cp = checkpoint()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 274, in checkpoint
+    validate_schema('jm_recovery_checkpoint_v1' if jm_recovery else 'checkpoint_' + suffix,value)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 64, in validate_schema
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_checkpoint_v16: /events/0: value does not match the versioned contract
+
+======================================================================
+ERROR: test_integer_multistep_type_conflict_is_preserved_technical_failure (test_geometry_order_p1.OrderP1.test_integer_multistep_type_conflict_is_preserved_technical_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 227, in test_integer_multistep_type_conflict_is_preserved_technical_failure
+    with monitor_double(self.calls):out=self.runloop(case)
+                                        ~~~~~~~~~~~~^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 84, in runloop
+    return episode.run_episode(t['runtime'],LocalPackagingDouble(job['method']),cfg,job_id=job['job_id'],method=job['method'],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        geometry_store=store,on_checkpoint=lambda cp:self.cps.append(copy.deepcopy(cp)),resume=resume,hook=hook)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 72, in run_episode
+    return _run_episode_v2(task,selector,config,job_id=job_id,method=method,resume=resume,
+        on_checkpoint=on_checkpoint,hook=hook,event_limit=event_limit,geometry_store=geometry_store)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 446, in _run_episode_v2
+    append({'event':kind,'before':before,'after':copy.deepcopy(state),'timings':{}})
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 290, in append
+    cp = persist()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 278, in persist
+    cp = checkpoint()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 274, in checkpoint
+    validate_schema('jm_recovery_checkpoint_v1' if jm_recovery else 'checkpoint_' + suffix,value)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 64, in validate_schema
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_checkpoint_v16: /events/0: value does not match the versioned contract
+
+======================================================================
+ERROR: test_metrics_independent_arithmetic_and_complete_run_denominator (test_geometry_order_p1.OrderP1.test_metrics_independent_arithmetic_and_complete_run_denominator)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 244, in test_metrics_independent_arithmetic_and_complete_run_denominator
+    run=p.update_run(p.draft_run(plan),plan,j['job_id'],'CANCELLED',row)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py", line 226, in update_run
+    validate_schema('geometry_order_run_v1',value)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 64, in validate_schema
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_geometry_order_run_v1: /rows/0/metrics: value does not match the versioned contract
+
+======================================================================
+ERROR: test_public_driver_persists_full_denominator_and_refuses_duplicate_start (test_geometry_order_p1.OrderP1.test_public_driver_persists_full_denominator_and_refuses_duplicate_start)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 267, in test_public_driver_persists_full_denominator_and_refuses_duplicate_start
+    with monitor_double(self.calls):out=o.run_order_job(plan,'J00',t,monitor_snapshot=SNAP,admission=adm,root=root)
+                                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 168, in run_order_job
+    if plan['scope']==DEVELOPMENT:result=execute_accounted()
+                                         ~~~~~~~~~~~~~~~~~^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 150, in execute_accounted
+    return execute()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 153, in execute
+    return run_episode(task,selector,config,job_id=job_id,method=config['selector'],resume=resume,
+        on_checkpoint=callback,geometry_store=store,hook=hook)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 72, in run_episode
+    return _run_episode_v2(task,selector,config,job_id=job_id,method=method,resume=resume,
+        on_checkpoint=on_checkpoint,hook=hook,event_limit=event_limit,geometry_store=geometry_store)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 446, in _run_episode_v2
+    append({'event':kind,'before':before,'after':copy.deepcopy(state),'timings':{}})
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 290, in append
+    cp = persist()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 278, in persist
+    cp = checkpoint()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 274, in checkpoint
+    validate_schema('jm_recovery_checkpoint_v1' if jm_recovery else 'checkpoint_' + suffix,value)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 64, in validate_schema
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_checkpoint_v16: /events/0: value does not match the versioned contract
+
+======================================================================
+ERROR: test_resume_selected_monitored_committed_no_duplicate_work (test_geometry_order_p1.OrderP1.test_resume_selected_monitored_committed_no_duplicate_work)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 115, in test_resume_selected_monitored_committed_no_duplicate_work
+    with self.assertRaises(Cut):self.runloop(case,hook=hook)
+                                ~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 84, in runloop
+    return episode.run_episode(t['runtime'],LocalPackagingDouble(job['method']),cfg,job_id=job['job_id'],method=job['method'],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        geometry_store=store,on_checkpoint=lambda cp:self.cps.append(copy.deepcopy(cp)),resume=resume,hook=hook)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 72, in run_episode
+    return _run_episode_v2(task,selector,config,job_id=job_id,method=method,resume=resume,
+        on_checkpoint=on_checkpoint,hook=hook,event_limit=event_limit,geometry_store=geometry_store)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 446, in _run_episode_v2
+    append({'event':kind,'before':before,'after':copy.deepcopy(state),'timings':{}})
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 290, in append
+    cp = persist()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 278, in persist
+    cp = checkpoint()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 274, in checkpoint
+    validate_schema('jm_recovery_checkpoint_v1' if jm_recovery else 'checkpoint_' + suffix,value)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 64, in validate_schema
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_checkpoint_v16: /events/0: value does not match the versioned contract
+
+======================================================================
+ERROR: test_stop_classification_failed_box_not_committed (test_geometry_order_p1.OrderP1.test_stop_classification_failed_box_not_committed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 126, in test_stop_classification_failed_box_not_committed
+    with monitor_double(calls,status):out=self.runloop(case)
+                                          ~~~~~~~~~~~~^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 84, in runloop
+    return episode.run_episode(t['runtime'],LocalPackagingDouble(job['method']),cfg,job_id=job['job_id'],method=job['method'],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        geometry_store=store,on_checkpoint=lambda cp:self.cps.append(copy.deepcopy(cp)),resume=resume,hook=hook)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 72, in run_episode
+    return _run_episode_v2(task,selector,config,job_id=job_id,method=method,resume=resume,
+        on_checkpoint=on_checkpoint,hook=hook,event_limit=event_limit,geometry_store=geometry_store)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 446, in _run_episode_v2
+    append({'event':kind,'before':before,'after':copy.deepcopy(state),'timings':{}})
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 290, in append
+    cp = persist()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 278, in persist
+    cp = checkpoint()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 274, in checkpoint
+    validate_schema('jm_recovery_checkpoint_v1' if jm_recovery else 'checkpoint_' + suffix,value)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 64, in validate_schema
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_checkpoint_v16: /events/0: value does not match the versioned contract
+
+======================================================================
+ERROR: test_two_backends_two_methods_complete_and_k02_exact_target (test_geometry_order_p1.OrderP1.test_two_backends_two_methods_complete_and_k02_exact_target)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 90, in test_two_backends_two_methods_complete_and_k02_exact_target
+    with monitor_double(calls):out=self.runloop(case)
+                                   ~~~~~~~~~~~~^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 84, in runloop
+    return episode.run_episode(t['runtime'],LocalPackagingDouble(job['method']),cfg,job_id=job['job_id'],method=job['method'],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        geometry_store=store,on_checkpoint=lambda cp:self.cps.append(copy.deepcopy(cp)),resume=resume,hook=hook)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 72, in run_episode
+    return _run_episode_v2(task,selector,config,job_id=job_id,method=method,resume=resume,
+        on_checkpoint=on_checkpoint,hook=hook,event_limit=event_limit,geometry_store=geometry_store)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 446, in _run_episode_v2
+    append({'event':kind,'before':before,'after':copy.deepcopy(state),'timings':{}})
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 290, in append
+    cp = persist()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 278, in persist
+    cp = checkpoint()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 274, in checkpoint
+    validate_schema('jm_recovery_checkpoint_v1' if jm_recovery else 'checkpoint_' + suffix,value)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 64, in validate_schema
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_checkpoint_v16: /events/0: value does not match the versioned contract
+
+======================================================================
+ERROR: test_unknown_send_and_raw_identity_refuse_silent_retry (test_geometry_order_p1.OrderP1.test_unknown_send_and_raw_identity_refuse_silent_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 252, in test_unknown_send_and_raw_identity_refuse_silent_retry
+    with monitor_double(self.calls),patch.object(LocalPackagingDouble,'select',unknown):out=self.runloop(case)
+                                                                                            ~~~~~~~~~~~~^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 84, in runloop
+    return episode.run_episode(t['runtime'],LocalPackagingDouble(job['method']),cfg,job_id=job['job_id'],method=job['method'],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        geometry_store=store,on_checkpoint=lambda cp:self.cps.append(copy.deepcopy(cp)),resume=resume,hook=hook)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 72, in run_episode
+    return _run_episode_v2(task,selector,config,job_id=job_id,method=method,resume=resume,
+        on_checkpoint=on_checkpoint,hook=hook,event_limit=event_limit,geometry_store=geometry_store)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 446, in _run_episode_v2
+    append({'event':kind,'before':before,'after':copy.deepcopy(state),'timings':{}})
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 290, in append
+    cp = persist()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 278, in persist
+    cp = checkpoint()
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 274, in checkpoint
+    validate_schema('jm_recovery_checkpoint_v1' if jm_recovery else 'checkpoint_' + suffix,value)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 64, in validate_schema
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_checkpoint_v16: /events/0: value does not match the versioned contract
+
+----------------------------------------------------------------------
+Ran 13 tests in 9.465s
+
+FAILED (errors=10)

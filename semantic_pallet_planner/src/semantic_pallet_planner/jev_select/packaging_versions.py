@@ -122,3 +122,8 @@ GEOMETRY_EXECUTABLE_CONFIGS=(GEOMETRY_RUN_VERSION,GEOMETRY_ORDER_VERSION)
 GEOMETRY_CONFIGS=(*GEOMETRY_CONFIGS,GEOMETRY_ORDER_VERSION)
 GEOMETRY_BUNDLES=(*GEOMETRY_BUNDLES,GEOMETRY_ORDER_BUNDLE)
 GEOMETRY_CONTEXTS=(*GEOMETRY_CONTEXTS,GEOMETRY_ORDER_CONTEXT)
+
+# GP5 P1-R1 closed completion and independent invocation accounting.
+GEOMETRY_ORDER_SCHEMAS.update({k:k for k in (
+    "geometry_real_kernel_receipt_v2", "geometry_kernel_completion_review_v1",
+    "geometry_order_accounting_v1")})

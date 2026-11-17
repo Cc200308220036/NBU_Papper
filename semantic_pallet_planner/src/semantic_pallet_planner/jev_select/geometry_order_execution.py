@@ -126,6 +126,8 @@ def validate_order_request(task,selector,config,method,store,on_checkpoint,*,job
     if config['monitor_evidence']=='REAL_KERNEL':
         from .geometry_order_meter import current_counts
         current_counts(config['plan_digest'])
+        from .geometry_order_accounting import snapshot
+        require(snapshot(config)['status']=='OBSERVED','geometry_order_accounting_required')
     return binding
 
 
@@ -144,6 +146,13 @@ def run_order_job(plan,job_id,adapted,*,monitor_snapshot,admission,root,kernel_r
     task=adapted['runtime'];selector=LocalPackagingDouble(config['selector'])
     callback=on_checkpoint if on_checkpoint is not None else lambda cp:None
     from .episode import run_episode
+    def execute_accounted():
+        from .geometry_order_accounting import invocation
+        with invocation(store.root/'accounting.json',config,job_id,resume):
+            result=execute()
+            from .geometry_order_accounting import completed
+            completed(config,result['checkpoint'])
+            return result
     def execute():
         validate_order_request(task,selector,config,config['selector'],store,callback,job_id=job_id)
         return run_episode(task,selector,config,job_id=job_id,method=config['selector'],resume=resume,
@@ -161,10 +170,10 @@ def run_order_job(plan,job_id,adapted,*,monitor_snapshot,admission,root,kernel_r
         run=update_run(run,plan,job_id,'RUNNING');write(root/'run.json',run)
         started=time.perf_counter()
         try:
-            if plan['scope']==DEVELOPMENT:result=execute()
+            if plan['scope']==DEVELOPMENT:result=execute_accounted()
             else:
                 from .geometry_order_meter import metered_run
-                with metered_run(plan,job_id=job_id,monitor_snapshot=monitor_snapshot,admission=admission,kernel_receipt=kernel_receipt):result=execute()
+                with metered_run(plan,job_id=job_id,monitor_snapshot=monitor_snapshot,admission=admission,kernel_receipt=kernel_receipt):result=execute_accounted()
         except BaseException as exc:
             status='CANCELLED' if isinstance(exc,KeyboardInterrupt) else 'TECHNICAL_FAILURE'
             write(root/'run.json',update_run(run,plan,job_id,status))
@@ -229,5 +238,12 @@ def order_metrics(task,config,method,state,events,reason):
         'cost':{'model_calls':0,'service_cost':'NA_NO_SERVICE_CALL','local_compute_cost':'UNKNOWN'},'global_infeasibility_proven':False}
     if bad is not None:
         value['predicted_instability_progress']['failed_item_id']=next(c['pick_item_id'] for c in bad['bundle']['physical_candidates'] if c['candidate_id']==bad['selection']['selected_candidate_id'])
+    from .geometry_order_accounting import snapshot
+    value['accounting']=snapshot(config)
+    if config['monitor_evidence']=='REAL_KERNEL':
+        from .geometry_order_meter import current_increment
+        value['kernel_count_scope']={'basis':'PERSISTENT_JOB_CUMULATIVE_AND_INVOCATION_DELTA','cumulative':counts,'invocation_delta':current_increment(config['plan_digest'])}
+    else:
+        value['kernel_count_scope']={'basis':'DEVELOPMENT_REAL_CALLS_FORBIDDEN','cumulative':{'assessment_entries':0,'solver_calls':0},'invocation_delta':{'assessment_entries':0,'solver_calls':0}}
     validate_schema('geometry_order_metrics_v1',value)
     return value

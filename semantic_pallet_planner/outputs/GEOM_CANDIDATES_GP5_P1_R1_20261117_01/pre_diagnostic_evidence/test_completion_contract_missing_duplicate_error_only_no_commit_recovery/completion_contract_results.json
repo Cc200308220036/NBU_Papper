@@ -1,0 +1,155 @@
+{
+  "positive": "PURE_COVERAGE_ONLY",
+  "negative": [
+    {
+      "case": "missing",
+      "result": "REJECTED",
+      "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+    },
+    {
+      "case": "duplicate",
+      "result": "REJECTED",
+      "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+    },
+    {
+      "case": "missing_recovery",
+      "result": "REJECTED",
+      "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+    },
+    {
+      "case": "technical_stop",
+      "result": "REJECTED",
+      "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+    },
+    {
+      "case": "only_error",
+      "result": "REJECTED",
+      "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+    },
+    {
+      "case": "no_commit",
+      "result": "REJECTED",
+      "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+    },
+    {
+      "case": "wrong_pose",
+      "result": "REJECTED",
+      "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+    },
+    {
+      "case": "no_recovery_commit",
+      "result": "REJECTED",
+      "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+    },
+    {
+      "case": "wrong_review",
+      "result": "REJECTED",
+      "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+    }
+  ],
+  "coverage": {
+    "version": "geometry_kernel_required_coverage_v1",
+    "primary": [
+      {
+        "job_id": "J00",
+        "task_id": "GP5_SYNTH_K01",
+        "backend": "e2_original_v1",
+        "poses": [
+          {
+            "x_mm": -260,
+            "y_mm": -150,
+            "z_base_mm": 0,
+            "yaw_deg": 90
+          }
+        ],
+        "status": "STABLE",
+        "termination": "ALL_ITEMS_PLACED"
+      },
+      {
+        "job_id": "J01",
+        "task_id": "GP5_SYNTH_K01",
+        "backend": "ems_surface_hybrid_v1",
+        "poses": [
+          {
+            "x_mm": -260,
+            "y_mm": 150,
+            "z_base_mm": 0,
+            "yaw_deg": 90
+          }
+        ],
+        "status": "STABLE",
+        "termination": "ALL_ITEMS_PLACED"
+      },
+      {
+        "job_id": "J02",
+        "task_id": "GP5_SYNTH_K02",
+        "backend": "e2_original_v1",
+        "poses": [
+          {
+            "x_mm": 0,
+            "y_mm": 0,
+            "z_base_mm": 0,
+            "yaw_deg": 0
+          },
+          {
+            "x_mm": 0,
+            "y_mm": 0,
+            "z_base_mm": 60,
+            "yaw_deg": 0
+          }
+        ],
+        "status": "STABLE",
+        "termination": "ALL_ITEMS_PLACED"
+      },
+      {
+        "job_id": "J03",
+        "task_id": "GP5_SYNTH_K02",
+        "backend": "ems_surface_hybrid_v1",
+        "poses": [
+          {
+            "x_mm": 0,
+            "y_mm": 0,
+            "z_base_mm": 0,
+            "yaw_deg": 0
+          },
+          {
+            "x_mm": 0,
+            "y_mm": 0,
+            "z_base_mm": 60,
+            "yaw_deg": 0
+          }
+        ],
+        "status": "STABLE",
+        "termination": "ALL_ITEMS_PLACED"
+      }
+    ],
+    "recovery": [
+      {
+        "job_id": "J00",
+        "phase": "SELECTED"
+      },
+      {
+        "job_id": "J00",
+        "phase": "MONITORED"
+      },
+      {
+        "job_id": "J00",
+        "phase": "COMMITTED"
+      },
+      {
+        "job_id": "J01",
+        "phase": "SELECTED"
+      },
+      {
+        "job_id": "J01",
+        "phase": "MONITORED"
+      },
+      {
+        "job_id": "J01",
+        "phase": "COMMITTED"
+      }
+    ],
+    "K03": "ADAPTER_ONLY_AND_PUBLIC_NEGATIVE_NOT_RUN_NOT_COMPLETION_CLAIM"
+  },
+  "business_dispatch": 0
+}

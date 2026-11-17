@@ -1,0 +1,50 @@
+{
+  "version": "geometry_gp5_r1_commands_v1",
+  "commands": [
+    {
+      "command": "git pull --ff-only",
+      "result": "FAST_FORWARD",
+      "head": "95ffbb428bb6b4e647ccbd5b2040281fedf63dbe",
+      "note": "initial sandbox FETCH_HEAD write denied; explicit user-authorized escalation succeeded; no stash/reset/checkout"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_order_p1.py",
+      "result": "FAILED_ENVIRONMENT_IDENTITY",
+      "log": "initial_interpreter_failure.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_order_p1.py",
+      "result": "INTERMEDIATE_FAILURES_PRESERVED",
+      "logs": [
+        "intermediate_item_contract_failure.log",
+        "intermediate_schema_failure.log"
+      ]
+    },
+    {
+      "command": "GP5_P1_EVIDENCE=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_R1_20261117_01/final_evidence PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python3 -m unittest test_geometry_order_r1.Remediation test_geometry_order_p1.OrderP1",
+      "result_log": "test.log",
+      "scope": "6 R1 + 13 P1; synthetic and explicit TEST_DOUBLE/COUNTER_TEST/PURE_CONTRACT",
+      "exit_code": 0,
+      "tests": 19
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_R1_20261117_01/run_legacy_regressions.py",
+      "exit_code": 0,
+      "tests": 21,
+      "log": "legacy_regression.log",
+      "source_note": "shared runtime identical to final; before final v16-only diagnostic numeric sentinel schema supplement"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_R1_20261117_01/verify_delivery.py",
+      "log": "verification.log",
+      "note": "first verifier incorrectly compared intentionally changed live source with historical manifest; corrected to pinned revision; no original manifest edit",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "no_installs": true,
+  "git_add_commit_push": false
+}

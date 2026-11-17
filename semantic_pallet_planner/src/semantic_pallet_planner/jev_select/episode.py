@@ -221,6 +221,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
     from .evaluation import evaluate_committed_state, summarize_v2
     from .execution import commit_physical
     from .selector import SelectionResult
+    from .geometry_order_accounting import tick as order_tick
     geometry_run=config.get('version') in GEOMETRY_EXECUTABLE_CONFIGS
     if geometry_run:
         from .geometry_execution import validate_run_request
@@ -492,9 +493,11 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                     times = event['timings']
                     selection = SelectionResult.from_dict(event['selection'])
                 elif route == 'SINGLETON_BYPASS':
+                    order_tick(config,'singleton_executions')
                     selection = result(context,status='singleton',source='singleton',label='C01')
                 else:
                     public_bind(req,policy,bundle)
+                    order_tick(config,'selector_calls')
                     selection = selector.select(context,decision_id=did)
                 elapsed = time.perf_counter()-start
                 if not recovering:
@@ -513,11 +516,13 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                             pending = copy.deepcopy(event); phase = 'SELECTED'; persist()
                             if hook: hook('after_selected_checkpoint',checkpoint())
                         if event['monitor'] is None:
+                            order_tick(config,'monitor_entries')
                             event['monitor'] = monitor_selected_action(state,chosen,event,config)
                             pending = copy.deepcopy(event); phase = 'MONITORED'; persist()
                             if hook: hook('after_monitored_checkpoint',checkpoint())
                         else:
                             validate_monitor(event['monitor'],state,chosen,event,config)
+                            order_tick(config,'monitor_reuses')
                             event['monitor_result_reuses'] += 1
                         if (jm_first or jm_continuation or jm_recovery or jm_v13) and event['monitor']['status'] not in ('STABLE','UNSTABLE','UNASSESSABLE','ERROR'):
                             raise JevSelectError('jm_monitor_status_not_authorized')
@@ -526,6 +531,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                     if reason is None:
                         if hook: hook('before_commit',event)
                         start = time.perf_counter()
+                        order_tick(config,'commit_attempts')
                         state = commit_physical(state,task['regions'],req,bundle,context,selection,config,
                             **({'monitor':event['monitor'],'monitor_event':event} if monitored else {}),
                             **({'geometry_store':geometry_store,'execution_binding':geometry_execution_binding} if geometry_run else {}))
@@ -534,6 +540,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                         event['reason'] = reason
 
                     if reason is None:
+                        order_tick(config,'commit_successes')
                         times['physical_commit_s'] = time.perf_counter()-start
                         event.update(event='PLACE',action=action,after=copy.deepcopy(state))
                         pending = event; phase = 'COMMITTED'

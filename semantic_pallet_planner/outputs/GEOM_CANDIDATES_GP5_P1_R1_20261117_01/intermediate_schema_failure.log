@@ -1,0 +1,35 @@
+.....EE......
+======================================================================
+ERROR: test_metrics_independent_arithmetic_and_complete_run_denominator (test_geometry_order_p1.OrderP1.test_metrics_independent_arithmetic_and_complete_run_denominator)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 244, in test_metrics_independent_arithmetic_and_complete_run_denominator
+    run=p.update_run(p.draft_run(plan),plan,j['job_id'],'CANCELLED',row)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py", line 226, in update_run
+    validate_schema('geometry_order_run_v1',value)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 64, in validate_schema
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_geometry_order_run_v1: /rows/0/metrics: value does not match the versioned contract
+
+======================================================================
+ERROR: test_public_driver_persists_full_denominator_and_refuses_duplicate_start (test_geometry_order_p1.OrderP1.test_public_driver_persists_full_denominator_and_refuses_duplicate_start)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_p1.py", line 267, in test_public_driver_persists_full_denominator_and_refuses_duplicate_start
+    with monitor_double(self.calls):out=o.run_order_job(plan,'J00',t,monitor_snapshot=SNAP,admission=adm,root=root)
+                                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py", line 184, in run_order_job
+    write(root/'run.json',update_run(run,plan,job_id,status,metric))
+                          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py", line 226, in update_run
+    validate_schema('geometry_order_run_v1',value)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py", line 64, in validate_schema
+    raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_geometry_order_run_v1: /rows/0/metrics: value does not match the versioned contract
+
+----------------------------------------------------------------------
+Ran 13 tests in 86.748s
+
+FAILED (errors=2)

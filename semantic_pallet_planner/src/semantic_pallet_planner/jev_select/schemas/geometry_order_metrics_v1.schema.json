@@ -255,6 +255,181 @@
     },
     "global_infeasibility_proven": {
       "const": false
+    },
+    "accounting": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "OBSERVED",
+            "UNKNOWN_UNINSTRUMENTED"
+          ]
+        },
+        "cumulative": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "selector_calls": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "singleton_executions": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "monitor_entries": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "monitor_reuses": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "commit_attempts": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "commit_successes": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "selector_calls",
+                "singleton_executions",
+                "monitor_entries",
+                "monitor_reuses",
+                "commit_attempts",
+                "commit_successes"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "invocation_delta": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "selector_calls": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "singleton_executions": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "monitor_entries": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "monitor_reuses": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "commit_attempts": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "commit_successes": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "selector_calls",
+                "singleton_executions",
+                "monitor_entries",
+                "monitor_reuses",
+                "commit_attempts",
+                "commit_successes"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "resume_phase": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "cumulative",
+        "invocation_delta",
+        "resume_phase"
+      ],
+      "additionalProperties": false
+    },
+    "kernel_count_scope": {
+      "type": "object",
+      "properties": {
+        "basis": {
+          "enum": [
+            "PERSISTENT_JOB_CUMULATIVE_AND_INVOCATION_DELTA",
+            "DEVELOPMENT_REAL_CALLS_FORBIDDEN"
+          ]
+        },
+        "cumulative": {
+          "type": "object",
+          "properties": {
+            "assessment_entries": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "solver_calls": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "test_double_assessments": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "assessment_entries",
+            "solver_calls"
+          ],
+          "additionalProperties": false
+        },
+        "invocation_delta": {
+          "type": "object",
+          "properties": {
+            "assessment_entries": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "solver_calls": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "test_double_assessments": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "assessment_entries",
+            "solver_calls"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "basis",
+        "cumulative",
+        "invocation_delta"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [

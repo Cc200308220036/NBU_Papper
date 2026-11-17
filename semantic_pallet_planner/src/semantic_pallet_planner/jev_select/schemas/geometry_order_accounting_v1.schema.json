@@ -1,0 +1,157 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "geometry_order_accounting_v1"
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "job_id": {
+      "type": "string"
+    },
+    "config_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "invocations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "resume_phase": {
+            "enum": [
+              "FRESH",
+              "READY",
+              "DECISION_READY",
+              "SELECTED",
+              "MONITORED",
+              "COMMITTED",
+              "TERMINATED"
+            ]
+          },
+          "status": {
+            "enum": [
+              "STARTED",
+              "RETURNED",
+              "ERROR"
+            ]
+          },
+          "delta": {
+            "type": "object",
+            "properties": {
+              "selector_calls": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "singleton_executions": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "monitor_entries": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "monitor_reuses": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "commit_attempts": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "commit_successes": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "selector_calls",
+              "singleton_executions",
+              "monitor_entries",
+              "monitor_reuses",
+              "commit_attempts",
+              "commit_successes"
+            ],
+            "additionalProperties": false
+          },
+          "resume_checkpoint_digest": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "result_checkpoint_digest": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "index",
+          "resume_phase",
+          "status",
+          "delta",
+          "resume_checkpoint_digest",
+          "result_checkpoint_digest"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "cumulative": {
+      "type": "object",
+      "properties": {
+        "selector_calls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "singleton_executions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "monitor_entries": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "monitor_reuses": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "commit_attempts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "commit_successes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "selector_calls",
+        "singleton_executions",
+        "monitor_entries",
+        "monitor_reuses",
+        "commit_attempts",
+        "commit_successes"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "plan_digest",
+    "job_id",
+    "config_digest",
+    "invocations",
+    "cumulative"
+  ],
+  "additionalProperties": false
+}

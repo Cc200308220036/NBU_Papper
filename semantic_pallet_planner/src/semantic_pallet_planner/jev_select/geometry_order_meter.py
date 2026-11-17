@@ -33,6 +33,7 @@ class CallBudget:
         for kind in self.limits:
             require(type(self.value['counts'][kind]) is int and self.value['counts'][kind]==sum(r['kind']==kind for r in self.value['calls']) and self.value['counts'][kind]<=self.limits[kind],'geometry_meter_count_drift')
         require(self.value['counts']['test_double_assessments']==0,'geometry_meter_test_double')
+        self.invocation_start=len(self.value['calls'])
         self._save()
     def _save(self):
         import os
@@ -57,6 +58,12 @@ def current_counts(plan_digest):
     budget=_ACTIVE.get()
     require(budget is not None and budget.plan_digest==plan_digest,'geometry_active_meter_required')
     return {**{kind:sum(r['kind']==kind and r['job_id']==budget.job_id for r in budget.value['calls']) for kind in budget.limits},'test_double_assessments':0}
+
+
+def current_increment(plan_digest):
+    budget=_ACTIVE.get()
+    require(budget is not None and budget.plan_digest==plan_digest,'geometry_active_meter_required')
+    return {**{kind:sum(r['kind']==kind and r['job_id']==budget.job_id for r in budget.value['calls'][budget.invocation_start:]) for kind in budget.limits},'test_double_assessments':0}
 
 
 @contextmanager

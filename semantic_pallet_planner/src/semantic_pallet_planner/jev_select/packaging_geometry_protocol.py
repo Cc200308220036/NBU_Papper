@@ -160,33 +160,32 @@ def validate_admission(plan,monitor_snapshot,admission,kernel_receipt=None):
 
 def validate_real_kernel_receipt(receipt,order_plan,monitor_snapshot):
     require(receipt is not None,'geometry_real_kernel_receipt_required')
-    validate_schema('geometry_real_kernel_receipt_v1',receipt)
+    validate_schema('geometry_real_kernel_receipt_v2',receipt)
     require(all(receipt[k]==v for k,v in {'source_identity':order_plan['source_identity'],
         'environment_digest':order_plan['environment_digest'],'monitor_digest':digest(monitor_snapshot)}.items()),'geometry_kernel_receipt_identity')
     acceptance=read_reference(receipt['acceptance_plan']);launch=read_reference(receipt['launch'])
     require(acceptance['scope']==ACCEPTANCE,'geometry_kernel_receipt_scope')
     validate_admission(acceptance,monitor_snapshot,launch)
-    review=read_reference(receipt['review'])
-    require(review.get('status')=='APPROVED' and review.get('scope')==ACCEPTANCE
-        and review.get('acceptance_plan_digest')==digest(acceptance),'geometry_kernel_review')
     counts=receipt['counts']
     require(0<counts['assessment_entries']<=acceptance['assessment_limit'] and
         0<counts['solver_calls']<=acceptance['solver_limit'] and counts['test_double_assessments']==0,'geometry_real_counts')
     log=read_reference(receipt['counter_log'])
     require(log.get('counts')==counts and log.get('plan_digest')==digest(acceptance)
         and log.get('evidence')=='REAL_KERNEL','geometry_real_counter_log')
+    require(set(log)=={'version','plan_digest','evidence','limits','calls','counts'} and log['version']=='geometry_call_ledger_v1'
+        and log['limits']=={'assessment_entries':acceptance['assessment_limit'],'solver_calls':acceptance['solver_limit']},'geometry_real_counter_contract')
     calls=log.get('calls',[])
+    require(all(set(r)=={'kind','state','index','job_id'} and r['kind'] in ('assessment_entries','solver_calls') for r in calls),'geometry_real_counter_rows')
     require(bool(calls) and all(r.get('state') in ('DONE','ERROR') for r in calls) and
         all(sum(r.get('kind')==kind for r in calls)==counts[kind] for kind in ('assessment_entries','solver_calls')),'geometry_real_call_reservations')
     require(bool(receipt['records']),'geometry_real_records_missing')
-    total=0;backends=set()
-    for ref in receipt['records']:
-        record=read_reference(ref);cp=record['checkpoint'];config=record['config']
-        require(cp['version']=='jev_checkpoint_v16' and cp['phase']=='TERMINATED'
+    def validate_record(record):
+        cp=record['checkpoint'];config=record['config']
+        require(cp['version']=='jev_checkpoint_v16'
             and config['execution_scope']==ACCEPTANCE and config['monitor_evidence']=='REAL_KERNEL'
             and config['plan_digest']==digest(acceptance),'geometry_real_record_scope')
         from .geometry_order_execution import preflight_order
-        preflight_order(config);backends.add(config['candidate_backend'])
+        preflight_order(config)
         require(set(record)=={'checkpoint','config','raw_task','durable_root'},'geometry_real_record_contract')
         raw_ref=record['raw_task'];read_reference(raw_ref)
         adapted=adapt_task(Path(raw_ref['path']).read_bytes(),origin='SYNTHETIC_FIXED',expected_sha256=raw_ref['sha256'])
@@ -203,8 +202,10 @@ def validate_real_kernel_receipt(receipt,order_plan,monitor_snapshot):
                 and res['version']=='pct_stability_result_v3'
                 and res['algorithm_identity']==monitor_snapshot['algorithm_identity'],'geometry_test_double_not_real')
             require(row['result_digest']==digest(res) and row['credential_digest']==digest({k:v for k,v in row.items() if k!='credential_digest'}),'geometry_real_record_drift')
-            total+=1
-    require(total>0 and total<=counts['assessment_entries'] and backends==set(GEOMETRY_BACKENDS),'geometry_real_record_denominator')
+
+    from .geometry_kernel_completion import validate_completion
+    validate_completion(receipt,acceptance,log,validate_record)
+
 
 
 def draft_run(plan):

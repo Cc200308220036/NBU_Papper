@@ -1,0 +1,49 @@
+{
+  "schema": "geometry_gp5_p1_admission_qa_v1",
+  "status": "CONDITIONAL",
+  "next_unit": "GP5_P1_IMPLEMENTATION_ONLY",
+  "prerequisite_matrix": [
+    {
+      "requirement": "interfaces/data/matrix/main design",
+      "evidence": "quality_review.json P0-01..04",
+      "status": "PASS",
+      "effect": "allows scoped implementation"
+    },
+    {
+      "requirement": "noncyclic real acceptance bootstrap and deterministic K02 selection",
+      "evidence": "GP5-P0-D01/D02",
+      "status": "PARTIAL",
+      "effect": "resolve with P1 offline implementation; blocks actual P2"
+    },
+    {
+      "requirement": "real-kernel acceptance and frozen true-order execution receipt",
+      "evidence": "NOT_RUN / NOT_FROZEN",
+      "status": "NOT_RUN",
+      "effect": "blocks actual order run"
+    }
+  ],
+  "allowed": [
+    "implement independent versioned v16 contracts and centralized routing, task adaptation, execution binding, metrics and durable recovery",
+    "reuse public candidate/provider/F0/loop/commit/monitor/store; retain old protections",
+    "resolve D01/D02 within P1 and deliver concrete future P2 bounded plan",
+    "small synthetic fixture candidates/loops with explicit test-layer monitor doubles and necessary regressions",
+    "administrator-side read/convert/hash of two selected real tasks, reject unauthorized execution tests"
+  ],
+  "forbidden": [
+    "actual exact-v3/PCT/LP/kernel freeze",
+    "models, real-source order run_episode, 8-job execution, GP6/F1/T/E/training",
+    "automatic subsequent P2 or formal-order execution",
+    "changes to existing geometry/physical tolerances or historical receipt re-signing"
+  ],
+  "real_call_authorization": {
+    "kernel": 0,
+    "LP": 0,
+    "model": 0,
+    "real_order_jobs": 0
+  },
+  "actual_P2_admission": "NOT_READY",
+  "actual_GP5_order_admission": "NOT_READY",
+  "parent_A03": "PARTIAL",
+  "required_exit": "P1 implementation + offline behavior/recovery/rejection evidence + concrete P2 draft; return independent QA; no self-advancement",
+  "prompt_delivery": "INLINE_FINAL_ONLY"
+}

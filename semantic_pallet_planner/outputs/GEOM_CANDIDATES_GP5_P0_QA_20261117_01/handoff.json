@@ -1,0 +1,57 @@
+{
+  "schema": "geometry_gp5_p0_qa_handoff_v1",
+  "reviewed_package": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P0_20261117_01",
+  "reviewed_manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P0_20261117_01/delivery_manifest.json",
+  "reviewed_handoff": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P0_20261117_01/handoff.json",
+  "reviewed_design": "docs/02_阶段实施方案/几何规划模块/几何候选器GP5-P0真实订单接入与验收补充方案_20261117_01.md",
+  "reviewed_report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP5-P0准备方案与GP4离线补图交付_20261117_01.md",
+  "source_head": "0fbb847d66bd72eda8e120682f73e98fd9e86884",
+  "qa_report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP5-P0独立质检与P1限定开发准入_20261117_01.md",
+  "qa_package": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P0_QA_20261117_01",
+  "qa_manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P0_QA_20261117_01/delivery_manifest.json",
+  "engineering_status": "PASS_FOR_P1_PREPARATION_SCOPE",
+  "real_kernel_case_plan": "PARTIAL",
+  "next_stage_admission": "CONDITIONAL",
+  "next_scope": "GP5_P1_IMPLEMENTATION_ONLY",
+  "issues": [
+    {
+      "id": "GP5-P0-D01",
+      "origin": "design_detail_pending",
+      "severity": "MEDIUM",
+      "blocks_P1": false,
+      "blocks_P2": true,
+      "location": "GP5-P0 design sections 2/4: execution binding and kernel acceptance",
+      "actual": "formal order receipt prerequisite is specified; acceptance bootstrap scope not concretely separated",
+      "required": "noncyclic development-test/kernel-acceptance/order scopes; independent receipt types and entry/solver counters",
+      "resolution_scope": "implement and test offline in P1; no actual kernel execution"
+    },
+    {
+      "id": "GP5-P0-D02",
+      "origin": "design_detail_pending",
+      "severity": "MEDIUM",
+      "blocks_P1": false,
+      "blocks_K02_actual_run": true,
+      "location": "GP5-P0 design section 4 K02",
+      "actual": "local_first does not yet prove selection of target (0,0,60) with floor space remaining",
+      "required": "concrete reachable fixture or separately versioned acceptance-only exact-action-key selector; no Cxx, hidden filtering or pre-assessment",
+      "resolution_scope": "P1 synthetic fixture verification and future P2 plan"
+    },
+    {
+      "id": "GP4-FIG-01",
+      "status": "CLOSED_REVIEW_CORRECTION",
+      "origin": "prior_QA_preview_judgment",
+      "blocks_P1": false,
+      "evidence": "png_pixel_verification.json",
+      "reason": "original and supplementary PNG label regions nonempty and identical to visible P01 reference within each set; retract missing-text inference; original records preserved"
+    }
+  ],
+  "not_verified": [
+    "v16 implementation/behavior",
+    "actual kernel numerical/E2E acceptance",
+    "real-source orders and research gain"
+  ],
+  "prompt_delivery": "INLINE_FINAL_ONLY",
+  "git_commit": "NOT_EXECUTED",
+  "git_push": "NOT_EXECUTED",
+  "stopped": true
+}

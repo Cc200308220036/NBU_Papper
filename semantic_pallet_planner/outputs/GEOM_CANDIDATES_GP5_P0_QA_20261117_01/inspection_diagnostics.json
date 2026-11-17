@@ -1,0 +1,13 @@
+{
+  "initial_identity_checker": {
+    "exit_code": 1,
+    "cause": "system Python 3.9 AST parser cannot parse existing modern f-string syntax in production source",
+    "classification": "QA interpreter grammar limitation, not production defect",
+    "action": "use already available CPython 3.14 for stdlib read-only AST inspection; no dependency install or production execution"
+  },
+  "pixel_inspection": {
+    "PIL_import_attempts": "unavailable in system Python and existing 3.14; no installation",
+    "action": "standard-library lossless PNG scanline inspection",
+    "production_or_image_edit_calls": 0
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "alternatives": [
+    {
+      "half_even_0_0005": "0",
+      "math": "Fraction(Decimal(repr(native_float))); int exact",
+      "risk": "decimal snapshot geometry is not identical to native binary64 real arithmetic or original lexemes",
+      "route": "geometry_runtime_shortest_decimal_v1"
+    },
+    {
+      "half_even_0_0005": "0.001",
+      "math": "Fraction(native_float) / as_integer_ratio; exact finite decimal string",
+      "risk": "binary tail affects quantization/contact boundaries; not original lexemes",
+      "route": "geometry_runtime_binary64_exact_v1"
+    },
+    {
+      "availability": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "math": "preserve original source bytes/pointers for original fields; derived values require separate profile",
+      "risk": "new end-to-end provenance chain required; never reload future task to patch current state",
+      "route": "original_lexeme_sidecar_plus_derived_contract"
+    }
+  ],
+  "approved_for_implementation": false,
+  "evidence_ref": "numeric_examples.json",
+  "outcome_claim": "No candidate or order effect measured",
+  "rationale": [
+    "New source is the current public runtime snapshot, not original task lexemes",
+    "Shortest float text roundtrips to the same native bits in the frozen environment",
+    "Matches observable JSON decimal representation without expanding binary64 tails at the half-grid boundary",
+    "Does not erase existing computed residuals; retains errors and no-snap rules"
+  ],
+  "recommended": "geometry_runtime_shortest_decimal_v1",
+  "status": "DESIGN_ONLY_RECOMMENDATION_PENDING_QA",
+  "version": "geometry_gp3_n0_profile_comparison_design_v1"
+}

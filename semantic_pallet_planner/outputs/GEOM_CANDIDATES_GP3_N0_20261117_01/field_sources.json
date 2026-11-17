@@ -1,0 +1,231 @@
+{
+  "compatibility_aliases": "current public attributes and legacy fragile/weight_class/product_category retained only in native closed whitelist, not geometry or new F0 fields",
+  "current_state_metadata": [
+    "buffer_capacity",
+    "pending_items[*].slot",
+    "arrived_ids",
+    "event_index",
+    "arrival_count",
+    "placed_count",
+    "end_of_stream"
+  ],
+  "fields": [
+    {
+      "current_source": "state.container.length_mm",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "strictly positive; no input quantization",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "container.length_mm"
+    },
+    {
+      "current_source": "state.container.width_mm",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "strictly positive; no input quantization",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "container.width_mm"
+    },
+    {
+      "current_source": "state.container.max_height_mm",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "strictly positive; no input quantization",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "container.max_height_mm"
+    },
+    {
+      "current_source": "state.container.max_payload_kg",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "strictly positive; no input quantization",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "container.max_payload_kg"
+    },
+    {
+      "current_source": "ordered(state.pending_items)[*].item.item_id",
+      "kind": "string",
+      "rule": "required; mass positive; synthetic capacity nonnegative; unique ID; exact type",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "buffer_items[*].item_id"
+    },
+    {
+      "current_source": "ordered(state.pending_items)[*].item.mass_kg",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "required; mass positive; synthetic capacity nonnegative; unique ID; exact type",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "buffer_items[*].mass_kg"
+    },
+    {
+      "current_source": "ordered(state.pending_items)[*].item.stackable",
+      "kind": "bool",
+      "rule": "required; mass positive; synthetic capacity nonnegative; unique ID; exact type",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "buffer_items[*].stackable"
+    },
+    {
+      "current_source": "ordered(state.pending_items)[*].item.top_load_limit_kg_synthetic",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "required; mass positive; synthetic capacity nonnegative; unique ID; exact type",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "buffer_items[*].top_load_limit_kg_synthetic"
+    },
+    {
+      "current_source": "ordered(state.pending_items)[*].item.dimensions_mm.length",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "positive, no input quantization",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "buffer_items[*].dimensions_mm.length"
+    },
+    {
+      "current_source": "ordered(state.pending_items)[*].item.dimensions_mm.width",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "positive, no input quantization",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "buffer_items[*].dimensions_mm.width"
+    },
+    {
+      "current_source": "ordered(state.pending_items)[*].item.dimensions_mm.height",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "positive, no input quantization",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "buffer_items[*].dimensions_mm.height"
+    },
+    {
+      "current_source": "state.placed_items[*].item_id",
+      "kind": "string",
+      "rule": "required; mass positive; synthetic capacity nonnegative; unique ID; exact type",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].item_id"
+    },
+    {
+      "current_source": "state.placed_items[*].mass_kg",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "required; mass positive; synthetic capacity nonnegative; unique ID; exact type",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].mass_kg"
+    },
+    {
+      "current_source": "state.placed_items[*].stackable",
+      "kind": "bool",
+      "rule": "required; mass positive; synthetic capacity nonnegative; unique ID; exact type",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].stackable"
+    },
+    {
+      "current_source": "state.placed_items[*].top_load_limit_kg_synthetic",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "required; mass positive; synthetic capacity nonnegative; unique ID; exact type",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].top_load_limit_kg_synthetic"
+    },
+    {
+      "current_source": "state.placed_items[*].dimensions_mm.length",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "positive, no input quantization",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].dimensions_mm.length"
+    },
+    {
+      "current_source": "state.placed_items[*].dimensions_mm.width",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "positive, no input quantization",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].dimensions_mm.width"
+    },
+    {
+      "current_source": "state.placed_items[*].dimensions_mm.height",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "positive, no input quantization",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].dimensions_mm.height"
+    },
+    {
+      "current_source": "ordered(state.pending_items)[*].arrival_index",
+      "kind": "int_not_bool",
+      "rule": "nonnegative, unique, preserve arrival order",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "buffer_items[*].arrival_index"
+    },
+    {
+      "current_source": "state.placed_items[*].pose.x_mm",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "yaw 0/90; z nonnegative; x/y signed finite; never snap",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].pose.x_mm"
+    },
+    {
+      "current_source": "state.placed_items[*].pose.y_mm",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "yaw 0/90; z nonnegative; x/y signed finite; never snap",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].pose.y_mm"
+    },
+    {
+      "current_source": "state.placed_items[*].pose.z_base_mm",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "yaw 0/90; z nonnegative; x/y signed finite; never snap",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].pose.z_base_mm"
+    },
+    {
+      "current_source": "state.placed_items[*].pose.yaw_deg",
+      "kind": "int_enum",
+      "rule": "yaw 0/90; z nonnegative; x/y signed finite; never snap",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].pose.yaw_deg"
+    },
+    {
+      "current_source": "state.placed_items[*].oriented_size_mm[0]",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "positive; orientation consistent with saved dimensions/yaw",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].oriented_size_mm[0]"
+    },
+    {
+      "current_source": "state.placed_items[*].oriented_size_mm[1]",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "positive; orientation consistent with saved dimensions/yaw",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].oriented_size_mm[1]"
+    },
+    {
+      "current_source": "state.placed_items[*].oriented_size_mm[2]",
+      "kind": "runtime_int_or_finite_binary64",
+      "rule": "positive; orientation consistent with saved dimensions/yaw",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].oriented_size_mm[2]"
+    },
+    {
+      "current_source": "state.placed_items[*].supported_load_kg",
+      "kind": "native_derived_value",
+      "rule": "nonnegative; preserve saved value, no exact-decimal recomputation",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].supported_load_kg"
+    },
+    {
+      "current_source": "state.placed_items[*].support_fractions[*].item_id",
+      "kind": "string",
+      "rule": "current placed support ID; preserve edge order",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].support_fractions[*].item_id"
+    },
+    {
+      "current_source": "state.placed_items[*].support_fractions[*].fraction",
+      "kind": "native_derived_value",
+      "rule": "0 < value <= 1; never renormalize to force exact sum 1",
+      "source_lexeme": "NOT_AVAILABLE_IN_CURRENT_STATE",
+      "target": "placed_items[*].support_fractions[*].fraction"
+    }
+  ],
+  "forbidden": [
+    "future task/stream",
+    "private witness",
+    "reference policy",
+    "monitor force/diagnostic",
+    "default zero/capacity",
+    "recovery of unavailable source lexemes"
+  ],
+  "geometry_negative_zero": "canonical decimal string 0",
+  "native_missing": "technical reject, no default",
+  "native_negative_zero": "preserve bytes and float bits",
+  "paired_observation": "existing public observation rebuilt from same current state; saved loads/edges come from state, not F0",
+  "status": "DESIGN_ONLY_NOT_IMPLEMENTED",
+  "version": "geometry_gp3_n0_field_sources_design_v1"
+}

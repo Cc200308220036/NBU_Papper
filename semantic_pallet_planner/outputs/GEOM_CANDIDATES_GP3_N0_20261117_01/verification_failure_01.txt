@@ -1,0 +1,16 @@
+Recorded from the first unsealed verification invocation, 2026-11-17.
+Command:
+PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N0_20261117_01/verify_design.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N0_20261117_01/verification.json
+
+The Python process failed (exit 1). The surrounding shell continued to git diff/status,
+so its final exit 0 was not a successful verifier result.
+Observed traceback location: verify_design.py line 33, read(path), json.loads(p.read_bytes()).
+Observed error:
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+Cause: stdout redirection created the empty verification.json before the script
+enumerated and parsed all *.json files, including that file itself.
+Fix: the unsealed verification skips its own output file; --sealed parses and
+checks the completed verification.json against the final manifest.
+This was an artifact-verifier failure, not production or numeric validation.
+This file records observed command/error and diagnosis; it is not a raw stderr dump.

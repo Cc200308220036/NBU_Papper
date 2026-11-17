@@ -1,0 +1,115 @@
+{
+  "all_objects_closed": true,
+  "binding_required": [
+    "version",
+    "native_snapshot_sha256",
+    "geometry_input_sha256",
+    "effective_state_digest",
+    "geometry_values_digest",
+    "observation_digest",
+    "profile",
+    "adapter_version",
+    "adapter_source_digest",
+    "source_manifest_digest",
+    "config_digest",
+    "backend",
+    "physical_identity",
+    "monitor_identity",
+    "data_identity",
+    "task_identity",
+    "environment_digest",
+    "serializer_version"
+  ],
+  "byte_rules": "UTF-8, no BOM/newline; ensure_ascii=False, sort_keys=True, separators=(comma,colon), allow_nan=False; arrays preserve order",
+  "checkpoint_blob_publication": "write immutable blobs atomically before checkpoint references",
+  "effective_state_digest": "H(canonical native effective field projection including saved ledger and counters, excluding backend/job/profile)",
+  "fairness": "same native snapshot/profile/input gate/F0/original physics; E2 float internals differ from exact new core; compare complete backend, not pure EMS mechanism",
+  "geometry_payload_required": [
+    "container",
+    "placed_items",
+    "buffer_items"
+  ],
+  "geometry_required": [
+    "version",
+    "profile",
+    "adapter",
+    "native_snapshot_sha256",
+    "effective_state_digest",
+    "observation_digest",
+    "payload"
+  ],
+  "geometry_scalar_encoding": "continuous values are canonical finite decimal strings; bool/ID/enum/index retain explicit kinds",
+  "geometry_values_digest": "H(canonical geometry payload); profile is separately mandatory even if values equal",
+  "interfaces": [
+    {
+      "forbidden_input": "task",
+      "inputs": [
+        "current_state",
+        "current_observation",
+        "profile",
+        "identities"
+      ],
+      "name": "capture_current_public_snapshot_v1",
+      "outputs": [
+        "B_native",
+        "B_geometry",
+        "binding"
+      ]
+    },
+    {
+      "inputs": [
+        "B_geometry bytes",
+        "native_snapshot_raw bytes",
+        "binding",
+        "config"
+      ],
+      "name": "generate_runtime_snapshot_v1",
+      "outputs": [
+        "geometry_runtime_generation_v1",
+        "audit"
+      ],
+      "reuse": "single parsed-input generation/reduction core after separately authorized refactor"
+    },
+    {
+      "inputs": [
+        "B_native",
+        "B_geometry",
+        "binding",
+        "current_state",
+        "observation"
+      ],
+      "name": "validate_runtime_snapshot_v1",
+      "outputs": [
+        "validated views or technical error"
+      ]
+    }
+  ],
+  "legacy_entrypoint": "generate(raw) source-lexeme contract and old adapt remain unchanged; no relabeling runtime bytes as geometry_physical_input_v1",
+  "native_required": [
+    "version",
+    "current_state",
+    "observation"
+  ],
+  "production_schemas": "NOT_IMPLEMENTED",
+  "proposed_versions": {
+    "adapter": "geometry_runtime_snapshot_adapter_v1",
+    "binding": "geometry_runtime_binding_v1",
+    "design": "geometry_runtime_numeric_design_v1",
+    "entrypoint": "generate_runtime_snapshot_v1",
+    "generation_result": "geometry_runtime_generation_v1",
+    "geometry_input": "geometry_runtime_public_input_v1",
+    "native_snapshot": "geometry_runtime_state_snapshot_v1",
+    "profile_comparison_only": "geometry_runtime_binary64_exact_v1",
+    "profile_recommended": "geometry_runtime_shortest_decimal_v1"
+  },
+  "resume_rules": {
+    "COMMITTED": "snapshot matches pending.before; cp.state matches pending.after; no duplicate place",
+    "MONITORED": "reuse saved monitor, do not reassess; match before",
+    "SELECTED": "reuse original bytes/pool/context/selection; match before and cp.state",
+    "UNKNOWN_SEND": "stop, no implicit retry",
+    "drift": "reject byte/profile/state/source/config/environment/data/physical/monitor changes; never re-sign"
+  },
+  "runtime_validation": "NOT_RUN",
+  "status": "DESIGN_ONLY_NOT_REGISTERED",
+  "version": "geometry_gp3_n0_interface_identity_design_v1"
+}

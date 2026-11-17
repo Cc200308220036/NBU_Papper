@@ -1,0 +1,56 @@
+{
+  "executable_adapter": null,
+  "fields": [
+    {
+      "required": [
+        "length_mm",
+        "width_mm",
+        "max_height_mm",
+        "max_payload_kg"
+      ],
+      "source": "state.container",
+      "target": "container"
+    },
+    {
+      "required": [
+        "item.item_id",
+        "item.dimensions_mm",
+        "item.mass_kg",
+        "item.stackable",
+        "item.top_load_limit_kg_synthetic",
+        "arrival_index"
+      ],
+      "source": "ordered(state.pending_items)",
+      "target": "buffer_items[]"
+    },
+    {
+      "required": [
+        "item_id",
+        "dimensions_mm",
+        "mass_kg",
+        "stackable",
+        "top_load_limit_kg_synthetic",
+        "pose",
+        "oriented_size_mm",
+        "supported_load_kg",
+        "support_fractions"
+      ],
+      "source": "state.placed_items",
+      "target": "placed_items[]"
+    }
+  ],
+  "input_bytes": null,
+  "no_default_fields": true,
+  "no_future_or_private_inputs": true,
+  "numeric_probe": "input_boundary_evidence.json",
+  "numerical_profile": null,
+  "options": [
+    "Independent runtime numeric input contract and generator entrypoint, retaining original raw-source entrypoint",
+    "Original lexeme provenance sidecar plus explicit derived-value contract throughout independent new runtime/checkpoint"
+  ],
+  "origin_lexemes": "NOT_AVAILABLE_IN_CURRENT_STATE",
+  "proposed_adapter_only": "geometry_runtime_snapshot_adapter_v1",
+  "proposed_input_only": "geometry_runtime_public_input_v1",
+  "status": "BLOCKED_GP3_INPUT_01",
+  "version": "geometry_gp3_input_contract_inventory_v1"
+}

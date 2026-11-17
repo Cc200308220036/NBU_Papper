@@ -1,0 +1,47 @@
+{
+  "commands": [
+    {
+      "command": "git pull --ff-only",
+      "exit_code": 1,
+      "mode": "ordinary sandbox",
+      "output": "error: 不能打开 .git/FETCH_HEAD: 只读文件系统"
+    },
+    {
+      "command": "git pull --ff-only",
+      "exit_code": 0,
+      "mode": "require_escalated",
+      "output": "已经是最新的。"
+    },
+    {
+      "command": "git rev-parse HEAD",
+      "exit_code": 0,
+      "output": "f6969c45016f65bf12f40401b0ddca1c4bde00bc"
+    },
+    {
+      "command": "git status --porcelain=v1",
+      "exit_code": 0,
+      "output": "",
+      "when": "after pull, before GP3 output"
+    },
+    {
+      "branch": "dev/jev-select",
+      "command": "git branch -vv",
+      "upstream": "origin/dev/jev-select"
+    },
+    {
+      "command": "python3 --version",
+      "exit_code": 0,
+      "output": "Python 3.13.5"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_20261117_01/check_input_boundary.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_20261117_01/input_boundary_check.log 2>&1",
+      "exit_code": 0,
+      "output_ref": "input_boundary_check.log"
+    }
+  ],
+  "date": "2026-11-17",
+  "historical_interpreter": "Historical miniconda python3.14 path absent; used existing python3; no installation",
+  "other_read_only_commands": "pwd, cat, sed, head, tail, ls, rg, git log, git remote -v, git cat-file, git diff --cached --stat; no model/credential access",
+  "timezone": "Asia/Shanghai",
+  "version": "geometry_gp3_command_receipts_v1"
+}

@@ -1,0 +1,45 @@
+{
+  "version": "geometry_gp3_n3_r1_qa_receipts_v1",
+  "date": "2026-11-17",
+  "original_validator": {
+    "command": "python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_R1_20261117_01/verify_delivery.py --sealed",
+    "exit_code": 0,
+    "when": "before QA navigation change",
+    "stdout": {
+      "status": "PASS_SAVED_FILES_AND_PINNED_HISTORY_ONLY",
+      "sealed": true,
+      "production_files": 542,
+      "changed": 2,
+      "source_bound_case_records": 6,
+      "isolated_phase_records": 48,
+      "negative_records": 25,
+      "historical_manifest_members": 246,
+      "production_imports": 0,
+      "loop_calls": 0,
+      "PCT_LP_calls": 0,
+      "model_calls": 0,
+      "A03": "PARTIAL",
+      "GP4": "NOT_READY"
+    }
+  },
+  "independent_checker": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_R1_QA_20261117_01/check_saved_evidence.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_R1_QA_20261117_01/saved_evidence_verification.json",
+    "exit_code": 0,
+    "result": "saved_evidence_verification.json",
+    "scope": "saved identities/bytes/counters/phase ownership and five GP0 public snapshot hashes only"
+  },
+  "other_checks": [
+    "Git branch/upstream/status/index/log/HEAD/diff",
+    "source/test/script static review",
+    "git diff --check",
+    "local upstream 0/0 without fetch"
+  ],
+  "check_failures": [],
+  "production_imports": 0,
+  "candidate_generation": 0,
+  "loop_recovery_physics_calls": 0,
+  "PCT_LP_models": 0,
+  "subagents": 0,
+  "credentials_read": false,
+  "git_pull_fetch_add_commit_push": "NOT_RUN"
+}

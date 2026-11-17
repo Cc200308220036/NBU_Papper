@@ -1,0 +1,41 @@
+{
+  "version": "geometry_gp3_n1_qa_receipts_v1",
+  "date": "2026-11-17",
+  "original_validator": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N1_20261117_01/verify_delivery.py --sealed",
+    "exit_code": 0,
+    "when": "before QA navigation addition",
+    "stdout": {
+      "status": "PASS_FILE_BYTE_AND_AUDIT_IDENTITIES",
+      "source_files": 530,
+      "old_unchanged": 526,
+      "native_geometry_fixtures": 7,
+      "links_checked": 18,
+      "manifest_verified": true,
+      "production_imports": 0,
+      "candidate_calls": 0,
+      "orders": 0,
+      "PCT_calls": 0,
+      "checkpoint_resume": "NOT_RUN",
+      "parent_A03": "PARTIAL"
+    }
+  },
+  "independent_check": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N1_QA_20261117_01/check_saved_evidence.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N1_QA_20261117_01/saved_evidence_verification.json",
+    "result_file": "saved_evidence_verification.json",
+    "scope": "saved evidence only; no production imports; optional read-only git show for historic navigation"
+  },
+  "git_checks": [
+    "status/worktree/index/branch/upstream/HEAD/log/diff",
+    "diff --check",
+    "rev-list HEAD...local upstream (no fetch)"
+  ],
+  "production_imports": 0,
+  "candidate_generation": 0,
+  "orders": 0,
+  "PCT_LP": 0,
+  "models": 0,
+  "subagents": 0,
+  "credentials_read": false,
+  "git_pull_fetch_add_commit_push": "NOT_RUN"
+}

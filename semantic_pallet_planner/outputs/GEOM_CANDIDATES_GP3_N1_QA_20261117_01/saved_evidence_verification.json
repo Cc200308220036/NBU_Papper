@@ -1,0 +1,111 @@
+{
+  "status": "PASS_SAVED_FACTS_ONLY",
+  "manifest_files": 92,
+  "production_files": 530,
+  "cases": [
+    {
+      "case": "empty",
+      "status": "OK",
+      "raw_saved_actions": 10,
+      "final_saved_actions": 10,
+      "error": null
+    },
+    {
+      "case": "native_identity",
+      "status": "OK",
+      "raw_saved_actions": 24,
+      "final_saved_actions": 16,
+      "error": null
+    },
+    {
+      "case": "nonstackable",
+      "status": "OK_EMPTY",
+      "raw_saved_actions": 0,
+      "final_saved_actions": 0,
+      "error": null
+    },
+    {
+      "case": "platform",
+      "status": "OK",
+      "raw_saved_actions": 10,
+      "final_saved_actions": 10,
+      "error": null
+    },
+    {
+      "case": "real_height_disagreement",
+      "status": "ERROR",
+      "raw_saved_actions": 0,
+      "final_saved_actions": 0,
+      "error": {
+        "code": "PHYSICAL_CHECK_DISAGREEMENT",
+        "detail": "max_height_mismatch"
+      }
+    },
+    {
+      "case": "rounded_ledger",
+      "status": "OK",
+      "raw_saved_actions": 14,
+      "final_saved_actions": 14,
+      "error": null
+    },
+    {
+      "case": "three",
+      "status": "OK",
+      "raw_saved_actions": 84,
+      "final_saved_actions": 48,
+      "error": null
+    }
+  ],
+  "raw_saved_actions": 142,
+  "final_saved_actions": 98,
+  "faults": [
+    {
+      "case": "changed_geometry_leaf",
+      "saved_error": {
+        "code": "RUNTIME_SNAPSHOT_MISMATCH",
+        "detail": "geometry leaf derivation/hash differs"
+      }
+    },
+    {
+      "case": "duplicate_json_key",
+      "saved_error": {
+        "code": "RUNTIME_INPUT_INVALID",
+        "detail": "duplicate JSON key: profile"
+      }
+    },
+    {
+      "case": "nonzero_underflow",
+      "saved_error": {
+        "code": "RUNTIME_NUMBER_UNREPRESENTABLE",
+        "detail": "nonfinite/overflow/nonzero underflow"
+      }
+    },
+    {
+      "case": "source_identity_drift",
+      "saved_error": {
+        "code": "RUNTIME_SNAPSHOT_MISMATCH",
+        "detail": "frozen binding/source/config/environment differs"
+      }
+    },
+    {
+      "case": "wrong_profile",
+      "saved_error": {
+        "code": "RUNTIME_INPUT_INVALID",
+        "detail": "unregistered geometry version/profile/adapter"
+      }
+    }
+  ],
+  "legacy_full_saved_result_comparisons": 3,
+  "production_imports": 0,
+  "candidate_generation": 0,
+  "orders": 0,
+  "PCT_LP": 0,
+  "models": 0,
+  "not_proven": [
+    "live capture rejection behavior",
+    "physical generation rerun",
+    "checkpoint resume",
+    "public wiring",
+    "research benefit"
+  ]
+}

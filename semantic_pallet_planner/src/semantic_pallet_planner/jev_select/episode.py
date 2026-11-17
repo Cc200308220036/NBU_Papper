@@ -544,6 +544,10 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                 event.update(observation=exc.observation,bundle=exc.bundle.data,context=exc.context.data,route=decision_route(exc.bundle))
                 if hook:hook('decision_ready',event)
             event['event'] = 'COMMIT_FAILURE' if event['proposed_action'] else 'DECISION_FAILURE'
+            if geometry_run and event['event']=='COMMIT_FAILURE' and (event['monitor'] or {}).get('status')=='STABLE':
+                # Closed v15 stop category; original exception/code remains in detail.
+                from .geometry_execution import COMMIT_TECHNICAL_ERROR
+                reason=COMMIT_TECHNICAL_ERROR
             event['error'] = {'code':reason,'detail':str(exc)[:240]}
             if geometry_run and hasattr(exc,'audit'):
                 event['geometry_ref']=geometry_store.put_json({'version':'geometry_generation_failure_v1','input':geometry_store.input_ref,'scope':exc.scope,'audit':exc.audit,'error':event['error']})

@@ -1,0 +1,73 @@
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
+index 343712e3..ccad71ca 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
+@@ -544,6 +544,10 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+                 event.update(observation=exc.observation,bundle=exc.bundle.data,context=exc.context.data,route=decision_route(exc.bundle))
+                 if hook:hook('decision_ready',event)
+             event['event'] = 'COMMIT_FAILURE' if event['proposed_action'] else 'DECISION_FAILURE'
++            if geometry_run and event['event']=='COMMIT_FAILURE' and (event['monitor'] or {}).get('status')=='STABLE':
++                # Closed v15 stop category; original exception/code remains in detail.
++                from .geometry_execution import COMMIT_TECHNICAL_ERROR
++                reason=COMMIT_TECHNICAL_ERROR
+             event['error'] = {'code':reason,'detail':str(exc)[:240]}
+             if geometry_run and hasattr(exc,'audit'):
+                 event['geometry_ref']=geometry_store.put_json({'version':'geometry_generation_failure_v1','input':geometry_store.input_ref,'scope':exc.scope,'audit':exc.audit,'error':event['error']})
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py
+index 82cfd7f0..f55f0006 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py
+@@ -13,6 +13,9 @@ from .contracts import JevSelectError, canonical, digest, validate_schema
+ from .geometry_runtime_contracts import environment, same_native
+ from .packaging_versions import GEOMETRY_RUN_VERSION, GEOMETRY_EXECUTION
+ 
++RECOVERY_VALIDATION_REVISION='geometry_technical_failure_recovery_v1'
++COMMIT_TECHNICAL_ERROR='GEOMETRY_COMMIT_TECHNICAL_ERROR'
++
+ 
+ def validate_fixture(task):
+     keys={'version','fixture_only','container','items','attributes','instruction_text','regions','reference_policy','task_id','mode','layer','feasibility_status'}
+@@ -216,11 +219,18 @@ def validate_saved_checkpoint(cp,task,config,job_id,method,store):
+         if phase=='SELECTED' and row is not None or phase in ('MONITORED','COMMITTED') and row is None:raise JevSelectError('geometry_saved_phase_drift')
+         if phase is None and not committed:
+             reasons={'UNSTABLE':'PREDICTED_STATIC_INSTABILITY','UNASSESSABLE':'STABILITY_UNASSESSABLE','ERROR':'STABILITY_MONITOR_ERROR','DISABLED':'GEOMETRY_MONITOR_DISABLED'}
+-            expected_reason=reasons.get(row['status']) if row else None
+-            if expected_reason is None or ev['reason']!=expected_reason:raise JevSelectError('geometry_saved_monitor_stop_drift')
++            if row is not None and row['status']=='STABLE':
++                # Explicit terminal commit-boundary failure, never a retry permit.
++                if (ev['event']!='COMMIT_FAILURE' or ev['reason']!=COMMIT_TECHNICAL_ERROR
++                    or ev['error'] is None or ev['error']['code']!=COMMIT_TECHNICAL_ERROR):raise JevSelectError('geometry_saved_commit_failure_drift')
++            else:
++                expected_reason=reasons.get(row['status']) if row else None
++                if (expected_reason is None or ev['reason']!=expected_reason or ev['event']!='STOP'
++                    or ev['error'] is not None):raise JevSelectError('geometry_saved_monitor_stop_drift')
+         if committed:
+             if row is None or row['status']!='STABLE':raise JevSelectError('geometry_saved_commit_not_stable')
+-            if ev['reason'] is not None:raise JevSelectError('geometry_committed_reason_drift')
++            if ev['reason'] is not None or ev['event']!='PLACE':raise JevSelectError('geometry_committed_reason_drift')
++            if phase is None and ev['error'] is not None:raise JevSelectError('geometry_committed_error_drift')
+             after=place(copy.deepcopy(before),chosen)  # sole original buffer/physics implementation, private validation only
+             if not same_native(ev['after'],after) or ev['action']!=ev['proposed_action']:raise JevSelectError('geometry_saved_after_drift')
+             return after
+@@ -237,11 +247,20 @@ def validate_saved_checkpoint(cp,task,config,job_id,method,store):
+         if not same_native(ev['after'],after):raise JevSelectError('geometry_saved_transition_drift')
+         state=after
+     pending=cp['pending_event'];phase=cp['phase']
++    evaluation_failure=(phase=='COMMITTED' and pending is not None and cp['reason']=='EVALUATION_ERROR')
+     if pending is not None:
+         if stopped or phase not in ('DECISION_READY','SELECTED','MONITORED','COMMITTED'):raise JevSelectError('geometry_pending_phase_drift')
++        if evaluation_failure:
++            if (pending['error'] is None or pending['error']['code']!='EVALUATION_ERROR'
++                or pending['business_after'] is not None
++                or pending['reference_after'] is not None):raise JevSelectError('geometry_saved_evaluation_failure_drift')
++        elif pending['error'] is not None:raise JevSelectError('geometry_pending_error_drift')
++        if pending['reason'] is not None:raise JevSelectError('geometry_pending_reason_drift')
++        if phase!='COMMITTED' and pending['event']!='STOP':raise JevSelectError('geometry_pending_event_drift')
+         state=check(pending,state,phase=='COMMITTED',phase)
+     elif phase not in ('READY','TERMINATED'):raise JevSelectError('geometry_missing_pending')
+     if not same_native(cp['state'],state) or cp['cursor']!=cursor or cp['decision']!=decision:raise JevSelectError('geometry_saved_progress_drift')
+     expected=stopped or ('ALL_ITEMS_PLACED' if pending is None and state['end_of_stream'] and not state['pending_items'] and cp['reason']=='ALL_ITEMS_PLACED' else None)
+-    if cp['reason']!=expected or (phase=='TERMINATED')!=(expected is not None):raise JevSelectError('geometry_saved_stop_drift')
++    if evaluation_failure:expected='EVALUATION_ERROR'
++    if cp['reason']!=expected or (phase=='TERMINATED')!=(expected is not None and not evaluation_failure):raise JevSelectError('geometry_saved_stop_drift')
+     return cp

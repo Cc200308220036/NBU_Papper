@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_R1_20261117_01/reproduce_recovery.py", line 38, in <module>
+    restored=run(cp);counts['monitor']=len(assess);delta={k:counts[k]-snapshot[k] for k in counts}
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_R1_20261117_01/reproduce_recovery.py", line 18, in run
+    def run(resume=None):return episode.run_episode(task,LocalPackagingDouble(),cfg,job_id='R1',method=cfg['selector'],geometry_store=store,on_checkpoint=lambda cp:cps.append(copy.deepcopy(cp)),resume=resume)
+                                ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 70, in run_episode
+    return _run_episode_v2(task,selector,config,job_id=job_id,method=method,resume=resume,
+        on_checkpoint=on_checkpoint,hook=hook,event_limit=event_limit,geometry_store=geometry_store)
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py", line 350, in _run_episode_v2
+    validate_saved_checkpoint(resume,task,config,job_id,method,geometry_store)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 235, in validate_saved_checkpoint
+    after=check(ev,state,ev['event']=='PLACE');decision+=1;stopped=ev['reason']
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 220, in check
+    if expected_reason is None or ev['reason']!=expected_reason:raise JevSelectError('geometry_saved_monitor_stop_drift')
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_saved_monitor_stop_drift

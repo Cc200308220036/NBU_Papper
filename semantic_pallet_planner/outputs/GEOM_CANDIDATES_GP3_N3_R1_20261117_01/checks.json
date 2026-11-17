@@ -1,0 +1,68 @@
+{
+  "issue": "GP3-N3-REC-01",
+  "checks": [
+    {
+      "id": "R1-01",
+      "item": "Real pre-fix loop reproduces both failures",
+      "status": "PASS",
+      "evidence": "before_behavior.json, exact failure checkpoints and tracebacks; QA itself was static only"
+    },
+    {
+      "id": "R1-02",
+      "item": "COMMITTED evaluation fault resumes without repeated operations",
+      "status": "PASS",
+      "evidence": "after/evaluation_failure and call deltas 0/0/0/0 plus evaluation 1"
+    },
+    {
+      "id": "R1-03",
+      "item": "STABLE commit fault terminal preserved and not retried",
+      "status": "PASS",
+      "evidence": "after/commit_failure, state/buffer/loading assertions and zero resume deltas"
+    },
+    {
+      "id": "R1-04",
+      "item": "reason/error/event/phase/action/state inconsistency rejects",
+      "status": "PASS",
+      "evidence": "19 relation mutations plus 6 environment/config/task mutations; negative_checks.json"
+    },
+    {
+      "id": "R1-05",
+      "item": "blob/config/source/environment/monitor/data/task/profile guards",
+      "status": "PASS",
+      "evidence": "unit real rejection and affected N3 regression; old before checkpoints stay frozen and reject on new source"
+    },
+    {
+      "id": "R1-06",
+      "item": "affected normal phases/monitor stops/UNKNOWN_SEND/legacy",
+      "status": "PASS",
+      "evidence": "N3 10, N2 11, N2-R1 5, legacy hand runtime 3 passed"
+    },
+    {
+      "id": "R1-07",
+      "item": "per-case phase/config attribution",
+      "status": "PASS",
+      "evidence": "each new before/after case has separate production_phases and recovery_phases; no foreign config records"
+    },
+    {
+      "id": "REAL-KERNEL",
+      "item": "actual exact-v3/PCT/LP",
+      "status": "NOT_RUN",
+      "evidence": "authorization zero; kernel TEST_DOUBLE only"
+    },
+    {
+      "id": "A03",
+      "item": "parent acceptance",
+      "status": "PARTIAL",
+      "evidence": "independent QA pending"
+    },
+    {
+      "id": "GP4",
+      "item": "later stage admission",
+      "status": "NOT_READY",
+      "evidence": "not authorized or run"
+    }
+  ],
+  "issue_disposition": "REMEDIATED_PENDING_INDEPENDENT_QA",
+  "before_FAIL": "PRESERVED",
+  "research_result": "NOT_ESTABLISHED"
+}

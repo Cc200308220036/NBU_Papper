@@ -1,0 +1,31 @@
+{
+  "issue": "GP3-N3-REC-01",
+  "scope": "v15_only",
+  "validation_revision": "geometry_technical_failure_recovery_v1",
+  "wire_versions": "unchanged v15; no Schema changes, all old Schema bytes preserved",
+  "evaluation_failure": {
+    "checkpoint_phase": "COMMITTED",
+    "checkpoint_reason": "EVALUATION_ERROR",
+    "pending_event": "PLACE",
+    "pending_reason": null,
+    "pending_error_code": "EVALUATION_ERROR",
+    "pending_business_and_reference_after": null,
+    "state": "must equal validated committed after; monitor STABLE; immutable input still before",
+    "continuation": "evaluation/accounting only, no generation/selection/assessment/commit"
+  },
+  "commit_failure": {
+    "checkpoint_phase": "TERMINATED",
+    "pending_event": null,
+    "last_event": "COMMIT_FAILURE",
+    "reason_and_error_code": "GEOMETRY_COMMIT_TECHNICAL_ERROR",
+    "monitor": "valid STABLE exact-action record",
+    "action": null,
+    "proposed_action": "validated original selected action",
+    "state": "before==after==durable terminal; no failed box removed or loading increased",
+    "original_exception": "preserved in error.detail, including original exception code when present",
+    "continuation": "none; load terminal without retry"
+  },
+  "error_detail": "free diagnostic string, including empty exception message, not used as an error category",
+  "prohibited": "unknown reason/error.code combinations remain rejected; cross-source checkpoints never resigned",
+  "nonstable_stops": "original exact mappings retained, STOP event and no technical error required"
+}

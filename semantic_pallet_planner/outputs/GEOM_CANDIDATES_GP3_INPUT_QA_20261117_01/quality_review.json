@@ -1,0 +1,61 @@
+{
+  "version": "gp3_input_quality_review_v1",
+  "date": "2026-11-17",
+  "stage": "GP3_INPUT_STOP",
+  "plan": "geometry_candidate_upgrade_design_v1",
+  "developer_entry_head": "f6969c45016f65bf12f40401b0ddca1c4bde00bc",
+  "qa_head": "4afedf0e3ca5642b7b1268eae35817f783ea0493",
+  "initial_worktree": "CLEAN",
+  "initial_index": "EMPTY",
+  "four_fact_layers": {
+    "report": "开发端声明停于输入合同冲突，A03未完成",
+    "source": "ledger普通JSON解析、episode内存状态、原generate禁止float重序列化来源",
+    "archive": "停点包清单匹配，反例及源码身份有归档",
+    "local": "标准库独立反例、量化差异算术及527源码身份核验，无生产模块导入"
+  },
+  "acceptance": {
+    "A03": "PARTIAL",
+    "runtime_integration": "NOT_RUN",
+    "GP4_GP6": "NOT_RUN"
+  },
+  "issues": [
+    {
+      "id": "GP3-INPUT-01",
+      "origin": "PLAN_AND_INPUT_CONTRACT_COMPATIBILITY",
+      "status": "CONFIRMED_OPEN",
+      "blocking": true,
+      "blocking_scope": "原合同不修订条件下的GP3运行接入/A03关闭",
+      "locations": [
+        "jev_select/ledger.py::read",
+        "jev_select/episode.py::decision_inputs",
+        "planner/space_candidates/generator.py::generate",
+        "GP0 protocol_draft.md 数值输入合同"
+      ],
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_INPUT_QA_20261117_01/independent_checks.json",
+      "finding": "内存float不携带原JSON词素；重新序列化不能满足原词素来源声明。不是GP2独立入口缺陷，也不是所有运行时协议不可实现。",
+      "minimum_next": "新增设计补充比较运行时数值profile，保留原GP0/GP2入口与历史证据，不先改生产代码"
+    }
+  ],
+  "conclusions": {
+    "engineering_status": {
+      "status": "PARTIAL",
+      "scope": "GP3停点核实，A03尚未实现"
+    },
+    "evidence_readiness": {
+      "status": "PASS",
+      "scope": "足以确认当前入口合同冲突，不证明所有接入方案不可能"
+    },
+    "research_result": "NOT_ESTABLISHED",
+    "next_stage_admission": {
+      "status": "CONDITIONAL",
+      "scope": "GP3_N0_DESIGN_ONLY",
+      "GP4": "NOT_READY"
+    }
+  },
+  "limits": [
+    "不能由数值不可逆推断真实订单候选或成绩差异",
+    "两个runtime profile在量化边界不同，尚未批准任何新profile",
+    "没有重跑会覆写原包的开发脚本"
+  ],
+  "stopped": true
+}

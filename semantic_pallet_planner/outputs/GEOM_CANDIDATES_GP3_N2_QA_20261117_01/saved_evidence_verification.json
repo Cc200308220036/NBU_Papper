@@ -1,0 +1,122 @@
+{
+  "status": "PASS_ARCHIVE_CHECKS_WITH_BLOCKING_STATIC_FINDING",
+  "manifest_files": 178,
+  "source_files": 534,
+  "paired_hand_states": 4,
+  "final_saved_candidates": 50,
+  "rows": [
+    {
+      "case": "empty",
+      "backend": "e2_original_v1",
+      "final_candidates": 8,
+      "route": "CHOICE_REQUIRED",
+      "request_bytes": 3966
+    },
+    {
+      "case": "empty",
+      "backend": "ems_surface_hybrid_v1",
+      "final_candidates": 10,
+      "route": "CHOICE_REQUIRED",
+      "request_bytes": 4639
+    },
+    {
+      "case": "nonstackable",
+      "backend": "e2_original_v1",
+      "final_candidates": 0,
+      "route": "STOP_NO_PHYSICAL_CANDIDATE",
+      "request_bytes": null
+    },
+    {
+      "case": "nonstackable",
+      "backend": "ems_surface_hybrid_v1",
+      "final_candidates": 0,
+      "route": "STOP_NO_PHYSICAL_CANDIDATE",
+      "request_bytes": null
+    },
+    {
+      "case": "rounded_ledger",
+      "backend": "e2_original_v1",
+      "final_candidates": 16,
+      "route": "CHOICE_REQUIRED",
+      "request_bytes": 8407
+    },
+    {
+      "case": "rounded_ledger",
+      "backend": "ems_surface_hybrid_v1",
+      "final_candidates": 14,
+      "route": "CHOICE_REQUIRED",
+      "request_bytes": 9442
+    },
+    {
+      "case": "singleton",
+      "backend": "e2_original_v1",
+      "final_candidates": 1,
+      "route": "SINGLETON_BYPASS",
+      "request_bytes": null
+    },
+    {
+      "case": "singleton",
+      "backend": "ems_surface_hybrid_v1",
+      "final_candidates": 1,
+      "route": "SINGLETON_BYPASS",
+      "request_bytes": null
+    }
+  ],
+  "saved_errors": [
+    {
+      "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N2_20261117_01/failures/bad_saved_ledger/e2_original_v1/error.json",
+      "scope": "COMMON_INPUT_ERROR",
+      "code": "INVALID_GEOMETRY_INPUT"
+    },
+    {
+      "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N2_20261117_01/failures/bad_saved_ledger/ems_surface_hybrid_v1/error.json",
+      "scope": "COMMON_INPUT_ERROR",
+      "code": "INVALID_GEOMETRY_INPUT"
+    },
+    {
+      "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N2_20261117_01/failures/real_height_disagreement/e2_original_v1/error.json",
+      "scope": "BACKEND_INTERNAL_ERROR",
+      "code": "PHYSICAL_CHECK_DISAGREEMENT"
+    },
+    {
+      "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N2_20261117_01/failures/real_height_disagreement/ems_surface_hybrid_v1/error.json",
+      "scope": "BACKEND_INTERNAL_ERROR",
+      "code": "PHYSICAL_CHECK_DISAGREEMENT"
+    }
+  ],
+  "legacy_saved_pairs": 2,
+  "execution_guards_checked_static_only": [
+    "episode.py:run_episode",
+    "episode.py:_run_episode_v2",
+    "execution.py:commit_physical",
+    "selector.py:result"
+  ],
+  "static_binding_witness": {
+    "issue": "GP3-N2-BIND-01",
+    "classification": "STATIC_SOURCE_DERIVATION_WITH_ARCHIVED_INPUTS_NOT_PRODUCTION_REPRODUCTION",
+    "external_config_path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N2_20261117_01/cases/empty/e2_original_v1/config.json",
+    "bundle_path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N2_20261117_01/cases/empty/ems_surface_hybrid_v1/bundle.json",
+    "audit_path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N2_20261117_01/cases/empty/ems_surface_hybrid_v1/audit.json",
+    "same_config_version": true,
+    "same_observation_digest": true,
+    "external_backend": "e2_original_v1",
+    "bundle_backend": "ems_surface_hybrid_v1",
+    "external_config_digest": "13424de54ec34f9f85ef4775c5ef8c44c02ca38691659e69d4faf3b67d45a650",
+    "bundle_backend_bound_config_digest": "467b483e62eb48aea94980b1621e9b906603322e816f34d809df90b8bf66c3b8",
+    "required_config_identity_equal": false,
+    "required_generator_config_equal": false,
+    "missing_edge": "external config -> bundle.audit.config/backend_binding.config_digest",
+    "source_trace": [
+      "ContextBuilder.__init__ validates external config Schema only",
+      "PublicBusinessGuard.filter checks v14 version and internally validates bundle using its own audit.config",
+      "build_context uses external config_digest/runtime_identity but copies bundle backend_binding_digest/generator_config_digest",
+      "validate_runtime_context checks external config against context and bundle binding against context separately; reconstruction repeats same mixed pair"
+    ],
+    "production_ContextBuilder_calls": 0,
+    "candidate_generation": 0
+  },
+  "production_imports": 0,
+  "candidate_generation": 0,
+  "run_episode_calls": 0,
+  "PCT_LP_models": 0
+}

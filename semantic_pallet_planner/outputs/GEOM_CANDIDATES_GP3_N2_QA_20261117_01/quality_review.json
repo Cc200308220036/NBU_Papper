@@ -1,0 +1,135 @@
+{
+  "version": "geometry_gp3_n2_qa_v1",
+  "date": "2026-11-17",
+  "timezone": "Asia/Shanghai",
+  "object": "GP3_N2_ONLY",
+  "plan_versions": [
+    "geometry_candidate_upgrade_design_v1",
+    "geometry_runtime_numeric_design_v1"
+  ],
+  "authorization": "independent QA, stdlib saved-fact/arithmetic/static checks only",
+  "developer_entry_head": "d69d904f09686c323edcf949f7e01022a7d564cb",
+  "implementation_base": "c82c7d800dd29aaa133bb8baa9f6e4a1d2d98c87",
+  "delivery_current_head": "2b47a1fa550262761d3155e428f9a95b5ebf1611",
+  "initial_branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "initial_worktree": "CLEAN",
+  "initial_index": "EMPTY",
+  "delivery_source_identity": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N2_20261117_01/source_manifest.json",
+  "production_files": 534,
+  "source_drift_after_delivery": false,
+  "four_fact_layers": {
+    "report": "developer bounded self-check; parent A03 PARTIAL",
+    "source": "normal candidate/F0 wiring plus missing external-config-to-bundle equality",
+    "archive": "178 manifest members; 4 paired states, 50 candidates, 4 errors, 2 legacy pairs; developer final 11/13/13 logs OK",
+    "local": "original sealed validator and independent saved-fact checker PASS; static identity witness confirms mismatched valid inputs and missing cross-check; no production calls"
+  },
+  "acceptance": [
+    {
+      "id": "N2-01",
+      "status": "PASS",
+      "scope": "correct internal paired bindings"
+    },
+    {
+      "id": "N2-02",
+      "status": "PASS",
+      "scope": "bounded common preflight evidence"
+    },
+    {
+      "id": "N2-03",
+      "status": "PASS",
+      "scope": "saved common/backend/empty errors"
+    },
+    {
+      "id": "N2-04",
+      "status": "PASS",
+      "scope": "normal paired F0 facts/seed/isolation"
+    },
+    {
+      "id": "N2-04b",
+      "status": "FAIL",
+      "issue": "GP3-N2-BIND-01",
+      "scope": "caller config vs bundle frozen config/backend identity"
+    },
+    {
+      "id": "N2-05",
+      "status": "PASS",
+      "scope": "legacy guards/budgets/telemetry"
+    },
+    {
+      "id": "N2-06",
+      "status": "PASS",
+      "scope": "limited legacy evidence"
+    },
+    {
+      "id": "N2-07",
+      "status": "PASS",
+      "scope": "static entry guards and archived rejection helper; no execution"
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP3-N2-BIND-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "status": "OPEN",
+      "origin": "IMPLEMENTATION_GAP_CURRENT_N2_CONFIG_BINDING_CONTRACT",
+      "acceptance": [
+        "N2-04b",
+        "A03 wrong backend/config rejection"
+      ],
+      "locations": [
+        "jev_select/candidate_backends.py:226-247",
+        "jev_select/candidates.py:148-162",
+        "jev_select/context.py:88-100",
+        "jev_select/packaging_runtime.py:159-169,254-270,311-331"
+      ],
+      "actual": "bundle validates audit.config; context separately binds caller config; no cross equality between caller config and bundle frozen config/backend binding",
+      "expected": "reject mismatched valid config/bundle before F0 construction and during full context validation",
+      "impact": "inconsistent backend/config provenance in a constructed context; no claim that normal archived pairings or sent requests were contaminated",
+      "evidence_type": "STATIC_SOURCE_DERIVATION_WITH_ARCHIVED_IDENTITY_WITNESS",
+      "production_reproduction": "NOT_RUN",
+      "evidence_file": "saved_evidence_verification.json#/static_binding_witness",
+      "minimal_fix": "central v14 caller config-to-bundle identity validation at filter/F0/context consumer boundaries; no rebinding/regeneration",
+      "developer_validation": "normal pairs; both-direction cross-backend; same backend different selector/data/task/monitor; invalid config; original regression; retain pre-fix failure"
+    }
+  ],
+  "parent_issue": {
+    "id": "GP3-INPUT-01",
+    "status": "PUBLIC_INTEGRATION_PARTIAL_CONFIG_BINDING_AND_EXECUTION_PENDING",
+    "fully_closed": false
+  },
+  "conclusions": {
+    "engineering_status": {
+      "status": "PARTIAL",
+      "scope": "GP3_N2_ONLY",
+      "blocking_issue": "GP3-N2-BIND-01",
+      "parent_A03": "PARTIAL"
+    },
+    "evidence_readiness": {
+      "status": "PARTIAL",
+      "archive_integrity": "PASS",
+      "normal_pair_saved_evidence": "PASS",
+      "cross_config_rejection_contract": "FAIL_STATIC",
+      "local_production_tests": "NOT_RUN"
+    },
+    "research_result": "NOT_ESTABLISHED",
+    "next_stage_admission": {
+      "status": "NOT_READY",
+      "scope": "FURTHER_GP3_EXECUTION_RECOVERY_DEVELOPMENT",
+      "remediation_only": "GP3_N2_R1_ONLY",
+      "GP4": "NOT_READY"
+    }
+  },
+  "known_context": "prior design/results known; not blind review",
+  "not_run": [
+    "production ContextBuilder/PublicBusinessGuard/validators",
+    "candidate generation",
+    "run_episode/orders",
+    "selection/monitor/commit/checkpoint resume",
+    "PCT/LP/models",
+    "GP4-GP6"
+  ],
+  "report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP3-N2独立质检与配置绑定最小整改_20261117_01.md",
+  "stopped": true
+}

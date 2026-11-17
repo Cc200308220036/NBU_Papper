@@ -1,0 +1,44 @@
+{
+  "version": "geometry_gp3_n2_remediation_admission_v1",
+  "date": "2026-11-17",
+  "status": "NOT_READY",
+  "scope": "FURTHER_GP3_EXECUTION_RECOVERY_DEVELOPMENT",
+  "blocking_issues": [
+    "GP3-N2-BIND-01"
+  ],
+  "remediation_scope": "GP3_N2_R1_ONLY",
+  "allowed": [
+    "minimal centralized caller config/bundle identity fix",
+    "v14 filter/F0/context consumer checks",
+    "bounded manual-state regression and explicit mismatch rejection tests",
+    "new remediation evidence/report/manifests preserving original failure"
+  ],
+  "not_allowed": [
+    "N3 execution/recovery wiring",
+    "run_episode/orders",
+    "PCT/LP/models",
+    "GP4-GP6",
+    "F1/experience",
+    "re-sign or relabel old artifacts"
+  ],
+  "prerequisites": [
+    {
+      "item": "N0/N1 foundations",
+      "status": "PASS_PREVIOUS_LIMITED_SCOPE"
+    },
+    {
+      "item": "N2 correct-pair public construction",
+      "status": "PASS_LIMITED"
+    },
+    {
+      "item": "wrong-config rejection across public consumers",
+      "status": "FAIL",
+      "issue": "GP3-N2-BIND-01"
+    }
+  ],
+  "release_condition": "independent QA closes GP3-N2-BIND-01 with source and real bounded rejection evidence; further scope requires a new instruction",
+  "parent_A03": "PARTIAL",
+  "GP4": "NOT_READY",
+  "real_model_calls_authorized": 0,
+  "stopped": true
+}

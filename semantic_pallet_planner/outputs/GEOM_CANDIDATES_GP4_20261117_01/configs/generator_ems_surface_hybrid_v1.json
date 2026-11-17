@@ -1,0 +1,33 @@
+{
+  "generator": {
+    "backend": "ems_surface_hybrid_v1",
+    "budgets": {
+      "active_spaces": 4096,
+      "raw_point_attempts_per_item": 32768,
+      "space_containment_comparisons": 2000000,
+      "surface_event_cells": 16384,
+      "surface_expansion_cell_checks": 2000000
+    },
+    "candidate_generator": {
+      "geometry_score_weights": {
+        "balance": 0.15,
+        "compactness": 0.35,
+        "height": 0.25,
+        "stability": 0.25
+      }
+    },
+    "joint_top_k": 48,
+    "per_item_top_k": 16,
+    "publish_quantum_mm": "0.001",
+    "reducer": "yaw_floor_required_then_joint_group_coverage_v1",
+    "rounding": "HALF_EVEN",
+    "support_ratio_min": 0.7,
+    "version": "geometry_gp2_standalone_config_v1",
+    "yaw_degrees": [
+      0,
+      90
+    ]
+  },
+  "profile": "geometry_runtime_shortest_decimal_v1",
+  "version": "geometry_runtime_generator_config_v1"
+}

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/verify_delivery.py", line 18, in <module>
+    for r in f['files']:assert sha(r['path'])==r['sha256'],r['path']
+                               ~~~^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/verify_delivery.py", line 11, in sha
+    def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+                                     ^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'read_bytes'

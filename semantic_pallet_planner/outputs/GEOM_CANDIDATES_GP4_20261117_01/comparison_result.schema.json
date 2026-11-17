@@ -1,0 +1,135 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "scope",
+    "state_denominator",
+    "item_denominator",
+    "states",
+    "items",
+    "timing_aggregate",
+    "interpretation",
+    "model_calls",
+    "PCT_LP_calls",
+    "execution_calls"
+  ],
+  "properties": {
+    "version": {
+      "const": "gp4_saved_state_comparison_result_v1"
+    },
+    "scope": {
+      "const": "SAVED_STATE_ANALYSIS_NO_EXECUTION"
+    },
+    "state_denominator": {
+      "const": 5
+    },
+    "item_denominator": {},
+    "states": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "point_id",
+          "common_status",
+          "common_error",
+          "common_admission_s",
+          "item_ids",
+          "backends",
+          "final_comparison",
+          "raw_raw_comparison",
+          "raw_raw_status",
+          "old_final_vs_new_raw"
+        ],
+        "properties": {
+          "point_id": {},
+          "common_status": {},
+          "common_error": {},
+          "common_admission_s": {},
+          "item_ids": {},
+          "backends": {},
+          "final_comparison": {},
+          "raw_raw_comparison": {},
+          "raw_raw_status": {},
+          "old_final_vs_new_raw": {}
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "point_id",
+          "item_id",
+          "old_status",
+          "new_status",
+          "old_final_count",
+          "new_final_count",
+          "old_raw_valid_count",
+          "old_raw_status",
+          "old_enumeration_projection_count",
+          "old_projection_to_final_removed",
+          "old_raw_generation_loss",
+          "old_raw_compression_loss",
+          "new_raw_valid_count",
+          "new_unique_published_proposals",
+          "new_raw_point_attempts",
+          "new_invalid_unique_actions",
+          "new_proposal_rejection_instances",
+          "new_compression_loss",
+          "new_surface_only_raw_count",
+          "new_surface_only_final_count",
+          "final_comparison",
+          "new_coverage",
+          "new_dropped_actions",
+          "new_surface_only_raw_actions",
+          "old_enumeration_counters"
+        ],
+        "properties": {
+          "point_id": {},
+          "item_id": {},
+          "old_status": {},
+          "new_status": {},
+          "old_final_count": {},
+          "new_final_count": {},
+          "old_raw_valid_count": {},
+          "old_raw_status": {},
+          "old_enumeration_projection_count": {},
+          "old_projection_to_final_removed": {},
+          "old_raw_generation_loss": {},
+          "old_raw_compression_loss": {},
+          "new_raw_valid_count": {},
+          "new_unique_published_proposals": {},
+          "new_raw_point_attempts": {},
+          "new_invalid_unique_actions": {},
+          "new_proposal_rejection_instances": {},
+          "new_compression_loss": {},
+          "new_surface_only_raw_count": {},
+          "new_surface_only_final_count": {},
+          "final_comparison": {},
+          "new_coverage": {},
+          "new_dropped_actions": {},
+          "new_surface_only_raw_actions": {},
+          "old_enumeration_counters": {}
+        }
+      }
+    },
+    "timing_aggregate": {},
+    "interpretation": {},
+    "model_calls": {
+      "const": 0
+    },
+    "PCT_LP_calls": {
+      "const": 0
+    },
+    "execution_calls": {
+      "const": 0
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

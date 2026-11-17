@@ -1,0 +1,118 @@
+{
+  "version": "geometry_compare_plan_v1",
+  "status": "DRAFT_NOT_EXECUTABLE_NOT_DISPATCHABLE",
+  "stage": "GP4_PLAN_ONLY",
+  "fixed_point_ids": [
+    "P01_ffcfcc6e4af4",
+    "P02_f17e03ef6116",
+    "P03_81c78da5f3a7",
+    "P04_53bacc63aa29",
+    "P05_392be366b95d"
+  ],
+  "denominator": 5,
+  "input_manifest": "input_manifest.json",
+  "input_manifest_sha256": "8b21da215a8252163b2d2b5ba33e68ec56ab9ed39f1f4ada9138880ad55ac07a",
+  "arms": {
+    "OLD_E2": "e2_original_v1",
+    "NEW_EMS_SURFACE": "ems_surface_hybrid_v1"
+  },
+  "runtime_protocol": "jev_packaging_geometry_compare_v14",
+  "fairness": {
+    "same_input": true,
+    "buffer_capacity": 3,
+    "yaw_degrees": [
+      0,
+      90
+    ],
+    "per_item_top_k": 16,
+    "joint_top_k": 48,
+    "feature_profile": "F0_existing_facts",
+    "original_physics": "frozen source_manifest and legacy config; both checks unchanged",
+    "display_order_seed": 20261102,
+    "seed_inputs": [
+      "display_order_seed",
+      "same saved request_id",
+      "same saved state_hash"
+    ],
+    "seed_excludes": [
+      "backend",
+      "candidate_id",
+      "job_id"
+    ],
+    "request_fields": "same existing F0 projector and prompt; no backend/source/host/reducer/monitor diagnostics",
+    "max_request_bytes": 96000
+  },
+  "matching": {
+    "key": [
+      "pick_item_id",
+      "oriented_size_mm",
+      "yaw_deg",
+      "published_x_mm",
+      "published_y_mm",
+      "published_z_base_mm"
+    ],
+    "numeric": "exact saved numeric value; canonical decimal text; negative zero=0; no tolerance-based matching",
+    "excluded": [
+      "candidate_id",
+      "Cxx",
+      "ems_id"
+    ],
+    "square_yaw": "retain 0/90 official actions; report separate yaw-equivalent geometry statistic"
+  },
+  "pools": [
+    "raw_valid_candidates",
+    "final_physical_candidates"
+  ],
+  "old_raw_availability": "GP4 use existing E2 audit action projection. Full raw facts/common reducer NOT_AVAILABLE if unavailable; never modify old generator to collect.",
+  "decomposition": [
+    "raw intersection/OLD_ONLY/NEW_ONLY",
+    "final intersection/OLD_ONLY/NEW_ONLY",
+    "raw-to-final compression losses by arm",
+    "surface-only net raw-valid contribution"
+  ],
+  "statuses": [
+    "OK",
+    "OK_EMPTY",
+    "ERROR",
+    "NOT_RUN",
+    "NOT_COMPARABLE_MISSING_INPUT",
+    "ERROR_IDENTITY_CONFLICT"
+  ],
+  "error_policy": "retain all five states and per-item denominators; errors are not empty pools; no replacement/additional state",
+  "outputs": [
+    "JSON",
+    "CSV",
+    "at most one combined top/side figure per state; <=5"
+  ],
+  "metrics": [
+    "proposal/unique/raw-valid/final counts per arm/item; old/new counting definitions separate",
+    "semantic action intersections",
+    "height/support/yaw/quadrant/source coverage",
+    "raw values/median/max latency; cold/cache separate",
+    "request bytes constructed only; no send"
+  ],
+  "interpretation": "coverage is not whole-order benefit, global completeness or Jev improvement; no selection by old result",
+  "authorization": {
+    "model_calls": 0,
+    "candidate_generations_now": 0,
+    "orders": 0,
+    "lp_solves": 0
+  },
+  "GP5": "NOT_AUTHORIZED_NOT_SCHEDULED",
+  "GP6": "NOT_AUTHORIZED_NOT_SCHEDULED",
+  "reuse_old_jm_permit": false,
+  "source_manifest": {
+    "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/source_manifest.json",
+    "sha256": "9c0e690b1234201572804ec81202af5a49d6b16c453748c8af5c54fca4c88039",
+    "pointer": ""
+  },
+  "config_snapshot": {
+    "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP0_20261116_01/config_snapshot.json",
+    "sha256": "f120d09c01876e934267b7eb121345aa4ce2ff7a6a6b7096bd1d2926ee23aa64",
+    "pointer": ""
+  },
+  "backend_configuration_identity": {
+    "OLD_E2": "config_snapshot.legacy_source.sha256; unchanged legacy generator config",
+    "NEW_EMS_SURFACE": "config_snapshot.draft_semantic_digest; design only not production runtime config"
+  }
+}

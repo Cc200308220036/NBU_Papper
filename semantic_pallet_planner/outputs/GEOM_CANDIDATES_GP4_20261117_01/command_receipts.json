@@ -1,0 +1,72 @@
+{
+  "PCT_LP_calls": 0,
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/test_analysis.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/preflight_tests.log 2>&1",
+      "exit_code": 0,
+      "raw_log": "preflight_tests.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/gp4_runner.py freeze > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/freeze.log 2>&1",
+      "exit_code": 0,
+      "raw_log": "freeze.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/gp4_runner.py generate > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/generation.log 2>&1",
+      "exit_code": 0,
+      "raw_log": "generation.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/gp4_analysis.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/analysis.log 2>&1",
+      "exit_code": 0,
+      "raw_log": "analysis.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/gp4_plots.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/plots.log 2>&1",
+      "exit_code": 0,
+      "raw_log": "plots.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/export_tables.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/export_tables.log 2>&1",
+      "exit_code": 0,
+      "raw_log": "export_tables.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/plot_layout.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/plot_layout.log 2>&1",
+      "exit_code": 0,
+      "raw_log": "plot_layout.log"
+    },
+    {
+      "command": "python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/verify_delivery.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/verification_01.log 2>&1",
+      "exit_code": 1,
+      "scope": "verification tool bug: str path was not wrapped in Path; generation unaffected"
+    },
+    {
+      "command": "python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/verify_delivery.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/verification_02.log 2>&1",
+      "exit_code": 0,
+      "scope": "stdlib saved files only"
+    },
+    {
+      "command": "python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/verify_delivery.py --sealed > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP4_20261117_01/seal_verification.log 2>&1",
+      "result_location": "seal_verification.log; post-seal receipt excluded from manifest"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "credentials_read": false,
+  "dependencies_installed": false,
+  "git_add_commit_push": "NOT_RUN",
+  "git_pull": {
+    "command": "git pull --ff-only",
+    "exit_code": 0,
+    "mode": "user authorized require_escalated",
+    "sync_head": "735b669c3e496d893aed55bc5759927f4d396643"
+  },
+  "model_network_calls": 0,
+  "preflight_git": "root/branch/upstream/worktree/index confirmed clean before pull",
+  "real_orders": 0,
+  "run_episode_selection_monitor_commit_recovery_calls": 0,
+  "subagents": 0
+}

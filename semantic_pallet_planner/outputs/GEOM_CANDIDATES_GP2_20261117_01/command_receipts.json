@@ -1,0 +1,41 @@
+{
+  "version": "geometry_gp2_command_receipts_v1",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/tests/unit/test_space_candidates_gp2.py -v",
+      "exit_code": 0,
+      "log": "gp2_tests.log",
+      "test_methods": 13
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/tests/unit/test_space_geometry_gp1.py -v",
+      "exit_code": 0,
+      "log": "gp1_regression.log",
+      "test_methods": 12
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/tests/unit/test_space_geometry_numeric_errors.py -v",
+      "exit_code": 0,
+      "log": "gp1_numeric_regression.log",
+      "test_methods": 2
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP2_20261117_01/collect_evidence.py",
+      "exit_code": 0,
+      "log": "collection.log"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "log": "diff_check.log"
+    }
+  ],
+  "synchronization": {
+    "command": "git pull --ff-only",
+    "first_attempt": "FAILED_READ_ONLY_FETCH_HEAD",
+    "authorized_second_attempt": "FAST_FORWARD_SUCCESS",
+    "before": "4140f89729191710ccdc447307e14ab752193a1b",
+    "after": "33f3291bc63a0160e6e3b8be90c73cf45381807c",
+    "stash_reset": "NOT_RUN"
+  }
+}

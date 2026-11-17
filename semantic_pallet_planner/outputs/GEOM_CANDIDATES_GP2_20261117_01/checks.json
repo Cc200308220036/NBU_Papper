@@ -1,0 +1,48 @@
+{
+  "version": "geometry_gp2_checks_v1",
+  "A00": {
+    "status": "NOT_RUN",
+    "scope": "prior GP0 static baseline referenced, not rerun"
+  },
+  "A01": {
+    "status": "PASS",
+    "scope": "12 geometry + 2 numeric regression methods only; previous QA retained"
+  },
+  "A02": {
+    "status": "PASS",
+    "scope": "13 GP2 unit methods; 14 synthetic archived scenes; developer self-check only",
+    "independent_qa": "PENDING",
+    "conditions": {
+      "original_proposal_and_published_checks": "PASS",
+      "independent_check_for_every_accepted_proposal": "PASS",
+      "published_pose_equality": "PASS",
+      "exact_host_recheck": "PASS",
+      "no_pct_import_or_call": "PASS",
+      "deterministic_unique_actions": "PASS",
+      "per_item_16_joint_48": "PASS",
+      "required_groups": "PASS",
+      "joint_tuple_coverage": "PASS",
+      "atomic_error": "PASS"
+    },
+    "fault_doubles": [
+      "point limit 19 and 20 instead of 32768",
+      "oracle forced error",
+      "reducer synthetic hand records"
+    ],
+    "real_negative": "2.0004mm height -> PHYSICAL_CHECK_DISAGREEMENT, never output partial candidates"
+  },
+  "A03": {
+    "status": "NOT_RUN"
+  },
+  "A04": {
+    "status": "NOT_RUN"
+  },
+  "A05": {
+    "status": "NOT_RUN"
+  },
+  "A06": {
+    "status": "NOT_RUN"
+  },
+  "research_benefit": "NOT_ESTABLISHED",
+  "commands": "command_receipts.json"
+}

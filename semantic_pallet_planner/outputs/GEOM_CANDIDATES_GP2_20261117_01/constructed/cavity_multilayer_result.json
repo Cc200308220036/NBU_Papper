@@ -1,0 +1,2221 @@
+{
+  "audit": {
+    "adapter": "geometry_public_physical_adapter_v1",
+    "config_digest": "01be0f8f9801cf5f233e52de03cc96cc11964108980b25cf1eaba7930836ba63",
+    "definitions": {
+      "final_candidates": "unique per-item reducer output, at most 16; joint at most 48",
+      "raw_point_attempts": "per item, source/host/yaw/point instances before dedup",
+      "raw_valid_candidates": "unique actions passing proposal, published and independent checks",
+      "unique_actions": "representable published keys including physical rejects"
+    },
+    "input_digest": "1d67d9df040e908c80f83b6eae3f4d3d76ecd89c5ef8b0cf3f11091c375f0eb6",
+    "items": [
+      {
+        "coverage": {
+          "compressed_count": 0,
+          "final_joint_keys": [
+            [
+              0,
+              "0",
+              [
+                true,
+                false
+              ],
+              [
+                "GROUND"
+              ],
+              "EMS_STYLE_3D"
+            ],
+            [
+              0,
+              "0",
+              [
+                true,
+                true
+              ],
+              [
+                "GROUND"
+              ],
+              "EMS_STYLE_3D"
+            ],
+            [
+              90,
+              "0",
+              [
+                true,
+                false
+              ],
+              [
+                "GROUND"
+              ],
+              "EMS_STYLE_3D"
+            ],
+            [
+              90,
+              "0",
+              [
+                true,
+                true
+              ],
+              [
+                "GROUND"
+              ],
+              "EMS_STYLE_3D"
+            ]
+          ],
+          "raw_joint_keys": [
+            [
+              0,
+              "0",
+              [
+                true,
+                false
+              ],
+              [
+                "GROUND"
+              ],
+              "EMS_STYLE_3D"
+            ],
+            [
+              0,
+              "0",
+              [
+                true,
+                true
+              ],
+              [
+                "GROUND"
+              ],
+              "EMS_STYLE_3D"
+            ],
+            [
+              90,
+              "0",
+              [
+                true,
+                false
+              ],
+              [
+                "GROUND"
+              ],
+              "EMS_STYLE_3D"
+            ],
+            [
+              90,
+              "0",
+              [
+                true,
+                true
+              ],
+              [
+                "GROUND"
+              ],
+              "EMS_STYLE_3D"
+            ]
+          ],
+          "required_groups": [
+            [
+              0,
+              "floor"
+            ],
+            [
+              90,
+              "floor"
+            ]
+          ],
+          "selection_order": [
+            {
+              "action_key": [
+                "pick",
+                "2",
+                "2",
+                "1",
+                "0",
+                "2",
+                "0",
+                "0"
+              ],
+              "new_joint_keys": 1,
+              "reason": "REQUIRED_YAW_LEVEL"
+            },
+            {
+              "action_key": [
+                "pick",
+                "2",
+                "2",
+                "1",
+                "90",
+                "2",
+                "0",
+                "0"
+              ],
+              "new_joint_keys": 1,
+              "reason": "REQUIRED_YAW_LEVEL"
+            },
+            {
+              "action_key": [
+                "pick",
+                "2",
+                "2",
+                "1",
+                "0",
+                "2",
+                "-4",
+                "0"
+              ],
+              "new_joint_keys": 1,
+              "reason": "JOINT_COVERAGE"
+            },
+            {
+              "action_key": [
+                "pick",
+                "2",
+                "2",
+                "1",
+                "90",
+                "2",
+                "-4",
+                "0"
+              ],
+              "new_joint_keys": 1,
+              "reason": "JOINT_COVERAGE"
+            },
+            {
+              "action_key": [
+                "pick",
+                "2",
+                "2",
+                "1",
+                "0",
+                "2",
+                "4",
+                "0"
+              ],
+              "new_joint_keys": 0,
+              "reason": "SCORE_FILL"
+            },
+            {
+              "action_key": [
+                "pick",
+                "2",
+                "2",
+                "1",
+                "90",
+                "2",
+                "4",
+                "0"
+              ],
+              "new_joint_keys": 0,
+              "reason": "SCORE_FILL"
+            }
+          ],
+          "uncovered_joint_keys": [],
+          "version": "yaw_floor_required_then_joint_group_coverage_v1"
+        },
+        "enumeration_complete": true,
+        "final_action_keys": [
+          [
+            "pick",
+            "2",
+            "2",
+            "1",
+            "0",
+            "2",
+            "-4",
+            "0"
+          ],
+          [
+            "pick",
+            "2",
+            "2",
+            "1",
+            "0",
+            "2",
+            "0",
+            "0"
+          ],
+          [
+            "pick",
+            "2",
+            "2",
+            "1",
+            "0",
+            "2",
+            "4",
+            "0"
+          ],
+          [
+            "pick",
+            "2",
+            "2",
+            "1",
+            "90",
+            "2",
+            "-4",
+            "0"
+          ],
+          [
+            "pick",
+            "2",
+            "2",
+            "1",
+            "90",
+            "2",
+            "0",
+            "0"
+          ],
+          [
+            "pick",
+            "2",
+            "2",
+            "1",
+            "90",
+            "2",
+            "4",
+            "0"
+          ]
+        ],
+        "final_candidates": 6,
+        "geometric_equivalence_count": 3,
+        "item_id": "pick",
+        "proposal_rejections": [
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "-4",
+              "-4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 0,
+            "proposal_corner_mm": [
+              "-5",
+              "-5",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "4",
+              "-4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 1,
+            "proposal_corner_mm": [
+              "3",
+              "-5",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "-4",
+              "4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 2,
+            "proposal_corner_mm": [
+              "-5",
+              "3",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "4",
+              "4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 3,
+            "proposal_corner_mm": [
+              "3",
+              "3",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "0",
+              "0",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 4,
+            "proposal_corner_mm": [
+              "-1",
+              "-1",
+              "4"
+            ],
+            "reason": "overload",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "-4",
+              "-4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 0,
+            "proposal_corner_mm": [
+              "-5",
+              "-5",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "4",
+              "-4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 1,
+            "proposal_corner_mm": [
+              "3",
+              "-5",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "-4",
+              "4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 2,
+            "proposal_corner_mm": [
+              "-5",
+              "3",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "4",
+              "4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 3,
+            "proposal_corner_mm": [
+              "3",
+              "3",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "0",
+              "0",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 4,
+            "proposal_corner_mm": [
+              "-1",
+              "-1",
+              "4"
+            ],
+            "reason": "overload",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "-4",
+              "-4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 0,
+            "proposal_corner_mm": [
+              "-5",
+              "-5",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "4",
+              "-4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 1,
+            "proposal_corner_mm": [
+              "3",
+              "-5",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "-4",
+              "4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 2,
+            "proposal_corner_mm": [
+              "-5",
+              "3",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "4",
+              "4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 3,
+            "proposal_corner_mm": [
+              "3",
+              "3",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "0",
+              "0",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 4,
+            "proposal_corner_mm": [
+              "-1",
+              "-1",
+              "4"
+            ],
+            "reason": "overload",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "-4",
+              "-4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 0,
+            "proposal_corner_mm": [
+              "-5",
+              "-5",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "4",
+              "-4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 1,
+            "proposal_corner_mm": [
+              "3",
+              "-5",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "-4",
+              "4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 2,
+            "proposal_corner_mm": [
+              "-5",
+              "3",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "4",
+              "4",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 3,
+            "proposal_corner_mm": [
+              "3",
+              "3",
+              "4"
+            ],
+            "reason": "insufficient_support",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "0",
+              "0",
+              "4"
+            ],
+            "host_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6",
+            "point_index": 4,
+            "proposal_corner_mm": [
+              "-1",
+              "-1",
+              "4"
+            ],
+            "reason": "overload",
+            "source_type": "SURFACE_CORNER"
+          }
+        ],
+        "raw_point_attempts": 30,
+        "raw_valid_candidates": [
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "2",
+              "-4",
+              "0"
+            ],
+            "candidate": {
+              "candidate_fingerprint": "c1d9f66bdf6a7ca793bd45841ebd5a8388840f1944023a4f28fbd426dba0323a",
+              "candidate_id": "G2_c1d9f66bdf6a7ca793bd4584",
+              "ems": {
+                "ems_id": "ems_d83d3842b7",
+                "ems_type": "floor_space"
+              },
+              "geometry_score_components": {
+                "balance": 0.61881,
+                "compactness": 0.811111,
+                "height": 0.6,
+                "stability": 1.0
+              },
+              "load": {
+                "downward_load_kg": 0.0,
+                "minimum_remaining_capacity_kg": null
+              },
+              "oriented_size_mm": [
+                2.0,
+                2.0,
+                1.0
+              ],
+              "physical_rejection_reasons": [],
+              "physical_valid": true,
+              "pick_item_id": "pick",
+              "pose": {
+                "x_mm": 2.0,
+                "y_mm": -4.0,
+                "yaw_deg": 0,
+                "z_base_mm": 0.0
+              },
+              "resulting_geometry": {
+                "center_of_mass_offset_mm": 2.695,
+                "max_height_mm": 4.0,
+                "volume_utilization": 0.292
+              },
+              "support": {
+                "com_margin_mm": 1.0,
+                "support_item_ids": [],
+                "support_ratio": 1.0
+              }
+            },
+            "geometry_score": 0.77671035,
+            "host_ids": [
+              "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3"
+            ],
+            "proposal_refs": [
+              {
+                "host_id": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+                "point_index": 0,
+                "proposal_corner_mm": [
+                  "1",
+                  "-5",
+                  "0"
+                ],
+                "source_type": "EMS_STYLE_3D"
+              },
+              {
+                "host_id": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+                "point_index": 1,
+                "proposal_corner_mm": [
+                  "1",
+                  "-5",
+                  "0"
+                ],
+                "source_type": "EMS_STYLE_3D"
+              }
+            ],
+            "representative_host": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+            "sources": [
+              "EMS_STYLE_3D"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "2",
+              "0",
+              "0"
+            ],
+            "candidate": {
+              "candidate_fingerprint": "ed68ed44d1c3751f5899e49a812747a66070daa7f9f6c507ee620c2139cd05b8",
+              "candidate_id": "G2_ed68ed44d1c3751f5899e49a",
+              "ems": {
+                "ems_id": "ems_c33610b8f4",
+                "ems_type": "floor_space"
+              },
+              "geometry_score_components": {
+                "balance": 0.797969,
+                "compactness": 0.9125,
+                "height": 0.6,
+                "stability": 1.0
+              },
+              "load": {
+                "downward_load_kg": 0.0,
+                "minimum_remaining_capacity_kg": null
+              },
+              "oriented_size_mm": [
+                2.0,
+                2.0,
+                1.0
+              ],
+              "physical_rejection_reasons": [],
+              "physical_valid": true,
+              "pick_item_id": "pick",
+              "pose": {
+                "x_mm": 2.0,
+                "y_mm": 0.0,
+                "yaw_deg": 0,
+                "z_base_mm": 0.0
+              },
+              "resulting_geometry": {
+                "center_of_mass_offset_mm": 1.429,
+                "max_height_mm": 4.0,
+                "volume_utilization": 0.292
+              },
+              "support": {
+                "com_margin_mm": 1.0,
+                "support_item_ids": [],
+                "support_ratio": 1.0
+              }
+            },
+            "geometry_score": 0.83907035,
+            "host_ids": [
+              "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3"
+            ],
+            "proposal_refs": [
+              {
+                "host_id": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+                "point_index": 4,
+                "proposal_corner_mm": [
+                  "1",
+                  "-1",
+                  "0"
+                ],
+                "source_type": "EMS_STYLE_3D"
+              }
+            ],
+            "representative_host": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+            "sources": [
+              "EMS_STYLE_3D"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "2",
+              "4",
+              "0"
+            ],
+            "candidate": {
+              "candidate_fingerprint": "a1078e625e925a6594bf73d5e12bccbeb1171ee82ecfb6528515c5e8bfd3db77",
+              "candidate_id": "G2_a1078e625e925a6594bf73d5",
+              "ems": {
+                "ems_id": "ems_17c506415c",
+                "ems_type": "floor_space"
+              },
+              "geometry_score_components": {
+                "balance": 0.61881,
+                "compactness": 0.811111,
+                "height": 0.6,
+                "stability": 1.0
+              },
+              "load": {
+                "downward_load_kg": 0.0,
+                "minimum_remaining_capacity_kg": null
+              },
+              "oriented_size_mm": [
+                2.0,
+                2.0,
+                1.0
+              ],
+              "physical_rejection_reasons": [],
+              "physical_valid": true,
+              "pick_item_id": "pick",
+              "pose": {
+                "x_mm": 2.0,
+                "y_mm": 4.0,
+                "yaw_deg": 0,
+                "z_base_mm": 0.0
+              },
+              "resulting_geometry": {
+                "center_of_mass_offset_mm": 2.695,
+                "max_height_mm": 4.0,
+                "volume_utilization": 0.292
+              },
+              "support": {
+                "com_margin_mm": 1.0,
+                "support_item_ids": [],
+                "support_ratio": 1.0
+              }
+            },
+            "geometry_score": 0.77671035,
+            "host_ids": [
+              "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3"
+            ],
+            "proposal_refs": [
+              {
+                "host_id": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+                "point_index": 2,
+                "proposal_corner_mm": [
+                  "1",
+                  "3",
+                  "0"
+                ],
+                "source_type": "EMS_STYLE_3D"
+              },
+              {
+                "host_id": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+                "point_index": 3,
+                "proposal_corner_mm": [
+                  "1",
+                  "3",
+                  "0"
+                ],
+                "source_type": "EMS_STYLE_3D"
+              }
+            ],
+            "representative_host": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+            "sources": [
+              "EMS_STYLE_3D"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "2",
+              "-4",
+              "0"
+            ],
+            "candidate": {
+              "candidate_fingerprint": "f66edea86504161020e7f7c1de48836eef851c38abddda06200ee25f2e7ab777",
+              "candidate_id": "G2_f66edea86504161020e7f7c1",
+              "ems": {
+                "ems_id": "ems_d83d3842b7",
+                "ems_type": "floor_space"
+              },
+              "geometry_score_components": {
+                "balance": 0.61881,
+                "compactness": 0.811111,
+                "height": 0.6,
+                "stability": 1.0
+              },
+              "load": {
+                "downward_load_kg": 0.0,
+                "minimum_remaining_capacity_kg": null
+              },
+              "oriented_size_mm": [
+                2.0,
+                2.0,
+                1.0
+              ],
+              "physical_rejection_reasons": [],
+              "physical_valid": true,
+              "pick_item_id": "pick",
+              "pose": {
+                "x_mm": 2.0,
+                "y_mm": -4.0,
+                "yaw_deg": 90,
+                "z_base_mm": 0.0
+              },
+              "resulting_geometry": {
+                "center_of_mass_offset_mm": 2.695,
+                "max_height_mm": 4.0,
+                "volume_utilization": 0.292
+              },
+              "support": {
+                "com_margin_mm": 1.0,
+                "support_item_ids": [],
+                "support_ratio": 1.0
+              }
+            },
+            "geometry_score": 0.77671035,
+            "host_ids": [
+              "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3"
+            ],
+            "proposal_refs": [
+              {
+                "host_id": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+                "point_index": 0,
+                "proposal_corner_mm": [
+                  "1",
+                  "-5",
+                  "0"
+                ],
+                "source_type": "EMS_STYLE_3D"
+              },
+              {
+                "host_id": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+                "point_index": 1,
+                "proposal_corner_mm": [
+                  "1",
+                  "-5",
+                  "0"
+                ],
+                "source_type": "EMS_STYLE_3D"
+              }
+            ],
+            "representative_host": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+            "sources": [
+              "EMS_STYLE_3D"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "2",
+              "0",
+              "0"
+            ],
+            "candidate": {
+              "candidate_fingerprint": "4def07c4b031149c0fbe506c81ab13a8c66eadccc847988e57bbf503f0692575",
+              "candidate_id": "G2_4def07c4b031149c0fbe506c",
+              "ems": {
+                "ems_id": "ems_c33610b8f4",
+                "ems_type": "floor_space"
+              },
+              "geometry_score_components": {
+                "balance": 0.797969,
+                "compactness": 0.9125,
+                "height": 0.6,
+                "stability": 1.0
+              },
+              "load": {
+                "downward_load_kg": 0.0,
+                "minimum_remaining_capacity_kg": null
+              },
+              "oriented_size_mm": [
+                2.0,
+                2.0,
+                1.0
+              ],
+              "physical_rejection_reasons": [],
+              "physical_valid": true,
+              "pick_item_id": "pick",
+              "pose": {
+                "x_mm": 2.0,
+                "y_mm": 0.0,
+                "yaw_deg": 90,
+                "z_base_mm": 0.0
+              },
+              "resulting_geometry": {
+                "center_of_mass_offset_mm": 1.429,
+                "max_height_mm": 4.0,
+                "volume_utilization": 0.292
+              },
+              "support": {
+                "com_margin_mm": 1.0,
+                "support_item_ids": [],
+                "support_ratio": 1.0
+              }
+            },
+            "geometry_score": 0.83907035,
+            "host_ids": [
+              "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3"
+            ],
+            "proposal_refs": [
+              {
+                "host_id": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+                "point_index": 4,
+                "proposal_corner_mm": [
+                  "1",
+                  "-1",
+                  "0"
+                ],
+                "source_type": "EMS_STYLE_3D"
+              }
+            ],
+            "representative_host": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+            "sources": [
+              "EMS_STYLE_3D"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "2",
+              "4",
+              "0"
+            ],
+            "candidate": {
+              "candidate_fingerprint": "79e85b767c3e8d38d21cb816e7bf173b6872c07dd7366f12225cb4a2c321cef1",
+              "candidate_id": "G2_79e85b767c3e8d38d21cb816",
+              "ems": {
+                "ems_id": "ems_17c506415c",
+                "ems_type": "floor_space"
+              },
+              "geometry_score_components": {
+                "balance": 0.61881,
+                "compactness": 0.811111,
+                "height": 0.6,
+                "stability": 1.0
+              },
+              "load": {
+                "downward_load_kg": 0.0,
+                "minimum_remaining_capacity_kg": null
+              },
+              "oriented_size_mm": [
+                2.0,
+                2.0,
+                1.0
+              ],
+              "physical_rejection_reasons": [],
+              "physical_valid": true,
+              "pick_item_id": "pick",
+              "pose": {
+                "x_mm": 2.0,
+                "y_mm": 4.0,
+                "yaw_deg": 90,
+                "z_base_mm": 0.0
+              },
+              "resulting_geometry": {
+                "center_of_mass_offset_mm": 2.695,
+                "max_height_mm": 4.0,
+                "volume_utilization": 0.292
+              },
+              "support": {
+                "com_margin_mm": 1.0,
+                "support_item_ids": [],
+                "support_ratio": 1.0
+              }
+            },
+            "geometry_score": 0.77671035,
+            "host_ids": [
+              "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3"
+            ],
+            "proposal_refs": [
+              {
+                "host_id": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+                "point_index": 2,
+                "proposal_corner_mm": [
+                  "1",
+                  "3",
+                  "0"
+                ],
+                "source_type": "EMS_STYLE_3D"
+              },
+              {
+                "host_id": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+                "point_index": 3,
+                "proposal_corner_mm": [
+                  "1",
+                  "3",
+                  "0"
+                ],
+                "source_type": "EMS_STYLE_3D"
+              }
+            ],
+            "representative_host": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3",
+            "sources": [
+              "EMS_STYLE_3D"
+            ]
+          }
+        ],
+        "raw_valid_count": 6,
+        "rejection_counts": {
+          "insufficient_support": 16,
+          "overload": 4
+        },
+        "space_skips": 4,
+        "unique_action_outcomes": [
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "-4",
+              "-4",
+              "4"
+            ],
+            "outcomes": [
+              "insufficient_support"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "-4",
+              "4",
+              "4"
+            ],
+            "outcomes": [
+              "insufficient_support"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "0",
+              "0",
+              "4"
+            ],
+            "outcomes": [
+              "overload"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "2",
+              "-4",
+              "0"
+            ],
+            "outcomes": [
+              "VALID"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "2",
+              "0",
+              "0"
+            ],
+            "outcomes": [
+              "VALID"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "2",
+              "4",
+              "0"
+            ],
+            "outcomes": [
+              "VALID"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "4",
+              "-4",
+              "4"
+            ],
+            "outcomes": [
+              "insufficient_support"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "0",
+              "4",
+              "4",
+              "4"
+            ],
+            "outcomes": [
+              "insufficient_support"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "-4",
+              "-4",
+              "4"
+            ],
+            "outcomes": [
+              "insufficient_support"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "-4",
+              "4",
+              "4"
+            ],
+            "outcomes": [
+              "insufficient_support"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "0",
+              "0",
+              "4"
+            ],
+            "outcomes": [
+              "overload"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "2",
+              "-4",
+              "0"
+            ],
+            "outcomes": [
+              "VALID"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "2",
+              "0",
+              "0"
+            ],
+            "outcomes": [
+              "VALID"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "2",
+              "4",
+              "0"
+            ],
+            "outcomes": [
+              "VALID"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "4",
+              "-4",
+              "4"
+            ],
+            "outcomes": [
+              "insufficient_support"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2",
+              "2",
+              "1",
+              "90",
+              "4",
+              "4",
+              "4"
+            ],
+            "outcomes": [
+              "insufficient_support"
+            ]
+          }
+        ],
+        "unique_actions": 16,
+        "unrepresentable_proposals": 0
+      }
+    ],
+    "outcome": "OK",
+    "semantic_digest": "469bfcdc5996ff2988b0cbbafbb31bcf6eec1f40b62c9527d86c8422c4f95b7e",
+    "source_bytes_sha256": "cd145fc2bbbe758e88695b40cfd04666205e6371f82e06ad7e6458f984123964",
+    "space_index": {
+      "algorithm": "ems_surface_geometry_v1",
+      "budget_usage": {
+        "limits": {
+          "active_spaces": 4096,
+          "raw_point_attempts_per_item": 32768,
+          "space_containment_comparisons": 2000000,
+          "surface_event_cells": 16384,
+          "surface_expansion_cell_checks": 2000000
+        },
+        "observed": {
+          "aabb_checks": 137,
+          "duplicate_space_references": 24,
+          "height_occupancy_checks": 27,
+          "surface_proposals": 24,
+          "surface_seeds": 12,
+          "surface_zero_height_skips": 0
+        },
+        "raw_point_attempts": "NOT_RUN_GP2",
+        "used": {
+          "active_spaces": 10,
+          "space_containment_comparisons": 113,
+          "surface_event_cells": 9,
+          "surface_expansion_cell_checks": 112
+        },
+        "wall_clock_cutoff": false
+      },
+      "config_digest": "8711b223a6634735350a411a3ec1b2391d6f0c4e521f09f57499fbf9acdc499c",
+      "error": null,
+      "input_digest": "05fce44600aec52863ca38a4c35077365a04633f26bca4af69109107e2749b09",
+      "semantic_digest": "af3173f2299b86538d60ade60405aa4697c8037fca80b2a88ff1c6ecb34f5071",
+      "source_bytes_sha256": "95843e6a14dda105377b1ce6074c3cb9bce8ac26586c8683ce71b7162377fcb7",
+      "spaces": [
+        {
+          "bounds_mm": [
+            "-5",
+            "-5",
+            "0",
+            "5",
+            "-4",
+            "10"
+          ],
+          "source_types": [
+            "EMS_STYLE_3D",
+            "SURFACE_CORNER"
+          ],
+          "space_id": "space_bacbb76000a37b113d26d4f5413f8418c8b93a874caab374d322d217e6dbb837"
+        },
+        {
+          "bounds_mm": [
+            "-5",
+            "-5",
+            "4",
+            "5",
+            "5",
+            "10"
+          ],
+          "source_types": [
+            "EMS_STYLE_3D",
+            "SURFACE_CORNER"
+          ],
+          "space_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6"
+        },
+        {
+          "bounds_mm": [
+            "-5",
+            "4",
+            "0",
+            "5",
+            "5",
+            "10"
+          ],
+          "source_types": [
+            "EMS_STYLE_3D",
+            "SURFACE_CORNER"
+          ],
+          "space_id": "space_d8b51a79457dc2eca276967adc349e8aaca150facc27d4a8863bb414bb9949d8"
+        },
+        {
+          "bounds_mm": [
+            "1",
+            "-5",
+            "0",
+            "3",
+            "5",
+            "2"
+          ],
+          "source_types": [
+            "EMS_STYLE_3D"
+          ],
+          "space_id": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3"
+        }
+      ],
+      "status": "OK",
+      "surface": {
+        "height_columns_mm": [
+          [
+            "0",
+            "4",
+            "0"
+          ],
+          [
+            "0",
+            "4",
+            "0"
+          ],
+          [
+            "0",
+            "4",
+            "0"
+          ]
+        ],
+        "seeds": [
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_bacbb76000a37b113d26d4f5413f8418c8b93a874caab374d322d217e6dbb837"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_bacbb76000a37b113d26d4f5413f8418c8b93a874caab374d322d217e6dbb837"
+              }
+            ],
+            "quadrant": [
+              1,
+              1
+            ],
+            "seed_z_mm": "0",
+            "vertex_mm": [
+              "-5",
+              "-5"
+            ]
+          },
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_bacbb76000a37b113d26d4f5413f8418c8b93a874caab374d322d217e6dbb837"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_bacbb76000a37b113d26d4f5413f8418c8b93a874caab374d322d217e6dbb837"
+              }
+            ],
+            "quadrant": [
+              1,
+              -1
+            ],
+            "seed_z_mm": "0",
+            "vertex_mm": [
+              "-5",
+              "-4"
+            ]
+          },
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6"
+              }
+            ],
+            "quadrant": [
+              1,
+              1
+            ],
+            "seed_z_mm": "4",
+            "vertex_mm": [
+              "-5",
+              "-4"
+            ]
+          },
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6"
+              }
+            ],
+            "quadrant": [
+              1,
+              -1
+            ],
+            "seed_z_mm": "4",
+            "vertex_mm": [
+              "-5",
+              "4"
+            ]
+          },
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_d8b51a79457dc2eca276967adc349e8aaca150facc27d4a8863bb414bb9949d8"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_d8b51a79457dc2eca276967adc349e8aaca150facc27d4a8863bb414bb9949d8"
+              }
+            ],
+            "quadrant": [
+              1,
+              1
+            ],
+            "seed_z_mm": "0",
+            "vertex_mm": [
+              "-5",
+              "4"
+            ]
+          },
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_d8b51a79457dc2eca276967adc349e8aaca150facc27d4a8863bb414bb9949d8"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_d8b51a79457dc2eca276967adc349e8aaca150facc27d4a8863bb414bb9949d8"
+              }
+            ],
+            "quadrant": [
+              1,
+              -1
+            ],
+            "seed_z_mm": "0",
+            "vertex_mm": [
+              "-5",
+              "5"
+            ]
+          },
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_bacbb76000a37b113d26d4f5413f8418c8b93a874caab374d322d217e6dbb837"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_bacbb76000a37b113d26d4f5413f8418c8b93a874caab374d322d217e6dbb837"
+              }
+            ],
+            "quadrant": [
+              -1,
+              1
+            ],
+            "seed_z_mm": "0",
+            "vertex_mm": [
+              "5",
+              "-5"
+            ]
+          },
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_bacbb76000a37b113d26d4f5413f8418c8b93a874caab374d322d217e6dbb837"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_bacbb76000a37b113d26d4f5413f8418c8b93a874caab374d322d217e6dbb837"
+              }
+            ],
+            "quadrant": [
+              -1,
+              -1
+            ],
+            "seed_z_mm": "0",
+            "vertex_mm": [
+              "5",
+              "-4"
+            ]
+          },
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6"
+              }
+            ],
+            "quadrant": [
+              -1,
+              1
+            ],
+            "seed_z_mm": "4",
+            "vertex_mm": [
+              "5",
+              "-4"
+            ]
+          },
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6"
+              }
+            ],
+            "quadrant": [
+              -1,
+              -1
+            ],
+            "seed_z_mm": "4",
+            "vertex_mm": [
+              "5",
+              "4"
+            ]
+          },
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_d8b51a79457dc2eca276967adc349e8aaca150facc27d4a8863bb414bb9949d8"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_d8b51a79457dc2eca276967adc349e8aaca150facc27d4a8863bb414bb9949d8"
+              }
+            ],
+            "quadrant": [
+              -1,
+              1
+            ],
+            "seed_z_mm": "0",
+            "vertex_mm": [
+              "5",
+              "4"
+            ]
+          },
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_d8b51a79457dc2eca276967adc349e8aaca150facc27d4a8863bb414bb9949d8"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_d8b51a79457dc2eca276967adc349e8aaca150facc27d4a8863bb414bb9949d8"
+              }
+            ],
+            "quadrant": [
+              -1,
+              -1
+            ],
+            "seed_z_mm": "0",
+            "vertex_mm": [
+              "5",
+              "5"
+            ]
+          }
+        ],
+        "x_events_mm": [
+          "-5",
+          "1",
+          "3",
+          "5"
+        ],
+        "y_events_mm": [
+          "-5",
+          "-4",
+          "4",
+          "5"
+        ]
+      },
+      "version": "geometry_space_index_v1"
+    },
+    "space_index_builds": 1,
+    "spaces": [
+      {
+        "bounds_mm": [
+          "-5",
+          "-5",
+          "0",
+          "5",
+          "-4",
+          "10"
+        ],
+        "source_types": [
+          "EMS_STYLE_3D",
+          "SURFACE_CORNER"
+        ],
+        "space_id": "space_bacbb76000a37b113d26d4f5413f8418c8b93a874caab374d322d217e6dbb837"
+      },
+      {
+        "bounds_mm": [
+          "-5",
+          "-5",
+          "4",
+          "5",
+          "5",
+          "10"
+        ],
+        "source_types": [
+          "EMS_STYLE_3D",
+          "SURFACE_CORNER"
+        ],
+        "space_id": "space_0027c73c59198b604438330d31fe1a9819e919fa924e21a6ceb987ee1969f1b6"
+      },
+      {
+        "bounds_mm": [
+          "-5",
+          "4",
+          "0",
+          "5",
+          "5",
+          "10"
+        ],
+        "source_types": [
+          "EMS_STYLE_3D",
+          "SURFACE_CORNER"
+        ],
+        "space_id": "space_d8b51a79457dc2eca276967adc349e8aaca150facc27d4a8863bb414bb9949d8"
+      },
+      {
+        "bounds_mm": [
+          "1",
+          "-5",
+          "0",
+          "3",
+          "5",
+          "2"
+        ],
+        "source_types": [
+          "EMS_STYLE_3D"
+        ],
+        "space_id": "space_40eb1a9cd242874d4341e4bc7149c81b35b276a8ec4865f54fbf5f0ff5a78ba3"
+      }
+    ],
+    "test_only_point_limit": null,
+    "version": "geometry_generation_audit_v1"
+  },
+  "backend": "ems_surface_hybrid_v1",
+  "candidates": [
+    {
+      "candidate_fingerprint": "c1d9f66bdf6a7ca793bd45841ebd5a8388840f1944023a4f28fbd426dba0323a",
+      "candidate_id": "G2_c1d9f66bdf6a7ca793bd4584",
+      "ems": {
+        "ems_id": "ems_d83d3842b7",
+        "ems_type": "floor_space"
+      },
+      "geometry_score_components": {
+        "balance": 0.61881,
+        "compactness": 0.811111,
+        "height": 0.6,
+        "stability": 1.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "oriented_size_mm": [
+        2.0,
+        2.0,
+        1.0
+      ],
+      "physical_rejection_reasons": [],
+      "physical_valid": true,
+      "pick_item_id": "pick",
+      "pose": {
+        "x_mm": 2.0,
+        "y_mm": -4.0,
+        "yaw_deg": 0,
+        "z_base_mm": 0.0
+      },
+      "resulting_geometry": {
+        "center_of_mass_offset_mm": 2.695,
+        "max_height_mm": 4.0,
+        "volume_utilization": 0.292
+      },
+      "support": {
+        "com_margin_mm": 1.0,
+        "support_item_ids": [],
+        "support_ratio": 1.0
+      }
+    },
+    {
+      "candidate_fingerprint": "ed68ed44d1c3751f5899e49a812747a66070daa7f9f6c507ee620c2139cd05b8",
+      "candidate_id": "G2_ed68ed44d1c3751f5899e49a",
+      "ems": {
+        "ems_id": "ems_c33610b8f4",
+        "ems_type": "floor_space"
+      },
+      "geometry_score_components": {
+        "balance": 0.797969,
+        "compactness": 0.9125,
+        "height": 0.6,
+        "stability": 1.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "oriented_size_mm": [
+        2.0,
+        2.0,
+        1.0
+      ],
+      "physical_rejection_reasons": [],
+      "physical_valid": true,
+      "pick_item_id": "pick",
+      "pose": {
+        "x_mm": 2.0,
+        "y_mm": 0.0,
+        "yaw_deg": 0,
+        "z_base_mm": 0.0
+      },
+      "resulting_geometry": {
+        "center_of_mass_offset_mm": 1.429,
+        "max_height_mm": 4.0,
+        "volume_utilization": 0.292
+      },
+      "support": {
+        "com_margin_mm": 1.0,
+        "support_item_ids": [],
+        "support_ratio": 1.0
+      }
+    },
+    {
+      "candidate_fingerprint": "a1078e625e925a6594bf73d5e12bccbeb1171ee82ecfb6528515c5e8bfd3db77",
+      "candidate_id": "G2_a1078e625e925a6594bf73d5",
+      "ems": {
+        "ems_id": "ems_17c506415c",
+        "ems_type": "floor_space"
+      },
+      "geometry_score_components": {
+        "balance": 0.61881,
+        "compactness": 0.811111,
+        "height": 0.6,
+        "stability": 1.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "oriented_size_mm": [
+        2.0,
+        2.0,
+        1.0
+      ],
+      "physical_rejection_reasons": [],
+      "physical_valid": true,
+      "pick_item_id": "pick",
+      "pose": {
+        "x_mm": 2.0,
+        "y_mm": 4.0,
+        "yaw_deg": 0,
+        "z_base_mm": 0.0
+      },
+      "resulting_geometry": {
+        "center_of_mass_offset_mm": 2.695,
+        "max_height_mm": 4.0,
+        "volume_utilization": 0.292
+      },
+      "support": {
+        "com_margin_mm": 1.0,
+        "support_item_ids": [],
+        "support_ratio": 1.0
+      }
+    },
+    {
+      "candidate_fingerprint": "f66edea86504161020e7f7c1de48836eef851c38abddda06200ee25f2e7ab777",
+      "candidate_id": "G2_f66edea86504161020e7f7c1",
+      "ems": {
+        "ems_id": "ems_d83d3842b7",
+        "ems_type": "floor_space"
+      },
+      "geometry_score_components": {
+        "balance": 0.61881,
+        "compactness": 0.811111,
+        "height": 0.6,
+        "stability": 1.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "oriented_size_mm": [
+        2.0,
+        2.0,
+        1.0
+      ],
+      "physical_rejection_reasons": [],
+      "physical_valid": true,
+      "pick_item_id": "pick",
+      "pose": {
+        "x_mm": 2.0,
+        "y_mm": -4.0,
+        "yaw_deg": 90,
+        "z_base_mm": 0.0
+      },
+      "resulting_geometry": {
+        "center_of_mass_offset_mm": 2.695,
+        "max_height_mm": 4.0,
+        "volume_utilization": 0.292
+      },
+      "support": {
+        "com_margin_mm": 1.0,
+        "support_item_ids": [],
+        "support_ratio": 1.0
+      }
+    },
+    {
+      "candidate_fingerprint": "4def07c4b031149c0fbe506c81ab13a8c66eadccc847988e57bbf503f0692575",
+      "candidate_id": "G2_4def07c4b031149c0fbe506c",
+      "ems": {
+        "ems_id": "ems_c33610b8f4",
+        "ems_type": "floor_space"
+      },
+      "geometry_score_components": {
+        "balance": 0.797969,
+        "compactness": 0.9125,
+        "height": 0.6,
+        "stability": 1.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "oriented_size_mm": [
+        2.0,
+        2.0,
+        1.0
+      ],
+      "physical_rejection_reasons": [],
+      "physical_valid": true,
+      "pick_item_id": "pick",
+      "pose": {
+        "x_mm": 2.0,
+        "y_mm": 0.0,
+        "yaw_deg": 90,
+        "z_base_mm": 0.0
+      },
+      "resulting_geometry": {
+        "center_of_mass_offset_mm": 1.429,
+        "max_height_mm": 4.0,
+        "volume_utilization": 0.292
+      },
+      "support": {
+        "com_margin_mm": 1.0,
+        "support_item_ids": [],
+        "support_ratio": 1.0
+      }
+    },
+    {
+      "candidate_fingerprint": "79e85b767c3e8d38d21cb816e7bf173b6872c07dd7366f12225cb4a2c321cef1",
+      "candidate_id": "G2_79e85b767c3e8d38d21cb816",
+      "ems": {
+        "ems_id": "ems_17c506415c",
+        "ems_type": "floor_space"
+      },
+      "geometry_score_components": {
+        "balance": 0.61881,
+        "compactness": 0.811111,
+        "height": 0.6,
+        "stability": 1.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "oriented_size_mm": [
+        2.0,
+        2.0,
+        1.0
+      ],
+      "physical_rejection_reasons": [],
+      "physical_valid": true,
+      "pick_item_id": "pick",
+      "pose": {
+        "x_mm": 2.0,
+        "y_mm": 4.0,
+        "yaw_deg": 90,
+        "z_base_mm": 0.0
+      },
+      "resulting_geometry": {
+        "center_of_mass_offset_mm": 2.695,
+        "max_height_mm": 4.0,
+        "volume_utilization": 0.292
+      },
+      "support": {
+        "com_margin_mm": 1.0,
+        "support_item_ids": [],
+        "support_ratio": 1.0
+      }
+    }
+  ],
+  "error": null,
+  "status": "OK",
+  "version": "geometry_gp2_generation_v1"
+}

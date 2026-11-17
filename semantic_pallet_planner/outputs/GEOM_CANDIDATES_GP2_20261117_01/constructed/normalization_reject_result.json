@@ -1,0 +1,1148 @@
+{
+  "audit": {
+    "adapter": "geometry_public_physical_adapter_v1",
+    "config_digest": "01be0f8f9801cf5f233e52de03cc96cc11964108980b25cf1eaba7930836ba63",
+    "definitions": {
+      "final_candidates": "unique per-item reducer output, at most 16; joint at most 48",
+      "raw_point_attempts": "per item, source/host/yaw/point instances before dedup",
+      "raw_valid_candidates": "unique actions passing proposal, published and independent checks",
+      "unique_actions": "representable published keys including physical rejects"
+    },
+    "input_digest": "8baddf9068f459c4e11708c50c65644a61fee4f9cb6e42f130df5126e948bb2a",
+    "items": [
+      {
+        "coverage": {
+          "compressed_count": 0,
+          "final_joint_keys": [
+            [
+              0,
+              "0",
+              [
+                true,
+                true
+              ],
+              [
+                "GROUND"
+              ],
+              "EMS_STYLE_3D"
+            ],
+            [
+              0,
+              "0",
+              [
+                true,
+                true
+              ],
+              [
+                "GROUND"
+              ],
+              "SURFACE_CORNER"
+            ],
+            [
+              90,
+              "0",
+              [
+                true,
+                true
+              ],
+              [
+                "GROUND"
+              ],
+              "EMS_STYLE_3D"
+            ],
+            [
+              90,
+              "0",
+              [
+                true,
+                true
+              ],
+              [
+                "GROUND"
+              ],
+              "SURFACE_CORNER"
+            ]
+          ],
+          "raw_joint_keys": [
+            [
+              0,
+              "0",
+              [
+                true,
+                true
+              ],
+              [
+                "GROUND"
+              ],
+              "EMS_STYLE_3D"
+            ],
+            [
+              0,
+              "0",
+              [
+                true,
+                true
+              ],
+              [
+                "GROUND"
+              ],
+              "SURFACE_CORNER"
+            ],
+            [
+              90,
+              "0",
+              [
+                true,
+                true
+              ],
+              [
+                "GROUND"
+              ],
+              "EMS_STYLE_3D"
+            ],
+            [
+              90,
+              "0",
+              [
+                true,
+                true
+              ],
+              [
+                "GROUND"
+              ],
+              "SURFACE_CORNER"
+            ]
+          ],
+          "required_groups": [
+            [
+              0,
+              "floor"
+            ],
+            [
+              90,
+              "floor"
+            ]
+          ],
+          "selection_order": [
+            {
+              "action_key": [
+                "pick",
+                "2.003",
+                "4.003",
+                "2",
+                "0",
+                "0",
+                "0",
+                "0"
+              ],
+              "new_joint_keys": 2,
+              "reason": "REQUIRED_YAW_LEVEL"
+            },
+            {
+              "action_key": [
+                "pick",
+                "4.003",
+                "2.003",
+                "2",
+                "90",
+                "0",
+                "0",
+                "0"
+              ],
+              "new_joint_keys": 2,
+              "reason": "REQUIRED_YAW_LEVEL"
+            }
+          ],
+          "uncovered_joint_keys": [],
+          "version": "yaw_floor_required_then_joint_group_coverage_v1"
+        },
+        "enumeration_complete": true,
+        "final_action_keys": [
+          [
+            "pick",
+            "2.003",
+            "4.003",
+            "2",
+            "0",
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "pick",
+            "4.003",
+            "2.003",
+            "2",
+            "90",
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "final_candidates": 2,
+        "geometric_equivalence_count": 2,
+        "item_id": "pick",
+        "proposal_rejections": [
+          {
+            "action_key": [
+              "pick",
+              "2.003",
+              "4.003",
+              "2",
+              "0",
+              "-4",
+              "-3",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 0,
+            "proposal_corner_mm": [
+              "-5.001",
+              "-5.001",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2.003",
+              "4.003",
+              "2",
+              "0",
+              "4",
+              "-3",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 1,
+            "proposal_corner_mm": [
+              "2.998",
+              "-5.001",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2.003",
+              "4.003",
+              "2",
+              "0",
+              "-4",
+              "3",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 2,
+            "proposal_corner_mm": [
+              "-5.001",
+              "0.998",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2.003",
+              "4.003",
+              "2",
+              "0",
+              "4",
+              "3",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 3,
+            "proposal_corner_mm": [
+              "2.998",
+              "0.998",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2.003",
+              "4.003",
+              "2",
+              "0",
+              "-4",
+              "-3",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 0,
+            "proposal_corner_mm": [
+              "-5.001",
+              "-5.001",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2.003",
+              "4.003",
+              "2",
+              "0",
+              "4",
+              "-3",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 1,
+            "proposal_corner_mm": [
+              "2.998",
+              "-5.001",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2.003",
+              "4.003",
+              "2",
+              "0",
+              "-4",
+              "3",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 2,
+            "proposal_corner_mm": [
+              "-5.001",
+              "0.998",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "2.003",
+              "4.003",
+              "2",
+              "0",
+              "4",
+              "3",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 3,
+            "proposal_corner_mm": [
+              "2.998",
+              "0.998",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "4.003",
+              "2.003",
+              "2",
+              "90",
+              "-3",
+              "-4",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 0,
+            "proposal_corner_mm": [
+              "-5.001",
+              "-5.001",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "4.003",
+              "2.003",
+              "2",
+              "90",
+              "3",
+              "-4",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 1,
+            "proposal_corner_mm": [
+              "0.998",
+              "-5.001",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "4.003",
+              "2.003",
+              "2",
+              "90",
+              "-3",
+              "4",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 2,
+            "proposal_corner_mm": [
+              "-5.001",
+              "2.998",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "4.003",
+              "2.003",
+              "2",
+              "90",
+              "3",
+              "4",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 3,
+            "proposal_corner_mm": [
+              "0.998",
+              "2.998",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "EMS_STYLE_3D"
+          },
+          {
+            "action_key": [
+              "pick",
+              "4.003",
+              "2.003",
+              "2",
+              "90",
+              "-3",
+              "-4",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 0,
+            "proposal_corner_mm": [
+              "-5.001",
+              "-5.001",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "4.003",
+              "2.003",
+              "2",
+              "90",
+              "3",
+              "-4",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 1,
+            "proposal_corner_mm": [
+              "0.998",
+              "-5.001",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "4.003",
+              "2.003",
+              "2",
+              "90",
+              "-3",
+              "4",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 2,
+            "proposal_corner_mm": [
+              "-5.001",
+              "2.998",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "SURFACE_CORNER"
+          },
+          {
+            "action_key": [
+              "pick",
+              "4.003",
+              "2.003",
+              "2",
+              "90",
+              "3",
+              "4",
+              "0"
+            ],
+            "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "point_index": 3,
+            "proposal_corner_mm": [
+              "0.998",
+              "2.998",
+              "0"
+            ],
+            "reason": "POSE_REPRESENTATION_REJECTED",
+            "source_type": "SURFACE_CORNER"
+          }
+        ],
+        "raw_point_attempts": 20,
+        "raw_valid_candidates": [
+          {
+            "action_key": [
+              "pick",
+              "2.003",
+              "4.003",
+              "2",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "candidate": {
+              "candidate_fingerprint": "a154fb9b3457612bb0b1cda3cdcb7a2971c0fe6d42eef769b564475200f723c3",
+              "candidate_id": "G2_a154fb9b3457612bb0b1cda3",
+              "ems": {
+                "ems_id": "ems_c7500a0d97",
+                "ems_type": "floor_space"
+              },
+              "geometry_score_components": {
+                "balance": 1.0,
+                "compactness": 1.0,
+                "height": 0.8,
+                "stability": 1.0
+              },
+              "load": {
+                "downward_load_kg": 0.0,
+                "minimum_remaining_capacity_kg": null
+              },
+              "oriented_size_mm": [
+                2.003,
+                4.003,
+                2.0
+              ],
+              "physical_rejection_reasons": [],
+              "physical_valid": true,
+              "pick_item_id": "pick",
+              "pose": {
+                "x_mm": 0.0,
+                "y_mm": 0.0,
+                "yaw_deg": 0,
+                "z_base_mm": 0.0
+              },
+              "resulting_geometry": {
+                "center_of_mass_offset_mm": 0.0,
+                "max_height_mm": 2.0,
+                "volume_utilization": 0.01603
+              },
+              "support": {
+                "com_margin_mm": 1.002,
+                "support_item_ids": [],
+                "support_ratio": 1.0
+              }
+            },
+            "geometry_score": 0.95,
+            "host_ids": [
+              "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f"
+            ],
+            "proposal_refs": [
+              {
+                "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+                "point_index": 4,
+                "proposal_corner_mm": [
+                  "-1.0015",
+                  "-2.0015",
+                  "0"
+                ],
+                "source_type": "EMS_STYLE_3D"
+              },
+              {
+                "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+                "point_index": 4,
+                "proposal_corner_mm": [
+                  "-1.0015",
+                  "-2.0015",
+                  "0"
+                ],
+                "source_type": "SURFACE_CORNER"
+              }
+            ],
+            "representative_host": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "sources": [
+              "EMS_STYLE_3D",
+              "SURFACE_CORNER"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "4.003",
+              "2.003",
+              "2",
+              "90",
+              "0",
+              "0",
+              "0"
+            ],
+            "candidate": {
+              "candidate_fingerprint": "f637c66dca69e70c993a2a958e7a7ad6909b96af57b650f8bfa8c550591fc343",
+              "candidate_id": "G2_f637c66dca69e70c993a2a95",
+              "ems": {
+                "ems_id": "ems_61005d003e",
+                "ems_type": "floor_space"
+              },
+              "geometry_score_components": {
+                "balance": 1.0,
+                "compactness": 1.0,
+                "height": 0.8,
+                "stability": 1.0
+              },
+              "load": {
+                "downward_load_kg": 0.0,
+                "minimum_remaining_capacity_kg": null
+              },
+              "oriented_size_mm": [
+                4.003,
+                2.003,
+                2.0
+              ],
+              "physical_rejection_reasons": [],
+              "physical_valid": true,
+              "pick_item_id": "pick",
+              "pose": {
+                "x_mm": 0.0,
+                "y_mm": 0.0,
+                "yaw_deg": 90,
+                "z_base_mm": 0.0
+              },
+              "resulting_geometry": {
+                "center_of_mass_offset_mm": 0.0,
+                "max_height_mm": 2.0,
+                "volume_utilization": 0.01603
+              },
+              "support": {
+                "com_margin_mm": 1.002,
+                "support_item_ids": [],
+                "support_ratio": 1.0
+              }
+            },
+            "geometry_score": 0.95,
+            "host_ids": [
+              "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f"
+            ],
+            "proposal_refs": [
+              {
+                "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+                "point_index": 4,
+                "proposal_corner_mm": [
+                  "-2.0015",
+                  "-1.0015",
+                  "0"
+                ],
+                "source_type": "EMS_STYLE_3D"
+              },
+              {
+                "host_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+                "point_index": 4,
+                "proposal_corner_mm": [
+                  "-2.0015",
+                  "-1.0015",
+                  "0"
+                ],
+                "source_type": "SURFACE_CORNER"
+              }
+            ],
+            "representative_host": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f",
+            "sources": [
+              "EMS_STYLE_3D",
+              "SURFACE_CORNER"
+            ]
+          }
+        ],
+        "raw_valid_count": 2,
+        "rejection_counts": {
+          "POSE_REPRESENTATION_REJECTED": 16
+        },
+        "space_skips": 0,
+        "unique_action_outcomes": [
+          {
+            "action_key": [
+              "pick",
+              "2.003",
+              "4.003",
+              "2",
+              "0",
+              "-4",
+              "-3",
+              "0"
+            ],
+            "outcomes": [
+              "POSE_REPRESENTATION_REJECTED"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2.003",
+              "4.003",
+              "2",
+              "0",
+              "-4",
+              "3",
+              "0"
+            ],
+            "outcomes": [
+              "POSE_REPRESENTATION_REJECTED"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2.003",
+              "4.003",
+              "2",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "outcomes": [
+              "VALID"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2.003",
+              "4.003",
+              "2",
+              "0",
+              "4",
+              "-3",
+              "0"
+            ],
+            "outcomes": [
+              "POSE_REPRESENTATION_REJECTED"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "2.003",
+              "4.003",
+              "2",
+              "0",
+              "4",
+              "3",
+              "0"
+            ],
+            "outcomes": [
+              "POSE_REPRESENTATION_REJECTED"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "4.003",
+              "2.003",
+              "2",
+              "90",
+              "-3",
+              "-4",
+              "0"
+            ],
+            "outcomes": [
+              "POSE_REPRESENTATION_REJECTED"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "4.003",
+              "2.003",
+              "2",
+              "90",
+              "-3",
+              "4",
+              "0"
+            ],
+            "outcomes": [
+              "POSE_REPRESENTATION_REJECTED"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "4.003",
+              "2.003",
+              "2",
+              "90",
+              "0",
+              "0",
+              "0"
+            ],
+            "outcomes": [
+              "VALID"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "4.003",
+              "2.003",
+              "2",
+              "90",
+              "3",
+              "-4",
+              "0"
+            ],
+            "outcomes": [
+              "POSE_REPRESENTATION_REJECTED"
+            ]
+          },
+          {
+            "action_key": [
+              "pick",
+              "4.003",
+              "2.003",
+              "2",
+              "90",
+              "3",
+              "4",
+              "0"
+            ],
+            "outcomes": [
+              "POSE_REPRESENTATION_REJECTED"
+            ]
+          }
+        ],
+        "unique_actions": 10,
+        "unrepresentable_proposals": 16
+      }
+    ],
+    "outcome": "OK",
+    "semantic_digest": "5cae5ad29624f146e02c2438e3a2a75073a3f0501a8ea32c38a3c2375c2ee486",
+    "source_bytes_sha256": "cf77a0b36948cbb6662206053b9e6dd88daf1e85dde46a2aab722653b433bc2c",
+    "space_index": {
+      "algorithm": "ems_surface_geometry_v1",
+      "budget_usage": {
+        "limits": {
+          "active_spaces": 4096,
+          "raw_point_attempts_per_item": 32768,
+          "space_containment_comparisons": 2000000,
+          "surface_event_cells": 16384,
+          "surface_expansion_cell_checks": 2000000
+        },
+        "observed": {
+          "aabb_checks": 10,
+          "duplicate_space_references": 8,
+          "height_occupancy_checks": 0,
+          "surface_proposals": 8,
+          "surface_seeds": 4,
+          "surface_zero_height_skips": 0
+        },
+        "raw_point_attempts": "NOT_RUN_GP2",
+        "used": {
+          "active_spaces": 1,
+          "space_containment_comparisons": 10,
+          "surface_event_cells": 1,
+          "surface_expansion_cell_checks": 0
+        },
+        "wall_clock_cutoff": false
+      },
+      "config_digest": "8711b223a6634735350a411a3ec1b2391d6f0c4e521f09f57499fbf9acdc499c",
+      "error": null,
+      "input_digest": "468649ceeab76383335934fec7dabd9cb96bd262d9d59a72476b87f95b86cc33",
+      "semantic_digest": "0ce891607c8865bb9ddac69616ac9345a85a3a34a77f25c1d43c4a2e20ef4383",
+      "source_bytes_sha256": "17d9b9057168a32075dee9582d8b13590d5ec74beabda420076a3ceef0e75a96",
+      "spaces": [
+        {
+          "bounds_mm": [
+            "-5.001",
+            "-5.001",
+            "0",
+            "5.001",
+            "5.001",
+            "10"
+          ],
+          "source_types": [
+            "EMS_STYLE_3D",
+            "SURFACE_CORNER"
+          ],
+          "space_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f"
+        }
+      ],
+      "status": "OK",
+      "surface": {
+        "height_columns_mm": [
+          [
+            "0"
+          ]
+        ],
+        "seeds": [
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f"
+              }
+            ],
+            "quadrant": [
+              1,
+              1
+            ],
+            "seed_z_mm": "0",
+            "vertex_mm": [
+              "-5.001",
+              "-5.001"
+            ]
+          },
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f"
+              }
+            ],
+            "quadrant": [
+              1,
+              -1
+            ],
+            "seed_z_mm": "0",
+            "vertex_mm": [
+              "-5.001",
+              "5.001"
+            ]
+          },
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f"
+              }
+            ],
+            "quadrant": [
+              -1,
+              1
+            ],
+            "seed_z_mm": "0",
+            "vertex_mm": [
+              "5.001",
+              "-5.001"
+            ]
+          },
+          {
+            "expansions": [
+              {
+                "axis_order": [
+                  0,
+                  1
+                ],
+                "space_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f"
+              },
+              {
+                "axis_order": [
+                  1,
+                  0
+                ],
+                "space_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f"
+              }
+            ],
+            "quadrant": [
+              -1,
+              -1
+            ],
+            "seed_z_mm": "0",
+            "vertex_mm": [
+              "5.001",
+              "5.001"
+            ]
+          }
+        ],
+        "x_events_mm": [
+          "-5.001",
+          "5.001"
+        ],
+        "y_events_mm": [
+          "-5.001",
+          "5.001"
+        ]
+      },
+      "version": "geometry_space_index_v1"
+    },
+    "space_index_builds": 1,
+    "spaces": [
+      {
+        "bounds_mm": [
+          "-5.001",
+          "-5.001",
+          "0",
+          "5.001",
+          "5.001",
+          "10"
+        ],
+        "source_types": [
+          "EMS_STYLE_3D",
+          "SURFACE_CORNER"
+        ],
+        "space_id": "space_e81bcee09707a8f109955e39eeda5a38939ce999a845fef8af8a422a3828886f"
+      }
+    ],
+    "test_only_point_limit": null,
+    "version": "geometry_generation_audit_v1"
+  },
+  "backend": "ems_surface_hybrid_v1",
+  "candidates": [
+    {
+      "candidate_fingerprint": "a154fb9b3457612bb0b1cda3cdcb7a2971c0fe6d42eef769b564475200f723c3",
+      "candidate_id": "G2_a154fb9b3457612bb0b1cda3",
+      "ems": {
+        "ems_id": "ems_c7500a0d97",
+        "ems_type": "floor_space"
+      },
+      "geometry_score_components": {
+        "balance": 1.0,
+        "compactness": 1.0,
+        "height": 0.8,
+        "stability": 1.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "oriented_size_mm": [
+        2.003,
+        4.003,
+        2.0
+      ],
+      "physical_rejection_reasons": [],
+      "physical_valid": true,
+      "pick_item_id": "pick",
+      "pose": {
+        "x_mm": 0.0,
+        "y_mm": 0.0,
+        "yaw_deg": 0,
+        "z_base_mm": 0.0
+      },
+      "resulting_geometry": {
+        "center_of_mass_offset_mm": 0.0,
+        "max_height_mm": 2.0,
+        "volume_utilization": 0.01603
+      },
+      "support": {
+        "com_margin_mm": 1.002,
+        "support_item_ids": [],
+        "support_ratio": 1.0
+      }
+    },
+    {
+      "candidate_fingerprint": "f637c66dca69e70c993a2a958e7a7ad6909b96af57b650f8bfa8c550591fc343",
+      "candidate_id": "G2_f637c66dca69e70c993a2a95",
+      "ems": {
+        "ems_id": "ems_61005d003e",
+        "ems_type": "floor_space"
+      },
+      "geometry_score_components": {
+        "balance": 1.0,
+        "compactness": 1.0,
+        "height": 0.8,
+        "stability": 1.0
+      },
+      "load": {
+        "downward_load_kg": 0.0,
+        "minimum_remaining_capacity_kg": null
+      },
+      "oriented_size_mm": [
+        4.003,
+        2.003,
+        2.0
+      ],
+      "physical_rejection_reasons": [],
+      "physical_valid": true,
+      "pick_item_id": "pick",
+      "pose": {
+        "x_mm": 0.0,
+        "y_mm": 0.0,
+        "yaw_deg": 90,
+        "z_base_mm": 0.0
+      },
+      "resulting_geometry": {
+        "center_of_mass_offset_mm": 0.0,
+        "max_height_mm": 2.0,
+        "volume_utilization": 0.01603
+      },
+      "support": {
+        "com_margin_mm": 1.002,
+        "support_item_ids": [],
+        "support_ratio": 1.0
+      }
+    }
+  ],
+  "error": null,
+  "status": "OK",
+  "version": "geometry_gp2_generation_v1"
+}

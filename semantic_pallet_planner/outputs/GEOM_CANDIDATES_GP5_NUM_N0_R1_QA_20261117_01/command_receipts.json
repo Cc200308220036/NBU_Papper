@@ -1,0 +1,29 @@
+{
+  "schema": "geometry_gp5_num_n0_r1_qa_commands_v1",
+  "commands": [
+    {
+      "command": "git status --short; git branch --show-current; git rev-parse HEAD; git rev-parse --abbrev-ref --symbolic-full-name @{upstream}; git diff --cached --stat; git log -6 --oneline",
+      "result": "initial clean/empty, dev/jev-select f1974261 upstream origin/dev/jev-select"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N0_R1_QA_20261117_01/check_saved_metadata.py",
+      "exit_code": 0,
+      "output": "independent_check.log",
+      "scope": "saved bytes and literal graph only; tamper probes in memory, no production imports"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N0_R1_QA_20261117_01/check_saved_metadata.py",
+      "exit_code": 0,
+      "detail": "final recheck after QA navigation update; original README pinned f1974261; no source drift"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "original_checker": "NOT_RUN: check_identity_metadata.py writes original fixed_metadata_example.json and verification.json; independently checked saved output instead",
+  "production_imports": 0,
+  "business_execution": 0,
+  "git_mutations": 0,
+  "dependencies_installed": 0
+}

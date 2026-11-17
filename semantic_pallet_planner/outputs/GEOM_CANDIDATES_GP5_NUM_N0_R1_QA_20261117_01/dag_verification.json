@@ -1,0 +1,93 @@
+{
+  "status": "PASS_LITERAL_METADATA_AND_DESIGN_DEPENDENCY_AUDIT",
+  "fixture_nodes": 25,
+  "fixture_edges": 58,
+  "topological_order": [
+    "bindings",
+    "native",
+    "geometry",
+    "raw_generation",
+    "raw_pool",
+    "raw_candidate",
+    "source_dimensions",
+    "raw_content",
+    "published_content",
+    "raw_after",
+    "raw_derived",
+    "published_after",
+    "published_derived",
+    "equivalence",
+    "proof",
+    "fingerprint",
+    "full_candidate",
+    "raw_final_shadow",
+    "published_final_shadow",
+    "final_binding",
+    "mapping",
+    "published_pool",
+    "publication",
+    "telemetry",
+    "audit"
+  ],
+  "proof_transitive_dependencies": [
+    "bindings",
+    "equivalence",
+    "geometry",
+    "native",
+    "published_after",
+    "published_content",
+    "published_derived",
+    "raw_after",
+    "raw_candidate",
+    "raw_content",
+    "raw_derived",
+    "raw_generation",
+    "raw_pool",
+    "source_dimensions"
+  ],
+  "final_binding_transitive_dependencies": [
+    "bindings",
+    "equivalence",
+    "fingerprint",
+    "full_candidate",
+    "geometry",
+    "native",
+    "proof",
+    "published_after",
+    "published_content",
+    "published_derived",
+    "published_final_shadow",
+    "raw_after",
+    "raw_candidate",
+    "raw_content",
+    "raw_derived",
+    "raw_final_shadow",
+    "raw_generation",
+    "raw_pool",
+    "source_dimensions"
+  ],
+  "negative": [
+    {
+      "case": "missing_published_after",
+      "result": "REJECTED",
+      "reason": "MISSING"
+    },
+    {
+      "case": "tampered_proof",
+      "result": "REJECTED",
+      "reason": "BYTES"
+    },
+    {
+      "case": "swapped_after_evidence",
+      "result": "REJECTED",
+      "reason": "REFERENCE"
+    },
+    {
+      "case": "swapped_derived_evidence",
+      "result": "REJECTED",
+      "reason": "REFERENCE"
+    }
+  ],
+  "ID-01": "CLOSED_DESIGN_ONLY",
+  "limits": "Fixture domains and tokens differ from production H/L/B contracts; not production vectors, candidate construction, physical proof or runtime acceptance."
+}

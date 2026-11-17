@@ -1,0 +1,151 @@
+{
+  "version": "geometry_gp3_n3_qa_v1",
+  "date": "2026-11-17",
+  "timezone": "Asia/Shanghai",
+  "object": "GP3_N3_ONLY",
+  "plans": [
+    "geometry_candidate_upgrade_design_v1",
+    "geometry_runtime_numeric_design_v1"
+  ],
+  "authorization": "independent static/saved-fact checks; no runtime/physics/orders/LP/models",
+  "developer_entry_head": "81a9a6ecb4023b2eaa7a8b0fe82d9e550b931f38",
+  "implementation_base": "5a15186e537fc45d6dbea455e57b58a4995c0e1d",
+  "delivery_current_head": "eec656877c9a22255fc4dd2a7e5d50e39bbfee0b",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "initial_worktree": "CLEAN",
+  "initial_index": "EMPTY",
+  "source_manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/source_manifest.json",
+  "production_files": 542,
+  "changed_existing": 11,
+  "added": 8,
+  "unchanged": 523,
+  "four_fact_layers": {
+    "report": "developer N3 limited self-check, real kernel NOT_RUN, A03 PARTIAL",
+    "source": "v15 public loop/store/normal phase restore implemented; missing legal error-state recovery",
+    "archive": "13 one-box/variant results; 84 blob file copies; monitor TEST_DOUBLE; normal phase tests; no evaluation-error resume case",
+    "local": "original sealed validator and independent saved-fact checker; static producer/consumer contradiction; no runtime imports/calls"
+  },
+  "acceptance": [
+    {
+      "id": "N3-01",
+      "status": "PASS",
+      "scope": "bounded persistence and store fault evidence"
+    },
+    {
+      "id": "N3-02",
+      "status": "PASS",
+      "scope": "bounded missing/identity/byte rejection evidence"
+    },
+    {
+      "id": "N3-03",
+      "status": "PASS",
+      "scope": "normal tested SELECTED/MONITORED/COMMITTED only"
+    },
+    {
+      "id": "N3-03b",
+      "status": "FAIL",
+      "scope": "technical error checkpoint producer/validator mismatch"
+    },
+    {
+      "id": "N3-04",
+      "status": "PASS",
+      "scope": "state-machine TEST_DOUBLE, not real numerical monitor"
+    },
+    {
+      "id": "N3-05",
+      "status": "PASS",
+      "scope": "DISABLED separate stop"
+    },
+    {
+      "id": "N3-06",
+      "status": "PASS",
+      "scope": "tested singleton/UNKNOWN_SEND/empty/number failure only"
+    },
+    {
+      "id": "N3-07",
+      "status": "PASS",
+      "scope": "two backend/local-method fixture pairs"
+    },
+    {
+      "id": "N3-08",
+      "status": "PASS",
+      "scope": "limited old protection/regression evidence"
+    },
+    {
+      "id": "REAL-EXACT-V3",
+      "status": "NOT_RUN",
+      "scope": "unauthorized, not treated as implementation failure"
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP3-N3-REC-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "status": "OPEN",
+      "origin": "CURRENT_IMPLEMENTATION_PRODUCER_RECOVERY_CONTRACT_MISMATCH",
+      "acceptance": [
+        "N3-03",
+        "N3-03b",
+        "A03 recovery"
+      ],
+      "locations": [
+        "episode.py:409-418",
+        "episode.py:345-352,404-405",
+        "geometry_execution.py:239-246",
+        "geometry_execution.py:217-220",
+        "episode.py:539-559"
+      ],
+      "primary": "COMMITTED evaluation exception persists reason EVALUATION_ERROR; new validator expects None whenever pending exists and rejects before loop can continue evaluation",
+      "secondary": "STABLE selected-action technical COMMIT_FAILURE is persisted unchanged but terminal recovery only maps four non-STABLE monitor stops",
+      "evidence_type": "STATIC_CONTROL_FLOW_AND_SCALAR_WITNESS_NOT_PRODUCTION_REPRODUCTION",
+      "production_reproduction": "NOT_RUN",
+      "evidence": "saved_evidence_verification.json#/static_recovery_witness",
+      "impact": "legitimate error checkpoints produced by shared loop cannot reload; no claim of observed duplicate placement or damaged real order",
+      "minimal_fix": "align explicit legal error states at producer/validator, preserve phase/action/state/error/identity guards; never relax all reason checks",
+      "required_developer_evidence": "pre/post controlled evaluation and commit-boundary fault unit behavior; phases/call counts, current valid source identities; retain old FAIL/checkpoints without resigning"
+    }
+  ],
+  "nonblocking_evidence_note": {
+    "case": "numeric_error/phases.json",
+    "foreign_normal_empty_records": 6,
+    "actual_target_records": 4,
+    "action": "new collection should isolate per-case phase histories; preserve original",
+    "invalidates_final_checkpoint": false
+  },
+  "previous_issues": {
+    "GP3-N2-BIND-01": "CLOSED_UNCHANGED",
+    "GP3-N2-R1-EVID-01": "OLD_FAIL_PRESERVED_NEW_N3_VERIFIER_USES_PINNED_REVISIONS"
+  },
+  "conclusions": {
+    "engineering_status": {
+      "status": "PARTIAL",
+      "scope": "GP3_N3_ONLY",
+      "blocking_issue": "GP3-N3-REC-01",
+      "parent_A03": "PARTIAL"
+    },
+    "evidence_readiness": {
+      "status": "PARTIAL",
+      "archive_integrity": "PASS",
+      "normal_phase_saved_facts": "PASS",
+      "technical_error_recovery": "FAIL_STATIC",
+      "local_runtime_reproduction": "NOT_RUN"
+    },
+    "research_result": "NOT_ESTABLISHED",
+    "next_stage_admission": {
+      "status": "NOT_READY",
+      "remediation_scope": "GP3_N3_R1_ONLY",
+      "GP4": "NOT_READY"
+    }
+  },
+  "known_prior_context": true,
+  "not_run": [
+    "local production candidate/loop/recovery/physics",
+    "real exact-v3/PCT/LP",
+    "models",
+    "real-source orders/GP4-GP6"
+  ],
+  "report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP3-N3独立质检与技术失败恢复最小整改_20261117_01.md",
+  "stopped": true
+}

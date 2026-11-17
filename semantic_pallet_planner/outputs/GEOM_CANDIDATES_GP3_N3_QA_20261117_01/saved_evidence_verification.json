@@ -1,0 +1,215 @@
+{
+  "status": "PASS_SAVED_FACTS_WITH_BLOCKING_STATIC_RECOVERY_FINDING",
+  "manifest_members": 236,
+  "production_files": 542,
+  "changed": 11,
+  "added": 8,
+  "unchanged": 523,
+  "cases": [
+    {
+      "case": "DISABLED",
+      "termination": "GEOMETRY_MONITOR_DISABLED",
+      "placed_count": 0,
+      "phases": [
+        "READY",
+        "DECISION_READY",
+        "SELECTED",
+        "MONITORED",
+        "TERMINATED"
+      ]
+    },
+    {
+      "case": "ERROR",
+      "termination": "STABILITY_MONITOR_ERROR",
+      "placed_count": 0,
+      "phases": [
+        "READY",
+        "DECISION_READY",
+        "SELECTED",
+        "MONITORED",
+        "TERMINATED"
+      ]
+    },
+    {
+      "case": "UNASSESSABLE",
+      "termination": "STABILITY_UNASSESSABLE",
+      "placed_count": 0,
+      "phases": [
+        "READY",
+        "DECISION_READY",
+        "SELECTED",
+        "MONITORED",
+        "TERMINATED"
+      ]
+    },
+    {
+      "case": "UNKNOWN_SEND",
+      "termination": "UNKNOWN_SEND",
+      "placed_count": 0,
+      "phases": [
+        "READY",
+        "DECISION_READY",
+        "TERMINATED"
+      ]
+    },
+    {
+      "case": "UNSTABLE",
+      "termination": "PREDICTED_STATIC_INSTABILITY",
+      "placed_count": 0,
+      "phases": [
+        "READY",
+        "DECISION_READY",
+        "SELECTED",
+        "MONITORED",
+        "TERMINATED"
+      ]
+    },
+    {
+      "case": "e2_original_v1_stable",
+      "termination": "ALL_ITEMS_PLACED",
+      "placed_count": 1,
+      "phases": [
+        "READY",
+        "DECISION_READY",
+        "SELECTED",
+        "MONITORED",
+        "COMMITTED",
+        "TERMINATED"
+      ]
+    },
+    {
+      "case": "ems_surface_hybrid_v1_stable",
+      "termination": "ALL_ITEMS_PLACED",
+      "placed_count": 1,
+      "phases": [
+        "READY",
+        "DECISION_READY",
+        "SELECTED",
+        "MONITORED",
+        "COMMITTED",
+        "TERMINATED"
+      ]
+    },
+    {
+      "case": "generation_ERROR_TEST_DOUBLE",
+      "termination": "PHYSICAL_CHECK_DISAGREEMENT",
+      "placed_count": 0,
+      "phases": [
+        "READY",
+        "TERMINATED"
+      ]
+    },
+    {
+      "case": "normal_empty",
+      "termination": "STOP_NO_PHYSICAL_CANDIDATE",
+      "placed_count": 0,
+      "phases": [
+        "READY",
+        "DECISION_READY",
+        "TERMINATED"
+      ]
+    },
+    {
+      "case": "numeric_error",
+      "termination": "RUNTIME_NUMBER_UNREPRESENTABLE",
+      "placed_count": 0,
+      "phases": [
+        "READY",
+        "TERMINATED"
+      ]
+    },
+    {
+      "case": "resume_COMMITTED",
+      "termination": "ALL_ITEMS_PLACED",
+      "placed_count": 1,
+      "phases": [
+        "READY",
+        "DECISION_READY",
+        "SELECTED",
+        "MONITORED",
+        "COMMITTED",
+        "TERMINATED"
+      ]
+    },
+    {
+      "case": "resume_MONITORED",
+      "termination": "ALL_ITEMS_PLACED",
+      "placed_count": 1,
+      "phases": [
+        "READY",
+        "DECISION_READY",
+        "SELECTED",
+        "MONITORED",
+        "COMMITTED",
+        "TERMINATED"
+      ]
+    },
+    {
+      "case": "resume_SELECTED",
+      "termination": "ALL_ITEMS_PLACED",
+      "placed_count": 1,
+      "phases": [
+        "READY",
+        "DECISION_READY",
+        "SELECTED",
+        "MONITORED",
+        "COMMITTED",
+        "TERMINATED"
+      ]
+    }
+  ],
+  "blob_file_copies": 84,
+  "test_double_monitor_rows": 8,
+  "saved_interrupted_phases": 3,
+  "foreign_phase_records": [
+    {
+      "case": "numeric_error",
+      "index": 0,
+      "config_digest": "879b685be84ce40eabb24f8d9bb94ce2d5ab633d617fbfb83adc0d180cc91f16"
+    },
+    {
+      "case": "numeric_error",
+      "index": 1,
+      "config_digest": "879b685be84ce40eabb24f8d9bb94ce2d5ab633d617fbfb83adc0d180cc91f16"
+    },
+    {
+      "case": "numeric_error",
+      "index": 2,
+      "config_digest": "879b685be84ce40eabb24f8d9bb94ce2d5ab633d617fbfb83adc0d180cc91f16"
+    },
+    {
+      "case": "numeric_error",
+      "index": 3,
+      "config_digest": "879b685be84ce40eabb24f8d9bb94ce2d5ab633d617fbfb83adc0d180cc91f16"
+    },
+    {
+      "case": "numeric_error",
+      "index": 4,
+      "config_digest": "879b685be84ce40eabb24f8d9bb94ce2d5ab633d617fbfb83adc0d180cc91f16"
+    },
+    {
+      "case": "numeric_error",
+      "index": 5,
+      "config_digest": "879b685be84ce40eabb24f8d9bb94ce2d5ab633d617fbfb83adc0d180cc91f16"
+    }
+  ],
+  "static_recovery_witness": {
+    "issue": "GP3-N3-REC-01",
+    "evidence_type": "STATIC_CONTROL_FLOW_AND_SCALAR_WITNESS_NOT_PRODUCTION_REPRODUCTION",
+    "archived_basis": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/resume/COMMITTED_interrupted.json",
+    "producer": "episode.py:409-418 saves phase COMMITTED, reason EVALUATION_ERROR, pending error",
+    "consumer": "geometry_execution.py:239-246 expects reason None when pending exists",
+    "produced_reason": "EVALUATION_ERROR",
+    "produced_phase": "COMMITTED",
+    "validator_expected_reason": null,
+    "footer_rejects": true,
+    "secondary": "episode exception path saves unchanged-state COMMIT_FAILURE after STABLE; geometry_execution.py:217-220 has no STABLE technical-failure terminal case",
+    "secondary_monitor_mapping_result": null,
+    "kernel_or_runtime_calls": 0,
+    "actual_error_checkpoint_generated": false
+  },
+  "production_imports": 0,
+  "candidate_generation": 0,
+  "orders_PCT_LP_models": 0,
+  "real_exact_v3_E2E": "NOT_RUN"
+}

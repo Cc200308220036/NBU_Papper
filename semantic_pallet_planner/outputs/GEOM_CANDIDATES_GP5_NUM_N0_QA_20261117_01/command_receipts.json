@@ -1,0 +1,40 @@
+{
+  "schema": "geometry_gp5_num_n0_qa_commands_v1",
+  "commands": [
+    {
+      "command": "git status --short; git branch --show-current; git rev-parse HEAD; git rev-parse --abbrev-ref --symbolic-full-name @{upstream}; git diff --cached --stat; git log -6 --oneline",
+      "result": "clean/empty dev/jev-select 83327dcb upstream origin/dev/jev-select"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N0_20261117_01/verify_design_delivery.py",
+      "exit_code": 1,
+      "output": "original_verifier.log",
+      "failure_stage": "line15 precommit HEAD assertion before historical/manifests checks",
+      "interpretation": "expected preparation-state assumption no longer holds after developer commit; not runtime source error; original not changed or relabeled passed"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N0_QA_20261117_01/check_saved_design.py",
+      "exit_code": 0,
+      "output": "independent_check.log",
+      "scope": "read only identities/literal arithmetic/symbolic dependency cycle; pinned historical revisions"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N0_QA_20261117_01/check_saved_design.py",
+      "exit_code": 0,
+      "detail": "final independent check after QA-only navigation update, original README checked at pinned83327dcb"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "not_executed": [
+    "check_hand_examples.py (would overwrite original hand_examples.json)",
+    "collect_baseline_receipt.py (would rewrite original package)",
+    "business/bridge/candidate/physics/episode/kernel tests"
+  ],
+  "production_imports": 0,
+  "business_execution": 0,
+  "git_mutations": 0,
+  "dependencies_installed": 0
+}

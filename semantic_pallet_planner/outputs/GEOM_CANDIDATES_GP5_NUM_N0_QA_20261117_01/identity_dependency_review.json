@@ -1,0 +1,38 @@
+{
+  "schema": "geometry_num_n0_identity_dependencies_qa_v1",
+  "status": "PARTIAL_SPECIFICATION_NOT_PROVEN_ACYCLIC",
+  "assumption": "shadow candidate_digest means digest(full published candidate), as current candidate mapping convention; design does not define an identity-free projection",
+  "dependency_direction": "node requires listed dependencies",
+  "dependencies": {
+    "published_fingerprint": [
+      "proof_core_digest"
+    ],
+    "published_candidate": [
+      "published_fingerprint"
+    ],
+    "published_candidate_digest": [
+      "published_candidate"
+    ],
+    "published_shadow_bytes": [
+      "published_candidate_digest"
+    ],
+    "published_after_ref": [
+      "published_shadow_bytes"
+    ],
+    "proof_core_digest": [
+      "published_after_ref"
+    ]
+  },
+  "cycle": [
+    "published_fingerprint",
+    "proof_core_digest",
+    "published_after_ref",
+    "published_shadow_bytes",
+    "published_candidate_digest",
+    "published_candidate",
+    "published_fingerprint"
+  ],
+  "alternative_interpretation": "If pre-ID content is intended, exact excluded fields, domain/version, shadow field meaning and final-ID binding must be stated; not silently inferred by implementer.",
+  "production_execution": false,
+  "not_a_hash_fixed_point_or_bridge_implementation": true
+}

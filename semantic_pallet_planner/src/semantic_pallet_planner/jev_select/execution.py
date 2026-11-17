@@ -11,9 +11,18 @@ from .context import resolve_display_id, validate_context
 from .contracts import JevSelectError, digest, validate_schema
 
 
-def commit_physical(state, regions, observation, bundle, context, selection, config, *, monitor=None, monitor_event=None):
+def commit_physical(state, regions, observation, bundle, context, selection, config, *, monitor=None, monitor_event=None, geometry_store=None, execution_binding=None):
     from .packaging_versions import reject_geometry_execution
     reject_geometry_execution(config,"commit_physical")
+    from .packaging_versions import GEOMETRY_RUN_VERSION
+    if config.get('version')==GEOMETRY_RUN_VERSION:
+        from .geometry_execution import GeometryStore,validate_execution_identity
+        validate_execution_identity(execution_binding,config)
+        if not isinstance(geometry_store,GeometryStore) or monitor_event is None:
+            raise JevSelectError('geometry_commit_requires_durable_binding')
+        saved=geometry_store.load_event(monitor_event,config)
+        if digest(saved.data)!=digest(bundle.data) or digest(monitor_event['before'])!=digest(state):
+            raise JevSelectError('geometry_commit_saved_state_drift')
     validate_schema("config", config)
     if not business_evaluation_mode(config):
         raise JevSelectError("physical_commit_requires_v2")

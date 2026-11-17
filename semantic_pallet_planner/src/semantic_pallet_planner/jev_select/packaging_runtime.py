@@ -4,6 +4,7 @@ No new physical solver or candidate generator. Local smoke selectors are test
 substitutes only, with no remote transport or memory loading route.
 """
 from __future__ import annotations
+from .packaging_versions import GEOMETRY_CONFIGS, GEOMETRY_BUNDLES, GEOMETRY_CONTEXTS, GEOMETRY_RUN_VERSION
 from .packaging_versions import EXACT_CONTEXT, EXACT_VERSION, GEOMETRY_VERSION, GEOMETRY_CONTEXT
 import copy
 import math
@@ -26,7 +27,7 @@ METHODS = ('local_geometry_test_double','local_first_test_double')
 
 
 def is_packaging(config):
-    return config.get('version') in (GEOMETRY_VERSION,'jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
+    return config.get('version') in (*GEOMETRY_CONFIGS,'jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
 
 
 def no_policy(observation):
@@ -158,7 +159,7 @@ def length_unit(values,source,target):
 
 def public_facts(config,observation,bundle,policy):
     from .packaging_versions import GEOMETRY_BUNDLE
-    if config['version']==GEOMETRY_VERSION or bundle.data['version']==GEOMETRY_BUNDLE:
+    if config['version'] in GEOMETRY_CONFIGS or bundle.data['version'] in GEOMETRY_BUNDLES:
         from .candidate_backends import validate_geometry_config_bundle
         validate_geometry_config_bundle(config,bundle)
     from semantic_pallet_planner.o4.extensions.e2.protocol import BINDINGS,validate_observation
@@ -263,7 +264,7 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
         'generator_config_digest':value['generator_config_digest'],'prompt_version':config['prompt_version'],
         'feature_version':config['feature_version'],'model_state_digest':digest(state),'criteria_digest':digest(criteria),
         'request_body_digest':digest(body),'runtime_identity':copy.deepcopy(config['runtime_identity'])}
-    if config['version']==GEOMETRY_VERSION:
+    if config['version'] in GEOMETRY_CONFIGS:
         binding.update(common_input_digest=value['common_input_digest'],backend_binding_digest=value['backend_binding_digest'])
     if memory_fields:
         binding.update(memory_snapshot_digest=config['memory_snapshot_digest'],memory_view_digest=mv['view_digest'])
@@ -281,10 +282,10 @@ def validate_runtime_context(context,observation=None,bundle=None,config=None):
     value=context.data;validate_schema('decision_context',value)
     if config is not None and bundle is not None:
         from .packaging_versions import GEOMETRY_BUNDLE
-        if value['version']==GEOMETRY_CONTEXT or config['version']==GEOMETRY_VERSION or bundle.data['version']==GEOMETRY_BUNDLE:
+        if value['version'] in GEOMETRY_CONTEXTS or config['version'] in GEOMETRY_CONFIGS or bundle.data['version'] in GEOMETRY_BUNDLES:
             from .candidate_backends import validate_geometry_config_bundle
             validate_geometry_config_bundle(config,bundle)
-    if value['version'] in ('jev_decision_context_v13',GEOMETRY_CONTEXT):
+    if value['version'] in ('jev_decision_context_v13',*GEOMETRY_CONTEXTS):
         require(value['model_state']['memories']==[] and not any(k in value for k in ('memory_view','retrieval_receipt')), 'jm_v13_memory_forbidden')
         if bundle is not None: require(bundle.data['selectable_candidates']==bundle.data['physical_candidates'],'jm_v13_full_physical_pool_required')
     if value['version'] in ('jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT):
@@ -328,7 +329,7 @@ def validate_runtime_context(context,observation=None,bundle=None,config=None):
     if bundle is not None:
         require(observation is not None and config is not None,'runtime_missing_binding_input')
         b=validate_bundle(observation,bundle)
-        if value['version']==GEOMETRY_CONTEXT:
+        if value['version'] in GEOMETRY_CONTEXTS:
             require(binding['common_input_digest']==b['common_input_digest'] and binding['backend_binding_digest']==b['backend_binding_digest'], 'geometry_context_binding_changed')
         require(binding['physical_digest']==b['physical_digest'] and binding['selectable_digest']==b['selectable_digest'] and
             route==decision_route(bundle),'runtime_stale_pool')
@@ -421,6 +422,11 @@ def summary(task,config,method,state,events,reason):
             row.update(version='jev_packaging_evaluation_metrics_v1' if config['version'] in ('jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION) else 'jev_packaging_memory_order_metrics_v1',origin='LOCAL_TEST_DOUBLE_NOT_JEV' if method in METHODS else 'jev',memory_snapshot_digest=config['memory_snapshot_digest'])
             row['cost'].update(event_cost(events))
             validate_schema('evaluation_episode_metrics_v1' if config['version'] in ('jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION) else 'pilot_order_metrics_v1',row)
+        elif config['version']==GEOMETRY_RUN_VERSION:
+            row.update(version='jev_geometry_fixture_metrics_v1',stability_algorithm=config['stability_monitor']['algorithm'] if config['stability_monitor']['enabled'] else 'DISABLED',
+                candidate_backend=config['candidate_backend'],numerical_profile=config['numerical_profile'],
+                monitor_evidence='TEST_DOUBLE' if any((e.get('monitor') or {}).get('result',{}).get('diagnostics',{}).get('TEST_DOUBLE') for e in events if (e.get('monitor') or {}).get('result') is not None) else 'SAVED_MONITOR_RECORDS')
+            validate_schema('geometry_metrics_v1',row)
         elif config['version']=='jev_packaging_contrast_v8':
             from .packaging_remote import event_cost
             row.update(version='jev_packaging_contrast_metrics_v1',origin='jev',memory_snapshot_digest=config['memory_snapshot_digest'])

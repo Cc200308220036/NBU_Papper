@@ -1,0 +1,513 @@
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidate_backends.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidate_backends.py
+index b18bf9e4..a7e8fce7 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidate_backends.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidate_backends.py
+@@ -3,6 +3,7 @@
+ Common input/admission and backend bindings are independent of N1's new-backend
+ binding. N1 configuration guards remain intact. Telemetry is not semantic audit.
+ """
++from .packaging_versions import GEOMETRY_RUN_VERSION, GEOMETRY_RUN_BUNDLE
+ import copy
+ from dataclasses import dataclass, replace
+ from importlib.resources import files
+@@ -49,6 +50,9 @@ def load_geometry_config(*, backend, data_identity, task_identity, monitor_ident
+ 
+ 
+ def preflight_config(config):
++    if config.get('version')==GEOMETRY_RUN_VERSION:
++        from .geometry_execution import preflight_run
++        return preflight_run(config)
+     validate_schema('config',config)
+     c.require(config['version']==GEOMETRY_VERSION,'construction config v14 required')
+     ids=config['runtime_identity']
+@@ -212,7 +216,7 @@ def build_geometry_bundle(state,observation,generator_config,config,*,common_inp
+     audit['final_candidates_digest']=digest(candidates)
+     audit['generation_counts']=copy.deepcopy(counts)
+     from .packaging_runtime import no_policy
+-    value={'version':GEOMETRY_BUNDLE,'observation_digest':observation['observation_digest'],
++    value={'version':GEOMETRY_RUN_BUNDLE if config['version']==GEOMETRY_RUN_VERSION else GEOMETRY_BUNDLE,'observation_digest':observation['observation_digest'],
+         'candidate_backend':backend,'generator_config_digest':digest(generator_config),
+         'physical_candidates':candidates,'physical_digest':digest(candidates),'generation_counts':counts,
+         'selectable_pool':'physical_feasible','selectable_candidates':copy.deepcopy(candidates),
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py
+index 5a8d0aff..2495582f 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py
+@@ -1,5 +1,6 @@
+ """Public-only candidate generation and business filtering; no selection policy."""
+ from __future__ import annotations
++from .packaging_versions import GEOMETRY_CONFIGS, GEOMETRY_BUNDLES
+ from .packaging_versions import EXACT_BUNDLE
+ 
+ import copy
+@@ -51,7 +52,7 @@ def validate_bundle(req: dict, bundle: CandidateBundle) -> dict:
+     value = bundle.data
+     validate_schema("candidate_bundle", value)
+     from .packaging_versions import GEOMETRY_BUNDLE
+-    if value['version']==GEOMETRY_BUNDLE:
++    if value['version'] in GEOMETRY_BUNDLES:
+         from .candidate_backends import validate_geometry_bundle
+         validate_geometry_bundle(req,bundle)
+     if value["observation_digest"] != req["observation_digest"]:
+@@ -77,7 +78,7 @@ class CandidateProvider:
+         from .packaging_versions import GEOMETRY_VERSION
+         if config is not None:
+             validate_schema('config',config)
+-        if config is not None and config.get('version')==GEOMETRY_VERSION:
++        if config is not None and config.get('version') in GEOMETRY_CONFIGS:
+             from .candidate_backends import build_geometry_bundle
+             result=build_geometry_bundle(state,observation,generator_config,config,common_input=common_input)
+             validate_bundle(observation,result)
+@@ -149,7 +150,7 @@ class PublicBusinessGuard:
+                config: dict) -> CandidateBundle:
+         validate_schema("config", config)
+         from .packaging_versions import GEOMETRY_VERSION, GEOMETRY_BUNDLE
+-        if config['version']==GEOMETRY_VERSION or bundle.data['version']==GEOMETRY_BUNDLE:
++        if config['version'] in GEOMETRY_CONFIGS or bundle.data['version'] in GEOMETRY_BUNDLES:
+             from .candidate_backends import validate_geometry_config_bundle
+             validate_geometry_config_bundle(config,bundle)
+         value = validate_bundle(req, bundle)
+@@ -161,7 +162,7 @@ class PublicBusinessGuard:
+             value.update(selectable_pool="physical_feasible", selectable_candidates=copy.deepcopy(candidates),
+                          selectable_digest=digest(candidates), policy_digest=digest(policy.data))
+             from .packaging_versions import GEOMETRY_VERSION
+-            result = bundle.with_data(value) if config['version']==GEOMETRY_VERSION else CandidateBundle.from_dict(value)
++            result = bundle.with_data(value) if config['version'] in GEOMETRY_CONFIGS else CandidateBundle.from_dict(value)
+             validate_bundle(req, result)
+             return result
+         if value["version"] != "jev_candidate_bundle_v1":
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py
+index 65a5095e..12beeb1b 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/config.py
+@@ -1,5 +1,6 @@
+ """Versioned Jev/J0 settings and geometry resources, independent of cwd."""
+ from __future__ import annotations
++from .packaging_versions import GEOMETRY_CONFIGS, GEOMETRY_RUN_VERSION
+ 
+ from importlib.resources import files
+ import json
+@@ -43,6 +44,7 @@ def protocol_suffix(config: dict) -> str:
+     validate_schema("config", config)
+     from .packaging_runtime import is_packaging
+     from .packaging_versions import EXACT_VERSION, GEOMETRY_VERSION
++    if config.get("version")==GEOMETRY_RUN_VERSION: return "v15"
+     if config.get("version")==GEOMETRY_VERSION: return "v14"
+     return "v13" if config.get("version")=="jev_packaging_jm_no_memory_v13" else "v12" if config.get("version")==EXACT_VERSION else "v11" if config.get("version")=="jev_packaging_synthetic_v11" else "v10" if config.get("version")=="jev_packaging_evaluation_v10" else "v9" if config.get("version") == "jev_packaging_memory_orders_v9" else "v8" if config.get("version") == "jev_packaging_contrast_v8" else "v7" if config.get("version") == "jev_packaging_memory_v7" else "v6" if config.get("version") == "jev_packaging_remote_v6" else "v5" if config.get("version") == "jev_packaging_monitored_v5" else "v4" if is_packaging(config) else "v3" if is_v3(config) else "v2" if is_v2(config) else "v1"
+ 
+@@ -88,7 +90,7 @@ def generator_config_for(config):
+     """Explicit N2 route; old no-argument generator_config remains untouched."""
+     from .packaging_versions import GEOMETRY_VERSION
+     validate_schema('config',config)
+-    if config['version']==GEOMETRY_VERSION:
++    if config['version'] in GEOMETRY_CONFIGS:
+         from .candidate_backends import preflight_config, backend_config
+         preflight_config(config)
+         return backend_config(config['candidate_backend'])
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py
+index 5ffcf030..62ee96bf 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py
+@@ -1,5 +1,6 @@
+ """Build an offline TypeSafe Choice request from public facts only."""
+ from __future__ import annotations
++from .packaging_versions import GEOMETRY_CONTEXTS
+ from .packaging_versions import EXACT_CONTEXT, GEOMETRY_CONTEXT
+ 
+ import copy
+@@ -244,7 +245,7 @@ class ContextBuilder:
+ def validate_context(context: DecisionContext, observation: dict | None = None,
+                      bundle: CandidateBundle | None = None, config: dict | None = None) -> dict:
+     from .packaging_runtime import is_packaging, validate_runtime_context
+-    if context.data.get('version') in (GEOMETRY_CONTEXT,'jev_decision_context_v13','jev_decision_context_v4','jev_decision_context_v5','jev_decision_context_v6','jev_decision_context_v7','jev_decision_context_v8','jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT) or (config is not None and is_packaging(config)):
++    if context.data.get('version') in (*GEOMETRY_CONTEXTS,'jev_decision_context_v13','jev_decision_context_v4','jev_decision_context_v5','jev_decision_context_v6','jev_decision_context_v7','jev_decision_context_v8','jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT) or (config is not None and is_packaging(config)):
+         return validate_runtime_context(context, observation, bundle, config)
+     value = context.data
+     validate_schema("decision_context", value)
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py
+index e626f4fd..ddaf94b7 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py
+@@ -8,7 +8,7 @@ from importlib.resources import files
+ import json
+ 
+ from jsonschema import Draft202012Validator
+-from .packaging_versions import GEOMETRY_SCHEMAS, GEOMETRY_VERSION, GEOMETRY_BUNDLE, GEOMETRY_CONTEXT
++from .packaging_versions import GEOMETRY_RUN_SCHEMAS, GEOMETRY_RUN_VERSION, GEOMETRY_RUN_CONTEXT, GEOMETRY_RUN_BUNDLE, GEOMETRY_SCHEMAS, GEOMETRY_VERSION, GEOMETRY_BUNDLE, GEOMETRY_CONTEXT
+ 
+ 
+ class JevSelectError(ValueError):
+@@ -31,7 +31,7 @@ def digest(value: object) -> str:
+ 
+ @lru_cache(maxsize=64)
+ def schema_validator(name: str) -> Draft202012Validator:
+-    if name not in set(GEOMETRY_SCHEMAS.values()) | {'jm_fs_input_v1','jm_fs_result_v1','jm_e_fact_pack_v1','jm_e_generation_v1','jm_e_gate_v1','jm_t_projection_v1','jm_t_query_v1','jm_scenario_input_v1','jm_scenario_signature_v1','jm_action_contrast_v1','jm_v13_schedule','config_v13','candidate_bundle_v13','decision_context_v13','selection_result_v13','checkpoint_v13','jm_v13_start','jm_v13_execution','jm_v13_journal','jm_v13_metrics','jm_activation_v1','jm_checkpoint_journal_v1','jm_recovery_v1','jm_recovery_checkpoint_v1','jm_repeat_schedule_v1','jm_continuation_v1','jm_fork_start_v1','jm_fork_binding_v1','jm_forced_selection_v1','synthetic_remainder_plan_v3','config_v12','candidate_bundle_v12','decision_context_v12','selection_result_v12','checkpoint_v12','synthetic_supplement_plan_v2','synthetic_supplement_run_v2','synthetic_registration_v1','config_v11','candidate_bundle_v11','decision_context_v11','selection_result_v11','checkpoint_v11','synthetic_dataset_v1','synthetic_orders_plan_v1','synthetic_orders_run_v1',"evaluation_dataset_v1", "evaluation_orders_plan_v1", "evaluation_orders_run_v1", "evaluation_order_metrics_v1", "evaluation_packaging_task_v1", "source_provenance_v1", "source_trust_policy_v1", "config_v10", "candidate_bundle_v10", "decision_context_v10", "selection_result_v10", "checkpoint_v10", "evaluation_memory_view_v1", "evaluation_retrieval_v1", "evaluation_episode_metrics_v1", "evaluation_control_v1", "evaluation_plan_blocked_v1", "config_v9", "candidate_bundle_v9", "decision_context_v9", "selection_result_v9", "checkpoint_v9", "pilot_memory_view_v1", "pilot_retrieval_v1", "pilot_order_metrics_v1", "pilot_plan_v1", "pilot_run_v1", "pilot_decision_v1", "config_v8", "candidate_bundle_v8", "decision_context_v8", "selection_result_v8", "checkpoint_v8", "contrast_order_metrics_v1", "packaging_contrast_generation_v1", "packaging_contrast_fact_pack_v1", "packaging_contrast_card_v1", "packaging_contrast_snapshot_v1", "packaging_contrast_view_v1", "packaging_contrast_public_v1", "memory_order_metrics_v1", "packaging_public_fragment_v1", "config_v7", "candidate_bundle_v7", "decision_context_v7", "selection_result_v7", "checkpoint_v7", "packaging_evidence_v1", "packaging_trajectory_v1", "packaging_memory_snapshot_v1", "packaging_memory_view_v1", "packaging_memory_query_v1", "packaging_reanalysis_plan_v2", "packaging_comparison_record_v2", "packaging_comparison_plan_v1", "packaging_comparison_record_v1", "packaging_fork_snapshot_v1", "packaging_fork_binding_v1", "packaging_fork_plan_v1", "packaging_branch_receipt_v1", "packaging_full_order_decision_v1", "packaging_full_order_plan_v2", "packaging_full_order_run_v2", "config_v6", "candidate_bundle_v6", "decision_context_v6", "selection_result_v6", "checkpoint_v6", "remote_order_metrics_v1", "packaging_full_order_plan_v1", "monitored_order_metrics_v1", "config_v5", "candidate_bundle_v5", "decision_context_v5", "selection_result_v5", "checkpoint_v5", "config_v4", "candidate_bundle_v4", "decision_context_v4", "selection_result_v4", "checkpoint_v4", "packaging_order_metrics_v1", "packaging_load_config_v1", "packaging_load_task_v1", "business_spec_v2", "config", "candidate_bundle", "decision_context", "selection_result", "transport_result", "config_v2", "candidate_bundle_v2", "decision_context_v2", "selection_result_v2", "business_state", "plan_v2", "checkpoint_v2", "order_metrics_v2", "metrics_v2",
++    if name not in set(GEOMETRY_RUN_SCHEMAS.values()) | set(GEOMETRY_SCHEMAS.values()) | {'jm_fs_input_v1','jm_fs_result_v1','jm_e_fact_pack_v1','jm_e_generation_v1','jm_e_gate_v1','jm_t_projection_v1','jm_t_query_v1','jm_scenario_input_v1','jm_scenario_signature_v1','jm_action_contrast_v1','jm_v13_schedule','config_v13','candidate_bundle_v13','decision_context_v13','selection_result_v13','checkpoint_v13','jm_v13_start','jm_v13_execution','jm_v13_journal','jm_v13_metrics','jm_activation_v1','jm_checkpoint_journal_v1','jm_recovery_v1','jm_recovery_checkpoint_v1','jm_repeat_schedule_v1','jm_continuation_v1','jm_fork_start_v1','jm_fork_binding_v1','jm_forced_selection_v1','synthetic_remainder_plan_v3','config_v12','candidate_bundle_v12','decision_context_v12','selection_result_v12','checkpoint_v12','synthetic_supplement_plan_v2','synthetic_supplement_run_v2','synthetic_registration_v1','config_v11','candidate_bundle_v11','decision_context_v11','selection_result_v11','checkpoint_v11','synthetic_dataset_v1','synthetic_orders_plan_v1','synthetic_orders_run_v1',"evaluation_dataset_v1", "evaluation_orders_plan_v1", "evaluation_orders_run_v1", "evaluation_order_metrics_v1", "evaluation_packaging_task_v1", "source_provenance_v1", "source_trust_policy_v1", "config_v10", "candidate_bundle_v10", "decision_context_v10", "selection_result_v10", "checkpoint_v10", "evaluation_memory_view_v1", "evaluation_retrieval_v1", "evaluation_episode_metrics_v1", "evaluation_control_v1", "evaluation_plan_blocked_v1", "config_v9", "candidate_bundle_v9", "decision_context_v9", "selection_result_v9", "checkpoint_v9", "pilot_memory_view_v1", "pilot_retrieval_v1", "pilot_order_metrics_v1", "pilot_plan_v1", "pilot_run_v1", "pilot_decision_v1", "config_v8", "candidate_bundle_v8", "decision_context_v8", "selection_result_v8", "checkpoint_v8", "contrast_order_metrics_v1", "packaging_contrast_generation_v1", "packaging_contrast_fact_pack_v1", "packaging_contrast_card_v1", "packaging_contrast_snapshot_v1", "packaging_contrast_view_v1", "packaging_contrast_public_v1", "memory_order_metrics_v1", "packaging_public_fragment_v1", "config_v7", "candidate_bundle_v7", "decision_context_v7", "selection_result_v7", "checkpoint_v7", "packaging_evidence_v1", "packaging_trajectory_v1", "packaging_memory_snapshot_v1", "packaging_memory_view_v1", "packaging_memory_query_v1", "packaging_reanalysis_plan_v2", "packaging_comparison_record_v2", "packaging_comparison_plan_v1", "packaging_comparison_record_v1", "packaging_fork_snapshot_v1", "packaging_fork_binding_v1", "packaging_fork_plan_v1", "packaging_branch_receipt_v1", "packaging_full_order_decision_v1", "packaging_full_order_plan_v2", "packaging_full_order_run_v2", "config_v6", "candidate_bundle_v6", "decision_context_v6", "selection_result_v6", "checkpoint_v6", "remote_order_metrics_v1", "packaging_full_order_plan_v1", "monitored_order_metrics_v1", "config_v5", "candidate_bundle_v5", "decision_context_v5", "selection_result_v5", "checkpoint_v5", "config_v4", "candidate_bundle_v4", "decision_context_v4", "selection_result_v4", "checkpoint_v4", "packaging_order_metrics_v1", "packaging_load_config_v1", "packaging_load_task_v1", "business_spec_v2", "config", "candidate_bundle", "decision_context", "selection_result", "transport_result", "config_v2", "candidate_bundle_v2", "decision_context_v2", "selection_result_v2", "business_state", "plan_v2", "checkpoint_v2", "order_metrics_v2", "metrics_v2",
+                     "config_v3", "candidate_bundle_v3", "decision_context_v3", "selection_result_v3", "plan_v3", "checkpoint_v3", "order_metrics_v3", "metrics_v3", "memory_card", "memory_snapshot", "memory_episode_export", "memory_query", "memory_index", "memory_retrieval", "memory_generation_result", "memory_review", "memory_generator_config", "memory_review_authorization"}:
+         raise JevSelectError("unknown_schema", name)
+     resource = files("semantic_pallet_planner.jev_select").joinpath("schemas", f"{name}.schema.json")
+@@ -42,6 +42,9 @@ def schema_validator(name: str) -> Draft202012Validator:
+ 
+ def validate_schema(name: str, value: dict) -> None:
+     canonical(value)
++    run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
++    if name in run_versions and value.get('version')==run_versions[name]:
++        name=GEOMETRY_RUN_SCHEMAS[name]
+     geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+     if name in geometry_versions and value.get('version')==geometry_versions[name]:
+         name=GEOMETRY_SCHEMAS[name]
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
+index bbae6eba..343712e3 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py
+@@ -1,5 +1,6 @@
+ """Fill-then-plan direct-selection simulator. Checkpoints own durable state."""
+ from __future__ import annotations
++from .packaging_versions import GEOMETRY_CONFIGS, GEOMETRY_RUN_VERSION
+ from .packaging_versions import EXACT_VERSION
+ 
+ import copy
+@@ -18,12 +19,12 @@ from .evaluation import feedback, summarize
+ from .selector import bind_decision, result
+ 
+ 
+-def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, memory_snapshot=None, saved_retrieval=None, memory_view=None, memory_driver=None):
++def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, memory_snapshot=None, saved_retrieval=None, memory_view=None, memory_driver=None, geometry_store=None):
+     from .packaging_versions import GEOMETRY_VERSION
+-    if config.get('version')==GEOMETRY_VERSION:
++    if config.get('version') in GEOMETRY_CONFIGS:
+         if any(v is not None for v in (memory_snapshot,saved_retrieval,memory_view,memory_driver)):
+             raise JevSelectError('geometry_memory_forbidden')
+-        return _geometry_decision_inputs(state,task,config,job_id,decision_id,timings=timings)
++        return _geometry_decision_inputs(state,task,config,job_id,decision_id,timings=timings,geometry_store=geometry_store)
+     started = time.perf_counter()
+     req = observation(state, task["instruction_text"], task["regions"])
+     guard = PublicBusinessGuard()
+@@ -58,9 +59,16 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
+ 
+ 
+ def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
+-                hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None):
++                hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None, geometry_store=None):
+     from .packaging_versions import reject_geometry_execution
+     reject_geometry_execution(config,"run_episode")
++    if config.get('version')==GEOMETRY_RUN_VERSION:
++        if any(v is not None for v in (expected_events,memory_snapshot,training_fork,memory_view,memory_driver)):
++            raise JevSelectError('geometry_run_unsupported_combination')
++        from .geometry_execution import validate_run_request
++        validate_run_request(task,selector,config,method,geometry_store,on_checkpoint)
++        return _run_episode_v2(task,selector,config,job_id=job_id,method=method,resume=resume,
++            on_checkpoint=on_checkpoint,hook=hook,event_limit=event_limit,geometry_store=geometry_store)
+     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
+     if config.get('version')=='jev_packaging_jm_no_memory_v13' and (training_fork is None or training_fork.get('version')!='jev_jm_v13_execution_v1'):
+         raise JevSelectError('jm13_explicit_execution_route_required')
+@@ -203,12 +211,18 @@ def semantic_record(value):
+ 
+ 
+ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+-                    on_checkpoint=None, hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None):
++                    on_checkpoint=None, hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None, geometry_store=None):
+     from .packaging_versions import reject_geometry_execution
+     reject_geometry_execution(config,"_run_episode_v2")
+     from .evaluation import evaluate_committed_state, summarize_v2
+     from .execution import commit_physical
+     from .selector import SelectionResult
++    geometry_run=config.get('version')==GEOMETRY_RUN_VERSION
++    if geometry_run:
++        from .geometry_execution import validate_run_request
++        if any(v is not None for v in (expected_events,training_fork,memory_snapshot,memory_view,memory_driver)):
++            raise JevSelectError('geometry_run_unsupported_combination')
++        geometry_execution_binding=validate_run_request(task,selector,config,method,geometry_store,on_checkpoint)
+     state = initial(task['container'], config['buffer_capacity'])
+     cursor = decision = 0
+     events = []; reason = None; pending = None; phase = 'READY'
+@@ -245,6 +259,8 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+         if is_v3(config):
+             value['memory_snapshot_digest'] = digest(memory_snapshot.data)
+             value['memory_identity']=memory_identity
++        if geometry_run:
++            value['execution_binding']=copy.deepcopy(geometry_execution_binding)
+         if monitored:
+             seal_checkpoint(value)
+         if jm_recovery:
+@@ -255,6 +271,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+ 
+     def persist():
+         cp = checkpoint()
++        if geometry_run:geometry_store.save_checkpoint(cp)
+         if on_checkpoint: on_checkpoint(cp)
+         return cp
+ 
+@@ -328,7 +345,10 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+             raise JevSelectError('checkpoint_identity_changed')
+         if monitored:
+             if training_fork is None:
+-                validate_checkpoint(resume,task,config,job_id,method)
++                if geometry_run:
++                    from .geometry_execution import validate_saved_checkpoint
++                    validate_saved_checkpoint(resume,task,config,job_id,method,geometry_store)
++                else:validate_checkpoint(resume,task,config,job_id,method)
+         else:
+             replay_selector = selector.for_replay() if hasattr(selector, 'for_replay') else selector
+             prefix = _run_episode_v2(task, replay_selector, config, job_id=job_id, method=method,
+@@ -430,27 +450,32 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+         event = {'event':'STOP','decision_id':did,'before':before,'after':before,'route':None,
+                  'observation':None,'bundle':None,'context':None,'selection':None,'proposed_action':None,'action':None,
+                  'reason':None,'error':None,'reference_after':None,'business_after':None,'timings':times}
++        if geometry_run:
++            event['geometry_ref']=None
++            geometry_store.input_ref=None
+         if monitored:
+             event['monitor'] = None
+             event['monitor_result_reuses'] = 0
+         try:
+             saved_context = (pending['context'] if pending is not None and phase=='DECISION_READY' else
+                 expected_events[len(events)].get('context') if expected_events is not None and len(events)<len(expected_events) else None)
+-            if monitored and pending is not None and phase in (('DECISION_READY','SELECTED','MONITORED') if is_driven(config) or jm_recovery or jm_v13 else ('SELECTED','MONITORED')):
++            if monitored and pending is not None and phase in (('DECISION_READY','SELECTED','MONITORED') if is_driven(config) or jm_recovery or jm_v13 or geometry_run else ('SELECTED','MONITORED')):
+                 from .contracts import CandidateBundle, DecisionContext
+                 from .packaging_runtime import no_policy
+                 req = copy.deepcopy(pending['observation'])
+                 policy = no_policy(req)
+-                bundle = CandidateBundle.from_dict(pending['bundle'])
++                bundle = geometry_store.load_event(pending,config) if geometry_run else CandidateBundle.from_dict(pending['bundle'])
+                 context = DecisionContext.from_dict(pending['context'])
+             else:
+                 req,policy,bundle,context = decision_inputs(state,task,config,job_id,did,timings=times,memory_snapshot=memory_snapshot,
+-                    saved_retrieval=saved_context.get('retrieval') if saved_context else None,memory_view=memory_view,memory_driver=memory_driver)
++                    saved_retrieval=saved_context.get('retrieval') if saved_context else None,memory_view=memory_view,memory_driver=memory_driver,geometry_store=geometry_store)
+             if is_driven(config) and pending is not None and phase=='DECISION_READY':
+                 event=copy.deepcopy(pending);times=event['timings']
++            if geometry_run:
++                event['geometry_ref']=pending['geometry_ref'] if pending is not None else geometry_store.save_event(bundle)
+             route = decision_route(bundle)
+             event.update(route=route,observation=req,bundle=bundle.data,context=context.data)
+-            if ((jm_recovery or jm_v13) and (pending is None or phase=='DECISION_READY')) or is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
++            if ((jm_recovery or jm_v13 or geometry_run) and (pending is None or phase=='DECISION_READY')) or is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
+                 pending=copy.deepcopy(event);phase='DECISION_READY';persist()
+             if hook: hook('decision_ready',event)
+             if route == 'STOP_NO_PHYSICAL_CANDIDATE':
+@@ -492,12 +517,14 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+                             event['monitor_result_reuses'] += 1
+                         if (jm_first or jm_continuation or jm_recovery or jm_v13) and event['monitor']['status'] not in ('STABLE','UNSTABLE','UNASSESSABLE','ERROR'):
+                             raise JevSelectError('jm_monitor_status_not_authorized')
+-                        reason = TERMINATIONS.get(event['monitor']['status'])
++                        reason = ('GEOMETRY_MONITOR_DISABLED' if geometry_run and event['monitor']['status']=='DISABLED'
++                                  else TERMINATIONS.get(event['monitor']['status']))
+                     if reason is None:
+                         if hook: hook('before_commit',event)
+                         start = time.perf_counter()
+                         state = commit_physical(state,task['regions'],req,bundle,context,selection,config,
+-                            **({'monitor':event['monitor'],'monitor_event':event} if monitored else {}))
++                            **({'monitor':event['monitor'],'monitor_event':event} if monitored else {}),
++                            **({'geometry_store':geometry_store,'execution_binding':geometry_execution_binding} if geometry_run else {}))
+                     else:
+                         # The selected attempted action remains in the buffer.
+                         event['reason'] = reason
+@@ -518,6 +545,8 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+                 if hook:hook('decision_ready',event)
+             event['event'] = 'COMMIT_FAILURE' if event['proposed_action'] else 'DECISION_FAILURE'
+             event['error'] = {'code':reason,'detail':str(exc)[:240]}
++            if geometry_run and hasattr(exc,'audit'):
++                event['geometry_ref']=geometry_store.put_json({'version':'geometry_generation_failure_v1','input':geometry_store.input_ref,'scope':exc.scope,'audit':exc.audit,'error':event['error']})
+             if state != before:
+                 raise JevSelectError('failure_mutated_state') from exc
+         event['reason'] = reason
+@@ -540,14 +569,20 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
+     return {'job_id':job_id,'events':events,'final_state':state,'summary':summary,'checkpoint':checkpoint()}
+ 
+ 
+-def _geometry_decision_inputs(state,task,config,job_id,decision_id,*,timings=None):
+-    """N2 construction only; reads only instruction/regions, never future task fields."""
++def _geometry_decision_inputs(state,task,config,job_id,decision_id,*,timings=None,geometry_store=None):
++    """Shared geometry F0 construction; v15 first persists current input bytes."""
+     from .config import generator_config_for
+     started=time.perf_counter()
+     req=observation(state,task['instruction_text'],task['regions'])
+     guard=PublicBusinessGuard();policy=guard.resolve(req)
+     parsed=time.perf_counter()
+-    bundle=CandidateProvider().build(state,req,generator_config_for(config),config=config)
++    common=None
++    if config['version']==GEOMETRY_RUN_VERSION:
++        if geometry_store is None:raise JevSelectError('geometry_durable_store_required')
++        from .candidate_backends import capture_common_input
++        common=capture_common_input(state,req,config)
++        geometry_store.save_input(common)
++    bundle=CandidateProvider().build(state,req,generator_config_for(config),config=config,common_input=common)
+     generated=time.perf_counter()
+     bundle=guard.filter(req,policy,bundle,config)
+     context=bind_decision(ContextBuilder(config).build(req,bundle,policy),job_id,decision_id,config=config)
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/execution.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/execution.py
+index e0617cee..8e6d87b0 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/execution.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/execution.py
+@@ -11,9 +11,18 @@ from .context import resolve_display_id, validate_context
+ from .contracts import JevSelectError, digest, validate_schema
+ 
+ 
+-def commit_physical(state, regions, observation, bundle, context, selection, config, *, monitor=None, monitor_event=None):
++def commit_physical(state, regions, observation, bundle, context, selection, config, *, monitor=None, monitor_event=None, geometry_store=None, execution_binding=None):
+     from .packaging_versions import reject_geometry_execution
+     reject_geometry_execution(config,"commit_physical")
++    from .packaging_versions import GEOMETRY_RUN_VERSION
++    if config.get('version')==GEOMETRY_RUN_VERSION:
++        from .geometry_execution import GeometryStore,validate_execution_identity
++        validate_execution_identity(execution_binding,config)
++        if not isinstance(geometry_store,GeometryStore) or monitor_event is None:
++            raise JevSelectError('geometry_commit_requires_durable_binding')
++        saved=geometry_store.load_event(monitor_event,config)
++        if digest(saved.data)!=digest(bundle.data) or digest(monitor_event['before'])!=digest(state):
++            raise JevSelectError('geometry_commit_saved_state_drift')
+     validate_schema("config", config)
+     if not business_evaluation_mode(config):
+         raise JevSelectError("physical_commit_requires_v2")
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py
+index 1be0ab0f..89e51b91 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py
+@@ -4,6 +4,7 @@ No new physical solver or candidate generator. Local smoke selectors are test
+ substitutes only, with no remote transport or memory loading route.
+ """
+ from __future__ import annotations
++from .packaging_versions import GEOMETRY_CONFIGS, GEOMETRY_BUNDLES, GEOMETRY_CONTEXTS, GEOMETRY_RUN_VERSION
+ from .packaging_versions import EXACT_CONTEXT, EXACT_VERSION, GEOMETRY_VERSION, GEOMETRY_CONTEXT
+ import copy
+ import math
+@@ -26,7 +27,7 @@ METHODS = ('local_geometry_test_double','local_first_test_double')
+ 
+ 
+ def is_packaging(config):
+-    return config.get('version') in (GEOMETRY_VERSION,'jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
++    return config.get('version') in (*GEOMETRY_CONFIGS,'jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_monitored_v5', 'jev_packaging_remote_v6', 'jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
+ 
+ 
+ def no_policy(observation):
+@@ -158,7 +159,7 @@ def length_unit(values,source,target):
+ 
+ def public_facts(config,observation,bundle,policy):
+     from .packaging_versions import GEOMETRY_BUNDLE
+-    if config['version']==GEOMETRY_VERSION or bundle.data['version']==GEOMETRY_BUNDLE:
++    if config['version'] in GEOMETRY_CONFIGS or bundle.data['version'] in GEOMETRY_BUNDLES:
+         from .candidate_backends import validate_geometry_config_bundle
+         validate_geometry_config_bundle(config,bundle)
+     from semantic_pallet_planner.o4.extensions.e2.protocol import BINDINGS,validate_observation
+@@ -263,7 +264,7 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
+         'generator_config_digest':value['generator_config_digest'],'prompt_version':config['prompt_version'],
+         'feature_version':config['feature_version'],'model_state_digest':digest(state),'criteria_digest':digest(criteria),
+         'request_body_digest':digest(body),'runtime_identity':copy.deepcopy(config['runtime_identity'])}
+-    if config['version']==GEOMETRY_VERSION:
++    if config['version'] in GEOMETRY_CONFIGS:
+         binding.update(common_input_digest=value['common_input_digest'],backend_binding_digest=value['backend_binding_digest'])
+     if memory_fields:
+         binding.update(memory_snapshot_digest=config['memory_snapshot_digest'],memory_view_digest=mv['view_digest'])
+@@ -281,10 +282,10 @@ def validate_runtime_context(context,observation=None,bundle=None,config=None):
+     value=context.data;validate_schema('decision_context',value)
+     if config is not None and bundle is not None:
+         from .packaging_versions import GEOMETRY_BUNDLE
+-        if value['version']==GEOMETRY_CONTEXT or config['version']==GEOMETRY_VERSION or bundle.data['version']==GEOMETRY_BUNDLE:
++        if value['version'] in GEOMETRY_CONTEXTS or config['version'] in GEOMETRY_CONFIGS or bundle.data['version'] in GEOMETRY_BUNDLES:
+             from .candidate_backends import validate_geometry_config_bundle
+             validate_geometry_config_bundle(config,bundle)
+-    if value['version'] in ('jev_decision_context_v13',GEOMETRY_CONTEXT):
++    if value['version'] in ('jev_decision_context_v13',*GEOMETRY_CONTEXTS):
+         require(value['model_state']['memories']==[] and not any(k in value for k in ('memory_view','retrieval_receipt')), 'jm_v13_memory_forbidden')
+         if bundle is not None: require(bundle.data['selectable_candidates']==bundle.data['physical_candidates'],'jm_v13_full_physical_pool_required')
+     if value['version'] in ('jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT):
+@@ -328,7 +329,7 @@ def validate_runtime_context(context,observation=None,bundle=None,config=None):
+     if bundle is not None:
+         require(observation is not None and config is not None,'runtime_missing_binding_input')
+         b=validate_bundle(observation,bundle)
+-        if value['version']==GEOMETRY_CONTEXT:
++        if value['version'] in GEOMETRY_CONTEXTS:
+             require(binding['common_input_digest']==b['common_input_digest'] and binding['backend_binding_digest']==b['backend_binding_digest'], 'geometry_context_binding_changed')
+         require(binding['physical_digest']==b['physical_digest'] and binding['selectable_digest']==b['selectable_digest'] and
+             route==decision_route(bundle),'runtime_stale_pool')
+@@ -421,6 +422,11 @@ def summary(task,config,method,state,events,reason):
+             row.update(version='jev_packaging_evaluation_metrics_v1' if config['version'] in ('jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION) else 'jev_packaging_memory_order_metrics_v1',origin='LOCAL_TEST_DOUBLE_NOT_JEV' if method in METHODS else 'jev',memory_snapshot_digest=config['memory_snapshot_digest'])
+             row['cost'].update(event_cost(events))
+             validate_schema('evaluation_episode_metrics_v1' if config['version'] in ('jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION) else 'pilot_order_metrics_v1',row)
++        elif config['version']==GEOMETRY_RUN_VERSION:
++            row.update(version='jev_geometry_fixture_metrics_v1',stability_algorithm=config['stability_monitor']['algorithm'] if config['stability_monitor']['enabled'] else 'DISABLED',
++                candidate_backend=config['candidate_backend'],numerical_profile=config['numerical_profile'],
++                monitor_evidence='TEST_DOUBLE' if any((e.get('monitor') or {}).get('result',{}).get('diagnostics',{}).get('TEST_DOUBLE') for e in events if (e.get('monitor') or {}).get('result') is not None) else 'SAVED_MONITOR_RECORDS')
++            validate_schema('geometry_metrics_v1',row)
+         elif config['version']=='jev_packaging_contrast_v8':
+             from .packaging_remote import event_cost
+             row.update(version='jev_packaging_contrast_metrics_v1',origin='jev',memory_snapshot_digest=config['memory_snapshot_digest'])
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py
+index 98526354..bf2eb7b4 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py
+@@ -93,3 +93,17 @@ JM_FS_RESULT='jev_jm_fs_result_v1'
+ JM_FS_ALGORITHM='jm_fs_floor_grid_neighbor_v1'
+ JM_FS_PROTOCOLS={v:'packaging_fs_geometry' for v in (JM_FS_INPUT,JM_FS_RESULT)}
+ JM_FS_SCHEMAS={JM_FS_INPUT:'jm_fs_input_v1',JM_FS_RESULT:'jm_fs_result_v1'}
++
++# GP3-N3 hand-fixture execution, independent of construction-only v14.
++GEOMETRY_RUN_VERSION='jev_packaging_geometry_run_v15'
++GEOMETRY_RUN_CONTEXT='jev_decision_context_v15'
++GEOMETRY_RUN_BUNDLE='jev_candidate_bundle_v15'
++GEOMETRY_EXECUTION='geometry_fixture_execution_v1'
++GEOMETRY_RUN_SCHEMAS={k:k+'_v15' for k in
++    ('config','candidate_bundle','decision_context','selection_result','checkpoint')}
++GEOMETRY_RUN_SCHEMAS['geometry_execution']='geometry_execution_v1'
++GEOMETRY_CONFIGS=(GEOMETRY_VERSION,GEOMETRY_RUN_VERSION)
++GEOMETRY_BUNDLES=(GEOMETRY_BUNDLE,GEOMETRY_RUN_BUNDLE)
++GEOMETRY_CONTEXTS=(GEOMETRY_CONTEXT,GEOMETRY_RUN_CONTEXT)
++
++GEOMETRY_RUN_SCHEMAS['geometry_metrics']='geometry_metrics_v1'
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py
+index 5b85505a..7740d5d1 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py
+@@ -34,7 +34,7 @@ def result(context, *, status, source, label=None, attempt=None, payload=None, e
+                  "usage": metadata.get("usage"), "latency_s": saved["latency_s"] if saved else None,
+                  "local_binding_digest": digest(value["local_binding"]),
+                  "raw_response_digest": saved["raw_sha256"] if saved else None, "error": error}
+-    if value['version'] in ('jev_decision_context_v13','jev_decision_context_v6','jev_decision_context_v7','jev_decision_context_v8','jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT):
++    if value['version'] in ('jev_decision_context_v15','jev_decision_context_v13','jev_decision_context_v6','jev_decision_context_v7','jev_decision_context_v8','jev_decision_context_v9','jev_decision_context_v10','jev_decision_context_v11', EXACT_CONTEXT):
+         selection.update(network_attempted=saved['network_attempted'] if saved else False,
+                          error_stage=('response_validation' if status=='invalid_response' else (saved or {}).get('error_stage')) if error else None,
+                          error_code=error)
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py
+index c41c275b..390db2bd 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py
+@@ -4,7 +4,7 @@ Durability belongs to the shared episode checkpoint. This module owns frozen
+ monitor identity, exact-action credentials and validation without reassessment.
+ """
+ from __future__ import annotations
+-from ..packaging_versions import EXACT_VERSION
++from ..packaging_versions import EXACT_VERSION, GEOMETRY_RUN_VERSION
+ 
+ import copy
+ import time
+@@ -18,7 +18,7 @@ TERMINATIONS = {'UNSTABLE':'PREDICTED_STATIC_INSTABILITY',
+ 
+ 
+ def is_monitored(config):
+-    return config.get('version') in ('jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
++    return config.get('version') in (GEOMETRY_RUN_VERSION,'jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
+ 
+ 
+ def freeze(enabled=False):
+@@ -61,6 +61,10 @@ def load_monitor_config(*, data_identity, task_digest, method='local_geometry_te
+ 
+ def preflight(config):
+     validate_schema('config', config)
++    if config['version']==GEOMETRY_RUN_VERSION:
++        from ..geometry_execution import preflight_run
++        preflight_run(config)
++        return
+     if config['version']=='jev_packaging_jm_no_memory_v13':
+         from ..packaging_jev_v13 import preflight
+         preflight(config)
+@@ -198,6 +202,8 @@ def validate_monitor(row, state, candidate, event, config, *, require_stable=Fal
+             res['state_digest']!=digest(asdict(state_from_runtime(state))) or
+             res['candidate_digest']!=digest(asdict(box_from_runtime(selected_box(state,candidate))))):
+             raise JevSelectError('kernel_result_binding_changed')
++    if require_stable and config['version']==GEOMETRY_RUN_VERSION and row['status']!='STABLE':
++        raise JevSelectError('geometry_monitor_commit_not_stable')
+     if require_stable and row['status'] not in ('DISABLED','STABLE'):
+         raise JevSelectError('monitor_commit_not_authorized')
+     return row

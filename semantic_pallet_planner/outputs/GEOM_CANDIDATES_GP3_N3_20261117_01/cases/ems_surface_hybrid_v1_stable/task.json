@@ -1,0 +1,52 @@
+{
+  "task_id": "CONSTRUCTED_NOT_SOURCE_ORDER",
+  "mode": "controlled_packaging",
+  "layer": "CONSTRUCTED_MECHANISM",
+  "feasibility_status": "UNKNOWN",
+  "regions": [],
+  "reference_policy": {
+    "version": "jev_packaging_load_dataset_v1",
+    "rules": []
+  },
+  "instruction_text": "Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.",
+  "container": {
+    "container_id": "fixture",
+    "coordinate_frame": "container_bottom_center",
+    "length_mm": 1000,
+    "width_mm": 1000,
+    "max_height_mm": 1000,
+    "max_payload_kg": 1000
+  },
+  "items": [
+    {
+      "item_id": "manual_box",
+      "mass_kg": 1,
+      "dimensions_mm": {
+        "length": 100,
+        "width": 100,
+        "height": 100
+      },
+      "stackable": true,
+      "top_load_limit_kg_synthetic": 100,
+      "fragile": false,
+      "weight_class": "medium",
+      "product_category": "general"
+    }
+  ],
+  "attributes": {
+    "manual_box": {
+      "object_id": "manual_box",
+      "physical_top_load_limit_kg": 100,
+      "cargo_category": "general",
+      "packaging": {
+        "reinforced": false
+      },
+      "labels": {
+        "no_top_load": false,
+        "max_top_load_kg": 100
+      }
+    }
+  },
+  "version": "jev_geometry_fixture_task_v1",
+  "fixture_only": true
+}

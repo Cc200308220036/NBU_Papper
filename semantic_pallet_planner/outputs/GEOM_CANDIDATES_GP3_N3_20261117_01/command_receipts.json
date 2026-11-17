@@ -1,0 +1,106 @@
+{
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_execution_n3.py -v > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/n3_tests_01.log 2>&1",
+      "log": "n3_tests_01.log",
+      "test_groups": 6,
+      "exit_code": 1
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_execution_n3.py -v > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/n3_tests_02.log 2>&1",
+      "log": "n3_tests_02.log",
+      "test_groups": 6,
+      "exit_code": 1
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_execution_n3.py -v > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/n3_tests_03.log 2>&1",
+      "log": "n3_tests_03.log",
+      "test_groups": 6,
+      "exit_code": 1
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_execution_n3.py -v > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/n3_tests_04.log 2>&1",
+      "log": "n3_tests_04.log",
+      "test_groups": 6,
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src N3_EVIDENCE=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01 python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_execution_n3.py -v > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/n3_tests_05.log 2>&1",
+      "log": "n3_tests_05.log",
+      "test_groups": 8,
+      "exit_code": 1
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src N3_EVIDENCE=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01 python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_execution_n3.py -v > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/n3_tests_final.log 2>&1",
+      "log": "n3_tests_final.log",
+      "test_groups": 10,
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_binding_r1.py -v > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/test_geometry_binding_r1.log 2>&1",
+      "exit_code": 0,
+      "test_groups": 5
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_public_n2.py -v > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/test_geometry_public_n2.log 2>&1",
+      "exit_code": 0,
+      "test_groups": 11
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_runtime_n1.py -v > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/test_geometry_runtime_n1.log 2>&1",
+      "exit_code": 0,
+      "test_groups": 13
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_space_candidates_gp2.py -v > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/test_space_candidates_gp2.log 2>&1",
+      "exit_code": 0,
+      "test_groups": 13
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m pytest semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_packaging_runtime.py -k 'recovery_reconstructs_load_once or empty_state_metrics' -q > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/legacy_runtime.log 2>&1",
+      "exit_code": 0,
+      "passed": 3,
+      "deselected": 15
+    },
+    {
+      "command": "python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/collect_delivery.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/collection.log 2>&1",
+      "exit_code": 0,
+      "scope": "saved evidence/source only"
+    },
+    {
+      "command": "python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/verify_delivery.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/verification_01.log 2>&1",
+      "exit_code": 0,
+      "scope": "stdlib saved files only; no production imports"
+    },
+    {
+      "command": "python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/verify_delivery.py --sealed > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/seal_verification.log 2>&1",
+      "result": "post-seal result in seal_verification.log; excluded from manifest as receipt"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "pull": {
+    "command": "git pull --ff-only",
+    "exit_code": 0,
+    "mode": "authorized require_escalated",
+    "result": "FF 81a9a6ec -> 5a15186e537fc45d6dbea455e57b58a4995c0e1d"
+  },
+  "read_only_preflight": [
+    "pwd",
+    "git status --short",
+    "git branch --show-current",
+    "git rev-parse --abbrev-ref @{upstream}",
+    "git diff --cached --stat",
+    "git rev-parse HEAD",
+    "rg --files -g AGENTS.md"
+  ],
+  "git_add_commit_push": "NOT_RUN",
+  "model_network_calls": 0,
+  "real_source_orders": 0,
+  "PCT_LP_calls": 0,
+  "dependencies_installed": false,
+  "credentials_read": false,
+  "subagents": 0
+}

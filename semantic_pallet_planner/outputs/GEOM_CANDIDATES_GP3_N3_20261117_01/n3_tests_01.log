@@ -1,0 +1,132 @@
+test_missing_and_corrupted_blob_and_identity_drift_reject (test_geometry_execution_n3.ExecutionN3.test_missing_and_corrupted_blob_and_identity_drift_reject) ... ERROR
+test_monitor_stops_and_singleton_share_exact_action_path (test_geometry_execution_n3.ExecutionN3.test_monitor_stops_and_singleton_share_exact_action_path) ... ERROR
+test_persistence_failure_precedes_generation_selection_monitor (test_geometry_execution_n3.ExecutionN3.test_persistence_failure_precedes_generation_selection_monitor) ... ERROR
+test_phase_resume_no_reselect_no_reassess_no_recommit (test_geometry_execution_n3.ExecutionN3.test_phase_resume_no_reselect_no_reassess_no_recommit) ... ERROR
+test_two_backends_two_local_methods_stable_and_atomic_order (test_geometry_execution_n3.ExecutionN3.test_two_backends_two_local_methods_stable_and_atomic_order) ... 
+  test_two_backends_two_local_methods_stable_and_atomic_order (test_geometry_execution_n3.ExecutionN3.test_two_backends_two_local_methods_stable_and_atomic_order) (backend='e2_original_v1') ... ERROR
+  test_two_backends_two_local_methods_stable_and_atomic_order (test_geometry_execution_n3.ExecutionN3.test_two_backends_two_local_methods_stable_and_atomic_order) (backend='ems_surface_hybrid_v1') ... ERROR
+test_unknown_send_stops_without_retry (test_geometry_execution_n3.ExecutionN3.test_unknown_send_stops_without_retry) ... ERROR
+
+======================================================================
+ERROR: test_missing_and_corrupted_blob_and_identity_drift_reject (test_geometry_execution_n3.ExecutionN3.test_missing_and_corrupted_blob_and_identity_drift_reject)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 104, in test_missing_and_corrupted_blob_and_identity_drift_reject
+    t,c=self.cfg();
+        ~~~~~~~~^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 52, in cfg
+    t=kw.pop('task',fixture());return t,load_run_config(backend=backend,task=t,data_identity=digest('N3_MANUAL_ONLY'),**kw)
+                                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 25, in load_run_config
+    validate_fixture(task)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 21, in validate_fixture
+    raise JevSelectError('geometry_manual_fixture_only')
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_manual_fixture_only
+
+======================================================================
+ERROR: test_monitor_stops_and_singleton_share_exact_action_path (test_geometry_execution_n3.ExecutionN3.test_monitor_stops_and_singleton_share_exact_action_path)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 80, in test_monitor_stops_and_singleton_share_exact_action_path
+    self.cps=[];t,c=self.cfg(task=fixture(True),enabled=status!='DISABLED');calls=[]
+                    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 52, in cfg
+    t=kw.pop('task',fixture());return t,load_run_config(backend=backend,task=t,data_identity=digest('N3_MANUAL_ONLY'),**kw)
+                                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 25, in load_run_config
+    validate_fixture(task)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 21, in validate_fixture
+    raise JevSelectError('geometry_manual_fixture_only')
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_manual_fixture_only
+
+======================================================================
+ERROR: test_persistence_failure_precedes_generation_selection_monitor (test_geometry_execution_n3.ExecutionN3.test_persistence_failure_precedes_generation_selection_monitor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 124, in test_persistence_failure_precedes_generation_selection_monitor
+    t,c=self.cfg()
+        ~~~~~~~~^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 52, in cfg
+    t=kw.pop('task',fixture());return t,load_run_config(backend=backend,task=t,data_identity=digest('N3_MANUAL_ONLY'),**kw)
+                                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 25, in load_run_config
+    validate_fixture(task)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 21, in validate_fixture
+    raise JevSelectError('geometry_manual_fixture_only')
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_manual_fixture_only
+
+======================================================================
+ERROR: test_phase_resume_no_reselect_no_reassess_no_recommit (test_geometry_execution_n3.ExecutionN3.test_phase_resume_no_reselect_no_reassess_no_recommit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 90, in test_phase_resume_no_reselect_no_reassess_no_recommit
+    self.cps=[];t,c=self.cfg(backend);calls=[]
+                    ~~~~~~~~^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 52, in cfg
+    t=kw.pop('task',fixture());return t,load_run_config(backend=backend,task=t,data_identity=digest('N3_MANUAL_ONLY'),**kw)
+                                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 25, in load_run_config
+    validate_fixture(task)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 21, in validate_fixture
+    raise JevSelectError('geometry_manual_fixture_only')
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_manual_fixture_only
+
+======================================================================
+ERROR: test_two_backends_two_local_methods_stable_and_atomic_order (test_geometry_execution_n3.ExecutionN3.test_two_backends_two_local_methods_stable_and_atomic_order) (backend='e2_original_v1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 67, in test_two_backends_two_local_methods_stable_and_atomic_order
+    self.cps=[];t,c=self.cfg(backend,method=method);calls=[]
+                    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 52, in cfg
+    t=kw.pop('task',fixture());return t,load_run_config(backend=backend,task=t,data_identity=digest('N3_MANUAL_ONLY'),**kw)
+                                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 25, in load_run_config
+    validate_fixture(task)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 21, in validate_fixture
+    raise JevSelectError('geometry_manual_fixture_only')
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_manual_fixture_only
+
+======================================================================
+ERROR: test_two_backends_two_local_methods_stable_and_atomic_order (test_geometry_execution_n3.ExecutionN3.test_two_backends_two_local_methods_stable_and_atomic_order) (backend='ems_surface_hybrid_v1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 67, in test_two_backends_two_local_methods_stable_and_atomic_order
+    self.cps=[];t,c=self.cfg(backend,method=method);calls=[]
+                    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 52, in cfg
+    t=kw.pop('task',fixture());return t,load_run_config(backend=backend,task=t,data_identity=digest('N3_MANUAL_ONLY'),**kw)
+                                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 25, in load_run_config
+    validate_fixture(task)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 21, in validate_fixture
+    raise JevSelectError('geometry_manual_fixture_only')
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_manual_fixture_only
+
+======================================================================
+ERROR: test_unknown_send_stops_without_retry (test_geometry_execution_n3.ExecutionN3.test_unknown_send_stops_without_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 130, in test_unknown_send_stops_without_retry
+    t,c=self.cfg()
+        ~~~~~~~~^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 52, in cfg
+    t=kw.pop('task',fixture());return t,load_run_config(backend=backend,task=t,data_identity=digest('N3_MANUAL_ONLY'),**kw)
+                                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 25, in load_run_config
+    validate_fixture(task)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py", line 21, in validate_fixture
+    raise JevSelectError('geometry_manual_fixture_only')
+semantic_pallet_planner.jev_select.contracts.JevSelectError: geometry_manual_fixture_only
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.005s
+
+FAILED (errors=7)

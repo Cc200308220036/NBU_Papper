@@ -4,7 +4,7 @@ Durability belongs to the shared episode checkpoint. This module owns frozen
 monitor identity, exact-action credentials and validation without reassessment.
 """
 from __future__ import annotations
-from ..packaging_versions import EXACT_VERSION
+from ..packaging_versions import EXACT_VERSION, GEOMETRY_RUN_VERSION
 
 import copy
 import time
@@ -18,7 +18,7 @@ TERMINATIONS = {'UNSTABLE':'PREDICTED_STATIC_INSTABILITY',
 
 
 def is_monitored(config):
-    return config.get('version') in ('jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
+    return config.get('version') in (GEOMETRY_RUN_VERSION,'jev_packaging_jm_no_memory_v13', VERSION, 'jev_packaging_remote_v6','jev_packaging_memory_v7','jev_packaging_contrast_v8','jev_packaging_memory_orders_v9','jev_packaging_evaluation_v10','jev_packaging_synthetic_v11', EXACT_VERSION)
 
 
 def freeze(enabled=False):
@@ -61,6 +61,10 @@ def load_monitor_config(*, data_identity, task_digest, method='local_geometry_te
 
 def preflight(config):
     validate_schema('config', config)
+    if config['version']==GEOMETRY_RUN_VERSION:
+        from ..geometry_execution import preflight_run
+        preflight_run(config)
+        return
     if config['version']=='jev_packaging_jm_no_memory_v13':
         from ..packaging_jev_v13 import preflight
         preflight(config)
@@ -198,6 +202,8 @@ def validate_monitor(row, state, candidate, event, config, *, require_stable=Fal
             res['state_digest']!=digest(asdict(state_from_runtime(state))) or
             res['candidate_digest']!=digest(asdict(box_from_runtime(selected_box(state,candidate))))):
             raise JevSelectError('kernel_result_binding_changed')
+    if require_stable and config['version']==GEOMETRY_RUN_VERSION and row['status']!='STABLE':
+        raise JevSelectError('geometry_monitor_commit_not_stable')
     if require_stable and row['status'] not in ('DISABLED','STABLE'):
         raise JevSelectError('monitor_commit_not_authorized')
     return row

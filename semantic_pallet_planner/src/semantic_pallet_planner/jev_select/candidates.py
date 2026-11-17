@@ -1,5 +1,6 @@
 """Public-only candidate generation and business filtering; no selection policy."""
 from __future__ import annotations
+from .packaging_versions import GEOMETRY_CONFIGS, GEOMETRY_BUNDLES
 from .packaging_versions import EXACT_BUNDLE
 
 import copy
@@ -51,7 +52,7 @@ def validate_bundle(req: dict, bundle: CandidateBundle) -> dict:
     value = bundle.data
     validate_schema("candidate_bundle", value)
     from .packaging_versions import GEOMETRY_BUNDLE
-    if value['version']==GEOMETRY_BUNDLE:
+    if value['version'] in GEOMETRY_BUNDLES:
         from .candidate_backends import validate_geometry_bundle
         validate_geometry_bundle(req,bundle)
     if value["observation_digest"] != req["observation_digest"]:
@@ -77,7 +78,7 @@ class CandidateProvider:
         from .packaging_versions import GEOMETRY_VERSION
         if config is not None:
             validate_schema('config',config)
-        if config is not None and config.get('version')==GEOMETRY_VERSION:
+        if config is not None and config.get('version') in GEOMETRY_CONFIGS:
             from .candidate_backends import build_geometry_bundle
             result=build_geometry_bundle(state,observation,generator_config,config,common_input=common_input)
             validate_bundle(observation,result)
@@ -149,7 +150,7 @@ class PublicBusinessGuard:
                config: dict) -> CandidateBundle:
         validate_schema("config", config)
         from .packaging_versions import GEOMETRY_VERSION, GEOMETRY_BUNDLE
-        if config['version']==GEOMETRY_VERSION or bundle.data['version']==GEOMETRY_BUNDLE:
+        if config['version'] in GEOMETRY_CONFIGS or bundle.data['version'] in GEOMETRY_BUNDLES:
             from .candidate_backends import validate_geometry_config_bundle
             validate_geometry_config_bundle(config,bundle)
         value = validate_bundle(req, bundle)
@@ -161,7 +162,7 @@ class PublicBusinessGuard:
             value.update(selectable_pool="physical_feasible", selectable_candidates=copy.deepcopy(candidates),
                          selectable_digest=digest(candidates), policy_digest=digest(policy.data))
             from .packaging_versions import GEOMETRY_VERSION
-            result = bundle.with_data(value) if config['version']==GEOMETRY_VERSION else CandidateBundle.from_dict(value)
+            result = bundle.with_data(value) if config['version'] in GEOMETRY_CONFIGS else CandidateBundle.from_dict(value)
             validate_bundle(req, result)
             return result
         if value["version"] != "jev_candidate_bundle_v1":

@@ -1,0 +1,35 @@
+test_missing_and_corrupted_blob_and_identity_drift_reject (test_geometry_execution_n3.ExecutionN3.test_missing_and_corrupted_blob_and_identity_drift_reject) ... ok
+test_monitor_stops_and_singleton_share_exact_action_path (test_geometry_execution_n3.ExecutionN3.test_monitor_stops_and_singleton_share_exact_action_path) ... FAIL
+test_persistence_failure_precedes_generation_selection_monitor (test_geometry_execution_n3.ExecutionN3.test_persistence_failure_precedes_generation_selection_monitor) ... ok
+test_phase_resume_no_reselect_no_reassess_no_recommit (test_geometry_execution_n3.ExecutionN3.test_phase_resume_no_reselect_no_reassess_no_recommit) ... ok
+test_two_backends_two_local_methods_stable_and_atomic_order (test_geometry_execution_n3.ExecutionN3.test_two_backends_two_local_methods_stable_and_atomic_order) ... ok
+test_unknown_send_stops_without_retry (test_geometry_execution_n3.ExecutionN3.test_unknown_send_stops_without_retry) ... FAIL
+
+======================================================================
+FAIL: test_monitor_stops_and_singleton_share_exact_action_path (test_geometry_execution_n3.ExecutionN3.test_monitor_stops_and_singleton_share_exact_action_path)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 85, in test_monitor_stops_and_singleton_share_exact_action_path
+    self.assertEqual(ev['selection']['status'],'singleton');self.assertIsNone(ev['action'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'selected' != 'singleton'
+- selected
++ singleton
+
+
+======================================================================
+FAIL: test_unknown_send_stops_without_retry (test_geometry_execution_n3.ExecutionN3.test_unknown_send_stops_without_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 134, in test_unknown_send_stops_without_retry
+    self.assertEqual(out['summary']['placed_items'],0);self.assertEqual(out['summary']['termination_reason'],'UNKNOWN_SEND')
+                                                       ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'invalid_selection_result_v15' != 'UNKNOWN_SEND'
+- invalid_selection_result_v15
++ UNKNOWN_SEND
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 33.432s
+
+FAILED (failures=2)

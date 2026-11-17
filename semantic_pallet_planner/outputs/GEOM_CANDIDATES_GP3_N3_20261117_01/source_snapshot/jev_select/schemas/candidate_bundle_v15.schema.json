@@ -1,0 +1,473 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_candidate_bundle_v15"
+    },
+    "observation_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "candidate_backend": {
+      "enum": [
+        "e2_original_v1",
+        "ems_surface_hybrid_v1"
+      ]
+    },
+    "generator_config_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "physical_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "candidate_fingerprint": {
+            "type": "string"
+          },
+          "candidate_id": {
+            "type": "string"
+          },
+          "ems": {
+            "type": "object",
+            "properties": {
+              "ems_id": {
+                "type": "string"
+              },
+              "ems_type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "ems_id",
+              "ems_type"
+            ],
+            "additionalProperties": false
+          },
+          "geometry_score_components": {
+            "type": "object",
+            "properties": {
+              "balance": {
+                "type": "number"
+              },
+              "compactness": {
+                "type": "number"
+              },
+              "height": {
+                "type": "number"
+              },
+              "stability": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "balance",
+              "compactness",
+              "height",
+              "stability"
+            ],
+            "additionalProperties": false
+          },
+          "load": {
+            "type": "object",
+            "properties": {
+              "downward_load_kg": {
+                "type": "number"
+              },
+              "minimum_remaining_capacity_kg": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "downward_load_kg",
+              "minimum_remaining_capacity_kg"
+            ],
+            "additionalProperties": false
+          },
+          "oriented_size_mm": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "physical_rejection_reasons": {
+            "const": []
+          },
+          "physical_valid": {
+            "const": true
+          },
+          "pick_item_id": {
+            "type": "string"
+          },
+          "pose": {
+            "type": "object",
+            "properties": {
+              "x_mm": {
+                "type": "number"
+              },
+              "y_mm": {
+                "type": "number"
+              },
+              "yaw_deg": {
+                "enum": [
+                  0,
+                  90
+                ]
+              },
+              "z_base_mm": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "x_mm",
+              "y_mm",
+              "yaw_deg",
+              "z_base_mm"
+            ],
+            "additionalProperties": false
+          },
+          "resulting_geometry": {
+            "type": "object",
+            "properties": {
+              "center_of_mass_offset_mm": {
+                "type": "number"
+              },
+              "max_height_mm": {
+                "type": "number"
+              },
+              "volume_utilization": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "center_of_mass_offset_mm",
+              "max_height_mm",
+              "volume_utilization"
+            ],
+            "additionalProperties": false
+          },
+          "support": {
+            "type": "object",
+            "properties": {
+              "com_margin_mm": {
+                "type": "number"
+              },
+              "support_item_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "support_ratio": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "com_margin_mm",
+              "support_item_ids",
+              "support_ratio"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "candidate_fingerprint",
+          "candidate_id",
+          "ems",
+          "geometry_score_components",
+          "load",
+          "oriented_size_mm",
+          "physical_rejection_reasons",
+          "physical_valid",
+          "pick_item_id",
+          "pose",
+          "resulting_geometry",
+          "support"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 48
+    },
+    "physical_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "generation_counts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pick_item_id": {
+            "type": "string"
+          },
+          "returned": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16
+          },
+          "sampled_physical": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "rejections": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "enumeration_attempts": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "pick_item_id",
+          "returned",
+          "sampled_physical",
+          "rejections",
+          "enumeration_attempts"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 3
+    },
+    "selectable_pool": {
+      "const": "physical_feasible"
+    },
+    "selectable_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "candidate_fingerprint": {
+            "type": "string"
+          },
+          "candidate_id": {
+            "type": "string"
+          },
+          "ems": {
+            "type": "object",
+            "properties": {
+              "ems_id": {
+                "type": "string"
+              },
+              "ems_type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "ems_id",
+              "ems_type"
+            ],
+            "additionalProperties": false
+          },
+          "geometry_score_components": {
+            "type": "object",
+            "properties": {
+              "balance": {
+                "type": "number"
+              },
+              "compactness": {
+                "type": "number"
+              },
+              "height": {
+                "type": "number"
+              },
+              "stability": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "balance",
+              "compactness",
+              "height",
+              "stability"
+            ],
+            "additionalProperties": false
+          },
+          "load": {
+            "type": "object",
+            "properties": {
+              "downward_load_kg": {
+                "type": "number"
+              },
+              "minimum_remaining_capacity_kg": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "downward_load_kg",
+              "minimum_remaining_capacity_kg"
+            ],
+            "additionalProperties": false
+          },
+          "oriented_size_mm": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "physical_rejection_reasons": {
+            "const": []
+          },
+          "physical_valid": {
+            "const": true
+          },
+          "pick_item_id": {
+            "type": "string"
+          },
+          "pose": {
+            "type": "object",
+            "properties": {
+              "x_mm": {
+                "type": "number"
+              },
+              "y_mm": {
+                "type": "number"
+              },
+              "yaw_deg": {
+                "enum": [
+                  0,
+                  90
+                ]
+              },
+              "z_base_mm": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "x_mm",
+              "y_mm",
+              "yaw_deg",
+              "z_base_mm"
+            ],
+            "additionalProperties": false
+          },
+          "resulting_geometry": {
+            "type": "object",
+            "properties": {
+              "center_of_mass_offset_mm": {
+                "type": "number"
+              },
+              "max_height_mm": {
+                "type": "number"
+              },
+              "volume_utilization": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "center_of_mass_offset_mm",
+              "max_height_mm",
+              "volume_utilization"
+            ],
+            "additionalProperties": false
+          },
+          "support": {
+            "type": "object",
+            "properties": {
+              "com_margin_mm": {
+                "type": "number"
+              },
+              "support_item_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "support_ratio": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "com_margin_mm",
+              "support_item_ids",
+              "support_ratio"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "candidate_fingerprint",
+          "candidate_id",
+          "ems",
+          "geometry_score_components",
+          "load",
+          "oriented_size_mm",
+          "physical_rejection_reasons",
+          "physical_valid",
+          "pick_item_id",
+          "pose",
+          "resulting_geometry",
+          "support"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 48
+    },
+    "selectable_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "policy_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "experiment_protocol": {
+      "const": "geometry_fixture_run_v1"
+    },
+    "business_mode": {
+      "const": "physical_only"
+    },
+    "geometry_audit_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "geometry_audit_ref": {
+      "const": "IN_MEMORY_SIDECAR_V1"
+    },
+    "common_input_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "backend_binding_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "observation_digest",
+    "candidate_backend",
+    "generator_config_digest",
+    "physical_candidates",
+    "physical_digest",
+    "generation_counts",
+    "selectable_pool",
+    "selectable_candidates",
+    "selectable_digest",
+    "policy_digest",
+    "experiment_protocol",
+    "business_mode",
+    "geometry_audit_digest",
+    "geometry_audit_ref",
+    "common_input_digest",
+    "backend_binding_digest"
+  ],
+  "additionalProperties": false
+}

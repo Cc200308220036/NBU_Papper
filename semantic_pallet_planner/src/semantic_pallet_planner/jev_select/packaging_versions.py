@@ -93,3 +93,17 @@ JM_FS_RESULT='jev_jm_fs_result_v1'
 JM_FS_ALGORITHM='jm_fs_floor_grid_neighbor_v1'
 JM_FS_PROTOCOLS={v:'packaging_fs_geometry' for v in (JM_FS_INPUT,JM_FS_RESULT)}
 JM_FS_SCHEMAS={JM_FS_INPUT:'jm_fs_input_v1',JM_FS_RESULT:'jm_fs_result_v1'}
+
+# GP3-N3 hand-fixture execution, independent of construction-only v14.
+GEOMETRY_RUN_VERSION='jev_packaging_geometry_run_v15'
+GEOMETRY_RUN_CONTEXT='jev_decision_context_v15'
+GEOMETRY_RUN_BUNDLE='jev_candidate_bundle_v15'
+GEOMETRY_EXECUTION='geometry_fixture_execution_v1'
+GEOMETRY_RUN_SCHEMAS={k:k+'_v15' for k in
+    ('config','candidate_bundle','decision_context','selection_result','checkpoint')}
+GEOMETRY_RUN_SCHEMAS['geometry_execution']='geometry_execution_v1'
+GEOMETRY_CONFIGS=(GEOMETRY_VERSION,GEOMETRY_RUN_VERSION)
+GEOMETRY_BUNDLES=(GEOMETRY_BUNDLE,GEOMETRY_RUN_BUNDLE)
+GEOMETRY_CONTEXTS=(GEOMETRY_CONTEXT,GEOMETRY_RUN_CONTEXT)
+
+GEOMETRY_RUN_SCHEMAS['geometry_metrics']='geometry_metrics_v1'

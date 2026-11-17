@@ -1,0 +1,45 @@
+{
+  "scope": "GP3_N3_ONLY_MANUAL_FIXTURES",
+  "config": "jev_packaging_geometry_run_v15",
+  "bundle": "jev_candidate_bundle_v15",
+  "context": "jev_decision_context_v15",
+  "selection": "jev_selection_result_v15",
+  "checkpoint": "jev_checkpoint_v15",
+  "execution": "geometry_fixture_execution_v1",
+  "metrics": "jev_geometry_fixture_metrics_v1",
+  "profile": "geometry_runtime_shortest_decimal_v1",
+  "snapshot_versions": [
+    "geometry_runtime_state_snapshot_v1",
+    "geometry_runtime_public_input_v1"
+  ],
+  "binding_versions": [
+    "geometry_common_input_binding_v1",
+    "geometry_backend_binding_v1"
+  ],
+  "durable_versions": [
+    "geometry_blob_ref_v1",
+    "geometry_durable_input_v1",
+    "geometry_durable_decision_v1",
+    "geometry_generation_failure_v1"
+  ],
+  "names_checked_before_registration": true,
+  "v14": "unchanged construction_only and rejection",
+  "F0": "same projection/seed/anonymous mapping/request budget; technical identities sidecar only",
+  "atomic_order": [
+    "capture and validate current public snapshots",
+    "fsync native and geometry blobs, publish immutable input manifest after readback",
+    "candidate generation with verified common input",
+    "fsync bundle/sidecar manifest before DECISION_READY checkpoint",
+    "SELECTED durable checkpoint",
+    "monitor selected exact action only",
+    "MONITORED durable checkpoint",
+    "STABLE only original commit_physical",
+    "COMMITTED durable checkpoint and later append/evaluate"
+  ],
+  "source_identity": "all production py/json; native environment binding and execution environment binding",
+  "execution_authority": "manual fixture task only, existing two local strategies; not a real-source permit or digital signature",
+  "resume": "load same immutable blobs; before binding; private original buffer place validation of after; no selector/reassessment/actual commit replay",
+  "DISABLED": "GEOMETRY_MONITOR_DISABLED; no commit",
+  "UNKNOWN_SEND": "record actual status and stop; no retry",
+  "kernel": "production exact v3 only; tests inject kernel_interface boundary, real kernel NOT_RUN"
+}

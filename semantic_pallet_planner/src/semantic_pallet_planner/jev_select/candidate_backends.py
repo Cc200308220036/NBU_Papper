@@ -3,6 +3,7 @@
 Common input/admission and backend bindings are independent of N1's new-backend
 binding. N1 configuration guards remain intact. Telemetry is not semantic audit.
 """
+from .packaging_versions import GEOMETRY_RUN_VERSION, GEOMETRY_RUN_BUNDLE
 import copy
 from dataclasses import dataclass, replace
 from importlib.resources import files
@@ -49,6 +50,9 @@ def load_geometry_config(*, backend, data_identity, task_identity, monitor_ident
 
 
 def preflight_config(config):
+    if config.get('version')==GEOMETRY_RUN_VERSION:
+        from .geometry_execution import preflight_run
+        return preflight_run(config)
     validate_schema('config',config)
     c.require(config['version']==GEOMETRY_VERSION,'construction config v14 required')
     ids=config['runtime_identity']
@@ -212,7 +216,7 @@ def build_geometry_bundle(state,observation,generator_config,config,*,common_inp
     audit['final_candidates_digest']=digest(candidates)
     audit['generation_counts']=copy.deepcopy(counts)
     from .packaging_runtime import no_policy
-    value={'version':GEOMETRY_BUNDLE,'observation_digest':observation['observation_digest'],
+    value={'version':GEOMETRY_RUN_BUNDLE if config['version']==GEOMETRY_RUN_VERSION else GEOMETRY_BUNDLE,'observation_digest':observation['observation_digest'],
         'candidate_backend':backend,'generator_config_digest':digest(generator_config),
         'physical_candidates':candidates,'physical_digest':digest(candidates),'generation_counts':counts,
         'selectable_pool':'physical_feasible','selectable_candidates':copy.deepcopy(candidates),

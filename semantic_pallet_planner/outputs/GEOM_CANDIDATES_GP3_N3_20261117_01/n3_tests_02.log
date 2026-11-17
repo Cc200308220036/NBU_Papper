@@ -1,0 +1,73 @@
+test_missing_and_corrupted_blob_and_identity_drift_reject (test_geometry_execution_n3.ExecutionN3.test_missing_and_corrupted_blob_and_identity_drift_reject) ... FAIL
+test_monitor_stops_and_singleton_share_exact_action_path (test_geometry_execution_n3.ExecutionN3.test_monitor_stops_and_singleton_share_exact_action_path) ... FAIL
+test_persistence_failure_precedes_generation_selection_monitor (test_geometry_execution_n3.ExecutionN3.test_persistence_failure_precedes_generation_selection_monitor) ... ok
+test_phase_resume_no_reselect_no_reassess_no_recommit (test_geometry_execution_n3.ExecutionN3.test_phase_resume_no_reselect_no_reassess_no_recommit) ... FAIL
+test_two_backends_two_local_methods_stable_and_atomic_order (test_geometry_execution_n3.ExecutionN3.test_two_backends_two_local_methods_stable_and_atomic_order) ... 
+  test_two_backends_two_local_methods_stable_and_atomic_order (test_geometry_execution_n3.ExecutionN3.test_two_backends_two_local_methods_stable_and_atomic_order) (backend='e2_original_v1') ... FAIL
+  test_two_backends_two_local_methods_stable_and_atomic_order (test_geometry_execution_n3.ExecutionN3.test_two_backends_two_local_methods_stable_and_atomic_order) (backend='ems_surface_hybrid_v1') ... FAIL
+test_unknown_send_stops_without_retry (test_geometry_execution_n3.ExecutionN3.test_unknown_send_stops_without_retry) ... FAIL
+
+======================================================================
+FAIL: test_missing_and_corrupted_blob_and_identity_drift_reject (test_geometry_execution_n3.ExecutionN3.test_missing_and_corrupted_blob_and_identity_drift_reject)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 108, in test_missing_and_corrupted_blob_and_identity_drift_reject
+    with self.assertRaises(Cut):self.runloop(t,c,hook=hook)
+         ~~~~~~~~~~~~~~~~~^^^^^
+AssertionError: Cut not raised
+
+======================================================================
+FAIL: test_monitor_stops_and_singleton_share_exact_action_path (test_geometry_execution_n3.ExecutionN3.test_monitor_stops_and_singleton_share_exact_action_path)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 82, in test_monitor_stops_and_singleton_share_exact_action_path
+    self.assertEqual(out['summary']['termination_reason'],reason)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'invalid_candidate_bundle_v15' != 'PREDICTED_STATIC_INSTABILITY'
+- invalid_candidate_bundle_v15
++ PREDICTED_STATIC_INSTABILITY
+
+
+======================================================================
+FAIL: test_phase_resume_no_reselect_no_reassess_no_recommit (test_geometry_execution_n3.ExecutionN3.test_phase_resume_no_reselect_no_reassess_no_recommit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 94, in test_phase_resume_no_reselect_no_reassess_no_recommit
+    with self.assertRaises(Cut):self.runloop(t,c,hook=hook)
+         ~~~~~~~~~~~~~~~~~^^^^^
+AssertionError: Cut not raised
+
+======================================================================
+FAIL: test_two_backends_two_local_methods_stable_and_atomic_order (test_geometry_execution_n3.ExecutionN3.test_two_backends_two_local_methods_stable_and_atomic_order) (backend='e2_original_v1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 70, in test_two_backends_two_local_methods_stable_and_atomic_order
+    self.assertEqual(out['summary']['placed_items'],1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_two_backends_two_local_methods_stable_and_atomic_order (test_geometry_execution_n3.ExecutionN3.test_two_backends_two_local_methods_stable_and_atomic_order) (backend='ems_surface_hybrid_v1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 70, in test_two_backends_two_local_methods_stable_and_atomic_order
+    self.assertEqual(out['summary']['placed_items'],1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_unknown_send_stops_without_retry (test_geometry_execution_n3.ExecutionN3.test_unknown_send_stops_without_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_execution_n3.py", line 134, in test_unknown_send_stops_without_retry
+    self.assertEqual(out['summary']['placed_items'],0);self.assertEqual(out['summary']['termination_reason'],'UNKNOWN_SEND')
+                                                       ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'invalid_candidate_bundle_v15' != 'UNKNOWN_SEND'
+- invalid_candidate_bundle_v15
++ UNKNOWN_SEND
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 4.702s
+
+FAILED (failures=6)

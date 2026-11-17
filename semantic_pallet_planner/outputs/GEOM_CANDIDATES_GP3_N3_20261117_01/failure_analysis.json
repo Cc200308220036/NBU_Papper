@@ -1,0 +1,46 @@
+{
+  "preserved_historical_issue": "GP3-N2-R1-EVID-01 OPEN_RECORDED; old validator and QA raw FAIL untouched",
+  "failures": [
+    {
+      "log": "n3_tests_01.log",
+      "exit_code": 1,
+      "cause": "new fixture validation reference_policy dataset version initially misspelled",
+      "fix": "use actual dataset version; no old contract edits"
+    },
+    {
+      "log": "n3_tests_02.log",
+      "exit_code": 1,
+      "cause": "new bundle schema still required construction experiment_protocol",
+      "fix": "independent v15 schema now requires geometry_fixture_run_v1"
+    },
+    {
+      "log": "n3_tests_03.log",
+      "exit_code": 1,
+      "cause": "square singleton fixture had two distinct yaw actions; new selection schema omitted UNKNOWN_SEND status",
+      "fix": "rectangular exact-fit fixture; new v15 enum explicitly allows unknown_send, old schemas unchanged"
+    },
+    {
+      "log": "n3_tests_05.log",
+      "exit_code": 1,
+      "cause": "test expected generic numeric error instead of existing RUNTIME_NUMBER_UNREPRESENTABLE",
+      "fix": "correct expectation; numeric rejection unchanged"
+    },
+    {
+      "log": "packaging_failure_01.txt",
+      "exit_code": 1,
+      "cause": "one-off collector typed wrong full baseline SHA for git show",
+      "fix": "collector now reads actual frozen sync_head from baseline.json",
+      "evidence_kind": "diagnostic transcript of tool output, not raw stderr file"
+    }
+  ],
+  "final": "n3_tests_final.log exit0 10 groups; necessary regressions exit0",
+  "not_run": [
+    "real exact-v3/PCT/LP end-to-end",
+    "model/remote requests",
+    "real-source orders",
+    "GP4-GP6",
+    "F1/T/E/experience/training"
+  ],
+  "monitor_doubles": "all enabled numerical results TEST_DOUBLE diagnostics and kernel_calls=0; real assess and solve entrypoints forbidden by test sentinels; production config has no bypass flag",
+  "generation_double": "generation_ERROR_TEST_DOUBLE explicitly injects backend-internal error at provider boundary to validate persistence; historical N2 real height disagreement preserved, not reclassified as new N3 real generation failure"
+}

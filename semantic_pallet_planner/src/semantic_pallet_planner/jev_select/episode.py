@@ -1,5 +1,6 @@
 """Fill-then-plan direct-selection simulator. Checkpoints own durable state."""
 from __future__ import annotations
+from .packaging_versions import GEOMETRY_CONFIGS, GEOMETRY_RUN_VERSION
 from .packaging_versions import EXACT_VERSION
 
 import copy
@@ -18,12 +19,12 @@ from .evaluation import feedback, summarize
 from .selector import bind_decision, result
 
 
-def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, memory_snapshot=None, saved_retrieval=None, memory_view=None, memory_driver=None):
+def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, memory_snapshot=None, saved_retrieval=None, memory_view=None, memory_driver=None, geometry_store=None):
     from .packaging_versions import GEOMETRY_VERSION
-    if config.get('version')==GEOMETRY_VERSION:
+    if config.get('version') in GEOMETRY_CONFIGS:
         if any(v is not None for v in (memory_snapshot,saved_retrieval,memory_view,memory_driver)):
             raise JevSelectError('geometry_memory_forbidden')
-        return _geometry_decision_inputs(state,task,config,job_id,decision_id,timings=timings)
+        return _geometry_decision_inputs(state,task,config,job_id,decision_id,timings=timings,geometry_store=geometry_store)
     started = time.perf_counter()
     req = observation(state, task["instruction_text"], task["regions"])
     guard = PublicBusinessGuard()
@@ -58,9 +59,16 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
 
 
 def run_episode(task, selector, config, *, job_id, method, resume=None, on_checkpoint=None,
-                hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None):
+                hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None, geometry_store=None):
     from .packaging_versions import reject_geometry_execution
     reject_geometry_execution(config,"run_episode")
+    if config.get('version')==GEOMETRY_RUN_VERSION:
+        if any(v is not None for v in (expected_events,memory_snapshot,training_fork,memory_view,memory_driver)):
+            raise JevSelectError('geometry_run_unsupported_combination')
+        from .geometry_execution import validate_run_request
+        validate_run_request(task,selector,config,method,geometry_store,on_checkpoint)
+        return _run_episode_v2(task,selector,config,job_id=job_id,method=method,resume=resume,
+            on_checkpoint=on_checkpoint,hook=hook,event_limit=event_limit,geometry_store=geometry_store)
     from .packaging_runtime import is_packaging, DATA_VERSION, METHODS
     if config.get('version')=='jev_packaging_jm_no_memory_v13' and (training_fork is None or training_fork.get('version')!='jev_jm_v13_execution_v1'):
         raise JevSelectError('jm13_explicit_execution_route_required')
@@ -203,12 +211,18 @@ def semantic_record(value):
 
 
 def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
-                    on_checkpoint=None, hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None):
+                    on_checkpoint=None, hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None, geometry_store=None):
     from .packaging_versions import reject_geometry_execution
     reject_geometry_execution(config,"_run_episode_v2")
     from .evaluation import evaluate_committed_state, summarize_v2
     from .execution import commit_physical
     from .selector import SelectionResult
+    geometry_run=config.get('version')==GEOMETRY_RUN_VERSION
+    if geometry_run:
+        from .geometry_execution import validate_run_request
+        if any(v is not None for v in (expected_events,training_fork,memory_snapshot,memory_view,memory_driver)):
+            raise JevSelectError('geometry_run_unsupported_combination')
+        geometry_execution_binding=validate_run_request(task,selector,config,method,geometry_store,on_checkpoint)
     state = initial(task['container'], config['buffer_capacity'])
     cursor = decision = 0
     events = []; reason = None; pending = None; phase = 'READY'
@@ -245,6 +259,8 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         if is_v3(config):
             value['memory_snapshot_digest'] = digest(memory_snapshot.data)
             value['memory_identity']=memory_identity
+        if geometry_run:
+            value['execution_binding']=copy.deepcopy(geometry_execution_binding)
         if monitored:
             seal_checkpoint(value)
         if jm_recovery:
@@ -255,6 +271,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
 
     def persist():
         cp = checkpoint()
+        if geometry_run:geometry_store.save_checkpoint(cp)
         if on_checkpoint: on_checkpoint(cp)
         return cp
 
@@ -328,7 +345,10 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
             raise JevSelectError('checkpoint_identity_changed')
         if monitored:
             if training_fork is None:
-                validate_checkpoint(resume,task,config,job_id,method)
+                if geometry_run:
+                    from .geometry_execution import validate_saved_checkpoint
+                    validate_saved_checkpoint(resume,task,config,job_id,method,geometry_store)
+                else:validate_checkpoint(resume,task,config,job_id,method)
         else:
             replay_selector = selector.for_replay() if hasattr(selector, 'for_replay') else selector
             prefix = _run_episode_v2(task, replay_selector, config, job_id=job_id, method=method,
@@ -430,27 +450,32 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         event = {'event':'STOP','decision_id':did,'before':before,'after':before,'route':None,
                  'observation':None,'bundle':None,'context':None,'selection':None,'proposed_action':None,'action':None,
                  'reason':None,'error':None,'reference_after':None,'business_after':None,'timings':times}
+        if geometry_run:
+            event['geometry_ref']=None
+            geometry_store.input_ref=None
         if monitored:
             event['monitor'] = None
             event['monitor_result_reuses'] = 0
         try:
             saved_context = (pending['context'] if pending is not None and phase=='DECISION_READY' else
                 expected_events[len(events)].get('context') if expected_events is not None and len(events)<len(expected_events) else None)
-            if monitored and pending is not None and phase in (('DECISION_READY','SELECTED','MONITORED') if is_driven(config) or jm_recovery or jm_v13 else ('SELECTED','MONITORED')):
+            if monitored and pending is not None and phase in (('DECISION_READY','SELECTED','MONITORED') if is_driven(config) or jm_recovery or jm_v13 or geometry_run else ('SELECTED','MONITORED')):
                 from .contracts import CandidateBundle, DecisionContext
                 from .packaging_runtime import no_policy
                 req = copy.deepcopy(pending['observation'])
                 policy = no_policy(req)
-                bundle = CandidateBundle.from_dict(pending['bundle'])
+                bundle = geometry_store.load_event(pending,config) if geometry_run else CandidateBundle.from_dict(pending['bundle'])
                 context = DecisionContext.from_dict(pending['context'])
             else:
                 req,policy,bundle,context = decision_inputs(state,task,config,job_id,did,timings=times,memory_snapshot=memory_snapshot,
-                    saved_retrieval=saved_context.get('retrieval') if saved_context else None,memory_view=memory_view,memory_driver=memory_driver)
+                    saved_retrieval=saved_context.get('retrieval') if saved_context else None,memory_view=memory_view,memory_driver=memory_driver,geometry_store=geometry_store)
             if is_driven(config) and pending is not None and phase=='DECISION_READY':
                 event=copy.deepcopy(pending);times=event['timings']
+            if geometry_run:
+                event['geometry_ref']=pending['geometry_ref'] if pending is not None else geometry_store.save_event(bundle)
             route = decision_route(bundle)
             event.update(route=route,observation=req,bundle=bundle.data,context=context.data)
-            if ((jm_recovery or jm_v13) and (pending is None or phase=='DECISION_READY')) or is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
+            if ((jm_recovery or jm_v13 or geometry_run) and (pending is None or phase=='DECISION_READY')) or is_v3(config) or (is_driven(config) and (pending is None or phase=='DECISION_READY')):
                 pending=copy.deepcopy(event);phase='DECISION_READY';persist()
             if hook: hook('decision_ready',event)
             if route == 'STOP_NO_PHYSICAL_CANDIDATE':
@@ -492,12 +517,14 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                             event['monitor_result_reuses'] += 1
                         if (jm_first or jm_continuation or jm_recovery or jm_v13) and event['monitor']['status'] not in ('STABLE','UNSTABLE','UNASSESSABLE','ERROR'):
                             raise JevSelectError('jm_monitor_status_not_authorized')
-                        reason = TERMINATIONS.get(event['monitor']['status'])
+                        reason = ('GEOMETRY_MONITOR_DISABLED' if geometry_run and event['monitor']['status']=='DISABLED'
+                                  else TERMINATIONS.get(event['monitor']['status']))
                     if reason is None:
                         if hook: hook('before_commit',event)
                         start = time.perf_counter()
                         state = commit_physical(state,task['regions'],req,bundle,context,selection,config,
-                            **({'monitor':event['monitor'],'monitor_event':event} if monitored else {}))
+                            **({'monitor':event['monitor'],'monitor_event':event} if monitored else {}),
+                            **({'geometry_store':geometry_store,'execution_binding':geometry_execution_binding} if geometry_run else {}))
                     else:
                         # The selected attempted action remains in the buffer.
                         event['reason'] = reason
@@ -518,6 +545,8 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                 if hook:hook('decision_ready',event)
             event['event'] = 'COMMIT_FAILURE' if event['proposed_action'] else 'DECISION_FAILURE'
             event['error'] = {'code':reason,'detail':str(exc)[:240]}
+            if geometry_run and hasattr(exc,'audit'):
+                event['geometry_ref']=geometry_store.put_json({'version':'geometry_generation_failure_v1','input':geometry_store.input_ref,'scope':exc.scope,'audit':exc.audit,'error':event['error']})
             if state != before:
                 raise JevSelectError('failure_mutated_state') from exc
         event['reason'] = reason
@@ -540,14 +569,20 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
     return {'job_id':job_id,'events':events,'final_state':state,'summary':summary,'checkpoint':checkpoint()}
 
 
-def _geometry_decision_inputs(state,task,config,job_id,decision_id,*,timings=None):
-    """N2 construction only; reads only instruction/regions, never future task fields."""
+def _geometry_decision_inputs(state,task,config,job_id,decision_id,*,timings=None,geometry_store=None):
+    """Shared geometry F0 construction; v15 first persists current input bytes."""
     from .config import generator_config_for
     started=time.perf_counter()
     req=observation(state,task['instruction_text'],task['regions'])
     guard=PublicBusinessGuard();policy=guard.resolve(req)
     parsed=time.perf_counter()
-    bundle=CandidateProvider().build(state,req,generator_config_for(config),config=config)
+    common=None
+    if config['version']==GEOMETRY_RUN_VERSION:
+        if geometry_store is None:raise JevSelectError('geometry_durable_store_required')
+        from .candidate_backends import capture_common_input
+        common=capture_common_input(state,req,config)
+        geometry_store.save_input(common)
+    bundle=CandidateProvider().build(state,req,generator_config_for(config),config=config,common_input=common)
     generated=time.perf_counter()
     bundle=guard.filter(req,policy,bundle,config)
     context=bind_decision(ContextBuilder(config).build(req,bundle,policy),job_id,decision_id,config=config)

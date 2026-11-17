@@ -1,0 +1,66 @@
+{
+  "schema": "geometry_gp5_p1_qa_admission_v1",
+  "status": "NOT_READY",
+  "next_unit": "GP5_P2_REAL_KERNEL_ACCEPTANCE",
+  "formal_8job": "NOT_READY",
+  "GP6": "NOT_AUTHORIZED",
+  "repair_recommendation": {
+    "unit": "GP5_P1_R1_LIMITED_REMEDIATION",
+    "status": "CONDITIONAL",
+    "scope": "REC-01/SCHEMA-01/MET-01 implementation plus NUM-01 design only, after user assigns developer task",
+    "numeric_code_change": "NOT_AUTHORIZED_BY_THIS_REVIEW"
+  },
+  "prerequisite_matrix": [
+    {
+      "requirement": "three scopes/noncyclic launch",
+      "status": "PASS",
+      "evidence": "source and archived launch_validation"
+    },
+    {
+      "requirement": "K02 deterministic selection",
+      "status": "PASS",
+      "evidence": "four archived test-double trajectories; real kernel NOT_RUN"
+    },
+    {
+      "requirement": "closed schema and actual completion gate",
+      "status": "FAIL",
+      "evidence": "REC-01/SCHEMA-01",
+      "effect": "blocks P1 full exit and P2 admission"
+    },
+    {
+      "requirement": "complete count metrics",
+      "status": "PARTIAL",
+      "evidence": "MET-01"
+    },
+    {
+      "requirement": "integer multi-step compatibility",
+      "status": "FAIL",
+      "evidence": "NUM-01 archived failure",
+      "effect": "blocks genuine integer-order readiness; cannot be closed by float fixture"
+    },
+    {
+      "requirement": "real numerical acceptance",
+      "status": "NOT_RUN",
+      "effect": "blocks formal 8job"
+    }
+  ],
+  "allowed_recommendation": [
+    "minimal gate/schema/count remediation using fixed small synthetic fixtures and explicit marked monitor doubles",
+    "NUM-01 interface/numeric design only; no frozen numeric changes",
+    "administrator task reads/hashes and pre-episode refusal tests only"
+  ],
+  "forbidden": [
+    "actual exact-v3/PCT/LP/freeze",
+    "real-source run_episode or 8job",
+    "models/GP6/training/third-party/dependency installs/subagents",
+    "historical digest re-signing or relaxing same_native/tolerances"
+  ],
+  "real_call_authorization": {
+    "kernel": 0,
+    "LP": 0,
+    "model": 0,
+    "real_order_jobs": 0
+  },
+  "release_condition": "independent QA of R1 plus separately assigned next task; numerical implementation/actual P2 require explicit scope",
+  "prompt_delivery": "INLINE_FINAL_ONLY"
+}

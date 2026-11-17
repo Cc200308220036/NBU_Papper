@@ -1,0 +1,47 @@
+{
+  "schema": "geometry_gp5_p1_qa_commands_v1",
+  "commands": [
+    {
+      "command": "git status --short; git branch --show-current; git rev-parse HEAD; git rev-parse --abbrev-ref --symbolic-full-name @{upstream}; git diff --cached --stat; git log -8 --oneline",
+      "result": "clean dev/jev-select current c7f99638 upstream origin/dev/jev-select; initial index empty",
+      "note": "inspection commands executed in shell; no Git mutations"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_20261117_01/verify_delivery.py",
+      "exit_code": 0,
+      "output": "original_verifier.log",
+      "side_effect_review": "stdlib reads, git show/diff/cached inspection, stdout only; no project import"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_QA_20261117_01/check_saved_evidence.py",
+      "attempt": 1,
+      "exit_code": 1,
+      "detail": "QA assertion incorrectly assumed all oriented dimensions float; actual saved value [100.0,80.0,60]. QA script corrected only; no developer artifact changed."
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_QA_20261117_01/check_saved_evidence.py",
+      "attempt": 2,
+      "exit_code": 0,
+      "output": "independent_check.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P1_QA_20261117_01/check_saved_evidence.py",
+      "attempt": 3,
+      "exit_code": 0,
+      "detail": "Final check after QA-only index addition: original README checked at pinned c7f99638 blob; original source/artifact identities unchanged."
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "inspection_diagnostics": [
+    "exploratory path geometry_backend.py absent; actual candidate_backends.py used",
+    "exploratory K02 evidence directory name corrected using actual test name"
+  ],
+  "business_tests": "NOT_RUN",
+  "production_imports": 0,
+  "candidate_order_kernel_solver_freeze_model_execution": 0,
+  "git_mutations": 0,
+  "dependencies_installed": 0
+}

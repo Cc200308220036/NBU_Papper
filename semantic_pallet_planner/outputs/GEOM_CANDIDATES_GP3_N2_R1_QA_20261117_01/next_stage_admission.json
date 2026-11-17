@@ -1,0 +1,49 @@
+{
+  "version": "geometry_gp3_n3_admission_v1",
+  "date": "2026-11-17",
+  "status": "READY",
+  "scope": "GP3_N3_ONLY",
+  "definition": "internal GP3 execution/persistence/recovery integration with bounded synthetic unit fixtures",
+  "prerequisites": [
+    {
+      "item": "N0/N1 foundations",
+      "status": "PASS_PREVIOUS_LIMITED_SCOPE"
+    },
+    {
+      "item": "N2 construction and R1 identity fix",
+      "status": "PASS"
+    },
+    {
+      "item": "GP3-N2-BIND-01",
+      "status": "CLOSED"
+    },
+    {
+      "item": "delivery identity",
+      "status": "PASS"
+    }
+  ],
+  "allowed": [
+    "independent runtime protocol versions, preserving v14 construction-only guards",
+    "public run_episode/commit/monitor/ledger/recovery wiring reuse",
+    "atomic immutable blobs/sidecar/checkpoint binding",
+    "bounded hand-constructed public-loop/recovery unit fixtures with local selectors",
+    "explicit test-layer monitor doubles only for state-machine checks"
+  ],
+  "not_allowed": [
+    "real-source order execution or comparisons",
+    "PCT/LP numerical kernel execution",
+    "model/network calls",
+    "GP4-GP6",
+    "F1/experience",
+    "silently executing construction-only v14",
+    "re-signing old identities/checkpoints"
+  ],
+  "monitor_verification_limit": "test-double state-machine evidence does not prove actual exact-v3 end-to-end monitor; retain NOT_RUN; no automatic A03/GP4 closure",
+  "runtime_version": "new independent version required; v15 proposed only, recheck occupancy before implementation",
+  "parent_A03": "PARTIAL",
+  "GP4": "NOT_READY",
+  "real_model_calls_authorized": 0,
+  "numerical_kernel_calls_authorized": 0,
+  "nonblocking_followup": "new delivery tools must pin historical navigation identities (GP3-N2-R1-EVID-01)",
+  "stop": "deliver N3 and return to independent QA, no automatic GP4"
+}

@@ -1,0 +1,33 @@
+{
+  "version": "geometry_gp3_n2_r1_qa_receipts_v1",
+  "date": "2026-11-17",
+  "original_validator": {
+    "command": "python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N2_R1_20261117_01/verify_delivery.py --sealed > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N2_R1_QA_20261117_01/original_validator.log 2>&1",
+    "exit_code": 1,
+    "log": "original_validator.log",
+    "failure_stage": "historical QA README compared to HEAD; before own sealed manifest branch",
+    "classification": "nonblocking validation-tool navigation identity problem"
+  },
+  "independent_checker": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N2_R1_QA_20261117_01/check_saved_evidence.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N2_R1_QA_20261117_01/saved_evidence_verification.json",
+    "first_exit_code": 1,
+    "first_diagnostic": "independent_failure_01.txt (diagnostic transcription, not raw stderr)",
+    "first_cause": "QA checker aliasing, not developer/production failure",
+    "corrected_exit_code": 0,
+    "result": "saved_evidence_verification.json",
+    "scope": "stdlib and read-only git show; saved config arithmetic only"
+  },
+  "other_checks": [
+    "Git branch/upstream/HEAD/status/index/log/diff",
+    "local upstream 0/0 without fetch",
+    "static source/test/entry-guard review",
+    "git diff --check"
+  ],
+  "production_imports": 0,
+  "candidate_generation": 0,
+  "F0_production_calls": 0,
+  "orders_PCT_LP_models": 0,
+  "subagents": 0,
+  "credentials_read": false,
+  "git_pull_fetch_add_commit_push": "NOT_RUN"
+}

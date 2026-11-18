@@ -1,0 +1,53 @@
+{
+  "commands": [
+    {
+      "command": "git pull --ff-only",
+      "normal_exit": 1,
+      "normal_error": "FETCH_HEAD read-only",
+      "escalated_exit": 0,
+      "result": "fast-forward4126a3d0"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/anaconda3/bin/python3\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R6_20261118_01/prepare.py",
+      "exit": 0,
+      "log": "prepare.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/anaconda3/bin/python3\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R6_20261118_01/test_f0_routes.py -v",
+      "exit": 0,
+      "log": "f0_pure_tests.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/anaconda3/bin/python3\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R6_20261118_01/check_saved_f0.py",
+      "exit": 0,
+      "log": "saved_f0_revalidation.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/anaconda3/bin/python3\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R6_20261118_01/test_guard_regressions.py",
+      "exit": 0,
+      "log": "guard_regressions.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 \"$HOME/anaconda3/bin/python3\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R6_20261118_01/seal_inputs.py",
+      "exit": 0,
+      "log": "seal_inputs.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 \"$HOME/anaconda3/bin/python3\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R6_20261118_01/verify_delivery.py",
+      "exit": 0,
+      "log": "verification.log"
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    }
+  ],
+  "business_calls": 0,
+  "not_run": [
+    "validation_entrypoint.py",
+    "remaining_checks.run_checks",
+    "C6/E8/R6/X_H_admin15",
+    "real kernel/LP/freeze/model/order/recovery"
+  ],
+  "old_QA_f0_failure": "PRESERVED_NOT_OVERWRITTEN"
+}

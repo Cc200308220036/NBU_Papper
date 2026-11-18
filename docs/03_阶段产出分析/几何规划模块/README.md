@@ -4,6 +4,7 @@
 
 | 报告 | 范围与状态 |
 |---|---|
+| [GP5-NUM-N1-R2独立复核与发布键合同整改](几何候选器GP5-NUM-N1-R2独立复核与发布键合同整改_20261118_01.md) | HARNESS-01限定关闭、J00未重跑、J01成功；确认新后端J02 raw字符串yaw与发布整数yaw比较FAIL。N1 PARTIAL，仅最小生产键合同修复及单独冻结复验CONDITIONAL；NUM-01 OPEN、P2 NOT_READY。 |
 | [GP5-NUM-N1-R1独立复核与验证脚本整改](几何候选器GP5-NUM-N1-R1独立复核与验证脚本整改_20261118_01.md) | SCHEMA-01限定关闭，首E2整数两箱生产COMPLETE；套件HARNESS-01字典轴顺序断言FAIL，整体PARTIAL。仅测试层修复及剩余7job/R/X/H/admin续验，不重跑成功J00；NUM-01 OPEN、P2 NOT_READY。 |
 | [GP5-NUM-N1独立质检与Schema最小整改](几何候选器GP5-NUM-N1独立质检与Schema最小整改_20261118_01.md) | N1 PARTIAL、首合成job FAIL/其余7 NOT_RUN；确认monitor结果箱体ID误套候选ID正则。DOC-01限定关闭；仅Schema修复及独立目录原矩阵限定复验，NUM-01 OPEN、A03 PARTIAL、P2/正式8job NOT_READY。 |
 | [GP5-NUM-N0-R1独立复核与N1限定实现准入](几何候选器GP5-NUM-N0-R1独立复核与N1限定实现准入_20261117_01.md) | ID-01设计限定关闭；先统一清单残留v2字段后，NUM-N1独立v17桥接及合成替身实现CONDITIONAL。NUM-01仍OPEN，A03 PARTIAL，P2/正式8job NOT_READY。 |

@@ -1,0 +1,125 @@
+{
+  "schema": "geometry_num_n1_r2_qa_v1",
+  "date": "2026-11-18",
+  "timezone": "Asia/Shanghai",
+  "reviewed_unit": "GP5_NUM_N1_R2_HARNESS_AND_REMAINING_VALIDATION",
+  "authorization": "static/saved facts plus inspected pure assertion tests; QA commit/push authorized; no production execution",
+  "identity": {
+    "developer_entry": "c1bc0184e16e04b1fe91d75c410d93ec47f37db5",
+    "delivery_current_head": "1db7a7f78b7389105046bcaf6a6ddbfdf6ccb0ae",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "initial_worktree": "CLEAN",
+    "initial_index": "EMPTY",
+    "source_files": 591,
+    "source_identity": "be3486f6f90f4c4b3ec2696aaf8fee24353d4b83af78892576962e437370cd89",
+    "production_changed_in_R2": false,
+    "source_drift": false,
+    "local_upstream_divergence": [
+      0,
+      0
+    ],
+    "remote_freshness": "NOT_FETCHED_AT_REVIEW"
+  },
+  "four_layers": {
+    "report_claim": "HARNESS fixed,J00 saved-only accepted,J01 complete,J02 production key mismatch stops; no production edit",
+    "source_implementation": "test-only selected-source/named-axis/yaw/type/bit assertions fixed; original generator key uses str yaw, bridge FRESH/SAVED compare native int yaw",
+    "archived_evidence": "458 delivery/98 predecessor members, unchanged original prefix/J00, continuation2 complete1 failure5 unrun,3 saved E2 last-item prefixes not resumed",
+    "local_reverification": "two pure unittest methods OK(12 positive subcases/4 mutation variants); independent stdlib hashes/prefix/counter/key checks; no production import/replay"
+  },
+  "acceptance": [
+    {
+      "id": "HARNESS-01",
+      "status": "PASS",
+      "scope": "local pure tests and saved J00/J01, close test-layer issue"
+    },
+    {
+      "id": "J00_PREFIX_IDENTITIES",
+      "status": "PASS",
+      "scope": "source full591/config/plan/data/monitor bytes and preserved prefix/J00 unchanged"
+    },
+    {
+      "id": "E_J01",
+      "status": "PASS",
+      "scope": "archived E2/local_first integer complete2 monitors/2 commits, not locally replayed"
+    },
+    {
+      "id": "E_J02",
+      "status": "FAIL",
+      "scope": "KEY-01 publication failure,selection/monitor/commit0"
+    },
+    {
+      "id": "E_J03_J07",
+      "status": "NOT_RUN",
+      "scope": "five jobs stopped"
+    },
+    {
+      "id": "R_SAVED_PREFIXES",
+      "status": "PASS",
+      "scope": "3 saved E2 prefixes only, not resume acceptance"
+    },
+    {
+      "id": "R_X_H_ADMIN",
+      "status": "NOT_RUN",
+      "scope": "remaining suite entrypoints not yet completed/executed"
+    },
+    {
+      "id": "NUM-01",
+      "status": "PARTIAL",
+      "scope": "OPEN new-backend two-box success absent"
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL",
+      "scope": "real numerical E2E not run"
+    },
+    {
+      "id": "A05",
+      "status": "NOT_RUN",
+      "scope": "formal real-source matrix"
+    },
+    {
+      "id": "A06",
+      "status": "NOT_APPLICABLE",
+      "scope": "GP6 outside unit"
+    }
+  ],
+  "closed_issues": [
+    {
+      "id": "GP5-NUM-N1-R1-HARNESS-01",
+      "status": "CLOSED_TEST_LAYER_AND_SAVED_EVIDENCE",
+      "limit": "not full N1 or production bridge acceptance"
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP5-NUM-N1-R2-KEY-01",
+      "status": "OPEN_CONFIRMED",
+      "severity": "HIGH",
+      "blocking": true,
+      "origin": "production_bridge_key_representation",
+      "location": [
+        "geometry_native_shape_bridge.py:84",
+        "geometry_native_shape_bridge.py:192",
+        "geometry_native_shape_bridge.py:239",
+        "planner/space_candidates/generator.py:164"
+      ],
+      "actual": "Original raw key contains str yaw0, publication key contains int yaw0; direct equality fails despite same orientation. Saved J02 generation OK/pool2 but no published bundle or selection/monitor/commit.",
+      "minimum_fix": "Explicit versioned canonical raw-string-key versus published-typed-key equivalence; preserve raw bytes/generator and native pose yaw; same strict checker for FRESH and SAVED. No blanket casting, skipped comparison or old-proof rewrite. Declare any wire/hash semantic changes independently.",
+      "validation": "pure key metadata0/90/canonical/type/value negatives first; separately frozen original synthetic matrix only after explicit new task allowance",
+      "identity_effect": "production fix changes full source/config/plan/policy identities; cannot resume or re-sign old successful J00/J01/prefixes as final-source evidence",
+      "scope_limit": "saved metadata and static cause confirmed; no production calls by QA"
+    }
+  ],
+  "engineering_status": "HARNESS_FIX_PASS_N1_PARTIAL_PRODUCTION_KEY_FAIL",
+  "evidence_readiness": "PASS_SAVED_INTEGRITY_AND_PURE_ASSERTIONS; PARTIAL_N1",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "NOT_READY_FOR_P2",
+  "recommended_repair": "GP5_NUM_N1_R3_KEY_EQUIVALENCE_FIX_AND_REVALIDATION",
+  "repair_status": "CONDITIONAL_MINIMUM_PRODUCTION_BRIDGE_FIX",
+  "NUM-01": "OPEN",
+  "A03": "PARTIAL",
+  "P2": "NOT_READY",
+  "formal_8job": "NOT_READY",
+  "stopped": true
+}

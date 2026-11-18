@@ -1,0 +1,62 @@
+{
+  "schema": "geometry_num_n1_fixed_qa_admission_v1",
+  "next_stage": "GP5_NUM_N1_R7_COMMITTED_TIMING_SUMMARY_FIX",
+  "status": "CONDITIONAL",
+  "scope": "Minimal timing aggregation production change, pure regressions and prepare auditable new source verification. No new business assignment.",
+  "prerequisites": [
+    {
+      "id": "E",
+      "status": "PASS",
+      "evidence": "8/8; 16 placements archived and checked for native size/source pose and action; test-double monitors 16; 4 F0 comparison receipts"
+    },
+    {
+      "id": "R_TOTAL",
+      "status": "PARTIAL",
+      "evidence": "2 PASS, 1 FAIL, 3 NOT_RUN"
+    },
+    {
+      "id": "X_H_ADMIN",
+      "status": "NOT_RUN",
+      "evidence": "15/15 stopped following R failure"
+    },
+    {
+      "id": "NUM-01",
+      "status": "PARTIAL",
+      "evidence": "OPEN overall; new backend integer 2-box E confirmed, recovery/guard matrix incomplete"
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL",
+      "evidence": "Real monitor numerical end-to-end no execution"
+    }
+  ],
+  "blocked": {
+    "N1": "PARTIAL",
+    "P2": "NOT_READY",
+    "formal_8job": "NOT_READY"
+  },
+  "existing_accounting": {
+    "old_limit_receipt": 17,
+    "E_history_before": 5,
+    "E_new": 16,
+    "E_total": 21,
+    "E_cross_history_cap": 21,
+    "E_budget_remaining_in_this_receipt": 0,
+    "R_attempted": 3,
+    "R_monitor": 1,
+    "R_commits": 2,
+    "X_H_monitor": 0
+  },
+  "after_fix": [
+    "Keep pre-fix source evidence historical, and require exact frozen production identity for recovery.",
+    "Separately request and freeze fresh source, planned validation cases and relevant allowance before any business revalidation; no carryover of checkpoints or old scope.",
+    "Report remaining/new matrix evidence and return to independent QA."
+  ],
+  "real_call_authorization": 0,
+  "prompt_delivery": "INLINE_FINAL_ONLY",
+  "stop_conditions": [
+    "Pure fix and handoff complete",
+    "Would change scope, public contract or protected algorithm",
+    "Identity drift or new unexpected failure"
+  ]
+}

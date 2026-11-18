@@ -1,0 +1,30 @@
+{
+  "schema": "geometry_num_n1_fixed_qa_command_receipts_v1",
+  "checks": [
+    {
+      "command": "GIT_OPTIONAL_LOCKS=0 git status -sb; git rev-parse HEAD '@{upstream}'; git rev-list --left-right --count HEAD...'@{upstream}'",
+      "result": "clean, empty index, local 0/0"
+    },
+    {
+      "command": "python3 -I -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_FIXED_SYNTHETIC_REVALIDATION_QA_20261118_01/verify_saved_run.py",
+      "exit_code": 0,
+      "result": "1491 run entries, 1403 frozen items, 591 production files, 5 protected roots, C6/E8, 16 exact placements, E F0 pairs 4, six saved phase copies and failure accounting; reproduced TypeError by isolated arithmetic."
+    },
+    {
+      "command": "git diff --check 2e5da537 b8134945",
+      "exit_code": 0,
+      "result": "No whitespace findings."
+    }
+  ],
+  "not_run": [
+    "preflight_check.py (writes a tmp receipt)",
+    "delivery_check.py (overwrites original reports/metadata)",
+    "business suites",
+    "production preflight",
+    "orders",
+    "candidate reconstruction",
+    "shadow physics",
+    "recovery",
+    "PCT/real kernel/LP/freeze/models"
+  ]
+}

@@ -1,0 +1,179 @@
+{
+  "schema": "geometry_num_n1_fixed_qa_review_v1",
+  "date": "2026-11-18",
+  "unit": "GP5_NUM_N1_FIXED_SYNTHETIC_REVALIDATION",
+  "engineering_status": "FIXED_SYNTHETIC_C_E_PASS_R_PARTIAL_N1_PARTIAL",
+  "evidence_readiness": "CURRENT_SOURCE_C_E_AND_R_PARTIAL_RUNTIME_EVIDENCE_READY_FULL_N1_INCOMPLETE",
+  "research_result": "NOT_ESTABLISHED",
+  "NUM-01": "OPEN",
+  "A03": "PARTIAL",
+  "P2": "NOT_READY",
+  "formal_8job": "NOT_READY",
+  "next_unit": "GP5_NUM_N1_R7_COMMITTED_TIMING_SUMMARY_FIX",
+  "next_unit_admission": "CONDITIONAL",
+  "real_call_authorization": 0,
+  "stopped": true,
+  "timezone": "Asia/Shanghai",
+  "scheme": [
+    "geometry_candidate_upgrade_design_v1",
+    "NUM-N0 §9",
+    "N1 revision",
+    "R6 QA admission"
+  ],
+  "authorization": "Independent QA, saved checks, isolated stdlib arithmetic only and QA archival commit/push. No business dispatch.",
+  "identity": {
+    "developer_entry": "1dbc8f30852be4171206706b57cd1085a63407fc",
+    "developer_synced_base": "2e5da537016adeba4578199c9b641bab6440abe6",
+    "reviewed_head": "b8134945f1b21a389d57cb9c8a436b04fd58fd8b",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "initial_worktree": "CLEAN",
+    "initial_index": "EMPTY",
+    "local_divergence": [
+      0,
+      0
+    ],
+    "source_files": 591,
+    "source_identity": "94e4c37838f0a82f84c200d12fbed5d92c93eb7486085e9c3014c514ba886fa2",
+    "input_freeze_sha256": "c742929cbe06be456eae628444d07ef29f4b293df4310705821d3b5f0bf61a96",
+    "validation_scope_sha256": "d55b1153c6fb61b0d819e8c2bf3b41012114b392902152a944b719fe307e933b",
+    "source_drift": false
+  },
+  "four_layers": {
+    "report_claim": "One fixed run, stopped at first R unexpected failure, 16 PASS / 1 FAIL / 18 NOT_RUN.",
+    "implementation": "COMMITTED recovery permits a null decision_wall_s; the shared summarizer collects the key from a numeric event, then sums null from another event.",
+    "archived_evidence": "C6 and E8, four F0 comparisons, six matching saved phase copies, J01 2 resumes pass/COMMITTED fails, all J03/X/H/admin unrun; E16/R1 monitors and R2 commits.",
+    "local_reverification": "Independent stdlib manifests, frozen bytes, exact native actions, recorded counts and timing expression reproduction. No business rerun."
+  },
+  "counts": {
+    "fixed": 35,
+    "attempts": 17,
+    "pass": 16,
+    "fail": 1,
+    "not_run": 18,
+    "saved_recovery_copies": 6,
+    "R_attempts": 3,
+    "R_passes": 2
+  },
+  "acceptance": [
+    {
+      "id": "SOURCE_CONFIG_FREEZE",
+      "status": "PASS",
+      "evidence": "1491 delivery members; all 1403 frozen members; 591 production; five protected roots; authorization and preflight saved field consistency"
+    },
+    {
+      "id": "C",
+      "status": "PASS",
+      "evidence": "6/6 archived supported; exact native target/identity nodes verified from JSON"
+    },
+    {
+      "id": "E",
+      "status": "PASS",
+      "evidence": "8/8; 16 placements archived and checked for native size/source pose and action; test-double monitors 16; 4 F0 comparison receipts"
+    },
+    {
+      "id": "F0-01",
+      "status": "PASS",
+      "evidence": "All 8 E completed route checks; four same-protocol F0 pairs; no model requests"
+    },
+    {
+      "id": "KEY-01_FRESH_SAVED_E",
+      "status": "PASS",
+      "evidence": "Scoped to actual production publication and saved validation in E; not full R resume acceptance"
+    },
+    {
+      "id": "R_J01_SELECTED",
+      "status": "PASS",
+      "evidence": "Archived attempt RETURNED, saved terminal and delta monitor/reuse/commit 1/0/1"
+    },
+    {
+      "id": "R_J01_MONITORED",
+      "status": "PASS",
+      "evidence": "Archived attempt RETURNED, monitor/reuse/commit 0/1/1"
+    },
+    {
+      "id": "R_J01_COMMITTED",
+      "status": "FAIL",
+      "evidence": "Terminal checkpoint persisted but TypeError; ERROR and TECHNICAL_FAILURE; monitor/reuse/commit 0/0/0"
+    },
+    {
+      "id": "R_J03",
+      "status": "NOT_RUN",
+      "evidence": "Three unchanged sealed phase copies exist; no recovery"
+    },
+    {
+      "id": "R_TOTAL",
+      "status": "PARTIAL",
+      "evidence": "2 PASS, 1 FAIL, 3 NOT_RUN"
+    },
+    {
+      "id": "X_H_ADMIN",
+      "status": "NOT_RUN",
+      "evidence": "15/15 stopped following R failure"
+    },
+    {
+      "id": "NUM-01",
+      "status": "PARTIAL",
+      "evidence": "OPEN overall; new backend integer 2-box E confirmed, recovery/guard matrix incomplete"
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL",
+      "evidence": "Real monitor numerical end-to-end no execution"
+    },
+    {
+      "id": "A05",
+      "status": "NOT_RUN",
+      "evidence": "Formal real-source 8 jobs"
+    },
+    {
+      "id": "A06",
+      "status": "NOT_APPLICABLE",
+      "evidence": "GP6 outside scope"
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP5-NUM-N1-FIXED-REC-TIMING-01",
+      "aliases": [
+        "GP5_NUM_N1_FIXED_R_COMMITTED_NULL_TIMING"
+      ],
+      "severity": "HIGH",
+      "status": "OPEN_REPRODUCED_ISOLATED_AGGREGATION",
+      "blocks": [
+        "R acceptance",
+        "complete N1 acceptance",
+        "P2"
+      ],
+      "location": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py:232",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py:429",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py:581"
+      ],
+      "case_id": "R/J01/COMMITTED",
+      "evidence": {
+        "failed_checkpoint": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_FIXED_SYNTHETIC_REVALIDATION_20261118_01/R_recovery/J01_COMMITTED/jobs/J01/checkpoint.json",
+        "failed_accounting": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_FIXED_SYNTHETIC_REVALIDATION_20261118_01/R_recovery/J01_COMMITTED/jobs/J01/accounting.json",
+        "error": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_FIXED_SYNTHETIC_REVALIDATION_20261118_01/validation_stop.json",
+        "observed_decision_wall_s": [
+          7.323691413999768,
+          null
+        ],
+        "types": [
+          "float",
+          "NoneType"
+        ],
+        "error_text": "unsupported operand type(s) for +: 'float' and 'NoneType'",
+        "qa_reproduction": "Isolated current summation on archived events; no package imports, solver or replay."
+      },
+      "impact": "Terminal data was saved as ALL_ITEMS_PLACED with two boxes, true zero restarts of selection/monitor/commit, but summary raised, invocation was ERROR and driver was TECHNICAL_FAILURE; no metrics receipt.",
+      "remediation": "Minimal production change in geometry order timing aggregation. Preserve null in saved events. Separate measured samples from unavailable time, keep recorded zero, avoid reporting an incomplete aggregate as complete duration, and keep existing output schema if feasible. Do not weaken validation, resume identity, physical flow or original evidence.",
+      "verification": "Pure archived-timing fixture plus numeric-only/missing/null/zero regressions under supported geometry v16/v17 use, check no mutation; record changed identity/new freeze and propose separately authorized fixed revalidation. Never resume or re-sign history under the new source."
+    }
+  ],
+  "next_stage_admission": {
+    "repair": "CONDITIONAL",
+    "fixed_acceptance": "NOT_READY",
+    "P2": "NOT_READY"
+  }
+}

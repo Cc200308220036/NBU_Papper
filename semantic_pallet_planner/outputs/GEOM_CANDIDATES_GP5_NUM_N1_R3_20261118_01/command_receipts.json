@@ -1,0 +1,22 @@
+{
+  "commands": [
+    {
+      "command": "git pull --ff-only",
+      "result": "normal exit1 read-only; escalated exit0 fast-forward"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_native_key_r3.py -v",
+      "exit_code": 0,
+      "evidence": "pure_key_test.log",
+      "scope": "pure metadata2 methods; no generation"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R3_20261118_01/prepare_validation.py",
+      "exit_code": 1,
+      "evidence": "prepare_failure.log",
+      "scope": "configuration preflight only; first unexpected failure stopped"
+    }
+  ],
+  "archival_checks": "standard library manifest and source verification only after stop",
+  "no_business_retry": true
+}

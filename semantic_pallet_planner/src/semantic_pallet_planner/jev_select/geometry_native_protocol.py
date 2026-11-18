@@ -16,7 +16,8 @@ def is_native(value):
 def wire(value,name):return NAMES[name] if is_native(value) else name
 
 def policy_digest():
-    return digest({'policy':GEOMETRY_NATIVE_POLICY,'bridge':GEOMETRY_NATIVE_BRIDGE,'source_sha256':digest({p.name:__import__('hashlib').sha256(p.read_bytes()).hexdigest() for p in (Path(__file__),Path(__file__).with_name('geometry_native_shape_bridge.py'))})})
+    from .geometry_native_shape_bridge import KEY_EQUIVALENCE
+    return digest({'policy':GEOMETRY_NATIVE_POLICY,'bridge':GEOMETRY_NATIVE_BRIDGE,'key_equivalence':KEY_EQUIVALENCE,'source_sha256':digest({p.name:__import__('hashlib').sha256(p.read_bytes()).hexdigest() for p in (Path(__file__),Path(__file__).with_name('geometry_native_shape_bridge.py'))})})
 
 def config_fields():
     return {'publication_policy':GEOMETRY_NATIVE_POLICY,'native_shape_bridge':GEOMETRY_NATIVE_BRIDGE,'publication_policy_digest':policy_digest()}

@@ -5,6 +5,7 @@ bytes and the complete evidence closure without invoking these functions.
 """
 import copy
 import math
+import re
 import struct
 from fractions import Fraction
 from .contracts import canonical, digest, JevSelectError, validate_schema
@@ -16,6 +17,7 @@ CONTENT='geometry_native_shape_candidate_content_v1'
 PROOF='geometry_candidate_publication_proof_v3'
 PUBLICATION='geometry_candidate_publication_v3'
 IDENTITY='geometry_gp5_num_n0_identity_dag_design_v1'
+KEY_EQUIVALENCE='geometry_native_shape_key_equivalence_v1'
 
 def require(ok,detail,code='NUM_BRIDGE_IDENTITY_MISMATCH'):
     if not ok:raise JevSelectError(code,detail)
@@ -84,6 +86,26 @@ def content(candidate,side):
 def action_key(candidate):
     return [candidate['pick_item_id'],*[c.numeric_text(x) for x in candidate['oriented_size_mm']],candidate['pose']['yaw_deg'],
         *[c.numeric_text(candidate['pose'][k]) for k in ('x_mm','y_mm','z_base_mm')]]
+
+def require_action_key_equivalence(raw, published, backend):
+    """KEY_EQUIVALENCE v1: only canonical string yaw bridges to native int.
+
+    Wire keys remain untouched. E2 has no raw key; all other backends require
+    eight strings. Numeric strings use the generator's exact decimal spelling.
+    """
+    require(type(published) is list and len(published)==8, 'publication key shape')
+    require(type(published[0]) is str and bool(published[0]), 'publication item ID')
+    require(type(published[4]) is int and published[4] in (0,90), 'publication native yaw')
+    for index in (1,2,3,5,6,7):
+        value=published[index]
+        require(type(value) is str and re.fullmatch(r'-?(?:0|[1-9][0-9]*)(?:\.[0-9]*[1-9])?',value) is not None and value!='-0', 'noncanonical publication numeric text')
+    if backend=='e2_original_v1':
+        require(raw is None, 'E2 raw key must be unavailable')
+        return
+    require(backend=='ems_surface_hybrid_v1', 'unknown raw key backend')
+    require(type(raw) is list and len(raw)==8 and all(type(x) is str for x in raw), 'raw key must contain eight strings')
+    require(raw[4] in ('0','90') and raw[4]==str(published[4]), 'raw/publication canonical yaw disagreement')
+    require(all(raw[i]==published[i] for i in (0,1,2,3,5,6,7)), 'raw/publication exact slot disagreement')
 
 def compare(a,b,*,size_paths=(),derived=False,path=''):
     """Full typed comparison; only declared size/derived numeric paths may differ."""
@@ -189,7 +211,7 @@ def publish_native_shape_pool_v3(n,g,common,binding,raw_generation_raw,raw_pool_
             'raw_after_digest':cr[0][1],'published_after_digest':cr[1][1],'raw_derived_digest':dr[0][1],'published_derived_digest':dr[1][1],
             'raw_oracle_errors':[],'published_oracle_errors':[],'allowed_difference_paths':[x['path'] for x in equalities],'derived_equalities':equalities}
         key=_raw_key(generation,r,config['candidate_backend'])
-        if key is not None:require(key==action_key(q),'raw/publication action key disagreement')
+        require_action_key_equivalence(key,action_key(q),config['candidate_backend'])
         p=_base_proof(i,r,q,items[i],pointers[i],n,g,common,binding,rr,genref,axes[i],eq,key)
         validate_schema('native_shape_proof_core',p);pref=store.put(p);pd=H('proof_core',p);fp=_fingerprint(p)
         q['candidate_id']='GP5N3_'+fp;q['candidate_fingerprint']=fp
@@ -236,7 +258,7 @@ def validate_native_shape_publication_v3(n,g,common,binding,published,publicatio
         eq=p['physical_and_derived_equivalence'];validate_schema('native_shape_equivalence',eq)
         ep=_base_proof(i,r,q,item,'/current_state/pending_items/'+str(j)+'/item',n,g,common,binding,pub['raw_pool_ref'],pub['raw_generation_ref'],axis,eq,_raw_key(generation,r,config['candidate_backend']))
         require(c.same_native(p,ep),'saved proof mismatch')
-        require(p['raw_action_key'] is None or p['raw_action_key']==action_key(q),'saved raw key')
+        require_action_key_equivalence(p['raw_action_key'],action_key(q),config['candidate_backend'])
         require(q['candidate_fingerprint']==_fingerprint(p) and q['candidate_id']=='GP5N3_'+_fingerprint(p),'final candidate identity')
         cd=[content(r,'raw'),content(q,'published')];cores=[];derived=[];wrappers=[]
         final=store.get(m['final_binding_ref']);validate_schema('native_shape_final_binding',final)

@@ -1,0 +1,167 @@
+{
+  "schema": "geometry_num_n1_r3_qa_review_v1",
+  "date": "2026-11-18",
+  "reviewed_unit": "GP5_NUM_N1_R3_KEY_EQUIVALENCE_FIX_AND_REVALIDATION",
+  "engineering_status": "R3_PARTIAL_N1_PARTIAL",
+  "evidence_readiness": "PURE_KEY_AND_SAVED_STOP_READY_FULL_N1_INCOMPLETE",
+  "research_result": "NOT_ESTABLISHED",
+  "NUM-01": "OPEN",
+  "A03": "PARTIAL",
+  "P2": "NOT_READY",
+  "formal_8job": "NOT_READY",
+  "recommended_repair": "GP5_NUM_N1_R4_ENVIRONMENT_AND_VALIDATION_ENTRYPOINT",
+  "repair_status": "CONDITIONAL",
+  "real_call_authorization": 0,
+  "stopped": true,
+  "timezone": "Asia/Shanghai",
+  "authorization": "Independent QA and archival commit/push; pure tests only, no business execution.",
+  "scheme": [
+    "geometry_candidate_upgrade_design_v1",
+    "geometry_native_shape_key_equivalence_v1",
+    "NUM-N0 design section 9",
+    "R2 QA next_stage_admission"
+  ],
+  "identity": {
+    "developer_entry_before_sync": "1db7a7f78b7389105046bcaf6a6ddbfdf6ccb0ae",
+    "developer_base": "cfb399ca447d75d144ae33f018c249a864a5d156",
+    "delivery_head": "498e0cf2dcd21220af4503e7b3e7277598d5b534",
+    "qa_review_head": "498e0cf2dcd21220af4503e7b3e7277598d5b534",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "local_divergence": [
+      0,
+      0
+    ],
+    "initial_index": "EMPTY",
+    "initial_worktree": "CLEAN",
+    "source_files": 591,
+    "source_identity": "94e4c37838f0a82f84c200d12fbed5d92c93eb7486085e9c3014c514ba886fa2",
+    "source_drift": false,
+    "policy_digest": "fe12fc1dec4d7004d813bef76162648ac916adb9e2006b92b163aeadb54fe4cb"
+  },
+  "four_layers": {
+    "report_claim": "Pure-key PASS; first config preflight FAIL and stopped.",
+    "implementation": "Strict shared FRESH/SAVED comparator and explicit policy input. E draft mismatches result directories.",
+    "archived_evidence": "31/458/11 manifest members checked; Linux env preflight refusal; no complete freeze; 35 NOT_RUN rows.",
+    "local_reverification": "Two pure tests pass in existing NBU environment; SHA/JSON/Git blobs and static source checked. No preflight or replay."
+  },
+  "acceptance": [
+    {
+      "id": "KEY-01_COMPARE",
+      "status": "PASS",
+      "evidence": "FRESH/SAVED shared implementation and two local pure tests; bounded closure"
+    },
+    {
+      "id": "KEY-01_INTEGRATION",
+      "status": "NOT_RUN",
+      "evidence": "production FRESH/SAVED behavior under R3 source"
+    },
+    {
+      "id": "SOURCE_POLICY_ARCHIVE",
+      "status": "PASS",
+      "evidence": "591 production items, two changed files, policy and 31/458/11 manifest members"
+    },
+    {
+      "id": "ENVIRONMENT_CONFIG_FREEZE",
+      "status": "FAIL",
+      "evidence": "saved stop at complete monitor environment equality"
+    },
+    {
+      "id": "E_ENTRYPOINT_PATH",
+      "status": "FAIL",
+      "evidence": "static mismatch in unexecuted draft"
+    },
+    {
+      "id": "C",
+      "status": "NOT_RUN",
+      "evidence": "0/6"
+    },
+    {
+      "id": "E",
+      "status": "NOT_RUN",
+      "evidence": "0/8, 0/16 test-double monitors"
+    },
+    {
+      "id": "R",
+      "status": "NOT_RUN",
+      "evidence": "0/6, 0/2 monitor and 0/4 commit increments"
+    },
+    {
+      "id": "X_H_ADMIN",
+      "status": "NOT_RUN",
+      "evidence": "0/15, 0/1 monitor"
+    },
+    {
+      "id": "NUM-01",
+      "status": "PARTIAL",
+      "evidence": "OPEN; missing new backend consecutive integer placements and proper recovery"
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL",
+      "evidence": "no real numerical end-to-end or recovery"
+    },
+    {
+      "id": "A05",
+      "status": "NOT_RUN",
+      "evidence": "no formal real-source 8job"
+    },
+    {
+      "id": "A06",
+      "status": "NOT_APPLICABLE",
+      "evidence": "GP6 outside assigned scope"
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP5-NUM-N1-R3-ENV-01",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "blocks": [
+        "freeze",
+        "N1 exit",
+        "P2"
+      ],
+      "locations": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R3_20261118_01/prepare_validation.py:20",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py:41"
+      ],
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R3_20261118_01/prepare_failure.log",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R3_20261118_01/environment_difference.json"
+      ],
+      "observed": "Recorded sys.executable is /home/cyw/anaconda3/bin/python, frozen field is /home/cyw/anaconda3/bin/python3; sole discrepancy among sampled stdlib fields. Full environment guard failed.",
+      "impact": "First config preflight stopped; complete plan, config and admissions absent.",
+      "remediation": "Use existing exactly matching development environment and registered interpreter entry. Verify all fields and dependency hashes before fresh freeze; otherwise stop. Preserve guard and originals.",
+      "verification": "Complete fresh preflight and identity receipts before dispatch; no real kernel freeze."
+    },
+    {
+      "id": "GP5-NUM-N1-R3-HARNESS-02",
+      "severity": "HIGH",
+      "status": "OPEN_STATIC_CONFIRMED_NOT_EXECUTED",
+      "blocks": [
+        "E validation",
+        "remaining suite"
+      ],
+      "locations": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R3_20261118_01/run_E.py:83",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R3_20261118_01/run_E.py:84",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R3_20261118_01/run_E.py:93",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py:170"
+      ],
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R3_20261118_01/run_E.py"
+      ],
+      "observed": "Dispatch and snapshots use E, status is read from continuation/run.json in success and exception arms.",
+      "impact": "After first return the draft reads the wrong root and can mask the original error.",
+      "remediation": "Use one root; use job ID; preserve original errors/counters even if run.json does not exist.",
+      "verification": "Pure temporary-root fixture: correct result, stale other-root file, absent run.json and preserved initial failure."
+    }
+  ],
+  "prior_issue": {
+    "id": "GP5-NUM-N1-R2-KEY-01",
+    "status": "CLOSED_COMPARATOR_IMPLEMENTATION_AND_PURE_TEST_SCOPE_ONLY",
+    "integration": "NOT_RUN"
+  },
+  "next_stage_admission": "NOT_READY"
+}

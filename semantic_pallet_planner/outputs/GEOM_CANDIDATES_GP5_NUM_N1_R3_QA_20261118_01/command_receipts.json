@@ -1,0 +1,47 @@
+{
+  "schema": "geometry_num_n1_r3_qa_receipts_v1",
+  "commands": [
+    {
+      "command": "GIT_OPTIONAL_LOCKS=0 git status -sb; git rev-parse HEAD '@{upstream}'; git rev-list --left-right --count HEAD...'@{upstream}'",
+      "result": "Clean worktree, empty index, local 0/0."
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/miniconda3/bin/python3.14\" -B -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_native_key_r3.py -v",
+      "exit_code": 1,
+      "result": "Missing jsonschema before test methods."
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/miniconda3/envs/NBU/bin/python\" -B -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_native_key_r3.py -v",
+      "exit_code": 0,
+      "result": "test_saved_and_orientations, test_strict_rejections: OK."
+    },
+    {
+      "command": "python3 -I -B - (inline stdlib; read-only SHA/JSON/Git blobs)",
+      "exit_code": 1,
+      "result": "All 31/458/11 manifest rows, 591 source files, snapshots and policy verified before comparing whole copied config to nested monitor by mistake."
+    },
+    {
+      "command": "python3 -I -B - (inline stdlib; corrected nested config, scope and denominators)",
+      "exit_code": 0,
+      "result": "Full GP3 config bytes match. Nested monitor matches R1/R2 snapshots. Old scopes match bytes. All 35 NOT_RUN, no freeze or runtime roots; historical E=5 and R3 dispatch=0."
+    },
+    {
+      "command": "git diff --check cfb399ca 498e0cf2",
+      "exit_code": 2,
+      "result": "Four lines of single-space unified diff context in archived production_change.patch."
+    },
+    {
+      "command": "git diff --check cfb399ca 498e0cf2 -- . ':!**/production_change.patch'",
+      "exit_code": 0,
+      "result": "No other whitespace findings."
+    }
+  ],
+  "not_run": [
+    "prepare_validation.py",
+    "run_E.py",
+    "Production preflight",
+    "FRESH/SAVED",
+    "C/E/R/X/H/admin",
+    "Orders, candidate regeneration, shadow transition, real monitor, LP, kernel freeze and model calls"
+  ]
+}

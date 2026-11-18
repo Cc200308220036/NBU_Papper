@@ -1,0 +1,94 @@
+{
+  "schema": "geometry_num_n1_r3_qa_admission_v1",
+  "next_stage": "P2_REAL_KERNEL_ACCEPTANCE",
+  "status": "NOT_READY",
+  "prerequisites": [
+    {
+      "id": "KEY-01_COMPARE",
+      "status": "PASS",
+      "evidence": "FRESH/SAVED shared implementation and two local pure tests; bounded closure"
+    },
+    {
+      "id": "KEY-01_INTEGRATION",
+      "status": "NOT_RUN",
+      "evidence": "production FRESH/SAVED behavior under R3 source"
+    },
+    {
+      "id": "SOURCE_POLICY_ARCHIVE",
+      "status": "PASS",
+      "evidence": "591 production items, two changed files, policy and 31/458/11 manifest members"
+    },
+    {
+      "id": "ENVIRONMENT_CONFIG_FREEZE",
+      "status": "FAIL",
+      "evidence": "saved stop at complete monitor environment equality"
+    },
+    {
+      "id": "E_ENTRYPOINT_PATH",
+      "status": "FAIL",
+      "evidence": "static mismatch in unexecuted draft"
+    },
+    {
+      "id": "C",
+      "status": "NOT_RUN",
+      "evidence": "0/6"
+    },
+    {
+      "id": "E",
+      "status": "NOT_RUN",
+      "evidence": "0/8, 0/16 test-double monitors"
+    },
+    {
+      "id": "R",
+      "status": "NOT_RUN",
+      "evidence": "0/6, 0/2 monitor and 0/4 commit increments"
+    },
+    {
+      "id": "X_H_ADMIN",
+      "status": "NOT_RUN",
+      "evidence": "0/15, 0/1 monitor"
+    },
+    {
+      "id": "NUM-01",
+      "status": "PARTIAL",
+      "evidence": "OPEN; missing new backend consecutive integer placements and proper recovery"
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL",
+      "evidence": "no real numerical end-to-end or recovery"
+    }
+  ],
+  "recommended_repair": {
+    "unit": "GP5_NUM_N1_R4_ENVIRONMENT_AND_VALIDATION_ENTRYPOINT",
+    "status": "CONDITIONAL",
+    "target": "Matching full development environment, fresh test-only entrypoints and bounded N1 revalidation.",
+    "requires_explicit_assignment": true,
+    "scope": {
+      "C": 6,
+      "E_jobs": 8,
+      "items_per_job": 2,
+      "E_monitor_max": 16,
+      "prior_E_actual": 5,
+      "prior_limit": 17,
+      "E_cross_history_max": 21,
+      "R_resumes": 6,
+      "R_monitor_increment_max": 2,
+      "R_commit_increment_max": 4,
+      "R_generation_publication_selection_increment": 0,
+      "X_H_ADMIN": 15,
+      "X_H_monitor_max": 1,
+      "new_seeds": 0,
+      "real_calls": 0
+    }
+  },
+  "stop": [
+    "Environment cannot be fully verified",
+    "First unexpected failure",
+    "Protected production change or scope expansion required",
+    "Bounded verification complete; return to QA"
+  ],
+  "formal_8job": "NOT_READY",
+  "real_call_authorization": 0,
+  "prompt_delivery": "INLINE_FINAL_ONLY"
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "geometry_num_n1_r4_qa_receipts_v1",
+  "checks": [
+    {
+      "command": "GIT_OPTIONAL_LOCKS=0 git status -sb; git rev-parse HEAD '@{upstream}'; git rev-list --left-right --count HEAD...'@{upstream}'",
+      "result": "Clean worktree, empty index, local 0/0."
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R4_20261118_01 -p test_harness.py -v",
+      "exit_code": 1,
+      "result": "Four methods passed, overall loader failure: Python 3.9 discovery descended into source_snapshot and tried importing archived viewer/contracts, which failed on Python version syntax. No entrypoint, order/monitor logic or kernel executed."
+    },
+    {
+      "command": "\"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R4_20261118_01/test_harness.py -v",
+      "exit_code": 0,
+      "result": "Four methods PASS, explicitly scoped, stdlib-only test and harness."
+    },
+    {
+      "command": "\"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R4_20261118_01/verify_delivery.py",
+      "exit_code": 0,
+      "result": "Read-only developer validator, source/frozen/delivery identities, JSON/AST, links, no dispatch."
+    },
+    {
+      "command": "python3 -I -B - (inline read-only stdlib JSON/SHA and Git historical blobs)",
+      "exit_code": 0,
+      "result": "Source 591, snapshots byte exact, R3/R3QA members 31/6, original monitor identity, plan/admission/data/strategy/8 config identity bindings, scope and 35 NOT_RUN rows."
+    },
+    {
+      "command": "git diff --check 64565e51 b9a26d59 -- . ':!**/source_snapshot/**'",
+      "exit_code": 0,
+      "result": "All whitespace findings on full comparison confined to immutable raw source snapshots."
+    }
+  ],
+  "not_run": [
+    "Business entrypoint",
+    "prepare.py",
+    "seal_identity.py",
+    "Production preflight",
+    "Candidate generation",
+    "Shadow transition",
+    "Order and recovery",
+    "Real kernel, LP, freeze and model calls"
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "schema": "geometry_num_n1_r4_qa_review_v1",
+  "date": "2026-11-18",
+  "unit": "GP5_NUM_N1_R4_ENVIRONMENT_AND_VALIDATION_ENTRYPOINT",
+  "engineering_status": "R4_PREPARATION_LIMITED_PASS_ENTRYPOINT_PARTIAL_N1_PARTIAL",
+  "evidence_readiness": "FREEZE_AND_FOUR_PURE_TESTS_READY_RUNTIME_EVIDENCE_NOT_RUN",
+  "research_result": "NOT_ESTABLISHED",
+  "NUM-01": "OPEN",
+  "A03": "PARTIAL",
+  "P2": "NOT_READY",
+  "formal_8job": "NOT_READY",
+  "recommended_repair": "GP5_NUM_N1_R5_VALIDATION_ISOLATION_AND_COVERAGE",
+  "repair_status": "CONDITIONAL",
+  "real_call_authorization": 0,
+  "stopped": true,
+  "timezone": "Asia/Shanghai",
+  "authorization": "Independent QA, pure tests, saved checks, archival commit/push only.",
+  "scheme": [
+    "geometry_candidate_upgrade_design_v1",
+    "NUM-N0 §9",
+    "N1 pre-registration revision",
+    "R3 QA handoff"
+  ],
+  "identity": {
+    "developer_head_before_sync": "498e0cf2dcd21220af4503e7b3e7277598d5b534",
+    "developer_synced_base": "64565e51e7758533a0ecb9b52f2611c791712a9f",
+    "delivery_head": "b9a26d59d17b3136aef0e1be81bab4bab68c42e9",
+    "qa_review_head": "b9a26d59d17b3136aef0e1be81bab4bab68c42e9",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "initial_worktree": "CLEAN",
+    "index": "EMPTY",
+    "local_divergence": [
+      0,
+      0
+    ],
+    "source_files": 591,
+    "source_identity": "94e4c37838f0a82f84c200d12fbed5d92c93eb7486085e9c3014c514ba886fa2",
+    "source_drift": false,
+    "policy_digest": "fe12fc1dec4d7004d813bef76162648ac916adb9e2006b92b163aeadb54fe4cb"
+  },
+  "closed_issues": [
+    {
+      "id": "GP5-NUM-N1-R3-ENV-01",
+      "scope": "ARCHIVED_ORIGINAL_PREFLIGHT_AND_FREEZE_ONLY"
+    },
+    {
+      "id": "GP5-NUM-N1-R3-HARNESS-02",
+      "scope": "SAME_ROOT_JOB_LOOKUP_AND_PURE_FAILURE_RECEIPTS_ONLY"
+    }
+  ],
+  "four_layers": {
+    "report_claim": "Environment matched; same-root tests pass; fixed suite not authorized or run.",
+    "implementation": "No production changes; wrapper fixed for E job lookup; new suite contains output isolation, exception mapping and evidence coverage issues.",
+    "archived_evidence": "Eight configs, 591 source snapshots, 1215 sealed entries, 630 delivery objects; counts 6/8/6/15 all NOT_RUN, dispatch 0, history E=5.",
+    "local_reverification": "Explicit test_harness.py four methods PASS; saved-byte verifier plus independent digest/identity/result checks; no production preflight or business replay."
+  },
+  "acceptance": [
+    {
+      "id": "SOURCE_AND_FREEZE",
+      "status": "PASS",
+      "evidence": "630 development manifest members, 1215 sealed identities, 591 current/source snapshot bytes, policy and 8 config identities, prior 31/6 manifests."
+    },
+    {
+      "id": "ENV-01",
+      "status": "PASS",
+      "evidence": "Closed at archived original source/dependency/environment check and 8 configuration preflight paths; Linux behavior not repeated on audit host."
+    },
+    {
+      "id": "HARNESS-02",
+      "status": "PASS",
+      "evidence": "Closed for original same-root lookup and exception bookkeeping; 4 local pure tests."
+    },
+    {
+      "id": "SUITE_OUTPUT_ISOLATION",
+      "status": "FAIL",
+      "evidence": "Static ARCHIVE-01; blocked before dispatch."
+    },
+    {
+      "id": "X_H_EXPECTED_ERROR_HANDLING",
+      "status": "FAIL",
+      "evidence": "Static NEGATIVE-01; no execution."
+    },
+    {
+      "id": "C_E_REQUIRED_ASSERTIONS",
+      "status": "PARTIAL",
+      "evidence": "Static COVERAGE-01."
+    },
+    {
+      "id": "C",
+      "status": "NOT_RUN",
+      "evidence": "0/6"
+    },
+    {
+      "id": "E",
+      "status": "NOT_RUN",
+      "evidence": "0/8"
+    },
+    {
+      "id": "R",
+      "status": "NOT_RUN",
+      "evidence": "0/6"
+    },
+    {
+      "id": "X_H_ADMIN",
+      "status": "NOT_RUN",
+      "evidence": "0/15"
+    },
+    {
+      "id": "KEY-01_FRESH_SAVED",
+      "status": "NOT_RUN",
+      "evidence": "New identity production publication and restore lack runtime evidence."
+    },
+    {
+      "id": "NUM-01",
+      "status": "PARTIAL",
+      "evidence": "OPEN"
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL",
+      "evidence": "No end-to-end and recovery evidence with real monitor."
+    },
+    {
+      "id": "A05",
+      "status": "NOT_RUN",
+      "evidence": "Formal 8 jobs"
+    },
+    {
+      "id": "A06",
+      "status": "NOT_APPLICABLE",
+      "evidence": "GP6 outside authorized scope"
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP5-NUM-N1-R4-ARCHIVE-01",
+      "severity": "HIGH",
+      "status": "OPEN_STATIC_CONFIRMED_NOT_EXECUTED",
+      "blocks": [
+        "R4 entrypoint exit",
+        "bounded suite dispatch"
+      ],
+      "location": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R4_20261118_01/validation_entrypoint.py:9",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R4_20261118_01/validation_entrypoint.py:55",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R4_20261118_01/validation_entrypoint.py:155",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R4_20261118_01/delivery_manifest.json"
+      ],
+      "evidence": "O is program parent, no separate output root. Suite.save overwrites O/call_accounting.json, which is a member of the 630-row delivery manifest; markers and runs are also written among original records.",
+      "impact": "The first save overwrites the sealed zero-call evidence, invalidating the delivered manifest. Suite results contain only appended outcomes and R_resumes counts passes, so failed attempts and NOT_RUN need independent full-denominator accounting.",
+      "remediation": "Separate sealed input and a new explicit output root, require no prior run, bind authorization to exact inputs and scope, put markers, status, receipts, snapshots, recovery and case outputs in new root. Initialize all 35 rows and count attempts independently of outcomes.",
+      "verification": "Pure temporary-roots check proves every sealed member still hashes identically after a simulated success and a simulated first stop; failed/attempted/NOT_RUN rows remain distinguishable."
+    },
+    {
+      "id": "GP5-NUM-N1-R4-NEGATIVE-01",
+      "severity": "HIGH",
+      "status": "OPEN_STATIC_CONFIRMED_NOT_EXECUTED",
+      "blocks": [
+        "bounded suite dispatch",
+        "X/H acceptance"
+      ],
+      "location": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R4_20261118_01/remaining_checks.py:18",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R4_20261118_01/remaining_checks.py:58",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R4_20261118_01/remaining_checks.py:98",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_runtime_input.py:255",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_runtime_contracts.py:35"
+      ],
+      "evidence": "Snapshot byte/native mismatches throw GeometryError. Shared negative helper only recognizes JevSelectError.",
+      "impact": "A correct target rejection can be treated as unexpected failure, aborting the fixed suite after preceding orders have used their allowance. The archived script was never executed.",
+      "remediation": "Bind each negative to its actual expected exception class and code, especially snapshot validation. No blanket success for arbitrary exceptions. Use saved copy or pure metadata; prove signed-zero/type fixture modifies only the intended type or bit and uses an otherwise valid baseline.",
+      "verification": "Pure contract test for expected, unexpected and no exception; preserve actual exact type/code, no business dispatch."
+    },
+    {
+      "id": "GP5-NUM-N1-R4-COVERAGE-01",
+      "severity": "MEDIUM",
+      "status": "OPEN_STATIC_COVERAGE_GAP",
+      "blocks": [
+        "full C/E evidence",
+        "N1 exit"
+      ],
+      "location": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R4_20261118_01/validation_entrypoint.py:81",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R4_20261118_01/validation_entrypoint.py:115",
+        "docs/02_阶段实施方案/几何规划模块/几何候选器GP5-NUM-N0原生尺寸发布桥接定稿设计_20261117_01.md"
+      ],
+      "evidence": "C checks restored native sizes and one typed encoding roundtrip, emits a digest once, and does not assert the remaining requested contract and identity evidence. E asserts completion, place count and shape but lacks paired public F0 contract evidence.",
+      "impact": "Passing the existing assertions would not establish all named C/E requirements.",
+      "remediation": "Preserve six case IDs and fixed tasks; add the missing proof/type-bit/determinism/closed-schema/DAG and same-protocol public F0 field-contract evidence using pure cases or already captured E contexts. Freeze exact scope; do not require identical candidates after trajectories diverge.",
+      "verification": "Receipts map each required existing assertion to its evidence under the same denominator."
+    }
+  ],
+  "next_stage_admission": "NOT_READY"
+}

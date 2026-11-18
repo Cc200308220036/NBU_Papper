@@ -1,0 +1,114 @@
+{
+  "schema": "geometry_num_n1_r4_qa_admission_v1",
+  "next_stage": "P2_REAL_KERNEL_ACCEPTANCE",
+  "status": "NOT_READY",
+  "prerequisites": [
+    {
+      "id": "SOURCE_AND_FREEZE",
+      "status": "PASS",
+      "evidence": "630 development manifest members, 1215 sealed identities, 591 current/source snapshot bytes, policy and 8 config identities, prior 31/6 manifests."
+    },
+    {
+      "id": "ENV-01",
+      "status": "PASS",
+      "evidence": "Closed at archived original source/dependency/environment check and 8 prepaid preflight paths; Linux behavior not repeated on audit host."
+    },
+    {
+      "id": "HARNESS-02",
+      "status": "PASS",
+      "evidence": "Closed for original same-root lookup and exception bookkeeping; 4 local pure tests."
+    },
+    {
+      "id": "SUITE_OUTPUT_ISOLATION",
+      "status": "FAIL",
+      "evidence": "Static ARCHIVE-01; blocked before dispatch."
+    },
+    {
+      "id": "X_H_EXPECTED_ERROR_HANDLING",
+      "status": "FAIL",
+      "evidence": "Static NEGATIVE-01; no execution."
+    },
+    {
+      "id": "C_E_REQUIRED_ASSERTIONS",
+      "status": "PARTIAL",
+      "evidence": "Static COVERAGE-01."
+    },
+    {
+      "id": "C",
+      "status": "NOT_RUN",
+      "evidence": "0/6"
+    },
+    {
+      "id": "E",
+      "status": "NOT_RUN",
+      "evidence": "0/8"
+    },
+    {
+      "id": "R",
+      "status": "NOT_RUN",
+      "evidence": "0/6"
+    },
+    {
+      "id": "X_H_ADMIN",
+      "status": "NOT_RUN",
+      "evidence": "0/15"
+    },
+    {
+      "id": "KEY-01_FRESH_SAVED",
+      "status": "NOT_RUN",
+      "evidence": "New identity production publication and restore lack runtime evidence."
+    },
+    {
+      "id": "NUM-01",
+      "status": "PARTIAL",
+      "evidence": "OPEN"
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL",
+      "evidence": "No end-to-end and recovery evidence with real monitor."
+    }
+  ],
+  "current_frozen_r4_entrypoint_dispatch": "NOT_READY",
+  "recommended_repair": {
+    "unit": "GP5_NUM_N1_R5_VALIDATION_ISOLATION_AND_COVERAGE",
+    "status": "CONDITIONAL",
+    "allowed_now_if_assigned": "Test-only changes/metadata/pure checks in isolated new delivery, no business assignment implied.",
+    "blockers": [
+      "GP5-NUM-N1-R4-ARCHIVE-01",
+      "GP5-NUM-N1-R4-NEGATIVE-01",
+      "GP5-NUM-N1-R4-COVERAGE-01"
+    ],
+    "execution_requirements": [
+      "Close pre-dispatch blockers with pure checks",
+      "same production identity and whole environment",
+      "fresh isolated freeze with exact scripts, scope, and checked stable inputs",
+      "explicit subsequent user assignment and matching receipt"
+    ],
+    "fixed_scope": {
+      "C": 6,
+      "E": 8,
+      "E_items_per_job": 2,
+      "E_monitors_new_max": 16,
+      "E_historical_actual": 5,
+      "E_cross_history_max": 21,
+      "E_original_archive_limit": 17,
+      "R": 6,
+      "R_new_monitors_max": 2,
+      "R_new_commits_max": 4,
+      "R_new_generation_publication_selection": 0,
+      "X_H_ADMIN": 15,
+      "X_H_monitors_max": 1,
+      "real_calls": 0
+    }
+  },
+  "stop_conditions": [
+    "First unexpected failure",
+    "identity mismatch or scope drift",
+    "protected production change required",
+    "bounded repair or assigned validation complete; return to independent QA"
+  ],
+  "formal_8job": "NOT_READY",
+  "prompt_delivery": "INLINE_FINAL_ONLY",
+  "real_call_authorization": 0
+}

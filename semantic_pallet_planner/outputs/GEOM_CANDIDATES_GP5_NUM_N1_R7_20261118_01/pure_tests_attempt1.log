@@ -1,0 +1,25 @@
+test_existing_numeric_e_totals_unchanged (__main__.TimingSummary.test_existing_numeric_e_totals_unchanged) ... FAIL
+test_monitor_duration_missing_null_zero (__main__.TimingSummary.test_monitor_duration_missing_null_zero) ... ok
+test_numeric_zero_null_missing_and_mixed (__main__.TimingSummary.test_numeric_zero_null_missing_and_mixed) ... ok
+test_original_failed_event_data (__main__.TimingSummary.test_original_failed_event_data) ... ok
+test_v16_v17_shared_summary_schema_without_execution (__main__.TimingSummary.test_v16_v17_shared_summary_schema_without_execution) ... ok
+
+======================================================================
+FAIL: test_existing_numeric_e_totals_unchanged (__main__.TimingSummary.test_existing_numeric_e_totals_unchanged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/cyw/NBU_Papper/semantic_pallet_planner/tests/unit/test_geometry_order_timing_r7.py", line 92, in test_existing_numeric_e_totals_unchanged
+    self.assertEqual(actual,expected);self.assertEqual(events,before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'segment': 'checkpoint_io_s', 'seconds': 0.0[646 chars]0.0}] != [{'seconds': 0.030015580996405333, 'segment': [711 chars]_s'}]
+
+Second list contains 1 additional elements.
+First extra element 11:
+{'seconds': 15.295248996990267, 'segment': 'invocation_wall_s'}
+
+Diff is 983 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.160s
+
+FAILED (failures=1)

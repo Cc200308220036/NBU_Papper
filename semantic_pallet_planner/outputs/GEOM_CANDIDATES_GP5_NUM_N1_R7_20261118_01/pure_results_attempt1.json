@@ -1,0 +1,337 @@
+{
+  "status": "FAIL",
+  "tests_run": 5,
+  "failures": 1,
+  "errors": 0,
+  "scope": "PURE_SUMMARY_ONLY",
+  "actual_order_and_resume": "NOT_RUN",
+  "evidence": {
+    "monitor_duration_cases": 5,
+    "sample_cases": [
+      {
+        "case": "numeric",
+        "input": [
+          {
+            "decision_id": "PURE",
+            "timings": {
+              "a_s": 1.25
+            }
+          },
+          {
+            "decision_id": "PURE",
+            "timings": {
+              "a_s": 2
+            }
+          }
+        ],
+        "output": [
+          {
+            "segment": "a_s",
+            "seconds": 3.25
+          }
+        ],
+        "status": "PASS"
+      },
+      {
+        "case": "zero",
+        "input": [
+          {
+            "decision_id": "PURE",
+            "timings": {
+              "a_s": 0
+            }
+          },
+          {
+            "decision_id": "PURE",
+            "timings": {
+              "a_s": 0.0
+            }
+          }
+        ],
+        "output": [
+          {
+            "segment": "a_s",
+            "seconds": 0.0
+          }
+        ],
+        "status": "PASS"
+      },
+      {
+        "case": "null",
+        "input": [
+          {
+            "decision_id": "PURE",
+            "timings": {
+              "a_s": null
+            }
+          }
+        ],
+        "output": [],
+        "status": "PASS"
+      },
+      {
+        "case": "missing",
+        "input": [
+          {
+            "decision_id": "PURE",
+            "timings": {}
+          }
+        ],
+        "output": [],
+        "status": "PASS"
+      },
+      {
+        "case": "mixed",
+        "input": [
+          {
+            "decision_id": "PURE",
+            "timings": {
+              "a_s": 1.25
+            }
+          },
+          {
+            "decision_id": "PURE",
+            "timings": {
+              "a_s": null
+            }
+          }
+        ],
+        "output": [
+          {
+            "segment": "measured_partial/a_s",
+            "seconds": 1.25
+          }
+        ],
+        "status": "PASS"
+      },
+      {
+        "case": "missing_one",
+        "input": [
+          {
+            "decision_id": "PURE",
+            "timings": {
+              "a_s": 1.25
+            }
+          },
+          {
+            "decision_id": "PURE",
+            "timings": {}
+          }
+        ],
+        "output": [
+          {
+            "segment": "measured_partial/a_s",
+            "seconds": 1.25
+          }
+        ],
+        "status": "PASS"
+      },
+      {
+        "case": "zero_null",
+        "input": [
+          {
+            "decision_id": "PURE",
+            "timings": {
+              "a_s": 0.0
+            }
+          },
+          {
+            "decision_id": "PURE",
+            "timings": {
+              "a_s": null
+            }
+          }
+        ],
+        "output": [
+          {
+            "segment": "measured_partial/a_s",
+            "seconds": 0.0
+          }
+        ],
+        "status": "PASS"
+      },
+      {
+        "case": "arrival_not_sample",
+        "input": [
+          {
+            "event": "ARRIVE",
+            "timings": {}
+          },
+          {
+            "decision_id": "PURE",
+            "timings": {
+              "a_s": 2
+            }
+          }
+        ],
+        "output": [
+          {
+            "segment": "a_s",
+            "seconds": 2
+          }
+        ],
+        "status": "PASS"
+      }
+    ],
+    "archived_failure": {
+      "checkpoint": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_FIXED_SYNTHETIC_REVALIDATION_20261118_01/R_recovery/J01_COMMITTED/jobs/J01/checkpoint.json",
+      "sha256": "0d72ceb132f4d6dd488da33d42c1bac2345296a583779380aa0699c70b431f15",
+      "original_values": [
+        7.323691413999768,
+        null
+      ],
+      "new_totals": [
+        {
+          "segment": "checkpoint_io_s",
+          "seconds": 0.013935802999185398
+        },
+        {
+          "segment": "decision_segments_s",
+          "seconds": 12.152308321004966
+        },
+        {
+          "segment": "measured_partial/decision_wall_s",
+          "seconds": 7.323691413999768
+        },
+        {
+          "segment": "facts_context_s",
+          "seconds": 3.150430255016545
+        },
+        {
+          "segment": "independent_evaluation_s",
+          "seconds": 0.0002891240001190454
+        },
+        {
+          "segment": "physical_commit_s",
+          "seconds": 7.4901769909774885
+        },
+        {
+          "segment": "physical_generation_s",
+          "seconds": 1.4876403369707987
+        },
+        {
+          "segment": "public_business_s",
+          "seconds": 0.0
+        },
+        {
+          "segment": "public_parse_s",
+          "seconds": 0.002457437018165365
+        },
+        {
+          "segment": "selection_s",
+          "seconds": 0.007378374022664502
+        },
+        {
+          "segment": "monitor_result_duration_s",
+          "seconds": 0.0
+        }
+      ],
+      "original_events_unchanged": true,
+      "actual_resume": "NOT_RUN"
+    },
+    "shared_entry": [
+      {
+        "config_version": "jev_packaging_geometry_order_v16",
+        "metrics_schema": "geometry_order_metrics_v1",
+        "timings": [
+          {
+            "segment": "checkpoint_io_s",
+            "seconds": 0.013935802999185398
+          },
+          {
+            "segment": "decision_segments_s",
+            "seconds": 12.152308321004966
+          },
+          {
+            "segment": "measured_partial/decision_wall_s",
+            "seconds": 7.323691413999768
+          },
+          {
+            "segment": "facts_context_s",
+            "seconds": 3.150430255016545
+          },
+          {
+            "segment": "independent_evaluation_s",
+            "seconds": 0.0002891240001190454
+          },
+          {
+            "segment": "physical_commit_s",
+            "seconds": 7.4901769909774885
+          },
+          {
+            "segment": "physical_generation_s",
+            "seconds": 1.4876403369707987
+          },
+          {
+            "segment": "public_business_s",
+            "seconds": 0.0
+          },
+          {
+            "segment": "public_parse_s",
+            "seconds": 0.002457437018165365
+          },
+          {
+            "segment": "selection_s",
+            "seconds": 0.007378374022664502
+          },
+          {
+            "segment": "monitor_result_duration_s",
+            "seconds": 0.0
+          }
+        ],
+        "status": "PASS_PURE_SUMMARY_NOT_ORDER_ACCEPTANCE"
+      },
+      {
+        "config_version": "jev_packaging_geometry_order_v17",
+        "metrics_schema": "geometry_order_metrics_v2",
+        "timings": [
+          {
+            "segment": "checkpoint_io_s",
+            "seconds": 0.013935802999185398
+          },
+          {
+            "segment": "decision_segments_s",
+            "seconds": 12.152308321004966
+          },
+          {
+            "segment": "measured_partial/decision_wall_s",
+            "seconds": 7.323691413999768
+          },
+          {
+            "segment": "facts_context_s",
+            "seconds": 3.150430255016545
+          },
+          {
+            "segment": "independent_evaluation_s",
+            "seconds": 0.0002891240001190454
+          },
+          {
+            "segment": "physical_commit_s",
+            "seconds": 7.4901769909774885
+          },
+          {
+            "segment": "physical_generation_s",
+            "seconds": 1.4876403369707987
+          },
+          {
+            "segment": "public_business_s",
+            "seconds": 0.0
+          },
+          {
+            "segment": "public_parse_s",
+            "seconds": 0.002457437018165365
+          },
+          {
+            "segment": "selection_s",
+            "seconds": 0.007378374022664502
+          },
+          {
+            "segment": "monitor_result_duration_s",
+            "seconds": 0.0
+          }
+        ],
+        "status": "PASS_PURE_SUMMARY_NOT_ORDER_ACCEPTANCE"
+      }
+    ]
+  }
+}

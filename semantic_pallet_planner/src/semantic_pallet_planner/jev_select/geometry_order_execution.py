@@ -198,6 +198,33 @@ def run_order_job(plan,job_id,adapted,*,monitor_snapshot,admission,root,kernel_r
         return result
 
 
+def _order_timing_totals(events,monitors):
+    """Numeric timing rows only, without inventing unmeasured durations.
+
+    Bare segment names denote complete sums over applicable decision events
+    (or monitor results). Missing/null samples make the sum incomplete: emit
+    only its measured subtotal under ``measured_partial/<segment>``. If no
+    sample was measured, omit the row; absence means unavailable, never zero.
+    Arrival events without decision timings are not timing samples. Original
+    event fields, including measured zero and legal null, remain untouched.
+    """
+    def aggregate(key,values):
+        measured=[v for v in values if v is not None]
+        if any(type(v) not in (int,float) for v in measured):
+            raise TypeError('invalid order timing sample: '+key)
+        if not measured:return []
+        name=key if len(measured)==len(values) else 'measured_partial/'+key
+        return [{'segment':name,'seconds':sum(measured)}]
+
+    samples=[e.get('timings',{}) for e in events if e.get('decision_id') or e.get('timings')]
+    timings=[]
+    for key in sorted({k for sample in samples for k in sample if k.endswith('_s')}):
+        timings.extend(aggregate(key,[sample.get(key) for sample in samples]))
+    timings.extend(aggregate('monitor_result_duration_s',[
+        (r.get('result') or {}).get('duration_s') for r in monitors]))
+    return timings
+
+
 def order_metrics(task,config,method,state,events,reason):
     placed=state['placed_items'];items=task['items'];container=state['container']
     planned_volume=sum(math.prod(o['dimensions_mm'].values()) for o in items)
@@ -227,10 +254,7 @@ def order_metrics(task,config,method,state,events,reason):
         from .geometry_order_meter import current_counts
         counts=current_counts(config['plan_digest'])
     else:counts={'assessment_entries':0,'solver_calls':0,'test_double_assessments':marked}
-    timings=[]
-    for key in sorted({k for e in events for k,v in e.get('timings',{}).items() if k.endswith('_s') and type(v) in (float,int)}):
-        timings.append({'segment':key,'seconds':sum(e.get('timings',{}).get(key,0) for e in events)})
-    timings.append({'segment':'monitor_result_duration_s','seconds':sum((r.get('result') or {}).get('duration_s',0) for r in rows)})
+    timings=_order_timing_totals(events,rows)
     value={**identity_fields(config),'version':wire(config,'geometry_order_metrics_v1'),'task_id':task['task_id'],'candidate_backend':config['candidate_backend'],
         'method':method,'scope':config['execution_scope'],'monitor_evidence':config['monitor_evidence'],
         'runtime_identity':copy.deepcopy(config['runtime_identity']),'planned_items':len(items),'arrived_items':state['arrival_count'],

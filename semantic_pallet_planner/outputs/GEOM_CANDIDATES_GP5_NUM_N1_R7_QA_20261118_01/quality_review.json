@@ -1,0 +1,132 @@
+{
+  "schema": "geometry_num_n1_r7_qa_review_v1",
+  "date": "2026-11-18",
+  "unit": "GP5_NUM_N1_R7_COMMITTED_TIMING_SUMMARY_FIX",
+  "engineering_status": "R7_IMPLEMENTATION_AND_PURE_PASS_N1_PARTIAL",
+  "evidence_readiness": "TIMING_FIX_PURE_EVIDENCE_READY_NEW_SOURCE_RUNTIME_NOT_RUN",
+  "research_result": "NOT_ESTABLISHED",
+  "NUM-01": "OPEN",
+  "A03": "PARTIAL",
+  "P2": "NOT_READY",
+  "formal_8job": "NOT_READY",
+  "next_unit": "GP5_NUM_N1_R8_MINIMAL_NEW_SOURCE_RECOVERY_REVALIDATION",
+  "next_unit_admission": "CONDITIONAL",
+  "real_call_authorization": 0,
+  "stopped": true,
+  "timezone": "Asia/Shanghai",
+  "scheme": [
+    "geometry_candidate_upgrade_design_v1",
+    "NUM-N0 §9",
+    "N1 pre-registration revision",
+    "fixed-synthetic QA handoff"
+  ],
+  "authorization": "Independent QA/saved checks/pure tests and QA commit/push only. No business dispatch.",
+  "identity": {
+    "developer_entry": "b8134945f1b21a389d57cb9c8a436b04fd58fd8b",
+    "developer_synced_base": "09165e86751f052dcaf6d4d106b1283a63d0520a",
+    "reviewed_head": "a060652f4f557337753043e1c91bed024f647139",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "initial_worktree": "CLEAN",
+    "initial_index": "EMPTY",
+    "local_divergence": [
+      0,
+      0
+    ],
+    "source_files": 591,
+    "before_source_identity": "94e4c37838f0a82f84c200d12fbed5d92c93eb7486085e9c3014c514ba886fa2",
+    "after_source_identity": "8a860eea3ec22f8805eb6767660301acfd526653f566b1b1bd3e42b4af53578f",
+    "source_drift_since_delivery": false
+  },
+  "four_layers": {
+    "report_claim": "Timing fix and final pure regressions passed; no new source runtime freeze or execution.",
+    "implementation": "Single production file changed; pure aggregator separates known zero, complete segments and partial subtotal with measured_partial prefix; shared v16/v17 routes.",
+    "archived_evidence": "Old fixed 35 remains 16/1/18; first development pure run failure preserved; final five methods and proposed bounded revalidation present.",
+    "local_reverification": "Five targeted pure methods PASS with GP5_R7_EVIDENCE unset; manifests, source SHA, saved metrics and plan independently checked. No resumed order."
+  },
+  "acceptance": [
+    {
+      "id": "SOURCE_AND_OLD_ARCHIVES",
+      "status": "PASS",
+      "evidence": "591 source files, one production file changed; 20/1491/8 manifest members; 1546 historical bytes; 35 historical row copy unchanged."
+    },
+    {
+      "id": "REC_TIMING_01_IMPLEMENTATION",
+      "status": "PASS",
+      "evidence": "Limited closure: null no longer enters numeric sum; complete and partial rows distinct; measured zero preserved. Live restore NOT_RUN."
+    },
+    {
+      "id": "PURE_SHARED_V16_V17",
+      "status": "PASS",
+      "evidence": "5 local pure methods; schema-valid v16/v17 summaries on historical metadata; no execution."
+    },
+    {
+      "id": "PREVIOUS_E_TIMING_ARITHMETIC",
+      "status": "PASS",
+      "evidence": "All eight historical numeric E sums recomputed identically excluding driver-added invocation_wall_s; no same-source E proof."
+    },
+    {
+      "id": "NEW_SOURCE_RUNTIME_FREEZE",
+      "status": "NOT_RUN",
+      "evidence": "New source manifest exists; execution freeze and authorization not issued."
+    },
+    {
+      "id": "MINIMAL_SCOPE_PREPARATION",
+      "status": "PARTIAL",
+      "evidence": "Two-job proposal specified. Prior R6 entrypoint dispatches all plan jobs and expects four F0 pairs; must build scoped test dispatch and receipts first."
+    },
+    {
+      "id": "ACTUAL_R7_C_E_R_X_H_ADMIN",
+      "status": "NOT_RUN",
+      "evidence": "No new orders/recovery/guard dispatch. Historical tally remains 16/1/18."
+    },
+    {
+      "id": "NUM-01",
+      "status": "PARTIAL",
+      "evidence": "OPEN; current-source resume and rejection evidence absent."
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL",
+      "evidence": "Real numerical E2E and recovery unverified."
+    },
+    {
+      "id": "A05",
+      "status": "NOT_RUN",
+      "evidence": "Formal real-source 8 jobs."
+    },
+    {
+      "id": "A06",
+      "status": "NOT_APPLICABLE",
+      "evidence": "GP6 outside scope."
+    }
+  ],
+  "closed_issues": [
+    {
+      "id": "GP5-NUM-N1-FIXED-REC-TIMING-01",
+      "scope": "CLOSED_PRODUCTION_IMPLEMENTATION_AND_PURE_RETEST_ONLY",
+      "actual_runtime": "NOT_RUN"
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP5-NUM-N1-R8-SCOPE-01",
+      "severity": "HIGH",
+      "status": "PRE_DISPATCH_CONDITION_FOR_NEXT_UNIT",
+      "blocks": "Any two-job dispatch through an unmodified R6 runner; R7 implementation exit unaffected.",
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R6_20261118_01/validation_entrypoint.py:100",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R6_20261118_01/validation_entrypoint.py:134",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:107"
+      ],
+      "observed": "Existing R6 runner iterates entire plan and expects four F0 pairs. Production development-plan validator binds full task/backend/method matrix.",
+      "impact": "Reusing old runner or editing plan jobs would respectively overshoot E2 or fail plan validation.",
+      "remediation": "Use unmodified valid production plan; in new test layer bind exact two allowed tasks/backends/method IDs, only authorize their dispatch, and record one matching F0 pair where applicable and six outside-scope rows. Pure negative check rejects wrong or missing jobs and excessive budgets before dispatch.",
+      "verification": "Static/pure allowlist, independent freeze and new output root before explicit assignment and any dispatch."
+    }
+  ],
+  "next_stage_admission": {
+    "minimal_new_source": "CONDITIONAL",
+    "P2": "NOT_READY"
+  }
+}

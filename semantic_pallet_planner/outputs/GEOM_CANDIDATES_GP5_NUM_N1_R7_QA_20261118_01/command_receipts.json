@@ -1,0 +1,36 @@
+{
+  "schema": "geometry_num_n1_r7_qa_command_receipts_v1",
+  "checks": [
+    {
+      "command": "GIT_OPTIONAL_LOCKS=0 git status -sb; git rev-parse HEAD '@{upstream}'; git rev-list --left-right --count HEAD...'@{upstream}'",
+      "result": "clean, empty index, local 0/0"
+    },
+    {
+      "command": "env -u GP5_R7_EVIDENCE PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/tests/unit/test_geometry_order_timing_r7.py",
+      "exit_code": 0,
+      "result": "5 targeted pure methods PASS, R7 developer evidence output disabled."
+    },
+    {
+      "command": "python3 -I -B - (inline stdlib SHA/JSON and historical Git blobs)",
+      "exit_code": 0,
+      "result": "20/1491/8 manifest entries, 1546 historical hashes, 591 current source files and single production edit. Old 35 row copy, raw failed timing, v16/v17 pure receipts and proposed plan status matched."
+    },
+    {
+      "command": "git diff --check 09165e86 a060652f",
+      "exit_code": 2,
+      "result": "Two single-space unified-diff context lines in archived production.patch, no findings outside that artifact."
+    },
+    {
+      "command": "git diff --check 09165e86 a060652f -- . ':!**/production.patch'",
+      "exit_code": 0,
+      "result": "No whitespace findings outside the archived patch."
+    }
+  ],
+  "not_run": [
+    "order/recovery",
+    "production preflight",
+    "shadow physical transition",
+    "real monitor/LP/freeze/model",
+    "new source runtime seal"
+  ]
+}

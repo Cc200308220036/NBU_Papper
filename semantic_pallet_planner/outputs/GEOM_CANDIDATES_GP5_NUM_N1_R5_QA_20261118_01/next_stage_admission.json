@@ -1,0 +1,105 @@
+{
+  "schema": "geometry_num_n1_r5_qa_admission_v1",
+  "next_stage": "P2_REAL_KERNEL_ACCEPTANCE",
+  "status": "NOT_READY",
+  "prerequisites": [
+    {
+      "id": "SAVED_IDENTITY_FREEZE",
+      "status": "PASS",
+      "evidence": "44 R5 delivery entries, 1262 sealed hashes, 634 prior package hashes, 591 production files and 8 config identities"
+    },
+    {
+      "id": "ARCHIVE-01",
+      "status": "PASS",
+      "evidence": "Limited closure for implementation and pure temporary-directory simulation, business path NOT_RUN."
+    },
+    {
+      "id": "NEGATIVE-01",
+      "status": "PASS",
+      "evidence": "Limited closure for dedicated helper and archived metadata type/sign probes. Full fixed X/H/admin NOT_RUN."
+    },
+    {
+      "id": "COVERAGE-01_C_ENTRYPOINT",
+      "status": "PASS",
+      "evidence": "Limited code/static identity and schema evidence; fixed six C cases NOT_RUN."
+    },
+    {
+      "id": "COVERAGE-01_E_F0_ENTRYPOINT",
+      "status": "FAIL",
+      "evidence": "F0-01 locally reproduced twice from saved v17 metadata"
+    },
+    {
+      "id": "C",
+      "status": "NOT_RUN",
+      "evidence": "0/6"
+    },
+    {
+      "id": "E",
+      "status": "NOT_RUN",
+      "evidence": "0/8"
+    },
+    {
+      "id": "R",
+      "status": "NOT_RUN",
+      "evidence": "0/6"
+    },
+    {
+      "id": "X_H_ADMIN",
+      "status": "NOT_RUN",
+      "evidence": "0/15"
+    },
+    {
+      "id": "KEY-01_FRESH_SAVED",
+      "status": "NOT_RUN",
+      "evidence": "Production publication and recovery under R5 frozen inputs"
+    },
+    {
+      "id": "NUM-01",
+      "status": "PARTIAL",
+      "evidence": "OPEN; fixed end-to-end and recovery evidence pending"
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL",
+      "evidence": "Real monitor E2E/recovery pending"
+    }
+  ],
+  "current_R5_fixed_suite_dispatch": "NOT_READY",
+  "recommended_repair": {
+    "unit": "GP5_NUM_N1_R6_F0_SINGLETON_RECEIPT_FIX",
+    "status": "CONDITIONAL",
+    "blocker": "GP5-NUM-N1-R5-F0-01",
+    "allowed_scope": "Test layer F0 receipt and route-contract tests; new sealed validation input identity with no production source change.",
+    "before_dispatch": [
+      "Close F0-01 in pure/saved metadata checks",
+      "Check unchanged production source and original environment; new independent freeze and run root",
+      "Explicit subsequent user assignment bound to frozen input, scope and output root"
+    ],
+    "fixed_scope": {
+      "C": 6,
+      "E": 8,
+      "items_per_job": 2,
+      "E_new_test_double_monitor_max": 16,
+      "E_historical_used": 5,
+      "E_historical_original_limit": 17,
+      "E_cross_history_max": 21,
+      "R_max": 6,
+      "R_monitor_increment_max": 2,
+      "R_commit_increment_max": 4,
+      "R_generation_publication_selection_increment": 0,
+      "X_H_ADMIN": 15,
+      "X_H_monitor_max": 1,
+      "extra_seeds": 0,
+      "real_calls": 0
+    }
+  },
+  "stop_conditions": [
+    "First unexpected failure",
+    "Frozen identity or environment mismatch",
+    "Protected production change or scope expansion required",
+    "Complete assigned limited work and return to independent QA"
+  ],
+  "formal_8job": "NOT_READY",
+  "real_call_authorization": 0,
+  "prompt_delivery": "INLINE_FINAL_ONLY"
+}

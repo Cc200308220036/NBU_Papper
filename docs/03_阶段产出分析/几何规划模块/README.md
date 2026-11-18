@@ -10,6 +10,7 @@
 
 | 报告 | 范围与状态 |
 |---|---|
+| [GP5-NUM-N1-R5独立复核与单候选F0收据整改](几何候选器GP5-NUM-N1-R5独立复核与单候选F0收据整改_20261118_01.md) | ARCHIVE-01/NEGATIVE-01 限定关闭；单候选 F0 收据保存元数据复验 FAIL，35 项固定复验 NOT_RUN。N1 PARTIAL、P2 NOT_READY，仅 R6 测试层整改 CONDITIONAL。 |
 | [GP5-NUM-N1-R4独立复核与复验入口隔离整改](几何候选器GP5-NUM-N1-R4独立复核与复验入口隔离整改_20261118_01.md) | ENV-01/HARNESS-02 限定关闭；封存隔离及预期拒绝静态 FAIL，C/E 判据 PARTIAL；35 项固定复验 NOT_RUN，N1 PARTIAL，P2 NOT_READY。仅 R5 入口整改 CONDITIONAL。 |
 | [GP5-NUM-N1-R3独立复核与环境及复验入口整改](几何候选器GP5-NUM-N1-R3独立复核与环境及复验入口整改_20261118_01.md) | KEY-01 比较实现与纯测试限定关闭；环境冻结 FAIL，E 草稿结果目录静态 FAIL；C/E/R/X/H/admin 未运行。N1 PARTIAL、P2 NOT_READY，仅 R4 环境匹配和限定复验 CONDITIONAL。 |
 | [GP5-NUM-N1-R2独立复核与发布键合同整改](几何候选器GP5-NUM-N1-R2独立复核与发布键合同整改_20261118_01.md) | HARNESS-01限定关闭、J00未重跑、J01成功；确认新后端J02 raw字符串yaw与发布整数yaw比较FAIL。N1 PARTIAL，仅最小生产键合同修复及单独冻结复验CONDITIONAL；NUM-01 OPEN、P2 NOT_READY。 |

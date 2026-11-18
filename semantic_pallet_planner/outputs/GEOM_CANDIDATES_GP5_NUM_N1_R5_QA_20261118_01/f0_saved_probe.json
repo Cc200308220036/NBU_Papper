@@ -1,0 +1,43 @@
+{
+  "schema": "geometry_num_n1_r5_qa_saved_f0_probe_v1",
+  "scope": "Only stored episode/config metadata, invoke f0_receipt only, no order/preflight/monitor/recovery",
+  "case_paths": [
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R1_20261118_01/E/jobs/J00",
+    "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R2_20261118_01/continuation/jobs/J01"
+  ],
+  "rows": [
+    {
+      "job": "J00",
+      "choice_only": {
+        "route": "CHOICE_REQUIRED",
+        "request_type": "object",
+        "status": "PASS"
+      },
+      "full_saved_metadata": {
+        "second_route": "SINGLETON_BYPASS",
+        "request_body": null,
+        "second_candidates": 1,
+        "status": "FAIL",
+        "exception": "TypeError: 'NoneType' object is not subscriptable",
+        "location": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R5_20261118_01/coverage_checks.py:59"
+      }
+    },
+    {
+      "job": "J01",
+      "choice_only": {
+        "route": "CHOICE_REQUIRED",
+        "request_type": "object",
+        "status": "PASS"
+      },
+      "full_saved_metadata": {
+        "second_route": "SINGLETON_BYPASS",
+        "request_body": null,
+        "second_candidates": 1,
+        "status": "FAIL",
+        "exception": "TypeError: 'NoneType' object is not subscriptable",
+        "location": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R5_20261118_01/coverage_checks.py:59"
+      }
+    }
+  ],
+  "limits": "Earlier-source historical v17 contexts validate route/data contract, not R5 execution evidence."
+}

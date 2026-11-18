@@ -1,0 +1,45 @@
+{
+  "schema": "geometry_num_n1_r5_qa_receipts_v1",
+  "checks": [
+    {
+      "command": "GIT_OPTIONAL_LOCKS=0 git status -sb; git rev-parse HEAD '@{upstream}'; git rev-list --left-right --count HEAD...'@{upstream}'",
+      "result": "Clean worktree, empty index, local 0/0."
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R5_20261118_01/test_r5_pure.py -v",
+      "exit_code": 0,
+      "result": "All eight targeted pure tests passed."
+    },
+    {
+      "command": "\"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R5_20261118_01/verify_delivery.py",
+      "exit_code": 0,
+      "result": "Read-only archive/digest check, 1262 frozen entries, 634 earlier archive members, 591 production, 35 unexecuted, 8 frozen configs, no business calls."
+    },
+    {
+      "command": "Existing NBU Python -B inline check (initial script via PYTHONPATH with unbraced shell variable)",
+      "exit_code": 1,
+      "result": "ModuleNotFoundError coverage_checks before checks; rerun with literal PYTHONPATH."
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R5_20261118_01:semantic_pallet_planner/src \"$HOME/miniconda3/envs/NBU/bin/python\" -B - (inline saved JSON/byte check and F0 metadata probes)",
+      "exit_code": 0,
+      "result": "R4/R4 QA 630/6 manifests; unchanged 591 source identities plus 8 config bindings; static contract receipt reproduced; J00 and J01 choice-only PASS and expected independent diagnosis TypeError at F0 line 59 on each singleton-containing episode. Earlier uncaught diagnostic probe exited 1 for the same TypeError. No business replay."
+    },
+    {
+      "command": "git diff --check 8b2a10a5 f5822483",
+      "exit_code": 0,
+      "result": "No whitespace findings."
+    }
+  ],
+  "not_run": [
+    "prepare.py",
+    "seal_inputs.py",
+    "validation_entrypoint.py",
+    "remaining_checks.run_checks",
+    "fixed C/E/R/X/H/admin",
+    "Linux production preflight",
+    "candidate generation and shadow transition",
+    "orders and recovery",
+    "real core, model, LP and freeze"
+  ]
+}

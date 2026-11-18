@@ -1,0 +1,171 @@
+{
+  "schema": "geometry_num_n1_r5_qa_review_v1",
+  "date": "2026-11-18",
+  "unit": "GP5_NUM_N1_R5_VALIDATION_ISOLATION_AND_COVERAGE",
+  "engineering_status": "R5_ISOLATION_AND_REJECTION_LIMITED_PASS_F0_FAIL_N1_PARTIAL",
+  "evidence_readiness": "FREEZE_AND_PURE_EVIDENCE_READY_F0_RUNTIME_RECEIPTS_BLOCKED",
+  "research_result": "NOT_ESTABLISHED",
+  "NUM-01": "OPEN",
+  "A03": "PARTIAL",
+  "P2": "NOT_READY",
+  "formal_8job": "NOT_READY",
+  "recommended_repair": "GP5_NUM_N1_R6_F0_SINGLETON_RECEIPT_FIX",
+  "repair_status": "CONDITIONAL",
+  "real_call_authorization": 0,
+  "stopped": true,
+  "timezone": "Asia/Shanghai",
+  "scheme": [
+    "geometry_candidate_upgrade_design_v1",
+    "NUM-N0 §9",
+    "N1 pre-registration revision",
+    "R4 QA handoff"
+  ],
+  "authorization": "Independent QA, pure test and saved metadata only, followed by QA commit/push. No business dispatch.",
+  "identity": {
+    "developer_prior_head": "b9a26d59d17b3136aef0e1be81bab4bab68c42e9",
+    "developer_synced_base": "8b2a10a51f70c561cbe9ec004708d3787344b4d1",
+    "delivery_head": "f58224833733be68b3508d849c68a462c9d56f5c",
+    "qa_review_head": "f58224833733be68b3508d849c68a462c9d56f5c",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "initial_worktree": "CLEAN",
+    "initial_index": "EMPTY",
+    "local_divergence": [
+      0,
+      0
+    ],
+    "source_files": 591,
+    "source_identity": "94e4c37838f0a82f84c200d12fbed5d92c93eb7486085e9c3014c514ba886fa2",
+    "source_drift": false
+  },
+  "four_layers": {
+    "report_claim": "Three test layer fixes and a new freeze; no real execution authorized.",
+    "implementation": "Separate output root, full denominators, exact error matcher and C evidence implemented. E F0 helper assumes a request body for every route.",
+    "archived_evidence": "44 R5 members and 1262 frozen hashes, 634 earlier archive members, original runtime environment receipt and 8 configurations; 35 NOT_RUN and 0 dispatch.",
+    "local_reverification": "8 specified pure test methods passed; archive/digests/static verified. Saved J00 and J01 metadata reproduce F0 TypeError at singleton, choice-only passes. No runtime replay."
+  },
+  "closed_issues": [
+    {
+      "id": "GP5-NUM-N1-R4-ARCHIVE-01",
+      "scope": "TEST_LAYER_IMPLEMENTATION_AND_TEMP_IO"
+    },
+    {
+      "id": "GP5-NUM-N1-R4-NEGATIVE-01",
+      "scope": "EXACT_HELPER_AND_SAVED_METADATA_ONLY"
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "SAVED_IDENTITY_FREEZE",
+      "status": "PASS",
+      "evidence": "44 R5 delivery entries, 1262 sealed hashes, 634 prior package hashes, 591 production files and 8 config identities"
+    },
+    {
+      "id": "ARCHIVE-01",
+      "status": "PASS",
+      "evidence": "Limited closure for implementation and pure temporary-directory simulation, business path NOT_RUN."
+    },
+    {
+      "id": "NEGATIVE-01",
+      "status": "PASS",
+      "evidence": "Limited closure for dedicated helper and archived metadata type/sign probes. Full fixed X/H/admin NOT_RUN."
+    },
+    {
+      "id": "COVERAGE-01_C_ENTRYPOINT",
+      "status": "PASS",
+      "evidence": "Limited code/static identity and schema evidence; fixed six C cases NOT_RUN."
+    },
+    {
+      "id": "COVERAGE-01_E_F0_ENTRYPOINT",
+      "status": "FAIL",
+      "evidence": "F0-01 locally reproduced twice from saved v17 metadata"
+    },
+    {
+      "id": "C",
+      "status": "NOT_RUN",
+      "evidence": "0/6"
+    },
+    {
+      "id": "E",
+      "status": "NOT_RUN",
+      "evidence": "0/8"
+    },
+    {
+      "id": "R",
+      "status": "NOT_RUN",
+      "evidence": "0/6"
+    },
+    {
+      "id": "X_H_ADMIN",
+      "status": "NOT_RUN",
+      "evidence": "0/15"
+    },
+    {
+      "id": "KEY-01_FRESH_SAVED",
+      "status": "NOT_RUN",
+      "evidence": "Production publication and recovery under R5 frozen inputs"
+    },
+    {
+      "id": "NUM-01",
+      "status": "PARTIAL",
+      "evidence": "OPEN; fixed end-to-end and recovery evidence pending"
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL",
+      "evidence": "Real monitor E2E/recovery pending"
+    },
+    {
+      "id": "A05",
+      "status": "NOT_RUN",
+      "evidence": "Formal real-source 8 jobs"
+    },
+    {
+      "id": "A06",
+      "status": "NOT_APPLICABLE",
+      "evidence": "GP6 outside scope"
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP5-NUM-N1-R5-F0-01",
+      "severity": "HIGH",
+      "status": "OPEN_REPRODUCED_ON_SAVED_METADATA",
+      "blocks": [
+        "launch of fixed suite under frozen R5 entrypoint",
+        "R5 COVERAGE-01 exit",
+        "N1 exit",
+        "P2"
+      ],
+      "location": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R5_20261118_01/coverage_checks.py:52",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R5_20261118_01/coverage_checks.py:59",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R5_20261118_01/coverage_checks.py:68",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R5_20261118_01/validation_entrypoint.py:131",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py:268",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py:324"
+      ],
+      "evidence": {
+        "saved_cases": [
+          "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R1_20261118_01/E/jobs/J00",
+          "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R2_20261118_01/continuation/jobs/J01"
+        ],
+        "saved_route_sequences": [
+          [
+            "CHOICE_REQUIRED",
+            "SINGLETON_BYPASS"
+          ],
+          [
+            "CHOICE_REQUIRED",
+            "SINGLETON_BYPASS"
+          ]
+        ],
+        "observed": "In both saved episodes choice-only receipt passed. Full historical metadata passed context Schema at line 58, then raised TypeError at line 59 on request_body=None. No order replay or new-generation evaluation."
+      },
+      "impact": "A job that completes can fail post-dispatch receipt generation on its singleton. Adding null handling alone can still fail the all-context contract comparison at line 68 if request presence is mixed into one signature.",
+      "remediation": "Keep common public facts contract distinct from route-conditioned request checks. Validate request state/criteria and structure for CHOICE_REQUIRED; require null and one criterion for SINGLETON_BYPASS, preserve existing stop route semantics if supported. Report per-route applicability and avoid requiring equal route counts/presence across trajectories. No synthetic request, no dropping singleton context.",
+      "verification": "Use J00 and J01 saved metadata read-only, covering both routes in one episode, plus pure wrong-route/wrong-field and paired different-route-distribution tests before authorizing fixed dispatch."
+    }
+  ],
+  "next_stage_admission": "NOT_READY"
+}

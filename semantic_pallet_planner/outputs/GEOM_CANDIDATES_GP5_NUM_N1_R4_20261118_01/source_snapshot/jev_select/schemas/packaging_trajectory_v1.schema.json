@@ -1,0 +1,87 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "packaging_trajectory_v1"
+    },
+    "kind": {
+      "enum": [
+        "T",
+        "E"
+      ]
+    },
+    "review_status": {
+      "enum": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED"
+      ]
+    },
+    "fixture_only": {
+      "type": "boolean"
+    },
+    "public_fragment": {
+      "type": "object"
+    },
+    "public_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "retrieval_query": {
+      "type": "object"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "private_original": {
+      "type": "object"
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "file_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "json_pointer": {
+            "type": "string"
+          },
+          "value_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "path",
+          "file_sha256",
+          "json_pointer",
+          "value_digest"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "case_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "kind",
+    "review_status",
+    "fixture_only",
+    "public_fragment",
+    "public_digest",
+    "retrieval_query",
+    "provenance",
+    "private_original",
+    "evidence",
+    "case_digest"
+  ],
+  "additionalProperties": false
+}

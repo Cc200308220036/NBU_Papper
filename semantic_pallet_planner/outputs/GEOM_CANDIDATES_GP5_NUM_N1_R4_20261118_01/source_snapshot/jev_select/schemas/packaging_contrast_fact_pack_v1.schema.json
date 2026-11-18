@@ -1,0 +1,91 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "packaging_contrast_fact_pack_v1"
+    },
+    "facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fact_id": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "value": {},
+          "value_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "minItems": 1
+          },
+          "derivation": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fact_id",
+          "role",
+          "value",
+          "value_digest",
+          "evidence",
+          "derivation"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "case_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "retrieval_query": {
+      "type": "object"
+    },
+    "fixture_only": {
+      "type": "boolean"
+    },
+    "background": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "relevance_rule": {
+      "type": "string"
+    },
+    "grammar_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "pack_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "facts",
+    "provenance",
+    "case_digest",
+    "retrieval_query",
+    "fixture_only",
+    "background",
+    "relevance_rule",
+    "grammar_digest",
+    "pack_digest"
+  ],
+  "additionalProperties": false
+}

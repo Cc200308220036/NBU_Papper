@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_branch_receipt_v1"
+    },
+    "job_id": {
+      "type": "string"
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "binding_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "fork_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "first": {
+      "type": "object"
+    },
+    "continuation": {
+      "type": "object"
+    },
+    "status": {
+      "type": "object"
+    },
+    "checkpoint_digest": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "metrics": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": "jev_training_branch_metrics_v1"
+            },
+            "branch_metrics": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "version",
+            "branch_metrics",
+            "loading",
+            "category",
+            "monitor_statuses",
+            "cost"
+          ]
+        },
+        {
+          "const": "NOT_RUN"
+        }
+      ]
+    },
+    "model_calls": {
+      "const": 0
+    },
+    "comparison_labels": {
+      "const": "DEFERRED_TO_JN2_B"
+    },
+    "record_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "job_id",
+    "plan_digest",
+    "binding_digest",
+    "fork_digest",
+    "first",
+    "continuation",
+    "status",
+    "checkpoint_digest",
+    "metrics",
+    "model_calls",
+    "comparison_labels",
+    "record_digest"
+  ],
+  "additionalProperties": false
+}

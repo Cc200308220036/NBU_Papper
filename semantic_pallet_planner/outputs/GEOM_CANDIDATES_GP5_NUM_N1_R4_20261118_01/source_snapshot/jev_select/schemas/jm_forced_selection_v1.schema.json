@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_jm_forced_selection_v1"
+    },
+    "status": {
+      "enum": [
+        "selected",
+        "singleton"
+      ]
+    },
+    "selected_display_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^C[0-9]{2}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "selected_candidate_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source": {
+      "const": "FORCED_FROM_FROZEN_POOL"
+    },
+    "requested_model": {
+      "type": "null"
+    },
+    "served_model": {
+      "type": "null"
+    },
+    "probabilities": {
+      "type": "null"
+    },
+    "confidence": {
+      "type": "null"
+    },
+    "attempt_ids": {
+      "const": []
+    },
+    "usage": {
+      "type": "null"
+    },
+    "latency_s": {
+      "type": "null"
+    },
+    "local_binding_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "raw_response_digest": {
+      "type": "null"
+    },
+    "error": {
+      "type": "null"
+    },
+    "network_attempted": {
+      "const": false
+    },
+    "error_stage": {
+      "type": "null"
+    },
+    "error_code": {
+      "type": "null"
+    },
+    "fork_binding_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "candidate_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "config_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "forced_action_count": {
+      "const": 1
+    },
+    "model_call_count": {
+      "const": 0
+    }
+  },
+  "required": [
+    "version",
+    "status",
+    "selected_display_id",
+    "selected_candidate_id",
+    "source",
+    "requested_model",
+    "served_model",
+    "probabilities",
+    "confidence",
+    "attempt_ids",
+    "usage",
+    "latency_s",
+    "local_binding_digest",
+    "raw_response_digest",
+    "error",
+    "network_attempted",
+    "error_stage",
+    "error_code",
+    "fork_binding_digest",
+    "candidate_digest",
+    "config_digest",
+    "forced_action_count",
+    "model_call_count"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "selected",
+              "singleton"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "selected_display_id": {
+            "type": "string",
+            "pattern": "^C[0-9]{2}$"
+          },
+          "selected_candidate_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "selected_display_id": {
+            "type": "null"
+          },
+          "selected_candidate_id": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

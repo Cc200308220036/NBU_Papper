@@ -1,0 +1,587 @@
+{
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "jev_episode_export_v1"
+        },
+        "episode_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_group_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "partition": {
+          "const": "train"
+        },
+        "protocol_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_code_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "decision_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "public_state": {
+                "type": "object"
+              },
+              "candidate_facts": {
+                "type": "object"
+              },
+              "selected_action": {
+                "type": "object"
+              },
+              "feedback": {
+                "type": "object",
+                "properties": {
+                  "instances": {
+                    "type": "array"
+                  },
+                  "coverage": {
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "instances",
+                  "coverage"
+                ],
+                "additionalProperties": false
+              },
+              "public_feedback": {
+                "type": "object",
+                "properties": {
+                  "instances": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string"
+                        },
+                        "rule_id": {
+                          "type": "string"
+                        },
+                        "object_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "severity": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "number"
+                                },
+                                "unit": {
+                                  "enum": [
+                                    "mm",
+                                    "kg"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "value",
+                                "unit"
+                              ],
+                              "additionalProperties": false
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "rule_id",
+                        "object_ids",
+                        "severity"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "new_instances": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string"
+                        },
+                        "rule_id": {
+                          "type": "string"
+                        },
+                        "object_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "severity": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "number"
+                                },
+                                "unit": {
+                                  "enum": [
+                                    "mm",
+                                    "kg"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "value",
+                                "unit"
+                              ],
+                              "additionalProperties": false
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "rule_id",
+                        "object_ids",
+                        "severity"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "coverage": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "active": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "checked": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "deferred": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "kind": {
+                          "type": "string"
+                        },
+                        "rule_id": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "active",
+                        "checked",
+                        "deferred",
+                        "kind",
+                        "rule_id",
+                        "status"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "instances",
+                  "new_instances",
+                  "coverage"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "decision_id",
+              "public_state",
+              "candidate_facts",
+              "selected_action",
+              "feedback"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "terminal_feedback": {
+          "type": "object",
+          "properties": {
+            "termination_reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "planned_items": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "placed_items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "placed_item_ratio": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "placed_volume_ratio": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "truncated_by_service_failure": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "termination_reason",
+            "planned_items",
+            "placed_items",
+            "placed_item_ratio",
+            "placed_volume_ratio",
+            "truncated_by_service_failure"
+          ],
+          "additionalProperties": false
+        },
+        "fixture_only": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "version",
+        "episode_id",
+        "source_group_id",
+        "partition",
+        "protocol_version",
+        "source_code_digest",
+        "events",
+        "terminal_feedback"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "jev_episode_export_v2"
+        },
+        "episode_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_group_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "partition": {
+          "const": "train"
+        },
+        "protocol_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_code_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "decision_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "public_state": {
+                "type": "object"
+              },
+              "candidate_facts": {
+                "type": "object"
+              },
+              "selected_action": {
+                "type": "object"
+              },
+              "feedback": {
+                "type": "object",
+                "properties": {
+                  "instances": {
+                    "type": "array"
+                  },
+                  "coverage": {
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "instances",
+                  "coverage"
+                ],
+                "additionalProperties": false
+              },
+              "public_feedback": {
+                "type": "object",
+                "properties": {
+                  "instances": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string"
+                        },
+                        "rule_id": {
+                          "type": "string"
+                        },
+                        "object_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "severity": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "number"
+                                },
+                                "unit": {
+                                  "enum": [
+                                    "mm",
+                                    "kg"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "value",
+                                "unit"
+                              ],
+                              "additionalProperties": false
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "rule_id",
+                        "object_ids",
+                        "severity"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "new_instances": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string"
+                        },
+                        "rule_id": {
+                          "type": "string"
+                        },
+                        "object_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "severity": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "number"
+                                },
+                                "unit": {
+                                  "enum": [
+                                    "mm",
+                                    "kg"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "value",
+                                "unit"
+                              ],
+                              "additionalProperties": false
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "rule_id",
+                        "object_ids",
+                        "severity"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "coverage": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "active": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "checked": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "deferred": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "kind": {
+                          "type": "string"
+                        },
+                        "rule_id": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "active",
+                        "checked",
+                        "deferred",
+                        "kind",
+                        "rule_id",
+                        "status"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "instances",
+                  "new_instances",
+                  "coverage"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "decision_id",
+              "public_state",
+              "candidate_facts",
+              "selected_action",
+              "feedback"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "terminal_feedback": {
+          "type": "object",
+          "properties": {
+            "termination_reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "planned_items": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "placed_items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "placed_item_ratio": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "placed_volume_ratio": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "truncated_by_service_failure": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "termination_reason",
+            "planned_items",
+            "placed_items",
+            "placed_item_ratio",
+            "placed_volume_ratio",
+            "truncated_by_service_failure"
+          ],
+          "additionalProperties": false
+        },
+        "fixture_only": {
+          "type": "boolean"
+        },
+        "object_bindings": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      },
+      "required": [
+        "version",
+        "episode_id",
+        "source_group_id",
+        "partition",
+        "protocol_version",
+        "source_code_digest",
+        "events",
+        "terminal_feedback",
+        "object_bindings"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

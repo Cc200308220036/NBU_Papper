@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_comparison_collection_v1"
+    },
+    "parent_a": {
+      "type": "object"
+    },
+    "jn1_parent": {
+      "type": "object"
+    },
+    "root": {
+      "type": "string"
+    },
+    "decision_rule": {
+      "type": "string"
+    },
+    "action_rule": {
+      "type": "object"
+    },
+    "label_rule": {
+      "type": "object"
+    },
+    "entries": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "type": "object"
+      }
+    },
+    "execution_source_manifest": {
+      "type": "object"
+    },
+    "analysis_source_manifest": {
+      "type": "object"
+    },
+    "worker_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "watchdog": {
+      "type": "object"
+    },
+    "watchdog_boundary": {
+      "type": "string"
+    },
+    "continuation_method": {
+      "const": "local_geometry_test_double"
+    },
+    "display_seed": {
+      "type": "integer"
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "A_used": {
+          "const": 3
+        },
+        "B_registered": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9
+        },
+        "total_registered": {
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 12
+        },
+        "cumulative_max": {
+          "const": 12
+        },
+        "new_model_calls": {
+          "const": 0
+        }
+      },
+      "required": [
+        "A_used",
+        "B_registered",
+        "total_registered",
+        "cumulative_max",
+        "new_model_calls"
+      ],
+      "additionalProperties": false
+    },
+    "batch_stop": {
+      "type": "string"
+    },
+    "record_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "parent_a",
+    "jn1_parent",
+    "root",
+    "decision_rule",
+    "action_rule",
+    "label_rule",
+    "entries",
+    "execution_source_manifest",
+    "analysis_source_manifest",
+    "worker_sha256",
+    "watchdog",
+    "watchdog_boundary",
+    "continuation_method",
+    "display_seed",
+    "budget",
+    "batch_stop",
+    "record_digest"
+  ],
+  "additionalProperties": false
+}

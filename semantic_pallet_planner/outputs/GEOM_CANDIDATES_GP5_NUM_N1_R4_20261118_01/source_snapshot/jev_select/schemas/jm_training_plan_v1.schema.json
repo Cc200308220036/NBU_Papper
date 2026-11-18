@@ -1,0 +1,748 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_jm_training_plan_v1"
+    },
+    "state": {
+      "const": "PREPARED_OFFLINE"
+    },
+    "execution_authorized": {
+      "const": false
+    },
+    "formal_frozen": {
+      "const": false
+    },
+    "selection_rule": {
+      "const": "CONSERVATIVE_COMPONENT_DIGEST_THEN_TASK_BYTE_DIGEST_ROUND_ROBIN_TRAIN_ONLY_V1"
+    },
+    "requested_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 6
+    },
+    "smaller_scope_reason": {
+      "enum": [
+        "NONE",
+        "EXPLICIT_SMALLER_OFFLINE_SCOPE_NO_REFILL"
+      ]
+    },
+    "catalog_ref": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "pointer": {
+          "const": ""
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "pointer"
+      ],
+      "additionalProperties": false
+    },
+    "input_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "pointer": {
+            "const": ""
+          }
+        },
+        "required": [
+          "path",
+          "sha256",
+          "pointer"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "qa_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "pointer": {
+            "const": ""
+          }
+        },
+        "required": [
+          "path",
+          "sha256",
+          "pointer"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "missing_qa": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "docs/03_阶段产出分析/Jev/Jev_JM1-v13整改独立复核与B2正式计划准备限定准入_20261112_01.md",
+          "semantic_pallet_planner/outputs/JEV_JM_V13_FIX_QA_20261112_01/quality_review.json",
+          "semantic_pallet_planner/outputs/JEV_JM_V13_FIX_QA_20261112_01/next_stage_admission.json",
+          "semantic_pallet_planner/outputs/JEV_JM_V13_FIX_QA_20261112_01/handoff.json",
+          "semantic_pallet_planner/outputs/JEV_JM_V13_FIX_QA_20261112_01/delivery_manifest.json"
+        ]
+      }
+    },
+    "audit_ref": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "pointer": {
+          "const": ""
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "pointer"
+      ],
+      "additionalProperties": false
+    },
+    "assignments": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "task_ref": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "pointer": {
+                "const": ""
+              }
+            },
+            "required": [
+              "path",
+              "sha256",
+              "pointer"
+            ],
+            "additionalProperties": false
+          },
+          "source_register_ref": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "pointer": {
+                "type": "string",
+                "pattern": "^/source_rows/[0-9]+$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256",
+              "pointer"
+            ],
+            "additionalProperties": false
+          },
+          "component": {
+            "type": "string"
+          },
+          "relation": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "type": "string"
+              },
+              "source_group": {
+                "type": "string"
+              },
+              "relation_tokens": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "relation_completeness": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "task_id",
+              "source_group",
+              "relation_tokens",
+              "relation_completeness"
+            ],
+            "additionalProperties": false
+          },
+          "exposure": {
+            "type": "object",
+            "properties": {
+              "existing_id": {
+                "type": "string"
+              },
+              "row_type": {
+                "type": "string"
+              },
+              "data_kind": {
+                "type": "string"
+              },
+              "current_role": {
+                "type": "string"
+              },
+              "formal_partition": {
+                "type": "string"
+              },
+              "strict_unseen_eligible": {
+                "type": "boolean"
+              },
+              "original_recommendation": {
+                "type": "object",
+                "properties": {
+                  "train": {
+                    "type": "string"
+                  },
+                  "dev": {
+                    "type": "string"
+                  },
+                  "eval": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "train",
+                  "dev",
+                  "eval"
+                ],
+                "additionalProperties": false
+              },
+              "reasons": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "source_pointer": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "json_pointer": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "json_pointer"
+                ],
+                "additionalProperties": false
+              },
+              "related_group": {
+                "type": "string"
+              },
+              "family": {
+                "type": "string"
+              },
+              "history_interpretation": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "existing_id",
+              "row_type",
+              "data_kind",
+              "current_role",
+              "formal_partition",
+              "strict_unseen_eligible",
+              "original_recommendation",
+              "reasons",
+              "source_pointer",
+              "related_group",
+              "family",
+              "history_interpretation"
+            ],
+            "additionalProperties": false
+          },
+          "history": {
+            "type": "object",
+            "properties": {
+              "partition": {
+                "type": "string"
+              },
+              "packaging_materialization": {
+                "type": "string"
+              },
+              "JN1_remote_decision_records": {
+                "type": "integer"
+              },
+              "JN2_fork_points": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "visualization_or_human_analysis": {
+                "type": "string"
+              },
+              "unrecorded": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "partition",
+              "packaging_materialization",
+              "JN1_remote_decision_records",
+              "JN2_fork_points",
+              "visualization_or_human_analysis",
+              "unrecorded"
+            ],
+            "additionalProperties": false
+          },
+          "data_identity": {
+            "type": "string"
+          },
+          "full_items": {
+            "type": "integer"
+          },
+          "partition": {
+            "type": "string"
+          },
+          "variant": {
+            "type": "string"
+          },
+          "feasibility": {
+            "type": "string"
+          },
+          "train_eligible": {
+            "type": "boolean"
+          },
+          "ordinal": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 6
+          },
+          "wave": {
+            "enum": [
+              1,
+              2
+            ]
+          },
+          "slot_id": {
+            "type": "string",
+            "pattern": "^W[12]S[123]$"
+          },
+          "role": {
+            "const": "training"
+          },
+          "job_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "arrival_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "runtime_task_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "execution_ref": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "pointer": {
+                "const": ""
+              }
+            },
+            "required": [
+              "path",
+              "sha256",
+              "pointer"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "task_id",
+          "task_ref",
+          "source_register_ref",
+          "component",
+          "relation",
+          "exposure",
+          "history",
+          "data_identity",
+          "full_items",
+          "partition",
+          "variant",
+          "feasibility",
+          "train_eligible",
+          "ordinal",
+          "wave",
+          "slot_id",
+          "role",
+          "job_id",
+          "arrival_digest",
+          "runtime_task_digest",
+          "execution_ref"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "schedule_ref": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "pointer": {
+          "const": ""
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "pointer"
+      ],
+      "additionalProperties": false
+    },
+    "runtime_identity": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "python": {
+          "type": "string"
+        },
+        "dependencies": {
+          "type": "object",
+          "properties": {
+            "jsonschema": {
+              "type": "string"
+            },
+            "numpy": {
+              "type": "string"
+            },
+            "scipy": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "jsonschema",
+            "numpy",
+            "scipy"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "source",
+        "python",
+        "dependencies"
+      ],
+      "additionalProperties": false
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "baseline_jobs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "type": "string"
+              },
+              "job_id": {
+                "type": "string"
+              },
+              "send_upper": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "task_id",
+              "job_id",
+              "send_upper"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "baseline_send_upper": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "point_capacities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "type": "string"
+              },
+              "stage": {
+                "type": "string"
+              },
+              "branch_capacity": {
+                "type": "integer"
+              },
+              "placed_min": {
+                "type": "integer"
+              },
+              "per_branch_send_upper": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "task_id",
+              "stage",
+              "branch_capacity",
+              "placed_min",
+              "per_branch_send_upper"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "point_cap": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "initial_suffix_cap": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "repeat_point_cap": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "repeat_suffix_cap": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_suffix_cap": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "initial_suffix_send_upper": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "repeat_suffix_send_upper": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "suffix_send_upper": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "global_send_upper": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "concrete_suffix_jobs": {
+          "const": "NOT_MATERIALIZED_DEFER_C1"
+        },
+        "unused_budget": {
+          "const": "NONTRANSFERABLE_NO_REFILL"
+        }
+      },
+      "required": [
+        "baseline_jobs",
+        "baseline_send_upper",
+        "point_capacities",
+        "point_cap",
+        "initial_suffix_cap",
+        "repeat_point_cap",
+        "repeat_suffix_cap",
+        "total_suffix_cap",
+        "initial_suffix_send_upper",
+        "repeat_suffix_send_upper",
+        "suffix_send_upper",
+        "global_send_upper",
+        "concrete_suffix_jobs",
+        "unused_budget"
+      ],
+      "additionalProperties": false
+    },
+    "sampling": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "jev_jm_sampling_public_v1"
+        },
+        "policy_sha256": {
+          "const": "4eb0d822b1fec051cebadcb2a378487e6099565130093e4d16364e8038fb63fb"
+        },
+        "epsilon": {
+          "const": "NOT_MATERIALIZED_DEFER_C1"
+        },
+        "points": {
+          "const": "NOT_MATERIALIZED_DEFER_C1"
+        },
+        "exact_actions": {
+          "const": "NOT_MATERIALIZED_DEFER_C1"
+        },
+        "repeat_rule": {
+          "const": "packaging_jev_training_template.repeat_priority"
+        },
+        "repeat_rule_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "input_boundary": {
+          "const": "B1_CLOSED_PUBLIC_PROJECTION_ONLY_NO_TERMINAL_OR_MONITOR"
+        }
+      },
+      "required": [
+        "protocol",
+        "policy_sha256",
+        "epsilon",
+        "points",
+        "exact_actions",
+        "repeat_rule",
+        "repeat_rule_digest",
+        "input_boundary"
+      ],
+      "additionalProperties": false
+    },
+    "gates": {
+      "type": "object",
+      "properties": {
+        "baseline": {
+          "const": "SEPARATE_USER_AUTHORIZATION_AND_INDEPENDENT_QA_REQUIRED"
+        },
+        "suffix": {
+          "const": "SEPARATELY_FROZEN_C1_FORK_PLAN_AND_SEPARATE_USER_AUTHORIZATION_REQUIRED"
+        },
+        "c1_stop": {
+          "const": "STOP_AFTER_CONCRETE_PLAN_NO_SUFFIX_SENDS"
+        }
+      },
+      "required": [
+        "baseline",
+        "suffix",
+        "c1_stop"
+      ],
+      "additionalProperties": false
+    },
+    "model_declaration": {
+      "type": "object",
+      "properties": {
+        "requested_model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "served_model": {
+          "const": "UNKNOWN_NOT_RUN"
+        },
+        "provider_seed": {
+          "const": "UNKNOWN_NOT_RUN"
+        },
+        "service_tie_rule": {
+          "const": "UNKNOWN"
+        },
+        "real_service": {
+          "const": "NOT_RUN"
+        },
+        "real_LP": {
+          "const": "NOT_RUN"
+        }
+      },
+      "required": [
+        "requested_model",
+        "served_model",
+        "provider_seed",
+        "service_tie_rule",
+        "real_service",
+        "real_LP"
+      ],
+      "additionalProperties": false
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "state",
+    "execution_authorized",
+    "formal_frozen",
+    "selection_rule",
+    "requested_count",
+    "smaller_scope_reason",
+    "catalog_ref",
+    "input_refs",
+    "qa_refs",
+    "missing_qa",
+    "audit_ref",
+    "assignments",
+    "schedule_ref",
+    "runtime_identity",
+    "budget",
+    "sampling",
+    "gates",
+    "model_declaration",
+    "plan_digest"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JM1-B2 actual offline preparation v1 (no send permission)"
+}

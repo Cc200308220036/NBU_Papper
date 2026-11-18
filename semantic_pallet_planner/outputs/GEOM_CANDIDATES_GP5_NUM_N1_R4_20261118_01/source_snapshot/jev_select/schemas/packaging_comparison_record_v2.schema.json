@@ -1,0 +1,484 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_comparison_record_v2"
+    },
+    "analysis_type": {
+      "const": "POST_HOC_USER_REVISED_OBJECTIVE"
+    },
+    "comparison_id": {
+      "type": "string"
+    },
+    "source_group": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "v1": {
+          "type": "object"
+        },
+        "parent": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "manifest_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "files": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "path",
+            "manifest_sha256",
+            "files"
+          ],
+          "additionalProperties": false
+        },
+        "plan_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "rule_version": {
+          "const": "jev_branch_comparison_rule_v2"
+        },
+        "rule_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "analysis_source_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "execution_source_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "receipts": {
+          "type": "object"
+        },
+        "state_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "candidate_pool_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "task_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "config_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "fork_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "snapshot_path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "v1",
+        "parent",
+        "plan_digest",
+        "rule_version",
+        "rule_digest",
+        "analysis_source_digest",
+        "execution_source_digest",
+        "receipts",
+        "state_digest",
+        "candidate_pool_digest",
+        "task_digest",
+        "config_digest",
+        "fork_digest",
+        "snapshot_path"
+      ],
+      "additionalProperties": false
+    },
+    "label_v1": {
+      "enum": [
+        "improved",
+        "degraded",
+        "neutral",
+        "trade_off",
+        "invalid"
+      ]
+    },
+    "raw_results": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "object"
+        },
+        "alternative": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "reference",
+        "alternative"
+      ],
+      "additionalProperties": false
+    },
+    "metric_views": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "object"
+        },
+        "alternative": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "reference",
+        "alternative"
+      ],
+      "additionalProperties": false
+    },
+    "original_delta": {
+      "type": "object"
+    },
+    "evaluation": {
+      "type": "object",
+      "properties": {
+        "comparison_valid": {
+          "type": "boolean"
+        },
+        "label_v2": {
+          "enum": [
+            "improved",
+            "degraded",
+            "neutral",
+            "trade_off",
+            "invalid"
+          ]
+        },
+        "invalid_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "decisive_level": {
+          "enum": [
+            "STABLE_COMPLETION",
+            "LOADED_VOLUME",
+            "COUNT_MASS",
+            "COMPACTNESS",
+            "INVALID"
+          ]
+        },
+        "benefit_type": {
+          "enum": [
+            "LOADING",
+            "COMPACTNESS",
+            "NONE"
+          ]
+        },
+        "delta": {
+          "type": "object",
+          "properties": {
+            "placed_volume_ratio": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "const": "NA"
+                }
+              ]
+            },
+            "placed_items": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "const": "NA"
+                }
+              ]
+            },
+            "placed_mass_kg": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "const": "NA"
+                }
+              ]
+            },
+            "actual_height_mm": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "const": "NA"
+                }
+              ]
+            },
+            "envelope_utilization": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "const": "NA"
+                }
+              ]
+            }
+          },
+          "required": [
+            "placed_volume_ratio",
+            "placed_items",
+            "placed_mass_kg",
+            "actual_height_mm",
+            "envelope_utilization"
+          ],
+          "additionalProperties": false
+        },
+        "secondary_regressions": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "properties": {
+              "metric": {
+                "enum": [
+                  "placed_items",
+                  "placed_mass_kg",
+                  "actual_height_mm",
+                  "envelope_utilization"
+                ]
+              },
+              "delta": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "const": "NA"
+                  }
+                ]
+              },
+              "status": {
+                "enum": [
+                  "APPLICABLE",
+                  "NOT_APPLICABLE_OR_UNAVAILABLE"
+                ]
+              },
+              "regressed": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "metric",
+              "delta",
+              "status",
+              "regressed"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "metric_gaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "compactness_status": {
+          "enum": [
+            "UNAVAILABLE",
+            "NOT_APPLICABLE",
+            "AVAILABLE"
+          ]
+        }
+      },
+      "required": [
+        "comparison_valid",
+        "label_v2",
+        "invalid_reasons",
+        "decisive_level",
+        "benefit_type",
+        "delta",
+        "secondary_regressions",
+        "metric_gaps",
+        "compactness_status"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "comparison_valid": {
+                "const": false
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "label_v2": {
+                "const": "invalid"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "label_v2": {
+                "enum": [
+                  "improved",
+                  "degraded",
+                  "neutral",
+                  "trade_off"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "benefit_type": {
+                "enum": [
+                  "LOADING",
+                  "COMPACTNESS"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "label_v2": {
+                "const": "improved"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "box_sets": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "alternative": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "same": {
+          "type": "boolean"
+        },
+        "interpretation": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "reference",
+        "alternative",
+        "same",
+        "interpretation"
+      ],
+      "additionalProperties": false
+    },
+    "evidence_checks": {
+      "type": "object",
+      "properties": {
+        "authorized_training": {
+          "type": "boolean"
+        },
+        "parent_verified": {
+          "type": "boolean"
+        },
+        "same_prefix_pool_task_follow": {
+          "type": "boolean"
+        },
+        "no_technical_or_range_confound": {
+          "type": "boolean"
+        },
+        "metrics_costs_complete": {
+          "type": "boolean"
+        },
+        "facts_locatable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "authorized_training",
+        "parent_verified",
+        "same_prefix_pool_task_follow",
+        "no_technical_or_range_confound",
+        "metrics_costs_complete",
+        "facts_locatable"
+      ],
+      "additionalProperties": false
+    },
+    "diagnostics": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "object"
+        },
+        "alternative": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "reference",
+        "alternative"
+      ],
+      "additionalProperties": false
+    },
+    "interpretation": {
+      "type": "string"
+    },
+    "record_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "observable_conditions": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "version",
+    "analysis_type",
+    "comparison_id",
+    "source_group",
+    "provenance",
+    "label_v1",
+    "raw_results",
+    "metric_views",
+    "original_delta",
+    "evaluation",
+    "box_sets",
+    "evidence_checks",
+    "diagnostics",
+    "interpretation",
+    "record_digest",
+    "observable_conditions"
+  ],
+  "additionalProperties": false
+}

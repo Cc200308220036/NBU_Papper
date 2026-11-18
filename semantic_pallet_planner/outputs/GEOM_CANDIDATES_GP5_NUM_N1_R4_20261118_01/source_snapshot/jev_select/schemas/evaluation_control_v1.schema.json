@@ -1,0 +1,95 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "mode",
+    "review_status",
+    "source_snapshot_digest",
+    "source_groups",
+    "rule",
+    "entries",
+    "snapshot_digest"
+  ],
+  "properties": {
+    "version": {
+      "const": "jev_unrelated_E_snapshot_v1"
+    },
+    "mode": {
+      "const": "E_unrelated_control"
+    },
+    "review_status": {
+      "const": "APPROVED_DETERMINISTIC_PLACEBO_NOT_EVIDENCE"
+    },
+    "source_snapshot_digest": {
+      "type": "string"
+    },
+    "source_groups": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rule": {
+      "type": "object"
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "reference_public_digest",
+          "public_fragment",
+          "public_digest",
+          "chars",
+          "utf8_bytes"
+        ],
+        "properties": {
+          "reference_public_digest": {
+            "type": "string"
+          },
+          "public_fragment": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "topic",
+              "notice",
+              "text"
+            ],
+            "properties": {
+              "kind": {
+                "const": "UNRELATED_NON_EVIDENCE"
+              },
+              "topic": {
+                "const": "typesetting"
+              },
+              "notice": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              }
+            }
+          },
+          "public_digest": {
+            "type": "string"
+          },
+          "chars": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "utf8_bytes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "snapshot_digest": {
+      "type": "string"
+    }
+  }
+}

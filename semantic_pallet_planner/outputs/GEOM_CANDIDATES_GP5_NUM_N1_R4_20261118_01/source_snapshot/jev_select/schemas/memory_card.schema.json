@@ -1,0 +1,2051 @@
+{
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "jev_memory_card_v1"
+        },
+        "card_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "card_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "content_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "status": {
+          "enum": [
+            "candidate",
+            "active",
+            "retired",
+            "rejected"
+          ]
+        },
+        "knowledge_role": {
+          "enum": [
+            "rule_restatement",
+            "current_rule_application",
+            "sequential_resource_strategy"
+          ]
+        },
+        "applicability": {
+          "type": "string",
+          "minLength": 1
+        },
+        "advice": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_evidence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "limitations_counterexamples": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "episode_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "decision_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_group_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "export_digest": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "episode_id",
+              "decision_id",
+              "source_group_id",
+              "export_digest"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "evidence_level": {
+          "const": "observational"
+        },
+        "created_after_episode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parent_card_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "generator_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "semantic_review": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "pending",
+                "accepted",
+                "rejected"
+              ]
+            },
+            "reviewer": {
+              "type": "string",
+              "minLength": 1
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "status",
+            "reviewer",
+            "reason"
+          ],
+          "additionalProperties": false
+        },
+        "gates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "enum": [
+                  "placed_count",
+                  "available_count",
+                  "candidate_count",
+                  "layout_height_mm",
+                  "max_available_mass_kg",
+                  "min_support_ratio",
+                  "buffer_capacity",
+                  "container_length_mm",
+                  "container_width_mm",
+                  "container_max_height_mm",
+                  "container_max_payload_kg",
+                  "available_categories",
+                  "policy_terms"
+                ]
+              },
+              "op": {
+                "enum": [
+                  "eq",
+                  "ne",
+                  "lt",
+                  "le",
+                  "gt",
+                  "ge",
+                  "contains"
+                ]
+              },
+              "value": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              }
+            },
+            "required": [
+              "field",
+              "op",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "fixture_only": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "version",
+        "card_id",
+        "card_version",
+        "content_digest",
+        "status",
+        "knowledge_role",
+        "applicability",
+        "advice",
+        "observed_evidence",
+        "limitations_counterexamples",
+        "evidence_refs",
+        "evidence_level",
+        "created_after_episode",
+        "parent_card_ids",
+        "generator_digest",
+        "semantic_review"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "jev_memory_card_v2"
+        },
+        "card_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "card_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "content_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "status": {
+          "enum": [
+            "candidate",
+            "active",
+            "retired",
+            "rejected"
+          ]
+        },
+        "knowledge_role": {
+          "enum": [
+            "rule_restatement",
+            "current_rule_application",
+            "sequential_resource_strategy"
+          ]
+        },
+        "applicability": {
+          "type": "string",
+          "minLength": 1
+        },
+        "advice": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_evidence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "limitations_counterexamples": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "episode_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "decision_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_group_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "export_digest": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "episode_id",
+              "decision_id",
+              "source_group_id",
+              "export_digest"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "evidence_level": {
+          "const": "observational"
+        },
+        "created_after_episode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parent_card_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "generator_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "semantic_review": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": "jev_semantic_review_v1"
+            },
+            "card_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "content_digest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "reviewer": {
+              "type": "string",
+              "minLength": 1
+            },
+            "reviewer_kind": {
+              "const": "independent_human"
+            },
+            "protocol_version": {
+              "const": "observational_support_review_v1"
+            },
+            "status": {
+              "enum": [
+                "accepted",
+                "rejected",
+                "pending"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "supported_source_groups": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "conflicts_resolved": {
+              "type": "boolean"
+            },
+            "scope_and_advice_compatible": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "version",
+            "card_id",
+            "content_digest",
+            "reviewer",
+            "reviewer_kind",
+            "protocol_version",
+            "status",
+            "reason",
+            "supported_source_groups",
+            "conflicts_resolved",
+            "scope_and_advice_compatible"
+          ],
+          "additionalProperties": false
+        },
+        "gates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "enum": [
+                  "placed_count",
+                  "available_count",
+                  "candidate_count",
+                  "layout_height_mm",
+                  "max_available_mass_kg",
+                  "min_support_ratio",
+                  "buffer_capacity",
+                  "container_length_mm",
+                  "container_width_mm",
+                  "container_max_height_mm",
+                  "container_max_payload_kg",
+                  "available_categories",
+                  "policy_terms"
+                ]
+              },
+              "op": {
+                "enum": [
+                  "eq",
+                  "ne",
+                  "lt",
+                  "le",
+                  "gt",
+                  "ge",
+                  "contains"
+                ]
+              },
+              "value": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              }
+            },
+            "required": [
+              "field",
+              "op",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "fixture_only": {
+          "type": "boolean"
+        },
+        "comparison_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_links": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "request_digest": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "episode_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "decision_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {},
+              "relation": {
+                "enum": [
+                  "support",
+                  "counterexample",
+                  "unknown"
+                ]
+              }
+            },
+            "required": [
+              "request_digest",
+              "episode_id",
+              "decision_id",
+              "path",
+              "value",
+              "relation"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "expected_effect_hypothesis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "knowledge_role_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validation": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": "jev_card_fact_validation_v1"
+            },
+            "status": {
+              "const": "PASS"
+            },
+            "request_digests": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "support_source_groups": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "conflict": {
+              "type": "boolean"
+            },
+            "semantic_support": {
+              "const": "REQUIRES_INDEPENDENT_REVIEW"
+            }
+          },
+          "required": [
+            "version",
+            "status",
+            "request_digests",
+            "support_source_groups",
+            "conflict",
+            "semantic_support"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "version",
+        "card_id",
+        "card_version",
+        "content_digest",
+        "status",
+        "knowledge_role",
+        "applicability",
+        "advice",
+        "observed_evidence",
+        "limitations_counterexamples",
+        "evidence_refs",
+        "evidence_level",
+        "created_after_episode",
+        "parent_card_ids",
+        "generator_digest",
+        "semantic_review",
+        "comparison_basis",
+        "evidence_links",
+        "expected_effect_hypothesis",
+        "knowledge_role_basis",
+        "validation"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "jev_memory_card_v3"
+        },
+        "card_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "card_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "content_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "status": {
+          "enum": [
+            "candidate",
+            "active",
+            "retired",
+            "rejected"
+          ]
+        },
+        "knowledge_role": {
+          "enum": [
+            "rule_restatement",
+            "current_rule_application",
+            "sequential_resource_strategy"
+          ]
+        },
+        "applicability": {
+          "type": "string",
+          "minLength": 1
+        },
+        "advice": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_evidence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "limitations_counterexamples": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "episode_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "decision_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_group_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "export_digest": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "episode_id",
+              "decision_id",
+              "source_group_id",
+              "export_digest"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "evidence_level": {
+          "const": "observational"
+        },
+        "created_after_episode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parent_card_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "generator_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "semantic_review": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "const": "jev_semantic_review_v2"
+                },
+                "card_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "content_digest": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "reviewer": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reviewer_kind": {
+                  "const": "independent_human"
+                },
+                "protocol_version": {
+                  "const": "observational_support_review_v2"
+                },
+                "status": {
+                  "enum": [
+                    "accepted",
+                    "rejected",
+                    "pending"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "supported_source_groups": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "conflicts_resolved": {
+                  "type": "boolean"
+                },
+                "scope_and_advice_compatible": {
+                  "type": "boolean"
+                },
+                "reviewed_at": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date-time"
+                },
+                "independence_declaration": {
+                  "type": "string"
+                },
+                "audit_binding_digest": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "source_assessments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source_group_id": {
+                        "type": "string"
+                      },
+                      "decision": {
+                        "enum": [
+                          "support",
+                          "counterexample",
+                          "unknown",
+                          "unsupported"
+                        ]
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "claim_and_scope": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "source_group_id",
+                      "decision",
+                      "reason",
+                      "claim_and_scope"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "checks": {
+                  "type": "object",
+                  "properties": {
+                    "field_truth": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "advice_support": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "scope": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "comparison": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "counterexamples_unknowns": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "observation_vs_causation": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "knowledge_role": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "incremental_content": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field_truth",
+                    "advice_support",
+                    "scope",
+                    "comparison",
+                    "counterexamples_unknowns",
+                    "observation_vs_causation",
+                    "knowledge_role",
+                    "incremental_content"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "version",
+                "card_id",
+                "content_digest",
+                "reviewer",
+                "reviewer_kind",
+                "protocol_version",
+                "status",
+                "reason",
+                "supported_source_groups",
+                "conflicts_resolved",
+                "scope_and_advice_compatible",
+                "reviewed_at",
+                "independence_declaration",
+                "audit_binding_digest",
+                "source_assessments",
+                "checks"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "const": "jev_semantic_review_v3"
+                },
+                "card_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "content_digest": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "reviewer": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reviewer_kind": {
+                  "const": "developer_agent"
+                },
+                "protocol_version": {
+                  "const": "developer_support_review_v1"
+                },
+                "status": {
+                  "enum": [
+                    "accepted",
+                    "rejected",
+                    "pending"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "supported_source_groups": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "conflicts_resolved": {
+                  "type": "boolean"
+                },
+                "scope_and_advice_compatible": {
+                  "type": "boolean"
+                },
+                "reviewed_at": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date-time"
+                },
+                "audit_binding_digest": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "source_assessments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source_group_id": {
+                        "type": "string"
+                      },
+                      "decision": {
+                        "enum": [
+                          "support",
+                          "counterexample",
+                          "unknown",
+                          "unsupported"
+                        ]
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "claim_and_scope": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "source_group_id",
+                      "decision",
+                      "reason",
+                      "claim_and_scope"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "checks": {
+                  "type": "object",
+                  "properties": {
+                    "field_truth": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "advice_support": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "scope": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "comparison": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "counterexamples_unknowns": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "observation_vs_causation": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "knowledge_role": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "incremental_content": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field_truth",
+                    "advice_support",
+                    "scope",
+                    "comparison",
+                    "counterexamples_unknowns",
+                    "observation_vs_causation",
+                    "knowledge_role",
+                    "incremental_content"
+                  ],
+                  "additionalProperties": false
+                },
+                "reviewer_declaration": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "independent_review": {
+                  "const": false
+                },
+                "authorization_digest": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "assessed_knowledge_role": {
+                  "enum": [
+                    "rule_restatement",
+                    "current_rule_application",
+                    "sequential_resource_strategy"
+                  ]
+                }
+              },
+              "required": [
+                "version",
+                "card_id",
+                "content_digest",
+                "reviewer",
+                "reviewer_kind",
+                "protocol_version",
+                "status",
+                "reason",
+                "supported_source_groups",
+                "conflicts_resolved",
+                "scope_and_advice_compatible",
+                "reviewed_at",
+                "audit_binding_digest",
+                "source_assessments",
+                "checks",
+                "reviewer_declaration",
+                "independent_review",
+                "authorization_digest",
+                "assessed_knowledge_role"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "gates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "enum": [
+                  "placed_count",
+                  "available_count",
+                  "candidate_count",
+                  "layout_height_mm",
+                  "max_available_mass_kg",
+                  "min_support_ratio",
+                  "buffer_capacity",
+                  "container_length_mm",
+                  "container_width_mm",
+                  "container_max_height_mm",
+                  "container_max_payload_kg",
+                  "available_categories",
+                  "policy_terms"
+                ]
+              },
+              "op": {
+                "enum": [
+                  "eq",
+                  "ne",
+                  "lt",
+                  "le",
+                  "gt",
+                  "ge",
+                  "contains"
+                ]
+              },
+              "value": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              }
+            },
+            "required": [
+              "field",
+              "op",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "fixture_only": {
+          "type": "boolean"
+        },
+        "comparison_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_links": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "request_digest": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "episode_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "decision_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {},
+              "relation": {
+                "enum": [
+                  "support",
+                  "counterexample",
+                  "unknown"
+                ]
+              }
+            },
+            "required": [
+              "request_digest",
+              "episode_id",
+              "decision_id",
+              "path",
+              "value",
+              "relation"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "expected_effect_hypothesis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "knowledge_role_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validation": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": "jev_card_fact_validation_v1"
+            },
+            "status": {
+              "const": "PASS"
+            },
+            "request_digests": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "support_source_groups": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "conflict": {
+              "type": "boolean"
+            },
+            "semantic_support": {
+              "const": "REQUIRES_INDEPENDENT_REVIEW"
+            }
+          },
+          "required": [
+            "version",
+            "status",
+            "request_digests",
+            "support_source_groups",
+            "conflict",
+            "semantic_support"
+          ],
+          "additionalProperties": false
+        },
+        "fact_links": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "fact_id": {
+                "type": "string",
+                "pattern": "^F[0-9]{4,}$"
+              },
+              "path": {
+                "type": "string",
+                "pattern": "^/"
+              },
+              "value": {},
+              "value_type": {
+                "enum": [
+                  "object",
+                  "array",
+                  "string",
+                  "number",
+                  "integer",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "unit": {
+                "enum": [
+                  "mm",
+                  "kg",
+                  "deg",
+                  "ratio",
+                  "count",
+                  "context"
+                ]
+              },
+              "relation": {
+                "enum": [
+                  "support",
+                  "counterexample",
+                  "unknown"
+                ]
+              },
+              "request_alias": {
+                "type": "string",
+                "pattern": "^P[0-9]{4}$"
+              }
+            },
+            "required": [
+              "fact_id",
+              "path",
+              "value",
+              "value_type",
+              "unit",
+              "relation"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "render_version": {
+          "const": "memory_prose_v2"
+        }
+      },
+      "required": [
+        "version",
+        "card_id",
+        "card_version",
+        "content_digest",
+        "status",
+        "knowledge_role",
+        "applicability",
+        "advice",
+        "observed_evidence",
+        "limitations_counterexamples",
+        "evidence_refs",
+        "evidence_level",
+        "created_after_episode",
+        "parent_card_ids",
+        "generator_digest",
+        "semantic_review",
+        "comparison_basis",
+        "evidence_links",
+        "expected_effect_hypothesis",
+        "knowledge_role_basis",
+        "validation",
+        "fact_links",
+        "render_version"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "jev_memory_card_v4"
+        },
+        "card_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "card_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "content_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "status": {
+          "enum": [
+            "candidate",
+            "active",
+            "retired",
+            "rejected"
+          ]
+        },
+        "knowledge_role": {
+          "enum": [
+            "rule_restatement",
+            "current_rule_application",
+            "sequential_resource_strategy"
+          ]
+        },
+        "applicability": {
+          "type": "string",
+          "minLength": 1
+        },
+        "advice": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_evidence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "limitations_counterexamples": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "episode_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "decision_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_group_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "export_digest": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "episode_id",
+              "decision_id",
+              "source_group_id",
+              "export_digest"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "evidence_level": {
+          "const": "observational"
+        },
+        "created_after_episode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parent_card_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "generator_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "semantic_review": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "const": "jev_semantic_review_v2"
+                },
+                "card_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "content_digest": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "reviewer": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reviewer_kind": {
+                  "const": "independent_human"
+                },
+                "protocol_version": {
+                  "const": "observational_support_review_v2"
+                },
+                "status": {
+                  "enum": [
+                    "accepted",
+                    "rejected",
+                    "pending"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "supported_source_groups": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "conflicts_resolved": {
+                  "type": "boolean"
+                },
+                "scope_and_advice_compatible": {
+                  "type": "boolean"
+                },
+                "reviewed_at": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date-time"
+                },
+                "independence_declaration": {
+                  "type": "string"
+                },
+                "audit_binding_digest": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "source_assessments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source_group_id": {
+                        "type": "string"
+                      },
+                      "decision": {
+                        "enum": [
+                          "support",
+                          "counterexample",
+                          "unknown",
+                          "unsupported"
+                        ]
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "claim_and_scope": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "source_group_id",
+                      "decision",
+                      "reason",
+                      "claim_and_scope"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "checks": {
+                  "type": "object",
+                  "properties": {
+                    "field_truth": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "advice_support": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "scope": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "comparison": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "counterexamples_unknowns": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "observation_vs_causation": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "knowledge_role": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "incremental_content": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field_truth",
+                    "advice_support",
+                    "scope",
+                    "comparison",
+                    "counterexamples_unknowns",
+                    "observation_vs_causation",
+                    "knowledge_role",
+                    "incremental_content"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "version",
+                "card_id",
+                "content_digest",
+                "reviewer",
+                "reviewer_kind",
+                "protocol_version",
+                "status",
+                "reason",
+                "supported_source_groups",
+                "conflicts_resolved",
+                "scope_and_advice_compatible",
+                "reviewed_at",
+                "independence_declaration",
+                "audit_binding_digest",
+                "source_assessments",
+                "checks"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "const": "jev_semantic_review_v3"
+                },
+                "card_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "content_digest": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "reviewer": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reviewer_kind": {
+                  "const": "developer_agent"
+                },
+                "protocol_version": {
+                  "const": "developer_support_review_v1"
+                },
+                "status": {
+                  "enum": [
+                    "accepted",
+                    "rejected",
+                    "pending"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "supported_source_groups": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "conflicts_resolved": {
+                  "type": "boolean"
+                },
+                "scope_and_advice_compatible": {
+                  "type": "boolean"
+                },
+                "reviewed_at": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date-time"
+                },
+                "audit_binding_digest": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "source_assessments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source_group_id": {
+                        "type": "string"
+                      },
+                      "decision": {
+                        "enum": [
+                          "support",
+                          "counterexample",
+                          "unknown",
+                          "unsupported"
+                        ]
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "claim_and_scope": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "source_group_id",
+                      "decision",
+                      "reason",
+                      "claim_and_scope"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "checks": {
+                  "type": "object",
+                  "properties": {
+                    "field_truth": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "advice_support": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "scope": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "comparison": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "counterexamples_unknowns": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "observation_vs_causation": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "knowledge_role": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    },
+                    "incremental_content": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unknown"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field_truth",
+                    "advice_support",
+                    "scope",
+                    "comparison",
+                    "counterexamples_unknowns",
+                    "observation_vs_causation",
+                    "knowledge_role",
+                    "incremental_content"
+                  ],
+                  "additionalProperties": false
+                },
+                "reviewer_declaration": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "independent_review": {
+                  "const": false
+                },
+                "authorization_digest": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "assessed_knowledge_role": {
+                  "enum": [
+                    "rule_restatement",
+                    "current_rule_application",
+                    "sequential_resource_strategy"
+                  ]
+                }
+              },
+              "required": [
+                "version",
+                "card_id",
+                "content_digest",
+                "reviewer",
+                "reviewer_kind",
+                "protocol_version",
+                "status",
+                "reason",
+                "supported_source_groups",
+                "conflicts_resolved",
+                "scope_and_advice_compatible",
+                "reviewed_at",
+                "audit_binding_digest",
+                "source_assessments",
+                "checks",
+                "reviewer_declaration",
+                "independent_review",
+                "authorization_digest",
+                "assessed_knowledge_role"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "gates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "enum": [
+                  "placed_count",
+                  "available_count",
+                  "candidate_count",
+                  "layout_height_mm",
+                  "max_available_mass_kg",
+                  "min_support_ratio",
+                  "buffer_capacity",
+                  "container_length_mm",
+                  "container_width_mm",
+                  "container_max_height_mm",
+                  "container_max_payload_kg",
+                  "available_categories",
+                  "policy_terms"
+                ]
+              },
+              "op": {
+                "enum": [
+                  "eq",
+                  "ne",
+                  "lt",
+                  "le",
+                  "gt",
+                  "ge",
+                  "contains"
+                ]
+              },
+              "value": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              }
+            },
+            "required": [
+              "field",
+              "op",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "fixture_only": {
+          "type": "boolean"
+        },
+        "comparison_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_links": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "request_digest": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "episode_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "decision_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {},
+              "relation": {
+                "enum": [
+                  "support",
+                  "counterexample",
+                  "unknown"
+                ]
+              }
+            },
+            "required": [
+              "request_digest",
+              "episode_id",
+              "decision_id",
+              "path",
+              "value",
+              "relation"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "expected_effect_hypothesis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "knowledge_role_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validation": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": "jev_card_fact_validation_v2"
+            },
+            "status": {
+              "const": "PASS"
+            },
+            "request_digests": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "support_source_groups": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "conflict": {
+              "type": "boolean"
+            },
+            "semantic_support": {
+              "const": "REQUIRES_VERSIONED_SEMANTIC_REVIEW"
+            }
+          },
+          "required": [
+            "version",
+            "status",
+            "request_digests",
+            "support_source_groups",
+            "conflict",
+            "semantic_support"
+          ],
+          "additionalProperties": false
+        },
+        "fact_links": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "fact_id": {
+                "type": "string",
+                "pattern": "^F[0-9]{4,}$"
+              },
+              "path": {
+                "type": "string",
+                "pattern": "^/"
+              },
+              "value": {},
+              "value_type": {
+                "enum": [
+                  "object",
+                  "array",
+                  "string",
+                  "number",
+                  "integer",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "unit": {
+                "enum": [
+                  "mm",
+                  "kg",
+                  "deg",
+                  "ratio",
+                  "count",
+                  "context"
+                ]
+              },
+              "relation": {
+                "enum": [
+                  "support",
+                  "counterexample",
+                  "unknown"
+                ]
+              },
+              "request_alias": {
+                "type": "string",
+                "pattern": "^P[0-9]{4}$"
+              }
+            },
+            "required": [
+              "fact_id",
+              "path",
+              "value",
+              "value_type",
+              "unit",
+              "relation"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "render_version": {
+          "const": "memory_prose_v2"
+        },
+        "admission": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": "jev_corrective_admission_v1"
+            },
+            "original_rejection_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "reason": {
+              "const": "unit_context_resolver_correction"
+            },
+            "unit_resolution": {
+              "const": "context_units_v2"
+            },
+            "historical_status": {
+              "const": "TECHNICALLY_REJECTED_V2_PRESERVED"
+            },
+            "new_generation": {
+              "const": false
+            }
+          },
+          "required": [
+            "version",
+            "original_rejection_digest",
+            "reason",
+            "unit_resolution",
+            "historical_status",
+            "new_generation"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "version",
+        "card_id",
+        "card_version",
+        "content_digest",
+        "status",
+        "knowledge_role",
+        "applicability",
+        "advice",
+        "observed_evidence",
+        "limitations_counterexamples",
+        "evidence_refs",
+        "evidence_level",
+        "created_after_episode",
+        "parent_card_ids",
+        "generator_digest",
+        "semantic_review",
+        "comparison_basis",
+        "evidence_links",
+        "expected_effect_hypothesis",
+        "knowledge_role_basis",
+        "validation",
+        "fact_links",
+        "render_version",
+        "admission"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

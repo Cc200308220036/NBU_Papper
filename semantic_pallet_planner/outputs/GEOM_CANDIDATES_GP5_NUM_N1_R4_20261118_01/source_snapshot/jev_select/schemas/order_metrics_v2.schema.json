@@ -1,0 +1,407 @@
+{
+  "type": "object",
+  "properties": {
+    "arrived_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "business_configuration": {
+      "type": "string"
+    },
+    "business_mode": {
+      "const": "evaluate_only"
+    },
+    "by_rule": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "new_events": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unique_instances": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "violating_steps": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "kind",
+          "new_events",
+          "unique_instances",
+          "violating_steps"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "candidate_backend": {
+      "type": "string"
+    },
+    "choice_steps": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "clean_completed": {
+      "type": "boolean"
+    },
+    "completed": {
+      "type": "boolean"
+    },
+    "decision_records": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "envelope_utilization": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1.000001
+        }
+      ]
+    },
+    "evaluation_version": {
+      "type": "string"
+    },
+    "execution_status": {
+      "enum": [
+        "RECORDED",
+        "FAILED"
+      ]
+    },
+    "execution_version": {
+      "type": "string"
+    },
+    "experiment_protocol": {
+      "type": "string"
+    },
+    "feasibility_status": {
+      "type": "string"
+    },
+    "feature_version": {
+      "type": "string"
+    },
+    "final_business_violations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "final_clean_completed": {
+      "type": "boolean"
+    },
+    "final_rule_coverage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule_id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "checked": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "deferred": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "active": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "enum": [
+              "deferred",
+              "checked",
+              "not_applicable"
+            ]
+          }
+        },
+        "required": [
+          "rule_id",
+          "kind",
+          "checked",
+          "deferred",
+          "active",
+          "status"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "final_violation_instances": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "job_id": {
+      "type": "string"
+    },
+    "max_height_mm": {
+      "type": "number",
+      "minimum": 0
+    },
+    "memory_mode": {
+      "type": "string"
+    },
+    "negative": {
+      "type": "boolean"
+    },
+    "new_violation_events": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "new_violations_per_100_planned_items": {
+      "type": "number",
+      "minimum": 0
+    },
+    "partition": {
+      "type": "string"
+    },
+    "pending_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "physical_check_failures": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "placed_item_ratio": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1.000001
+    },
+    "placed_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "placed_volume_ratio": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1.000001
+    },
+    "planned_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "policy_source": {
+      "type": "string"
+    },
+    "public_spec_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "relation_status": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "checked_pairs": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "deferred_pairs": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "enum": [
+              "checked",
+              "deferred",
+              "not_applicable"
+            ]
+          }
+        },
+        "required": [
+          "checked_pairs",
+          "deferred_pairs",
+          "status"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "selectable_pool": {
+      "type": "string"
+    },
+    "selector_backend": {
+      "enum": [
+        "shared_geometry",
+        "shared_business_lexicographic",
+        "jev_choice"
+      ]
+    },
+    "singleton_steps": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "source_kind": {
+      "type": "string"
+    },
+    "source_order_key": {
+      "type": "string"
+    },
+    "synthetic_business_attributes": {
+      "type": "boolean"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "termination_reason": {
+      "type": "string"
+    },
+    "unarrived_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unique_violation_instances": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unobserved_rule_objects": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "version": {
+      "const": "jev_order_metrics_v2"
+    },
+    "violating_steps": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "volume_utilization": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1.000001
+    },
+    "planned_rule_coverage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule_id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "unit": {
+            "enum": [
+              "objects",
+              "unordered_pairs",
+              "ordered_pairs"
+            ]
+          },
+          "planned_match_instances": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "placed_match_instances": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pending_or_unarrived_instances": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unarrived_instances": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "placed_match_fraction": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "rule_id",
+          "kind",
+          "unit",
+          "planned_match_instances",
+          "placed_match_instances",
+          "pending_or_unarrived_instances",
+          "unarrived_instances",
+          "placed_match_fraction"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "arrived_items",
+    "business_configuration",
+    "business_mode",
+    "by_rule",
+    "candidate_backend",
+    "choice_steps",
+    "clean_completed",
+    "completed",
+    "decision_records",
+    "envelope_utilization",
+    "evaluation_version",
+    "execution_status",
+    "execution_version",
+    "experiment_protocol",
+    "feasibility_status",
+    "feature_version",
+    "final_business_violations",
+    "final_clean_completed",
+    "final_rule_coverage",
+    "final_violation_instances",
+    "job_id",
+    "max_height_mm",
+    "memory_mode",
+    "negative",
+    "new_violation_events",
+    "new_violations_per_100_planned_items",
+    "partition",
+    "pending_ids",
+    "physical_check_failures",
+    "placed_item_ratio",
+    "placed_items",
+    "placed_volume_ratio",
+    "planned_items",
+    "policy_source",
+    "public_spec_digest",
+    "relation_status",
+    "selectable_pool",
+    "selector_backend",
+    "singleton_steps",
+    "source_kind",
+    "source_order_key",
+    "synthetic_business_attributes",
+    "task_id",
+    "termination_reason",
+    "unarrived_ids",
+    "unique_violation_instances",
+    "unobserved_rule_objects",
+    "version",
+    "violating_steps",
+    "volume_utilization",
+    "planned_rule_coverage"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

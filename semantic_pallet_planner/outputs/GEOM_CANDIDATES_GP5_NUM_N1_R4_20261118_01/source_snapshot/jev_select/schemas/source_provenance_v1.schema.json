@@ -1,0 +1,202 @@
+{
+  "type": "object",
+  "properties": {
+    "body": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "jev_source_provenance_v1"
+        },
+        "issuer": {
+          "type": "string"
+        },
+        "fixture_only": {
+          "type": "boolean"
+        },
+        "source_identity": {
+          "type": "object",
+          "properties": {
+            "component": {
+              "type": "string"
+            },
+            "raw_keys": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "raw_manifest_sha256": {
+              "type": "string"
+            },
+            "identities": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "raw_order_digests": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          },
+          "required": [
+            "component",
+            "raw_keys",
+            "raw_manifest_sha256",
+            "identities",
+            "raw_order_digests"
+          ],
+          "additionalProperties": false
+        },
+        "origin": {
+          "type": "object",
+          "properties": {
+            "created_at": {
+              "type": "string"
+            },
+            "repository_or_acquisition": {
+              "type": "string"
+            },
+            "evidence_file": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "created_at",
+            "repository_or_acquisition",
+            "evidence_file"
+          ],
+          "additionalProperties": false
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "domains": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "from": {
+              "type": "string"
+            },
+            "through": {
+              "type": "string"
+            },
+            "closed_world": {
+              "type": "boolean"
+            },
+            "evidence_file": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "domains",
+            "from",
+            "through",
+            "closed_world",
+            "evidence_file"
+          ],
+          "additionalProperties": false
+        },
+        "uses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "kind": {
+                "enum": [
+                  "static_audit",
+                  "model_requests",
+                  "policy_development",
+                  "training",
+                  "memory_build",
+                  "historical_testing"
+                ]
+              },
+              "at": {
+                "type": "string"
+              },
+              "evidence_file": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "at",
+              "evidence_file"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "unknowns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_files": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "review": {
+          "type": "object",
+          "properties": {
+            "conclusion": {
+              "enum": [
+                "COMPLETE",
+                "INCOMPLETE"
+              ]
+            },
+            "component_identity_digest": {
+              "type": "string"
+            },
+            "evidence_file": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "conclusion",
+            "component_identity_digest",
+            "evidence_file"
+          ],
+          "additionalProperties": false
+        },
+        "body_digest": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "issuer",
+        "fixture_only",
+        "source_identity",
+        "origin",
+        "coverage",
+        "uses",
+        "unknowns",
+        "evidence_files",
+        "review",
+        "body_digest"
+      ],
+      "additionalProperties": false
+    },
+    "signature_b64": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "body",
+    "signature_b64"
+  ],
+  "additionalProperties": false
+}

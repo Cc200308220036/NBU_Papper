@@ -1,0 +1,63 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_pilot_retrieval_v1"
+    },
+    "mode": {
+      "enum": [
+        "none",
+        "T",
+        "E"
+      ]
+    },
+    "snapshot_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "query": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "query_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "view_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "raw_retrieval": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "EMPTY_POOL",
+        "NO_MEMORY_ASSIGNED",
+        "HIT",
+        "NO_COMPLETE_ISOLATED_HIT"
+      ]
+    },
+    "receipt_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "mode",
+    "snapshot_digest",
+    "query",
+    "query_digest",
+    "view_digest",
+    "raw_retrieval",
+    "status",
+    "receipt_digest"
+  ],
+  "additionalProperties": false
+}

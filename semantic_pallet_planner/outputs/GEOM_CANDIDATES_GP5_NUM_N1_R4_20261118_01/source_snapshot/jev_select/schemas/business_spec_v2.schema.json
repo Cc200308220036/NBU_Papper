@@ -1,0 +1,2878 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "public_generated_v2"
+    },
+    "base_spec_digest": {
+      "const": "9a8c51edd658cb8c311f872971a88eeceea6dbf7522b6f3d1687ed5080d8d249"
+    },
+    "generator_version": {
+      "const": "jev_j4_overlay_v2.0"
+    },
+    "attribute_seed": {
+      "const": 20261101
+    },
+    "attribute_hash": {
+      "const": "sha256_canonical_first_32_bits_div_2pow32"
+    },
+    "product_multipliers": {
+      "type": "array",
+      "const": [
+        0.8,
+        1.0,
+        1.2
+      ]
+    },
+    "rounding": {
+      "const": "ceil(2*x)/2_decimal"
+    },
+    "identity": {
+      "const": "article_id_or_article_plus_full_physical_digest_on_conflict"
+    },
+    "unchanged_semantics": {
+      "const": "public_generated_v1_categories_packaging_contact_regions_direction_priorities"
+    },
+    "reinforced_factor": {
+      "const": 1.5
+    },
+    "physical_attributes": {
+      "const": "preserve_source_unchanged"
+    },
+    "calibration": {
+      "type": "object",
+      "properties": {
+        "source_keys": {
+          "type": "array",
+          "const": [
+            "00100027",
+            "00100090",
+            "00100150",
+            "00100153"
+          ]
+        },
+        "source_file_manifest": {
+          "type": "object",
+          "properties": {
+            "splits/group_manifest.json": {
+              "const": "994916195bd7cce1fb7ee9631f4912f229441cfc0f514bf1a055e45bef32d5b6"
+            },
+            "tasks/scenarios/NEW_00100027.json": {
+              "const": "2550323edaaecca136fda14e1cd2c0bd75c9e404d7c06838d27fb5880e02c898"
+            },
+            "annotations/ground_truth_rules/NEW_00100027.json": {
+              "const": "0189225663af27d68df5255ebf83d9c39347825e8aa97cfa548d39eefddef5ed"
+            },
+            "tasks/scenarios/NEW_00100090.json": {
+              "const": "8da6a66fb15c42eaa8dcdfface450ea73d7b105614d92e00247b5bee7a0286f6"
+            },
+            "annotations/ground_truth_rules/NEW_00100090.json": {
+              "const": "32ccf05dff8053c65517f143825916bc4ce5d69eac67b621531e602d5ca8f893"
+            },
+            "tasks/scenarios/NEW_00100150.json": {
+              "const": "d1feaa8f74a02ca80c042a27483ba30fd6048ac9912a3e2b4c33d12b01fce267"
+            },
+            "annotations/ground_truth_rules/NEW_00100150.json": {
+              "const": "5422664c415cd3868055ff2c1e77c8bfe2f842e88e2d46c9d92a64941791528c"
+            },
+            "tasks/scenarios/NEW_00100153.json": {
+              "const": "14bdb78b90d7aeca43e4af2d74603e83d85a0cae3fe226990264a35ef8208943"
+            },
+            "annotations/ground_truth_rules/NEW_00100153.json": {
+              "const": "826d5fcd104c644cf57e2ef7603fe9b4b7e6fd41b136bdf55d96f74e212703d7"
+            }
+          },
+          "required": [
+            "splits/group_manifest.json",
+            "tasks/scenarios/NEW_00100027.json",
+            "annotations/ground_truth_rules/NEW_00100027.json",
+            "tasks/scenarios/NEW_00100090.json",
+            "annotations/ground_truth_rules/NEW_00100090.json",
+            "tasks/scenarios/NEW_00100150.json",
+            "annotations/ground_truth_rules/NEW_00100150.json",
+            "tasks/scenarios/NEW_00100153.json",
+            "annotations/ground_truth_rules/NEW_00100153.json"
+          ],
+          "additionalProperties": false
+        },
+        "statistics": {
+          "type": "object",
+          "properties": {
+            "algorithm": {
+              "const": "sorted_linear_interpolation_(n-1)*0.75"
+            },
+            "quantile": {
+              "const": 0.75
+            },
+            "m_ref_kg": {
+              "const": 8.586
+            },
+            "instance_count": {
+              "const": 66
+            },
+            "article_count": {
+              "const": 33
+            },
+            "physical_product_count": {
+              "const": 33
+            },
+            "members": {
+              "type": "object",
+              "properties": {
+                "00100064": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00100064"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 130
+                            },
+                            "length": {
+                              "const": 570
+                            },
+                            "width": {
+                              "const": 380
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_570x380x130"
+                        },
+                        "mass_kg": {
+                          "const": 5.816
+                        },
+                        "material": {
+                          "const": "Plastic"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 30.97
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 5.816
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00100456": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00100456"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 260
+                            },
+                            "length": {
+                              "const": 580
+                            },
+                            "width": {
+                              "const": 390
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_580x390x260"
+                        },
+                        "mass_kg": {
+                          "const": 9.387
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "electronics"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 51.46
+                        },
+                        "weight_class": {
+                          "const": "heavy"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 9.387
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00100818": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00100818"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 100
+                            },
+                            "length": {
+                              "const": 380
+                            },
+                            "width": {
+                              "const": 290
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": true
+                        },
+                        "geometry_id": {
+                          "const": "G_380x290x100"
+                        },
+                        "mass_kg": {
+                          "const": 2.04
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": false
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 5.51
+                        },
+                        "weight_class": {
+                          "const": "light"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 2.04
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00101162": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00101162"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 275
+                            },
+                            "length": {
+                              "const": 590
+                            },
+                            "width": {
+                              "const": 390
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_590x390x275"
+                        },
+                        "mass_kg": {
+                          "const": 7.21
+                        },
+                        "material": {
+                          "const": "Wood"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 123.39
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 7.21
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00101167": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00101167"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 280
+                            },
+                            "length": {
+                              "const": 570
+                            },
+                            "width": {
+                              "const": 380
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_570x380x280"
+                        },
+                        "mass_kg": {
+                          "const": 9.01
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 75.81
+                        },
+                        "weight_class": {
+                          "const": "heavy"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 9.01
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00101316": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00101316"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 250
+                            },
+                            "length": {
+                              "const": 590
+                            },
+                            "width": {
+                              "const": 290
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_590x290x250"
+                        },
+                        "mass_kg": {
+                          "const": 6.23
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 21.39
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 6.23
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00101349": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00101349"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 280
+                            },
+                            "length": {
+                              "const": 590
+                            },
+                            "width": {
+                              "const": 390
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_590x390x280"
+                        },
+                        "mass_kg": {
+                          "const": 6.529
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "electronics"
+                        },
+                        "stackable": {
+                          "const": false
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 24.16
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 6.529
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00101371": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00101371"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 230
+                            },
+                            "length": {
+                              "const": 400
+                            },
+                            "width": {
+                              "const": 300
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_400x300x230"
+                        },
+                        "mass_kg": {
+                          "const": 6.36
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": false
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 34.5
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 6.36
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00102055": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00102055"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 265
+                            },
+                            "length": {
+                              "const": 585
+                            },
+                            "width": {
+                              "const": 395
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_585x395x265"
+                        },
+                        "mass_kg": {
+                          "const": 7.208
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": false
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 22.96
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 7.208
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00102123": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00102123"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 295
+                            },
+                            "length": {
+                              "const": 590
+                            },
+                            "width": {
+                              "const": 395
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_590x395x295"
+                        },
+                        "mass_kg": {
+                          "const": 9.8
+                        },
+                        "material": {
+                          "const": "Composite"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 220.0
+                        },
+                        "weight_class": {
+                          "const": "heavy"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 9.8
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00102125": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00102125"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 220
+                            },
+                            "length": {
+                              "const": 600
+                            },
+                            "width": {
+                              "const": 400
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_600x400x220"
+                        },
+                        "mass_kg": {
+                          "const": 8.904
+                        },
+                        "material": {
+                          "const": "Plastic"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": false
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 174.24
+                        },
+                        "weight_class": {
+                          "const": "heavy"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 8.904
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00102591": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00102591"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 125
+                            },
+                            "length": {
+                              "const": 580
+                            },
+                            "width": {
+                              "const": 390
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_580x390x125"
+                        },
+                        "mass_kg": {
+                          "const": 6.486
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "electronics"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 28.28
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 6.486
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00104306": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00104306"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 300
+                            },
+                            "length": {
+                              "const": 595
+                            },
+                            "width": {
+                              "const": 400
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_595x400x300"
+                        },
+                        "mass_kg": {
+                          "const": 9.8
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 89.25
+                        },
+                        "weight_class": {
+                          "const": "heavy"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 9.8
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00104442": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00104442"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 230
+                            },
+                            "length": {
+                              "const": 590
+                            },
+                            "width": {
+                              "const": 380
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_590x380x230"
+                        },
+                        "mass_kg": {
+                          "const": 6.36
+                        },
+                        "material": {
+                          "const": "Wood"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 100.55
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 6.36
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00104568": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00104568"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 100
+                            },
+                            "length": {
+                              "const": 580
+                            },
+                            "width": {
+                              "const": 280
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_580x280x100"
+                        },
+                        "mass_kg": {
+                          "const": 6.236
+                        },
+                        "material": {
+                          "const": "Plastic"
+                        },
+                        "product_category": {
+                          "const": "electronics"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 35.73
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 6.236
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00104731": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00104731"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 290
+                            },
+                            "length": {
+                              "const": 590
+                            },
+                            "width": {
+                              "const": 400
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": true
+                        },
+                        "geometry_id": {
+                          "const": "G_590x400x290"
+                        },
+                        "mass_kg": {
+                          "const": 10.0
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 59.88
+                        },
+                        "weight_class": {
+                          "const": "heavy"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 10.0
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00105511": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00105511"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 120
+                            },
+                            "length": {
+                              "const": 580
+                            },
+                            "width": {
+                              "const": 390
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_580x390x120"
+                        },
+                        "mass_kg": {
+                          "const": 6.38
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 23.75
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 6.38
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00106593": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00106593"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 280
+                            },
+                            "length": {
+                              "const": 600
+                            },
+                            "width": {
+                              "const": 400
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_600x400x280"
+                        },
+                        "mass_kg": {
+                          "const": 8.056
+                        },
+                        "material": {
+                          "const": "Metal"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 161.28
+                        },
+                        "weight_class": {
+                          "const": "heavy"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 8.056
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00106669": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00106669"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 290
+                            },
+                            "length": {
+                              "const": 600
+                            },
+                            "width": {
+                              "const": 400
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_600x400x290"
+                        },
+                        "mass_kg": {
+                          "const": 10.81
+                        },
+                        "material": {
+                          "const": "Plastic"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 229.68
+                        },
+                        "weight_class": {
+                          "const": "heavy"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 10.81
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00107296": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00107296"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 300
+                            },
+                            "length": {
+                              "const": 595
+                            },
+                            "width": {
+                              "const": 400
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_595x400x300"
+                        },
+                        "mass_kg": {
+                          "const": 8.586
+                        },
+                        "material": {
+                          "const": "Wood"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 464.1
+                        },
+                        "weight_class": {
+                          "const": "heavy"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 8.586
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00107800": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00107800"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 215
+                            },
+                            "length": {
+                              "const": 590
+                            },
+                            "width": {
+                              "const": 280
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_590x280x215"
+                        },
+                        "mass_kg": {
+                          "const": 3.339
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": false
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 44.4
+                        },
+                        "weight_class": {
+                          "const": "light"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 3.339
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00108100": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00108100"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 270
+                            },
+                            "length": {
+                              "const": 590
+                            },
+                            "width": {
+                              "const": 390
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_590x390x270"
+                        },
+                        "mass_kg": {
+                          "const": 8.01
+                        },
+                        "material": {
+                          "const": "Plastic"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 68.34
+                        },
+                        "weight_class": {
+                          "const": "heavy"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 8.01
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00108825": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00108825"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 125
+                            },
+                            "length": {
+                              "const": 580
+                            },
+                            "width": {
+                              "const": 380
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": true
+                        },
+                        "geometry_id": {
+                          "const": "G_580x380x125"
+                        },
+                        "mass_kg": {
+                          "const": 7.7
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 20.66
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 7.7
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00108838": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00108838"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 115
+                            },
+                            "length": {
+                              "const": 585
+                            },
+                            "width": {
+                              "const": 390
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_585x390x115"
+                        },
+                        "mass_kg": {
+                          "const": 6.086
+                        },
+                        "material": {
+                          "const": "Wood"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": false
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 170.54
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 6.086
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00109610": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00109610"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 330
+                            },
+                            "length": {
+                              "const": 580
+                            },
+                            "width": {
+                              "const": 260
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_580x260x330"
+                        },
+                        "mass_kg": {
+                          "const": 8.026
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 12.44
+                        },
+                        "weight_class": {
+                          "const": "heavy"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 8.026
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00109661": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00109661"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 320
+                            },
+                            "length": {
+                              "const": 600
+                            },
+                            "width": {
+                              "const": 395
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_600x395x320"
+                        },
+                        "mass_kg": {
+                          "const": 6.996
+                        },
+                        "material": {
+                          "const": "Wood"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 492.96
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 6.996
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00109731": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00109731"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 290
+                            },
+                            "length": {
+                              "const": 600
+                            },
+                            "width": {
+                              "const": 400
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": false
+                        },
+                        "geometry_id": {
+                          "const": "G_600x400x290"
+                        },
+                        "mass_kg": {
+                          "const": 7.21
+                        },
+                        "material": {
+                          "const": "Plastic"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 153.12
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 7.21
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00109742": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00109742"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 255
+                            },
+                            "length": {
+                              "const": 590
+                            },
+                            "width": {
+                              "const": 395
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": true
+                        },
+                        "geometry_id": {
+                          "const": "G_590x395x255"
+                        },
+                        "mass_kg": {
+                          "const": 6.352
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": false
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 66.86
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 6.352
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00110731": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00110731"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 295
+                            },
+                            "length": {
+                              "const": 590
+                            },
+                            "width": {
+                              "const": 395
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": true
+                        },
+                        "geometry_id": {
+                          "const": "G_590x395x295"
+                        },
+                        "mass_kg": {
+                          "const": 9.8
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": false
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 17.19
+                        },
+                        "weight_class": {
+                          "const": "heavy"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 9.8
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00110866": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00110866"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 240
+                            },
+                            "length": {
+                              "const": 580
+                            },
+                            "width": {
+                              "const": 390
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": true
+                        },
+                        "geometry_id": {
+                          "const": "G_580x390x240"
+                        },
+                        "mass_kg": {
+                          "const": 6.527
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 54.29
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 6.527
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00111692": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00111692"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 130
+                            },
+                            "length": {
+                              "const": 300
+                            },
+                            "width": {
+                              "const": 280
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": true
+                        },
+                        "geometry_id": {
+                          "const": "G_300x280x130"
+                        },
+                        "mass_kg": {
+                          "const": 2.1
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "general"
+                        },
+                        "stackable": {
+                          "const": true
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 4.09
+                        },
+                        "weight_class": {
+                          "const": "light"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 2.1
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00111753": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00111753"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 295
+                            },
+                            "length": {
+                              "const": 590
+                            },
+                            "width": {
+                              "const": 395
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": true
+                        },
+                        "geometry_id": {
+                          "const": "G_590x395x295"
+                        },
+                        "mass_kg": {
+                          "const": 6.614
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "electronics"
+                        },
+                        "stackable": {
+                          "const": false
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 51.56
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 6.614
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                },
+                "00112215": {
+                  "type": "object",
+                  "properties": {
+                    "article_id": {
+                      "const": "00112215"
+                    },
+                    "physical": {
+                      "type": "object",
+                      "properties": {
+                        "dimensions_mm": {
+                          "type": "object",
+                          "properties": {
+                            "height": {
+                              "const": 130
+                            },
+                            "length": {
+                              "const": 590
+                            },
+                            "width": {
+                              "const": 400
+                            }
+                          },
+                          "required": [
+                            "height",
+                            "length",
+                            "width"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "fragile": {
+                          "const": true
+                        },
+                        "geometry_id": {
+                          "const": "G_590x400x130"
+                        },
+                        "mass_kg": {
+                          "const": 6.38
+                        },
+                        "material": {
+                          "const": "Cardboard"
+                        },
+                        "product_category": {
+                          "const": "electronics"
+                        },
+                        "stackable": {
+                          "const": false
+                        },
+                        "top_load_limit_kg_synthetic": {
+                          "const": 19.18
+                        },
+                        "weight_class": {
+                          "const": "medium"
+                        }
+                      },
+                      "required": [
+                        "dimensions_mm",
+                        "fragile",
+                        "geometry_id",
+                        "mass_kg",
+                        "material",
+                        "product_category",
+                        "stackable",
+                        "top_load_limit_kg_synthetic",
+                        "weight_class"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mass_kg": {
+                      "const": 6.38
+                    }
+                  },
+                  "required": [
+                    "article_id",
+                    "physical",
+                    "mass_kg"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "00100064",
+                "00100456",
+                "00100818",
+                "00101162",
+                "00101167",
+                "00101316",
+                "00101349",
+                "00101371",
+                "00102055",
+                "00102123",
+                "00102125",
+                "00102591",
+                "00104306",
+                "00104442",
+                "00104568",
+                "00104731",
+                "00105511",
+                "00106593",
+                "00106669",
+                "00107296",
+                "00107800",
+                "00108100",
+                "00108825",
+                "00108838",
+                "00109610",
+                "00109661",
+                "00109731",
+                "00109742",
+                "00110731",
+                "00110866",
+                "00111692",
+                "00111753",
+                "00112215"
+              ],
+              "additionalProperties": false
+            },
+            "conflicts": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "instance_weight_q75_kg": {
+              "const": 8.022
+            }
+          },
+          "required": [
+            "algorithm",
+            "quantile",
+            "m_ref_kg",
+            "instance_count",
+            "article_count",
+            "physical_product_count",
+            "members",
+            "conflicts",
+            "instance_weight_q75_kg"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "source_keys",
+        "source_file_manifest",
+        "statistics"
+      ],
+      "additionalProperties": false
+    },
+    "difficulties": {
+      "type": "object",
+      "properties": {
+        "loose": {
+          "type": "object",
+          "properties": {
+            "base_multiplier": {
+              "const": 3.0
+            },
+            "no_top_probability": {
+              "const": 0.05
+            },
+            "concentration_warning": {
+              "const": 0.25
+            },
+            "maximum_normal_label_kg": {
+              "const": 31.0
+            },
+            "reinforced_limit_kg": {
+              "const": 46.5
+            }
+          },
+          "required": [
+            "base_multiplier",
+            "no_top_probability",
+            "concentration_warning",
+            "maximum_normal_label_kg",
+            "reinforced_limit_kg"
+          ],
+          "additionalProperties": false
+        },
+        "moderate": {
+          "type": "object",
+          "properties": {
+            "base_multiplier": {
+              "const": 1.5
+            },
+            "no_top_probability": {
+              "const": 0.1
+            },
+            "concentration_warning": {
+              "const": 0.35
+            },
+            "maximum_normal_label_kg": {
+              "const": 15.5
+            },
+            "reinforced_limit_kg": {
+              "const": 23.5
+            }
+          },
+          "required": [
+            "base_multiplier",
+            "no_top_probability",
+            "concentration_warning",
+            "maximum_normal_label_kg",
+            "reinforced_limit_kg"
+          ],
+          "additionalProperties": false
+        },
+        "strict": {
+          "type": "object",
+          "properties": {
+            "base_multiplier": {
+              "const": 0.75
+            },
+            "no_top_probability": {
+              "const": 0.2
+            },
+            "concentration_warning": {
+              "const": 0.5
+            },
+            "maximum_normal_label_kg": {
+              "const": 8.0
+            },
+            "reinforced_limit_kg": {
+              "const": 12.0
+            }
+          },
+          "required": [
+            "base_multiplier",
+            "no_top_probability",
+            "concentration_warning",
+            "maximum_normal_label_kg",
+            "reinforced_limit_kg"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "loose",
+        "moderate",
+        "strict"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "base_spec_digest",
+    "generator_version",
+    "attribute_seed",
+    "attribute_hash",
+    "product_multipliers",
+    "rounding",
+    "identity",
+    "unchanged_semantics",
+    "reinforced_factor",
+    "physical_attributes",
+    "calibration",
+    "difficulties"
+  ],
+  "additionalProperties": false
+}

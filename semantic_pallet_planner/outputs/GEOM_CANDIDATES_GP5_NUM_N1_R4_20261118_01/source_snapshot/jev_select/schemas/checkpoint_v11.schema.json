@@ -1,0 +1,978 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_checkpoint_v11"
+    },
+    "job_id": {
+      "type": "string"
+    },
+    "method": {
+      "enum": [
+        "local_geometry_test_double",
+        "local_first_test_double",
+        "jev_no_memory",
+        "jev_with_trajectory",
+        "jev_with_contrast_experience",
+        "jev_with_unrelated_E_control"
+      ]
+    },
+    "task_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "config_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "container": {
+          "type": "object"
+        },
+        "buffer_capacity": {
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        "pending_items": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "placed_items": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "arrived_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "attributes": {
+          "type": "object"
+        },
+        "event_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "arrival_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "placed_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_of_stream": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "container",
+        "buffer_capacity",
+        "pending_items",
+        "placed_items",
+        "arrived_ids",
+        "attributes",
+        "event_index",
+        "arrival_count",
+        "placed_count",
+        "end_of_stream"
+      ],
+      "additionalProperties": false
+    },
+    "cursor": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "decision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "event": {
+                "enum": [
+                  "WAIT_RECEIVE",
+                  "EOS"
+                ]
+              },
+              "before": {
+                "type": "object"
+              },
+              "after": {
+                "type": "object"
+              },
+              "timings": {
+                "type": "object",
+                "maxProperties": 0
+              }
+            },
+            "required": [
+              "event",
+              "before",
+              "after",
+              "timings"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "event": {
+                "enum": [
+                  "PLACE",
+                  "STOP",
+                  "DECISION_FAILURE",
+                  "COMMIT_FAILURE"
+                ]
+              },
+              "decision_id": {
+                "type": "string"
+              },
+              "before": {
+                "type": "object"
+              },
+              "after": {
+                "type": "object"
+              },
+              "route": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "enum": [
+                      "STOP_NO_PHYSICAL_CANDIDATE",
+                      "SINGLETON_BYPASS",
+                      "CHOICE_REQUIRED"
+                    ]
+                  }
+                ]
+              },
+              "observation": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object"
+                  }
+                ]
+              },
+              "bundle": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object"
+                  }
+                ]
+              },
+              "context": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object"
+                  }
+                ]
+              },
+              "selection": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object"
+                  }
+                ]
+              },
+              "proposed_action": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object"
+                  }
+                ]
+              },
+              "action": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object"
+                  }
+                ]
+              },
+              "reason": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "error": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "detail"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "reference_after": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object"
+                  }
+                ]
+              },
+              "business_after": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "const": "jev_packaging_physical_state_v1"
+                      },
+                      "raw": {
+                        "type": "object"
+                      },
+                      "violations": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "item_id": {
+                              "type": "string"
+                            },
+                            "reason": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "item_id",
+                            "reason"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "runtime_facts": {
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "version",
+                      "raw",
+                      "violations",
+                      "runtime_facts"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "timings": {
+                "type": "object",
+                "properties": {
+                  "public_parse_s": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "physical_generation_s": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "facts_context_s": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "public_business_s": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "selection_s": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "physical_commit_s": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "independent_evaluation_s": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "checkpoint_io_s": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "decision_wall_s": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    ]
+                  },
+                  "decision_segments_s": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "generation_cache_hits": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "generation_cache_misses": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [],
+                "additionalProperties": false
+              },
+              "monitor": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$schema": "https://json-schema.org/draft/2020-12/schema",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "version": {
+                        "const": "selected_action_monitor_v1"
+                      },
+                      "binding": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "state_digest": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{64}$"
+                          },
+                          "candidate_digest": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{64}$"
+                          },
+                          "action_digest": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{64}$"
+                          },
+                          "selection_digest": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{64}$"
+                          },
+                          "context_digest": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{64}$"
+                          },
+                          "bundle_digest": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{64}$"
+                          },
+                          "config_digest": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{64}$"
+                          },
+                          "decision_id": {
+                            "type": "string"
+                          },
+                          "runtime_identity": {
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "state_digest",
+                          "candidate_digest",
+                          "action_digest",
+                          "selection_digest",
+                          "context_digest",
+                          "bundle_digest",
+                          "config_digest",
+                          "decision_id",
+                          "runtime_identity"
+                        ]
+                      },
+                      "status": {
+                        "enum": [
+                          "DISABLED",
+                          "STABLE",
+                          "UNSTABLE",
+                          "UNASSESSABLE",
+                          "ERROR"
+                        ]
+                      },
+                      "result": {
+                        "type": [
+                          "object",
+                          "null"
+                        ]
+                      },
+                      "attempted": {
+                        "const": true
+                      },
+                      "committed": {
+                        "const": false
+                      },
+                      "result_digest": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$"
+                      },
+                      "credential_digest": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$"
+                      }
+                    },
+                    "required": [
+                      "version",
+                      "binding",
+                      "status",
+                      "result",
+                      "attempted",
+                      "committed",
+                      "result_digest",
+                      "credential_digest"
+                    ]
+                  }
+                ]
+              },
+              "monitor_result_reuses": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "event",
+              "decision_id",
+              "before",
+              "after",
+              "route",
+              "observation",
+              "bundle",
+              "context",
+              "selection",
+              "proposed_action",
+              "action",
+              "reason",
+              "error",
+              "reference_after",
+              "business_after",
+              "timings",
+              "monitor",
+              "monitor_result_reuses"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "reason": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "phase": {
+      "enum": [
+        "READY",
+        "SELECTED",
+        "MONITORED",
+        "COMMITTED",
+        "TERMINATED",
+        "DECISION_READY"
+      ]
+    },
+    "pending_event": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event": {
+              "enum": [
+                "PLACE",
+                "STOP",
+                "DECISION_FAILURE",
+                "COMMIT_FAILURE"
+              ]
+            },
+            "decision_id": {
+              "type": "string"
+            },
+            "before": {
+              "type": "object"
+            },
+            "after": {
+              "type": "object"
+            },
+            "route": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "enum": [
+                    "STOP_NO_PHYSICAL_CANDIDATE",
+                    "SINGLETON_BYPASS",
+                    "CHOICE_REQUIRED"
+                  ]
+                }
+              ]
+            },
+            "observation": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object"
+                }
+              ]
+            },
+            "bundle": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object"
+                }
+              ]
+            },
+            "context": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object"
+                }
+              ]
+            },
+            "selection": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object"
+                }
+              ]
+            },
+            "proposed_action": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object"
+                }
+              ]
+            },
+            "action": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object"
+                }
+              ]
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "error": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "detail"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "reference_after": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object"
+                }
+              ]
+            },
+            "business_after": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "const": "jev_packaging_physical_state_v1"
+                    },
+                    "raw": {
+                      "type": "object"
+                    },
+                    "violations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "item_id": {
+                            "type": "string"
+                          },
+                          "reason": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "item_id",
+                          "reason"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "runtime_facts": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "version",
+                    "raw",
+                    "violations",
+                    "runtime_facts"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "timings": {
+              "type": "object",
+              "properties": {
+                "public_parse_s": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "physical_generation_s": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "facts_context_s": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "public_business_s": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "selection_s": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "physical_commit_s": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "independent_evaluation_s": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "checkpoint_io_s": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "decision_wall_s": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  ]
+                },
+                "decision_segments_s": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "generation_cache_hits": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "generation_cache_misses": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [],
+              "additionalProperties": false
+            },
+            "monitor": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "version": {
+                      "const": "selected_action_monitor_v1"
+                    },
+                    "binding": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "state_digest": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        "candidate_digest": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        "action_digest": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        "selection_digest": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        "context_digest": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        "bundle_digest": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        "config_digest": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        "decision_id": {
+                          "type": "string"
+                        },
+                        "runtime_identity": {
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "state_digest",
+                        "candidate_digest",
+                        "action_digest",
+                        "selection_digest",
+                        "context_digest",
+                        "bundle_digest",
+                        "config_digest",
+                        "decision_id",
+                        "runtime_identity"
+                      ]
+                    },
+                    "status": {
+                      "enum": [
+                        "DISABLED",
+                        "STABLE",
+                        "UNSTABLE",
+                        "UNASSESSABLE",
+                        "ERROR"
+                      ]
+                    },
+                    "result": {
+                      "type": [
+                        "object",
+                        "null"
+                      ]
+                    },
+                    "attempted": {
+                      "const": true
+                    },
+                    "committed": {
+                      "const": false
+                    },
+                    "result_digest": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "credential_digest": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "version",
+                    "binding",
+                    "status",
+                    "result",
+                    "attempted",
+                    "committed",
+                    "result_digest",
+                    "credential_digest"
+                  ]
+                }
+              ]
+            },
+            "monitor_result_reuses": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "event",
+            "decision_id",
+            "before",
+            "after",
+            "route",
+            "observation",
+            "bundle",
+            "context",
+            "selection",
+            "proposed_action",
+            "action",
+            "reason",
+            "error",
+            "reference_after",
+            "business_after",
+            "timings",
+            "monitor",
+            "monitor_result_reuses"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "runtime_identity": {
+      "type": "object",
+      "properties": {
+        "data_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "physical_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "strategy_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "task_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "monitor_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "data_identity",
+        "physical_identity",
+        "strategy_identity",
+        "task_identity",
+        "monitor_identity"
+      ],
+      "additionalProperties": false
+    },
+    "record_digest": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "job_id",
+    "method",
+    "task_digest",
+    "config_digest",
+    "state",
+    "cursor",
+    "decision",
+    "events",
+    "reason",
+    "phase",
+    "pending_event",
+    "runtime_identity",
+    "record_digest"
+  ],
+  "additionalProperties": false
+}

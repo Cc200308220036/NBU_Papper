@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_posthoc_analysis_plan_v2"
+    },
+    "analysis_type": {
+      "const": "POST_HOC_USER_REVISED_OBJECTIVE"
+    },
+    "scheme": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "parent": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "manifest_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "files": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "path",
+        "manifest_sha256",
+        "files"
+      ],
+      "additionalProperties": false
+    },
+    "inventory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "comparison_id": {
+            "type": "string"
+          },
+          "v1_path": {
+            "type": "string"
+          },
+          "v1_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "reference_path": {
+            "type": "string"
+          },
+          "alternative_path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "comparison_id",
+          "v1_path",
+          "v1_sha256",
+          "reference_path",
+          "alternative_path"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "rule": {
+      "type": "object"
+    },
+    "rule_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "admission": {
+      "type": "object"
+    },
+    "analysis_source_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "analysis_source_manifest": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    },
+    "execution_source_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "historical_suffixes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "operations": {
+      "type": "object",
+      "properties": {
+        "new_suffixes": {
+          "const": 0
+        },
+        "model_api_calls": {
+          "const": 0
+        },
+        "credential_reads": {
+          "const": 0
+        }
+      },
+      "required": [
+        "new_suffixes",
+        "model_api_calls",
+        "credential_reads"
+      ],
+      "additionalProperties": false
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "record_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "parent_verification_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "frozen_at_utc": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "version",
+    "analysis_type",
+    "scheme",
+    "parent",
+    "inventory",
+    "rule",
+    "rule_digest",
+    "admission",
+    "analysis_source_digest",
+    "analysis_source_manifest",
+    "execution_source_digest",
+    "historical_suffixes",
+    "operations",
+    "limitations",
+    "record_digest",
+    "parent_verification_digest",
+    "frozen_at_utc"
+  ],
+  "additionalProperties": false
+}

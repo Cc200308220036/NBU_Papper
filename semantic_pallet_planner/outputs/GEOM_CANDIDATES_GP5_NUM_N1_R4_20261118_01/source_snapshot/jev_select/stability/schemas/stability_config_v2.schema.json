@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "algorithm",
+    "setting",
+    "height_tolerance_mm",
+    "mass_atol_kg",
+    "mass_rtol",
+    "moment_atol_kg_mm",
+    "moment_rtol",
+    "solver_tolerance",
+    "scaled_residual_tolerance",
+    "strict_interior_slack",
+    "certificate_gap",
+    "presolve",
+    "solver",
+    "selection"
+  ],
+  "properties": {
+    "algorithm": {
+      "const": "pct_contact_network_v2"
+    },
+    "setting": {
+      "const": 1
+    },
+    "height_tolerance_mm": {
+      "const": 1e-06
+    },
+    "mass_atol_kg": {
+      "const": 1e-09
+    },
+    "mass_rtol": {
+      "const": 1e-09
+    },
+    "moment_atol_kg_mm": {
+      "const": 1e-06
+    },
+    "moment_rtol": {
+      "const": 1e-09
+    },
+    "solver_tolerance": {
+      "const": 1e-10
+    },
+    "scaled_residual_tolerance": {
+      "const": 1e-09
+    },
+    "strict_interior_slack": {
+      "const": 1e-10
+    },
+    "certificate_gap": {
+      "const": 1e-08
+    },
+    "presolve": {
+      "const": false
+    },
+    "solver": {
+      "const": "highs-ds"
+    },
+    "selection": {
+      "const": "max_network_interior_then_lexicographic_forces"
+    }
+  }
+}

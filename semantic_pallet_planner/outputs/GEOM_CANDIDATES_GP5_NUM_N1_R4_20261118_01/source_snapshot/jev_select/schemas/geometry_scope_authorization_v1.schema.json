@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "geometry_scope_authorization_v1"
+    },
+    "scope": {
+      "enum": [
+        "KERNEL_ACCEPTANCE_SYNTHETIC_ONLY",
+        "EXPOSED_TRAIN_LOCAL_ORDER_ONLY"
+      ]
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "status": {
+      "const": "APPROVED"
+    }
+  },
+  "required": [
+    "version",
+    "scope",
+    "plan_digest",
+    "status"
+  ]
+}

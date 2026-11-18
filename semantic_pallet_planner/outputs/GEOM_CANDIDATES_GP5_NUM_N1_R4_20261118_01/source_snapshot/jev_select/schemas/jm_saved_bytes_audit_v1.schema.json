@@ -1,0 +1,72 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_jm_saved_bytes_audit_v1"
+    },
+    "entry_head": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "scope": {
+      "enum": [
+        "B1_SUPPLEMENT_ONLY",
+        "B2_TEMPLATE_DELIVERY"
+      ]
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "comparison": {
+            "enum": [
+              "EXACT",
+              "ENTRY_PREFIX"
+            ]
+          },
+          "extension_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "path",
+          "sha256",
+          "bytes",
+          "comparison",
+          "extension_sha256"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "version",
+    "entry_head",
+    "scope",
+    "files"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

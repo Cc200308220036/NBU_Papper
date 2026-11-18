@@ -1,0 +1,450 @@
+{
+  "type": "object",
+  "properties": {
+    "kind": {
+      "const": "E"
+    },
+    "notice": {
+      "const": "Conditional historical contrast experience; not a current action or established causal rule."
+    },
+    "observable_conditions": {
+      "type": "object",
+      "properties": {
+        "buffer_capacity": {
+          "type": "number"
+        },
+        "container": {
+          "type": "object",
+          "properties": {
+            "coordinate_frame": {
+              "const": "container_bottom_center"
+            },
+            "length_mm": {
+              "type": "number"
+            },
+            "max_height_mm": {
+              "type": "number"
+            },
+            "max_payload_kg": {
+              "type": "number"
+            },
+            "width_mm": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "coordinate_frame",
+            "length_mm",
+            "max_height_mm",
+            "max_payload_kg",
+            "width_mm"
+          ],
+          "additionalProperties": false
+        },
+        "observed_buffer": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "dimensions_mm": {
+                "type": "object",
+                "properties": {
+                  "height": {
+                    "type": "number"
+                  },
+                  "length": {
+                    "type": "number"
+                  },
+                  "width": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "height",
+                  "length",
+                  "width"
+                ],
+                "additionalProperties": false
+              },
+              "mass_kg": {
+                "type": "number"
+              },
+              "role": {
+                "type": "string",
+                "pattern": "^history_box_[1-3]$"
+              },
+              "stackable": {
+                "type": "boolean"
+              },
+              "top_load_limit_kg_synthetic": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "dimensions_mm",
+              "mass_kg",
+              "role",
+              "stackable",
+              "top_load_limit_kg_synthetic"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "placed_count": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "buffer_capacity",
+        "container",
+        "observed_buffer",
+        "placed_count"
+      ],
+      "additionalProperties": false
+    },
+    "historical_attribute_geometry_contrast": {
+      "type": "object",
+      "properties": {
+        "historical_box_alpha": {
+          "type": "object",
+          "properties": {
+            "box": {
+              "type": "object",
+              "properties": {
+                "dimensions_mm": {
+                  "type": "object",
+                  "properties": {
+                    "height": {
+                      "type": "number"
+                    },
+                    "length": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "height",
+                    "length",
+                    "width"
+                  ],
+                  "additionalProperties": false
+                },
+                "mass_kg": {
+                  "type": "number"
+                },
+                "stackable": {
+                  "type": "boolean"
+                },
+                "top_load_limit_kg_synthetic": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "dimensions_mm",
+                "mass_kg",
+                "stackable",
+                "top_load_limit_kg_synthetic"
+              ],
+              "additionalProperties": false
+            },
+            "size_over_container": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            "on_floor": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "box",
+            "size_over_container",
+            "on_floor"
+          ],
+          "additionalProperties": false
+        },
+        "historical_box_beta": {
+          "type": "object",
+          "properties": {
+            "box": {
+              "type": "object",
+              "properties": {
+                "dimensions_mm": {
+                  "type": "object",
+                  "properties": {
+                    "height": {
+                      "type": "number"
+                    },
+                    "length": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "height",
+                    "length",
+                    "width"
+                  ],
+                  "additionalProperties": false
+                },
+                "mass_kg": {
+                  "type": "number"
+                },
+                "stackable": {
+                  "type": "boolean"
+                },
+                "top_load_limit_kg_synthetic": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "dimensions_mm",
+                "mass_kg",
+                "stackable",
+                "top_load_limit_kg_synthetic"
+              ],
+              "additionalProperties": false
+            },
+            "size_over_container": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            "on_floor": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "box",
+            "size_over_container",
+            "on_floor"
+          ],
+          "additionalProperties": false
+        },
+        "relationship": {
+          "const": "different boxes"
+        },
+        "geometry_scope": {
+          "const": "historical on-floor interventions; no coordinates are current actions"
+        }
+      },
+      "required": [
+        "historical_box_alpha",
+        "historical_box_beta",
+        "relationship",
+        "geometry_scope"
+      ],
+      "additionalProperties": false
+    },
+    "advice": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "const": "HYPOTHESIS"
+          },
+          "direction": {
+            "enum": [
+              "COMPARE_LOADING_AND_HEIGHT_TRADEOFF",
+              "COMPARE_STACKABILITY_AND_CAPACITY"
+            ]
+          },
+          "text": {
+            "enum": [
+              "Hypothesis: in a similar currently observable setting, compare alternative box-and-position choices for potential loading opportunities while retaining the height cost; this historical result does not identify the best current action.",
+              "Hypothesis: compare observed size, mass, stackability and usable top-load capacity together when considering box-and-position alternatives; the causal contribution of any one attribute has not been established."
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "direction",
+          "text"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "expected_effect": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "HYPOTHESIS"
+        },
+        "text": {
+          "const": "HYPOTHESIS: different observed attribute and geometry tradeoffs may change later loading under a fixed continuation. This mechanism is unverified."
+        }
+      },
+      "required": [
+        "type",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "historical_result": {
+      "type": "object",
+      "properties": {
+        "alternative": {
+          "type": "object",
+          "properties": {
+            "actual_height_mm": {
+              "type": "number"
+            },
+            "envelope_utilization": {
+              "type": "number"
+            },
+            "placed_items": {
+              "type": "number"
+            },
+            "placed_mass_kg": {
+              "type": "number"
+            },
+            "placed_volume_ratio": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "actual_height_mm",
+            "envelope_utilization",
+            "placed_items",
+            "placed_mass_kg",
+            "placed_volume_ratio"
+          ],
+          "additionalProperties": false
+        },
+        "delta": {
+          "type": "object",
+          "properties": {
+            "actual_height_mm": {
+              "type": "number"
+            },
+            "envelope_utilization": {
+              "type": "number"
+            },
+            "placed_items": {
+              "type": "number"
+            },
+            "placed_mass_kg": {
+              "type": "number"
+            },
+            "placed_volume_ratio": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "actual_height_mm",
+            "envelope_utilization",
+            "placed_items",
+            "placed_mass_kg",
+            "placed_volume_ratio"
+          ],
+          "additionalProperties": false
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "actual_height_mm": {
+              "type": "number"
+            },
+            "envelope_utilization": {
+              "type": "number"
+            },
+            "placed_items": {
+              "type": "number"
+            },
+            "placed_mass_kg": {
+              "type": "number"
+            },
+            "placed_volume_ratio": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "actual_height_mm",
+            "envelope_utilization",
+            "placed_items",
+            "placed_mass_kg",
+            "placed_volume_ratio"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "alternative",
+        "delta",
+        "reference"
+      ],
+      "additionalProperties": false
+    },
+    "evidence_counts": {
+      "type": "object",
+      "properties": {
+        "support": {
+          "type": "number"
+        },
+        "refutation": {
+          "type": "number"
+        },
+        "neutral": {
+          "type": "number"
+        },
+        "invalid": {
+          "type": "number"
+        },
+        "unrelated_background": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "support",
+        "refutation",
+        "neutral",
+        "invalid",
+        "unrelated_background"
+      ],
+      "additionalProperties": false
+    },
+    "counterexamples": {
+      "const": "No relevant counterexample was observed in the declared exact-observation/intervention-family group; this is not evidence of universal validity."
+    },
+    "evaluation_rule": {
+      "const": "jev_branch_comparison_rule_v2"
+    },
+    "fixed_followup": {
+      "const": "local_geometry_test_double"
+    },
+    "limitations": {
+      "const": [
+        "POST_HOC_USER_REVISED_OBJECTIVE",
+        "two previously exposed training sources; no unseen-source validation",
+        "fixed local_geometry_test_double continuation; finite intervention, no causal or global optimum claim",
+        "synthetic packaging load parameters; feasibility UNKNOWN",
+        "historical observation only, not a recommendation or an action for the current task",
+        "not a universal cross-box or rank rule; external memory is not weight updating",
+        "restricted claim grammar; no free-form causal explanation certified",
+        "relevance is exact observed condition and intervention family; unrelated neutral evidence is not counted as support or refutation"
+      ]
+    }
+  },
+  "required": [
+    "kind",
+    "notice",
+    "observable_conditions",
+    "historical_attribute_geometry_contrast",
+    "advice",
+    "expected_effect",
+    "historical_result",
+    "evidence_counts",
+    "counterexamples",
+    "evaluation_rule",
+    "fixed_followup",
+    "limitations"
+  ],
+  "additionalProperties": false
+}

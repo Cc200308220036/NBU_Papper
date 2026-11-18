@@ -1,0 +1,296 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_jm_fs_input_v1"
+    },
+    "coordinate": {
+      "const": "bottom_center_x_right_y_back_z_up_v1"
+    },
+    "precision": {
+      "enum": [
+        "SAVED_LEXEMES",
+        "UNKNOWN"
+      ]
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "container": {
+          "type": "object",
+          "properties": {
+            "length_mm": {
+              "type": "string",
+              "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+            },
+            "width_mm": {
+              "type": "string",
+              "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+            },
+            "max_height_mm": {
+              "type": "string",
+              "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+            }
+          },
+          "required": [
+            "length_mm",
+            "width_mm",
+            "max_height_mm"
+          ],
+          "additionalProperties": false
+        },
+        "buffer": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "item_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "size_mm": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "item_id",
+              "size_mm"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "placed_objects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "item_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "size_mm": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "pose": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "x_mm": {
+                        "type": "string",
+                        "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+                      },
+                      "y_mm": {
+                        "type": "string",
+                        "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+                      },
+                      "z_base_mm": {
+                        "type": "string",
+                        "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+                      },
+                      "yaw_deg": {
+                        "type": "string",
+                        "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+                      }
+                    },
+                    "required": [
+                      "x_mm",
+                      "y_mm",
+                      "z_base_mm",
+                      "yaw_deg"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "oriented_size_mm": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "item_id",
+              "size_mm",
+              "pose",
+              "oriented_size_mm"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 256
+        }
+      },
+      "required": [
+        "container",
+        "buffer",
+        "placed_objects"
+      ],
+      "additionalProperties": false
+    },
+    "pool": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pick_item_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pose": {
+            "type": "object",
+            "properties": {
+              "x_mm": {
+                "type": "string",
+                "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+              },
+              "y_mm": {
+                "type": "string",
+                "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+              },
+              "z_base_mm": {
+                "type": "string",
+                "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+              },
+              "yaw_deg": {
+                "type": "string",
+                "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+              }
+            },
+            "required": [
+              "x_mm",
+              "y_mm",
+              "z_base_mm",
+              "yaw_deg"
+            ],
+            "additionalProperties": false
+          },
+          "oriented_size_mm": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(?:-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)$"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          }
+        },
+        "required": [
+          "candidate_id",
+          "pick_item_id",
+          "pose",
+          "oriented_size_mm"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 512
+    },
+    "descriptor_scope": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "enum": [
+            "FULL_POOL",
+            "HISTORICAL_AB"
+          ]
+        },
+        "contrast": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "mode",
+        "contrast"
+      ],
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "state_sha256": {
+          "type": "string",
+          "pattern": "^(?:[0-9a-f]{64})$"
+        },
+        "pool_sha256": {
+          "type": "string",
+          "pattern": "^(?:[0-9a-f]{64})$"
+        }
+      },
+      "required": [
+        "state_sha256",
+        "pool_sha256"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "coordinate",
+    "precision",
+    "state",
+    "pool",
+    "descriptor_scope",
+    "provenance"
+  ],
+  "additionalProperties": false
+}

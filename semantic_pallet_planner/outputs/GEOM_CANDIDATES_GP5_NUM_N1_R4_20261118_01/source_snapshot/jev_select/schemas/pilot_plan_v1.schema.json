@@ -1,0 +1,118 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "execution_version",
+    "frozen_at",
+    "dataset",
+    "data_identity",
+    "fixture_only",
+    "task_ids",
+    "method_ids",
+    "jobs",
+    "request_budget",
+    "watchdog",
+    "gate_rule",
+    "evaluation_rule",
+    "parent_refs",
+    "snapshots",
+    "source_manifest",
+    "physical_manifest",
+    "method_registry",
+    "run_location",
+    "scope",
+    "credential_reference",
+    "recommendation_rule",
+    "retrieval_rule",
+    "information_budget"
+  ],
+  "properties": {
+    "version": {
+      "const": "jev_memory_order_plan_v1"
+    },
+    "execution_version": {
+      "const": "jev_packaging_memory_orders_v9"
+    },
+    "frozen_at": {
+      "type": "string"
+    },
+    "dataset": {
+      "type": "string"
+    },
+    "data_identity": {
+      "type": "string"
+    },
+    "fixture_only": {
+      "type": "boolean"
+    },
+    "task_ids": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "items": {
+        "type": "string"
+      }
+    },
+    "method_ids": {
+      "const": [
+        "jev_no_memory",
+        "jev_with_trajectory",
+        "jev_with_contrast_experience"
+      ]
+    },
+    "jobs": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 6,
+      "items": {
+        "type": "object"
+      }
+    },
+    "request_budget": {
+      "type": "object"
+    },
+    "watchdog": {
+      "type": "object"
+    },
+    "gate_rule": {
+      "type": "object"
+    },
+    "evaluation_rule": {
+      "type": "object"
+    },
+    "parent_refs": {
+      "type": "object"
+    },
+    "snapshots": {
+      "type": "object"
+    },
+    "source_manifest": {
+      "type": "object"
+    },
+    "physical_manifest": {
+      "type": "object"
+    },
+    "method_registry": {
+      "type": "object"
+    },
+    "run_location": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "string"
+    },
+    "credential_reference": {
+      "type": "string"
+    },
+    "recommendation_rule": {
+      "type": "object"
+    },
+    "retrieval_rule": {
+      "type": "object"
+    },
+    "information_budget": {
+      "type": "object"
+    }
+  }
+}

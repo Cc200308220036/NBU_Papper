@@ -1,0 +1,158 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "query",
+    "query_digest",
+    "view_digest",
+    "status",
+    "reference_view",
+    "reference_receipt",
+    "receipt_digest"
+  ],
+  "properties": {
+    "version": {
+      "const": "jev_evaluation_retrieval_v1"
+    },
+    "query": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "query_digest": {
+      "type": "string"
+    },
+    "view_digest": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "reference_view": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "jev_pilot_memory_view_v1"
+        },
+        "mode": {
+          "enum": [
+            "none",
+            "T",
+            "E"
+          ]
+        },
+        "snapshot_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "query_digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "reason": {
+          "type": "string"
+        },
+        "injected_chars": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "injected_utf8_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "view_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "version",
+        "mode",
+        "snapshot_digest",
+        "query_digest",
+        "entries",
+        "reason",
+        "injected_chars",
+        "injected_utf8_bytes",
+        "view_digest"
+      ],
+      "additionalProperties": false
+    },
+    "reference_receipt": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "jev_pilot_retrieval_v1"
+        },
+        "mode": {
+          "enum": [
+            "none",
+            "T",
+            "E"
+          ]
+        },
+        "snapshot_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "query": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "query_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "view_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "raw_retrieval": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "status": {
+          "enum": [
+            "EMPTY_POOL",
+            "NO_MEMORY_ASSIGNED",
+            "HIT",
+            "NO_COMPLETE_ISOLATED_HIT"
+          ]
+        },
+        "receipt_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "version",
+        "mode",
+        "snapshot_digest",
+        "query",
+        "query_digest",
+        "view_digest",
+        "raw_retrieval",
+        "status",
+        "receipt_digest"
+      ],
+      "additionalProperties": false
+    },
+    "receipt_digest": {
+      "type": "string"
+    }
+  }
+}

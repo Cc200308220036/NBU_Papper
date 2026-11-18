@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_packaging_monitored_metrics_v1"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "source_preserving",
+        "controlled_packaging"
+      ]
+    },
+    "layer": {
+      "type": "string"
+    },
+    "selector_backend": {
+      "enum": [
+        "local_geometry_test_double",
+        "local_first_test_double"
+      ]
+    },
+    "origin": {
+      "const": "LOCAL_TEST_DOUBLE_NOT_JEV"
+    },
+    "runtime_identity": {
+      "type": "object",
+      "properties": {
+        "data_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "physical_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "strategy_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "task_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "monitor_identity": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_identity",
+        "physical_identity",
+        "strategy_identity",
+        "task_identity",
+        "monitor_identity"
+      ],
+      "additionalProperties": false
+    },
+    "planned_items": {
+      "type": "number",
+      "minimum": 0
+    },
+    "arrived_items": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_items": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_item_ratio": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_volume_ratio": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_mass_kg": {
+      "type": "number",
+      "minimum": 0
+    },
+    "planned_mass_kg": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_mass_ratio": {
+      "type": "number",
+      "minimum": 0
+    },
+    "completed": {
+      "type": "boolean"
+    },
+    "termination_reason": {
+      "type": "string"
+    },
+    "feasibility_status": {
+      "const": "UNKNOWN"
+    },
+    "global_infeasibility_proven": {
+      "const": false
+    },
+    "physical_violation_instances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "item_id",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "physical_valid": {
+      "type": "boolean"
+    },
+    "physical_zero_violation_interpretation": {
+      "type": "string"
+    },
+    "max_height_mm": {
+      "type": "number",
+      "minimum": 0
+    },
+    "combined_centroid_mm": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      ]
+    },
+    "maximum_capacity_utilization": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "number",
+          "minimum": 0
+        }
+      ]
+    },
+    "remaining_capacity_kg": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "cost": {
+      "type": "object",
+      "properties": {
+        "model_calls": {
+          "const": 0
+        },
+        "model_cost_usd": {
+          "const": 0
+        },
+        "memory_cost_usd": {
+          "const": 0
+        },
+        "decision_segment_wall_s": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "model_calls",
+        "model_cost_usd",
+        "memory_cost_usd",
+        "decision_segment_wall_s"
+      ],
+      "additionalProperties": false
+    },
+    "policy_effect": {
+      "const": "NOT_MEASURED"
+    },
+    "stability_algorithm": {
+      "enum": [
+        "pct_contact_network_v2",
+        "DISABLED"
+      ]
+    },
+    "monitor_statistics": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "version",
+    "task_id",
+    "mode",
+    "layer",
+    "selector_backend",
+    "origin",
+    "runtime_identity",
+    "planned_items",
+    "arrived_items",
+    "placed_items",
+    "placed_item_ratio",
+    "placed_volume_ratio",
+    "placed_mass_kg",
+    "planned_mass_kg",
+    "placed_mass_ratio",
+    "completed",
+    "termination_reason",
+    "feasibility_status",
+    "global_infeasibility_proven",
+    "physical_violation_instances",
+    "physical_valid",
+    "physical_zero_violation_interpretation",
+    "max_height_mm",
+    "combined_centroid_mm",
+    "maximum_capacity_utilization",
+    "remaining_capacity_kg",
+    "cost",
+    "policy_effect",
+    "stability_algorithm",
+    "monitor_statistics"
+  ],
+  "additionalProperties": false
+}

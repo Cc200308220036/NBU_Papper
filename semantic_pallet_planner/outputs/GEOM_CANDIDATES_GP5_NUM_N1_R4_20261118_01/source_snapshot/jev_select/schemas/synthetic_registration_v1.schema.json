@@ -1,0 +1,89 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "jev_synthetic_combo_registration_v1"
+    },
+    "generation_version": {
+      "const": "jev_synthetic_combo_generation_v1"
+    },
+    "memory_scope_version": {
+      "const": "jev_synthetic_combo_memory_scope_v1"
+    },
+    "raw_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "audit_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "pool_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "pool_file_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "references_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "seed": {
+      "const": 20261105
+    },
+    "tasks": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "task_id",
+          "count"
+        ]
+      }
+    },
+    "encoding": {
+      "type": "string"
+    },
+    "sampling": {
+      "type": "string"
+    },
+    "packaging_config_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "material_scope": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "generation_version",
+    "memory_scope_version",
+    "raw_sha256",
+    "audit_sha256",
+    "pool_digest",
+    "pool_file_sha256",
+    "references_digest",
+    "seed",
+    "tasks",
+    "encoding",
+    "sampling",
+    "packaging_config_digest",
+    "material_scope"
+  ]
+}

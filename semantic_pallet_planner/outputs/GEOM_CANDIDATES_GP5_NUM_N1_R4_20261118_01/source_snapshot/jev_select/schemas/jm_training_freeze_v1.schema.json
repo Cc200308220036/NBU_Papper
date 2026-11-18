@@ -1,0 +1,650 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_jm_training_freeze_v1"
+    },
+    "state": {
+      "const": "FROZEN_OFFLINE"
+    },
+    "formal_frozen": {
+      "const": true
+    },
+    "execution_authorized": {
+      "const": false
+    },
+    "operation_root": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runtime_root": {
+      "type": "string",
+      "minLength": 1
+    },
+    "plan_ref": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "pointer": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "pointer"
+      ],
+      "additionalProperties": false
+    },
+    "preparation_digest": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "historical_plan_ref": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "const": "semantic_pallet_planner/outputs/JEV_JM1_B2_FORMAL_PREP_20261112_01/materials/training_plan.json"
+        },
+        "sha256": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "pointer": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "pointer"
+      ],
+      "additionalProperties": false
+    },
+    "historical_manifest_ref": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "const": "semantic_pallet_planner/outputs/JEV_JM1_B2_FORMAL_PREP_20261112_01/delivery_manifest.json"
+        },
+        "sha256": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "pointer": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "pointer"
+      ],
+      "additionalProperties": false
+    },
+    "qa_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "enum": [
+              "docs/03_阶段产出分析/Jev/Jev_JM1-v13整改独立复核与B2正式计划准备限定准入_20261112_01.md",
+              "semantic_pallet_planner/outputs/JEV_JM_V13_FIX_QA_20261112_01/quality_review.json",
+              "semantic_pallet_planner/outputs/JEV_JM_V13_FIX_QA_20261112_01/next_stage_admission.json",
+              "semantic_pallet_planner/outputs/JEV_JM_V13_FIX_QA_20261112_01/handoff.json",
+              "semantic_pallet_planner/outputs/JEV_JM_V13_FIX_QA_20261112_01/delivery_manifest.json",
+              "docs/03_阶段产出分析/Jev/Jev_JM1-B2正式计划离线准备独立质检与冻结收尾交接_20261112_01.md",
+              "semantic_pallet_planner/outputs/JEV_JM_B2_FORMAL_PREP_QA_20261112_01/quality_review.json",
+              "semantic_pallet_planner/outputs/JEV_JM_B2_FORMAL_PREP_QA_20261112_01/next_stage_admission.json",
+              "semantic_pallet_planner/outputs/JEV_JM_B2_FORMAL_PREP_QA_20261112_01/handoff.json",
+              "semantic_pallet_planner/outputs/JEV_JM_B2_FORMAL_PREP_QA_20261112_01/delivery_manifest.json"
+            ]
+          },
+          "sha256": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "pointer": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "sha256",
+          "pointer"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 10,
+      "maxItems": 10
+    },
+    "qa_audit": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "manifest_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "verified_non_navigation": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "navigation": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "expected_bytes": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "status": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "expected_bytes",
+                "status"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "manifest_path",
+          "verified_non_navigation",
+          "navigation"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "runtime_identity": {
+      "type": "object",
+      "properties": {
+        "dependencies": {
+          "type": "object",
+          "properties": {
+            "jsonschema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "numpy": {
+              "type": "string",
+              "minLength": 1
+            },
+            "scipy": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "jsonschema",
+            "numpy",
+            "scipy"
+          ],
+          "additionalProperties": false
+        },
+        "python": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "dependencies",
+        "python",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "jobs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "slot_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "job_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "allocation_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "storage_root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "execution_ref": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "pointer": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "pointer",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "execution_digest": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "config_digest": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "task_digest": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "arrival_digest": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "strategy_identity": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "physical_identity": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "monitor_identity": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "max_sends": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "task_id",
+          "slot_id",
+          "job_id",
+          "allocation_id",
+          "storage_root",
+          "execution_ref",
+          "execution_digest",
+          "config_digest",
+          "task_digest",
+          "arrival_digest",
+          "strategy_identity",
+          "physical_identity",
+          "monitor_identity",
+          "max_sends"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "baseline_jobs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "job_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "send_upper": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "task_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "job_id",
+              "send_upper",
+              "task_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "baseline_send_upper": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "concrete_suffix_jobs": {
+          "const": "NOT_MATERIALIZED_DEFER_C1"
+        },
+        "global_send_upper": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "initial_suffix_cap": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "initial_suffix_send_upper": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "point_cap": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "point_capacities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "branch_capacity": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "per_branch_send_upper": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "placed_min": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "stage": {
+                "type": "string",
+                "minLength": 1
+              },
+              "task_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "branch_capacity",
+              "per_branch_send_upper",
+              "placed_min",
+              "stage",
+              "task_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "repeat_point_cap": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "repeat_suffix_cap": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "repeat_suffix_send_upper": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "suffix_send_upper": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_suffix_cap": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unused_budget": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "baseline_jobs",
+        "baseline_send_upper",
+        "concrete_suffix_jobs",
+        "global_send_upper",
+        "initial_suffix_cap",
+        "initial_suffix_send_upper",
+        "point_cap",
+        "point_capacities",
+        "repeat_point_cap",
+        "repeat_suffix_cap",
+        "repeat_suffix_send_upper",
+        "suffix_send_upper",
+        "total_suffix_cap",
+        "unused_budget"
+      ],
+      "additionalProperties": false
+    },
+    "sampling": {
+      "type": "object",
+      "properties": {
+        "epsilon": {
+          "const": "NOT_MATERIALIZED_DEFER_C1"
+        },
+        "exact_actions": {
+          "const": "NOT_MATERIALIZED_DEFER_C1"
+        },
+        "input_boundary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "points": {
+          "const": "NOT_MATERIALIZED_DEFER_C1"
+        },
+        "policy_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "protocol": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repeat_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repeat_rule_digest": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "epsilon",
+        "exact_actions",
+        "input_boundary",
+        "points",
+        "policy_sha256",
+        "protocol",
+        "repeat_rule",
+        "repeat_rule_digest"
+      ],
+      "additionalProperties": false
+    },
+    "gates": {
+      "type": "object",
+      "properties": {
+        "baseline": {
+          "const": "SEPARATE_C1_AUTHORIZATION_AND_INDEPENDENT_CLOSURE_QA_REQUIRED"
+        },
+        "suffix": {
+          "const": "SEPARATELY_FROZEN_CONCRETE_C1_PLAN_AND_SEPARATE_C2_AUTHORIZATION_REQUIRED"
+        },
+        "c1_stop": {
+          "const": "STOP_AFTER_CONCRETE_PLAN_MATERIALIZATION_BEFORE_SUFFIX"
+        }
+      },
+      "required": [
+        "baseline",
+        "suffix",
+        "c1_stop"
+      ],
+      "additionalProperties": false
+    },
+    "admission": {
+      "type": "object",
+      "properties": {
+        "B2_plan": {
+          "const": "FORMALLY_FROZEN_OFFLINE"
+        },
+        "new_delivery_review": {
+          "const": "PENDING_INDEPENDENT_QA"
+        },
+        "C1": {
+          "const": "NOT_AUTHORIZED"
+        },
+        "C2": {
+          "const": "NOT_AUTHORIZED"
+        },
+        "QA-JMB2P-01": {
+          "const": "REMEDIATION_IMPLEMENTED_PENDING_INDEPENDENT_QA"
+        }
+      },
+      "required": [
+        "B2_plan",
+        "new_delivery_review",
+        "C1",
+        "C2",
+        "QA-JMB2P-01"
+      ],
+      "additionalProperties": false
+    },
+    "materialization": {
+      "type": "object",
+      "properties": {
+        "epsilon": {
+          "const": "NOT_MATERIALIZED_DEFER_C1"
+        },
+        "points": {
+          "const": "NOT_MATERIALIZED_DEFER_C1"
+        },
+        "exact_actions": {
+          "const": "NOT_MATERIALIZED_DEFER_C1"
+        },
+        "suffix_jobs": {
+          "const": "NOT_MATERIALIZED_DEFER_C1"
+        }
+      },
+      "required": [
+        "epsilon",
+        "points",
+        "exact_actions",
+        "suffix_jobs"
+      ],
+      "additionalProperties": false
+    },
+    "identity_change_reason": {
+      "const": "NEW_QA_BOUND_PLAN_AND_STORAGE_ALLOCATION; ADDITIVE_FREEZE_PROTOCOL_SOURCE; STUDY_UNCHANGED"
+    },
+    "receipt_digest": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "state",
+    "formal_frozen",
+    "execution_authorized",
+    "operation_root",
+    "runtime_root",
+    "plan_ref",
+    "preparation_digest",
+    "historical_plan_ref",
+    "historical_manifest_ref",
+    "qa_refs",
+    "qa_audit",
+    "runtime_identity",
+    "jobs",
+    "budget",
+    "sampling",
+    "gates",
+    "admission",
+    "materialization",
+    "identity_change_reason",
+    "receipt_digest"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "B2 formal offline freeze receipt v1; not a sending permit"
+}

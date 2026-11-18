@@ -1,0 +1,137 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_business_state_v1"
+    },
+    "reference_spec_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "observed_state_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "instances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "identity": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "no_top_load",
+              "max_top_load",
+              "forbidden_contact",
+              "inside_region",
+              "relative_position"
+            ]
+          },
+          "rule_id": {
+            "type": "string"
+          },
+          "object_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "maxItems": 2
+          },
+          "severity": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "unit": {
+                    "enum": [
+                      "kg",
+                      "mm"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "required": [
+          "identity",
+          "kind",
+          "rule_id",
+          "object_ids",
+          "severity"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "coverage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule_id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "checked": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "deferred": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "active": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "enum": [
+              "deferred",
+              "checked",
+              "not_applicable"
+            ]
+          }
+        },
+        "required": [
+          "rule_id",
+          "kind",
+          "checked",
+          "deferred",
+          "active",
+          "status"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "raw": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "version",
+    "reference_spec_digest",
+    "observed_state_digest",
+    "instances",
+    "coverage",
+    "raw"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

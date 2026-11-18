@@ -1,0 +1,57 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "packaging_public_query_v1"
+    },
+    "features": {
+      "type": "object",
+      "properties": {
+        "buffer_fill": {
+          "type": "number"
+        },
+        "placed_fill": {
+          "type": "number"
+        },
+        "mean_length": {
+          "type": "number"
+        },
+        "mean_width": {
+          "type": "number"
+        },
+        "mean_height": {
+          "type": "number"
+        },
+        "mean_mass": {
+          "type": "number"
+        },
+        "mean_capacity": {
+          "type": "number"
+        },
+        "stackable_fraction": {
+          "type": "number"
+        },
+        "candidate_height": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "buffer_fill",
+        "placed_fill",
+        "mean_length",
+        "mean_width",
+        "mean_height",
+        "mean_mass",
+        "mean_capacity",
+        "stackable_fraction",
+        "candidate_height"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "features"
+  ],
+  "additionalProperties": false
+}

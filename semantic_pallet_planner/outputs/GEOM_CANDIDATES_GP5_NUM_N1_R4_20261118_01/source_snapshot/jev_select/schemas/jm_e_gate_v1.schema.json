@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_jm_e_gate_v1"
+    },
+    "status": {
+      "enum": [
+        "NOT_READY",
+        "FIXTURE_CONTRACT_VALID"
+      ]
+    },
+    "qualified_generation_input": {
+      "const": false
+    },
+    "execution_eligible": {
+      "const": false
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "pack_digest": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "[0-9a-f]{64}"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "version",
+    "status",
+    "qualified_generation_input",
+    "execution_eligible",
+    "reasons",
+    "pack_digest"
+  ],
+  "additionalProperties": false
+}

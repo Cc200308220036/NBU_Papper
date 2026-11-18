@@ -1,0 +1,40 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_source_trust_policy_v1"
+    },
+    "fixture_only": {
+      "type": "boolean"
+    },
+    "issuers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "public_key_hex": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "authority_scope": {
+            "enum": [
+              "complete_source_lifecycle",
+              "partial"
+            ]
+          }
+        },
+        "required": [
+          "public_key_hex",
+          "authority_scope"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "version",
+    "fixture_only",
+    "issuers"
+  ],
+  "additionalProperties": false
+}

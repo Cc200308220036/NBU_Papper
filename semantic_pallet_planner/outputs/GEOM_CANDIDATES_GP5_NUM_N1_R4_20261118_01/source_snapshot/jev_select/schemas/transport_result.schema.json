@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_transport_v1"
+    },
+    "status": {
+      "enum": [
+        "OK",
+        "PROVIDER_FAILURE",
+        "UNKNOWN_IN_FLIGHT"
+      ]
+    },
+    "http_status": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 599
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "raw_body_b64": {
+      "type": "string"
+    },
+    "raw_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "latency_s": {
+      "type": "number",
+      "minimum": 0
+    },
+    "error": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "network_attempted": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "error_stage": {
+      "enum": [
+        "credential",
+        "connection_and_headers",
+        "response_read"
+      ]
+    },
+    "error_code": {
+      "type": "string"
+    },
+    "stage_timings": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0
+      }
+    }
+  },
+  "required": [
+    "version",
+    "status",
+    "http_status",
+    "raw_body_b64",
+    "raw_sha256",
+    "latency_s",
+    "error",
+    "network_attempted"
+  ],
+  "additionalProperties": false
+}

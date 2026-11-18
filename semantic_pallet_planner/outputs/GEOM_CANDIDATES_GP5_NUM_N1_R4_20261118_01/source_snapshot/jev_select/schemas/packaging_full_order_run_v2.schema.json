@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_packaging_full_order_run_v2"
+    },
+    "plan": {
+      "type": "string"
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "plan",
+    "plan_digest"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_jm_constructed_budget_metadata_v1"
+    },
+    "evidence_kind": {
+      "const": "CONSTRUCTED_ONLY"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "full_item_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "source_group": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "relation_tokens": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.:-]+$"
+      },
+      "minItems": 1
+    },
+    "relation_completeness": {
+      "enum": [
+        "CONSTRUCTED_COMPLETE",
+        "UNKNOWN"
+      ]
+    }
+  },
+  "required": [
+    "version",
+    "evidence_kind",
+    "task_id",
+    "full_item_count",
+    "source_group",
+    "relation_tokens",
+    "relation_completeness"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

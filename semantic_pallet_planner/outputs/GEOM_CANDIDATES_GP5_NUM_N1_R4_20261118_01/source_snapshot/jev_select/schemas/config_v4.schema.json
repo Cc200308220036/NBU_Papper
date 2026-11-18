@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_packaging_choice_v4"
+    },
+    "model": {
+      "const": "LOCAL_TEST_DOUBLE_NOT_JEV"
+    },
+    "buffer_capacity": {
+      "const": 3
+    },
+    "candidate_backend": {
+      "const": "e2_original_v1"
+    },
+    "per_object_top_k": {
+      "const": 16
+    },
+    "joint_candidates_max": {
+      "const": 48
+    },
+    "selectable_pool": {
+      "const": "physical_feasible"
+    },
+    "policy_source": {
+      "const": "packaging_physical_only"
+    },
+    "selector": {
+      "enum": [
+        "local_geometry_test_double",
+        "local_first_test_double"
+      ]
+    },
+    "feature_version": {
+      "const": "packaging_physical_facts_v1"
+    },
+    "prompt_version": {
+      "const": "packaging_load_en_v1"
+    },
+    "display_order_seed": {
+      "const": 20261102
+    },
+    "max_request_bytes": {
+      "const": 96000
+    },
+    "memory_mode": {
+      "const": "none"
+    },
+    "experiment_protocol": {
+      "const": "jev_packaging_runtime_v1"
+    },
+    "business_mode": {
+      "const": "physical_only"
+    },
+    "execution_version": {
+      "const": "physical_commit_v1"
+    },
+    "evaluation_version": {
+      "const": "packaging_loading_metrics_v1"
+    },
+    "runtime_identity": {
+      "type": "object",
+      "properties": {
+        "data_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "physical_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "strategy_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "task_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "data_identity",
+        "physical_identity",
+        "strategy_identity",
+        "task_identity"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "model",
+    "buffer_capacity",
+    "candidate_backend",
+    "per_object_top_k",
+    "joint_candidates_max",
+    "selectable_pool",
+    "policy_source",
+    "selector",
+    "feature_version",
+    "prompt_version",
+    "display_order_seed",
+    "max_request_bytes",
+    "memory_mode",
+    "experiment_protocol",
+    "business_mode",
+    "execution_version",
+    "evaluation_version",
+    "runtime_identity"
+  ],
+  "additionalProperties": false
+}

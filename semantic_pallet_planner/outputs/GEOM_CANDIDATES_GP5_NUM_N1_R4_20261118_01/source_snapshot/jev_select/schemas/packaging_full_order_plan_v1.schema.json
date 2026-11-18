@@ -1,0 +1,151 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_packaging_full_order_plan_v1"
+    },
+    "execution_version": {
+      "const": "jev_packaging_monitored_v5"
+    },
+    "dataset": {
+      "type": "string"
+    },
+    "data_identity": {
+      "type": "string"
+    },
+    "task_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "maxItems": 4,
+      "uniqueItems": true
+    },
+    "method_ids": {
+      "const": [
+        "local_geometry_test_double",
+        "local_first_test_double"
+      ]
+    },
+    "jobs": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "method_id": {
+            "enum": [
+              "local_geometry_test_double",
+              "local_first_test_double"
+            ]
+          },
+          "task_digest": {
+            "type": "string"
+          },
+          "config": {
+            "type": "object"
+          },
+          "source_group_id": {
+            "type": "string"
+          },
+          "variant": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "task_id",
+          "method_id",
+          "task_digest",
+          "config",
+          "source_group_id",
+          "variant"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "selection_rule": {
+      "type": "string"
+    },
+    "selection_mode": {
+      "enum": [
+        "DETERMINISTIC_RULE",
+        "EXPLICIT_PREREGISTERED"
+      ]
+    },
+    "watchdog": {
+      "type": "object",
+      "properties": {
+        "max_events": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_active_wall_s": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "max_events",
+        "max_active_wall_s"
+      ],
+      "additionalProperties": false
+    },
+    "termination_contract": {
+      "type": "string"
+    },
+    "watchdog_boundary": {
+      "type": "string"
+    },
+    "source_manifest": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "physical_manifest": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "method_contract": {
+      "type": "object"
+    },
+    "metrics_contract": {
+      "type": "object"
+    },
+    "inventory_digest": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "execution_version",
+    "dataset",
+    "data_identity",
+    "task_ids",
+    "method_ids",
+    "jobs",
+    "selection_rule",
+    "selection_mode",
+    "watchdog",
+    "termination_contract",
+    "watchdog_boundary",
+    "source_manifest",
+    "physical_manifest",
+    "method_contract",
+    "metrics_contract",
+    "inventory_digest"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

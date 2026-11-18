@@ -1,0 +1,241 @@
+{
+  "f0": {
+    "version": "geometry_num_n1_r6_f0_receipt_v1",
+    "backend": "ems_surface_hybrid_v1",
+    "method": "local_first_test_double",
+    "task_id": "GP5_SYNTH_K02",
+    "contract": {
+      "runtime": "jev_packaging_geometry_order_v17",
+      "context_version": "jev_decision_context_v17",
+      "feature_profile": "F0_existing_facts",
+      "model_state_fields": [
+        "assumptions",
+        "available_objects",
+        "buffer",
+        "container",
+        "coordinate_convention",
+        "memories",
+        "objective",
+        "placed_objects",
+        "units"
+      ],
+      "criteria_fields": [
+        "features",
+        "load_changes",
+        "oriented_size_mm",
+        "pick_object",
+        "pose"
+      ],
+      "feature_fields": [
+        "com_margin_mm",
+        "geometry_score",
+        "resulting_max_height_mm",
+        "resulting_volume_utilization",
+        "support_fractions",
+        "support_ratio",
+        "supported_by"
+      ],
+      "pose_fields": [
+        "x_mm",
+        "y_mm",
+        "yaw_deg",
+        "z_base_mm"
+      ],
+      "schema_sha256": "4a16cce74a4ec80066bc9c41282cdc51394d3eb564783d5dc6e57ab83322dd34"
+    },
+    "route_contracts": {
+      "CHOICE_REQUIRED": {
+        "request_body": "OBJECT",
+        "request_fields": [
+          "model",
+          "questions",
+          "state"
+        ],
+        "question_fields": [
+          "criteria",
+          "instructions",
+          "type"
+        ],
+        "option_count": "AT_LEAST_TWO"
+      },
+      "SINGLETON_BYPASS": {
+        "request_body": "NULL",
+        "request_fields": null,
+        "question_fields": null,
+        "option_count": "ONE"
+      },
+      "STOP_NO_PHYSICAL_CANDIDATE": {
+        "request_body": "NULL",
+        "request_fields": null,
+        "question_fields": null,
+        "option_count": "ZERO"
+      }
+    },
+    "route_counts": {
+      "CHOICE_REQUIRED": 1,
+      "SINGLETON_BYPASS": 1
+    },
+    "contexts": [
+      {
+        "event_index": 3,
+        "route": "CHOICE_REQUIRED",
+        "candidate_count": 2,
+        "context_digest": "78228729f2dcd7732d0e589aa49bc1b3bd387b0ed424aa22090e87f7b920c933",
+        "public_state_digest": "ebd51c4c21b55505649d36e8b435582edf6f296b6d07fbb30d60926e55e07a1a",
+        "criteria_digest": "b45e8407bb79b906dd021c52f90fa58ecfdd3c3efeb0abb895b54b65291826e2",
+        "mapping_digest": "524585b16115e70ac3faedd3c0be06a2738d50d37d84a0d21ba6d37706b8145f",
+        "request_digest": "08d3508cb0840b38b913d65fb56012556de453982372ca2eaa72acc8717024d6",
+        "request_body_is_null": false,
+        "request_fields_applicable": true,
+        "request_fields": [
+          "model",
+          "questions",
+          "state"
+        ],
+        "question_fields": [
+          "criteria",
+          "instructions",
+          "type"
+        ],
+        "shared_public_contract": {
+          "runtime": "jev_packaging_geometry_order_v17",
+          "context_version": "jev_decision_context_v17",
+          "feature_profile": "F0_existing_facts",
+          "model_state_fields": [
+            "assumptions",
+            "available_objects",
+            "buffer",
+            "container",
+            "coordinate_convention",
+            "memories",
+            "objective",
+            "placed_objects",
+            "units"
+          ],
+          "criteria_fields": [
+            "features",
+            "load_changes",
+            "oriented_size_mm",
+            "pick_object",
+            "pose"
+          ],
+          "feature_fields": [
+            "com_margin_mm",
+            "geometry_score",
+            "resulting_max_height_mm",
+            "resulting_volume_utilization",
+            "support_fractions",
+            "support_ratio",
+            "supported_by"
+          ],
+          "pose_fields": [
+            "x_mm",
+            "y_mm",
+            "yaw_deg",
+            "z_base_mm"
+          ],
+          "schema_sha256": "4a16cce74a4ec80066bc9c41282cdc51394d3eb564783d5dc6e57ab83322dd34"
+        },
+        "route_request_contract": {
+          "request_body": "OBJECT",
+          "request_fields": [
+            "model",
+            "questions",
+            "state"
+          ],
+          "question_fields": [
+            "criteria",
+            "instructions",
+            "type"
+          ],
+          "option_count": "AT_LEAST_TWO"
+        },
+        "schema_and_public_route_binding": "PASS_ORIGINAL_VALIDATOR",
+        "saved_option_binding": "PASS_SAVED_POOL_MAPPING_DIGEST_EXACT_ACTION"
+      },
+      {
+        "event_index": 4,
+        "route": "SINGLETON_BYPASS",
+        "candidate_count": 1,
+        "context_digest": "05f33938586914912ab47328c79c4ab23cd2890e72bad7c06388091d51feefbd",
+        "public_state_digest": "18bff7b87132022d7756ac1fd90bd3e2d5909c11db4f8b908df4dc9f32fca5a1",
+        "criteria_digest": "c89f8d850b5dbbf8bcd97657401959f2c324c9b9972550d616e17944242b4693",
+        "mapping_digest": "35d259deb06e684c429c5ab6adb3c5314b87a3a1d6f65d6697633247cb329d11",
+        "request_digest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "request_body_is_null": true,
+        "request_fields_applicable": false,
+        "request_fields": null,
+        "question_fields": null,
+        "shared_public_contract": {
+          "runtime": "jev_packaging_geometry_order_v17",
+          "context_version": "jev_decision_context_v17",
+          "feature_profile": "F0_existing_facts",
+          "model_state_fields": [
+            "assumptions",
+            "available_objects",
+            "buffer",
+            "container",
+            "coordinate_convention",
+            "memories",
+            "objective",
+            "placed_objects",
+            "units"
+          ],
+          "criteria_fields": [
+            "features",
+            "load_changes",
+            "oriented_size_mm",
+            "pick_object",
+            "pose"
+          ],
+          "feature_fields": [
+            "com_margin_mm",
+            "geometry_score",
+            "resulting_max_height_mm",
+            "resulting_volume_utilization",
+            "support_fractions",
+            "support_ratio",
+            "supported_by"
+          ],
+          "pose_fields": [
+            "x_mm",
+            "y_mm",
+            "yaw_deg",
+            "z_base_mm"
+          ],
+          "schema_sha256": "4a16cce74a4ec80066bc9c41282cdc51394d3eb564783d5dc6e57ab83322dd34"
+        },
+        "route_request_contract": {
+          "request_body": "NULL",
+          "request_fields": null,
+          "question_fields": null,
+          "option_count": "ONE"
+        },
+        "schema_and_public_route_binding": "PASS_ORIGINAL_VALIDATOR",
+        "saved_option_binding": "PASS_SAVED_POOL_MAPPING_DIGEST_EXACT_ACTION"
+      }
+    ],
+    "context_count": 2,
+    "status": "PASS_SAVED_PUBLIC_FIELD_AND_ROUTE_CONTRACT",
+    "request_constructed": false,
+    "contexts_dropped": 0
+  },
+  "production_saved_closure": [
+    {
+      "event_index": 3,
+      "geometry_ref": {
+        "version": "geometry_blob_ref_v1",
+        "sha256": "ee04532d9249c90b63dbeccf859658c53514f5a7e2e603dddbc9242039a70310"
+      },
+      "status": "PASS_COMPLETE_SAVED_REFERENCE_CLOSURE"
+    },
+    {
+      "event_index": 4,
+      "geometry_ref": {
+        "version": "geometry_blob_ref_v1",
+        "sha256": "46ae742637639e448f9a58bf442d1a8799d311cc575c3ee9b7ba4400b77d262d"
+      },
+      "status": "PASS_COMPLETE_SAVED_REFERENCE_CLOSURE"
+    }
+  ]
+}

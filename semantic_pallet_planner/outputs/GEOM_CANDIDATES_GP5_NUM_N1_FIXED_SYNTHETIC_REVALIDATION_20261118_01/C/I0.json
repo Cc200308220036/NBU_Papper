@@ -1,0 +1,530 @@
+{
+  "case": "I0",
+  "raw": [
+    100.0,
+    80.0,
+    60
+  ],
+  "target": [
+    100,
+    80,
+    60
+  ],
+  "axis_equalities": [
+    {
+      "axis_index": 0,
+      "source_axis": "length",
+      "raw_signature": {
+        "native_type": "FLOAT",
+        "integer_text": null,
+        "binary64_be_hex": "4059000000000000",
+        "numerator": "100",
+        "denominator": "1"
+      },
+      "target_signature": {
+        "native_type": "INT",
+        "integer_text": "100",
+        "binary64_be_hex": null,
+        "numerator": "100",
+        "denominator": "1"
+      },
+      "value_equal": true
+    },
+    {
+      "axis_index": 1,
+      "source_axis": "width",
+      "raw_signature": {
+        "native_type": "FLOAT",
+        "integer_text": null,
+        "binary64_be_hex": "4054000000000000",
+        "numerator": "80",
+        "denominator": "1"
+      },
+      "target_signature": {
+        "native_type": "INT",
+        "integer_text": "80",
+        "binary64_be_hex": null,
+        "numerator": "80",
+        "denominator": "1"
+      },
+      "value_equal": true
+    },
+    {
+      "axis_index": 2,
+      "source_axis": "height",
+      "raw_signature": {
+        "native_type": "INT",
+        "integer_text": "60",
+        "binary64_be_hex": null,
+        "numerator": "60",
+        "denominator": "1"
+      },
+      "target_signature": {
+        "native_type": "INT",
+        "integer_text": "60",
+        "binary64_be_hex": null,
+        "numerator": "60",
+        "denominator": "1"
+      },
+      "value_equal": true
+    }
+  ],
+  "target_digest": "a336277cdaee70eb7818cf36119bd19e452b9f300fdf0acd8718cd8ab63591cf",
+  "dependency_nodes": [
+    {
+      "name": "raw",
+      "dependencies": [],
+      "payload": {
+        "version": "gp5_num_n1_r5_C_metadata_v1",
+        "dependencies": {},
+        "value": [
+          "DICT",
+          [
+            [
+              "item",
+              [
+                "STR",
+                "C_METADATA_ONLY"
+              ]
+            ],
+            [
+              "oriented_size_mm",
+              [
+                "LIST",
+                [
+                  [
+                    "FLOAT64",
+                    "4059000000000000"
+                  ],
+                  [
+                    "FLOAT64",
+                    "4054000000000000"
+                  ],
+                  [
+                    "INT",
+                    "60"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "pose",
+              [
+                "DICT",
+                [
+                  [
+                    "x_mm",
+                    [
+                      "FLOAT64",
+                      "8000000000000000"
+                    ]
+                  ],
+                  [
+                    "y_mm",
+                    [
+                      "INT",
+                      "1"
+                    ]
+                  ],
+                  [
+                    "yaw_deg",
+                    [
+                      "INT",
+                      "0"
+                    ]
+                  ],
+                  [
+                    "z_base_mm",
+                    [
+                      "FLOAT64",
+                      "0000000000000000"
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      },
+      "digest": "ca5ff5588ec79c4bdcf3ff1383841a96aee74b58e2f81a0c3a3c63db84d78032",
+      "blob_sha256": "19afda0b3181d808cc16a2c56fd29bf138f59c1a5c079b5156a5e065d77b7711"
+    },
+    {
+      "name": "source",
+      "dependencies": [],
+      "payload": {
+        "version": "gp5_num_n1_r5_C_metadata_v1",
+        "dependencies": {},
+        "value": [
+          "LIST",
+          [
+            [
+              "INT",
+              "100"
+            ],
+            [
+              "INT",
+              "80"
+            ],
+            [
+              "INT",
+              "60"
+            ]
+          ]
+        ]
+      },
+      "digest": "22541fabc96bf3932ebf47313d6b364c72fd68e1a06e0796c3de9ebda6a183a0",
+      "blob_sha256": "9394781a948fe84c548de339a7ed9c1f006f762f562da19f26d519f5b5aef5c5"
+    },
+    {
+      "name": "target",
+      "dependencies": [
+        "raw",
+        "source"
+      ],
+      "payload": {
+        "version": "gp5_num_n1_r5_C_metadata_v1",
+        "dependencies": {
+          "raw": "ca5ff5588ec79c4bdcf3ff1383841a96aee74b58e2f81a0c3a3c63db84d78032",
+          "source": "22541fabc96bf3932ebf47313d6b364c72fd68e1a06e0796c3de9ebda6a183a0"
+        },
+        "value": [
+          "LIST",
+          [
+            [
+              "INT",
+              "100"
+            ],
+            [
+              "INT",
+              "80"
+            ],
+            [
+              "INT",
+              "60"
+            ]
+          ]
+        ]
+      },
+      "digest": "57efe77eab21a22be6b0f14818a13b1ad3bf212718e298374a52cc5ef9cce967",
+      "blob_sha256": "7f46751397548bcfcc2c011657dd5dc5ec9e6c510262c49e7f34166e63167074"
+    },
+    {
+      "name": "axes",
+      "dependencies": [
+        "raw",
+        "source",
+        "target"
+      ],
+      "payload": {
+        "version": "gp5_num_n1_r5_C_metadata_v1",
+        "dependencies": {
+          "raw": "ca5ff5588ec79c4bdcf3ff1383841a96aee74b58e2f81a0c3a3c63db84d78032",
+          "source": "22541fabc96bf3932ebf47313d6b364c72fd68e1a06e0796c3de9ebda6a183a0",
+          "target": "57efe77eab21a22be6b0f14818a13b1ad3bf212718e298374a52cc5ef9cce967"
+        },
+        "value": [
+          {
+            "axis_index": 0,
+            "source_axis": "length",
+            "raw_signature": {
+              "native_type": "FLOAT",
+              "integer_text": null,
+              "binary64_be_hex": "4059000000000000",
+              "numerator": "100",
+              "denominator": "1"
+            },
+            "target_signature": {
+              "native_type": "INT",
+              "integer_text": "100",
+              "binary64_be_hex": null,
+              "numerator": "100",
+              "denominator": "1"
+            },
+            "value_equal": true
+          },
+          {
+            "axis_index": 1,
+            "source_axis": "width",
+            "raw_signature": {
+              "native_type": "FLOAT",
+              "integer_text": null,
+              "binary64_be_hex": "4054000000000000",
+              "numerator": "80",
+              "denominator": "1"
+            },
+            "target_signature": {
+              "native_type": "INT",
+              "integer_text": "80",
+              "binary64_be_hex": null,
+              "numerator": "80",
+              "denominator": "1"
+            },
+            "value_equal": true
+          },
+          {
+            "axis_index": 2,
+            "source_axis": "height",
+            "raw_signature": {
+              "native_type": "INT",
+              "integer_text": "60",
+              "binary64_be_hex": null,
+              "numerator": "60",
+              "denominator": "1"
+            },
+            "target_signature": {
+              "native_type": "INT",
+              "integer_text": "60",
+              "binary64_be_hex": null,
+              "numerator": "60",
+              "denominator": "1"
+            },
+            "value_equal": true
+          }
+        ]
+      },
+      "digest": "eba9d843e66dcf3cb5778cf3f50cdf4970bcf553332c5b3fbf65b14684ca1133",
+      "blob_sha256": "a24970da5812ba38786cb6a8798b1d5736c910a333272d5906600ca25d11468b"
+    },
+    {
+      "name": "binding",
+      "dependencies": [
+        "target",
+        "axes"
+      ],
+      "payload": {
+        "version": "gp5_num_n1_r5_C_metadata_v1",
+        "dependencies": {
+          "target": "57efe77eab21a22be6b0f14818a13b1ad3bf212718e298374a52cc5ef9cce967",
+          "axes": "eba9d843e66dcf3cb5778cf3f50cdf4970bcf553332c5b3fbf65b14684ca1133"
+        },
+        "value": {
+          "untouched_pose": [
+            "DICT",
+            [
+              [
+                "x_mm",
+                [
+                  "FLOAT64",
+                  "8000000000000000"
+                ]
+              ],
+              [
+                "y_mm",
+                [
+                  "INT",
+                  "1"
+                ]
+              ],
+              [
+                "yaw_deg",
+                [
+                  "INT",
+                  "0"
+                ]
+              ],
+              [
+                "z_base_mm",
+                [
+                  "FLOAT64",
+                  "0000000000000000"
+                ]
+              ]
+            ]
+          ]
+        }
+      },
+      "digest": "9ae2653071a09f97ae91e2288b392ba17cdbc6422b59977579412c64fd270c35",
+      "blob_sha256": "5ec876bdee84adf0f5a8855c296dee5e4fffe33d41272697ec3c7137ad2bd551"
+    }
+  ],
+  "production_dependency_contract": {
+    "status": "PASS_SOURCE_SCHEMA_DEPENDENCY_BOUNDARIES",
+    "source_sha256": "93ba42fc5581aff15eaa899595f7f16a22e63ff55df7759454ed27e7050032c7",
+    "actual_proof_fields": [
+      "allowed_changed_paths",
+      "axis_equalities",
+      "backend",
+      "backend_binding_digest",
+      "common_binding_digest",
+      "geometry_sha256",
+      "native_sha256",
+      "ordinal",
+      "physical_and_derived_equivalence",
+      "publication_action_key",
+      "published_content_digest",
+      "raw_action_key",
+      "raw_candidate_digest",
+      "raw_candidate_fingerprint",
+      "raw_candidate_id",
+      "raw_content_digest",
+      "raw_generation_ref",
+      "raw_pool_sha256",
+      "raw_size_digest",
+      "source_dimensions_digest",
+      "source_item_pointer",
+      "source_signatures",
+      "target_signatures",
+      "target_size_digest",
+      "version"
+    ],
+    "forbidden_back_edges": [
+      "candidate_digest",
+      "final_binding_ref",
+      "published_candidate_digest",
+      "published_candidate_id",
+      "published_fingerprint"
+    ],
+    "schema_contracts": {
+      "shadow_core": {
+        "schema_sha256": "ea8ec58346b495b9841e789ef25a56a6d914c0642ec9b06ae847cf9da60010ef",
+        "fields": [
+          "candidate_content_digest",
+          "ordinal",
+          "placed_items",
+          "side",
+          "source_native_sha256",
+          "version"
+        ]
+      },
+      "derived_core": {
+        "schema_sha256": "58bd9d0755e5544d2cca890f74d7ac6a698356bc23b9c0c2e19d76a4706ab827",
+        "fields": [
+          "candidate_content_digest",
+          "native_tree",
+          "source_native_sha256",
+          "version"
+        ]
+      },
+      "shadow_binding": {
+        "schema_sha256": "3c4c9ab2ade7c6876cbf55bb1d9cd111a32af6cb2b2058f62e3f2400f4ae2b09",
+        "fields": [
+          "candidate_content_digest",
+          "candidate_digest",
+          "derived_core_digest",
+          "derived_core_ref",
+          "ordinal",
+          "proof_core_digest",
+          "shadow_core_digest",
+          "shadow_core_ref",
+          "side",
+          "source_native_sha256",
+          "version"
+        ]
+      },
+      "final_binding": {
+        "schema_sha256": "247fe0ad2524064a034ac2cd2ab8871bb855c5278f602aab986da80fb0f559a9",
+        "fields": [
+          "ordinal",
+          "proof_core_digest",
+          "proof_core_ref",
+          "published_candidate_digest",
+          "published_candidate_id",
+          "published_content_digest",
+          "published_fingerprint",
+          "published_shadow_binding_digest",
+          "published_shadow_binding_ref",
+          "raw_candidate_digest",
+          "raw_content_digest",
+          "raw_pool_sha256",
+          "raw_shadow_binding_digest",
+          "raw_shadow_binding_ref",
+          "version"
+        ]
+      },
+      "publication": {
+        "schema_sha256": "73b241c4f52cfc99d8a20d4794d2be93232578e8a35ce4ae8eca91674e39752d",
+        "fields": [
+          "backend_binding_digest",
+          "bridge",
+          "common_binding_digest",
+          "config_digest",
+          "environment_digest",
+          "geometry_ref",
+          "geometry_sha256",
+          "identity_contract",
+          "native_ref",
+          "native_sha256",
+          "ordered_mappings",
+          "policy",
+          "published_pool_digest",
+          "raw_generation_ref",
+          "raw_pool_ref",
+          "source_identity",
+          "validation_counts",
+          "version"
+        ]
+      }
+    },
+    "topological_dependency_order": {
+      "external": [],
+      "raw_and_source": [
+        "external"
+      ],
+      "content": [
+        "raw_and_source"
+      ],
+      "shadow_derived_cores": [
+        "content"
+      ],
+      "equivalence": [
+        "shadow_derived_cores"
+      ],
+      "proof": [
+        "equivalence",
+        "content",
+        "raw_and_source"
+      ],
+      "fingerprint": [
+        "proof",
+        "content"
+      ],
+      "final_candidate": [
+        "fingerprint",
+        "content"
+      ],
+      "shadow_wrappers": [
+        "final_candidate",
+        "shadow_derived_cores",
+        "proof"
+      ],
+      "final_binding": [
+        "shadow_wrappers",
+        "final_candidate",
+        "proof"
+      ],
+      "publication": [
+        "final_binding",
+        "external"
+      ]
+    },
+    "boundary": "STATIC_CONTRACT_PLUS_C_TYPED_METADATA; FULL_PHYSICAL_PROOF_ONLY_FROM_E_SAVED_REFERENCE_VALIDATOR"
+  },
+  "closed_schema_negative": [
+    {
+      "node": "axis",
+      "rejected_by": [
+        "additionalProperties"
+      ]
+    },
+    {
+      "node": "signature",
+      "rejected_by": [
+        "additionalProperties"
+      ]
+    }
+  ],
+  "schema_source_sha256": "ffb5212e0da61dc0a3e1edf61450438b3642b4ba5caca38515cc48cec4e559a4",
+  "requirements": {
+    "exact_dimensions": "PASS",
+    "axis_yaw": "PASS",
+    "native_types": "PASS",
+    "float_bits": "PASS",
+    "untouched_fields": "PASS",
+    "digest_repeat_and_domain_and_type_sensitivity": "PASS",
+    "acyclic_typed_metadata_dependencies": "PASS",
+    "production_source_schema_dependency_boundaries": "PASS_STATIC",
+    "closed_axis_and_signature_schema": "PASS"
+  },
+  "boundary": "PURE_C_METADATA_NOT_PHYSICAL_PUBLICATION_PROOF"
+}

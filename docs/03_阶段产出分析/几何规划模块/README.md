@@ -65,3 +65,5 @@
 - [GP5-NUM-N1-R1身份Schema修复与限定复验停点（首E生产成功，套件断言失败，PARTIAL交QA）](几何候选器GP5-NUM-N1-R1身份Schema修复与限定复验停点_20261118_01.md)
 
 - [GP5-NUM-N1-R2断言修复与剩余验证停点（J01成功，J02发布键类型冲突，停止交QA）](几何候选器GP5-NUM-N1-R2断言修复与剩余验证停点_20261118_01.md)
+
+- [GP5-NUM-N1固定合成复验交付（FIRST_UNEXPECTED_FAILURE_STOPPED）](几何候选器GP5-NUM-N1固定合成复验交付_20261118_01.md)

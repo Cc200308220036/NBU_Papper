@@ -1,0 +1,38 @@
+{
+  "baseline": [
+    {
+      "command": "git status --short; git diff --stat; git diff --cached --stat",
+      "worktree": "CLEAN",
+      "index": "EMPTY"
+    },
+    {
+      "command": "git pull --ff-only",
+      "first_attempt": "FETCH_HEAD_READ_ONLY_NO_FETCH",
+      "escalated_attempt": "FAST_FORWARD",
+      "before": "1dbc8f30852be4171206706b57cd1085a63407fc",
+      "after": "2e5da537016adeba4578199c9b641bab6440abe6"
+    }
+  ],
+  "preflight": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src \"$REGISTERED_PYTHON\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_FIXED_SYNTHETIC_REVALIDATION_20261118_01/preflight_check.py",
+    "original_script_location": "/tmp/gp5_fixed_preflight.py",
+    "status": "PASS",
+    "business_dispatches": 0
+  },
+  "execution": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$REGISTERED_PYTHON\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R6_20261118_01/validation_entrypoint.py --run-root semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_FIXED_SYNTHETIC_REVALIDATION_20261118_01 --authorization-receipt /tmp/gp5_fixed_authorization.json",
+    "authorization_receipt_archived": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_FIXED_SYNTHETIC_REVALIDATION_20261118_01/authorization_receipt.json",
+    "original_authorization_receipt": "/tmp/gp5_fixed_authorization.json",
+    "attempts": 1,
+    "exit_code": 1,
+    "log": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_FIXED_SYNTHETIC_REVALIDATION_20261118_01/execution.log",
+    "no_retry": true
+  },
+  "interpreter_reference": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_FIXED_SYNTHETIC_REVALIDATION_20261118_01/environment_identity_preflight.json",
+  "delivery_verification": {
+    "script": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_FIXED_SYNTHETIC_REVALIDATION_20261118_01/delivery_check.py",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$REGISTERED_PYTHON\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_FIXED_SYNTHETIC_REVALIDATION_20261118_01/delivery_check.py",
+    "original_script_location": "/tmp/gp5_fixed_finalize.py",
+    "scope": "read-only archive verification and delivery metadata; no suite replay"
+  }
+}

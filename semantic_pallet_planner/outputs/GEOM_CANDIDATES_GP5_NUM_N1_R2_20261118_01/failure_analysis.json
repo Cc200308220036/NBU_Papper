@@ -1,0 +1,78 @@
+{
+  "issue": "GP5-NUM-N1-R2-KEY-01",
+  "status": "OPEN_PRODUCTION_PUBLICATION_KEY_TYPE_MISMATCH",
+  "job_id": "J02",
+  "production_reason": "NUM_BRIDGE_IDENTITY_MISMATCH",
+  "saved_error": {
+    "code": "NUM_BRIDGE_IDENTITY_MISMATCH",
+    "detail": "NUM_BRIDGE_IDENTITY_MISMATCH: NUM_BRIDGE_IDENTITY_MISMATCH: raw/publication action key disagreement"
+  },
+  "scope": "Read source and original audit metadata only, no republish/re-evaluation or new candidate",
+  "raw_generation_key": [
+    "synth_1",
+    "100",
+    "80",
+    "60",
+    "0",
+    "0",
+    "0",
+    "0"
+  ],
+  "raw_key_types": [
+    "str",
+    "str",
+    "str",
+    "str",
+    "str",
+    "str",
+    "str",
+    "str"
+  ],
+  "bridge_contract_key_metadata": [
+    "synth_1",
+    "100",
+    "80",
+    "60",
+    0,
+    "0",
+    "0",
+    "0"
+  ],
+  "bridge_key_types": [
+    "str",
+    "str",
+    "str",
+    "str",
+    "int",
+    "str",
+    "str",
+    "str"
+  ],
+  "mismatch_index": 4,
+  "mismatch_role": "yaw: original generator key string 0 versus bridge action_key native int0",
+  "explanation": "The bridge compares the entire keys using Python equality, so string0 != int0. The saved pose has yaw int0. This is an integration representation mismatch, not evidence that the physical pose/value differs. No conversion/production change is attempted in this test-only task.",
+  "source_locations": [
+    "jev_select/geometry_native_shape_bridge.py::action_key",
+    "jev_select/geometry_native_shape_bridge.py::publish_native_shape_pool_v3 raw/publication action key check",
+    "planner/space_candidates/generator.py saved raw_valid_candidates action_key"
+  ],
+  "audit_blob": {
+    "sha256": "476eca331770f9509f47ebd8f64536b4e06e2afad3c5be214d4c0f4bc61c09e3",
+    "version": "geometry_blob_ref_v1"
+  },
+  "audit_blob_sha256": "476eca331770f9509f47ebd8f64536b4e06e2afad3c5be214d4c0f4bc61c09e3",
+  "generation_status": "OK",
+  "raw_pool_size": 2,
+  "published_bundle_saved": false,
+  "J02_selection_monitor_commit_counts": {
+    "commit_attempts": 0,
+    "commit_successes": 0,
+    "monitor_entries": 0,
+    "monitor_reuses": 0,
+    "selector_calls": 0,
+    "singleton_executions": 0
+  },
+  "harness_status": "Correctly reported incomplete production job and stopped; does not overwrite production status",
+  "retry": false,
+  "production_modified": false
+}

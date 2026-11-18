@@ -1,0 +1,51 @@
+{
+  "schema": "geometry_num_n1_r2_commands_v1",
+  "actual_head": "c1bc0184e16e04b1fe91d75c410d93ec47f37db5",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "initial_worktree": "CLEAN",
+  "initial_index": "EMPTY",
+  "interpreter": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 16:09:02) [GCC 11.2.0]",
+  "commands": [
+    {
+      "command": "git pull --ff-only",
+      "first_exit": 1,
+      "reason": ".git/FETCH_HEAD read-only",
+      "escalated_exit": 130,
+      "explanation": "Redundant pending pull cancelled after user confirmed completed pull; actual HEAD/QA verified. Not reported as agent fast-forward success."
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_native_harness_r2.py -v",
+      "exit": 0,
+      "test_methods": 2
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R2_20261118_01/prepare_continuation.py",
+      "exit": 0,
+      "scope": "identities and J00 read-only; prefix copy, no orders"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R2_20261118_01/continue_validation.py",
+      "exit": 2,
+      "scope": "J01 COMPLETE, J02 technical failure, first-failure stop"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R2_20261118_01/inspect_stopped_evidence.py",
+      "exit": 0,
+      "scope": "stdlib saved bytes/metadata only, no production imports/replay"
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    }
+  ],
+  "not_run": [
+    "J00 execution",
+    "J03..J07",
+    "R recovery",
+    "X/H",
+    "administrator refusal",
+    "any post-stop retry"
+  ],
+  "snapshot_children": "three planned no-dispatch child exception unwinds; no LLM subagents"
+}

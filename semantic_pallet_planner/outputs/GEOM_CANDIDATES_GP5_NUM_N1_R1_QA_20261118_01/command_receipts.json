@@ -1,0 +1,38 @@
+{
+  "schema": "geometry_num_n1_r1_qa_commands_v1",
+  "commands": [
+    {
+      "command": "git status --short; git branch --show-current; git rev-parse HEAD; git rev-parse --abbrev-ref --symbolic-full-name @{upstream}; git diff --cached --stat; git log -5 --oneline",
+      "result": "initial clean/empty dev/jev-select cb9575d0 upstream origin/dev/jev-select"
+    },
+    {
+      "command": "\"$HOME/miniconda3/bin/python3.14\" -c \"import importlib.util; print(importlib.util.find_spec(\"jsonschema\") is not None)\"",
+      "exit_code": 0,
+      "result": "jsonschema unavailable; schema unit tests NOT_RUN, no install"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 \"$HOME/miniconda3/bin/python3.14\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R1_QA_20261118_01/check_saved_evidence.py",
+      "exit_code": 0,
+      "output": "independent_check.log",
+      "scope": "stdlib saved source/blob/digest/axis/counter analysis; no production imports or transition"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 \"$HOME/miniconda3/bin/python3.14\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R1_QA_20261118_01/check_saved_evidence.py",
+      "exit_code": 0,
+      "detail": "final check after QA-only navigation addition, original README pinned cb9575d0"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "not_run": [
+    "run_bounded_validation.py: dispatch/fork/write",
+    "prepare_validation.py: business config operations and write",
+    "inspect_saved_delivery.py: rewrites original failure_analysis and verification",
+    "schema unit tests: dependency missing"
+  ],
+  "business_execution": 0,
+  "production_imports": 0,
+  "git_result_delivery": "final reply after scoped commit/push; not embedded in own commit manifest"
+}

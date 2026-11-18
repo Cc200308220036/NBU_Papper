@@ -1,0 +1,60 @@
+{
+  "schema": "geometry_num_n1_r6_qa_admission_v1",
+  "next_stage": "GP5_NUM_N1_FIXED_SYNTHETIC_REVALIDATION",
+  "status": "CONDITIONAL",
+  "technical_preparation": "PASS_R6_TEST_LAYER_SCOPE",
+  "current_execution_authorization": "ABSENT",
+  "prerequisites": [
+    {
+      "id": "F0-01",
+      "status": "PASS",
+      "scope": "pure and saved metadata"
+    },
+    {
+      "id": "CURRENT_PRODUCTION_SOURCE_AND_SEAL",
+      "status": "PASS",
+      "source_identity": "94e4c37838f0a82f84c200d12fbed5d92c93eb7486085e9c3014c514ba886fa2",
+      "input_freeze_sha256": "c742929cbe06be456eae628444d07ef29f4b293df4310705821d3b5f0bf61a96",
+      "scope_sha256": "d55b1153c6fb61b0d819e8c2bf3b41012114b392902152a944b719fe307e933b"
+    },
+    {
+      "id": "EXECUTION_ENVIRONMENT_AT_DISPATCH",
+      "status": "CONDITIONAL",
+      "note": "Recheck matching registered environment and identities at actual dispatch; historic development receipt is PASS."
+    },
+    {
+      "id": "EXPLICIT_USER_ASSIGNMENT",
+      "status": "REQUIRED_NOT_GRANTED",
+      "note": "Bind exact R6 unit, frozen input/scope hashes, production identity and new output root. This QA and this file are not an authorization receipt."
+    }
+  ],
+  "runtime_scope": {
+    "C": 6,
+    "E": 8,
+    "items_per_job": 2,
+    "E_new_test_double_monitor_max": 16,
+    "E_historical_actual": 5,
+    "E_cross_history_max": 21,
+    "E_original_limit_preserved": 17,
+    "R": 6,
+    "R_new_monitor_max": 2,
+    "R_new_commit_max": 4,
+    "R_new_generation_publication_selection": 0,
+    "X_H_ADMIN": 15,
+    "X_H_new_monitor_max": 1,
+    "no_new_cases_or_seeds": true,
+    "real_calls": 0
+  },
+  "downstream": {
+    "P2": "NOT_READY",
+    "formal_real_8job": "NOT_READY"
+  },
+  "stop_conditions": [
+    "No matching explicit assignment or identity",
+    "First unexpected failure",
+    "Would exceed scope or change production protections",
+    "Suite complete; return to independent QA"
+  ],
+  "prompt_delivery": "INLINE_FINAL_ONLY",
+  "real_call_authorization": 0
+}

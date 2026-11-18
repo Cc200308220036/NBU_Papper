@@ -1,0 +1,46 @@
+{
+  "schema": "geometry_num_n1_r6_qa_command_receipts_v1",
+  "checks": [
+    {
+      "command": "GIT_OPTIONAL_LOCKS=0 git status -sb; git rev-parse HEAD '@{upstream}'; git rev-list --left-right --count HEAD...'@{upstream}'",
+      "result": "clean, empty index, local 0/0"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R6_20261118_01/test_f0_routes.py -v",
+      "exit_code": 0,
+      "result": "Six pure methods passed"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R6_20261118_01/test_guard_regressions.py",
+      "exit_code": 0,
+      "result": "Seven R5 guard pure regressions passed"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R6_20261118_01/verify_delivery.py",
+      "exit_code": 0,
+      "result": "Read-only delivered byte/AST/JSON/link and original records check passed"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R6_20261118_01:semantic_pallet_planner/src \"$HOME/miniconda3/envs/NBU/bin/python\" -B - (inline read-only JSON/SHA and F0 receipt recomputation)",
+      "exit_code": 0,
+      "result": "R5 manifest 44, R5 QA manifest 7, 591 production, old plans/inputs/guards bytes, 8 config digest bindings, 2 exact full saved receipt recomputations; fixed 35 NOT_RUN."
+    },
+    {
+      "command": "git diff --check 4126a3d0 1dbc8f30",
+      "exit_code": 0,
+      "result": "No whitespace findings."
+    }
+  ],
+  "not_run": [
+    "prepare.py",
+    "seal_inputs.py",
+    "check_saved_f0.py (writes developer package receipts)",
+    "validation_entrypoint.py",
+    "remaining_checks.run_checks",
+    "fixed C/E/R/X/H/admin",
+    "production Linux preflight",
+    "candidate generation/shadow transition",
+    "order and restore",
+    "real kernel, LP, freeze, model"
+  ]
+}

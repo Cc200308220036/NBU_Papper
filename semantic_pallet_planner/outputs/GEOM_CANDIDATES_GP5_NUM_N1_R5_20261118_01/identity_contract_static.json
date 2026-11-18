@@ -1,0 +1,162 @@
+{
+  "status": "PASS_SOURCE_SCHEMA_DEPENDENCY_BOUNDARIES",
+  "source_sha256": "93ba42fc5581aff15eaa899595f7f16a22e63ff55df7759454ed27e7050032c7",
+  "actual_proof_fields": [
+    "allowed_changed_paths",
+    "axis_equalities",
+    "backend",
+    "backend_binding_digest",
+    "common_binding_digest",
+    "geometry_sha256",
+    "native_sha256",
+    "ordinal",
+    "physical_and_derived_equivalence",
+    "publication_action_key",
+    "published_content_digest",
+    "raw_action_key",
+    "raw_candidate_digest",
+    "raw_candidate_fingerprint",
+    "raw_candidate_id",
+    "raw_content_digest",
+    "raw_generation_ref",
+    "raw_pool_sha256",
+    "raw_size_digest",
+    "source_dimensions_digest",
+    "source_item_pointer",
+    "source_signatures",
+    "target_signatures",
+    "target_size_digest",
+    "version"
+  ],
+  "forbidden_back_edges": [
+    "candidate_digest",
+    "final_binding_ref",
+    "published_candidate_digest",
+    "published_candidate_id",
+    "published_fingerprint"
+  ],
+  "schema_contracts": {
+    "shadow_core": {
+      "schema_sha256": "ea8ec58346b495b9841e789ef25a56a6d914c0642ec9b06ae847cf9da60010ef",
+      "fields": [
+        "candidate_content_digest",
+        "ordinal",
+        "placed_items",
+        "side",
+        "source_native_sha256",
+        "version"
+      ]
+    },
+    "derived_core": {
+      "schema_sha256": "58bd9d0755e5544d2cca890f74d7ac6a698356bc23b9c0c2e19d76a4706ab827",
+      "fields": [
+        "candidate_content_digest",
+        "native_tree",
+        "source_native_sha256",
+        "version"
+      ]
+    },
+    "shadow_binding": {
+      "schema_sha256": "3c4c9ab2ade7c6876cbf55bb1d9cd111a32af6cb2b2058f62e3f2400f4ae2b09",
+      "fields": [
+        "candidate_content_digest",
+        "candidate_digest",
+        "derived_core_digest",
+        "derived_core_ref",
+        "ordinal",
+        "proof_core_digest",
+        "shadow_core_digest",
+        "shadow_core_ref",
+        "side",
+        "source_native_sha256",
+        "version"
+      ]
+    },
+    "final_binding": {
+      "schema_sha256": "247fe0ad2524064a034ac2cd2ab8871bb855c5278f602aab986da80fb0f559a9",
+      "fields": [
+        "ordinal",
+        "proof_core_digest",
+        "proof_core_ref",
+        "published_candidate_digest",
+        "published_candidate_id",
+        "published_content_digest",
+        "published_fingerprint",
+        "published_shadow_binding_digest",
+        "published_shadow_binding_ref",
+        "raw_candidate_digest",
+        "raw_content_digest",
+        "raw_pool_sha256",
+        "raw_shadow_binding_digest",
+        "raw_shadow_binding_ref",
+        "version"
+      ]
+    },
+    "publication": {
+      "schema_sha256": "73b241c4f52cfc99d8a20d4794d2be93232578e8a35ce4ae8eca91674e39752d",
+      "fields": [
+        "backend_binding_digest",
+        "bridge",
+        "common_binding_digest",
+        "config_digest",
+        "environment_digest",
+        "geometry_ref",
+        "geometry_sha256",
+        "identity_contract",
+        "native_ref",
+        "native_sha256",
+        "ordered_mappings",
+        "policy",
+        "published_pool_digest",
+        "raw_generation_ref",
+        "raw_pool_ref",
+        "source_identity",
+        "validation_counts",
+        "version"
+      ]
+    }
+  },
+  "topological_dependency_order": {
+    "external": [],
+    "raw_and_source": [
+      "external"
+    ],
+    "content": [
+      "raw_and_source"
+    ],
+    "shadow_derived_cores": [
+      "content"
+    ],
+    "equivalence": [
+      "shadow_derived_cores"
+    ],
+    "proof": [
+      "equivalence",
+      "content",
+      "raw_and_source"
+    ],
+    "fingerprint": [
+      "proof",
+      "content"
+    ],
+    "final_candidate": [
+      "fingerprint",
+      "content"
+    ],
+    "shadow_wrappers": [
+      "final_candidate",
+      "shadow_derived_cores",
+      "proof"
+    ],
+    "final_binding": [
+      "shadow_wrappers",
+      "final_candidate",
+      "proof"
+    ],
+    "publication": [
+      "final_binding",
+      "external"
+    ]
+  },
+  "boundary": "STATIC_CONTRACT_PLUS_C_TYPED_METADATA; FULL_PHYSICAL_PROOF_ONLY_FROM_E_SAVED_REFERENCE_VALIDATOR"
+}

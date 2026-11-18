@@ -1,0 +1,55 @@
+{
+  "issue": "GP5-NUM-N1-R1-HARNESS-01",
+  "status": "OPEN_VALIDATION_HARNESS_DEFECT",
+  "production_J00": "COMPLETE_TWO_BOXES",
+  "suite_status": "FAIL_STOPPED_AFTER_J00",
+  "cause": "Validation assertion uses dimensions_mm.values(), whose canonical JSON key order is height,length,width. It compares [60,100,80] to valid oriented [100,80,60], ignoring named axis/yaw mapping.",
+  "observed_dictionary_key_order": [
+    "height",
+    "length",
+    "width"
+  ],
+  "observed_values_order": [
+    60,
+    100,
+    80
+  ],
+  "observed_placement_size": [
+    100,
+    80,
+    60
+  ],
+  "correct_named_axis_saved_fact_check": "PASS_READ_ONLY_NO_REPLAY",
+  "traceback_ref": "stop.json",
+  "raw_E_results_note": "Harness catch overwrote its J00 status to TECHNICAL_FAILURE while completed summary remains true. Original production E/run.json and episode/accounting say COMPLETE/RETURNED. Raw files retained; normalized summary separates these statuses.",
+  "schema_fix_runtime_evidence": [
+    {
+      "candidate_id": "GP5N3_a8c436f24666ad1ed50ea064f1522074148eb6b36441896b6e51f49ef73f9159",
+      "monitor_result_box_id": "synth_1",
+      "oriented_size_mm": [
+        100,
+        80,
+        60
+      ],
+      "yaw": 0
+    },
+    {
+      "candidate_id": "GP5N3_05f3ada55b57f1856f23032127bb7c5e55b1489cfb9880e5577ddfce86da99b0",
+      "monitor_result_box_id": "synth_2",
+      "oriented_size_mm": [
+        100,
+        80,
+        60
+      ],
+      "yaw": 0
+    }
+  ],
+  "monitors_new_E": 2,
+  "old_failed_E": 1,
+  "E_cumulative": 3,
+  "R_runs": 0,
+  "X_H_monitors": 0,
+  "remaining_E": "7_NOT_RUN",
+  "reruns": 0,
+  "scope": "Read saved facts only; do not claim R/new-backend/X/H/ADMIN acceptance"
+}

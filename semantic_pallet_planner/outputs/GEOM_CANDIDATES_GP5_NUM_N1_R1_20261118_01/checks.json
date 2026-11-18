@@ -1,0 +1,105 @@
+{
+  "schema": "geometry_num_n1_r1_checks_v1",
+  "engineering": "PARTIAL_REVALIDATION_STOPPED_HARNESS_FAILURE",
+  "schema_fix": "LOCAL_VERIFIED_PENDING_INDEPENDENT_QA",
+  "acceptance": [
+    {
+      "id": "SCHEMA-01",
+      "status": "FIXED_LOCAL_REVIEW_PENDING",
+      "scope": "one erroneous result-box-ID pattern removed; whole monitor_result equals v16; 13 candidate patterns unchanged"
+    },
+    {
+      "id": "SCHEMA_SEMANTICS",
+      "status": "PASS",
+      "tests": 3,
+      "evidence": "schema_semantics.log"
+    },
+    {
+      "id": "C",
+      "status": "PASS_FIXED_SIX",
+      "evidence": "C_results.json"
+    },
+    {
+      "id": "X_PURE",
+      "status": "PASS_FIXED_FIVE",
+      "evidence": "X_pure_results.json"
+    },
+    {
+      "id": "E_PRODUCTION",
+      "status": "PARTIAL_ONE_COMPLETE_SEVEN_NOT_RUN",
+      "actual_monitors": 2,
+      "actual_commits": 2,
+      "evidence": "E/run.json"
+    },
+    {
+      "id": "E_VALIDATION",
+      "status": "FAIL_HARNESS",
+      "issue": "GP5-NUM-N1-R1-HARNESS-01",
+      "evidence": "stop.json"
+    },
+    {
+      "id": "R",
+      "status": "NOT_RUN",
+      "actual_resumes": 0,
+      "new_generation_bridge_selection": "NA_NOT_RUN",
+      "monitor_increment": "NA_NOT_RUN",
+      "commit_increment": "NA_NOT_RUN"
+    },
+    {
+      "id": "X_RUNTIME_H_ADMIN",
+      "status": "NOT_RUN",
+      "test_double_monitors": 0
+    },
+    {
+      "id": "PROTECTED_CODE_AND_OLD_EVIDENCE",
+      "status": "PASS_BYTES_ONLY",
+      "evidence": "saved_verification.json"
+    },
+    {
+      "id": "NUM-01",
+      "status": "OPEN",
+      "scope": "new-backend integer two-box behavior not tested"
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "P2",
+      "status": "NOT_READY"
+    },
+    {
+      "id": "FORMAL_8JOB",
+      "status": "NOT_READY"
+    },
+    {
+      "id": "GP6",
+      "status": "NOT_RUN"
+    }
+  ],
+  "cumulative_calls": {
+    "old_failed_E_monitor": 1,
+    "new_E_monitors": 2,
+    "E_cumulative": 3,
+    "E_cumulative_limit": 17,
+    "new_R_monitors": 0,
+    "new_X_H_monitors": 0,
+    "new_E_commit_attempts": 2,
+    "new_E_commits": 2,
+    "R_runs": 0,
+    "R_increment": "NA_NOT_RUN"
+  },
+  "forbidden_actual_executions": {
+    "real_exact_PCT_LP": 0,
+    "freeze": 0,
+    "model_network": 0,
+    "real_source_episode": 0,
+    "formal_8job": 0,
+    "GP6": 0,
+    "install": 0,
+    "subagents": 0,
+    "snapshot_fork_children": 0
+  },
+  "research_result": "NOT_ESTABLISHED",
+  "stopped": true
+}

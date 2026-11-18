@@ -1,0 +1,52 @@
+{
+  "schema": "geometry_num_n1_r1_commands_v1",
+  "entry_head": "37f65434b04cda5e7c136239fb57efdd242386b2",
+  "actual_head": "c086b319897a4a5c514754e784feefcbfe1d056a",
+  "initial_worktree": "CLEAN",
+  "initial_index": "EMPTY",
+  "interpreter": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 16:09:02) [GCC 11.2.0]",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "commands": [
+    {
+      "command": "git pull --ff-only",
+      "first_exit": 1,
+      "first_reason": ".git/FETCH_HEAD read-only",
+      "escalated_exit": 0,
+      "result": "FAST_FORWARD"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s semantic_pallet_planner/tests/unit -p test_geometry_native_schema_roles_r1.py -v",
+      "exit": 0,
+      "tests": 3,
+      "business_calls": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R1_20261118_01/prepare_validation.py",
+      "exit": 0,
+      "scope": "source/8configs/plan/fixed-name budgets frozen; no episode/generation/monitor"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R1_20261118_01/run_bounded_validation.py",
+      "exit": 2,
+      "reason": "validation assertion after first production job COMPLETE; no retry"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R1_20261118_01/inspect_saved_delivery.py",
+      "exit": 0,
+      "scope": "standard library saved-only checks, no production imports/replay"
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    }
+  ],
+  "old_manifest_check": "108 members verified at their delivery navigation revisions",
+  "not_executed": [
+    "remaining7E",
+    "R",
+    "runtimeX/H",
+    "administrator real tasks",
+    "any rerun after stop"
+  ],
+  "first_error_policy": "stopped even though cause belongs to new validation harness"
+}

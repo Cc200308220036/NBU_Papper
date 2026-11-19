@@ -1,0 +1,26 @@
+{
+  "schema": "geometry_num_n1_r8_r1_run_qa_receipts_v1",
+  "checks": [
+    {
+      "command": "GIT_OPTIONAL_LOCKS=0 git status -sb; git rev-parse HEAD '@{upstream}'",
+      "result": "clean index/worktree, HEAD tracks local upstream"
+    },
+    {
+      "command": "python3 -I -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_R1_RUN_QA_20261119_01/verify_saved_run.py",
+      "exit_code": 0,
+      "result": "974 final manifest entries, 2977 historical, 699 current, 591 production, authorized receipt, exact placements/F0, six checkpoint/accounting deltas, both partial totals and all X/H fixed class/code receipts matched."
+    },
+    {
+      "command": "git diff --check cd6afce2 45384dd1",
+      "exit_code": 0,
+      "result": "clean"
+    }
+  ],
+  "not_run": [
+    "registered Linux preflight",
+    "candidate generation",
+    "shadow physical transition",
+    "orders/recovery",
+    "real kernel, LP, freeze, models"
+  ]
+}

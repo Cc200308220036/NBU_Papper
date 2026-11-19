@@ -1,0 +1,94 @@
+{
+  "schema": "gp5_p2_offline_driver_qa_review_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_FIXED_4_PLUS_6_OFFLINE_DRIVER",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "64049c8e52db7590803ef23114b1a6ba437d1f2d",
+  "developer_entry_head": "363ceda1d7aedf4f918d49f481ec88d3b0825caf",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "engineering_status": "PARTIAL_OFFLINE_DRIVER_NEEDS_CORRECTIONS",
+  "evidence_readiness": "PURE_AND_ARCHIVE_VERIFIED_REAL_EXECUTION_NOT_RUN",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "NOT_READY",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "facts": {
+    "report_claim": "开发称离线驱动和八项纯测试完成，实际 4+6 未运行。",
+    "source": "驱动与测试在交付包内，复用公共配置、订单、计数和完成合同。原生产源码无变化。",
+    "archive": "7 项开发清单在固定提交校验，19 个原冻结包文件与命令收据一致，真实各项计数为0。",
+    "local_recheck": "复跑开发8项纯测试，并增加独立替身和临时文件探针，原 Linux 联合配置及实际内核均未运行。"
+  },
+  "acceptance": [
+    {
+      "id": "GP5_P2_OFFLINE_ARCHIVE_AND_TESTS",
+      "status": "PASS"
+    },
+    {
+      "id": "GP5_P2_PREFLIGHT_BARRIER",
+      "status": "PASS",
+      "scope": "四配置屏障及缺件/漂移拒绝的替身或纯协议验证"
+    },
+    {
+      "id": "GP5_P2_FIXED_4_6_ORCHESTRATION",
+      "status": "PARTIAL",
+      "issue": "GP5-P2-DRIVER-DISPATCH-01"
+    },
+    {
+      "id": "GP5_P2_LAUNCH_REFERENCE",
+      "status": "FAIL",
+      "issue": "GP5-P2-DRIVER-AUTH-01"
+    },
+    {
+      "id": "GP5_P2_FRESH_SHARED_LEDGER",
+      "status": "FAIL",
+      "issue": "GP5-P2-DRIVER-LEDGER-01"
+    },
+    {
+      "id": "GP5_P2_REAL_PRIMARY_AND_RECOVERY",
+      "status": "NOT_RUN",
+      "primary": 4,
+      "recovery": 6
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL"
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP5-P2-DRIVER-AUTH-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "acceptance": "启动绑定",
+      "location": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_20261119_01/driver.py:29–39",
+      "observed": "启动引用的 review 与命令输入绑定，authorization 仅经通用 Schema 和计划等值检查，未与本次独立指定来源绑定",
+      "evidence": "只读探针固定计划，使用不同路径的临时授权引用，保留真实通用准入检查，桩化运行机计划预检和配置校验。替换引用进入了四配置预检。",
+      "fix": "明确绑定独立指定的授权文件引用（路径和摘要）。变更依据另立独立记录，不能沿用已澄清的历史转录当作生效授权。"
+    },
+    {
+      "id": "GP5-P2-DRIVER-LEDGER-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "acceptance": "新运行及共享账本",
+      "location": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_20261119_01/driver.py:17–25,44,60–62",
+      "observed": "初始检查接收合法非空、未超上限的旧账本；全新输出目录可以混用旧 DONE 调用",
+      "evidence": "纯探针在临时账本加入一个合法 J00 DONE 评估，检查返回 1，没有拒绝。",
+      "fix": "新运行派发前强制空调用、零计数及正确账本身份，复用共享账本后检查每项增量和最终覆盖；非空旧账本保留，不能清零、续接或重试。"
+    },
+    {
+      "id": "GP5-P2-DRIVER-DISPATCH-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "acceptance": "固定4+6与终止分母",
+      "location": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_20261119_01/driver.py:63–88",
+      "observed": "替身入口记录 10 次主路径调用与 6 次恢复调用，共 16。两个 K01 各三次受控异常续跑。外层只有十行，主路径账本将受控异常记为 ERROR/TECHNICAL_FAILURE。",
+      "evidence": "纯替身录像及 geometry_order_execution.py:182–186、geometry_order_accounting.py:47–52 静态追踪。",
+      "fix": "对齐固定派发与证据口径，优先从四个主运行的同次执行取得可恢复的耐久相位快照，仅额外派发六个注册恢复。已有接口无法满足时先交最小变更设计和身份影响，不能擅自增派发、改账或重签冻结。"
+    }
+  ],
+  "stopped": true
+}

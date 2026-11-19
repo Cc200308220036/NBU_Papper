@@ -1,0 +1,50 @@
+{
+  "schema": "gp5_p2_offline_driver_qa_admission_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_FIXED_4_PLUS_6_OFFLINE_DRIVER",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "64049c8e52db7590803ef23114b1a6ba437d1f2d",
+  "developer_entry_head": "363ceda1d7aedf4f918d49f481ec88d3b0825caf",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "engineering_status": "PARTIAL_OFFLINE_DRIVER_NEEDS_CORRECTIONS",
+  "evidence_readiness": "PURE_AND_ARCHIVE_VERIFIED_REAL_EXECUTION_NOT_RUN",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "NOT_READY",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "next_unit": "GP5_P2_OFFLINE_DRIVER_CORRECTION_ONLY",
+  "allowed_now": "离线整改驱动、临时纯测试、补齐交接证据",
+  "blockers": [
+    {
+      "id": "GP5-P2-DRIVER-AUTH-01",
+      "condition": "明确绑定独立指定的授权文件引用（路径和摘要）。变更依据另立独立记录，不能沿用已澄清的历史转录当作生效授权。"
+    },
+    {
+      "id": "GP5-P2-DRIVER-LEDGER-01",
+      "condition": "新运行派发前强制空调用、零计数及正确账本身份，复用共享账本后检查每项增量和最终覆盖；非空旧账本保留，不能清零、续接或重试。"
+    },
+    {
+      "id": "GP5-P2-DRIVER-DISPATCH-01",
+      "condition": "对齐固定派发与证据口径，优先从四个主运行的同次执行取得可恢复的耐久相位快照，仅额外派发六个注册恢复。已有接口无法满足时先交最小变更设计和身份影响，不能擅自增派发、改账或重签冻结。"
+    }
+  ],
+  "before_dispatch": [
+    "独立 QA 复核整改",
+    "后续明确布置本次有界真实验收并取得同计划独立审查和启动记录",
+    "原 Linux 四项联合只读预检"
+  ],
+  "proposed_scope": {
+    "primary": 4,
+    "recovery": 6,
+    "assessment_entries": 8,
+    "solver_calls": 128,
+    "model_calls": 0
+  },
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED",
+  "real_calls_authorized_this_qa": 0
+}

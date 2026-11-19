@@ -1,0 +1,59 @@
+{
+  "schema": "gp5_p2_offline_driver_qa_commands_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_FIXED_4_PLUS_6_OFFLINE_DRIVER",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "64049c8e52db7590803ef23114b1a6ba437d1f2d",
+  "developer_entry_head": "363ceda1d7aedf4f918d49f481ec88d3b0825caf",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "checks": [
+    {
+      "command": "git status --short --branch && git rev-parse HEAD @{upstream} && git diff --cached --stat",
+      "result": "dev/jev-select，入场0/0且工作区、暂存区干净"
+    },
+    {
+      "command": "git ls-remote --exit-code origin refs/heads/dev/jev-select",
+      "result": "64049c8e52db7590803ef23114b1a6ba437d1f2d"
+    },
+    {
+      "command": "git diff --check 363ceda1 HEAD",
+      "exit_code": 0
+    },
+    {
+      "check": "标准库、git show 固定提交字节及大小/SHA256对比",
+      "observed": {
+        "developer_manifest_members": 7,
+        "protected_runtime_files": 19,
+        "production_source_changes": 0
+      }
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_20261119_01/test_driver.py",
+      "exit_code": 0,
+      "passed": 8,
+      "evidence": "OFFLINE_TEST_DOUBLE"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_QA_20261119_01/probe_offline.py",
+      "exit_code": 0,
+      "observations": [
+        "替代授权引用进入配置预检",
+        "非空旧账本被初始检查接收",
+        "替身主路径10次另有分支6次"
+      ]
+    }
+  ],
+  "actual_this_qa": {
+    "order_dispatch": 0,
+    "monitor_assessment": 0,
+    "LP": 0,
+    "freeze": 0,
+    "resume": 0,
+    "model": 0
+  },
+  "original_linux_joint_config_preflight": "NOT_RUN"
+}

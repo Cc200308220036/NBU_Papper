@@ -1,0 +1,45 @@
+{
+  "schema": "gp5_p2_ems_default_v17_qa_commands_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_EMS_DEFAULT_ROUTE_AND_V17_COMPLETION_COMPATIBILITY_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "3c5ccc2ddf89e648dabd1838cb50996f8438f12a",
+  "developer_entry_head": "0a34f9b835250e7a0dad366432144ec8213ae088",
+  "new_source_identity": "6aea710fad8c98c110a4a5cb17e2edf52e29cc87a217657850a3ffeda5da58c0",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "default_route_identity": "859dbf7e72616544660580b70e8653cdd3782c96ec2a79a72d98817d9a6a77b7",
+  "checks": [
+    {
+      "command": "git status --short --branch && git rev-parse HEAD @{upstream}",
+      "result": "0/0，工作区和暂存区干净"
+    },
+    {
+      "command": "git ls-remote --exit-code origin refs/heads/dev/jev-select",
+      "result": "3c5ccc2ddf89e648dabd1838cb50996f8438f12a"
+    },
+    {
+      "command": "git diff --check 0a34f9b8 HEAD",
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python -B - <unittest筛选包装器>",
+      "exit_code": 1,
+      "reason": "开发测试模块导入依赖pytest，现有解释器缺pytest；未安装；未进入测试。"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_EMS_DEFAULT_AND_V17_COMPAT_QA_20261119_01/verify_archive_and_routes.py",
+      "exit_code": 0,
+      "result": "12清单/593生产/19历史文件；几何配置与既有包装入口对照；8项纯合同通过"
+    }
+  ],
+  "actual_qa": {
+    "orders": 0,
+    "monitor": 0,
+    "LP": 0,
+    "freeze": 0,
+    "recovery": 0,
+    "model": 0
+  }
+}

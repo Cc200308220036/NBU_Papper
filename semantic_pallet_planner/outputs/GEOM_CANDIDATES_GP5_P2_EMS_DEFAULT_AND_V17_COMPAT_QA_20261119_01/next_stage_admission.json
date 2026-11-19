@@ -1,0 +1,54 @@
+{
+  "schema": "gp5_p2_ems_default_v17_qa_admission_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_EMS_DEFAULT_ROUTE_AND_V17_COMPLETION_COMPATIBILITY_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "3c5ccc2ddf89e648dabd1838cb50996f8438f12a",
+  "developer_entry_head": "0a34f9b835250e7a0dad366432144ec8213ae088",
+  "new_source_identity": "6aea710fad8c98c110a4a5cb17e2edf52e29cc87a217657850a3ffeda5da58c0",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "default_route_identity": "859dbf7e72616544660580b70e8653cdd3782c96ec2a79a72d98817d9a6a77b7",
+  "engineering_status": "PARTIAL",
+  "evidence_readiness": "CONTRACT_AND_CONFIGURATION_VERIFIED",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "NOT_READY",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "next_unit": "GP5_P2_EMS_DEFAULT_OPERATIONAL_ENTRY_CORRECTION_ONLY",
+  "admitted_scope": "READY_FOR_TARGET_OPERATIONAL_ENTRY_OFFLINE_IMPLEMENTATION_ONLY",
+  "blockers": [
+    {
+      "id": "GP5-P2-EMS-DEFAULT-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "locations": [
+        "jev_select/candidate_backends.py:36",
+        "jev_select/geometry_execution.py:22–42",
+        "jev_select/packaging_runtime.py:73–84",
+        "jev_select/episode.py:23–36",
+        "jev_select/geometry_order_execution.py:44–50"
+      ],
+      "observed": "无后端的 load_geometry_config 和手工夹具 load_run_config 接入EMS。新调用既有 load_runtime_config 仍得E2，非几何公共决策走原路径；v17整单消费显式job后端。",
+      "required": "交付明确的面向新运行的正常入口；遗漏后端时用EMS，显式E2用原E2，保留各历史版本和固定实验显式路由。",
+      "verification": "本机只构造配置进行对照，开发归档中的真实编排用手工夹具和监测替身。",
+      "correction": "从计划/配置构造到公共订单入口端到端接线并进行离线回归，不能仅改变生成器默认参数。"
+    }
+  ],
+  "after_implementation": [
+    "独立复核目标入口和显式覆盖",
+    "最终身份新冻结、零账本及独立启动记录",
+    "原Linux四任务联合预检及固定4+6验收"
+  ],
+  "proposed_scope": {
+    "primary": 4,
+    "recovery": 6,
+    "assessment_entries": 8,
+    "solver_calls": 128,
+    "model_calls": 0
+  },
+  "real_calls_authorized": 0,
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED"
+}

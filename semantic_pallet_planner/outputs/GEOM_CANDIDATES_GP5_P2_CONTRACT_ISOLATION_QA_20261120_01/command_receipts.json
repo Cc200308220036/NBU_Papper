@@ -1,0 +1,48 @@
+{
+  "schema": "gp5_p2_contract_isolation_qa_commands_v1",
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_OPERATIONAL_AND_FIXED_MATRIX_CONTRACT_ISOLATION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "2c97f59444f07e40b98da529e5256efc441207d4",
+  "developer_entry_head": "ca5c39c7c21a909b0ee46a411174420e6451001f",
+  "new_source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "default_route_identity": "1a55c583b931690f0500fe96f53597756ec3884ee7bff56e1dd4b9129e26ebc7",
+  "operational_plan_version": "geometry_operational_order_plan_v1",
+  "checks": [
+    {
+      "command": "git status --short --branch && git rev-parse HEAD @{upstream}",
+      "result": "0/0，工作区和暂存区干净"
+    },
+    {
+      "command": "git ls-remote --exit-code origin refs/heads/dev/jev-select",
+      "result": "2c97f59444f07e40b98da529e5256efc441207d4"
+    },
+    {
+      "command": "git diff --check ca5c39c7 HEAD",
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python -B - <unittest选择包装器>",
+      "exit_code": 0,
+      "passed": 12,
+      "scope": "V17OrdinaryCompletionAndPhaseSnapshotTests全部，另三项配置/历史矩阵/协议隔离测试"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_CONTRACT_ISOLATION_QA_20261120_01/verify_archive_and_contracts.py",
+      "exit_code": 0,
+      "result": "9清单/594源码/19历史；默认EMS和显式E2、合成范围守门、v1/v2矩阵与驱动缺项拒绝"
+    }
+  ],
+  "actual_qa": {
+    "orders": 0,
+    "candidates": 0,
+    "monitor": 0,
+    "LP": 0,
+    "freeze": 0,
+    "recovery": 0,
+    "model": 0
+  }
+}

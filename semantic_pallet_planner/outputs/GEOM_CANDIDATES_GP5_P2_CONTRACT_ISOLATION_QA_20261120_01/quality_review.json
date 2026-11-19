@@ -1,0 +1,59 @@
+{
+  "schema": "gp5_p2_contract_isolation_qa_review_v1",
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_OPERATIONAL_AND_FIXED_MATRIX_CONTRACT_ISOLATION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "2c97f59444f07e40b98da529e5256efc441207d4",
+  "developer_entry_head": "ca5c39c7c21a909b0ee46a411174420e6451001f",
+  "new_source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "default_route_identity": "1a55c583b931690f0500fe96f53597756ec3884ee7bff56e1dd4b9129e26ebc7",
+  "operational_plan_version": "geometry_operational_order_plan_v1",
+  "engineering_status": "PASS_OFFLINE_CONTRACT_ISOLATION",
+  "evidence_readiness": "OFFLINE_PASS_REAL_EXECUTION_NOT_RUN",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "READY",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "facts": {
+    "report_claim": "两条计划合同已经隔离，开发归档15项离线与35项回归通过，真实运行未开始。",
+    "source": "新增独立封闭的合成开发协议；固定v1/v2计划恢复逐任务双后端校验，专用4+6驱动固定完整四项。",
+    "archive": "固定提交9项、594源码、19旧运行文件逐项核验，历史账本仍为空。",
+    "local_recheck": "12项选定纯合同和加载测试通过；独立探针验证默认/显式后端、scope限制、v1/v2分母和专用驱动零派发拒绝。完整替身循环仅使用开发归档。"
+  },
+  "acceptance": [
+    {
+      "id": "GP5-P2-OPERATIONAL-MATRIX-01",
+      "status": "PASS",
+      "scope": "旧 v1/v2 与独立单后端开发协议；专用4+6入口"
+    },
+    {
+      "id": "GP5-P2-EMS-DEFAULT-01",
+      "status": "PASS",
+      "scope": "合成开发的正常单后端入口；固定矩阵按登记后端"
+    },
+    {
+      "id": "GP5-P2-R3-LEGACY-COMPLETION-01",
+      "status": "PASS",
+      "scope": "普通v16/v17和快照父证据纯回归"
+    },
+    {
+      "id": "GP5_P2_REAL_PRIMARY_AND_RECOVERY",
+      "status": "NOT_RUN",
+      "primary": 4,
+      "recovery": 6
+    }
+  ],
+  "limitations": [
+    "单后端新协议仅允许合成开发与替身，不支持真实普通订单",
+    "共享通用验收计划历史上允许单任务双后端，专用4+6驱动启动前拒绝；不是固定分母缺失"
+  ],
+  "engineering_closure": [
+    "默认EMS与显式E2离线路由通过",
+    "最终版本在原Linux机完成新冻结、空账本、有效启动与四任务联合预检",
+    "固定四项真实主运行和六次恢复通过独立完成审查"
+  ],
+  "stopped": true
+}

@@ -8,7 +8,8 @@ NAMES={name:name.rsplit('_v',1)[0]+'_v'+str(int(name.rsplit('_v',1)[1])+1) for n
     'geometry_order_metrics_v1','geometry_order_run_v1','geometry_order_accounting_v1',
     'geometry_development_binding_v1','geometry_kernel_launch_v1','geometry_order_admission_v1',
     'geometry_scope_authorization_v1','geometry_scope_review_v1','geometry_real_kernel_receipt_v2',
-    'geometry_kernel_completion_review_v1','geometry_kernel_required_coverage_v1')}
+    'geometry_kernel_completion_review_v1','geometry_kernel_required_coverage_v1',
+    'geometry_phase_snapshot_credential_v1')}
 
 def is_native(value):
     return value.get('version') in (GEOMETRY_NATIVE_VERSION,'geometry_order_plan_v2') or value.get('runtime_version')==GEOMETRY_NATIVE_VERSION

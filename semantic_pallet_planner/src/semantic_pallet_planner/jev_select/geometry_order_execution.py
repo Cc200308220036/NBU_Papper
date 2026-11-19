@@ -137,7 +137,7 @@ def validate_order_request(task,selector,config,method,store,on_checkpoint,*,job
 
 
 def run_order_job(plan,job_id,adapted,*,monitor_snapshot,admission,root,kernel_receipt=None,
-                  resume=None,on_checkpoint=None,hook=None):
+                  resume=None,phase_credential=None,on_checkpoint=None,hook=None):
     """Gate before IO; root owns one frozen plan and its full job denominator."""
     import time
     from .ledger import read,write,exclusive
@@ -153,7 +153,7 @@ def run_order_job(plan,job_id,adapted,*,monitor_snapshot,admission,root,kernel_r
     from .episode import run_episode
     def execute_accounted():
         from .geometry_order_accounting import invocation
-        with invocation(store.root/'accounting.json',config,job_id,resume):
+        with invocation(store.root/'accounting.json',config,job_id,resume,phase_credential=phase_credential):
             result=execute()
             from .geometry_order_accounting import completed
             completed(config,result['checkpoint'])

@@ -1,0 +1,60 @@
+{
+  "schema": "gp5_p2_phase_snapshot_r2_handoff_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_PHASE_SNAPSHOT_ACCOUNTING_IMPLEMENTATION_ONLY",
+  "baseline_head": "f761942f243c86b6128988f9ddc6e8f632aa70ff",
+  "previous_qa_handoff": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_R1_QA_20261119_01/handoff.json",
+  "old_source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "new_source_identity": "63f49409e61c90734c78a9fb1c9a22098bd7ea135285ade522475e998410a020",
+  "old_publication_policy_digest": "fe12fc1dec4d7004d813bef76162648ac916adb9e2006b92b163aeadb54fe4cb",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "historical_plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "historical_monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "status": "OFFLINE_IMPLEMENTATION_AND_PURE_TESTS_PASS_PENDING_INDEPENDENT_QA",
+  "production_dispatch": "NOT_READY_NEEDS_NEW_HOST_FREEZE_AND_INDEPENDENT_LAUNCH",
+  "issue_status": {
+    "GP5-P2-DRIVER-DISPATCH-01": {
+      "status": "PASS",
+      "evidence": "OFFLINE_TEST_DOUBLE",
+      "summary": "Added versioned geometry_phase_snapshot_credential_v1/v2 schemas, seal_phase_snapshot_credential, validate_phase_snapshot_credential, and phase_credential consumption in geometry_order_accounting.invocation and geometry_order_execution.run_order_job. In-run snapshots remain STARTED and are never rewritten to RETURNED; credentials are sealed only after the parent primary run returns normally and validates. Driver checks capability before first dispatch and runs 4 primary + 6 recovery dispatches (10 total run_order_job calls, all 6 snapshots and recovery outputs validated by real accounting and real validate_saved_checkpoint)."
+    },
+    "GP5-P2-DRIVER-AUTH-01": {
+      "status": "PASS",
+      "evidence": "OFFLINE_TEST_DOUBLE",
+      "summary": "Explicit authorization binding requires both independent expected path and SHA-256 (from startup_review_request.json, an independent reference dict, or an independent reference JSON file via --authorization-reference). Same-path byte drift with synchronously re-signed launch.authorization.sha256 is rejected before 4-job config preflight and dispatch."
+    },
+    "GP5-P2-DRIVER-LEDGER-01": {
+      "status": "PASS",
+      "evidence": "OFFLINE_TEST_DOUBLE",
+      "summary": "Initial zero-ledger check requires empty calls and zero counts (rejecting and preserving any DONE/STARTED/ERROR prior ledger); in-run incremental check_counts and final 6+2=8 coverage check remain enforced."
+    },
+    "GP5-P2-R1-PORTABILITY-01": {
+      "status": "PASS",
+      "evidence": "OFFLINE_TEST_DOUBLE",
+      "summary": "Pure tests explicitly inject archived order environment from host_preflight.json for cross-machine portability while preserving production host environment checks."
+    }
+  },
+  "report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP5-P2相位快照凭证与恢复接入交付_20261119_01.md",
+  "driver": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R2_20261119_01/driver.py",
+  "tests": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R2_20261119_01/test_driver.py",
+  "source_identity_receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R2_20261119_01/source_identity_receipt.json",
+  "command_receipts": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R2_20261119_01/command_receipts.json",
+  "manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R2_20261119_01/manifest.json",
+  "historical_runtime_root": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_BOUNDED_REAL_MONITOR_RUNTIME_20261119_01",
+  "fixed_primary": 4,
+  "fixed_recovery": 6,
+  "actual_this_delivery": {
+    "orders": 0,
+    "real_assessments": 0,
+    "LP": 0,
+    "model_calls": 0,
+    "freeze": 0,
+    "real_recovery": 0
+  },
+  "A03": "PARTIAL",
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED",
+  "next": "INDEPENDENT_QA_ONLY",
+  "stopped": true
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "geometry_num_n1_r8_r1_qa_admission_v1",
+  "next_stage": "GP5_NUM_N1_R8_R1_BOUNDED_USABILITY_EXECUTION",
+  "status": "CONDITIONAL",
+  "technical_preparation": "PASS",
+  "execution_authorization": "NOT_GRANTED",
+  "requires": [
+    "Explicit user assignment and independent allowance",
+    "Matching environment, source identity, freeze hash, allowlist and specified fresh root"
+  ],
+  "frozen_identity": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_R1_20261119_01/frozen_identity.json",
+  "freeze_sha256": "166ce1cf0d92a908facd881726cbe01b7a027ba53dc8725fb0746891ecf6c612",
+  "run_root": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_R1_RUN_20261119_01",
+  "limits": {
+    "C": 6,
+    "E": 2,
+    "E_monitors": 4,
+    "E_items_per_job": 2,
+    "R": 6,
+    "R_monitors": 2,
+    "R_commits": 4,
+    "R_generation_publication_selection": 0,
+    "X_H_ADMIN": 15,
+    "X_H_monitors": 1,
+    "test_double_monitor_total": 7,
+    "total_denominator": 35,
+    "E_outside_scope": 6,
+    "real_calls": 0
+  },
+  "stop": [
+    "First unexpected failure",
+    "Missing explicit assignment or identity mismatch",
+    "Would exceed scope or caps",
+    "Assigned limited suite completes, return to QA"
+  ],
+  "P2": "NOT_READY",
+  "prompt_delivery": "INLINE_FINAL_ONLY",
+  "real_call_authorization": 0
+}

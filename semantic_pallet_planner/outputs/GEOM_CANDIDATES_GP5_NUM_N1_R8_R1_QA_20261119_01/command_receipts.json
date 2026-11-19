@@ -1,0 +1,41 @@
+{
+  "schema": "geometry_num_n1_r8_r1_qa_command_receipts_v1",
+  "checks": [
+    {
+      "command": "GIT_OPTIONAL_LOCKS=0 git status -sb; git rev-parse HEAD '@{upstream}'",
+      "result": "clean worktree and index; local refs equal"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_R1_20261119_01/test_timing_lineage.py",
+      "exit_code": 0,
+      "result": "5 pure methods passed."
+    },
+    {
+      "command": "python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_R1_20261119_01/test_scope.py ScopeTests.test_exact_two_jobs ScopeTests.test_other_six_rejected_before_dispatch ScopeTests.test_wrong_and_missing_identity ScopeTests.test_quotas_pre_dispatch ScopeTests.test_authorization_and_root_binding -v",
+      "exit_code": 0,
+      "result": "5 pure scope methods passed. Sixth invokes Linux environment/config preflight; not rerun locally."
+    },
+    {
+      "command": "python3 -I -B - (independent inline SHA/JSON/Git historical blobs)",
+      "exit_code": 1,
+      "result": "Initial QA assertion incorrectly required scope_guard.py byte equality across unit rename; 41/37/6 manifests and entire input freeze already checked before this non-delivery QA assertion."
+    },
+    {
+      "command": "python3 -I -B - (same independent check, compare scope guard with exact unit label change)",
+      "exit_code": 0,
+      "result": "2977 historical + 699 current, 1403 R6 references, 591 current, 8 configs, all 35 unrun, all call counts zero, fresh root absent."
+    },
+    {
+      "command": "git diff --check f6f28fbd 5edebb26",
+      "exit_code": 0,
+      "result": "clean"
+    }
+  ],
+  "not_run": [
+    "seal_inputs.py writes to development package",
+    "sixth full environment scope guard method",
+    "candidate generation",
+    "orders and resumes",
+    "PCT/LP/freeze/real monitoring/model"
+  ]
+}

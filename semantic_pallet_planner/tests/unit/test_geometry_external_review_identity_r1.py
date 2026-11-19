@@ -166,6 +166,13 @@ class ReviewIdentity(unittest.TestCase):
         self.assertNotIn('runtime_version', review)
         self.assertNotIn('publication_policy_digest', review)
         c.validate_completion(receipt, plan, log, lambda record: None)
+        for row in receipt['recovery']:
+            rec = json.loads(Path(row['after']['path']).read_bytes())
+            rec['durable_root'] = str(Path(row['after']['path']).parent)
+            row['after'] = self.ref(rec)
+        review['recovery_digest'] = digest(receipt['recovery'])
+        receipt['review'] = self.ref(review)
+        c.validate_completion(receipt, plan, log, lambda record: None)
         RECEIPTS.append({'case': 'v16 legacy records', 'status': 'PASS_BINDING_AND_COVERAGE_ONLY'})
 
     def test_missing_references_and_existing_identity_protections(self):

@@ -68,13 +68,23 @@ def validate_completion(receipt,plan,log,validate_record):
             'commit_successes':int(row['phase']!='COMMITTED')}
         require(inv[-1]['resume_checkpoint_digest']==digest(before) and inv[-1]['result_checkpoint_digest']==digest(after['checkpoint']) and inv[-1]['resume_phase']==row['phase'] and inv[-1]['status']=='RETURNED' and inv[-1]['delta']==delta
             and all(account['cumulative'][k]==sum(i['delta'][k] for i in inv) for k in delta),'geometry_completion_recovery_delta')
-        if len(inv)>1 and inv[0].get('status')=='STARTED' or 'durable_root' in after:
+        is_phase_snapshot_recovery=(len(inv)>1 and inv[0].get('status')=='STARTED'
+            or 'phase_credential' in row
+            or (is_native(plan) and 'durable_root' in after)
+            or ('durable_root' in after and (Path(after['durable_root'])/'phase_snapshot_credential.json').exists()))
+        if is_phase_snapshot_recovery:
             from .geometry_order_accounting import validate_phase_snapshot_credential
             from .ledger import read
             require('durable_root' in after and row['job_id'] in primary_by_job,'geometry_completion_recovery_parent_missing')
             rec_root=Path(after['durable_root']);cred_path=rec_root/'phase_snapshot_credential.json'
             require(cred_path.is_file(),'geometry_completion_recovery_credential_missing')
-            cred=read(cred_path)
+            if 'phase_credential' in row:
+                cred_from_ref=read_reference(row['phase_credential'])
+                require(Path(row['phase_credential']['path']).resolve()==cred_path.resolve(),'geometry_completion_recovery_credential_path_drift')
+                cred=read(cred_path)
+                require(same_native(cred_from_ref,cred),'geometry_completion_recovery_credential_drift')
+            else:
+                cred=read(cred_path)
             validate_phase_snapshot_credential(cred,rec_root,after['config'],row['job_id'],before,expected_accounting_digest=digest(account))
             parent_ref,parent_rec=primary_by_job[row['job_id']]
             pinv=cred['parent_invocation']

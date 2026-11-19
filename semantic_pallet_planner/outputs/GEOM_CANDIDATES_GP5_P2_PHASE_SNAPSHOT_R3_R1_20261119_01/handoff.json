@@ -1,0 +1,94 @@
+{
+  "schema": "gp5_p2_phase_snapshot_r3_r1_handoff_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_R3_FREEZE_BINDING_AND_COMPLETION_COMPATIBILITY_CORRECTION_ONLY",
+  "baseline_head": "cfcbf662f8c1e1c3b447be400e670c1aa7c4402e",
+  "previous_qa_handoff": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_QA_20261119_01/handoff.json",
+  "historical_source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "r2_source_identity": "63f49409e61c90734c78a9fb1c9a22098bd7ea135285ade522475e998410a020",
+  "r3_source_identity": "378b0c7b9e66befb2eee87ca29fd23fe1915431f5952fe13fff5223126ceb0eb",
+  "new_source_identity": "15742d249425a8017e6f894c78cfb4797c0e3a613e40f07632ca47a5f0580a19",
+  "historical_publication_policy_digest": "fe12fc1dec4d7004d813bef76162648ac916adb9e2006b92b163aeadb54fe4cb",
+  "r2_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "r3_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "historical_plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "historical_monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "host_environment_notes": {
+    "archived_host_preflight_receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_HOST_PREFLIGHT_20261119_01/host_preflight.json",
+    "archived_platform": "Linux-6.8.0-149-generic-x86_64-with-glibc2.35",
+    "archived_python": "3.13.5",
+    "archived_scipy": "1.15.3",
+    "archived_numpy": "2.1.3",
+    "archived_jsonschema": "4.23.0",
+    "archived_highs": "1.8.0",
+    "new_freeze_rule": "Corrected in this new handoff (R3 report retained in place). Original preflight archive is Linux 6.8.0-149, Python 3.13.5, SciPy 1.15.3, NumPy 2.1.3. Subsequent execution is governed by the actual new freeze environment. No new freeze is generated in this turn."
+  },
+  "status": "OFFLINE_IMPLEMENTATION_AND_PURE_TESTS_PASS_PENDING_INDEPENDENT_QA",
+  "production_dispatch": "NOT_READY_NEEDS_NEW_HOST_FREEZE_AND_INDEPENDENT_LAUNCH",
+  "issue_status": {
+    "GP5-P2-R3-MONITOR-BINDING-01": {
+      "status": "PASS",
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_MONITOR_SUBSTITUTE",
+      "summary": "Removed historical EXPECTED_MONITOR_DIGEST constant from driver.py. bind_runtime_monitor_snapshot loads monitor_snapshot.json from the explicit --runtime directory and verifies its raw file reference (path inside runtime and SHA-256), startup_review_request.json (monitor_digest and monitor_reference), independent launch record (monitor_digest and optional monitor_reference), and actual monitor algorithm_identity structure/digests, while preserving host dependency/config/source checks in validate_monitor_snapshot and preflight_order. Regression proves a temporary snapshot whose digest differs from the historical value enters the 4-config preflight, and any reference or identity drift aborts with 0 dispatches."
+    },
+    "GP5-P2-R3-LEGACY-COMPLETION-01": {
+      "status": "PASS",
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_MONITOR_SUBSTITUTE",
+      "summary": "geometry_kernel_completion.validate_completion now explicitly distinguishes ordinary legacy recovery records from phase-snapshot recovery records by recovery protocol and credential mode (is_native(plan) with durable_root, [STARTED, RETURNED] invocation history, explicit phase_credential reference, or presence of phase_snapshot_credential.json). Legacy v16 ordinary recovery records carrying durable_root retain baseline acceptance behavior; phase-snapshot recovery records must verify phase_snapshot_credential.json and retained parent final record.json and accounting.json. Added contrastive regressions proving legacy v16 durable_root records pass while new phase-snapshot records missing credentials or with drifted parent evidence are rejected."
+    },
+    "GP5-P2-R3-HOST-NOTES-01": {
+      "status": "PASS",
+      "evidence": "ARCHIVE_AND_HANDOFF_VERIFIED",
+      "summary": "Corrected host environment baseline in the new handoff and report to match archived host_preflight.json (Linux 6.8.0-149, Python 3.13.5, SciPy 1.15.3, NumPy 2.1.3), noting that future new freeze will use the actual new freeze environment. No new freeze generated in this turn; prior R3 report retained untouched."
+    },
+    "GP5-P2-R2-PARENT-EVIDENCE-01": {
+      "status": "PASS",
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_MONITOR_SUBSTITUTE",
+      "summary": "Retained parent primary run final accounting.json and record.json verification on disk via read_reference at both recovery entrypoint and completion review."
+    },
+    "GP5-P2-R2-RUNTIME-INPUT-01": {
+      "status": "PASS",
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_MONITOR_SUBSTITUTE",
+      "summary": "Explicit --runtime CLI directory check and dynamic monitor snapshot binding pass offline verification; historical runtime directory, stale source_identity, wrong directory, missing files, and historical authorization paths are rejected before first dispatch."
+    },
+    "GP5-P2-DRIVER-DISPATCH-01": {
+      "status": "PASS",
+      "evidence": "OFFLINE_MONITOR_SUBSTITUTE",
+      "summary": "Retained 4 primary + 6 recovery dispatches (10 total run_order_job invocations) tested with a new-digest monitor snapshot; all 6 recovery outputs and completion receipt pass real validate_saved_checkpoint and validate_completion."
+    },
+    "GP5-P2-DRIVER-AUTH-01": {
+      "status": "PASS",
+      "evidence": "PURE_CONTRACT_TEST",
+      "summary": "Retained independent authorization path and SHA-256 binding and rejections before 4-job config preflight and dispatch."
+    },
+    "GP5-P2-DRIVER-LEDGER-01": {
+      "status": "PASS",
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_MONITOR_SUBSTITUTE",
+      "summary": "Retained initial zero-ledger barrier, in-run incremental check_counts, and final 6+2=8 assessment coverage check."
+    }
+  },
+  "report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP5-P2新冻结监测绑定与完成审查兼容修正交付_20261119_01.md",
+  "driver": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_R1_20261119_01/driver.py",
+  "tests": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_R1_20261119_01/test_driver.py",
+  "source_identity_receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_R1_20261119_01/source_identity_receipt.json",
+  "command_receipts": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_R1_20261119_01/command_receipts.json",
+  "manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_R1_20261119_01/manifest.json",
+  "historical_runtime_root": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_BOUNDED_REAL_MONITOR_RUNTIME_20261119_01",
+  "fixed_primary": 4,
+  "fixed_recovery": 6,
+  "actual_this_delivery": {
+    "orders": 0,
+    "real_assessments": 0,
+    "LP": 0,
+    "model_calls": 0,
+    "freeze": 0,
+    "real_recovery": 0
+  },
+  "A03": "PARTIAL",
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED",
+  "next": "INDEPENDENT_QA_ONLY",
+  "stopped": true
+}

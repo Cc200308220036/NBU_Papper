@@ -1,0 +1,56 @@
+{
+  "schema": "gp5_p2_launch_review_preflight_receipts_v1",
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_INDEPENDENT_LAUNCH_REVIEW_AND_JOINT_PREFLIGHT_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "synced_head": "2a4d20430ccd0cf01ebdb6935d71c1e4a2ae172b",
+  "pull": {
+    "command": "git pull --ff-only",
+    "result": "FAST_FORWARD 195e1138..2a4d2043"
+  },
+  "host_environment": {
+    "platform": "Linux-6.8.0-149-generic-x86_64-with-glibc2.35",
+    "python_executable": "/home/cyw/anaconda3/bin/python3",
+    "python_version": "3.13.5",
+    "numpy": "2.1.3",
+    "scipy": "1.15.3",
+    "jsonschema": "4.23.0",
+    "highs_version": "1.8.0"
+  },
+  "checks": [
+    {
+      "name": "qa_verify_freeze_archive",
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_QA_20261120_01/verify_freeze_archive.py",
+      "exit_code": 0
+    },
+    {
+      "name": "final_freeze_read_only_verify",
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/verify_final_freeze.py",
+      "exit_code": 0,
+      "output": "READ_ONLY_FREEZE_VERIFICATION_PASS"
+    },
+    {
+      "name": "routing_and_admission_gate_probe",
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -B -c \"...\"",
+      "exit_code": 0,
+      "observed": {
+        "op_ems_backend": "ems_surface_hybrid_v1",
+        "op_e2_backend": "e2_original_v1",
+        "admission_gate_check": "invalid_geometry_kernel_launch_v2",
+        "ledger_calls": 0
+      }
+    }
+  ],
+  "four_job_joint_preflight": "NOT_RUN_BLOCKED_MISSING_LAUNCH_MATERIALS",
+  "actual_this_delivery": {
+    "freeze": 0,
+    "orders": 0,
+    "real_assessments": 0,
+    "LP": 0,
+    "real_recovery": 0,
+    "model_calls": 0,
+    "launch_records_issued": 0
+  }
+}

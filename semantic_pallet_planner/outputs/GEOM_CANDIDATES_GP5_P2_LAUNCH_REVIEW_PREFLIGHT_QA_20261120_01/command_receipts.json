@@ -1,0 +1,31 @@
+{
+  "schema": "gp5_p2_preflight_gap_qa_receipts_v1",
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_INDEPENDENT_LAUNCH_REVIEW_AND_JOINT_PREFLIGHT_ONLY",
+  "reviewed_head": "705db06a79a5fe590959637c36aa62bc6116e06b",
+  "development_delivery": "d34aa6f6368ab6cb9c970b5a96b14cb3897d9d4f",
+  "checks": [
+    {
+      "command": "git status --short --branch; git rev-parse HEAD @{upstream}; git ls-files -u",
+      "result": "分支与上游对应，工作区和暂存区干净，无冲突"
+    },
+    {
+      "command": "python -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_LAUNCH_REVIEW_PREFLIGHT_QA_20261120_01/verify_preflight_archive.py",
+      "result": "PASS，提交关系、开发清单 5 项、源码/驱动/冻结未变化、绑定及账本一致，受跟踪产物无同计划 v2 启动材料"
+    },
+    {
+      "command": "python -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_QA_20261120_01/verify_freeze_archive.py",
+      "result": "PASS，19 项冻结清单、原冻结与任务不变，4+6 NOT_RUN"
+    }
+  ],
+  "interpreter": "现有 NBU Python 环境",
+  "actual_qa_calls": {
+    "orders": 0,
+    "monitor": 0,
+    "LP": 0,
+    "recovery": 0,
+    "model": 0,
+    "freeze": 0
+  }
+}

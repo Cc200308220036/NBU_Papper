@@ -1,0 +1,71 @@
+{
+  "schema": "gp5_p2_preflight_gap_qa_review_v1",
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_INDEPENDENT_LAUNCH_REVIEW_AND_JOINT_PREFLIGHT_ONLY",
+  "reviewed_head": "705db06a79a5fe590959637c36aa62bc6116e06b",
+  "development_delivery": "d34aa6f6368ab6cb9c970b5a96b14cb3897d9d4f",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "entry_worktree": "CLEAN",
+  "entry_index": "EMPTY",
+  "developer_synced_head": "2a4d20430ccd0cf01ebdb6935d71c1e4a2ae172b",
+  "identities": {
+    "source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+    "publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+    "default_route_identity": "1a55c583b931690f0500fe96f53597756ec3884ee7bff56e1dd4b9129e26ebc7",
+    "plan_digest": "248e746c4d3b8063a0f56e2be9f8441b5c34c7c5947147d8da6d67a3396b70e5",
+    "monitor_digest": "83b807f6aa8f60a45c1873aebd20fc2aeb04ec5cc924cf2568137bff254f88d6"
+  },
+  "scope": "独立静态核对和 Git 归档复验",
+  "evidence": {
+    "report_statement": "docs/03_阶段产出分析/几何规划模块/几何候选器GP5-P2独立启动审查与四任务联合预检缺口报告_20261120_01.md",
+    "source": [
+      "packaging_geometry_protocol.validate_admission",
+      "geometry_order_execution.load_order_config",
+      "driver.prepare"
+    ],
+    "archive": [
+      "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_LAUNCH_REVIEW_PREFLIGHT_20261120_01/manifest.json",
+      "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_LAUNCH_REVIEW_PREFLIGHT_20261120_01/command_receipts.json"
+    ],
+    "local_verification": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_LAUNCH_REVIEW_PREFLIGHT_QA_20261120_01/command_receipts.json"
+  },
+  "acceptance": {
+    "SYNC_AND_DELIVERY_HASHES": "PASS",
+    "LINUX_AND_ROUTING": "PASS_ARCHIVE",
+    "NEGATIVE_GATE_PROBE": "PARTIAL_EVIDENCE_ABBREVIATED_COMMAND",
+    "STARTUP_RECORDS": "MISSING",
+    "FOUR_JOB_PREFLIGHT": "NOT_RUN",
+    "FIXED_PRIMARY": {
+      "NOT_RUN": 4
+    },
+    "FIXED_RECOVERY": {
+      "NOT_RUN": 6
+    }
+  },
+  "issues": [
+    {
+      "id": "GP5-P2-LAUNCH-01",
+      "severity": "BLOCKER",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_LAUNCH_REVIEW_PREFLIGHT_20261120_01/launch_material_gaps.json",
+      "impact": "缺新计划授权、独立审查和启动三项，无法执行联合预检",
+      "remediation": "取得可核验的同计划材料，原机执行既有只读 prepare"
+    },
+    {
+      "id": "GP5-P2-LAUNCH-02",
+      "severity": "LOW",
+      "blocks": false,
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_LAUNCH_REVIEW_PREFLIGHT_20261120_01/command_receipts.json",
+      "impact": "负向探针命令缩写，无法逐字复验",
+      "remediation": "后续预检保存可复现的确切命令或脚本摘要与分项结果"
+    }
+  ],
+  "engineering_status": "PASS_READONLY_RECHECK_AND_STOP",
+  "evidence_readiness": "PARTIAL_MISSING_STARTUP_MATERIALS",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "NOT_READY",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "stopped": true
+}

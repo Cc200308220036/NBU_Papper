@@ -1,0 +1,51 @@
+{
+  "schema": "gp5_p2_host_preflight_qa_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_BOUNDED_REAL_MONITOR_USABILITY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "52919d84fe065d3edd7f97486e3058428ecebe32",
+  "developer_preflight_head": "e34f80f2991552b3079d3f3de630a213513d47fd",
+  "previous_qa": "30d9cd194be224817d4b6a87e9eff15d7fdc92ac",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "engineering_status": "HOST_PREFLIGHT_ACCEPTED_REAL_EXECUTION_NOT_RUN",
+  "evidence_readiness": "HOST_ARCHIVE_VERIFIED_ORIGINAL_AUTHORIZATION_CONTEXT_PENDING_INDEPENDENT_VERIFICATION",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "CONDITIONAL",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "next_unit": "GP5_P2_INDEPENDENT_LAUNCH_GATE",
+  "prerequisites": [
+    {
+      "item": "原机只读预检",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_HOST_PREFLIGHT_20261119_01/host_preflight.json"
+    },
+    {
+      "item": "原授权完整上下文",
+      "status": "PENDING_INDEPENDENT_VERIFICATION",
+      "basis": "开发窗口声明直接可见；本窗口仅能核实转录和绑定"
+    },
+    {
+      "item": "独立审查与有效启动记录",
+      "status": "MISSING"
+    },
+    {
+      "item": "四 job 联合只读准入",
+      "status": "NOT_RUN"
+    }
+  ],
+  "allowed_now": "向独立质检提供原授权可追溯上下文，并完成独立启动审查准备",
+  "conditions": "核验原授权后绑定同一冻结计划生成两份有效记录，再完成四 job 联合只读准入。达到条件后按原授权执行固定 4+6。",
+  "limits": {
+    "assessment_entries": 8,
+    "solver_calls": 128,
+    "model_calls": 0
+  },
+  "newly_authorized_real_calls": 0,
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED"
+}

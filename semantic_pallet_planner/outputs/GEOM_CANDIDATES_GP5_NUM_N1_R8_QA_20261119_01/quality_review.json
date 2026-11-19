@@ -1,0 +1,123 @@
+{
+  "schema": "geometry_num_n1_r8_qa_review_v1",
+  "date": "2026-11-19",
+  "unit": "GP5_NUM_N1_R8_MINIMAL_NEW_SOURCE_RECOVERY_REVALIDATION",
+  "engineering_status": "R8_PREPARATION_PARTIAL_FREEZE_FAIL",
+  "evidence_readiness": "TEST_GUARD_PARTLY_VERIFIED_NO_NEW_RUNTIME_FREEZE",
+  "research_result": "NOT_ESTABLISHED",
+  "NUM_01": "OPEN",
+  "A03": "PARTIAL",
+  "P2": "NOT_READY",
+  "formal_8job": "NOT_READY_DEFERRED_FOR_USABILITY_GOAL",
+  "next_unit": "GP5_NUM_N1_R8_R1_FREEZE_LINEAGE_AND_USABILITY",
+  "next_unit_admission": "CONDITIONAL",
+  "real_call_authorization": 0,
+  "stopped": true,
+  "timezone": "Asia/Shanghai",
+  "authorization": "Independent saved checks, narrow pure helper tests, QA archival only.",
+  "identity": {
+    "developer_base": "591700487c2c5b13c016bc936b3035c54f04bf53",
+    "reviewed_head": "4838a2cd5ea14994d3cac295bf7b2acae0c2cd72",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "initial_worktree": "CLEAN",
+    "initial_index": "EMPTY",
+    "source_files": 591,
+    "source_identity": "8a860eea3ec22f8805eb6767660301acfd526653f566b1b1bd3e42b4af53578f",
+    "source_drift": false
+  },
+  "four_layers": {
+    "report_claim": "New test harness and eight configs ready; seal failed and stopped before scope tests or orders.",
+    "implementation": "J01/J03 allowlist and scoped F0 comparison; no production change.",
+    "archived_evidence": "37 delivery, 1546 history, 1561 protected members, first seal error, 35 unrun, zero calls.",
+    "local_reverification": "Four targeted stdlib guard tests PASS. Historic R6 and current R7 bytes separately verified. No seal/preflight/order/recovery replay."
+  },
+  "acceptance": [
+    {
+      "id": "CURRENT_SOURCE_PREPARATION",
+      "status": "PASS",
+      "evidence": "591 files same as R7; eight draft configs and recorded environment/preflight identity consistent"
+    },
+    {
+      "id": "R8-SCOPE-01_GUARD",
+      "status": "PASS",
+      "evidence": "Four QA pure methods: exact two jobs, rejection of other six and wrong identity, pre-dispatch caps"
+    },
+    {
+      "id": "R8-SCOPE-01_COMPLETE",
+      "status": "PARTIAL",
+      "evidence": "Real sealed input and authorization/root integration not run; missing freeze"
+    },
+    {
+      "id": "R8_NEW_FREEZE",
+      "status": "FAIL",
+      "evidence": "Historical manifest compared live R7 file to R6; seal absent"
+    },
+    {
+      "id": "COMMITTED_TIMING_ASSERT",
+      "status": "PARTIAL",
+      "evidence": "Summary is archived on success; direct timing assertion missing"
+    },
+    {
+      "id": "C_E_R_X_H_ADMIN",
+      "status": "NOT_RUN",
+      "evidence": "Fixed 35: 29 proposed, six outside proposed scope; actual zero all groups"
+    },
+    {
+      "id": "NUM-01_A03",
+      "status": "PARTIAL",
+      "evidence": "Current-source restore remains unverified"
+    },
+    {
+      "id": "P2",
+      "status": "NOT_RUN",
+      "evidence": "Real-monitor acceptance needs later separate assignment"
+    },
+    {
+      "id": "A05",
+      "status": "NOT_RUN",
+      "evidence": "Formal advantage comparison deferred under user's latest goal"
+    },
+    {
+      "id": "A06",
+      "status": "NOT_APPLICABLE",
+      "evidence": "GP6 outside usability goal"
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP5-NUM-N1-R8-FREEZE-01",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "blocks": "New freeze and dispatch",
+      "location": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_20261119_01/seal_inputs.py:11",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_20261119_01/seal_inputs.py:16",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_20261119_01/seal_inputs.py:20"
+      ],
+      "evidence": "R6 freeze has 1403 members. Exactly one historical source member differs against current live tree, geometry_order_execution.py, and matches R6 Git blob at 1dbc8f30. Current bytes match R7 a060652f and the whole current 591-file manifest. Original stop exit 1. Draft also flattens historical and live keys into one map.",
+      "impact": "R8 freeze was never issued. A flattened map cannot express both revision-specific and current identity for the same path.",
+      "repair": "Resolve old live-source references against pinned historical revisions or archived bytes where appropriate, independently verify current tree, verify current archive members and keep namespaces separate. Use repo-relative paths in new manifests; old recorded Linux absolute prefixes were resolved read-only at QA. Never rewrite existing manifests.",
+      "verification": "Pure old-revision/current hashes, drift, path handling and separate identities, then new independent package and full seal."
+    },
+    {
+      "id": "GP5-NUM-N1-R8-TIMING-ASSERT-01",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "blocks": "Proof of the exact R7 timing acceptance in the new runtime",
+      "location": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_20261119_01/validation_entrypoint.py:170",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_20261119_01/validation_entrypoint.py:172"
+      ],
+      "evidence": "Runner checks complete, phase deltas and shape; it saves summary but does not check measured-partial vs complete elapsed time for the COMMITTED failure regression.",
+      "impact": "A runtime summary could return successfully without verifying that unknown timing is kept separate.",
+      "repair": "Verify from saved event timing: when mixed numeric/null, measured_partial/decision_wall_s equals measured subtotal and complete decision_wall_s is absent; unmeasured data remains untouched.",
+      "verification": "Pure positive and negative receipt fixture, then both actual COMMITTED recoveries on new identity if assigned."
+    }
+  ],
+  "next_stage_admission": {
+    "repair": "CONDITIONAL",
+    "dispatch": "NOT_READY",
+    "P2": "NOT_READY"
+  }
+}

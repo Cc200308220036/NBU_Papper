@@ -1,0 +1,41 @@
+{
+  "schema": "geometry_num_n1_r8_qa_receipts_v1",
+  "checks": [
+    {
+      "command": "GIT_OPTIONAL_LOCKS=0 git status -sb; git rev-parse HEAD '@{upstream}'",
+      "result": "clean worktree/index, matches local upstream"
+    },
+    {
+      "command": "python3 -I -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_20261119_01/test_scope.py ScopeTests.test_exact_two_jobs ScopeTests.test_other_six_rejected_before_dispatch ScopeTests.test_wrong_and_missing_identity ScopeTests.test_quotas_pre_dispatch -v",
+      "exit_code": 1,
+      "result": "Isolated mode omits script directory, scope_guard import failed before tests."
+    },
+    {
+      "command": "python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_20261119_01/test_scope.py ScopeTests.test_exact_two_jobs ScopeTests.test_other_six_rejected_before_dispatch ScopeTests.test_wrong_and_missing_identity ScopeTests.test_quotas_pre_dispatch -v",
+      "exit_code": 0,
+      "result": "4 pure guard methods pass. Two freeze-dependent methods not run."
+    },
+    {
+      "command": "python3 -I -B - (inline stdlib SHA / archive / config probe)",
+      "exit_code": 1,
+      "result": "Initial direct read found Linux absolute archive path absent on QA host."
+    },
+    {
+      "command": "python3 -I -B - (inline stdlib SHA / archive / config probe with repository-root remapping)",
+      "exit_code": 0,
+      "result": "37 delivery, 1546 historical, 1561 protected, 591 production, 8 configs. R6 1403 identity paths validate after exactly one is matched using historical Git blob. No input freeze/run root and all 35 unrun."
+    },
+    {
+      "command": "git diff --check 59170048 4838a2cd",
+      "exit_code": 0,
+      "result": "No whitespace findings."
+    }
+  ],
+  "not_run": [
+    "prepare.py and seal_inputs.py (write original delivery paths)",
+    "two tests requiring actual seal",
+    "order/recovery",
+    "candidate/shadow generation",
+    "real monitor/PCT/LP/freeze/model"
+  ]
+}

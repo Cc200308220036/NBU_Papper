@@ -12,6 +12,7 @@
 
 | 报告 | 范围与状态 |
 |---|---|
+| [GP5-NUM-N1-R8独立复核与可用性验收范围](几何候选器GP5-NUM-N1-R8独立复核与可用性验收范围_20261119_01.md) | 四项纯范围验证通过，封存 FAIL，实际复验 NOT_RUN。仅限定封存整改与可用性复验准备 CONDITIONAL，P2 NOT_READY。 |
 | [GP5-NUM-N1-R7独立复核与最小恢复复验准入](几何候选器GP5-NUM-N1-R7独立复核与最小恢复复验准入_20261118_01.md) | 耗时汇总实现与5项纯测试PASS；实际恢复NOT_RUN。R8最小新身份复验CONDITIONAL，N1 PARTIAL、P2 NOT_READY。 |
 | [GP5-NUM-N1固定合成复验独立质检与恢复计时整改](几何候选器GP5-NUM-N1固定合成复验独立质检与恢复计时整改_20261118_01.md) | C6/E8 通过；R2通过、1失败、3未运行，X/H/admin 15项未运行。确认已提交恢复的空计时汇总故障，N1 PARTIAL、P2 NOT_READY，仅R7最小整改 CONDITIONAL。 |
 | [GP5-NUM-N1-R6独立复核与限定合成复验准入](几何候选器GP5-NUM-N1-R6独立复核与限定合成复验准入_20261118_01.md) | F0-01 限定关闭，13 项纯测试及两份保存件复核通过；固定 35 项 NOT_RUN，后续合成复验 CONDITIONAL，N1 PARTIAL、P2 NOT_READY。 |

@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_R1_EXTERNAL_REVIEW_IDENTITY_BINDING",
+  "reviewed_head": "2c4f8e87dca43452ea7f5d643f81d6d6b56ee372",
+  "previous_qa": "942303143502621b89a7a6be66ac6ef550cf90ff",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "draft_digest": "bba1a430c058fb12bd52bf2c5de0e7b60c154cc77b96a3e99221d2ce85d75416",
+  "checks": [
+    {
+      "kind": "git",
+      "commands": [
+        "git status --short --branch",
+        "git rev-list --left-right --count HEAD...@{upstream}",
+        "git diff --check 94230314 HEAD"
+      ],
+      "status": "PASS"
+    },
+    {
+      "kind": "pure_test",
+      "command": "PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/miniconda3/envs/NBU/bin/python\" -B -m unittest -v test_geometry_external_review_identity_r1",
+      "exit_code": 0,
+      "passed": 7,
+      "business_dispatch": 0
+    },
+    {
+      "kind": "readonly_archive_and_draft",
+      "command": "PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/envs/NBU/bin/python\" -B - <inline audit>",
+      "script": "check_archive.py",
+      "exit_code": 0,
+      "observed": {
+        "developer_final_manifest_items": 30,
+        "historical_manifest_items": 33,
+        "historical_unchanged_members": 31,
+        "production_files": 591,
+        "primary": 4,
+        "resumes": 6
+      }
+    }
+  ],
+  "unrun": [
+    "real order",
+    "candidate build",
+    "monitor assessment",
+    "solver",
+    "kernel freeze",
+    "actual resume",
+    "model calls"
+  ]
+}

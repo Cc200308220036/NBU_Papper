@@ -1,0 +1,97 @@
+{
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_R1_EXTERNAL_REVIEW_IDENTITY_BINDING",
+  "reviewed_head": "2c4f8e87dca43452ea7f5d643f81d6d6b56ee372",
+  "previous_qa": "942303143502621b89a7a6be66ac6ef550cf90ff",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "draft_digest": "bba1a430c058fb12bd52bf2c5de0e7b60c154cc77b96a3e99221d2ce85d75416",
+  "engineering": "PASS",
+  "evidence_readiness": "PASS_FOR_R1_SCOPE",
+  "research": "NOT_ESTABLISHED",
+  "A03": "PARTIAL",
+  "entry_git": {
+    "worktree_clean": true,
+    "index_empty": true,
+    "left_right": [
+      0,
+      0
+    ]
+  },
+  "developer_delivery": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_20261119_01",
+  "checks": [
+    {
+      "id": "launch_binding",
+      "status": "PASS",
+      "evidence": "三类记录中的两类分别核对版本和策略摘要，保留原启动保护。"
+    },
+    {
+      "id": "completion_binding",
+      "status": "PASS",
+      "evidence": "独立完成审查和计划使用同一身份，原覆盖和数据核对保留。"
+    },
+    {
+      "id": "v16_and_existing_guards",
+      "status": "PASS",
+      "evidence": "纯测试验证 v16 兼容，原引用/计划/替身保护仍有效。"
+    },
+    {
+      "id": "backends",
+      "status": "PASS",
+      "evidence": "E2/EMS 显式配置均通过，默认路径、候选和物理源文件字节保持。"
+    },
+    {
+      "id": "source_inputs_draft",
+      "status": "PASS",
+      "evidence": "591 项生产文件仅变动授权两项，原输入逐字节一致。按本机环境构造内存映射后计划验证通过。"
+    },
+    {
+      "id": "delivery_archive",
+      "status": "PASS",
+      "evidence": "当前30项和历史33项均与固定提交一致，旧包31个成员原位保持。"
+    },
+    {
+      "id": "delivery_count_receipt",
+      "status": "PARTIAL",
+      "evidence": "GP5-P2-R1-ARCHIVE-COUNT-01，不阻断整改验收。"
+    },
+    {
+      "id": "real_execution_and_recovery",
+      "status": "NOT_RUN",
+      "evidence": "复验仅做纯合同、静态摘要及字节检查。"
+    },
+    {
+      "id": "superiority",
+      "status": "NOT_APPLICABLE",
+      "evidence": "用户验收目标为原后端保留、新后端可用。"
+    }
+  ],
+  "issues": [
+    {
+      "id": "P2-PREP-EXTERNAL-POLICY-01",
+      "status": "CLOSED_IMPLEMENTATION_AND_PURE_RETEST",
+      "previous_status": "OPEN",
+      "location": "packaging_geometry_protocol.py:158-162",
+      "evidence": "外部授权和启动审查分别绑定现行 v17 身份。纯复验确认两类记录在匹配时通过、摘要或版本不一致时拒绝。既有保护保留。"
+    },
+    {
+      "id": "GP5-P2-COMPLETION-POLICY-01",
+      "status": "CLOSED_IMPLEMENTATION_AND_PURE_RETEST",
+      "previous_status": "OPEN",
+      "location": "geometry_kernel_completion.py:40-46",
+      "evidence": "完成记录并入 v17 身份等值检查。纯复验确认一致通过、不一致拒绝，既有覆盖核对和 v16 兼容。"
+    },
+    {
+      "id": "GP5-P2-R1-ARCHIVE-COUNT-01",
+      "status": "OPEN_NON_BLOCKING",
+      "severity": "LOW",
+      "location": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_20261119_01/delivery_checks.json",
+      "evidence": "开发收据写29，最终交付清单30项，逐项大小及摘要已按受审提交重新核对。",
+      "impact": "归档清点数字差一，未发现缺件或摘要不符。",
+      "minimal_fix": "后续新包收据用最终清单长度作为核对分母。历史收据原位保留。",
+      "verification": "按受审提交复核全部30项；以后封存前核对收据分母与最终清单一致。"
+    }
+  ]
+}

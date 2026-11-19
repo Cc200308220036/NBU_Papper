@@ -1,0 +1,53 @@
+{
+  "schema": "gp5_p2_snapshot_r2_qa_commands_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_PHASE_SNAPSHOT_ACCOUNTING_IMPLEMENTATION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "dce1979fa2a0fe1f3e35ab3062f1e604f1bf740c",
+  "developer_entry_head": "f761942f243c86b6128988f9ddc6e8f632aa70ff",
+  "old_source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "new_source_identity": "63f49409e61c90734c78a9fb1c9a22098bd7ea135285ade522475e998410a020",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "historical_plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "checks": [
+    {
+      "command": "git status --short --branch && git rev-parse HEAD @{upstream}",
+      "result": "0/0，工作区与暂存区干净"
+    },
+    {
+      "command": "git ls-remote --exit-code origin refs/heads/dev/jev-select",
+      "result": "dce1979fa2a0fe1f3e35ab3062f1e604f1bf740c"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit:<R2包目录> python -B - <unittest筛选包装器>",
+      "exit_code": 0,
+      "selected": "排除执行4+6订单的R2方法，其余11项及test_geometry_external_review_identity_r1的7项",
+      "passed": 18
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R2_QA_20261119_01/verify_and_probe.py",
+      "exit_code": 0,
+      "result": "14交付成员，593生产文件，19历史运行文件；父账本变化未被消费者拒绝"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src python -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R2_20261119_01/driver.py --help",
+      "exit_code": 0,
+      "result": "没有运行目录入口"
+    },
+    {
+      "command": "git diff --check f761942f HEAD",
+      "observed": "开发报告两行尾空格，关闭行尾空格检查后通过"
+    }
+  ],
+  "development_4_plus_6_rerun": "NOT_RUN_BY_QA",
+  "actual_qa": {
+    "orders": 0,
+    "monitor": 0,
+    "LP": 0,
+    "freeze": 0,
+    "recovery": 0,
+    "model": 0
+  }
+}

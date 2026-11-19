@@ -1,0 +1,45 @@
+{
+  "schema": "gp5_p2_snapshot_r2_qa_admission_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_PHASE_SNAPSHOT_ACCOUNTING_IMPLEMENTATION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "dce1979fa2a0fe1f3e35ab3062f1e604f1bf740c",
+  "developer_entry_head": "f761942f243c86b6128988f9ddc6e8f632aa70ff",
+  "old_source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "new_source_identity": "63f49409e61c90734c78a9fb1c9a22098bd7ea135285ade522475e998410a020",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "historical_plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "engineering_status": "PARTIAL",
+  "evidence_readiness": "OFFLINE_FIXTURE_AND_STATIC_GAPS_VERIFIED",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "NOT_READY_FOR_NEW_FREEZE_OR_REAL_ACCEPTANCE",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "next_unit": "GP5_P2_PHASE_SNAPSHOT_PARENT_EVIDENCE_CORRECTION_ONLY",
+  "admitted_scope": "READY_FOR_MINIMAL_OFFLINE_CORRECTION_ONLY",
+  "blockers": [
+    {
+      "id": "GP5-P2-R2-PARENT-EVIDENCE-01",
+      "requirement": "以受信的父结果与账本文件引用或等效的独立封存索引验证父来源；核对任务、计划、配置、父终态、前缀和摘要，缺证据时在恢复派发之前停止。保留普通 STARTED 拒绝以及证据记录语义。"
+    },
+    {
+      "id": "GP5-P2-R2-RUNTIME-INPUT-01",
+      "requirement": "提供明确的新冻结目录入口，真实模式依据该目录的独立新记录，不默认消费历史冻结或历史授权。"
+    }
+  ],
+  "later_gate": [
+    "独立验收整改",
+    "基于最终源码身份在原Linux机准备新冻结及空账本",
+    "取得同计划有效启动记录并完成四项联合预检"
+  ],
+  "scope": {
+    "assessment_entries": 8,
+    "solver_calls": 128,
+    "model_calls": 0
+  },
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED",
+  "real_calls_authorized": 0
+}

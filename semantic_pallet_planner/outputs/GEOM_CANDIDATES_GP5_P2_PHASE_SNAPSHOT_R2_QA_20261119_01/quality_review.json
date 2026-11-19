@@ -1,0 +1,75 @@
+{
+  "schema": "gp5_p2_snapshot_r2_qa_review_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_PHASE_SNAPSHOT_ACCOUNTING_IMPLEMENTATION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "dce1979fa2a0fe1f3e35ab3062f1e604f1bf740c",
+  "developer_entry_head": "f761942f243c86b6128988f9ddc6e8f632aa70ff",
+  "old_source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "new_source_identity": "63f49409e61c90734c78a9fb1c9a22098bd7ea135285ade522475e998410a020",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "historical_plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "engineering_status": "PARTIAL",
+  "evidence_readiness": "OFFLINE_FIXTURE_AND_STATIC_GAPS_VERIFIED",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "NOT_READY_FOR_NEW_FREEZE_OR_REAL_ACCEPTANCE",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "facts": {
+    "report_claim": "开发宣告快照恢复、授权绑定、账本及迁移纯测试全部通过；实际4+6未运行。",
+    "source": "新增 v1/v2 凭证、封存和恢复消费；通用 STARTED 拒绝保留，消费未回查父账目，CLI仍接历史固定目录。",
+    "archive": "14 个交付清单成员、593 个新生产文件、19 个历史运行文件核对；12项开发测试及13项单元回归按其原归档记录。",
+    "local_recheck": "复跑11项R2纯测试和7项身份回归；完整4+6替身订单循环及恢复单元未复跑。独立核对父账目关联及CLI。"
+  },
+  "acceptance": [
+    {
+      "id": "GP5-P2-DRIVER-AUTH-01",
+      "status": "PASS",
+      "boundary": "离线绑定"
+    },
+    {
+      "id": "GP5-P2-DRIVER-LEDGER-01",
+      "status": "PASS",
+      "boundary": "离线初始拒绝及归档增量"
+    },
+    {
+      "id": "GP5-P2-R1-PORTABILITY-01",
+      "status": "PASS",
+      "boundary": "选定纯测试在本机正常执行"
+    },
+    {
+      "id": "GP5-P2-DRIVER-DISPATCH-01",
+      "status": "PARTIAL",
+      "boundary": "开发归档4+6替身链路完成；父来源消费与CLI仍有缺口"
+    },
+    {
+      "id": "GP5_P2_REAL_PRIMARY_AND_RECOVERY",
+      "status": "NOT_RUN",
+      "primary": 4,
+      "recovery": 6
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP5-P2-R2-PARENT-EVIDENCE-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "location": "jev_select/geometry_order_accounting.py:69–94,100–140；jev_select/geometry_kernel_completion.py:54–67",
+      "observation": "封存时检查父账本正常返回，消费时只检查快照和凭证自摘要。父完成记录与父最终账本仅在凭证内声明，消费时无法核对。纯探针中凭证签出后替换父账本，验证仍接受。",
+      "expected": "恢复入口和完成审查可把快照凭证追溯至对应父主运行的最终完成记录及最终调用账目，缺失、漂移或失败应拒绝。",
+      "correction": "以受信的父结果与账本文件引用或等效的独立封存索引验证父来源；核对任务、计划、配置、父终态、前缀和摘要，缺证据时在恢复派发之前停止。保留普通 STARTED 拒绝以及证据记录语义。"
+    },
+    {
+      "id": "GP5-P2-R2-RUNTIME-INPUT-01",
+      "severity": "MEDIUM",
+      "blocking": true,
+      "location": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R2_20261119_01/driver.py:21, CLI末尾",
+      "observation": "函数 execute 接受运行目录，CLI 始终传入历史目录 R，--help 没有运行目录参数。测试从函数接口注入临时目录。",
+      "expected": "原机正常启动入口能显式接收新冻结包，旧身份和错误目录在首派发前失败。",
+      "correction": "提供明确的新冻结目录入口，真实模式依据该目录的独立新记录，不默认消费历史冻结或历史授权。"
+    }
+  ],
+  "stopped": true
+}

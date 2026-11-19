@@ -1,0 +1,79 @@
+{
+  "schema": "gp5_p2_offline_driver_r1_qa_review_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_OFFLINE_DRIVER_CORRECTION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "02655773a561fb68a458d2c815cab420dada0e77",
+  "developer_entry_head": "0a2275611109b988f3fb9623344a2bce1d6eba6c",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "engineering_status": "R1_DELIVERED_ACCEPTED_AS_PARTIAL",
+  "evidence_readiness": "OFFLINE_PROBES_CONFIRMED",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "CONDITIONAL",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "facts": {
+    "report_claim": "AUTH、LEDGER离线PASS，DISPATCH完成10入口替身编排与STARTED阻断取证，仍PARTIAL。",
+    "source": "R1仅新增独立包；驱动同次主运行捕获快照，现有账本拒绝STARTED。显式授权路径未独立冻结预期SHA。",
+    "archive": "固定提交9清单成员和19原运行包文件逐项吻合，生产身份仍由原591项清单核对，零账本不变。",
+    "local_recheck": "直接纯测试12通过1环境错误；代入归档订单环境后受控13项通过。独立探针复现授权引用和三个相位账本行为。"
+  },
+  "acceptance": [
+    {
+      "id": "GP5-P2-DRIVER-AUTH-01",
+      "status": "PARTIAL",
+      "evidence": "字典输入已校验路径和固定SHA；显式--authorization只固定路径"
+    },
+    {
+      "id": "GP5-P2-DRIVER-LEDGER-01",
+      "status": "PASS",
+      "boundary": "离线；首次空账本、后续增量和最终分母"
+    },
+    {
+      "id": "GP5-P2-DRIVER-DISPATCH-01",
+      "status": "PARTIAL",
+      "evidence": "替身4+6，三相位在现有账本仍拒绝恢复；最小设计材料已交"
+    },
+    {
+      "id": "GP5_P2_REAL_PRIMARY_AND_RECOVERY",
+      "status": "NOT_RUN",
+      "primary": 4,
+      "recovery": 6
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL"
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP5-P2-DRIVER-AUTH-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "location": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_R1_20261119_01/driver.py:42–59,160–164",
+      "observed": "同一路径换字节且同步更新 launch SHA 后，显式路径模式进入四配置预检。",
+      "fix": "要求来自独立来源的预期路径和SHA；历史授权不作实际运行输入。"
+    },
+    {
+      "id": "GP5-P2-DRIVER-DISPATCH-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "location": "geometry_order_accounting.py:32–53；R1 driver.py:247–298",
+      "observed": "正式账本在回调时处于STARTED；驱动当前到四项主运行之后才发现不可恢复。替身写RETURNED绕过此状态。",
+      "fix": "新增经版本路由的相位快照凭证及恢复入口，绑定父调用真实成功结果后才可消费。无支持时首派发前拒绝。"
+    },
+    {
+      "id": "GP5-P2-R1-PORTABILITY-01",
+      "severity": "LOW",
+      "blocking": false,
+      "location": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_R1_20261119_01/probe_dispatch_01.py:73",
+      "observed": "纯探针仍读取实际订单环境，macOS直接复跑出现1项geometry_order_plan_identity。",
+      "fix": "纯测试显式注入归档环境，真实预检独立保留。"
+    }
+  ],
+  "stopped": true
+}

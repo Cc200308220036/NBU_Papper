@@ -1,0 +1,57 @@
+{
+  "schema": "gp5_p2_offline_driver_r1_qa_commands_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_OFFLINE_DRIVER_CORRECTION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "02655773a561fb68a458d2c815cab420dada0e77",
+  "developer_entry_head": "0a2275611109b988f3fb9623344a2bce1d6eba6c",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "checks": [
+    {
+      "command": "git status --short --branch && git rev-parse HEAD @{upstream} && git diff --cached --stat",
+      "observed": "0/0，工作区及暂存区干净"
+    },
+    {
+      "command": "git ls-remote --exit-code origin refs/heads/dev/jev-select",
+      "observed": "02655773a561fb68a458d2c815cab420dada0e77"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_R1_20261119_01/test_driver.py",
+      "exit_code": 1,
+      "passed": 12,
+      "error": "geometry_order_plan_identity on macOS"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_R1_QA_20261119_01/verify_and_probe.py",
+      "exit_code": 0,
+      "observed": "9清单/19原运行文件；三相位拒绝复现；显式授权摘要漂移进入预检"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src:<R1 directory> python -B - <inline unittest wrapper>",
+      "passed": 13,
+      "exit_code": 0,
+      "boundary": "仅在包装器以host_preflight.json实际订单环境替换 p.environment；不据此声称原机预检"
+    },
+    {
+      "command": "python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FROZEN_PRELAUNCH_QA_20261119_01/verify_frozen_archive.py",
+      "exit_code": 0,
+      "observed": "源码集合591，原冻结与正常分母不变"
+    },
+    {
+      "command": "git diff --check 0a227561 HEAD",
+      "observed": "开发报告两行 Markdown 换行尾空格；生产无变更；忽略尾空格后检查通过"
+    }
+  ],
+  "actual_this_qa": {
+    "order_dispatch": 0,
+    "monitor_assessment": 0,
+    "LP": 0,
+    "freeze": 0,
+    "real_recovery": 0,
+    "model": 0
+  }
+}

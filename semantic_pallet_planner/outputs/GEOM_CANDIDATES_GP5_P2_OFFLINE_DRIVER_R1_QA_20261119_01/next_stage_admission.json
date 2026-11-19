@@ -1,0 +1,36 @@
+{
+  "schema": "gp5_p2_offline_driver_r1_qa_admission_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_OFFLINE_DRIVER_CORRECTION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "02655773a561fb68a458d2c815cab420dada0e77",
+  "developer_entry_head": "0a2275611109b988f3fb9623344a2bce1d6eba6c",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "engineering_status": "R1_DELIVERED_ACCEPTED_AS_PARTIAL",
+  "evidence_readiness": "OFFLINE_PROBES_CONFIRMED",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "CONDITIONAL",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "next_unit": "GP5_P2_PHASE_SNAPSHOT_ACCOUNTING_IMPLEMENTATION_ONLY",
+  "allowed_now": "最小生产恢复凭证接入、显式授权绑定补齐及离线回归；新身份差异和准备说明",
+  "conditions": [
+    "采用独立版本的相位凭证及显式路由，不放宽旧账本Schema和普通STARTED拒绝",
+    "主运行真实返回后才可使相位凭证成为可消费记录；父运行、独立工作副本和账本不可混用",
+    "授权来源须独立绑定路径和SHA；无快照能力或显式授权不匹配时首派发前停止",
+    "新源码身份在实现后单列，旧冻结、旧授权和旧收据原位保留"
+  ],
+  "next_real_gate": "另行布置有界真实验收后，准备原Linux机的新冻结、新零账本及同计划独立启动记录，四项联合预检完成方可派发。",
+  "limits": {
+    "assessment_entries": 8,
+    "solver_calls": 128,
+    "model_calls": 0
+  },
+  "real_calls_authorized_this_qa": 0,
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED"
+}

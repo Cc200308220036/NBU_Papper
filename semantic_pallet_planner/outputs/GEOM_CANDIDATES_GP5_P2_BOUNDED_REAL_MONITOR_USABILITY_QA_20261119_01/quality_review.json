@@ -1,0 +1,100 @@
+{
+  "schema": "gp5_p2_bounded_real_monitor_quality_review_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_BOUNDED_REAL_MONITOR_USABILITY",
+  "reviewed_head": "1ff6d93c20a747ab348071e01ef682266b571f0c",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "draft_digest": "bba1a430c058fb12bd52bf2c5de0e7b60c154cc77b96a3e99221d2ce85d75416",
+  "engineering_status": "PREPARATION_PASS_REAL_EXECUTION_NOT_RUN",
+  "evidence_readiness": "PREPARATION_VERIFIED_REAL_EVIDENCE_MISSING",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "CONDITIONAL",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "contract": "docs/02_阶段实施方案/几何规划模块/几何候选器GP5-P1协议实现与P2启动合同补充_20261117_01.md",
+  "scope": "静态源码、Git 与保存字节核对，以及标准库纯检查",
+  "developer_entry_head": "942303143502621b89a7a6be66ac6ef550cf90ff",
+  "developer_delivery_head": "2c4f8e87dca43452ea7f5d643f81d6d6b56ee372",
+  "facts": {
+    "developer_claim": "R1 修复两处 v17 身份绑定，四主项和六恢复只交付草案，真实执行 NOT_RUN。",
+    "source": "本地及远端入场头与上轮 QA 一致，591 个生产文件匹配。E2/EMS 可选，保留公共订单、选后监测、提交与恢复。DRAFT 被启动门拒绝。",
+    "archive": "R1 清单 30 项，上轮 QA 清单 7 项。原 K01/K02 字节、4+6 分母和 8/128 预算提案核实。只找到 DRAFT、历史 DEVELOPMENT_READY 和 COUNTER_TEST。",
+    "local_recheck": "只运行标准库静态证据核对和 Git 查询。上轮七项纯测试作为归档证据引用，本轮不重跑。"
+  },
+  "acceptance": [
+    {
+      "id": "P2-PREP-EXTERNAL-POLICY-01",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_QA_20261119_01/quality_review.json",
+      "basis": "上轮关闭，源码无漂移"
+    },
+    {
+      "id": "GP5-P2-COMPLETION-POLICY-01",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_QA_20261119_01/quality_review.json",
+      "basis": "上轮关闭，源码无漂移"
+    },
+    {
+      "id": "P2_DRAFT_AND_FULL_DENOMINATORS",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_BOUNDED_REAL_MONITOR_USABILITY_QA_20261119_01/command_receipts.json"
+    },
+    {
+      "id": "P2_REAL_PRIMARY",
+      "status": "NOT_RUN",
+      "planned": 4,
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_20261119_01/run_denominator_NOT_RUN.json"
+    },
+    {
+      "id": "P2_REAL_RECOVERY",
+      "status": "NOT_RUN",
+      "planned": 6,
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_20261119_01/recovery_DRAFT.json"
+    },
+    {
+      "id": "P2_REAL_COUNTER_AND_COMPLETION",
+      "status": "NOT_RUN",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_20261119_01/call_accounting.json"
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL",
+      "basis": "限定真实监测、真实恢复及公共负向剩余证据缺失"
+    },
+    {
+      "id": "RANKING",
+      "status": "NOT_APPLICABLE",
+      "basis": "仅验证两后端可用性"
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP5-P2-BOUNDED-REAL-EVIDENCE-01",
+      "severity": "BLOCKING_FOR_COMPLETION",
+      "blocking": true,
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_20261119_01/acceptance_plan_DRAFT.json",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_20261119_01/call_accounting.json",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_20261119_01/recovery_DRAFT.json"
+      ],
+      "observed": "当前仅可核实草案及零调用账目，缺冻结启动与真实结果。",
+      "impact": "当前派发与真实验收不可关闭，A03 PARTIAL。",
+      "resolution": "先满足放行条件，再按固定4+6归档真实监测、恢复、账本及独立完成审查。"
+    },
+    {
+      "id": "GP5-P2-R1-ARCHIVE-COUNT-01",
+      "severity": "LOW",
+      "blocking": false,
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_20261119_01/delivery_checks.json",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_20261119_01/delivery_manifest.json"
+      ],
+      "observed": "历史收据写29，最终清单30项全符。",
+      "resolution": "新包按最终清单记录，既有收据原位保留。"
+    }
+  ],
+  "stopped": true
+}

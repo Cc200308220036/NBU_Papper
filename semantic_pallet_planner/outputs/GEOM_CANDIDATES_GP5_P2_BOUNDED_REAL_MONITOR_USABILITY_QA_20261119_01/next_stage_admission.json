@@ -1,0 +1,62 @@
+{
+  "schema": "gp5_p2_bounded_real_monitor_admission_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_BOUNDED_REAL_MONITOR_USABILITY",
+  "reviewed_head": "1ff6d93c20a747ab348071e01ef682266b571f0c",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "draft_digest": "bba1a430c058fb12bd52bf2c5de0e7b60c154cc77b96a3e99221d2ce85d75416",
+  "engineering_status": "PREPARATION_PASS_REAL_EXECUTION_NOT_RUN",
+  "evidence_readiness": "PREPARATION_VERIFIED_REAL_EVIDENCE_MISSING",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "CONDITIONAL",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "execution_authorized": false,
+  "authorized_real_calls": 0,
+  "prerequisites": [
+    {
+      "requirement": "原后端保留且两个 v17 身份绑定已验",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_QA_20261119_01/quality_review.json"
+    },
+    {
+      "requirement": "固定四项主运行、六次恢复、原件与限额提案",
+      "status": "PASS_DRAFT",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_20261119_01/required_coverage.json"
+    },
+    {
+      "requirement": "用户明确授权限定真实执行和限额",
+      "status": "MISSING_IN_REVIEWED_DELIVERY"
+    },
+    {
+      "requirement": "实际运行机的独立新运行根、FROZEN 计划、匹配监测身份及共享计数账本",
+      "status": "NOT_RUN"
+    },
+    {
+      "requirement": "匹配冻结计划的独立启动审查和有效启动记录",
+      "status": "MISSING_IN_REVIEWED_DELIVERY"
+    }
+  ],
+  "allowed_now": "只读交接和无实际执行的准备",
+  "acceptance_after_authorization": "按固定4+6交回真实结果，由独立QA另行审查。",
+  "proposal": {
+    "primary": 4,
+    "recovery": 6,
+    "assessment_entries": 8,
+    "solver_calls": 128,
+    "model_calls": 0
+  },
+  "excluded": [
+    "K03",
+    "公共真实负向",
+    "正式八单",
+    "GP6",
+    "排名",
+    "模型调用"
+  ],
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED"
+}

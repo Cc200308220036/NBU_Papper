@@ -1,0 +1,64 @@
+{
+  "schema": "gp5_p2_bounded_real_monitor_qa_checks_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_BOUNDED_REAL_MONITOR_USABILITY",
+  "reviewed_head": "1ff6d93c20a747ab348071e01ef682266b571f0c",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "draft_digest": "bba1a430c058fb12bd52bf2c5de0e7b60c154cc77b96a3e99221d2ce85d75416",
+  "checks": [
+    {
+      "commands": [
+        "git status --porcelain=v1 --untracked-files=all",
+        "git rev-parse HEAD @{u}",
+        "git rev-list --left-right --count HEAD...@{upstream}",
+        "git diff --cached --name-only",
+        "git diff --name-status 1ff6d93c20a747ab348071e01ef682266b571f0c HEAD"
+      ],
+      "status": "PASS",
+      "observed": "0/0，工作区和暂存区干净，无后续差异"
+    },
+    {
+      "command": "git ls-remote --exit-code origin refs/heads/dev/jev-select",
+      "status": "PASS",
+      "observed_sha": "1ff6d93c20a747ab348071e01ef682266b571f0c",
+      "note": "默认沙箱 SSH 不可达，获准后只读查询退出0。"
+    },
+    {
+      "command": "python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_BOUNDED_REAL_MONITOR_USABILITY_QA_20261119_01/verify_saved_evidence.py",
+      "exit_code": 0,
+      "observed": {
+        "parent_qa_manifest_members": 7,
+        "developer_manifest_members": 30,
+        "production_files": 591,
+        "raw_inputs_unchanged": 2,
+        "primary_not_run": 4,
+        "recovery_not_run": 6,
+        "effective_receipts": 0
+      }
+    },
+    {
+      "command": "rg -l --hidden --no-ignore -g '*.json' '\"version\"[[:space:]]*:[[:space:]]*\"(geometry_kernel_launch_v2|geometry_real_kernel_receipt_v3|geometry_kernel_completion_review_v2|geometry_scope_authorization_v2|geometry_scope_review_v2|geometry_call_ledger_v1|geometry_order_plan_v2)\"' semantic_pallet_planner/outputs outputs",
+      "status": "PASS",
+      "observed_top_level_records": {
+        "P2_DRAFT": 2,
+        "DEVELOPMENT_READY": 38,
+        "COUNTER_TEST": 6,
+        "real_launch_or_completion_or_external_gate": 0
+      },
+      "scope": "两处本地 outputs，含忽略目录的 JSON。对匹配文件按顶层 version/scope/status/evidence 分组。"
+    }
+  ],
+  "local_business_calls": {
+    "order": 0,
+    "candidate_generation": 0,
+    "monitor": 0,
+    "LP": 0,
+    "freeze": 0,
+    "resume": 0,
+    "model": 0
+  },
+  "previous_pure_tests": "上轮 7 项归档 PASS，本轮 NOT_RUN"
+}

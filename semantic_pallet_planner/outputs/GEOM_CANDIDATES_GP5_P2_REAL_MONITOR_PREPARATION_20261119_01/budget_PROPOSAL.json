@@ -1,0 +1,33 @@
+{
+  "status": "PROPOSAL_NOT_AUTHORIZATION",
+  "contract_caps": {
+    "assessment_entries": 12,
+    "solver_calls": 512
+  },
+  "proposed_limits": {
+    "assessment_entries": 8,
+    "solver_calls": 128
+  },
+  "fresh": {
+    "jobs": 4,
+    "assessment_entries": 6,
+    "commits": 6,
+    "expected_stable_solver_calls": 56
+  },
+  "recovery": {
+    "resumes": 6,
+    "assessment_entries": 2,
+    "commits": 4,
+    "monitor_reuses": 2,
+    "generation_publication_selection": 0,
+    "expected_stable_solver_calls": 12
+  },
+  "combined_expected_stable_solver_calls": 68,
+  "derivation": "stable solve_network uses physical_feasibility + max_network_interior + one LP per contact vertex; single floor network4 vertices =>6 LP; upper two-box network8 =>10 LP plus baseline floor6 =>16 per upper assessment; fresh2*(K01 6 + K02 floor6 + upper16)=56; recovery2*6=12",
+  "solver_uncertainty": "static estimate only, numerical branches may terminate or differ; no LP executed.128 includes bounded headroom, never allows extra jobs/assessments",
+  "K03": "OUTSIDE_PROPOSAL_NOT_RUN",
+  "public_negative_E2E": "OUTSIDE_PROPOSAL_NOT_RUN",
+  "old_test_double_allowance_carryover": false,
+  "actual_real_calls": 0,
+  "stop": "reserve each kind before call; cap exhaustion stops without retry/increase; ERROR/STARTED preserved"
+}

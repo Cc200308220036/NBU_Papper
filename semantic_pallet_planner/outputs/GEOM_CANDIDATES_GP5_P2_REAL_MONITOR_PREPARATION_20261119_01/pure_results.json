@@ -1,0 +1,215 @@
+{
+  "status": "PASS",
+  "methods_run": 8,
+  "failures": [],
+  "errors": [],
+  "observations": [
+    {
+      "case": "cap assessment_entries",
+      "type": "JevSelectError",
+      "code": "geometry_assessment_entries_budget_exhausted",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "cap solver_calls",
+      "type": "JevSelectError",
+      "code": "geometry_solver_calls_budget_exhausted",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "STARTED no retry",
+      "type": "JevSelectError",
+      "code": "geometry_meter_unknown_call",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "counter drift",
+      "type": "JevSelectError",
+      "code": "geometry_meter_count_drift",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "DRAFT run_order_job",
+      "type": "JevSelectError",
+      "code": "geometry_order_draft_not_executable",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "launch source_identity",
+      "type": "JevSelectError",
+      "code": "geometry_admission_binding",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "launch environment_digest",
+      "type": "JevSelectError",
+      "code": "geometry_admission_binding",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "launch monitor_digest",
+      "type": "JevSelectError",
+      "code": "geometry_admission_binding",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "launch publication_policy_digest",
+      "type": "JevSelectError",
+      "code": "geometry_admission_binding",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "plan source_identity",
+      "type": "JevSelectError",
+      "code": "geometry_order_plan_identity",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "plan environment_digest",
+      "type": "JevSelectError",
+      "code": "geometry_order_plan_identity",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "launch cannot consume own completion",
+      "type": "JevSelectError",
+      "code": "geometry_launch_not_completion",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "metered_run forwarding",
+      "status": "PASS_FAKE_TARGETS_ONLY",
+      "actual_assessment": 0,
+      "actual_LP": 0,
+      "temporary_ledger_exported": false
+    },
+    {
+      "case": "missing authorization",
+      "type": "JevSelectError",
+      "code": "geometry_missing_receipt",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "mismatched authorization",
+      "type": "JevSelectError",
+      "code": "geometry_external_approval",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "missing review",
+      "type": "JevSelectError",
+      "code": "geometry_missing_receipt",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "mismatched review",
+      "type": "JevSelectError",
+      "code": "geometry_external_approval",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "absent review field",
+      "type": "JevSelectError",
+      "code": "invalid_geometry_kernel_launch_v2",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "absent authorization field",
+      "type": "JevSelectError",
+      "code": "invalid_geometry_kernel_launch_v2",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "existing completion pure contract",
+      "coverage_version": "v16 original regression; current v17 coverage independently checked",
+      "negative_cases": [
+        {
+          "case": "missing",
+          "result": "REJECTED",
+          "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+        },
+        {
+          "case": "duplicate",
+          "result": "REJECTED",
+          "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+        },
+        {
+          "case": "missing_recovery",
+          "result": "REJECTED",
+          "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+        },
+        {
+          "case": "technical_stop",
+          "result": "REJECTED",
+          "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+        },
+        {
+          "case": "only_error",
+          "result": "REJECTED",
+          "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+        },
+        {
+          "case": "no_commit",
+          "result": "REJECTED",
+          "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+        },
+        {
+          "case": "wrong_pose",
+          "result": "REJECTED",
+          "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+        },
+        {
+          "case": "no_recovery_commit",
+          "result": "REJECTED",
+          "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+        },
+        {
+          "case": "wrong_review",
+          "result": "REJECTED",
+          "evidence": "PURE_CONTRACT_NOT_REAL_RECEIPT"
+        }
+      ],
+      "genuine_record_callback": "NOOP_COVERAGE_TEST_ONLY_NOT_REAL_EVIDENCE"
+    },
+    {
+      "case": "marked substitute counts",
+      "type": "JevSelectError",
+      "code": "geometry_real_counts",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "counter fixture not real evidence",
+      "type": "JevSelectError",
+      "code": "geometry_real_counter_log",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "historical substitute record not completion receipt",
+      "type": "JevSelectError",
+      "code": "invalid_geometry_real_kernel_receipt_v3",
+      "status": "EXPECTED_REJECTION"
+    }
+  ],
+  "contract_gaps": [
+    {
+      "id": "P2-PREP-EXTERNAL-POLICY-01",
+      "document": "authorization",
+      "observed": "wrong publication_policy_digest accepted when schema valid and plan_digest matches",
+      "scope": "plan and launch current source/policy are still checked; external document redundant policy field not cross-checked",
+      "suggestion": "QA decide whether require identity_fields(plan) equality for both external docs; no production change in this task"
+    },
+    {
+      "id": "P2-PREP-EXTERNAL-POLICY-01",
+      "document": "review",
+      "observed": "wrong publication_policy_digest accepted when schema valid and plan_digest matches",
+      "scope": "plan and launch current source/policy are still checked; external document redundant policy field not cross-checked",
+      "suggestion": "QA decide whether require identity_fields(plan) equality for both external docs; no production change in this task"
+    }
+  ],
+  "all_fixture_files": "TEMPORARY_DELETED",
+  "valid_approvals_issued": 0,
+  "actual_real_assessment": 0,
+  "actual_LP": 0,
+  "actual_freeze": 0,
+  "actual_order_or_resume_dispatch": 0
+}

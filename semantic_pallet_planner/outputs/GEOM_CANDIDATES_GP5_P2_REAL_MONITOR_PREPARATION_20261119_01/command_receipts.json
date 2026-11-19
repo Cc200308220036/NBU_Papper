@@ -1,0 +1,33 @@
+{
+  "commands": [
+    {
+      "command": "git status --short; git diff --cached --stat; git branch --show-current; git rev-parse --abbrev-ref --symbolic-full-name @{u}; rg --files -g AGENTS.md",
+      "exit": 0,
+      "result": "CLEAN worktree/index; dev/jev-select tracks origin/dev/jev-select; root AGENTS only"
+    },
+    {
+      "command": "git pull --ff-only",
+      "sandbox_escalated": true,
+      "exit": 0,
+      "result": "FAST_FORWARD 45384dd1..46dd8c0699d0c57875d4204c78dc3a7640b2015d"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/anaconda3/bin/python3\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_REAL_MONITOR_PREPARATION_20261119_01/prepare.py",
+      "exit": 0,
+      "result": "source591, QA manifest, saved run29/6 recovery, DRAFT4+6, inventory, budget; no dispatch/freeze"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/anaconda3/bin/python3\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_REAL_MONITOR_PREPARATION_20261119_01/test_offline_gates.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_REAL_MONITOR_PREPARATION_20261119_01/pure_tests.log 2>&1",
+      "exit": 0,
+      "result": "8 pure methods PASS; external-policy probe exposes gap; no real targets called"
+    },
+    {
+      "command": "git diff --check; python - (inline final source set/SHA, manifest SHA/size, report links, DRAFT4/recovery6 and gap receipt checks)",
+      "exit": 0,
+      "receipt": "delivery_checks.json"
+    }
+  ],
+  "real_calls": 0,
+  "authorization": "PREPARATION_ONLY",
+  "effective_approvals_issued": 0
+}

@@ -1,0 +1,22 @@
+{
+  "issues": [
+    {
+      "id": "P2-PREP-EXTERNAL-POLICY-01",
+      "document": "authorization",
+      "observed": "wrong publication_policy_digest accepted when schema valid and plan_digest matches",
+      "scope": "plan and launch current source/policy are still checked; external document redundant policy field not cross-checked",
+      "suggestion": "QA decide whether require identity_fields(plan) equality for both external docs; no production change in this task"
+    },
+    {
+      "id": "P2-PREP-EXTERNAL-POLICY-01",
+      "document": "review",
+      "observed": "wrong publication_policy_digest accepted when schema valid and plan_digest matches",
+      "scope": "plan and launch current source/policy are still checked; external document redundant policy field not cross-checked",
+      "suggestion": "QA decide whether require identity_fields(plan) equality for both external docs; no production change in this task"
+    }
+  ],
+  "overall": "PARTIAL_CONTRACT_REVIEW_REQUIRED",
+  "dispatch": "NOT_READY",
+  "production_change_authorized": false,
+  "minimum_proposal": "QA determine whether external authorization/review identity_fields must equal plan; if needed authorize separate minimal validation-only repair; do not edit production here"
+}

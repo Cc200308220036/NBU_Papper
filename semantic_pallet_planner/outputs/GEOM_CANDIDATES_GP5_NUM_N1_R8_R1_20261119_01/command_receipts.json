@@ -1,0 +1,43 @@
+{
+  "commands": [
+    {
+      "command": "git status --short; git diff --cached --stat; git branch --show-current; git rev-parse --abbrev-ref --symbolic-full-name @{u}; git log -3 --oneline; rg --files -g AGENTS.md",
+      "exit": 0,
+      "result": "clean dev/jev-select tracks origin/dev/jev-select; root AGENTS.md only"
+    },
+    {
+      "command": "git pull --ff-only",
+      "sandbox_escalated": true,
+      "exit": 0,
+      "result": "FAST_FORWARD 4838a2cd..f6f28fbd"
+    },
+    {
+      "command": "python /tmp/build_r8r1.py",
+      "exit": 0,
+      "purpose": "create independent test-layer package; no business execution"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/anaconda3/bin/python3\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_R1_20261119_01/seal_inputs.py",
+      "exit": 0,
+      "stdout": "PASS independent R8-R1 seal; historical 2977 current 699 source591 configs8; no dispatch"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/anaconda3/bin/python3\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_R1_20261119_01/test_timing_lineage.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_R1_20261119_01/timing_lineage_tests.log 2>&1",
+      "exit": 0,
+      "methods": 5
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/anaconda3/bin/python3\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_R1_20261119_01/test_scope.py -f > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_R1_20261119_01/scope_tests.log 2>&1",
+      "exit": 0,
+      "methods": 6
+    },
+    {
+      "command": "git diff --check; python - (inline delivery manifest SHA/size, report links, 35-row denominator, original guard-byte and absent-run-root checks)",
+      "exit": 0,
+      "result": "PASS 40 manifest members; links; 29+6; original guard bytes; absent runtime root",
+      "receipt": "delivery_checks.json"
+    }
+  ],
+  "runtime": "NOT_RUN",
+  "implicit_retries": 0
+}

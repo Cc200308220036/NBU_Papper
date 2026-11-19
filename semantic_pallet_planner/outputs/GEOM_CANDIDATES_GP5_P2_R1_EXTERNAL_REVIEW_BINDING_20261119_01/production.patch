@@ -1,0 +1,26 @@
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_kernel_completion.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_kernel_completion.py
+index d8f0ecd2..c96ac193 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_kernel_completion.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_kernel_completion.py
+@@ -41,7 +41,7 @@ def validate_completion(receipt,plan,log,validate_record):
+     """validate_record must perform genuine identity/durable checks, including resumes."""
+     coverage=required_coverage(plan)
+     review=read_reference(receipt['review']);validate_schema(wire(plan,'geometry_kernel_completion_review_v1'),review)
+-    expected={'acceptance_plan_digest':digest(plan),'records_digest':digest(receipt['records']),
++    expected={**identity_fields(plan),'acceptance_plan_digest':digest(plan),'records_digest':digest(receipt['records']),
+         'recovery_digest':digest(receipt['recovery']),'counter_log':receipt['counter_log'],'coverage_digest':digest(coverage)}
+     require(all(review[k]==v for k,v in expected.items()),'geometry_completion_review_binding')
+     require(len(receipt['records'])==4 and len({r['sha256'] for r in receipt['records']})==4,'geometry_completion_unique_records')
+diff --git a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py
+index c2ba1cc0..a3df615f 100644
+--- a/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py
++++ b/semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py
+@@ -158,6 +158,8 @@ def validate_admission(plan,monitor_snapshot,admission,kernel_receipt=None):
+     for doc in (authorization,review):
+         require(doc.get('scope')==plan['scope'] and doc.get('plan_digest')==digest(plan)
+             and doc.get('status')=='APPROVED','geometry_external_approval')
++        require(all(doc.get(k)==v for k,v in identity_fields(plan).items()),
++            'geometry_external_approval_identity')
+     if plan['scope']==ACCEPTANCE:
+         require(kernel_receipt is None,'geometry_launch_not_completion')
+     else:validate_real_kernel_receipt(kernel_receipt,plan,monitor_snapshot)

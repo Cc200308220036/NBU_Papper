@@ -158,6 +158,8 @@ def validate_admission(plan,monitor_snapshot,admission,kernel_receipt=None):
     for doc in (authorization,review):
         require(doc.get('scope')==plan['scope'] and doc.get('plan_digest')==digest(plan)
             and doc.get('status')=='APPROVED','geometry_external_approval')
+        require(all(doc.get(k)==v for k,v in identity_fields(plan).items()),
+            'geometry_external_approval_identity')
     if plan['scope']==ACCEPTANCE:
         require(kernel_receipt is None,'geometry_launch_not_completion')
     else:validate_real_kernel_receipt(kernel_receipt,plan,monitor_snapshot)

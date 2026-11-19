@@ -41,7 +41,7 @@ def validate_completion(receipt,plan,log,validate_record):
     """validate_record must perform genuine identity/durable checks, including resumes."""
     coverage=required_coverage(plan)
     review=read_reference(receipt['review']);validate_schema(wire(plan,'geometry_kernel_completion_review_v1'),review)
-    expected={'acceptance_plan_digest':digest(plan),'records_digest':digest(receipt['records']),
+    expected={**identity_fields(plan),'acceptance_plan_digest':digest(plan),'records_digest':digest(receipt['records']),
         'recovery_digest':digest(receipt['recovery']),'counter_log':receipt['counter_log'],'coverage_digest':digest(coverage)}
     require(all(review[k]==v for k,v in expected.items()),'geometry_completion_review_binding')
     require(len(receipt['records'])==4 and len({r['sha256'] for r in receipt['records']})==4,'geometry_completion_unique_records')

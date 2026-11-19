@@ -1,0 +1,47 @@
+{
+  "commands": [
+    {
+      "command": "git status --short; git diff --cached --stat; git rev-parse HEAD; git branch --show-current; git rev-parse --abbrev-ref --symbolic-full-name @{u}; rg --files -g AGENTS.md",
+      "exit": 0,
+      "result": "34bc67d2, clean worktree/index, dev/jev-select tracking origin/dev/jev-select; root AGENTS only"
+    },
+    {
+      "command": "git -c core.sshCommand='ssh -o ConnectTimeout=20 -o ConnectionAttempts=1' pull --ff-only",
+      "sandbox_escalated": true,
+      "exit": 0,
+      "result": "FAST_FORWARD 34bc67d2..94230314"
+    },
+    {
+      "command": "git merge-base --is-ancestor 34bc67d2a3b37a0a6a05d8cfefa478f916f4e73d HEAD; git merge-base --is-ancestor 942303143502621b89a7a6be66ac6ef550cf90ff HEAD; git diff --name-only 942303143502621b89a7a6be66ac6ef550cf90ff HEAD",
+      "exit": 0,
+      "result": "both ancestors; no later difference"
+    },
+    {
+      "command": "python - (inline original591 source comparison and historical package SHA inventory)",
+      "exit": 0,
+      "result": "591 match; 31 historical package members preserved"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/anaconda3/bin/python3\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_20261119_01/run_pure.py > semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_20261119_01/pure_tests.log 2>&1",
+      "exit": 0,
+      "result": "7 methods PASS; includes original v16 nine-negative pure regression; no business dispatch"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/anaconda3/bin/python3\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_R1_EXTERNAL_REVIEW_BINDING_20261119_01/prepare_draft.py",
+      "exit": 0,
+      "result": "new source591 with exactly2 production changes; new DRAFT4/recovery6, raw inputs unchanged, proposal8/128; all NOT_RUN"
+    },
+    {
+      "command": "python /tmp/deliver_p2r1.py (fixed-revision historical manifests verification and delivery generation)",
+      "exit": 0,
+      "result": "original development manifest27 and QA manifest6 verified; no historical re-signing"
+    },
+    {
+      "command": "git diff --check; git diff -- (two production files); python - (inline manifest SHA/size, historical31 SHA, report links, raw inputs, new DRAFT identity and4/6 denominator verification)",
+      "exit": 0,
+      "receipt": "delivery_checks.json"
+    }
+  ],
+  "previous_turn_network_failures": "previous attempt stopped before changes; not experiment retries",
+  "real_calls": 0
+}

@@ -11,7 +11,7 @@ from pathlib import Path
 from .geometry_native_protocol import wire, is_native, identity_fields, config_fields
 from .contracts import JevSelectError, canonical, digest, validate_schema
 from .geometry_runtime_contracts import environment, same_native
-from .packaging_versions import GEOMETRY_BACKENDS
+from .packaging_versions import GEOMETRY_BACKENDS, DEFAULT_GEOMETRY_BACKEND
 
 DEVELOPMENT='DEVELOPMENT_SYNTHETIC_ONLY'
 ACCEPTANCE='KERNEL_ACCEPTANCE_SYNTHETIC_ONLY'
@@ -104,6 +104,32 @@ def prepare_order_plan(adapted,*,data_identity,scope=ORDER,native=False):
     return plan
 
 
+def prepare_operational_order_plan(adapted,*,data_identity,scope=DEVELOPMENT,backend=None,method=None,native=True):
+    """Operational single-backend order plan entry point; defaults to EMS when backend is omitted."""
+    from .candidate_backends import _identity
+    from .packaging_runtime import METHODS
+    require(scope in SCOPES and 1<=len(adapted)<=2,'geometry_order_plan_scope')
+    selected_backend=DEFAULT_GEOMETRY_BACKEND if backend is None else backend
+    require(selected_backend in GEOMETRY_BACKENDS,'unknown_geometry_backend')
+    allowed_methods=METHODS[1:] if scope==ACCEPTANCE else METHODS
+    selected_methods=(allowed_methods[:1] if method is None else (method,))
+    require(all(m in allowed_methods for m in selected_methods),'geometry_order_method')
+    tasks=[copy.deepcopy(t['identity']) for t in adapted]
+    jobs=[{'job_id':'J%02d'%i,'task_id':t['task_id'],'backend':selected_backend,'method':m}
+        for i,(t,m) in enumerate((t,m) for t in tasks for m in selected_methods)]
+    plan={'version':'geometry_order_plan_v1','status':'DEVELOPMENT_READY' if scope==DEVELOPMENT else 'DRAFT',
+        'scope':scope,'data_identity':data_identity,'source_identity':_identity()['source_identity'],
+        'environment_digest':digest(environment()),'tasks':tasks,'jobs':jobs,'feature_profile':'F0_existing_facts',
+        'event_limit':None,'extra_seeds':False,'model_calls_max':0,'assessment_limit':0 if scope==DEVELOPMENT else (152 if scope==ORDER else 12),
+        'solver_limit':0 if scope==DEVELOPMENT else (8192 if scope==ORDER else 512),
+        'call_ledger_path':None}
+    if native:
+        from .geometry_native_protocol import policy_digest
+        plan.update(version='geometry_order_plan_v2',runtime_version='jev_packaging_geometry_order_v17',publication_policy_digest=policy_digest())
+    validate_order_plan(plan)
+    return plan
+
+
 def validate_order_plan(plan):
     from .candidate_backends import _identity
     from .packaging_runtime import METHODS
@@ -111,9 +137,19 @@ def validate_order_plan(plan):
     if is_native(plan):require(all(plan.get(k)==v for k,v in identity_fields(plan).items()),'geometry_native_plan_identity')
     require(plan['source_identity']==_identity()['source_identity'] and plan['environment_digest']==digest(environment()),'geometry_order_plan_identity')
     require(1<=len(plan['tasks'])<=2 and len({t['task_id'] for t in plan['tasks']})==len(plan['tasks']),'geometry_order_plan_tasks')
-    expected=[{'job_id':'J%02d'%i,'task_id':t['task_id'],'backend':b,'method':m}
-        for i,(t,b,m) in enumerate((t,b,m) for t in plan['tasks'] for b in GEOMETRY_BACKENDS for m in (METHODS[1:] if plan['scope']==ACCEPTANCE else METHODS))]
-    require(same_native(plan['jobs'],expected) and len(expected)<=8,'geometry_order_matrix')
+    allowed_methods=METHODS[1:] if plan['scope']==ACCEPTANCE else METHODS
+    matrix_expected=[{'job_id':'J%02d'%i,'task_id':t['task_id'],'backend':b,'method':m}
+        for i,(t,b,m) in enumerate((t,b,m) for t in plan['tasks'] for b in GEOMETRY_BACKENDS for m in allowed_methods)]
+    is_matrix=same_native(plan['jobs'],matrix_expected) and len(matrix_expected)<=8
+    if not is_matrix:
+        backends={j['backend'] for j in plan['jobs']}
+        require(len(backends)==1 and next(iter(backends)) in GEOMETRY_BACKENDS,'geometry_order_matrix')
+        selected_backend=next(iter(backends))
+        methods_used=tuple(dict.fromkeys(j['method'] for j in plan['jobs']))
+        require(bool(methods_used) and all(m in allowed_methods for m in methods_used),'geometry_order_matrix')
+        op_expected=[{'job_id':'J%02d'%i,'task_id':t['task_id'],'backend':selected_backend,'method':m}
+            for i,(t,m) in enumerate((t,m) for t in plan['tasks'] for m in methods_used)]
+        require(same_native(plan['jobs'],op_expected) and len(op_expected)<=8,'geometry_order_matrix')
     synthetic=plan['scope']!=ORDER
     require(all(t['origin']==('SYNTHETIC_FIXED' if synthetic else 'EXPOSED_TRAIN') for t in plan['tasks']),'geometry_plan_task_scope')
     if plan['scope']==ACCEPTANCE:require(all(t['task_id'] in ('GP5_SYNTH_K01','GP5_SYNTH_K02') for t in plan['tasks']),'geometry_acceptance_catalogue')

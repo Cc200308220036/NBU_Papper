@@ -1,0 +1,62 @@
+{
+  "schema": "gp5_p2_ems_operational_entry_handoff_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_EMS_DEFAULT_OPERATIONAL_ENTRY_CORRECTION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "baseline_head": "e9a2f424610b4072ce84dad2e7c973cd49cc888f",
+  "previous_qa_handoff": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_EMS_DEFAULT_AND_V17_COMPAT_QA_20261119_01/handoff.json",
+  "new_source_identity": "11c1bce48bc35df4240c6d8e593def6f8787c4ef80525b00d367de1ce7e9ec61",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "default_geometry_backend": "ems_surface_hybrid_v1",
+  "geometry_backends": [
+    "e2_original_v1",
+    "ems_surface_hybrid_v1"
+  ],
+  "default_operational_entry": {
+    "plan": "packaging_geometry_protocol.prepare_operational_order_plan(adapted, data_identity=..., scope=..., backend=None)",
+    "explicit_e2": "packaging_geometry_protocol.prepare_operational_order_plan(adapted, data_identity=..., scope=..., backend='e2_original_v1')",
+    "config": "geometry_order_execution.load_order_config(plan, job_id, monitor_snapshot=..., admission=...)",
+    "execution": "geometry_order_execution.run_order_job(...) -> episode.run_episode(...) -> episode.decision_inputs(...)"
+  },
+  "default_route_identity": "2443d227aedc2abd99bc6c5b9eb88ab9edba47f57d61cc61d1ec74939655c15b",
+  "status": "OFFLINE_IMPLEMENTATION_AND_TESTS_PASS_PENDING_INDEPENDENT_QA",
+  "production_dispatch": "NOT_READY_NEEDS_NEW_HOST_FREEZE_AND_INDEPENDENT_LAUNCH",
+  "issue_status": {
+    "GP5-P2-EMS-DEFAULT-01": {
+      "status": "PASS",
+      "evidence": "END_TO_END_OPERATIONAL_OFFLINE_TESTS_STDLIB_ONLY",
+      "summary": "Added prepare_operational_order_plan in packaging_geometry_protocol.py (defaulting backend to DEFAULT_GEOMETRY_BACKEND='ems_surface_hybrid_v1' when omitted, and honoring explicit backend='e2_original_v1') and updated validate_order_plan to admit both the fixed 4+6 matrix and single-backend operational plans. Wired episode.decision_inputs non-geometry branch to generator_config_for(config). Verified end-to-end from prepare_operational_order_plan -> load_order_config -> run_order_job -> episode.run_episode -> CandidateProvider.build with backend spies, confirming omitted backend calls EMS, explicit E2 calls E2, and EMS empty pool / error stop without falling back to E2."
+    },
+    "GP5-P2-R3-LEGACY-COMPLETION-01": {
+      "status": "PASS",
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_TESTS",
+      "summary": "Retained ordinary v16/v17 completion compatibility and phase-snapshot credential/parent-evidence verification."
+    },
+    "GP5-P2-PRESERVATION-01": {
+      "status": "PASS",
+      "evidence": "OFFLINE_REGRESSION_SUITE",
+      "summary": "Retained historical frozen configs (v1-v13, v4), fixed 4+6 matrix per-job backends, original physical checks, post-selection monitor, and first-error stop."
+    }
+  },
+  "report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP5-P2_EMS正常订单入口端到端接线交付_20261119_01.md",
+  "tests": "semantic_pallet_planner/tests/unit/test_geometry_ems_default_and_v17_completion.py",
+  "source_identity_receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_EMS_OPERATIONAL_ENTRY_20261119_01/source_identity_receipt.json",
+  "command_receipts": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_EMS_OPERATIONAL_ENTRY_20261119_01/command_receipts.json",
+  "manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_EMS_OPERATIONAL_ENTRY_20261119_01/manifest.json",
+  "actual_this_delivery": {
+    "orders": 0,
+    "real_assessments": 0,
+    "LP": 0,
+    "model_calls": 0,
+    "freeze": 0,
+    "real_recovery": 0
+  },
+  "independent_production_records_issued": 0,
+  "A03": "PARTIAL",
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED",
+  "next": "INDEPENDENT_QA_ONLY",
+  "stopped": true
+}

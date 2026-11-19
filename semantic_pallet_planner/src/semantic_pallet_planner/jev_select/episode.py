@@ -33,7 +33,8 @@ def decision_inputs(state, task, config, job_id, decision_id, *, timings=None, m
     parsed = time.perf_counter()
     from semantic_pallet_planner.o4.extensions.e2.candidates import _cached_generation
     before_cache = _cached_generation.cache_info()
-    bundle = CandidateProvider().build(state, req, generator_config(), config=config)
+    from .config import generator_config_for
+    bundle = CandidateProvider().build(state, req, generator_config_for(config), config=config)
     generated = time.perf_counter()
     after_cache = _cached_generation.cache_info()
     bundle = guard.filter(req, policy, bundle, config)

@@ -41,33 +41,50 @@ from semantic_pallet_planner.jev_select.packaging_versions import (
 )
 from semantic_pallet_planner.jev_select.stability import monitor
 from semantic_pallet_planner.jev_select.stability.exact_adapter import algorithm_identity
-from semantic_pallet_planner.jev_select.stability.exact_contracts import ExactResult
-from semantic_pallet_planner.jev_select.tests.unit.test_packaging_runtime import (
-    item as rt_item,
-    mechanism_task,
-)
+from semantic_pallet_planner.jev_select.stability.exact_contracts import ExactConfig, ExactResult
 
 
 def _manual_fixture(singleton=False):
-    t = mechanism_task([rt_item("manual_box", size=(100, 100, 100))])
     t = {
-        k: v
-        for k, v in t.items()
-        if k
-        in {
-            "container",
-            "items",
-            "attributes",
-            "instruction_text",
-            "regions",
-            "reference_policy",
-            "task_id",
-            "mode",
-            "layer",
-            "feasibility_status",
-        }
+        "version": "jev_geometry_fixture_task_v1",
+        "fixture_only": True,
+        "task_id": "CONSTRUCTED_NOT_SOURCE_ORDER",
+        "mode": "controlled_packaging",
+        "layer": "CONSTRUCTED_MECHANISM",
+        "feasibility_status": "UNKNOWN",
+        "container": {
+            "container_id": "fixture",
+            "coordinate_frame": "container_bottom_center",
+            "length_mm": 1000,
+            "width_mm": 1000,
+            "max_height_mm": 1000,
+            "max_payload_kg": 1000,
+        },
+        "items": [
+            {
+                "item_id": "manual_box",
+                "dimensions_mm": {"length": 100, "width": 100, "height": 100},
+                "mass_kg": 1,
+                "stackable": True,
+                "fragile": False,
+                "weight_class": "medium",
+                "top_load_limit_kg_synthetic": 100,
+                "product_category": "general",
+            }
+        ],
+        "attributes": {
+            "manual_box": {
+                "object_id": "manual_box",
+                "physical_top_load_limit_kg": 100,
+                "cargo_category": "general",
+                "packaging": {"reinforced": False},
+                "labels": {"no_top_load": False, "max_top_load_kg": 100},
+            }
+        },
+        "instruction_text": n1_fixtures.INSTRUCTION,
+        "regions": [],
+        "reference_policy": {"version": "jev_packaging_load_dataset_v1", "rules": []},
     }
-    t.update(version="jev_geometry_fixture_task_v1", fixture_only=True)
     if singleton:
         t["items"][0]["dimensions_mm"]["width"] = 80
         t["container"].update(length_mm=100, width_mm=80, max_height_mm=100)
@@ -503,6 +520,162 @@ class EmsDefaultRouteAndNoFallbackTests(unittest.TestCase):
             tasks.append(p.adapt_task(raw, origin="SYNTHETIC_FIXED", expected_sha256=p.sha(raw)))
         plan = p.prepare_order_plan(tasks, data_identity=digest("MATRIX"), scope=p.ACCEPTANCE, native=True)
         self.assertEqual([j["backend"] for j in plan["jobs"]], list(GEOMETRY_BACKENDS) * 2)
+
+    def test_operational_order_entry_ems_default_explicit_e2_and_no_fallback(self):
+        from semantic_pallet_planner.jev_select import geometry_order_execution as o
+
+        snap = json.loads(
+            Path(
+                "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP3_N3_20261117_01/cases/ems_surface_hybrid_v1_stable/config.json"
+            ).read_bytes()
+        )["stability_monitor"]
+        raw = canonical(p.synthetic_task("K01")).encode()
+        adapted = p.adapt_task(raw, origin="SYNTHETIC_FIXED", expected_sha256=p.sha(raw))
+
+        def dev_adm(plan):
+            return {
+                **identity_fields(plan),
+                "version": wire(plan, "geometry_development_binding_v1"),
+                "scope": p.DEVELOPMENT,
+                "evidence": "TEST_DOUBLE",
+                "plan_digest": digest(plan),
+            }
+
+        @contextmanager
+        def monitor_double(calls):
+            def interface(algorithm):
+                assert algorithm == "pct_exact_pose_network_v3"
+
+                def assess(state, box, cfg):
+                    calls.append({"box": box.item_id})
+                    return ExactResult(
+                        status="STABLE",
+                        reason_code="TEST_DOUBLE_STABLE",
+                        state_digest=digest(asdict(state)),
+                        candidate_digest=digest(asdict(box)),
+                        candidate_id=box.item_id,
+                        config_digest=digest(asdict(cfg)),
+                        algorithm_identity=copy.deepcopy(snap["algorithm_identity"]),
+                        baseline_status="NOT_ASSESSED",
+                        first_bad_prefix=None,
+                        failed_item_id=None,
+                        height_delta_mm=None,
+                        evaluated_pose=None,
+                        kernel_calls=0,
+                        diagnostics={"TEST_DOUBLE": True, "actual_PCT_LP_calls": 0},
+                    )
+
+                assess.geometry_test_double = True
+                return assess, lambda: ExactConfig(**snap["kernel_config"]), ExactResult, "stability_result_v3.schema.json"
+
+            with patch.object(monitor, "kernel_interface", side_effect=interface):
+                yield
+
+        with patch.object(o, "validate_monitor_snapshot", return_value=None):
+            # 1. Default omitted backend -> EMS end-to-end through prepare_operational_order_plan -> load_order_config -> run_order_job -> episode.
+            plan_ems = p.prepare_operational_order_plan([adapted], data_identity=digest("OP_EMS"))
+            self.assertEqual(plan_ems["jobs"][0]["backend"], "ems_surface_hybrid_v1")
+            adm_ems = dev_adm(plan_ems)
+            cfg_ems = o.load_order_config(plan_ems, "J00", monitor_snapshot=snap, admission=adm_ems)
+            self.assertEqual(cfg_ems["candidate_backend"], "ems_surface_hybrid_v1")
+            calls_ems = []
+            with patch(
+                "semantic_pallet_planner.o4.extensions.e2.candidates.generate",
+                side_effect=AssertionError("E2_MUST_NOT_BE_CALLED"),
+            ), monitor_double(calls_ems):
+                out_ems = o.run_order_job(
+                    plan_ems,
+                    "J00",
+                    adapted,
+                    monitor_snapshot=snap,
+                    admission=adm_ems,
+                    root=Path(self.tmp.name) / "op_ems",
+                )
+            self.assertEqual(out_ems["summary"]["candidate_backend"], "ems_surface_hybrid_v1")
+            self.assertEqual(out_ems["summary"]["placed_items"], 1)
+            self.assertEqual(len(calls_ems), 1)
+
+            # 2. Explicit backend='e2_original_v1' -> original E2 end-to-end.
+            plan_e2 = p.prepare_operational_order_plan([adapted], data_identity=digest("OP_E2"), backend="e2_original_v1")
+            self.assertEqual(plan_e2["jobs"][0]["backend"], "e2_original_v1")
+            adm_e2 = dev_adm(plan_e2)
+            cfg_e2 = o.load_order_config(plan_e2, "J00", monitor_snapshot=snap, admission=adm_e2)
+            self.assertEqual(cfg_e2["candidate_backend"], "e2_original_v1")
+            calls_e2 = []
+            with patch(
+                "semantic_pallet_planner.planner.space_candidates.generator._generation_core",
+                side_effect=AssertionError("EMS_MUST_NOT_BE_CALLED"),
+            ), monitor_double(calls_e2):
+                out_e2 = o.run_order_job(
+                    plan_e2,
+                    "J00",
+                    adapted,
+                    monitor_snapshot=snap,
+                    admission=adm_e2,
+                    root=Path(self.tmp.name) / "op_e2",
+                )
+            self.assertEqual(out_e2["summary"]["candidate_backend"], "e2_original_v1")
+            self.assertEqual(out_e2["summary"]["placed_items"], 1)
+            self.assertEqual(len(calls_e2), 1)
+
+            # 3. Operational EMS empty pool -> stops with STOP_NO_PHYSICAL_CANDIDATE, no fallback to E2.
+            empty_core = {
+                "status": "OK_EMPTY",
+                "candidates": [],
+                "audit": {
+                    "items": [
+                        {
+                            "item_id": adapted["runtime"]["items"][0]["item_id"],
+                            "final_candidates": 0,
+                            "raw_valid_count": 0,
+                            "rejection_counts": {"no_surface": 1},
+                            "raw_point_attempts": 1,
+                        }
+                    ]
+                },
+            }
+            with patch(
+                "semantic_pallet_planner.o4.extensions.e2.candidates.generate",
+                side_effect=AssertionError("E2_FALLBACK_FORBIDDEN"),
+            ), patch(
+                "semantic_pallet_planner.planner.space_candidates.generator._generation_core",
+                return_value=empty_core,
+            ):
+                out_empty = o.run_order_job(
+                    plan_ems,
+                    "J00",
+                    adapted,
+                    monitor_snapshot=snap,
+                    admission=adm_ems,
+                    root=Path(self.tmp.name) / "op_ems_empty",
+                )
+            self.assertEqual(out_empty["summary"]["candidate_backend"], "ems_surface_hybrid_v1")
+            self.assertEqual(out_empty["summary"]["termination_reason"], "STOP_NO_PHYSICAL_CANDIDATE")
+            self.assertEqual(out_empty["summary"]["placed_items"], 0)
+
+            # 4. Operational EMS error -> stops on first error and records failure, no fallback to E2.
+            err_root = Path(self.tmp.name) / "op_ems_err"
+            with patch(
+                "semantic_pallet_planner.o4.extensions.e2.candidates.generate",
+                side_effect=AssertionError("E2_FALLBACK_FORBIDDEN"),
+            ), patch(
+                "semantic_pallet_planner.planner.space_candidates.generator._generation_core",
+                return_value={"status": "ERROR", "error": {"code": "EMS_OP_ERROR", "detail": "synthetic"}},
+            ):
+                out_err = o.run_order_job(
+                    plan_ems,
+                    "J00",
+                    adapted,
+                    monitor_snapshot=snap,
+                    admission=adm_ems,
+                    root=err_root,
+                )
+            self.assertEqual(out_err["summary"]["candidate_backend"], "ems_surface_hybrid_v1")
+            self.assertEqual(out_err["summary"]["termination_reason"], "EMS_OP_ERROR")
+            self.assertEqual(out_err["summary"]["termination_class"], "TECHNICAL_FAILURE")
+            self.assertEqual(out_err["summary"]["placed_items"], 0)
+            run_doc = json.loads((err_root / "run.json").read_text(encoding="utf-8"))
+            self.assertEqual(run_doc["rows"][0]["status"], "TECHNICAL_FAILURE")
 
 
 if __name__ == "__main__":

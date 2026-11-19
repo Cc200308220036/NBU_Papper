@@ -1,0 +1,49 @@
+{
+  "schema": "gp5_p2_ems_operational_entry_command_receipts_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_EMS_DEFAULT_OPERATIONAL_ENTRY_CORRECTION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "baseline_qa_head": "e9a2f424610b4072ce84dad2e7c973cd49cc888f",
+  "pull": {
+    "command": "git pull --ff-only",
+    "result": "FAST_FORWARD 3c5ccc2d..e9a2f424"
+  },
+  "initial_worktree": "CLEAN",
+  "initial_index": "CLEAN",
+  "new_source_identity": "11c1bce48bc35df4240c6d8e593def6f8787c4ef80525b00d367de1ce7e9ec61",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "default_geometry_backend": "ems_surface_hybrid_v1",
+  "default_route_identity": "2443d227aedc2abd99bc6c5b9eb88ab9edba47f57d61cc61d1ec74939655c15b",
+  "production_source_files": 593,
+  "tests": [
+    {
+      "name": "operational_entry_ems_default_and_v17_completion_offline_suite",
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python3 -B -m unittest test_geometry_ems_default_and_v17_completion -v",
+      "exit_code": 0,
+      "tests": 14,
+      "passed": 14,
+      "failed": 0,
+      "evidence": "PURE_STDLIB_UNITTEST_WITH_OFFLINE_MONITOR_SUBSTITUTE"
+    },
+    {
+      "name": "geometry_unit_regression_suite",
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python3 -B -m unittest test_geometry_external_review_identity_r1 test_geometry_public_n2 test_geometry_execution_n3 test_geometry_recovery_r1 test_geometry_order_r1.Remediation.test_completion_contract_missing_duplicate_error_only_no_commit_recovery",
+      "exit_code": 0,
+      "tests": 35,
+      "passed": 35,
+      "failed": 0,
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_MONITOR_SUBSTITUTE"
+    }
+  ],
+  "actual_this_delivery": {
+    "orders": 0,
+    "real_assessments": 0,
+    "LP": 0,
+    "model_calls": 0,
+    "freeze": 0,
+    "real_recovery": 0
+  },
+  "independent_production_records_issued": 0
+}

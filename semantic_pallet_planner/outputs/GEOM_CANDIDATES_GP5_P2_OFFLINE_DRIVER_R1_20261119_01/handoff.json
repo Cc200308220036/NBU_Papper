@@ -1,0 +1,53 @@
+{
+  "schema": "gp5_p2_offline_driver_r1_handoff_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_OFFLINE_DRIVER_CORRECTION_ONLY",
+  "baseline_head": "0a2275611109b988f3fb9623344a2bce1d6eba6c",
+  "previous_qa_handoff": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_QA_20261119_01/handoff.json",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "status": "AUTH_AND_LEDGER_PASS_DISPATCH_PARTIAL_PENDING_INDEPENDENT_QA",
+  "production_dispatch": "NOT_READY_MISSING_INDEPENDENT_REVIEW_AND_LAUNCH",
+  "issue_status": {
+    "GP5-P2-DRIVER-AUTH-01": {
+      "status": "PASS",
+      "evidence": "OFFLINE_TEST_DOUBLE",
+      "summary": "Explicitly binds launch authorization reference to independently specified path and file SHA-256 before validate_admission and 4-job config preflight."
+    },
+    "GP5-P2-DRIVER-LEDGER-01": {
+      "status": "PASS",
+      "evidence": "OFFLINE_TEST_DOUBLE",
+      "summary": "Separates check_initial_zero_ledger (requires empty calls and zero counts; preserves nonempty DONE/STARTED/ERROR ledger without clearing) from in-run incremental check_counts and final 6+2=8 coverage check."
+    },
+    "GP5-P2-DRIVER-DISPATCH-01": {
+      "status": "PARTIAL",
+      "evidence": "OFFLINE_TEST_DOUBLE_AND_PURE_PROBE",
+      "summary": "Driver refactored to 4 single primary dispatches + 6 recovery dispatches (10 total run_order_job calls, verified by mock). Pure probe confirms public geometry_order_accounting.invocation keeps invocations[-1].status==STARTED during in-run callbacks and rejects unmutated in-run snapshots with geometry_accounting_unknown_dispatch. Minimum production interface design and freeze identity impact delivered without modifying frozen sources."
+    }
+  },
+  "report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP5-P2离线驱动运行边界整改与派发快照阻断分析_20261119_01.md",
+  "driver": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_R1_20261119_01/driver.py",
+  "tests": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_R1_20261119_01/test_driver.py",
+  "probe": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_R1_20261119_01/probe_dispatch_01.py",
+  "probe_results": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_R1_20261119_01/probe_dispatch_01_results.json",
+  "command_receipts": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_R1_20261119_01/command_receipts.json",
+  "manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_OFFLINE_DRIVER_R1_20261119_01/manifest.json",
+  "runtime_root": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_BOUNDED_REAL_MONITOR_RUNTIME_20261119_01",
+  "fixed_primary": 4,
+  "fixed_recovery": 6,
+  "actual_this_delivery": {
+    "orders": 0,
+    "real_assessments": 0,
+    "LP": 0,
+    "model_calls": 0,
+    "freeze": 0,
+    "real_recovery": 0
+  },
+  "A03": "PARTIAL",
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED",
+  "next": "INDEPENDENT_QA_ONLY",
+  "stopped": true
+}

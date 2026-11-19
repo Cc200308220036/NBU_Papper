@@ -6,7 +6,7 @@ from pathlib import Path
 from .geometry_native_protocol import wire, is_native, identity_fields, config_fields
 from .contracts import digest,validate_schema
 from .geometry_runtime_contracts import same_native
-from .packaging_geometry_protocol import require,sha
+from .packaging_geometry_protocol import require,sha,read_reference
 from .ledger import read,write
 
 FIELDS=('selector_calls','singleton_executions','monitor_entries','monitor_reuses','commit_attempts','commit_successes')
@@ -50,29 +50,77 @@ def _blob_hashes(job_root):
     return out
 
 
+def _file_ref(path):
+    p=Path(path)
+    require(p.is_file(),'geometry_phase_snapshot_missing_parent_evidence')
+    return {'path':str(p),'sha256':sha(p.read_bytes())}
+
+
+def _verify_parent_evidence(parent_job_root,snapshot_job_root,config,job_id,snap_acc,*,accounting_ref=None,record_ref=None,expected_final_acc_digest=None,expected_final_cp_digest=None):
+    parent_job_root=Path(parent_job_root);snapshot_job_root=Path(snapshot_job_root)
+    require(parent_job_root.resolve()!=snapshot_job_root.resolve(),'geometry_phase_snapshot_distinct_root_required')
+    acc_path=parent_job_root/'accounting.json';rec_path=parent_job_root/'record.json'
+    if accounting_ref is not None:
+        require(Path(accounting_ref['path']).resolve()==acc_path.resolve(),'geometry_phase_snapshot_parent_accounting_path_drift')
+        parent_acc=read_reference(accounting_ref)
+    else:
+        require(acc_path.is_file(),'geometry_phase_snapshot_missing_accounting')
+        parent_acc=read(acc_path)
+    if record_ref is not None:
+        require(Path(record_ref['path']).resolve()==rec_path.resolve(),'geometry_phase_snapshot_parent_record_path_drift')
+        parent_rec=read_reference(record_ref)
+    else:
+        require(rec_path.is_file(),'geometry_phase_snapshot_missing_parent_record')
+        parent_rec=read(rec_path)
+    validate_schema(wire(config,'geometry_order_accounting_v1'),parent_acc)
+    binding=_binding(config,job_id)
+    require(all(parent_acc.get(k)==v for k,v in binding.items()),'geometry_phase_snapshot_accounting_binding')
+    require(len(parent_acc['invocations'])==1,'geometry_phase_snapshot_primary_only')
+    p_inv=parent_acc['invocations'][0];s_inv=snap_acc['invocations'][0]
+    require(p_inv['index']==s_inv['index']==0 and p_inv['resume_phase']==s_inv['resume_phase']=='FRESH'
+        and p_inv['resume_checkpoint_digest'] is None and s_inv['resume_checkpoint_digest'] is None,'geometry_phase_snapshot_invocation_origin')
+    require(p_inv['status']=='RETURNED' and type(p_inv['result_checkpoint_digest']) is str,'geometry_phase_snapshot_parent_not_returned')
+    require(all(parent_acc['cumulative'][k]==p_inv['delta'][k] for k in FIELDS),'geometry_phase_snapshot_parent_accounting_sum')
+    require(all(snap_acc['cumulative'][k]==s_inv['delta'][k]<=p_inv['delta'][k]==parent_acc['cumulative'][k] for k in FIELDS),'geometry_phase_snapshot_prefix_bounds')
+    if expected_final_acc_digest is not None:
+        require(digest(parent_acc)==expected_final_acc_digest,'geometry_phase_snapshot_parent_accounting_drift')
+    if expected_final_cp_digest is not None:
+        require(p_inv['result_checkpoint_digest']==expected_final_cp_digest,'geometry_phase_snapshot_parent_checkpoint_drift')
+    require(type(parent_rec) is dict and set(parent_rec)=={'checkpoint','config','raw_task','durable_root'},'geometry_phase_snapshot_parent_record_contract')
+    require(Path(parent_rec['durable_root']).resolve()==parent_job_root.resolve(),'geometry_phase_snapshot_parent_root_drift')
+    require(same_native(parent_rec['config'],config),'geometry_phase_snapshot_parent_config_drift')
+    raw_ref=parent_rec['raw_task']
+    require(type(raw_ref) is dict and set(raw_ref)=={'path','sha256'} and raw_ref['sha256']==config['order_task_identity']['raw_sha256'],'geometry_phase_snapshot_parent_raw_task_drift')
+    parent_cp=parent_rec['checkpoint']
+    require(type(parent_cp) is dict and parent_cp.get('job_id')==job_id and parent_cp.get('method')==config['selector']
+        and parent_cp.get('config_digest')==digest(config) and parent_cp.get('task_digest')==config['order_task_identity']['runtime_digest']
+        and parent_cp.get('phase')=='TERMINATED' and parent_cp.get('reason')=='ALL_ITEMS_PLACED'
+        and digest(parent_cp)==p_inv['result_checkpoint_digest'],'geometry_phase_snapshot_parent_checkpoint_drift')
+    return parent_acc,parent_rec,p_inv
+
+
 def seal_phase_snapshot_credential(parent_job_root,snapshot_job_root,config,job_id,phase,checkpoint,*,parent_result):
     """Seal a versioned phase-snapshot credential only after the parent primary run returned and completed."""
     parent_job_root=Path(parent_job_root);snapshot_job_root=Path(snapshot_job_root)
     require(parent_job_root.resolve()!=snapshot_job_root.resolve(),'geometry_phase_snapshot_distinct_root_required')
     require(phase in SNAPSHOT_PHASES and type(checkpoint) is dict and checkpoint.get('phase')==phase and checkpoint.get('job_id')==job_id,'geometry_phase_snapshot_phase')
     binding=_binding(config,job_id)
-    parent_acc_path=parent_job_root/'accounting.json';snap_acc_path=snapshot_job_root/'accounting.json'
-    require(parent_acc_path.is_file() and snap_acc_path.is_file(),'geometry_phase_snapshot_missing_accounting')
-    parent_acc=read(parent_acc_path);snap_acc=read(snap_acc_path)
-    validate_schema(wire(config,'geometry_order_accounting_v1'),parent_acc)
+    snap_acc_path=snapshot_job_root/'accounting.json'
+    require(snap_acc_path.is_file(),'geometry_phase_snapshot_missing_accounting')
+    snap_acc=read(snap_acc_path)
     validate_schema(wire(config,'geometry_order_accounting_v1'),snap_acc)
-    require(all(parent_acc[k]==v for k,v in binding.items()) and all(snap_acc[k]==v for k,v in binding.items()),'geometry_phase_snapshot_accounting_binding')
-    require(len(parent_acc['invocations'])==1 and len(snap_acc['invocations'])==1,'geometry_phase_snapshot_primary_only')
-    p_inv=parent_acc['invocations'][0];s_inv=snap_acc['invocations'][0]
-    require(p_inv['index']==s_inv['index']==0 and p_inv['resume_phase']==s_inv['resume_phase']=='FRESH'
-        and p_inv['resume_checkpoint_digest'] is None and s_inv['resume_checkpoint_digest'] is None,'geometry_phase_snapshot_invocation_origin')
+    require(all(snap_acc[k]==v for k,v in binding.items()) and len(snap_acc['invocations'])==1,'geometry_phase_snapshot_accounting_binding')
+    s_inv=snap_acc['invocations'][0]
     require(s_inv['status']=='STARTED' and s_inv['result_checkpoint_digest'] is None,'geometry_phase_snapshot_in_run_state')
-    require(p_inv['status']=='RETURNED' and type(p_inv['result_checkpoint_digest']) is str,'geometry_phase_snapshot_parent_not_returned')
     require(type(parent_result) is dict and (parent_result.get('summary') or {}).get('completed') is True,'geometry_phase_snapshot_parent_not_completed')
-    parent_cp=parent_result.get('checkpoint')
-    require(type(parent_cp) is dict and parent_cp.get('phase')=='TERMINATED' and parent_cp.get('reason')=='ALL_ITEMS_PLACED'
-        and digest(parent_cp)==p_inv['result_checkpoint_digest'],'geometry_phase_snapshot_parent_checkpoint_drift')
-    require(all(snap_acc['cumulative'][k]==s_inv['delta'][k]<=p_inv['delta'][k]==parent_acc['cumulative'][k] for k in FIELDS),'geometry_phase_snapshot_prefix_bounds')
+    acc_path=parent_job_root/'accounting.json';rec_path=parent_job_root/'record.json'
+    if not rec_path.is_file() and acc_path.is_file():
+        parent_acc_pre=read(acc_path)
+        validate_schema(wire(config,'geometry_order_accounting_v1'),parent_acc_pre)
+        require(len(parent_acc_pre['invocations'])==1 and parent_acc_pre['invocations'][0]['status']=='RETURNED','geometry_phase_snapshot_parent_not_returned')
+    acc_ref=_file_ref(acc_path);rec_ref=_file_ref(rec_path)
+    parent_acc,parent_rec,p_inv=_verify_parent_evidence(parent_job_root,snapshot_job_root,config,job_id,snap_acc,accounting_ref=acc_ref,record_ref=rec_ref)
+    require(same_native(parent_result.get('checkpoint'),parent_rec['checkpoint']),'geometry_phase_snapshot_parent_checkpoint_drift')
     cp_path=snapshot_job_root/'checkpoint.json';cfg_path=snapshot_job_root/'config.json';tid_path=snapshot_job_root/'task_identity.json'
     require(cp_path.is_file() and cfg_path.is_file() and tid_path.is_file(),'geometry_phase_snapshot_missing_files')
     require(same_native(read(cp_path),checkpoint),'geometry_phase_snapshot_checkpoint_drift')
@@ -87,7 +135,8 @@ def seal_phase_snapshot_credential(parent_job_root,snapshot_job_root,config,job_
         'plan_digest':config['plan_digest'],'job_id':job_id,'task_id':task_id_doc['task_id'],'task_digest':task_id_doc['runtime_digest'],
         'config_digest':digest(config),'source_identity':config['runtime_identity']['source_identity'],'phase':phase,
         'checkpoint_digest':digest(checkpoint),'parent_invocation':{'index':0,'resume_phase':'FRESH','in_run_status':'STARTED',
-            'final_status':'RETURNED','final_checkpoint_digest':p_inv['result_checkpoint_digest'],'final_accounting_digest':digest(parent_acc)},
+            'final_status':'RETURNED','final_checkpoint_digest':p_inv['result_checkpoint_digest'],'final_accounting_digest':digest(parent_acc),
+            'parent_durable_root':str(parent_job_root),'final_accounting_ref':acc_ref,'final_record_ref':rec_ref},
         'prefix_accounting':{'in_run_accounting_digest':digest(snap_acc),'invocation_index':0,
             'delta':copy.deepcopy(s_inv['delta']),'cumulative':copy.deepcopy(snap_acc['cumulative'])},
         'durable_references':{'raw_task_sha256':raw_sha,'geometry_ref':copy.deepcopy(gref),'blob_hashes':blobs}}
@@ -97,7 +146,7 @@ def seal_phase_snapshot_credential(parent_job_root,snapshot_job_root,config,job_
     return cred
 
 
-def validate_phase_snapshot_credential(credential,snapshot_job_root,config,job_id,resume):
+def validate_phase_snapshot_credential(credential,snapshot_job_root,config,job_id,resume,*,expected_accounting_digest=None):
     require(type(credential) is dict and type(resume) is dict,'geometry_phase_snapshot_credential_required')
     validate_schema(wire(config,'geometry_phase_snapshot_credential_v1'),credential)
     require(credential['credential_digest']==digest({k:v for k,v in credential.items() if k!='credential_digest'}),'geometry_phase_snapshot_credential_digest_drift')
@@ -110,7 +159,9 @@ def validate_phase_snapshot_credential(credential,snapshot_job_root,config,job_i
     snapshot_job_root=Path(snapshot_job_root)
     cp_path=snapshot_job_root/'checkpoint.json';cfg_path=snapshot_job_root/'config.json';tid_path=snapshot_job_root/'task_identity.json';acc_path=snapshot_job_root/'accounting.json'
     require(cp_path.is_file() and cfg_path.is_file() and tid_path.is_file() and acc_path.is_file(),'geometry_phase_snapshot_missing_files')
-    require(same_native(read(cp_path),resume) and same_native(read(cfg_path),config) and same_native(read(tid_path),task_id_doc),'geometry_phase_snapshot_durable_drift')
+    if expected_accounting_digest is None:
+        require(same_native(read(cp_path),resume),'geometry_phase_snapshot_durable_drift')
+    require(same_native(read(cfg_path),config) and same_native(read(tid_path),task_id_doc),'geometry_phase_snapshot_durable_drift')
     blobs=_blob_hashes(snapshot_job_root)
     drefs=credential['durable_references']
     require(drefs['raw_task_sha256']==task_id_doc['raw_sha256'] and drefs['blob_hashes']==blobs
@@ -119,12 +170,23 @@ def validate_phase_snapshot_credential(credential,snapshot_job_root,config,job_i
     binding=_binding(config,job_id)
     require(all(doc[k]==v for k,v in binding.items()),'geometry_accounting_drift')
     p_acc=credential['prefix_accounting']
-    require(digest(doc)==p_acc['in_run_accounting_digest'] and len(doc['invocations'])==1,'geometry_phase_snapshot_accounting_drift')
-    inv0=doc['invocations'][0]
-    require(inv0['index']==0 and inv0['resume_phase']=='FRESH' and inv0['status']=='STARTED'
-        and inv0['resume_checkpoint_digest'] is None and inv0['result_checkpoint_digest'] is None
-        and same_native(inv0['delta'],p_acc['delta']) and same_native(doc['cumulative'],p_acc['cumulative'])
-        and all(doc['cumulative'][k]==inv0['delta'][k] for k in FIELDS),'geometry_phase_snapshot_accounting_prefix_drift')
+    inv0=doc['invocations'][0] if doc.get('invocations') else {}
+    require(inv0.get('index')==0 and inv0.get('resume_phase')=='FRESH' and inv0.get('status')=='STARTED'
+        and inv0.get('resume_checkpoint_digest') is None and inv0.get('result_checkpoint_digest') is None
+        and same_native(inv0.get('delta'),p_acc['delta']),'geometry_phase_snapshot_accounting_prefix_drift')
+    if expected_accounting_digest is None:
+        require(digest(doc)==p_acc['in_run_accounting_digest'] and len(doc['invocations'])==1
+            and same_native(doc['cumulative'],p_acc['cumulative'])
+            and all(doc['cumulative'][k]==inv0['delta'][k] for k in FIELDS),'geometry_phase_snapshot_accounting_drift')
+    else:
+        require(digest(doc)==expected_accounting_digest and len(doc['invocations'])==2,'geometry_phase_snapshot_accounting_drift')
+        in_run_doc={**binding,'invocations':[copy.deepcopy(inv0)],'cumulative':copy.deepcopy(p_acc['cumulative'])}
+        require(digest(in_run_doc)==p_acc['in_run_accounting_digest'] and same_native(inv0['delta'],p_acc['cumulative']),'geometry_phase_snapshot_accounting_prefix_drift')
+    pinv=credential['parent_invocation']
+    _verify_parent_evidence(Path(pinv['parent_durable_root']),snapshot_job_root,config,job_id,
+        {**binding,'invocations':[copy.deepcopy(inv0)],'cumulative':copy.deepcopy(p_acc['cumulative'])},
+        accounting_ref=pinv['final_accounting_ref'],record_ref=pinv['final_record_ref'],
+        expected_final_acc_digest=pinv['final_accounting_digest'],expected_final_cp_digest=pinv['final_checkpoint_digest'])
     return doc
 
 

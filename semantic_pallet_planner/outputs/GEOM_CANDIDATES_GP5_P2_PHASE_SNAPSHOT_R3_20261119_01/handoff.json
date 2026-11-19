@@ -1,0 +1,72 @@
+{
+  "schema": "gp5_p2_phase_snapshot_r3_handoff_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_PHASE_SNAPSHOT_PARENT_EVIDENCE_CORRECTION_ONLY",
+  "baseline_head": "b5de450cc51aedff536b478aee30ffe92d07e58b",
+  "previous_qa_handoff": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R2_QA_20261119_01/handoff.json",
+  "historical_source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "r2_source_identity": "63f49409e61c90734c78a9fb1c9a22098bd7ea135285ade522475e998410a020",
+  "new_source_identity": "378b0c7b9e66befb2eee87ca29fd23fe1915431f5952fe13fff5223126ceb0eb",
+  "historical_publication_policy_digest": "fe12fc1dec4d7004d813bef76162648ac916adb9e2006b92b163aeadb54fe4cb",
+  "r2_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "historical_plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "historical_monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "status": "OFFLINE_IMPLEMENTATION_AND_PURE_TESTS_PASS_PENDING_INDEPENDENT_QA",
+  "production_dispatch": "NOT_READY_NEEDS_NEW_HOST_FREEZE_AND_INDEPENDENT_LAUNCH",
+  "issue_status": {
+    "GP5-P2-R2-PARENT-EVIDENCE-01": {
+      "status": "PASS",
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_MONITOR_SUBSTITUTE",
+      "summary": "geometry_phase_snapshot_credential_v1/v2 now require parent_durable_root, final_accounting_ref ({path, sha256}), and final_record_ref ({path, sha256}). Both geometry_order_accounting.validate_phase_snapshot_credential (invoked by recovery entrypoints) and geometry_kernel_completion.validate_completion verify the retained parent primary run's accounting.json and record.json on disk via read_reference, checking task, plan, config, single FRESH RETURNED invocation, prefix delta bounds, successful terminal state (TERMINATED / ALL_ITEMS_PLACED), final checkpoint digest, final accounting digest, and matching primary receipt record. Post-seal mutation or deletion of parent accounting.json or record.json is rejected. Ordinary STARTED rejection remains intact without rewriting historical accounting."
+    },
+    "GP5-P2-R2-RUNTIME-INPUT-01": {
+      "status": "PASS",
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_MONITOR_SUBSTITUTE",
+      "summary": "Driver CLI requires explicit --runtime directory and passes it to execute(), loading acceptance_plan_FROZEN.json, monitor_snapshot.json, startup_review_request.json, and shared_call_ledger.json from that directory. validate_runtime_directory rejects historical runtime directory, stale source_identity, stale publication_policy_digest, wrong directory, missing files, external plan/monitor references, and historical authorization paths before first dispatch."
+    },
+    "GP5-P2-DRIVER-DISPATCH-01": {
+      "status": "PASS",
+      "evidence": "OFFLINE_MONITOR_SUBSTITUTE",
+      "summary": "Retained 4 primary + 6 recovery dispatches (10 total run_order_job invocations). K01 primary runs save SELECTED, MONITORED, and COMMITTED snapshots and seal credentials only after normal parent return and parent evidence validation; all 6 recovery outputs and completion receipt pass real validate_saved_checkpoint and geometry_kernel_completion.validate_completion."
+    },
+    "GP5-P2-DRIVER-AUTH-01": {
+      "status": "PASS",
+      "evidence": "PURE_CONTRACT_TEST",
+      "summary": "Explicit authorization binding requires both independent expected path and SHA-256 (from runtime startup_review_request.json, an independent reference dict, or --authorization-reference) and rejects historical authorization paths or byte drift before 4-job config preflight and dispatch."
+    },
+    "GP5-P2-DRIVER-LEDGER-01": {
+      "status": "PASS",
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_MONITOR_SUBSTITUTE",
+      "summary": "Initial zero-ledger check requires empty calls and zero counts (rejecting and preserving any DONE/STARTED/ERROR prior ledger); in-run incremental check_counts and final 6+2=8 assessment / 86+28=114 simulated LP coverage check remain enforced."
+    },
+    "GP5-P2-R1-PORTABILITY-01": {
+      "status": "PASS",
+      "evidence": "OFFLINE_MONITOR_SUBSTITUTE",
+      "summary": "Offline tests explicitly inject archived order environment from host_preflight.json for cross-machine portability while preserving production host environment checks."
+    }
+  },
+  "report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP5-P2父运行证据核验与显式冻结入口交付_20261119_01.md",
+  "driver": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_20261119_01/driver.py",
+  "tests": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_20261119_01/test_driver.py",
+  "source_identity_receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_20261119_01/source_identity_receipt.json",
+  "command_receipts": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_20261119_01/command_receipts.json",
+  "manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_20261119_01/manifest.json",
+  "historical_runtime_root": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_BOUNDED_REAL_MONITOR_RUNTIME_20261119_01",
+  "fixed_primary": 4,
+  "fixed_recovery": 6,
+  "actual_this_delivery": {
+    "orders": 0,
+    "real_assessments": 0,
+    "LP": 0,
+    "model_calls": 0,
+    "freeze": 0,
+    "real_recovery": 0
+  },
+  "A03": "PARTIAL",
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED",
+  "next": "INDEPENDENT_QA_ONLY",
+  "stopped": true
+}

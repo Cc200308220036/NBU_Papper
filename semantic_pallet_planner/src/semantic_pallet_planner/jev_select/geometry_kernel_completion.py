@@ -39,6 +39,8 @@ def check_success(record,expected):
 
 def validate_completion(receipt,plan,log,validate_record):
     """validate_record must perform genuine identity/durable checks, including resumes."""
+    from pathlib import Path
+    from .geometry_runtime_contracts import same_native
     coverage=required_coverage(plan)
     review=read_reference(receipt['review']);validate_schema(wire(plan,'geometry_kernel_completion_review_v1'),review)
     expected={**identity_fields(plan),'acceptance_plan_digest':digest(plan),'records_digest':digest(receipt['records']),
@@ -48,6 +50,7 @@ def validate_completion(receipt,plan,log,validate_record):
     records=[read_reference(r) for r in receipt['records']]
     require([r['checkpoint']['job_id'] for r in records]==[r['job_id'] for r in coverage['primary']],'geometry_completion_record_set')
     for record,row in zip(records,coverage['primary']):validate_record(record);check_success(record,row)
+    primary_by_job={r['checkpoint']['job_id']:(ref,r) for ref,r in zip(receipt['records'],records)}
     recovery=receipt['recovery']
     require([{'job_id':r['job_id'],'phase':r['phase']} for r in recovery]==coverage['recovery'],'geometry_completion_recovery_set')
     for row in recovery:
@@ -65,6 +68,21 @@ def validate_completion(receipt,plan,log,validate_record):
             'commit_successes':int(row['phase']!='COMMITTED')}
         require(inv[-1]['resume_checkpoint_digest']==digest(before) and inv[-1]['result_checkpoint_digest']==digest(after['checkpoint']) and inv[-1]['resume_phase']==row['phase'] and inv[-1]['status']=='RETURNED' and inv[-1]['delta']==delta
             and all(account['cumulative'][k]==sum(i['delta'][k] for i in inv) for k in delta),'geometry_completion_recovery_delta')
+        if len(inv)>1 and inv[0].get('status')=='STARTED' or 'durable_root' in after:
+            from .geometry_order_accounting import validate_phase_snapshot_credential
+            from .ledger import read
+            require('durable_root' in after and row['job_id'] in primary_by_job,'geometry_completion_recovery_parent_missing')
+            rec_root=Path(after['durable_root']);cred_path=rec_root/'phase_snapshot_credential.json'
+            require(cred_path.is_file(),'geometry_completion_recovery_credential_missing')
+            cred=read(cred_path)
+            validate_phase_snapshot_credential(cred,rec_root,after['config'],row['job_id'],before,expected_accounting_digest=digest(account))
+            parent_ref,parent_rec=primary_by_job[row['job_id']]
+            pinv=cred['parent_invocation']
+            require(Path(pinv['final_record_ref']['path']).resolve()==Path(parent_ref['path']).resolve()
+                and pinv['final_record_ref']['sha256']==parent_ref['sha256']
+                and Path(pinv['parent_durable_root']).resolve()==Path(parent_rec['durable_root']).resolve()
+                and same_native(parent_rec['config'],after['config'])
+                and pinv['final_checkpoint_digest']==digest(parent_rec['checkpoint']),'geometry_completion_recovery_parent_mismatch')
         event=after['checkpoint']['events'][-1];pending=before['pending_event']
         require(event['selection']==pending['selection'] and event['proposed_action']==pending['proposed_action'],'geometry_completion_reselected')
         if row['phase']!='SELECTED':require(event['monitor']['result_digest']==pending['monitor']['result_digest'],'geometry_completion_remonitored')

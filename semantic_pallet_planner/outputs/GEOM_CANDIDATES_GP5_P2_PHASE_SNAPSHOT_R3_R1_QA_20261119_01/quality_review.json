@@ -1,0 +1,74 @@
+{
+  "schema": "gp5_p2_r3_r1_qa_review_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_R3_FREEZE_BINDING_AND_COMPLETION_COMPATIBILITY_CORRECTION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "afa128ff835513593b19e6017d376bc8222ac9c7",
+  "developer_entry_head": "cfcbf662f8c1e1c3b447be400e670c1aa7c4402e",
+  "new_source_identity": "15742d249425a8017e6f894c78cfb4797c0e3a613e40f07632ca47a5f0580a19",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "historical_plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "engineering_status": "PARTIAL",
+  "evidence_readiness": "OFFLINE_BINDING_VERIFIED",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "NOT_READY",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "facts": {
+    "report_claim": "开发称原两项整改完成，18项离线及14项回归通过，真实4+6未执行。",
+    "source": "快照依新计划、文件引用和启动摘要绑定；普通v16兼容恢复，普通v17仍过度检测；默认路由无变更。",
+    "archive": "16开发清单项、593生产文件、19历史运行文件核对，开发替身4+6仍属于原归档。",
+    "local_recheck": "10项本轮合同测试加7项身份回归通过；对同一普通v16/v17耐久元数据做比较，未运行候选、订单、内核或恢复。"
+  },
+  "acceptance": [
+    {
+      "id": "GP5-P2-R3-MONITOR-BINDING-01",
+      "status": "PASS",
+      "scope": "离线；新摘要进入四配置检查，漂移拒绝"
+    },
+    {
+      "id": "GP5-P2-R3-LEGACY-COMPLETION-01",
+      "status": "PARTIAL",
+      "scope": "v16通过；普通v17回归仍失败"
+    },
+    {
+      "id": "GP5-P2-R3-HOST-NOTES-01",
+      "status": "PASS",
+      "scope": "新交接与原机收据一致"
+    },
+    {
+      "id": "GP5-P2-EMS-DEFAULT-01",
+      "status": "NOT_IMPLEMENTED",
+      "scope": "用户新增交付要求，原开发单元未包含"
+    },
+    {
+      "id": "GP5_P2_REAL_PRIMARY_AND_RECOVERY",
+      "status": "NOT_RUN",
+      "primary": 4,
+      "recovery": 6
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP5-P2-R3-LEGACY-COMPLETION-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "location": "jev_select/geometry_kernel_completion.py:71–77",
+      "observed": "普通v16已恢复兼容；对普通v17，is_native(plan)且有durable_root仍强制新凭证。",
+      "expected": "由明确的快照恢复合同触发凭证检查，保留普通v16和v17完成协议。",
+      "evidence": "同一纯覆盖夹具增加durable_root，旧基线v16/v17通过；当前v16通过，v17以缺凭证拒绝。耐久回调为桩。"
+    },
+    {
+      "id": "GP5-P2-EMS-DEFAULT-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "location": "jev_select/candidates.py:77–115；jev_select/config.py:93–101",
+      "observed": "常规未指定路径仍走E2。此次交付仅修改生产完成校验，没有改路由。",
+      "expected": "按用户最新目标，当前目标运行入口默认EMS，显式e2_original_v1选原E2，不回退，冻结固定矩阵按每项后端运行。",
+      "evidence": "当前源码和Git文件差异。切换默认是新增用户目标，未计作开发原整改的失败。"
+    }
+  ],
+  "stopped": true
+}

@@ -1,0 +1,62 @@
+{
+  "schema": "gp5_p2_r3_r1_qa_admission_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_R3_FREEZE_BINDING_AND_COMPLETION_COMPATIBILITY_CORRECTION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "afa128ff835513593b19e6017d376bc8222ac9c7",
+  "developer_entry_head": "cfcbf662f8c1e1c3b447be400e670c1aa7c4402e",
+  "new_source_identity": "15742d249425a8017e6f894c78cfb4797c0e3a613e40f07632ca47a5f0580a19",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "historical_plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "engineering_status": "PARTIAL",
+  "evidence_readiness": "OFFLINE_BINDING_VERIFIED",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "NOT_READY",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "next_unit": "GP5_P2_EMS_DEFAULT_ROUTE_AND_V17_COMPLETION_COMPATIBILITY_ONLY",
+  "admitted_scope": "READY_FOR_V17_COMPLETION_AND_EMS_DEFAULT_OFFLINE_IMPLEMENTATION",
+  "blockers": [
+    {
+      "id": "GP5-P2-R3-LEGACY-COMPLETION-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "location": "jev_select/geometry_kernel_completion.py:71–77",
+      "observed": "普通v16已恢复兼容；对普通v17，is_native(plan)且有durable_root仍强制新凭证。",
+      "expected": "由明确的快照恢复合同触发凭证检查，保留普通v16和v17完成协议。",
+      "evidence": "同一纯覆盖夹具增加durable_root，旧基线v16/v17通过；当前v16通过，v17以缺凭证拒绝。耐久回调为桩。"
+    },
+    {
+      "id": "GP5-P2-EMS-DEFAULT-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "location": "jev_select/candidates.py:77–115；jev_select/config.py:93–101",
+      "observed": "常规未指定路径仍走E2。此次交付仅修改生产完成校验，没有改路由。",
+      "expected": "按用户最新目标，当前目标运行入口默认EMS，显式e2_original_v1选原E2，不回退，冻结固定矩阵按每项后端运行。",
+      "evidence": "当前源码和Git文件差异。切换默认是新增用户目标，未计作开发原整改的失败。"
+    }
+  ],
+  "implementation": [
+    "普通v16/v17与相位凭证的回归对照",
+    "新运行入口默认EMS及显式E2回归",
+    "固定4+6显式后端、无自动后端回退"
+  ],
+  "after_implementation": [
+    "独立复核路由和兼容性",
+    "原Linux机按最终源码及路由生成新冻结与空账本",
+    "独立启动记录和四配置联合预检",
+    "固定4+6有界真实监测及独立完成审查"
+  ],
+  "scope": {
+    "primary": 4,
+    "recovery": 6,
+    "assessment_entries": 8,
+    "solver_calls": 128,
+    "model_calls": 0
+  },
+  "real_calls_authorized": 0,
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED"
+}

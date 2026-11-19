@@ -1,0 +1,66 @@
+{
+  "schema": "gp5_p2_authorization_context_qa_review_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_INDEPENDENT_LAUNCH_GATE",
+  "reviewed_head": "b4fb05f05fd4c1d5e7624bc0c2141aae5f570b3e",
+  "previous_qa": "c02e6babc2830238af36e6620fc55f56a3bca554",
+  "reviewed_branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "engineering_status": "HOST_PREFLIGHT_ACCEPTED_AUTHORIZATION_CONTEXT_DELIVERED",
+  "evidence_readiness": "TRANSCRIPT_INTEGRITY_PASS_SPECIFIC_PRIOR_AUTHORIZATION_UNCONFIRMED",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "NOT_READY",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "facts": {
+    "report_claim": "开发端称已整理原授权和上下文，未签发、未运行。转录本身声明没有可用的会话消息 ID 或服务端签名。",
+    "source": "远端新增三个授权交接文件，生产源码与运行包无改动，原启动合同仍需要同计划独立审查及启动记录。",
+    "archive": "两清单成员大小和 SHA-256 核对通过，冻结计划、原机预检和零账本证据保留。",
+    "local_recheck": "重验原机和冻结证据脚本，仅静态。用户在独立窗口澄清此前未说明具体授权范围，并要求后续常规开发直接进行。"
+  },
+  "acceptance": [
+    {
+      "id": "GP5_P2_AUTHORIZATION_CONTEXT_ARCHIVE",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_AUTHORIZATION_CONTEXT_20261119_01/delivery_manifest.json"
+    },
+    {
+      "id": "GP5_P2_SPECIFIC_PRIOR_AUTHORIZATION",
+      "status": "PARTIAL",
+      "reason": "无法确认先前授权适用于归档所述具体计划，用户澄清未说明授权范围"
+    },
+    {
+      "id": "GP5_P2_INDEPENDENT_REVIEW_AND_LAUNCH",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "GP5_P2_FOUR_JOB_JOINT_PREFLIGHT",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "GP5_P2_REAL_PRIMARY",
+      "status": "NOT_RUN",
+      "denominator": 4
+    },
+    {
+      "id": "GP5_P2_REAL_RECOVERY",
+      "status": "NOT_RUN",
+      "denominator": 6
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP5-P2-PRIOR-AUTHORIZATION-SCOPE-01",
+      "severity": "BLOCKING_FOR_DISPATCH",
+      "state": "OPEN",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_AUTHORIZATION_CONTEXT_20261119_01/original_authorization_context.md",
+      "effect": "不能把归档转录解释为对同一冻结计划的既有明确授权，独立记录未签发",
+      "resolution": "后续如直接布置这项限定运行验收，按任务给出的执行范围核对并走独立启动门；常规开发直接推进。"
+    }
+  ],
+  "stopped": true
+}

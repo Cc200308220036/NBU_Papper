@@ -1,0 +1,33 @@
+{
+  "schema": "gp5_p2_authorization_context_qa_commands_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_INDEPENDENT_LAUNCH_GATE",
+  "reviewed_head": "b4fb05f05fd4c1d5e7624bc0c2141aae5f570b3e",
+  "previous_qa": "c02e6babc2830238af36e6620fc55f56a3bca554",
+  "reviewed_branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "checks": [
+    {
+      "check": "实时远端与 GitHub 固定提交比较",
+      "observed": "远端领先入场本地1个提交，仅新增授权上下文包三个文件",
+      "sha": "b4fb05f05fd4c1d5e7624bc0c2141aae5f570b3e"
+    },
+    {
+      "check": "按固定提交及清单重算原授权上下文包",
+      "observed": "2 项大小、SHA-256和Git字节相符"
+    },
+    {
+      "command": "python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_HOST_PREFLIGHT_QA_20261119_01/verify_host_archive.py",
+      "result": "PASS，6项与19个冻结文件"
+    },
+    {
+      "command": "python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FROZEN_PRELAUNCH_QA_20261119_01/verify_frozen_archive.py",
+      "result": "PASS，原清单、源码、身份、原件和空账本"
+    }
+  ],
+  "real_operations": 0
+}

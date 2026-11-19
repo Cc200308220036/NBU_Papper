@@ -74,13 +74,15 @@ def validate_bundle(req: dict, bundle: CandidateBundle) -> dict:
 
 
 class CandidateProvider:
-    def build(self, state: dict, observation: dict, generator_config: dict, *, config: dict | None = None, common_input=None) -> CandidateBundle:
+    def build(self, state: dict, observation: dict, generator_config: dict | None = None, *, config: dict | None = None, common_input=None) -> CandidateBundle:
         from .packaging_versions import GEOMETRY_VERSION
         if config is not None:
             validate_schema('config',config)
         if config is not None and config.get('version') in GEOMETRY_CONFIGS:
             from .candidate_backends import build_geometry_bundle
-            result=build_geometry_bundle(state,observation,generator_config,config,common_input=common_input)
+            from .config import generator_config_for
+            effective_gen = generator_config_for(config) if generator_config is None else generator_config
+            result=build_geometry_bundle(state,observation,effective_gen,config,common_input=common_input)
             validate_bundle(observation,result)
             return result
         if common_input is not None:

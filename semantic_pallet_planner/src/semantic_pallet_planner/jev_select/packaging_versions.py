@@ -17,6 +17,7 @@ GEOMETRY_BACKEND_BINDING='geometry_backend_binding_v1'
 GEOMETRY_ADMISSION='geometry_common_admission_v1'
 GEOMETRY_AUDIT='geometry_provider_audit_v1'
 GEOMETRY_BACKENDS=('e2_original_v1','ems_surface_hybrid_v1')
+DEFAULT_GEOMETRY_BACKEND='ems_surface_hybrid_v1'
 
 
 def reject_geometry_execution(config_or_context, operation):

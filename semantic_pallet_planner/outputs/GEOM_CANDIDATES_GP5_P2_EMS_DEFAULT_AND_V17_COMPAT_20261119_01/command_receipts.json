@@ -1,0 +1,76 @@
+{
+  "schema": "gp5_p2_ems_default_and_v17_compat_command_receipts_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_EMS_DEFAULT_ROUTE_AND_V17_COMPLETION_COMPATIBILITY_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "baseline_qa_head": "0a34f9b835250e7a0dad366432144ec8213ae088",
+  "pull": {
+    "command": "git pull --ff-only",
+    "result": "FAST_FORWARD afa128ff..0a34f9b8"
+  },
+  "initial_worktree": "CLEAN",
+  "initial_index": "CLEAN",
+  "new_source_identity": "6aea710fad8c98c110a4a5cb17e2edf52e29cc87a217657850a3ffeda5da58c0",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "default_geometry_backend": "ems_surface_hybrid_v1",
+  "default_route_identity": "859dbf7e72616544660580b70e8653cdd3782c96ec2a79a72d98817d9a6a77b7",
+  "production_source_files": 593,
+  "tests": [
+    {
+      "name": "ems_default_and_v17_completion_offline_suite",
+      "command": "PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python3 -m unittest test_geometry_ems_default_and_v17_completion -v",
+      "exit_code": 0,
+      "tests": 13,
+      "passed": 13,
+      "failed": 0,
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_MONITOR_SUBSTITUTE"
+    },
+    {
+      "name": "geometry_regression_suite",
+      "command": "PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python3 -m unittest test_geometry_external_review_identity_r1 test_geometry_public_n2 test_geometry_execution_n3",
+      "exit_code": 0,
+      "tests": 28,
+      "passed": 28,
+      "failed": 0,
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_MONITOR_SUBSTITUTE"
+    },
+    {
+      "name": "recovery_and_completion_contract_regression",
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python3 -B -m unittest test_geometry_recovery_r1 test_geometry_order_r1.Remediation.test_completion_contract_missing_duplicate_error_only_no_commit_recovery",
+      "exit_code": 0,
+      "tests": 7,
+      "passed": 7,
+      "failed": 0,
+      "evidence": "PURE_UNIT_REGRESSION"
+    },
+    {
+      "name": "legacy_v1_candidates_pytest_regression",
+      "command": "PYTHONPATH=semantic_pallet_planner/src python3 -m pytest semantic_pallet_planner/src/semantic_pallet_planner/jev_select/tests/unit/test_candidates.py -q",
+      "exit_code": 0,
+      "tests": 38,
+      "passed": 38,
+      "failed": 0,
+      "evidence": "PURE_UNIT_REGRESSION"
+    },
+    {
+      "name": "r3_r1_driver_preservation_check",
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit:semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_R1_20261119_01 python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_R1_20261119_01/test_driver.py",
+      "exit_code": 1,
+      "tests": 18,
+      "passed": 17,
+      "failed": 1,
+      "note": "Only test_r3_legacy_completion_01_legacy_with_durable_root_passes_and_phase_snapshot_missing_or_drifted_rejected failed at line 470 because it asserted the old R3-R1 behavior where ordinary v17 with durable_root was rejected; all 17 other checks (including 4+6 dispatch, monitor binding, 4-config preflight, auth, zero-ledger, parent evidence) passed."
+    }
+  ],
+  "actual_this_delivery": {
+    "orders": 0,
+    "real_assessments": 0,
+    "LP": 0,
+    "model_calls": 0,
+    "freeze": 0,
+    "real_recovery": 0
+  },
+  "independent_production_records_issued": 0
+}

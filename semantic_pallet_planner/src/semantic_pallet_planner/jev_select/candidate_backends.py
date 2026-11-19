@@ -14,7 +14,7 @@ from . import geometry_runtime_contracts as c
 from .geometry_runtime_input import capture_runtime_views_v1, validate_runtime_views_v1
 from .contracts import CandidateBundle, JevSelectError, canonical, digest, validate_schema
 from .packaging_versions import (GEOMETRY_VERSION, GEOMETRY_BUNDLE, GEOMETRY_COMMON_BINDING,
-    GEOMETRY_BACKEND_BINDING, GEOMETRY_ADMISSION, GEOMETRY_AUDIT, GEOMETRY_BACKENDS)
+    GEOMETRY_BACKEND_BINDING, GEOMETRY_ADMISSION, GEOMETRY_AUDIT, GEOMETRY_BACKENDS, DEFAULT_GEOMETRY_BACKEND)
 
 
 def backend_config(backend):
@@ -33,8 +33,10 @@ def _identity():
     return {'source_identity':digest(source_manifest()),'physical_identity':digest(physical_manifest())}
 
 
-def load_geometry_config(*, backend, data_identity, task_identity, monitor_identity,
+def load_geometry_config(*, backend=DEFAULT_GEOMETRY_BACKEND, data_identity, task_identity, monitor_identity,
                          method='local_geometry_test_double'):
+    if backend is None:
+        backend=DEFAULT_GEOMETRY_BACKEND
     # No remote transport, model options or monitor preflight are loaded.
     config=json.loads(files(__package__).joinpath('configs/packaging_runtime_v4.json').read_text())
     config.update(version=GEOMETRY_VERSION,candidate_backend=backend,selector=method,

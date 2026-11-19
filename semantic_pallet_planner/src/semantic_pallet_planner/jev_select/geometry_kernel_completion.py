@@ -70,7 +70,7 @@ def validate_completion(receipt,plan,log,validate_record):
             and all(account['cumulative'][k]==sum(i['delta'][k] for i in inv) for k in delta),'geometry_completion_recovery_delta')
         is_phase_snapshot_recovery=(len(inv)>1 and inv[0].get('status')=='STARTED'
             or 'phase_credential' in row
-            or (is_native(plan) and 'durable_root' in after)
+            or row.get('recovery_mode')=='phase_snapshot'
             or ('durable_root' in after and (Path(after['durable_root'])/'phase_snapshot_credential.json').exists()))
         if is_phase_snapshot_recovery:
             from .geometry_order_accounting import validate_phase_snapshot_credential

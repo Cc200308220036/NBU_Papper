@@ -90,12 +90,18 @@ def config_for_memory(config, method, snapshot):
                 memory_corpus_digest=snapshot.data['corpus_digest'])
 
 
-def generator_config_for(config):
-    """Explicit N2 route; old no-argument generator_config remains untouched."""
-    from .packaging_versions import GEOMETRY_VERSION
+def generator_config_for(config=None):
+    """Default geometry route uses EMS; explicit/frozen configs keep their registered backend."""
+    from .packaging_versions import DEFAULT_GEOMETRY_BACKEND
+    if config is None:
+        from .candidate_backends import backend_config
+        return backend_config(DEFAULT_GEOMETRY_BACKEND)
     validate_schema('config',config)
     if config['version'] in GEOMETRY_CONFIGS:
         from .candidate_backends import preflight_config, backend_config
         preflight_config(config)
         return backend_config(config['candidate_backend'])
+    if config.get('candidate_backend')==DEFAULT_GEOMETRY_BACKEND:
+        from .candidate_backends import backend_config
+        return backend_config(DEFAULT_GEOMETRY_BACKEND)
     return generator_config()

@@ -12,7 +12,7 @@ import tempfile
 from .packaging_versions import GEOMETRY_ORDER_CONFIGS, GEOMETRY_NATIVE_VERSION
 from .contracts import JevSelectError, canonical, digest, validate_schema
 from .geometry_runtime_contracts import environment, same_native
-from .packaging_versions import GEOMETRY_RUN_VERSION, GEOMETRY_EXECUTION
+from .packaging_versions import GEOMETRY_RUN_VERSION, GEOMETRY_EXECUTION, DEFAULT_GEOMETRY_BACKEND
 
 RECOVERY_VALIDATION_REVISION='geometry_technical_failure_recovery_v1'
 COMMIT_TECHNICAL_ERROR='GEOMETRY_COMMIT_TECHNICAL_ERROR'
@@ -25,7 +25,9 @@ def validate_fixture(task):
         raise JevSelectError('geometry_manual_fixture_only')
 
 
-def load_run_config(*,backend,task,data_identity,method='local_geometry_test_double',enabled=True):
+def load_run_config(*,backend=DEFAULT_GEOMETRY_BACKEND,task,data_identity,method='local_geometry_test_double',enabled=True):
+    if backend is None:
+        backend=DEFAULT_GEOMETRY_BACKEND
     validate_fixture(task)
     from .candidate_backends import load_geometry_config
     from .stability.monitor import exact_freeze, freeze

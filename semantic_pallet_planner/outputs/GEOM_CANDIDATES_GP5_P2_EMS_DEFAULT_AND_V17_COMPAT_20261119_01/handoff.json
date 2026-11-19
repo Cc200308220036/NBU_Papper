@@ -1,0 +1,56 @@
+{
+  "schema": "gp5_p2_ems_default_and_v17_compat_handoff_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_EMS_DEFAULT_ROUTE_AND_V17_COMPLETION_COMPATIBILITY_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "baseline_head": "0a34f9b835250e7a0dad366432144ec8213ae088",
+  "previous_qa_handoff": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_R1_QA_20261119_01/handoff.json",
+  "new_source_identity": "6aea710fad8c98c110a4a5cb17e2edf52e29cc87a217657850a3ffeda5da58c0",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "default_geometry_backend": "ems_surface_hybrid_v1",
+  "geometry_backends": [
+    "e2_original_v1",
+    "ems_surface_hybrid_v1"
+  ],
+  "default_route_identity": "859dbf7e72616544660580b70e8653cdd3782c96ec2a79a72d98817d9a6a77b7",
+  "status": "OFFLINE_IMPLEMENTATION_AND_TESTS_PASS_PENDING_INDEPENDENT_QA",
+  "production_dispatch": "NOT_READY_NEEDS_NEW_HOST_FREEZE_AND_INDEPENDENT_LAUNCH",
+  "issue_status": {
+    "GP5-P2-R3-LEGACY-COMPLETION-01": {
+      "status": "PASS",
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_TESTS",
+      "summary": "Removed the blanket (is_native(plan) and 'durable_root' in after) trigger in geometry_kernel_completion.validate_completion and routed phase-snapshot credential checks strictly by explicit recovery contract/credential indicators (len(inv)>1 and inv[0].get('status')=='STARTED', 'phase_credential' in row, row.get('recovery_mode')=='phase_snapshot', or presence of phase_snapshot_credential.json in durable_root). Ordinary v16 and v17 durable_root records pass under ordinary review rules, while phase-snapshot recoveries with missing credentials or drifted parent evidence are rejected."
+    },
+    "GP5-P2-EMS-DEFAULT-01": {
+      "status": "PASS",
+      "evidence": "OFFLINE_TESTS_WITH_BACKEND_SPIES",
+      "summary": "Added DEFAULT_GEOMETRY_BACKEND='ems_surface_hybrid_v1' in packaging_versions.py and wired it as the default backend for load_geometry_config, load_run_config, generator_config_for, and CandidateProvider.build (when config is in GEOMETRY_CONFIGS and generator_config is omitted). Explicit backend='e2_original_v1' continues to invoke original E2. EMS empty pool and EMS errors stop with their own status/error without silent fallback to E2. Historical frozen configs (v1-v13, v4) and the fixed 4+6 matrix retain their explicit per-task backends."
+    },
+    "GP5-P2-PRESERVATION-01": {
+      "status": "PASS",
+      "evidence": "OFFLINE_REGRESSION_AND_R3_R1_DRIVER_CHECK",
+      "summary": "Preserved new snapshot digest binding, original physical checks, post-selection monitor path, zero-ledger barrier, and 4-config joint preflight."
+    }
+  },
+  "report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP5-P2_EMS默认路由与普通v17完成审查兼容交付_20261119_01.md",
+  "tests": "semantic_pallet_planner/tests/unit/test_geometry_ems_default_and_v17_completion.py",
+  "source_identity_receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_EMS_DEFAULT_AND_V17_COMPAT_20261119_01/source_identity_receipt.json",
+  "command_receipts": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_EMS_DEFAULT_AND_V17_COMPAT_20261119_01/command_receipts.json",
+  "manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_EMS_DEFAULT_AND_V17_COMPAT_20261119_01/manifest.json",
+  "actual_this_delivery": {
+    "orders": 0,
+    "real_assessments": 0,
+    "LP": 0,
+    "model_calls": 0,
+    "freeze": 0,
+    "real_recovery": 0
+  },
+  "independent_production_records_issued": 0,
+  "A03": "PARTIAL",
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED",
+  "next": "INDEPENDENT_QA_ONLY",
+  "stopped": true
+}

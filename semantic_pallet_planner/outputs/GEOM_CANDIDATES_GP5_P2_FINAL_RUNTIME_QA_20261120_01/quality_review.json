@@ -1,0 +1,56 @@
+{
+  "schema": "gp5_p2_final_runtime_qa_review_v1",
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_FINAL_LINUX_FREEZE_AND_LAUNCH_PACKAGE_PREPARATION_ONLY",
+  "reviewed_head": "195e1138884306a09e6329150798816ffd747919",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "entry_head": "2c97f59444f07e40b98da529e5256efc441207d4",
+  "entry_index": "EMPTY",
+  "entry_worktree": "上轮 QA 的未提交产物和索引",
+  "developer_entry_head": "2c97f59444f07e40b98da529e5256efc441207d4",
+  "identities": {
+    "source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+    "publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+    "default_route_identity": "1a55c583b931690f0500fe96f53597756ec3884ee7bff56e1dd4b9129e26ebc7",
+    "plan_digest": "248e746c4d3b8063a0f56e2be9f8441b5c34c7c5947147d8da6d67a3396b70e5",
+    "monitor_digest": "83b807f6aa8f60a45c1873aebd20fc2aeb04ec5cc924cf2568137bff254f88d6"
+  },
+  "scope": "静态核查、只读 Git 溯源与独立 QA 归档",
+  "evidence": {
+    "report_statement": "docs/03_阶段产出分析/几何规划模块/几何候选器GP5-P2最终Linux冻结与待审启动包准备_20261120_01.md",
+    "source": "生产源码与父提交相同，正常订单默认 EMS、保留显式 E2，固定验收矩阵独立校验",
+    "archives": [
+      "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/manifest.json",
+      "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/command_receipts.json"
+    ],
+    "local_verification": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_QA_20261120_01/command_receipts.json"
+  },
+  "acceptance": {
+    "FREEZE_IDENTITY": "PASS",
+    "LINUX_FREEZE_VERIFICATION": "PASS_ARCHIVE",
+    "ZERO_LEDGER_AND_HISTORICAL_PROTECTION": "PASS",
+    "SCOPE_AUTHORIZATION": "MISSING_NEW_PLAN_REFERENCE",
+    "INDEPENDENT_STARTUP": "NOT_READY",
+    "FOUR_JOB_JOINT_PREFLIGHT": "NOT_RUN",
+    "FIXED_PRIMARY": {
+      "NOT_RUN": 4
+    },
+    "FIXED_RECOVERY": {
+      "NOT_RUN": 6
+    }
+  },
+  "limits": {
+    "assessment_entries": 8,
+    "solver_calls": 128,
+    "model_calls": 0
+  },
+  "engineering_status": "PASS_FREEZE_PREPARATION",
+  "evidence_readiness": "FROZEN_ARCHIVE_VERIFIED_STARTUP_GATES_OPEN",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "READY",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "stopped": true
+}

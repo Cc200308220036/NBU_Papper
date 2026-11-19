@@ -1,0 +1,39 @@
+{
+  "schema": "gp5_p2_final_runtime_qa_receipts_v1",
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_FINAL_LINUX_FREEZE_AND_LAUNCH_PACKAGE_PREPARATION_ONLY",
+  "reviewed_head": "195e1138884306a09e6329150798816ffd747919",
+  "checks": [
+    {
+      "command": "git status --short --branch; git diff --cached --name-only; git ls-remote --exit-code origin refs/heads/dev/jev-select",
+      "status": "PASS_READ_ONLY",
+      "observation": "主工作区落后一笔，上一轮 QA 待提交，暂存区空，远端同期为被审提交"
+    },
+    {
+      "command": "python -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_QA_20261120_01/verify_freeze_archive.py",
+      "interpreter": "现有 NBU 环境 Python",
+      "status": "PASS",
+      "stdout": [
+        "Verified 19 manifest members, 594-source identity, 19 historical runtime files, two unchanged task inputs, and archived environment and monitor bytes.",
+        "Plan 248e746c4d3b8063a0f56e2be9f8441b5c34c7c5947147d8da6d67a3396b70e5; monitor 83b807f6aa8f60a45c1873aebd20fc2aeb04ec5cc924cf2568137bff254f88d6.",
+        "Four primary and six recovery rows NOT_RUN; zero ledger; no authorization reference, independent review or launch in the startup request."
+      ]
+    },
+    {
+      "command": "/usr/bin/python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_QA_20261120_01/verify_freeze_archive.py",
+      "status": "INITIAL_ATTEMPT_INCOMPATIBLE_INTERPRETER",
+      "observation": "系统 Python 不支持 zip 的 strict 参数，改用现有 NBU 环境后通过"
+    }
+  ],
+  "limits": "本机仅审查 Git 对象和产物一致性，原 Linux 环境为归档证据",
+  "actual_qa_calls": {
+    "freeze": 0,
+    "orders": 0,
+    "monitor": 0,
+    "LP": 0,
+    "recovery": 0,
+    "model_calls": 0,
+    "launch_records_issued": 0
+  }
+}

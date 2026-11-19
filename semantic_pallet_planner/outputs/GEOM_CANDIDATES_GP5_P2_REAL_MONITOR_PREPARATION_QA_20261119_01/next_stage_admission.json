@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_REAL_MONITOR_USABILITY_PREPARATION",
+  "reviewed_head": "34bc67d2a3b37a0a6a05d8cfefa478f916f4e73d",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "source_identity": "8a860eea3ec22f8805eb6767660301acfd526653f566b1b1bd3e42b4af53578f",
+  "decisions": [
+    {
+      "task": "GP5_P2_R1_EXTERNAL_REVIEW_IDENTITY_BINDING",
+      "status": "CONDITIONAL",
+      "conditions": [
+        "仅修复两处 v17 外部审查身份绑定；保留 v16 和两后端",
+        "仅静态和无业务副作用的纯测试；变更来源身份后另交 DRAFT",
+        "完成即交独立质检"
+      ]
+    },
+    {
+      "task": "P2_REAL_DISPATCH",
+      "status": "NOT_READY",
+      "dependencies": [
+        "P2-PREP-EXTERNAL-POLICY-01",
+        "GP5-P2-COMPLETION-POLICY-01",
+        "新身份独立 QA",
+        "用户明确执行授权",
+        "绑定新冻结计划的启动记录及共享计数账本"
+      ]
+    },
+    {
+      "task": "FORMAL_EIGHT_REAL_JOBS",
+      "status": "NOT_READY"
+    },
+    {
+      "task": "GP6",
+      "status": "NOT_ASSESSED"
+    }
+  ],
+  "future_proposal": {
+    "primary": 4,
+    "recovery": 6,
+    "assessment_max": 8,
+    "lp_max": 128,
+    "normal_path_lp_estimate": 68,
+    "authorization": false
+  }
+}

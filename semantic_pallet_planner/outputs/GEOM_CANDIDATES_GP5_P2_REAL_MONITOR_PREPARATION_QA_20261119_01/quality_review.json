@@ -1,0 +1,102 @@
+{
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_REAL_MONITOR_USABILITY_PREPARATION",
+  "reviewed_head": "34bc67d2a3b37a0a6a05d8cfefa478f916f4e73d",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "source_identity": "8a860eea3ec22f8805eb6767660301acfd526653f566b1b1bd3e42b4af53578f",
+  "engineering": "PARTIAL",
+  "preparation_scope_delivered": true,
+  "evidence_readiness": "PARTIAL",
+  "research": "NOT_ESTABLISHED",
+  "A03": "PARTIAL",
+  "developer_delivery": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_REAL_MONITOR_PREPARATION_20261119_01",
+  "previous_qa": "46dd8c0699d0c57875d4204c78dc3a7640b2015d",
+  "entry_git": {
+    "worktree_clean": true,
+    "index_empty": true,
+    "upstream_behind": 0,
+    "upstream_ahead": 0
+  },
+  "checks": [
+    {
+      "id": "PREPARATION_ARTIFACTS",
+      "status": "PASS",
+      "evidence": "本机核对开发交付清单 27 项 SHA 和大小。"
+    },
+    {
+      "id": "PINNED_SOURCE_AND_HISTORY",
+      "status": "PASS",
+      "evidence": "本机对照 591 项生产文件和前轮 QA 清单七项，归档来源一致。"
+    },
+    {
+      "id": "DRAFT_PRIMARY_AND_RECOVERY",
+      "status": "PASS",
+      "evidence": "固定原件字节、4 个主项、6 个恢复分母和 NOT_RUN 状态一致。"
+    },
+    {
+      "id": "READONLY_METADATA",
+      "status": "PASS",
+      "evidence": "开发归档登记环境只读预检通过，QA 核对证据和只读标记；本机未重跑该预检。"
+    },
+    {
+      "id": "BUDGET_PROPOSAL",
+      "status": "PASS",
+      "evidence": "6+2=8，8/128 在 12/512 合同硬上限内。68 为源码正常路径估算。"
+    },
+    {
+      "id": "OFFLINE_RECHECK",
+      "status": "PASS",
+      "evidence": "六项独立本机复验均通过，小范围纯合同及假包装调用。"
+    },
+    {
+      "id": "LAUNCH_EXTERNAL_REVIEW_BINDING",
+      "status": "FAIL",
+      "evidence": "P2-PREP-EXTERNAL-POLICY-01"
+    },
+    {
+      "id": "COMPLETION_REVIEW_BINDING",
+      "status": "FAIL",
+      "evidence": "GP5-P2-COMPLETION-POLICY-01"
+    },
+    {
+      "id": "P2_REAL_EXECUTION_AND_RECOVERY",
+      "status": "NOT_RUN",
+      "evidence": "真实监测、真实 LP、实际订单和恢复均为零。"
+    },
+    {
+      "id": "BENCHMARK_OR_SUPERIORITY",
+      "status": "NOT_APPLICABLE",
+      "evidence": "本单元目标是两后端可选与新后端可用证据。"
+    }
+  ],
+  "issues": [
+    {
+      "id": "P2-PREP-EXTERNAL-POLICY-01",
+      "status": "OPEN",
+      "severity": "HIGH",
+      "blocks": [
+        "P2_REAL_DISPATCH"
+      ],
+      "location": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:154-160",
+      "evidence": "两种 v17 外部文件的策略摘要仅校验格式，启动门比较计划摘要、scope 和 APPROVED。开发离线探针已归档，QA 静态确认。",
+      "impact": "外部文件声明的发布策略与实际计划可能不一致，原计划和启动记录自身的身份保护仍有效。",
+      "minimal_fix": "按现有 v17 身份字段与当前计划逐项校验，保留 v16 兼容。",
+      "verification": "纯试件验证两类文件身份匹配及不一致拒绝，保留既有缺失与计划身份检查。"
+    },
+    {
+      "id": "GP5-P2-COMPLETION-POLICY-01",
+      "status": "OPEN",
+      "severity": "HIGH",
+      "blocks": [
+        "P2_REAL_COMPLETION_ACCEPTANCE"
+      ],
+      "location": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_kernel_completion.py:40-46",
+      "evidence": "v17 完成审查 Schema 含发布策略摘要，等值列表含计划、主项、恢复、计数与覆盖摘要，缺该字段。QA 静态确认。",
+      "impact": "最终签收记录可能声明不同发布策略。真实主项、恢复及计数仍需独立校验。",
+      "minimal_fix": "把当前计划的现有 v17 身份字段纳入完成审查等值检查，保留 v16 兼容。",
+      "verification": "纯试件检查身份同一与不一致拒绝，保留既有完成证据和分母保护。"
+    }
+  ]
+}

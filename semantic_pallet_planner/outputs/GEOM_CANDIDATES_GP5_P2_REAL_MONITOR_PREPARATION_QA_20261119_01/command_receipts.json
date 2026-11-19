@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_REAL_MONITOR_USABILITY_PREPARATION",
+  "reviewed_head": "34bc67d2a3b37a0a6a05d8cfefa478f916f4e73d",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "source_identity": "8a860eea3ec22f8805eb6767660301acfd526653f566b1b1bd3e42b4af53578f",
+  "checks": [
+    {
+      "kind": "git",
+      "commands": [
+        "git status --short --branch",
+        "git rev-parse HEAD",
+        "git rev-list --left-right --count HEAD...@{upstream}",
+        "git diff --check 46dd8c06 HEAD"
+      ],
+      "observed": "clean; 0/0; no diff warnings"
+    },
+    {
+      "kind": "readonly_stdlib_audit",
+      "observed": {
+        "dev_manifest_verified": 27,
+        "previous_qa_manifest_verified": 7,
+        "production_files_verified": 591,
+        "original_inputs_byte_exact": true,
+        "main_draft": 4,
+        "recovery_draft": 6,
+        "real_calls": 0
+      }
+    },
+    {
+      "kind": "pure_test",
+      "command": "PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/miniconda3/envs/NBU/bin/python\" -B - <<'PY'\nimport runpy,unittest\nfrom semantic_pallet_planner.jev_select import packaging_geometry_protocol as p\nfrom semantic_pallet_planner.jev_select.contracts import digest\ng=runpy.run_path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_REAL_MONITOR_PREPARATION_20261119_01/test_offline_gates.py',run_name='qa_test_only')['Gates']\nold=g.setUp\ndef setup(t):\n old(t)\n t.plan['environment_digest']=digest(p.environment())\ng.setUp=setup\nnames=[\"test_missing_and_mismatched_external_approvals\",\"test_identity_drift_and_launch_not_completion\",\"test_substitute_evidence_cannot_satisfy_real_completion\",\"test_counter_reservations_caps_unknown_and_forwarding\",\"test_meter_wrapper_only_fake_targets\",\"test_required_coverage_and_existing_completion_pure_contract\"]\nresult=unittest.TextTestRunner(verbosity=2).run(unittest.TestSuite(g(n) for n in names))\nraise SystemExit(not result.wasSuccessful())\nPY",
+      "exit_code": 0,
+      "passed": [
+        "test_missing_and_mismatched_external_approvals",
+        "test_identity_drift_and_launch_not_completion",
+        "test_substitute_evidence_cannot_satisfy_real_completion",
+        "test_counter_reservations_caps_unknown_and_forwarding",
+        "test_meter_wrapper_only_fake_targets",
+        "test_required_coverage_and_existing_completion_pure_contract"
+      ],
+      "fixture_adjustment": "Only environment_digest of in-memory fixtures reflects current machine; archived files unchanged."
+    }
+  ],
+  "not_reexecuted": [
+    "Linux read-only preflight",
+    "test_draft_public_entry_rejects_before_io",
+    "external policy development probe",
+    "production runtime, monitoring, solver, freeze and recovery"
+  ]
+}

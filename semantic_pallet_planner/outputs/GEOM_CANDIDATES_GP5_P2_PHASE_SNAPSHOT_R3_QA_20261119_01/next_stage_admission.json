@@ -1,0 +1,60 @@
+{
+  "schema": "gp5_p2_snapshot_r3_qa_admission_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_PHASE_SNAPSHOT_PARENT_EVIDENCE_CORRECTION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "27e22d68fcb729d68dcd2bd0e058dd2cd28f7a5c",
+  "developer_entry_head": "b5de450cc51aedff536b478aee30ffe92d07e58b",
+  "historical_source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "new_source_identity": "378b0c7b9e66befb2eee87ca29fd23fe1915431f5952fe13fff5223126ceb0eb",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "historical_plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "historical_monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "engineering_status": "PARTIAL",
+  "evidence_readiness": "ARCHIVE_AND_OFFLINE_PROBES_VERIFIED",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "NOT_READY",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "next_unit": "GP5_P2_R3_FREEZE_BINDING_AND_COMPLETION_COMPATIBILITY_CORRECTION_ONLY",
+  "allowed_now": "仅两项最小离线整改，修订新运行机说明。",
+  "blockers": [
+    {
+      "id": "GP5-P2-R3-MONITOR-BINDING-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "location": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_20261119_01/driver.py:30,218–244",
+      "requirement": "新冻结目录依据其已绑定的监测快照及启动记录预检",
+      "observation": "显式目录已接通，但仍将新快照摘要与历史固定值比较。临时元数据改变快照摘要并同步其文件与参考后，配置预检和通用启动门尚未调用就被拒绝。",
+      "impact": "只接受字节身份与历史快照一致的监测快照，R3报告所列不同环境无法通过。",
+      "correction": "以新启动请求、原始快照文件和独立启动记录相互绑定后的身份为准；保留生产原机监测配置和依赖验证。"
+    },
+    {
+      "id": "GP5-P2-R3-LEGACY-COMPLETION-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "location": "jev_select/geometry_kernel_completion.py:71–85",
+      "requirement": "给相位凭证路径核对父运行，同时保留旧版本普通耐久记录",
+      "observation": "durable_root 出现即要求新凭证。元数据夹具增加原产出本来就有的 durable_root 后，旧基线覆盖校验通过，R3因缺失新凭证拒绝。",
+      "impact": "凭证要求扩散至既有普通恢复合同，旧式测试夹具普遍没有durable_root，未覆盖。",
+      "correction": "按显式受信协议/模式分流；新路径必须核验凭证和父来源，旧式普通记录保持原行为，并增加带durable_root的回归。"
+    }
+  ],
+  "after_correction": [
+    "独立复核整改",
+    "根据最终源码身份准备原Linux机新冻结和零账本",
+    "同计划独立启动审查及启动记录，四任务联合只读预检"
+  ],
+  "proposed_scope": {
+    "primary": 4,
+    "recovery": 6,
+    "assessment_entries": 8,
+    "solver_calls": 128,
+    "model_calls": 0
+  },
+  "real_calls_authorized": 0,
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED"
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "gp5_p2_snapshot_r3_qa_commands_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_PHASE_SNAPSHOT_PARENT_EVIDENCE_CORRECTION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "27e22d68fcb729d68dcd2bd0e058dd2cd28f7a5c",
+  "developer_entry_head": "b5de450cc51aedff536b478aee30ffe92d07e58b",
+  "historical_source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "new_source_identity": "378b0c7b9e66befb2eee87ca29fd23fe1915431f5952fe13fff5223126ceb0eb",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "historical_plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "historical_monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "checks": [
+    {
+      "command": "git status --short --branch && git rev-parse HEAD @{upstream}",
+      "result": "0/0，工作区与暂存区干净"
+    },
+    {
+      "command": "git ls-remote --exit-code origin refs/heads/dev/jev-select",
+      "result": "27e22d68fcb729d68dcd2bd0e058dd2cd28f7a5c"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit:<R3包目录> python -B - <unittest筛选包装器>",
+      "exit_code": 0,
+      "passed": 15,
+      "selected": "8项R3，排除完整4+6替身运行；另7项旧外部审查身份纯回归"
+    },
+    {
+      "command": "PYTHONPATH=semantic_pallet_planner/src \"$HOME/miniconda3/envs/NBU/bin/python\" -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_PHASE_SNAPSHOT_R3_QA_20261119_01/verify_and_probe.py",
+      "exit_code": 0,
+      "observed": "15份固定提交成员、593源码、19历史运行文件，2个临时元数据探针"
+    },
+    {
+      "command": "git diff --check b5de450c HEAD",
+      "exit_code": 0
+    }
+  ],
+  "actual_qa": {
+    "order": 0,
+    "monitor": 0,
+    "LP": 0,
+    "freeze": 0,
+    "recovery": 0,
+    "model": 0
+  }
+}

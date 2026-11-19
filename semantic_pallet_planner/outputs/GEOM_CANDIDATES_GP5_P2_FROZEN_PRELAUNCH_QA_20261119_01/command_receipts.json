@@ -1,0 +1,63 @@
+{
+  "schema": "gp5_p2_frozen_prelaunch_qa_commands_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "unit": "GP5_P2_BOUNDED_REAL_MONITOR_USABILITY",
+  "reviewed_head": "0e37ced18c93ec2395766b5e8ab7c17095e35673",
+  "previous_qa": "52766787cdac095ce2d6724adfe8373fc39598e8",
+  "developer_delivery_head": "39d0884c9120c03082867d50d169911877ab51e8",
+  "developer_entry_head": "1ff6d93c20a747ab348071e01ef682266b571f0c",
+  "plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "environment_digest": "7e067024b6cad0efef09ad2e4cc866d4b7758ea403f23875196e0dee8f706415",
+  "checks": [
+    {
+      "command": "git status --short --branch; git rev-parse HEAD @{upstream}; git diff --cached --stat",
+      "status": "PASS",
+      "observed": "HEAD 与上游一致，工作区与暂存区干净"
+    },
+    {
+      "command": "git ls-remote --exit-code origin refs/heads/dev/jev-select",
+      "status": "PASS",
+      "observed": "0e37ced18c93ec2395766b5e8ab7c17095e35673"
+    },
+    {
+      "command": "git diff --name-status 52766787cdac095ce2d6724adfe8373fc39598e8 HEAD",
+      "status": "PASS",
+      "observed": "两份开发报告、PRESTART、RUNTIME 和导航，生产源码无变更"
+    },
+    {
+      "command": "python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FROZEN_PRELAUNCH_QA_20261119_01/verify_frozen_archive.py",
+      "status": "PASS",
+      "exit_code": 0,
+      "output": [
+        "Verified 9 PRESTART and 20 RUNTIME manifest members at the developer revision.",
+        "Verified 591 production files, 23 monitor files and both original task identities.",
+        "FROZEN plan 2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433, monitor b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07.",
+        "Authorization transcription and references match; no independent review or launch receipt in the handoff.",
+        "Limits 8/128/0; ledger empty; 4 primary and 6 recoveries NOT_RUN.",
+        "QA host: Darwin; saved monitor host: Linux-6.8.0-149-generic-x86_64-with-glibc2.35."
+      ]
+    },
+    {
+      "command": "rg -l --hidden --no-ignore -g '*.json' '\"version\"[[:space:]]*:[[:space:]]*\"(geometry_kernel_launch_v2|geometry_scope_review_v2|geometry_real_kernel_receipt_v3|geometry_kernel_completion_review_v2)\"' semantic_pallet_planner/outputs outputs",
+      "status": "NO_MATCH",
+      "exit_code": 1,
+      "observed": "该搜索无有效版本记录路径；与 handoff 的缺件声明一致"
+    }
+  ],
+  "not_run": [
+    "运行机依赖字节与环境实测",
+    "订单",
+    "候选生成",
+    "监测评估",
+    "LP",
+    "新freeze",
+    "恢复",
+    "模型"
+  ],
+  "qa_business_dispatches": 0
+}

@@ -1,0 +1,92 @@
+{
+  "schema": "gp5_p2_frozen_prelaunch_qa_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "unit": "GP5_P2_BOUNDED_REAL_MONITOR_USABILITY",
+  "reviewed_head": "0e37ced18c93ec2395766b5e8ab7c17095e35673",
+  "previous_qa": "52766787cdac095ce2d6724adfe8373fc39598e8",
+  "developer_delivery_head": "39d0884c9120c03082867d50d169911877ab51e8",
+  "developer_entry_head": "1ff6d93c20a747ab348071e01ef682266b571f0c",
+  "plan_digest": "2e97da50ad87c91b50b0259129f1dfc0b584e11c653d23a9a25830f3499d6433",
+  "monitor_digest": "b6cda604eaf1640c48c7d6d71fb536f4ef777cac56ca2de0c01b8ed4dda3ab07",
+  "source_identity": "3b58b72f9f31913afb0e2180911dadad0c02c10f58171f8eeb632f3988b4b956",
+  "environment_digest": "7e067024b6cad0efef09ad2e4cc866d4b7758ea403f23875196e0dee8f706415",
+  "engineering_status": "FROZEN_PRELAUNCH_DELIVERED_REAL_EXECUTION_NOT_RUN",
+  "evidence_readiness": "STATIC_PACKAGE_PASS_EXECUTION_HOST_PREFLIGHT_PENDING",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "CONDITIONAL",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "contract": "docs/02_阶段实施方案/几何规划模块/几何候选器GP5-P1协议实现与P2启动合同补充_20261117_01.md",
+  "facts": {
+    "report_claim": "开发端称收到执行授权并完成 Linux 运行机新冻结和账本初始化，停在独立启动审查。",
+    "source": "无生产源码改动。启动门要求冻结、匹配环境、两个独立外部引用；订单配置预检对比库字节和运行环境。",
+    "archive": "固定提交清单9+20、新冻结与授权转录证据一致。账本空，主项全未运行、恢复全未运行。",
+    "local_recheck": "标准库核验全部清单项、591生产文件、23监测文件、两个原始任务、摘要、引用、额度及分母。质检机Darwin，运行机依赖及环境重验NOT_RUN。"
+  },
+  "checks": [
+    {
+      "id": "GP5_P2_PRELAUNCH_ARCHIVE",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FROZEN_PRELAUNCH_QA_20261119_01/command_receipts.json"
+    },
+    {
+      "id": "GP5_P2_AUTHORIZATION_BINDING",
+      "status": "PASS",
+      "scope": "转录归档、范围、计划及文件绑定；原授权上下文由独立放行窗口核对",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_BOUNDED_REAL_MONITOR_RUNTIME_20261119_01/authorization_provenance.json"
+    },
+    {
+      "id": "GP5_P2_FROZEN_SCOPE_AND_LEDGER",
+      "status": "PASS",
+      "scope": "保存事实",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_BOUNDED_REAL_MONITOR_RUNTIME_20261119_01/shared_call_ledger.json"
+    },
+    {
+      "id": "GP5_P2_HOST_PREFLIGHT",
+      "status": "NOT_RUN",
+      "scope": "本轮；开发归档报告预检PASS"
+    },
+    {
+      "id": "GP5_P2_INDEPENDENT_STARTUP",
+      "status": "PARTIAL",
+      "scope": "静态审查通过，待运行机预检和有效独立审查、启动记录"
+    },
+    {
+      "id": "GP5_P2_REAL_PRIMARY",
+      "status": "NOT_RUN",
+      "denominator": 4
+    },
+    {
+      "id": "GP5_P2_REAL_RECOVERY",
+      "status": "NOT_RUN",
+      "denominator": 6
+    },
+    {
+      "id": "GP5_P2_REAL_COMPLETION",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "A03",
+      "status": "PARTIAL"
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP5-P2-PRELAUNCH-HOST-GATE-01",
+      "severity": "BLOCKING_FOR_DISPATCH",
+      "blocking": true,
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_BOUNDED_REAL_MONITOR_RUNTIME_20261119_01/startup_review_request.json",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_BOUNDED_REAL_MONITOR_RUNTIME_20261119_01/monitor_snapshot.json"
+      ],
+      "expected": "运行机预检和绑定同一计划的有效独立审查、启动记录",
+      "observed": "静态身份一致，运行机关系未由本机复验，启动记录缺失",
+      "impact": "实际派发 NOT_READY",
+      "resolution": "在原冻结 Linux 机只读复核，再由独立窗口完成有效启动审查与启动记录；任何漂移停止。"
+    }
+  ],
+  "stopped": true
+}

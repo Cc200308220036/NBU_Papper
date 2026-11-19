@@ -1,0 +1,51 @@
+{
+  "schema": "gp5_p2_ems_operational_qa_admission_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_EMS_DEFAULT_OPERATIONAL_ENTRY_CORRECTION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "ff4c1c56c213c1470a88773c54cb233008ebf2ce",
+  "developer_entry_head": "e9a2f424610b4072ce84dad2e7c973cd49cc888f",
+  "new_source_identity": "11c1bce48bc35df4240c6d8e593def6f8787c4ef80525b00d367de1ce7e9ec61",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "default_route_identity": "2443d227aedc2abd99bc6c5b9eb88ab9edba47f57d61cc61d1ec74939655c15b",
+  "engineering_status": "PARTIAL",
+  "evidence_readiness": "OFFLINE_AND_ARCHIVE_VERIFIED",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "NOT_READY",
+  "dispatch_status": "NOT_READY",
+  "A03": "PARTIAL",
+  "next_unit": "GP5_P2_OPERATIONAL_AND_FIXED_MATRIX_CONTRACT_ISOLATION_ONLY",
+  "admitted_scope": "READY_FOR_MINIMAL_OFFLINE_CONTRACT_ISOLATION_ONLY",
+  "blockers": [
+    {
+      "id": "GP5-P2-OPERATIONAL-MATRIX-01",
+      "severity": "HIGH",
+      "blocking": true,
+      "locations": [
+        "jev_select/packaging_geometry_protocol.py:107–151",
+        "jev_select/geometry_kernel_completion.py:8–19"
+      ],
+      "observed": "单后端入口可创建 ACCEPTANCE 两项计划，现有v1和v2计划校验均接受。相同计划基线校验及当前完成覆盖均拒绝。",
+      "expected": "固定验收仍用原四项双后端矩阵，正常运行单后端以显式独立模式或版本路由，保留原协议校验。",
+      "verification": "临时内存的K01/K02固定原件适配，仅生产计划构造、Schema及覆盖，不签发、不派发。",
+      "correction": "隔离单后端入口和固定验收合同。新模式如支持旧范围之外的执行须显式版本化；固定验收拒绝缺项和单后端，保持正常入口默认EMS和显式E2。"
+    }
+  ],
+  "engineering_closure": [
+    "最终入口默认EMS、显式E2且不回退；固定矩阵保护与历史兼容通过独立离线复核",
+    "最终源码及路由身份下新冻结、原机联合预检、同计划独立启动记录",
+    "固定四项真实监测主运行和六次恢复及独立完成审查通过，动作、终态和计数证据完整"
+  ],
+  "scope": {
+    "primary": 4,
+    "recovery": 6,
+    "assessment_entries": 8,
+    "solver_calls": 128,
+    "model_calls": 0
+  },
+  "real_calls_authorized": 0,
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED"
+}

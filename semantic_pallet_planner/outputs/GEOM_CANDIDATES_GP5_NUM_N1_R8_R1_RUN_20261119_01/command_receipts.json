@@ -1,0 +1,45 @@
+{
+  "commands": [
+    {
+      "command": "git status --short; git diff --cached --stat; git branch --show-current; git rev-parse --abbrev-ref --symbolic-full-name @{u}; rg --files -g AGENTS.md",
+      "exit": 0,
+      "result": "CLEAN worktree/index, dev/jev-select tracks origin/dev/jev-select; root AGENTS only"
+    },
+    {
+      "command": "git pull --ff-only",
+      "sandbox_escalated": true,
+      "exit": 0,
+      "result": "FAST_FORWARD 5edebb26..cd6afce2d6fcd6c2380b104f9a9f082e79e5b56f"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/anaconda3/bin/python3\" - (inline read-only frozen SHA, lineage.verify_freeze, QA manifest and absent-root preflight)",
+      "exit": 0,
+      "result": "source591, historical2977/current699, environment/config8, QA manifest6 verified"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/anaconda3/bin/python3\" - (inline post-authorization frozen preflight and separate /tmp receipt creation)",
+      "exit": 0,
+      "user_confirmation": "明确授权运行"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit \"$HOME/anaconda3/bin/python3\" semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_R1_20261119_01/validation_entrypoint.py --run-root semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_NUM_N1_R8_R1_RUN_20261119_01 --authorization-receipt /tmp/gp5_r8_r1_bounded_authorization.json > /tmp/gp5_r8_r1_bounded_execution.log 2>&1",
+      "exit": 0,
+      "log": "execution.log",
+      "attempts": 1
+    },
+    {
+      "command": "python /tmp/deliver_bounded.py; git diff --check; python - (inline read-only actual budgets, recovery deltas, COMMITTED timing, F0 pair, guards15, delivery manifest SHA and report links validation)",
+      "exit": 0,
+      "receipt": "delivery_checks.json"
+    }
+  ],
+  "retries": 0,
+  "old_E_used": 21,
+  "independent_allowance": {
+    "E": 4,
+    "R": 2,
+    "R_COMMIT": 4,
+    "X_H": 1,
+    "TOTAL_MONITOR": 7
+  }
+}

@@ -1,0 +1,399 @@
+[
+  {
+    "name": "X_pure_size_bool_rounding_unrepresentable_axis_yaw",
+    "status": "PASS",
+    "details": [
+      {
+        "case": "bool",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_SOURCE_INVALID",
+        "detail": "NUM_BRIDGE_SOURCE_INVALID: invalid numeric signature"
+      },
+      {
+        "case": "rounding",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_VALUE_MISMATCH",
+        "detail": "NUM_BRIDGE_VALUE_MISMATCH: dimension rational mismatch"
+      },
+      {
+        "case": "unrepresentable",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_UNREPRESENTABLE",
+        "detail": "NUM_BRIDGE_UNREPRESENTABLE: source not exactly binary64 representable"
+      },
+      {
+        "case": "axis",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_VALUE_MISMATCH",
+        "detail": "NUM_BRIDGE_VALUE_MISMATCH: dimension rational mismatch"
+      },
+      {
+        "case": "yaw",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_SOURCE_INVALID",
+        "detail": "NUM_BRIDGE_SOURCE_INVALID: yaw must be native 0/90"
+      }
+    ]
+  },
+  {
+    "name": "X_schema_unknown_version_unknown_field",
+    "status": "PASS",
+    "details": [
+      {
+        "case": "version",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "invalid_checkpoint_v17",
+        "detail": "invalid_checkpoint_v17: /version: 'jev_checkpoint_v17' was expected"
+      },
+      {
+        "case": "UNRECOGNIZED",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "invalid_checkpoint_v17",
+        "detail": "invalid_checkpoint_v17: /: Additional properties are not allowed ('UNRECOGNIZED' was unexpected)"
+      }
+    ]
+  },
+  {
+    "name": "X_missing_proof_three_phases",
+    "status": "PASS",
+    "details": [
+      {
+        "case": "SELECTED",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_MISSING_ARTIFACT",
+        "detail": "NUM_BRIDGE_MISSING_ARTIFACT: missing 3bd34857ddc9924a6eaee8e2d7bb10d75557b08a633a9b66e6839d44bd06253f"
+      },
+      {
+        "case": "MONITORED",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_MISSING_ARTIFACT",
+        "detail": "NUM_BRIDGE_MISSING_ARTIFACT: missing 3bd34857ddc9924a6eaee8e2d7bb10d75557b08a633a9b66e6839d44bd06253f"
+      },
+      {
+        "case": "COMMITTED",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_MISSING_ARTIFACT",
+        "detail": "NUM_BRIDGE_MISSING_ARTIFACT: missing 3bd34857ddc9924a6eaee8e2d7bb10d75557b08a633a9b66e6839d44bd06253f"
+      }
+    ]
+  },
+  {
+    "name": "X_missing_shadow_derived_final_binding",
+    "status": "PASS",
+    "details": [
+      {
+        "case": "raw_after_ref",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_MISSING_ARTIFACT",
+        "detail": "NUM_BRIDGE_MISSING_ARTIFACT: missing 6fae20d4fee47e0ebf1a0c774f62ce98b4487915c0366e3044bd01ba8627090a"
+      },
+      {
+        "case": "published_after_ref",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_MISSING_ARTIFACT",
+        "detail": "NUM_BRIDGE_MISSING_ARTIFACT: missing 6d1a12f3ebc7f14dc3ffc24b5fdea01f1a554393892b4623b6d6b47999d55ac8"
+      },
+      {
+        "case": "raw_derived_ref",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_MISSING_ARTIFACT",
+        "detail": "NUM_BRIDGE_MISSING_ARTIFACT: missing 032b3332506f1ac1465328d9649f521d20ed9b87ba6d0ea64032c345d04ae932"
+      },
+      {
+        "case": "published_derived_ref",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_MISSING_ARTIFACT",
+        "detail": "NUM_BRIDGE_MISSING_ARTIFACT: missing e40bdf805fb7ca1dd406f1454d591623d668864f2a1ac55a77e4ed5e017edf86"
+      },
+      {
+        "case": "final_binding_ref",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_MISSING_ARTIFACT",
+        "detail": "NUM_BRIDGE_MISSING_ARTIFACT: missing c8e70998d3f92d83ba66179a28de292e841746dfea1b70cb9756dccd905f38c2"
+      }
+    ]
+  },
+  {
+    "name": "X_tampered_bytes_signed_zero",
+    "status": "PASS",
+    "details": [
+      {
+        "case": "blob_bytes",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_IDENTITY_MISMATCH",
+        "detail": "NUM_BRIDGE_IDENTITY_MISMATCH: blob bytes drift"
+      },
+      {
+        "positive_baseline": "PASS_ORIGINAL_VALIDATOR",
+        "path": "/current_state/placed_items/0/pose/x_mm",
+        "before_type": "float",
+        "after_type": "float",
+        "before_bits": "0000000000000000",
+        "after_bits": "8000000000000000",
+        "only_changed_paths": [
+          "/current_state/placed_items/0/pose/x_mm"
+        ],
+        "geometry_bytes_unchanged": true
+      },
+      {
+        "case": "signed_zero",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "GeometryError",
+        "code": "RUNTIME_SNAPSHOT_MISMATCH",
+        "detail": "RUNTIME_SNAPSHOT_MISMATCH: stale observation or native leaf/type/bit drift"
+      }
+    ]
+  },
+  {
+    "name": "X_swapped_evidence_raw_P_mismatch",
+    "status": "PASS",
+    "details": [
+      {
+        "case": "swapped_shadow",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_IDENTITY_MISMATCH",
+        "detail": "NUM_BRIDGE_IDENTITY_MISMATCH: blob bytes drift"
+      },
+      {
+        "case": "raw_P_source",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_IDENTITY_MISMATCH",
+        "detail": "NUM_BRIDGE_IDENTITY_MISMATCH: publication roots drift"
+      }
+    ]
+  },
+  {
+    "name": "X_policy_source_config_backend_task_scope_drift",
+    "status": "PASS",
+    "details": [
+      {
+        "case": "publication_policy_digest",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "invalid_config_v17",
+        "detail": "invalid_config_v17: /publication_policy_digest: 'UNKNOWN' does not match '^[0-9a-f]{64}$'"
+      },
+      {
+        "case": "runtime_identity",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "geometry_order_config_drift",
+        "detail": "geometry_order_config_drift"
+      },
+      {
+        "case": "candidate_backend",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "invalid_config_v17",
+        "detail": "invalid_config_v17: /candidate_backend: 'UNKNOWN' is not one of ['e2_original_v1', 'ems_surface_hybrid_v1']"
+      },
+      {
+        "case": "order_task_identity",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "geometry_order_task_identity",
+        "detail": "geometry_order_task_identity"
+      },
+      {
+        "case": "execution_scope",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "invalid_config_v17",
+        "detail": "invalid_config_v17: /execution_scope: 'UNKNOWN' is not one of ['DEVELOPMENT_SYNTHETIC_ONLY', 'KERNEL_ACCEPTANCE_SYNTHETIC_ONLY', 'EXPOSED_TRAIN_LOCAL_ORDER_ONLY']"
+      },
+      {
+        "case": "publication_config",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "NUM_BRIDGE_IDENTITY_MISMATCH",
+        "detail": "NUM_BRIDGE_IDENTITY_MISMATCH: publication semantic digest"
+      }
+    ]
+  },
+  {
+    "name": "H_v14_execution_refusal",
+    "status": "PASS",
+    "details": [
+      {
+        "case": "construction_only",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "geometry_construction_only",
+        "detail": "geometry_construction_only: run_episode"
+      }
+    ]
+  },
+  {
+    "name": "H_v15_real_task_refusal",
+    "status": "PASS",
+    "details": [
+      {
+        "case": "fixture_only",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "geometry_manual_fixture_only",
+        "detail": "geometry_manual_fixture_only"
+      }
+    ]
+  },
+  {
+    "name": "H_v16_K02_INT_original_failure",
+    "status": "PASS",
+    "details": [
+      {
+        "case": "original_integer_failure",
+        "status": "EXPECTED_TECHNICAL_FAILURE",
+        "monitor_entries": 1
+      }
+    ]
+  },
+  {
+    "name": "H_v1_snapshot_type_bit_refusal",
+    "status": "PASS",
+    "details": [
+      {
+        "positive_baseline": "PASS_ORIGINAL_VALIDATOR",
+        "path": "/current_state/placed_items/0/oriented_size_mm/0",
+        "before_type": "int",
+        "after_type": "float",
+        "before_bits": null,
+        "after_bits": "4059000000000000",
+        "only_changed_paths": [
+          "/current_state/placed_items/0/oriented_size_mm/0"
+        ],
+        "geometry_bytes_unchanged": true
+      },
+      {
+        "case": "type",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "GeometryError",
+        "code": "RUNTIME_INPUT_INVALID",
+        "detail": "RUNTIME_INPUT_INVALID: oriented size/type mismatch"
+      },
+      {
+        "positive_baseline": "PASS_ORIGINAL_VALIDATOR",
+        "path": "/current_state/placed_items/0/pose/x_mm",
+        "before_type": "float",
+        "after_type": "float",
+        "before_bits": "0000000000000000",
+        "after_bits": "8000000000000000",
+        "only_changed_paths": [
+          "/current_state/placed_items/0/pose/x_mm"
+        ],
+        "geometry_bytes_unchanged": true
+      },
+      {
+        "case": "sign",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "GeometryError",
+        "code": "RUNTIME_SNAPSHOT_MISMATCH",
+        "detail": "RUNTIME_SNAPSHOT_MISMATCH: stale observation or native leaf/type/bit drift"
+      }
+    ]
+  },
+  {
+    "name": "H_accounting_unknown_dispatch_missing_history",
+    "status": "PASS",
+    "details": [
+      {
+        "case": "unknown_dispatch",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "geometry_accounting_unknown_dispatch",
+        "detail": "geometry_accounting_unknown_dispatch"
+      },
+      {
+        "case": "missing_history",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "geometry_accounting_missing_history",
+        "detail": "geometry_accounting_missing_history"
+      }
+    ]
+  },
+  {
+    "name": "H_terminal_commit_failure_validator",
+    "status": "PASS",
+    "details": [
+      {
+        "case": "arbitrary_terminal_error",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "geometry_saved_commit_failure_drift",
+        "detail": "geometry_saved_commit_failure_drift"
+      },
+      {
+        "case": "valid_terminal_commit_failure",
+        "status": "PASS_SAVED_CONTRACT_ONLY",
+        "new_monitor_commit": 0
+      }
+    ]
+  },
+  {
+    "name": "H_strong_completion_missing_duplicate_error_no_commit",
+    "status": "PASS",
+    "details": [
+      {
+        "case": "original_coverage_only_method",
+        "status": "PASS_PURE_CONTRACT_NOT_GENUINE_RECEIPT"
+      }
+    ]
+  },
+  {
+    "name": "ADMIN_real_task_read_adapt_digest_pre_episode_refusal",
+    "status": "PASS",
+    "details": [
+      {
+        "case": "NEW_00100027_controlled_base",
+        "identity": {
+          "origin": "EXPOSED_TRAIN",
+          "raw_sha256": "230ea8b1d6766fb4898b75da8afcea1738afd27e66a38d1ffa0a82409e332a89",
+          "normalized_digest": "bbb5ffcf0c2e2fe62f8c382bc52d2276e2f117ab6cfa13de2b8caec1f70074f4",
+          "runtime_digest": "9ded736921295aafd50b97e1f54f355c4f53be550a97d6e0f306d766fa100953",
+          "adapter_digest": "dcec96761d34046d7d5d6f71fa2a00098ed4bfe3fc514ed248ec04aed30fcebe",
+          "task_id": "NEW_00100027_controlled_base",
+          "source_group_id": "SG_901bbb22f834c63f"
+        },
+        "status": "READ_ADAPT_DIGEST_ONLY"
+      },
+      {
+        "case": "NEW_00100027_controlled_capacity_tight",
+        "identity": {
+          "origin": "EXPOSED_TRAIN",
+          "raw_sha256": "6d4595ba23d8fe6878cb22eacad7bac80cda05150648a0234fe69dff23db4114",
+          "normalized_digest": "d797f7c61a6b616028d69956ac8b26a8400893577690e84729157d6f76622102",
+          "runtime_digest": "56b43f993d4128ff0cff85bfd097e847b0b88172a2b91001ea57eff8ff065798",
+          "adapter_digest": "dcec96761d34046d7d5d6f71fa2a00098ed4bfe3fc514ed248ec04aed30fcebe",
+          "task_id": "NEW_00100027_controlled_capacity_tight",
+          "source_group_id": "SG_901bbb22f834c63f"
+        },
+        "status": "READ_ADAPT_DIGEST_ONLY"
+      },
+      {
+        "case": "DRAFT_no_real_admission",
+        "status": "EXPECTED_REJECTION",
+        "exception_type": "JevSelectError",
+        "code": "geometry_order_draft_not_executable",
+        "detail": "geometry_order_draft_not_executable"
+      }
+    ]
+  }
+]

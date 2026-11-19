@@ -1,0 +1,530 @@
+{
+  "case": "M0",
+  "raw": [
+    100.0,
+    80.0,
+    60
+  ],
+  "target": [
+    100,
+    80.0,
+    60
+  ],
+  "axis_equalities": [
+    {
+      "axis_index": 0,
+      "source_axis": "length",
+      "raw_signature": {
+        "native_type": "FLOAT",
+        "integer_text": null,
+        "binary64_be_hex": "4059000000000000",
+        "numerator": "100",
+        "denominator": "1"
+      },
+      "target_signature": {
+        "native_type": "INT",
+        "integer_text": "100",
+        "binary64_be_hex": null,
+        "numerator": "100",
+        "denominator": "1"
+      },
+      "value_equal": true
+    },
+    {
+      "axis_index": 1,
+      "source_axis": "width",
+      "raw_signature": {
+        "native_type": "FLOAT",
+        "integer_text": null,
+        "binary64_be_hex": "4054000000000000",
+        "numerator": "80",
+        "denominator": "1"
+      },
+      "target_signature": {
+        "native_type": "FLOAT",
+        "integer_text": null,
+        "binary64_be_hex": "4054000000000000",
+        "numerator": "80",
+        "denominator": "1"
+      },
+      "value_equal": true
+    },
+    {
+      "axis_index": 2,
+      "source_axis": "height",
+      "raw_signature": {
+        "native_type": "INT",
+        "integer_text": "60",
+        "binary64_be_hex": null,
+        "numerator": "60",
+        "denominator": "1"
+      },
+      "target_signature": {
+        "native_type": "INT",
+        "integer_text": "60",
+        "binary64_be_hex": null,
+        "numerator": "60",
+        "denominator": "1"
+      },
+      "value_equal": true
+    }
+  ],
+  "target_digest": "6c2f9649a725b3381c5fc467f16ec8d4d2830d8c395ee88a4bfde97b6615cb6c",
+  "dependency_nodes": [
+    {
+      "name": "raw",
+      "dependencies": [],
+      "payload": {
+        "version": "gp5_num_n1_r5_C_metadata_v1",
+        "dependencies": {},
+        "value": [
+          "DICT",
+          [
+            [
+              "item",
+              [
+                "STR",
+                "C_METADATA_ONLY"
+              ]
+            ],
+            [
+              "oriented_size_mm",
+              [
+                "LIST",
+                [
+                  [
+                    "FLOAT64",
+                    "4059000000000000"
+                  ],
+                  [
+                    "FLOAT64",
+                    "4054000000000000"
+                  ],
+                  [
+                    "INT",
+                    "60"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "pose",
+              [
+                "DICT",
+                [
+                  [
+                    "x_mm",
+                    [
+                      "FLOAT64",
+                      "8000000000000000"
+                    ]
+                  ],
+                  [
+                    "y_mm",
+                    [
+                      "INT",
+                      "1"
+                    ]
+                  ],
+                  [
+                    "yaw_deg",
+                    [
+                      "INT",
+                      "0"
+                    ]
+                  ],
+                  [
+                    "z_base_mm",
+                    [
+                      "FLOAT64",
+                      "0000000000000000"
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      },
+      "digest": "ca5ff5588ec79c4bdcf3ff1383841a96aee74b58e2f81a0c3a3c63db84d78032",
+      "blob_sha256": "19afda0b3181d808cc16a2c56fd29bf138f59c1a5c079b5156a5e065d77b7711"
+    },
+    {
+      "name": "source",
+      "dependencies": [],
+      "payload": {
+        "version": "gp5_num_n1_r5_C_metadata_v1",
+        "dependencies": {},
+        "value": [
+          "LIST",
+          [
+            [
+              "INT",
+              "100"
+            ],
+            [
+              "FLOAT64",
+              "4054000000000000"
+            ],
+            [
+              "INT",
+              "60"
+            ]
+          ]
+        ]
+      },
+      "digest": "eb7fec1b92be6d6211d7c631c13c199ff605e7abed3e8214ab06e7d0e7cabae8",
+      "blob_sha256": "3077723d040cfba5b973cc996fb0a07030b268ef59d8e53790a90398d9241af3"
+    },
+    {
+      "name": "target",
+      "dependencies": [
+        "raw",
+        "source"
+      ],
+      "payload": {
+        "version": "gp5_num_n1_r5_C_metadata_v1",
+        "dependencies": {
+          "raw": "ca5ff5588ec79c4bdcf3ff1383841a96aee74b58e2f81a0c3a3c63db84d78032",
+          "source": "eb7fec1b92be6d6211d7c631c13c199ff605e7abed3e8214ab06e7d0e7cabae8"
+        },
+        "value": [
+          "LIST",
+          [
+            [
+              "INT",
+              "100"
+            ],
+            [
+              "FLOAT64",
+              "4054000000000000"
+            ],
+            [
+              "INT",
+              "60"
+            ]
+          ]
+        ]
+      },
+      "digest": "22e54fe31a6355e7abcc0806afa7fd6aed793837d8a061bc9ef0302cdad99d64",
+      "blob_sha256": "d03604aa8040f46d4b7ce62cfe82bdd822725339085ee1a66b6d4f81205106b1"
+    },
+    {
+      "name": "axes",
+      "dependencies": [
+        "raw",
+        "source",
+        "target"
+      ],
+      "payload": {
+        "version": "gp5_num_n1_r5_C_metadata_v1",
+        "dependencies": {
+          "raw": "ca5ff5588ec79c4bdcf3ff1383841a96aee74b58e2f81a0c3a3c63db84d78032",
+          "source": "eb7fec1b92be6d6211d7c631c13c199ff605e7abed3e8214ab06e7d0e7cabae8",
+          "target": "22e54fe31a6355e7abcc0806afa7fd6aed793837d8a061bc9ef0302cdad99d64"
+        },
+        "value": [
+          {
+            "axis_index": 0,
+            "source_axis": "length",
+            "raw_signature": {
+              "native_type": "FLOAT",
+              "integer_text": null,
+              "binary64_be_hex": "4059000000000000",
+              "numerator": "100",
+              "denominator": "1"
+            },
+            "target_signature": {
+              "native_type": "INT",
+              "integer_text": "100",
+              "binary64_be_hex": null,
+              "numerator": "100",
+              "denominator": "1"
+            },
+            "value_equal": true
+          },
+          {
+            "axis_index": 1,
+            "source_axis": "width",
+            "raw_signature": {
+              "native_type": "FLOAT",
+              "integer_text": null,
+              "binary64_be_hex": "4054000000000000",
+              "numerator": "80",
+              "denominator": "1"
+            },
+            "target_signature": {
+              "native_type": "FLOAT",
+              "integer_text": null,
+              "binary64_be_hex": "4054000000000000",
+              "numerator": "80",
+              "denominator": "1"
+            },
+            "value_equal": true
+          },
+          {
+            "axis_index": 2,
+            "source_axis": "height",
+            "raw_signature": {
+              "native_type": "INT",
+              "integer_text": "60",
+              "binary64_be_hex": null,
+              "numerator": "60",
+              "denominator": "1"
+            },
+            "target_signature": {
+              "native_type": "INT",
+              "integer_text": "60",
+              "binary64_be_hex": null,
+              "numerator": "60",
+              "denominator": "1"
+            },
+            "value_equal": true
+          }
+        ]
+      },
+      "digest": "c6e1fa49a6cd991d82fb363cd1b6bd16f32f40cc6e9c12fcb00ca01e64236227",
+      "blob_sha256": "38e984e484d6104edaeecdb1ed659521c35fa89c56e25c323bd0b1ba0d37c4e1"
+    },
+    {
+      "name": "binding",
+      "dependencies": [
+        "target",
+        "axes"
+      ],
+      "payload": {
+        "version": "gp5_num_n1_r5_C_metadata_v1",
+        "dependencies": {
+          "target": "22e54fe31a6355e7abcc0806afa7fd6aed793837d8a061bc9ef0302cdad99d64",
+          "axes": "c6e1fa49a6cd991d82fb363cd1b6bd16f32f40cc6e9c12fcb00ca01e64236227"
+        },
+        "value": {
+          "untouched_pose": [
+            "DICT",
+            [
+              [
+                "x_mm",
+                [
+                  "FLOAT64",
+                  "8000000000000000"
+                ]
+              ],
+              [
+                "y_mm",
+                [
+                  "INT",
+                  "1"
+                ]
+              ],
+              [
+                "yaw_deg",
+                [
+                  "INT",
+                  "0"
+                ]
+              ],
+              [
+                "z_base_mm",
+                [
+                  "FLOAT64",
+                  "0000000000000000"
+                ]
+              ]
+            ]
+          ]
+        }
+      },
+      "digest": "a0ed74f6b6362d37fed8e21548c582310618088e6af03d7d7da9313e6e5e5192",
+      "blob_sha256": "8a4b9f3e6e5b9db2cd4750f3a21746d3e3bbbfc8b2c52b874a0fb8c1c21a94bf"
+    }
+  ],
+  "production_dependency_contract": {
+    "status": "PASS_SOURCE_SCHEMA_DEPENDENCY_BOUNDARIES",
+    "source_sha256": "93ba42fc5581aff15eaa899595f7f16a22e63ff55df7759454ed27e7050032c7",
+    "actual_proof_fields": [
+      "allowed_changed_paths",
+      "axis_equalities",
+      "backend",
+      "backend_binding_digest",
+      "common_binding_digest",
+      "geometry_sha256",
+      "native_sha256",
+      "ordinal",
+      "physical_and_derived_equivalence",
+      "publication_action_key",
+      "published_content_digest",
+      "raw_action_key",
+      "raw_candidate_digest",
+      "raw_candidate_fingerprint",
+      "raw_candidate_id",
+      "raw_content_digest",
+      "raw_generation_ref",
+      "raw_pool_sha256",
+      "raw_size_digest",
+      "source_dimensions_digest",
+      "source_item_pointer",
+      "source_signatures",
+      "target_signatures",
+      "target_size_digest",
+      "version"
+    ],
+    "forbidden_back_edges": [
+      "candidate_digest",
+      "final_binding_ref",
+      "published_candidate_digest",
+      "published_candidate_id",
+      "published_fingerprint"
+    ],
+    "schema_contracts": {
+      "shadow_core": {
+        "schema_sha256": "ea8ec58346b495b9841e789ef25a56a6d914c0642ec9b06ae847cf9da60010ef",
+        "fields": [
+          "candidate_content_digest",
+          "ordinal",
+          "placed_items",
+          "side",
+          "source_native_sha256",
+          "version"
+        ]
+      },
+      "derived_core": {
+        "schema_sha256": "58bd9d0755e5544d2cca890f74d7ac6a698356bc23b9c0c2e19d76a4706ab827",
+        "fields": [
+          "candidate_content_digest",
+          "native_tree",
+          "source_native_sha256",
+          "version"
+        ]
+      },
+      "shadow_binding": {
+        "schema_sha256": "3c4c9ab2ade7c6876cbf55bb1d9cd111a32af6cb2b2058f62e3f2400f4ae2b09",
+        "fields": [
+          "candidate_content_digest",
+          "candidate_digest",
+          "derived_core_digest",
+          "derived_core_ref",
+          "ordinal",
+          "proof_core_digest",
+          "shadow_core_digest",
+          "shadow_core_ref",
+          "side",
+          "source_native_sha256",
+          "version"
+        ]
+      },
+      "final_binding": {
+        "schema_sha256": "247fe0ad2524064a034ac2cd2ab8871bb855c5278f602aab986da80fb0f559a9",
+        "fields": [
+          "ordinal",
+          "proof_core_digest",
+          "proof_core_ref",
+          "published_candidate_digest",
+          "published_candidate_id",
+          "published_content_digest",
+          "published_fingerprint",
+          "published_shadow_binding_digest",
+          "published_shadow_binding_ref",
+          "raw_candidate_digest",
+          "raw_content_digest",
+          "raw_pool_sha256",
+          "raw_shadow_binding_digest",
+          "raw_shadow_binding_ref",
+          "version"
+        ]
+      },
+      "publication": {
+        "schema_sha256": "73b241c4f52cfc99d8a20d4794d2be93232578e8a35ce4ae8eca91674e39752d",
+        "fields": [
+          "backend_binding_digest",
+          "bridge",
+          "common_binding_digest",
+          "config_digest",
+          "environment_digest",
+          "geometry_ref",
+          "geometry_sha256",
+          "identity_contract",
+          "native_ref",
+          "native_sha256",
+          "ordered_mappings",
+          "policy",
+          "published_pool_digest",
+          "raw_generation_ref",
+          "raw_pool_ref",
+          "source_identity",
+          "validation_counts",
+          "version"
+        ]
+      }
+    },
+    "topological_dependency_order": {
+      "external": [],
+      "raw_and_source": [
+        "external"
+      ],
+      "content": [
+        "raw_and_source"
+      ],
+      "shadow_derived_cores": [
+        "content"
+      ],
+      "equivalence": [
+        "shadow_derived_cores"
+      ],
+      "proof": [
+        "equivalence",
+        "content",
+        "raw_and_source"
+      ],
+      "fingerprint": [
+        "proof",
+        "content"
+      ],
+      "final_candidate": [
+        "fingerprint",
+        "content"
+      ],
+      "shadow_wrappers": [
+        "final_candidate",
+        "shadow_derived_cores",
+        "proof"
+      ],
+      "final_binding": [
+        "shadow_wrappers",
+        "final_candidate",
+        "proof"
+      ],
+      "publication": [
+        "final_binding",
+        "external"
+      ]
+    },
+    "boundary": "STATIC_CONTRACT_PLUS_C_TYPED_METADATA; FULL_PHYSICAL_PROOF_ONLY_FROM_E_SAVED_REFERENCE_VALIDATOR"
+  },
+  "closed_schema_negative": [
+    {
+      "node": "axis",
+      "rejected_by": [
+        "additionalProperties"
+      ]
+    },
+    {
+      "node": "signature",
+      "rejected_by": [
+        "additionalProperties"
+      ]
+    }
+  ],
+  "schema_source_sha256": "ffb5212e0da61dc0a3e1edf61450438b3642b4ba5caca38515cc48cec4e559a4",
+  "requirements": {
+    "exact_dimensions": "PASS",
+    "axis_yaw": "PASS",
+    "native_types": "PASS",
+    "float_bits": "PASS",
+    "untouched_fields": "PASS",
+    "digest_repeat_and_domain_and_type_sensitivity": "PASS",
+    "acyclic_typed_metadata_dependencies": "PASS",
+    "production_source_schema_dependency_boundaries": "PASS_STATIC",
+    "closed_axis_and_signature_schema": "PASS"
+  },
+  "boundary": "PURE_C_METADATA_NOT_PHYSICAL_PUBLICATION_PROOF"
+}

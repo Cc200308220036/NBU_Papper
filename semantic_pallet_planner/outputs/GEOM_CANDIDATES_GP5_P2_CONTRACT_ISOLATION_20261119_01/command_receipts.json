@@ -1,0 +1,50 @@
+{
+  "schema": "gp5_p2_contract_isolation_command_receipts_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_OPERATIONAL_AND_FIXED_MATRIX_CONTRACT_ISOLATION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "baseline_qa_head": "ca5c39c7c21a909b0ee46a411174420e6451001f",
+  "pull": {
+    "command": "git pull --ff-only",
+    "result": "FAST_FORWARD ff4c1c56..ca5c39c7"
+  },
+  "initial_worktree": "CLEAN",
+  "initial_index": "CLEAN",
+  "new_source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "default_geometry_backend": "ems_surface_hybrid_v1",
+  "operational_plan_version": "geometry_operational_order_plan_v1",
+  "default_route_identity": "1a55c583b931690f0500fe96f53597756ec3884ee7bff56e1dd4b9129e26ebc7",
+  "production_source_files": 594,
+  "tests": [
+    {
+      "name": "contract_isolation_ems_default_and_v17_completion_offline_suite",
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python3 -B -m unittest test_geometry_ems_default_and_v17_completion -v",
+      "exit_code": 0,
+      "tests": 15,
+      "passed": 15,
+      "failed": 0,
+      "evidence": "PURE_STDLIB_UNITTEST_WITH_OFFLINE_MONITOR_SUBSTITUTE"
+    },
+    {
+      "name": "geometry_unit_regression_suite",
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python3 -B -m unittest test_geometry_external_review_identity_r1 test_geometry_public_n2 test_geometry_execution_n3 test_geometry_recovery_r1 test_geometry_order_r1.Remediation.test_completion_contract_missing_duplicate_error_only_no_commit_recovery",
+      "exit_code": 0,
+      "tests": 35,
+      "passed": 35,
+      "failed": 0,
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_MONITOR_SUBSTITUTE"
+    }
+  ],
+  "actual_this_delivery": {
+    "orders": 0,
+    "real_assessments": 0,
+    "LP": 0,
+    "model_calls": 0,
+    "freeze": 0,
+    "real_recovery": 0
+  },
+  "independent_production_records_issued": 0
+}

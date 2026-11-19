@@ -145,4 +145,5 @@ GEOMETRY_BUNDLES=(*GEOMETRY_BUNDLES,GEOMETRY_NATIVE_BUNDLE)
 GEOMETRY_CONTEXTS=(*GEOMETRY_CONTEXTS,GEOMETRY_NATIVE_CONTEXT)
 GEOMETRY_ORDER_CONFIGS=(GEOMETRY_ORDER_VERSION,GEOMETRY_NATIVE_VERSION)
 
-GEOMETRY_NATIVE_SCHEMAS.update({k:k for k in ('geometry_order_plan_v2', 'geometry_order_execution_v2', 'geometry_order_metrics_v2', 'geometry_order_run_v2', 'geometry_order_accounting_v2', 'geometry_development_binding_v2', 'geometry_kernel_launch_v2', 'geometry_order_admission_v2', 'geometry_scope_authorization_v2', 'geometry_scope_review_v2', 'geometry_real_kernel_receipt_v3', 'geometry_kernel_completion_review_v2', 'geometry_phase_snapshot_credential_v2')})
+GEOMETRY_NATIVE_SCHEMAS.update({k:k for k in ('geometry_order_plan_v2', 'geometry_order_execution_v2', 'geometry_order_metrics_v2', 'geometry_order_run_v2', 'geometry_order_accounting_v2', 'geometry_development_binding_v2', 'geometry_kernel_launch_v2', 'geometry_order_admission_v2', 'geometry_scope_authorization_v2', 'geometry_scope_review_v2', 'geometry_real_kernel_receipt_v3', 'geometry_kernel_completion_review_v2', 'geometry_phase_snapshot_credential_v2', 'geometry_operational_order_plan_v1')})
+GEOMETRY_OPERATIONAL_PLAN='geometry_operational_order_plan_v1'

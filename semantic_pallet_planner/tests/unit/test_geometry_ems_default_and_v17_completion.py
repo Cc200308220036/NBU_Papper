@@ -521,6 +521,43 @@ class EmsDefaultRouteAndNoFallbackTests(unittest.TestCase):
         plan = p.prepare_order_plan(tasks, data_identity=digest("MATRIX"), scope=p.ACCEPTANCE, native=True)
         self.assertEqual([j["backend"] for j in plan["jobs"]], list(GEOMETRY_BACKENDS) * 2)
 
+    def test_operational_and_fixed_matrix_contract_isolation(self):
+        from semantic_pallet_planner.jev_select.geometry_kernel_completion import required_coverage
+
+        tasks = []
+        for case in ("K01", "K02"):
+            raw = canonical(p.synthetic_task(case)).encode()
+            tasks.append(p.adapt_task(raw, origin="SYNTHETIC_FIXED", expected_sha256=p.sha(raw)))
+        ident = digest("CONTRACT_ISOLATION")
+
+        # Operational entry is isolated to geometry_operational_order_plan_v1 and DEVELOPMENT scope only.
+        op_plan = p.prepare_operational_order_plan(tasks, data_identity=ident)
+        self.assertEqual(op_plan["version"], "geometry_operational_order_plan_v1")
+        self.assertEqual(op_plan["scope"], p.DEVELOPMENT)
+        self.assertEqual({j["backend"] for j in op_plan["jobs"]}, {"ems_surface_hybrid_v1"})
+        for bad_scope in (p.ACCEPTANCE, p.ORDER):
+            with self.assertRaises(JevSelectError) as caught:
+                p.prepare_operational_order_plan(tasks, data_identity=ident, scope=bad_scope)
+            self.assertEqual(caught.exception.code, "geometry_operational_development_only")
+
+        # Fixed v1/v2 acceptance 4-job matrix (K01/K02 x E2/EMS) passes; single-backend or incomplete plans are rejected before dispatch.
+        for native in (False, True):
+            matrix = p.prepare_order_plan(tasks, data_identity=ident, scope=p.ACCEPTANCE, native=native)
+            p.validate_order_plan(matrix)
+            self.assertEqual(len(required_coverage(matrix)["primary"]), 4)
+
+            single_backend = copy.deepcopy(matrix)
+            single_backend["jobs"] = [j for j in matrix["jobs"] if j["backend"] == "ems_surface_hybrid_v1"]
+            with self.assertRaises(JevSelectError) as caught_single:
+                p.validate_order_plan(single_backend)
+            self.assertEqual(caught_single.exception.code, "geometry_order_matrix")
+
+            incomplete = copy.deepcopy(matrix)
+            incomplete["jobs"] = matrix["jobs"][:-1]
+            with self.assertRaises(JevSelectError) as caught_inc:
+                p.validate_order_plan(incomplete)
+            self.assertEqual(caught_inc.exception.code, "geometry_order_matrix")
+
     def test_operational_order_entry_ems_default_explicit_e2_and_no_fallback(self):
         from semantic_pallet_planner.jev_select import geometry_order_execution as o
 

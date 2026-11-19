@@ -1,0 +1,62 @@
+{
+  "schema": "gp5_p2_contract_isolation_handoff_v1",
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_OPERATIONAL_AND_FIXED_MATRIX_CONTRACT_ISOLATION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "baseline_head": "ca5c39c7c21a909b0ee46a411174420e6451001f",
+  "previous_qa_handoff": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_EMS_OPERATIONAL_ENTRY_QA_20261119_01/handoff.json",
+  "new_source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+  "new_publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "default_geometry_backend": "ems_surface_hybrid_v1",
+  "geometry_backends": [
+    "e2_original_v1",
+    "ems_surface_hybrid_v1"
+  ],
+  "operational_plan_version": "geometry_operational_order_plan_v1",
+  "default_operational_entry": {
+    "plan": "packaging_geometry_protocol.prepare_operational_order_plan(adapted, data_identity=..., backend=None)",
+    "explicit_e2": "packaging_geometry_protocol.prepare_operational_order_plan(adapted, data_identity=..., backend='e2_original_v1')",
+    "scope": "DEVELOPMENT_SYNTHETIC_ONLY"
+  },
+  "default_route_identity": "1a55c583b931690f0500fe96f53597756ec3884ee7bff56e1dd4b9129e26ebc7",
+  "status": "OFFLINE_IMPLEMENTATION_AND_TESTS_PASS_PENDING_INDEPENDENT_QA",
+  "production_dispatch": "NOT_READY_NEEDS_NEW_HOST_FREEZE_AND_INDEPENDENT_LAUNCH",
+  "issue_status": {
+    "GP5-P2-OPERATIONAL-MATRIX-01": {
+      "status": "PASS",
+      "evidence": "OFFLINE_CONTRACT_ISOLATION_AND_REGRESSION_TESTS",
+      "summary": "Isolated single-backend operational entry under explicit version geometry_operational_order_plan_v1 (strictly DEVELOPMENT_SYNTHETIC_ONLY, assessment_limit=0, solver_limit=0) with dedicated schema and validate_operational_order_plan. Restored strict fixed dual-backend matrix validation in validate_order_plan for geometry_order_plan_v1 and geometry_order_plan_v2; single-backend or incomplete acceptance/order plans are rejected with geometry_order_matrix before dispatch."
+    },
+    "GP5-P2-EMS-DEFAULT-01": {
+      "status": "PASS",
+      "evidence": "END_TO_END_OPERATIONAL_OFFLINE_TESTS",
+      "summary": "Retained default EMS routing, explicit E2 routing, and no silent fallback on empty pool or error."
+    },
+    "GP5-P2-R3-LEGACY-COMPLETION-01": {
+      "status": "PASS",
+      "evidence": "PURE_CONTRACT_AND_OFFLINE_TESTS",
+      "summary": "Retained ordinary v16/v17 completion compatibility and phase-snapshot parent evidence checks."
+    }
+  },
+  "report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP5-P2_单后端正常入口与固定验收矩阵合同隔离交付_20261119_01.md",
+  "tests": "semantic_pallet_planner/tests/unit/test_geometry_ems_default_and_v17_completion.py",
+  "source_identity_receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_CONTRACT_ISOLATION_20261119_01/source_identity_receipt.json",
+  "command_receipts": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_CONTRACT_ISOLATION_20261119_01/command_receipts.json",
+  "manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_CONTRACT_ISOLATION_20261119_01/manifest.json",
+  "actual_this_delivery": {
+    "orders": 0,
+    "real_assessments": 0,
+    "LP": 0,
+    "model_calls": 0,
+    "freeze": 0,
+    "real_recovery": 0
+  },
+  "independent_production_records_issued": 0,
+  "A03": "PARTIAL",
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED",
+  "next": "INDEPENDENT_QA_ONLY",
+  "stopped": true
+}

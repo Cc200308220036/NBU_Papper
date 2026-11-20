@@ -1,0 +1,46 @@
+{
+  "schema": "gp5_p2_fixed_acceptance_quality_review_v1",
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "reviewed_head": "7eecc5519e8594577f9b255554b53a100f0b4940",
+  "execution_baseline": "a287357b2ea5618198cb25c4eec720ad32f32ca9",
+  "engineering_status": "FIXED_ACCEPTANCE_PASS_CLOSE",
+  "evidence_readiness": "FIXED_4_PLUS_6_REVIEWED",
+  "research_result": "NOT_ESTABLISHED",
+  "next_stage_admission": "READY_FOR_CLOSEOUT_ONLY",
+  "facts": {
+    "reported": "原 Linux 隔离工作树单次退出0；主工作树空账本未动",
+    "implemented": "正常入口默认 EMS、E2 可显式启用；R3-R1 内置四项联检后才派发",
+    "archived": "驱动收据、四项主记录、六次恢复前后及父运行凭证、逐笔最终账本",
+    "locally_rechecked": "1825 路径、1606 内容寻址 blob；四项后端/动作/稳定放置，六次恢复相位与父记录，76 条计数记录，无业务重跑"
+  },
+  "acceptance": {
+    "inline_preflight": "PASS_ARCHIVE_4_OF_4",
+    "primary": {
+      "J00": "PASS",
+      "J01": "PASS",
+      "J02": "PASS",
+      "J03": "PASS"
+    },
+    "recovery": {
+      "J00": {
+        "SELECTED": "PASS",
+        "MONITORED": "PASS",
+        "COMMITTED": "PASS"
+      },
+      "J01": {
+        "SELECTED": "PASS",
+        "MONITORED": "PASS",
+        "COMMITTED": "PASS"
+      }
+    },
+    "budget": {
+      "assessment_entries": 8,
+      "solver_calls": 68,
+      "model_calls": 0
+    },
+    "formal_protocol_completion_receipt": "NOT_ISSUED_OUT_OF_SCOPE"
+  },
+  "issues": [],
+  "stopped": true
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "gp5_p2_external_receipt_admission_v1",
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "reviewed_head": "f58a68c8ad466f06ad30db15e82c516383cfffa4",
+  "developer_baseline": "c88177d5e2a90c09bfc21a1eea0d3f1a97e04eb5",
+  "next_stage_admission": "NOT_READY",
+  "next": "ORIGINAL_LINUX_FOUR_JOB_JOINT_READONLY_PREFLIGHT",
+  "blockers": [
+    {
+      "artifact": "geometry_scope_authorization_v2",
+      "owner": "用户或获授权范围签发方（另交独立 path+sha256 引用）",
+      "status": "MISSING"
+    },
+    {
+      "artifact": "geometry_scope_review_v2",
+      "owner": "独立范围审查角色",
+      "status": "MISSING"
+    },
+    {
+      "artifact": "geometry_kernel_launch_v2",
+      "owner": "独立启动审查角色",
+      "status": "MISSING"
+    }
+  ],
+  "allowed": "先补齐并核验三项；独立 QA 另判联合预检",
+  "fixed_4_plus_6": "NOT_READY",
+  "real_calls_authorized_by_this_qa": 0
+}

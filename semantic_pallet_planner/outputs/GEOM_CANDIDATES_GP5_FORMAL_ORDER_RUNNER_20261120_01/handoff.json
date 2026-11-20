@@ -5,12 +5,12 @@
   "unit": "GP5_FORMAL_8_JOB_EXECUTABLE_RUNNER_AND_QA_HANDOFF_ONLY",
   "branch": "dev/jev-select",
   "upstream": "origin/dev/jev-select",
-  "reviewed_head": "0aec3577b8980800601e61eeaa838c57395ed08c",
+  "reviewed_head": "6757e2b2b8a60c8636b5fb5c64ca6cc952baaab3",
   "prep_root": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_PREP_20261120_01",
   "runner_root": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_RUNNER_20261120_01",
   "plan_digest": "493e547d85a3df0909b6741ed53cd7c93047af49cef695a9380d695be48006aa",
   "unsigned_prep_checks": "PASS (4/4)",
-  "offline_driver_tests": "PASS (8/8 OFFLINE_SPY_ONLY)",
+  "offline_driver_tests": "PASS (11/11 OFFLINE_SPY_ONLY)",
   "signed_gate_checks": "NOT_RUN_PENDING_QA_SIGN_OFF_AND_USER_AUTH_RECORD",
   "formal_8_jobs_status": "ALL_8_NOT_RUN",
   "actual_this_delivery": {
@@ -22,5 +22,10 @@
   },
   "report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP5正式八项运行入口与签发交接交付_20261120_01.md",
   "next": "INDEPENDENT_QA_SIGN_OFF_AND_READONLY_8_JOB_PREFLIGHT_BEFORE_ISOLATED_EXECUTION",
-  "stopped": true
+  "stopped": true,
+  "remediation": [
+    "Atomic mkdir(exist_ok=False) for --run-root in --execute mode; rejects any existing dir including jobs/-only with 0 dispatches.",
+    "Empty/missing summary stops batch as TECHNICAL_FAILURE (exit 1) and preserves remaining NOT_RUN.",
+    "Returned CANCELLED stops batch as CANCELLED (exit 1) and preserves remaining NOT_RUN."
+  ]
 }

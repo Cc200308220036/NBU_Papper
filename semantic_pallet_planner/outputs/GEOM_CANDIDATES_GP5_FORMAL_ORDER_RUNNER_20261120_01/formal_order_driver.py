@@ -154,9 +154,11 @@ def main(argv=None):
 
     assert args.run_root is not None, "RUN_ROOT_REQUIRED_FOR_EXECUTE"
     run_root = Path(args.run_root)
-    assert not (run_root / "run.json").exists(), f"NO_OVERWRITE_EXISTING_RUN_ROOT: {run_root}"
-    assert not (run_root / "driver_receipt.json").exists(), f"NO_OVERWRITE_EXISTING_RECEIPT: {run_root}"
-    run_root.mkdir(parents=True, exist_ok=True)
+    run_root.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        run_root.mkdir(parents=False, exist_ok=False)
+    except FileExistsError as exc:
+        raise AssertionError(f"NO_OVERWRITE_EXISTING_RUN_ROOT: {run_root}") from exc
 
     plan = ctx["plan"]
     job_rows = []
@@ -174,23 +176,76 @@ def main(argv=None):
                 root=run_root,
                 kernel_receipt=ctx["receipt"],
             )
-            metric = res.get("summary") or {}
+            summary = res.get("summary") if isinstance(res, dict) else None
+            if not isinstance(summary, dict) or not summary:
+                first_error = {
+                    "job_id": job_id,
+                    "type": "EMPTY_SUMMARY_TECHNICAL_FAILURE",
+                    "detail": "run_order_job returned missing or empty summary",
+                }
+                job_rows.append({
+                    "job_id": job_id,
+                    "task_id": job["task_id"],
+                    "backend": job["backend"],
+                    "method": job["method"],
+                    "status": "TECHNICAL_FAILURE",
+                    "error": first_error,
+                })
+                break
+
+            term_class = summary.get("termination_class")
+            term_reason = summary.get("termination_reason")
+            if term_class == "CANCELLED" or term_reason == "CANCELLED":
+                first_error = {
+                    "job_id": job_id,
+                    "type": "CANCELLED",
+                    "detail": term_reason or "CANCELLED",
+                }
+                job_rows.append({
+                    "job_id": job_id,
+                    "task_id": job["task_id"],
+                    "backend": job["backend"],
+                    "method": job["method"],
+                    "status": "CANCELLED",
+                    "termination_reason": term_reason,
+                    "termination_class": term_class,
+                    "placed_items": summary.get("placed_items"),
+                    "planned_items": summary.get("planned_items"),
+                    "error": first_error,
+                })
+                break
+
+            if term_class == "TECHNICAL_FAILURE":
+                first_error = {
+                    "job_id": job_id,
+                    "type": "TECHNICAL_FAILURE",
+                    "detail": term_reason or "TECHNICAL_FAILURE",
+                }
+                job_rows.append({
+                    "job_id": job_id,
+                    "task_id": job["task_id"],
+                    "backend": job["backend"],
+                    "method": job["method"],
+                    "status": "TECHNICAL_FAILURE",
+                    "termination_reason": term_reason,
+                    "termination_class": term_class,
+                    "placed_items": summary.get("placed_items"),
+                    "planned_items": summary.get("planned_items"),
+                    "error": first_error,
+                })
+                break
+
             job_rows.append({
                 "job_id": job_id,
                 "task_id": job["task_id"],
                 "backend": job["backend"],
                 "method": job["method"],
-                "status": "COMPLETE" if metric.get("completed") else (
-                    "TECHNICAL_FAILURE" if metric.get("termination_class") == "TECHNICAL_FAILURE" else "STOPPED"
-                ),
-                "termination_reason": metric.get("termination_reason"),
-                "termination_class": metric.get("termination_class"),
-                "placed_items": metric.get("placed_items"),
-                "planned_items": metric.get("planned_items"),
+                "status": "COMPLETE" if summary.get("completed") else "STOPPED",
+                "termination_reason": term_reason,
+                "termination_class": term_class,
+                "placed_items": summary.get("placed_items"),
+                "planned_items": summary.get("planned_items"),
             })
-            if metric.get("termination_class") == "TECHNICAL_FAILURE":
-                first_error = {"job_id": job_id, "type": "TECHNICAL_FAILURE", "detail": metric.get("termination_reason")}
-                break
         except BaseException as exc:
             first_error = {"job_id": job_id, "type": type(exc).__name__, "detail": str(exc)[:240]}
             job_rows.append({

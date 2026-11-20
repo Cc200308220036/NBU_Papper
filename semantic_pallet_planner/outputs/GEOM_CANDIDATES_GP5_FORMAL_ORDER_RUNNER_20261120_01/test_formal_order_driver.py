@@ -207,6 +207,97 @@ class TestFormalOrderDriverOffline(unittest.TestCase):
         self.assertEqual(receipt["first_error"]["job_id"], "J03")
         self.assertEqual([r["status"] for r in receipt["rows"]], ["COMPLETE", "COMPLETE", "COMPLETE", "TECHNICAL_FAILURE", "NOT_RUN", "NOT_RUN", "NOT_RUN", "NOT_RUN"])
 
+    def test_existing_run_root_with_only_jobs_subdir_blocks_with_zero_dispatches(self):
+        spy = MagicMock()
+        with tempfile.TemporaryDirectory() as td:
+            r_path, a_path = self._write_dummy_auth_files(td)
+            run_root = Path(td) / "existing_jobs_only"
+            ckpt = run_root / "jobs" / "J00" / "checkpoint.json"
+            ckpt.parent.mkdir(parents=True, exist_ok=True)
+            ckpt.write_text('{"phase": "SELECTED"}')
+            with (
+                patch.object(drv.p, "validate_real_kernel_receipt", return_value=None),
+                patch.object(drv.p, "validate_admission", return_value=None),
+                patch.object(drv.order, "load_order_config", side_effect=self._fake_load_order_config),
+                patch.object(drv.order, "run_order_job", spy),
+            ):
+                with self.assertRaisesRegex(AssertionError, "NO_OVERWRITE_EXISTING_RUN_ROOT"):
+                    drv.main([
+                        "--kernel-receipt", str(r_path),
+                        "--admission", str(a_path),
+                        "--execute",
+                        "--run-root", str(run_root),
+                    ])
+            self.assertTrue(ckpt.is_file())
+            self.assertFalse((run_root / "driver_receipt.json").exists())
+        self.assertEqual(spy.call_count, 0)
+
+    def test_empty_summary_stops_batch_as_technical_failure_and_preserves_not_run(self):
+        dispatched = []
+        def offline_spy(plan, job_id, adapted, **_kwargs):
+            dispatched.append(job_id)
+            if job_id == "J02":
+                return {"summary": None}
+            return {"summary": {"completed": True, "termination_class": "COMPLETE", "termination_reason": "ALL_ITEMS_PLACED", "placed_items": 19, "planned_items": 19}}
+
+        with tempfile.TemporaryDirectory() as td:
+            r_path, a_path = self._write_dummy_auth_files(td)
+            run_root = Path(td) / "formal_run_empty_summary"
+            with (
+                patch.object(drv.p, "validate_real_kernel_receipt", return_value=None),
+                patch.object(drv.p, "validate_admission", return_value=None),
+                patch.object(drv.order, "load_order_config", side_effect=self._fake_load_order_config),
+                patch.object(drv.order, "run_order_job", side_effect=offline_spy),
+            ):
+                rc = drv.main([
+                    "--kernel-receipt", str(r_path),
+                    "--admission", str(a_path),
+                    "--execute",
+                    "--run-root", str(run_root),
+                ])
+            receipt = drv.read(run_root / "driver_receipt.json")
+        self.assertEqual(rc, 1)
+        self.assertEqual(dispatched, ["J00", "J01", "J02"])
+        self.assertEqual(receipt["dispatched_jobs"], 3)
+        self.assertEqual(receipt["status"], "STOPPED_ON_ERROR")
+        self.assertEqual(receipt["first_error"]["job_id"], "J02")
+        self.assertEqual(receipt["first_error"]["type"], "EMPTY_SUMMARY_TECHNICAL_FAILURE")
+        self.assertEqual(len(receipt["rows"]), 8)
+        self.assertEqual([r["status"] for r in receipt["rows"]], ["COMPLETE", "COMPLETE", "TECHNICAL_FAILURE", "NOT_RUN", "NOT_RUN", "NOT_RUN", "NOT_RUN", "NOT_RUN"])
+
+    def test_returned_cancelled_stops_batch_and_preserves_not_run(self):
+        dispatched = []
+        def offline_spy(plan, job_id, adapted, **_kwargs):
+            dispatched.append(job_id)
+            if job_id == "J02":
+                return {"summary": {"completed": False, "termination_class": "CANCELLED", "termination_reason": "CANCELLED", "placed_items": 3, "planned_items": 19}}
+            return {"summary": {"completed": True, "termination_class": "COMPLETE", "termination_reason": "ALL_ITEMS_PLACED", "placed_items": 19, "planned_items": 19}}
+
+        with tempfile.TemporaryDirectory() as td:
+            r_path, a_path = self._write_dummy_auth_files(td)
+            run_root = Path(td) / "formal_run_cancelled"
+            with (
+                patch.object(drv.p, "validate_real_kernel_receipt", return_value=None),
+                patch.object(drv.p, "validate_admission", return_value=None),
+                patch.object(drv.order, "load_order_config", side_effect=self._fake_load_order_config),
+                patch.object(drv.order, "run_order_job", side_effect=offline_spy),
+            ):
+                rc = drv.main([
+                    "--kernel-receipt", str(r_path),
+                    "--admission", str(a_path),
+                    "--execute",
+                    "--run-root", str(run_root),
+                ])
+            receipt = drv.read(run_root / "driver_receipt.json")
+        self.assertEqual(rc, 1)
+        self.assertEqual(dispatched, ["J00", "J01", "J02"])
+        self.assertEqual(receipt["dispatched_jobs"], 3)
+        self.assertEqual(receipt["status"], "STOPPED_ON_ERROR")
+        self.assertEqual(receipt["first_error"]["job_id"], "J02")
+        self.assertEqual(receipt["first_error"]["type"], "CANCELLED")
+        self.assertEqual(len(receipt["rows"]), 8)
+        self.assertEqual([r["status"] for r in receipt["rows"]], ["COMPLETE", "COMPLETE", "CANCELLED", "NOT_RUN", "NOT_RUN", "NOT_RUN", "NOT_RUN", "NOT_RUN"])
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

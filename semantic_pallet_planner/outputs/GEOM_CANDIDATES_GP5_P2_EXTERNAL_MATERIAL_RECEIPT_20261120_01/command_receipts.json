@@ -1,0 +1,38 @@
+{
+  "schema": "gp5_p2_external_material_receipt_commands_v1",
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "synced_head": "c88177d5e2a90c09bfc21a1eea0d3f1a97e04eb5",
+  "pull": {
+    "command": "git pull --ff-only",
+    "result": "FAST_FORWARD 712401c7..c88177d5"
+  },
+  "checks": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_LAUNCH_INTAKE_QA_20261120_01/verify_intake_archive.py",
+      "exit_code": 0,
+      "stdout_summary": "PASS manifests=[19, 5, 7, 6]; source_files=594; matching_plan_json=17; matching_v2_records=0; ledger_calls=0"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_LAUNCH_INTAKE_20261120_01/check_launch_intake.py",
+      "exit_code": 0,
+      "observed": {
+        "found_v2_materials": {"geometry_scope_authorization_v2": [], "geometry_scope_review_v2": [], "geometry_kernel_launch_v2": []},
+        "ledger_calls": 0,
+        "four_job_joint_preflight": "NOT_RUN_BLOCKED_MISSING_LAUNCH_MATERIALS"
+      }
+    }
+  ],
+  "actual_this_delivery": {
+    "source_code_edits": 0,
+    "freeze_edits": 0,
+    "joint_preflight": 0,
+    "orders": 0,
+    "monitor": 0,
+    "LP": 0,
+    "recovery": 0,
+    "model_calls": 0
+  }
+}

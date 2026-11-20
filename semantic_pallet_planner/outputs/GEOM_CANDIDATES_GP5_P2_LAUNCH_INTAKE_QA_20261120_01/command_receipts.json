@@ -1,0 +1,17 @@
+{
+  "schema": "gp5_p2_launch_intake_qa_receipts_v1",
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "712401c7ee74396f906340fa1030dc973c16056d",
+  "initial_index": "CLEAN",
+  "initial_worktree": "CLEAN",
+  "checks": [
+    {"command": "git status -sb; git diff --cached --name-status; git rev-parse HEAD '@{upstream}'", "result": "入场分支、跟踪引用及暂存/工作区核对"},
+    {"command": "git ls-remote --exit-code origin refs/heads/dev/jev-select", "initial_result": "sandbox denied port 22", "approved_result": "712401c7ee74396f906340fa1030dc973c16056d"},
+    {"command": "python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_LAUNCH_INTAKE_QA_20261120_01/verify_intake_archive.py", "exit_code": 0, "result": "PASS manifests=[19, 5, 7, 6]; source_files=594; matching_plan_json=17; matching_v2_records=0; ledger_calls=0"}
+  ],
+  "not_reexecuted": ["原 Linux 缺件门控探针", "原 Linux 环境身份运行校验", "J00–J03 联合预检"],
+  "actual_qa_calls": {"orders": 0, "monitor": 0, "LP": 0, "recovery": 0, "model": 0, "freeze": 0}
+}

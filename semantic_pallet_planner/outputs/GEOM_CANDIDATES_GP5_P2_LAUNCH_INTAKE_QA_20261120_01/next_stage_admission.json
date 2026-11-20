@@ -1,0 +1,19 @@
+{
+  "schema": "gp5_p2_launch_intake_admission_v1",
+  "date": "2026-11-20",
+  "next_stage_admission": "NOT_READY",
+  "unit": "ORIGINAL_LINUX_FOUR_JOB_JOINT_READONLY_PREFLIGHT",
+  "prerequisites": [
+    {"requirement": "同一冻结计划及路由/源码/环境/监测绑定", "status": "PASS", "evidence": "归档及本机保存事实；实际 Linux 依赖仍由该机门控复核"},
+    {"requirement": "独立授权、审查、启动三项 v2", "status": "FAIL", "evidence": "同计划原件、来源及 path+SHA-256 均未交付；请求未内嵌授权引用"},
+    {"requirement": "同机 prepare + J00–J03 load_order_config 与前后零账本", "status": "NOT_RUN", "evidence": "仅缺件探针，不是联合预检"}
+  ],
+  "allowed_next": "仅从用户/范围签发方及独立审查角色取得、核验三项启动材料并交回独立 QA",
+  "not_allowed": ["联合预检", "业务派发", "固定 4+6 实跑", "正式八项", "GP6"],
+  "clearance": "三项有效原件与独立授权引用通过核验后另判联合预检；四任务预检和其余启动条件通过后另判固定范围技术准入，实际执行范围单列",
+  "fixed_4_plus_6_technical_admission": "NOT_READY",
+  "scope_dispatched_by_this_qa": "NONE",
+  "real_calls_authorized_by_this_qa": 0,
+  "formal_eight": "NOT_READY",
+  "GP6": "NOT_ASSESSED"
+}

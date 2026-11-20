@@ -1,0 +1,43 @@
+{
+  "schema": "gp5_p2_launch_intake_quality_review_v1",
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_P2_LAUNCH_MATERIAL_INTAKE_AND_READONLY_PREFLIGHT_ONLY",
+  "qa_scope": "静态保存事实复核与独立准入；不授权运行",
+  "developer_baseline": "5d5904173250d607be5b395cec894f9fc3edeb20",
+  "development_delivery": "712401c7ee74396f906340fa1030dc973c16056d",
+  "reviewed_head": "712401c7ee74396f906340fa1030dc973c16056d",
+  "identities": {
+    "source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+    "publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+    "default_route_identity": "1a55c583b931690f0500fe96f53597756ec3884ee7bff56e1dd4b9129e26ebc7",
+    "plan_digest": "248e746c4d3b8063a0f56e2be9f8441b5c34c7c5947147d8da6d67a3396b70e5",
+    "monitor_digest": "83b807f6aa8f60a45c1873aebd20fc2aeb04ec5cc924cf2568137bff254f88d6",
+    "environment_digest": "7e067024b6cad0efef09ad2e4cc866d4b7758ea403f23875196e0dee8f706415"
+  },
+  "fact_layers": {
+    "reported": "Linux 同步至上轮 QA 后新增缺件扫描和门控探针并停止",
+    "implemented": "生产源码及冻结无变化；收件脚本只验证缺件停点，不能核验有效收件或预检成功",
+    "archived": "prepare 缺 launch 文件；J00 空准入被拒；最终冻结账本为空；无匹配同计划的 v2 签发记录或实际运行收据",
+    "rechecked_locally": "四清单共 37 项，594 个源码摘要，计划、发布策略、监测绑定、静态路由、4+6 分母及空账本；原 Linux 依赖文件未复验"
+  },
+  "acceptance": {
+    "git_and_frozen_identity": "PASS",
+    "read_only_missing_material_stop": "PASS",
+    "A03": "PARTIAL",
+    "preflight": {"J00": "NOT_RUN", "J01": "NOT_RUN", "J02": "NOT_RUN", "J03": "NOT_RUN"},
+    "primary": {"J00": "NOT_RUN", "J01": "NOT_RUN", "J02": "NOT_RUN", "J03": "NOT_RUN"},
+    "recovery": {"J00": {"SELECTED": "NOT_RUN", "MONITORED": "NOT_RUN", "COMMITTED": "NOT_RUN"}, "J01": {"SELECTED": "NOT_RUN", "MONITORED": "NOT_RUN", "COMMITTED": "NOT_RUN"}},
+    "same_version_independent_completion": "NOT_RUN"
+  },
+  "issues": [
+    {"id": "GP5-P2-INTAKE-AUTH", "status": "FAIL", "severity": "BLOCKER", "contract": "A03 / driver.prepare authorization_reference", "actual": "未交付目标计划的 geometry_scope_authorization_v2；冻结请求没有内嵌引用", "remediation": "独立范围来源签发并通过独立渠道交付 path、SHA-256；不复用历史授权"},
+    {"id": "GP5-P2-INTAKE-REVIEW", "status": "FAIL", "severity": "BLOCKER", "contract": "A03 / validate_admission review", "actual": "未交付目标计划的 geometry_scope_review_v2", "remediation": "独立审查方审查后提供原件、路径、摘要和来源"},
+    {"id": "GP5-P2-INTAKE-LAUNCH", "status": "FAIL", "severity": "BLOCKER", "contract": "A03 / validate_admission", "actual": "未交付 geometry_kernel_launch_v2；空 admission 被拒", "remediation": "独立启动审查方核对上游两项后签发并绑定冻结身份"}
+  ],
+  "engineering_status": "READ_ONLY_INTAKE_GAP_CHECK_ACCEPTED; GP5_P2_A03_PARTIAL",
+  "evidence_readiness": "MISSING_EXTERNAL_LAUNCH_MATERIALS",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "NOT_READY",
+  "stopped": true
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "gp5_formal_order_prep_handoff_v1",
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP5_FORMAL_8_JOB_PRE_EXECUTION_PREPARATION_ONLY",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "reviewed_head": "24f75b978cedd0a15efafe991a918d90de09c92b",
+  "prep_root": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_PREP_20261120_01",
+  "plan_digest": "493e547d85a3df0909b6741ed53cd7c93047af49cef695a9380d695be48006aa",
+  "plan_frozen_sha256": "916df74e3fb0c73a40cb80d630b473b1787ef8776e162c6e510b98be207c1ffc",
+  "source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+  "publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "monitor_digest": "83b807f6aa8f60a45c1873aebd20fc2aeb04ec5cc924cf2568137bff254f88d6",
+  "data_identity": "9cf6d039543df402d04d406f45cd8cff00ee0a5ab49540190662e7f0d18f21de",
+  "pending_4_plus_6_review_fields": {
+    "acceptance_plan_digest": "248e746c4d3b8063a0f56e2be9f8441b5c34c7c5947147d8da6d67a3396b70e5",
+    "records_digest": "2ae98bb3a88a14420cc5e737621ad3c7872ee555daacc0f985184d8df307b2f9",
+    "recovery_digest": "f6d71f99b7a028bbc80529268595bdcc0cda4d3fc6174f031d38c6ab9781b566",
+    "counter_log": {
+      "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FIXED_ACCEPTANCE_20261120_01/shared_call_ledger_FINAL.json",
+      "sha256": "9163b56ab7b88e665c0d6d41ffe654e07bc8cbd95a75b365ebe635844ae7562c"
+    },
+    "coverage_digest": "c3fcfff9ecf027c73c018bbce966182beacb591b275db1e2bd6284d35c994e93"
+  },
+  "unsigned_prep_checks": {
+    "source_and_monitor_identity": "PASS",
+    "4_plus_6_pending_materials_and_references": "PASS",
+    "data_and_frozen_8_job_plan": "PASS",
+    "zero_ledger_and_not_run_denominator": "PASS"
+  },
+  "signed_gate_checks": {
+    "validate_real_kernel_receipt": "NOT_VERIFIED_PENDING_QA_SIGN_OFF",
+    "validate_admission": "NOT_VERIFIED_PENDING_AUTH_AND_QA",
+    "load_order_config_jobs": {
+      "J00": "NOT_RUN_PENDING_ADMISSION",
+      "J01": "NOT_RUN_PENDING_ADMISSION",
+      "J02": "NOT_RUN_PENDING_ADMISSION",
+      "J03": "NOT_RUN_PENDING_ADMISSION",
+      "J04": "NOT_RUN_PENDING_ADMISSION",
+      "J05": "NOT_RUN_PENDING_ADMISSION",
+      "J06": "NOT_RUN_PENDING_ADMISSION",
+      "J07": "NOT_RUN_PENDING_ADMISSION"
+    },
+    "ledger_after_preflight": {
+      "assessment_entries": 0,
+      "solver_calls": 0,
+      "test_double_assessments": 0
+    }
+  },
+  "blockers": [
+    "PENDING_QA_SIGN_OFF: geometry_kernel_completion_review_v2 & geometry_real_kernel_receipt_v3",
+    "PENDING_USER_AUTHORIZATION: geometry_scope_authorization_v2 for plan_digest 493e547d85a3df0909b6741ed53cd7c93047af49cef695a9380d695be48006aa",
+    "PENDING_QA_SCOPE_REVIEW_AND_ADMISSION: geometry_scope_review_v2 & geometry_order_admission_v2"
+  ],
+  "report": "docs/03_阶段产出分析/几何规划模块/几何候选器GP5正式八项运行前准备与待签凭证交付_20261120_01.md",
+  "actual_this_delivery": {
+    "formal_orders_dispatched": 0,
+    "p2_reruns": 0,
+    "real_assessments": 0,
+    "lp_calls": 0,
+    "model_calls": 0
+  },
+  "next": "INDEPENDENT_QA_REVIEW_AND_USER_AUTHORIZATION_THEN_READONLY_8_JOB_PREFLIGHT",
+  "stopped": true
+}

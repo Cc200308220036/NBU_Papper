@@ -1,0 +1,5 @@
+KERNEL_RECEIPT=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_APPROVED_QA_20261120_01/real_kernel_receipt.json
+ORDER_ADMISSION=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_APPROVED_QA_20261120_01/order_admission.json
+DRIVER=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_RUNNER_20261120_01/formal_order_driver.py
+RUN_ROOT=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_RUN_20261120_01
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src /home/cyw/anaconda3/bin/python3 -B "$DRIVER" --kernel-receipt "${KERNEL_RECEIPT:?未提供正式内核凭证路径}" --admission "${ORDER_ADMISSION:?未提供正式准入记录路径}" --execute --run-root "$RUN_ROOT"

@@ -1,0 +1,86 @@
+{
+  "schema": "gp5_formal_order_qa_signoff_handoff_checklist_v1",
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "head": "0aec3577b8980800601e61eeaa838c57395ed08c",
+  "plan_digest": "493e547d85a3df0909b6741ed53cd7c93047af49cef695a9380d695be48006aa",
+  "user_authorization_scope": {
+    "status": "AUTHORIZED_LIMITED_SCOPE_PENDING_RECORD_AND_QA_RELEASE",
+    "target_schema": "geometry_scope_authorization_v2",
+    "required_fields": {
+      "plan_digest": "493e547d85a3df0909b6741ed53cd7c93047af49cef695a9380d695be48006aa",
+      "publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+      "runtime_version": "jev_packaging_geometry_order_v17",
+      "scope": "EXPOSED_TRAIN_LOCAL_ORDER_ONLY",
+      "status": "APPROVED",
+      "version": "geometry_scope_authorization_v2"
+    },
+    "reference_source": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_PREP_20261120_01/execution_scope_checklist.json"
+  },
+  "independent_qa_signoffs_required": {
+    "1_kernel_completion_review_v2": {
+      "pending_material": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_PREP_20261120_01/kernel_completion_review_PENDING.json",
+      "fields": {
+        "acceptance_plan_digest": "248e746c4d3b8063a0f56e2be9f8441b5c34c7c5947147d8da6d67a3396b70e5",
+        "counter_log": {
+          "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FIXED_ACCEPTANCE_20261120_01/shared_call_ledger_FINAL.json",
+          "sha256": "9163b56ab7b88e665c0d6d41ffe654e07bc8cbd95a75b365ebe635844ae7562c"
+        },
+        "coverage_digest": "c3fcfff9ecf027c73c018bbce966182beacb591b275db1e2bd6284d35c994e93",
+        "publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+        "records_digest": "2ae98bb3a88a14420cc5e737621ad3c7872ee555daacc0f985184d8df307b2f9",
+        "recovery_digest": "f6d71f99b7a028bbc80529268595bdcc0cda4d3fc6174f031d38c6ab9781b566",
+        "runtime_version": "jev_packaging_geometry_order_v17",
+        "scope": "KERNEL_ACCEPTANCE_SYNTHETIC_ONLY",
+        "version": "geometry_kernel_completion_review_v2"
+      },
+      "target_status": "APPROVED"
+    },
+    "2_real_kernel_receipt_v3": {
+      "pending_material": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_PREP_20261120_01/real_kernel_receipt_PENDING.json",
+      "counter_log_note": "Must reference 4+6 shared_call_ledger_FINAL.json (8/68/0), never old empty ledger or new 8-job zero ledger.",
+      "target_status": "ACCEPTED"
+    },
+    "3_scope_review_v2": {
+      "pending_material": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_PREP_20261120_01/scope_review_PENDING.json",
+      "required_fields": {
+        "plan_digest": "493e547d85a3df0909b6741ed53cd7c93047af49cef695a9380d695be48006aa",
+        "publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+        "runtime_version": "jev_packaging_geometry_order_v17",
+        "scope": "EXPOSED_TRAIN_LOCAL_ORDER_ONLY",
+        "status": "APPROVED",
+        "version": "geometry_scope_review_v2"
+      },
+      "target_status": "APPROVED"
+    },
+    "4_order_admission_v2": {
+      "pending_material": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_PREP_20261120_01/order_admission_PENDING.json",
+      "required_fields": {
+        "authorization": {
+          "path": "<USER_AUTHORIZED_GEOMETRY_SCOPE_AUTHORIZATION_V2_PATH>",
+          "sha256": "<USER_AUTHORIZED_GEOMETRY_SCOPE_AUTHORIZATION_V2_SHA256>"
+        },
+        "environment_digest": "7e067024b6cad0efef09ad2e4cc866d4b7758ea403f23875196e0dee8f706415",
+        "monitor_digest": "83b807f6aa8f60a45c1873aebd20fc2aeb04ec5cc924cf2568137bff254f88d6",
+        "plan_digest": "493e547d85a3df0909b6741ed53cd7c93047af49cef695a9380d695be48006aa",
+        "publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+        "review": {
+          "path": "<QA_APPROVED_GEOMETRY_SCOPE_REVIEW_V2_PATH>",
+          "sha256": "<QA_APPROVED_GEOMETRY_SCOPE_REVIEW_V2_SHA256>"
+        },
+        "runtime_version": "jev_packaging_geometry_order_v17",
+        "scope": "EXPOSED_TRAIN_LOCAL_ORDER_ONLY",
+        "source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+        "status": "APPROVED",
+        "version": "geometry_order_admission_v2"
+      },
+      "target_status": "APPROVED"
+    }
+  },
+  "commands": {
+    "python_executable": "/home/cyw/anaconda3/bin/python3",
+    "working_directory": "NBU_Papper repo root or isolated git worktree root",
+    "preflight_readonly_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src /home/cyw/anaconda3/bin/python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_PREP_20261120_01/verify_formal_prep.py --kernel-receipt <SIGNED_KERNEL_RECEIPT_V3_JSON> --admission <SIGNED_ORDER_ADMISSION_V2_JSON> --write-receipt semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_RUNNER_20261120_01/signed_preflight_receipt.json",
+    "formal_execute_command_isolated_worktree": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src /home/cyw/anaconda3/bin/python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_RUNNER_20261120_01/formal_order_driver.py --kernel-receipt <SIGNED_KERNEL_RECEIPT_V3_JSON> --admission <SIGNED_ORDER_ADMISSION_V2_JSON> --execute --run-root semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_RUN_20261120_01"
+  }
+}

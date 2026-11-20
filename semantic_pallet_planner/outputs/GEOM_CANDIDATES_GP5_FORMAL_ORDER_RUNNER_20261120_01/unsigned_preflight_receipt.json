@@ -1,0 +1,38 @@
+{
+  "schema": "gp5_formal_order_prep_verification_v1",
+  "git": {
+    "branch": "dev/jev-select",
+    "head": "0aec3577b8980800601e61eeaa838c57395ed08c"
+  },
+  "python": "3.13.5",
+  "plan_digest": "493e547d85a3df0909b6741ed53cd7c93047af49cef695a9380d695be48006aa",
+  "monitor_digest": "83b807f6aa8f60a45c1873aebd20fc2aeb04ec5cc924cf2568137bff254f88d6",
+  "source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+  "publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "unsigned_prep_checks": {
+    "source_and_monitor_identity": "PASS",
+    "4_plus_6_pending_materials_and_references": "PASS",
+    "data_and_frozen_8_job_plan": "PASS",
+    "zero_ledger_and_not_run_denominator": "PASS"
+  },
+  "signed_gate_checks": {
+    "validate_real_kernel_receipt": "NOT_VERIFIED_PENDING_QA_SIGN_OFF",
+    "validate_admission": "NOT_VERIFIED_PENDING_AUTH_AND_QA",
+    "load_order_config_jobs": {
+      "J00": "NOT_RUN_PENDING_ADMISSION",
+      "J01": "NOT_RUN_PENDING_ADMISSION",
+      "J02": "NOT_RUN_PENDING_ADMISSION",
+      "J03": "NOT_RUN_PENDING_ADMISSION",
+      "J04": "NOT_RUN_PENDING_ADMISSION",
+      "J05": "NOT_RUN_PENDING_ADMISSION",
+      "J06": "NOT_RUN_PENDING_ADMISSION",
+      "J07": "NOT_RUN_PENDING_ADMISSION"
+    },
+    "ledger_after_preflight": {
+      "assessment_entries": 0,
+      "solver_calls": 0,
+      "test_double_assessments": 0
+    }
+  },
+  "post_signoff_command_template": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_PREP_20261120_01/verify_formal_prep.py --kernel-receipt <SIGNED_KERNEL_RECEIPT_V3_JSON> --admission <SIGNED_ORDER_ADMISSION_V2_JSON>"
+}

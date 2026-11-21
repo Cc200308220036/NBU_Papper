@@ -1,0 +1,1361 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="20" failures="0" skipped="0" tests="20" time="255.879" timestamp="2026-11-21T20:41:52.696419+08:00" hostname="cyw-R7000P"><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_positive_both_contracts_and_actual_meter" time="255.417"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[bare_v17]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[missing]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[receipt_bytes]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[review_bytes]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[completion_bytes]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[record_bytes]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[ledger_bytes]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[target_plan]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[target_source]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[target_environment]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[target_publication]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[target_monitor]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[target_algorithm]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[historical_source]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[diff_missing]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[review_binding]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[no_user_authorization]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[no_scope_review]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase><testcase classname="tests.unit.test_gp6_kernel_bridge" name="test_rejections_before_send_assess_commit[no_api_check]" time="0.000"><error message="failed on setup with &quot;semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x779f5f18a060&gt;, _basetemp=PosixPath('/tmp/pytest-of-cyw/pytest-2'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def fixture(tmp_path_factory):
+        root=tmp_path_factory.mktemp('gp6_bridge')
+        assert root.is_relative_to(Path('/tmp'))
+        package=root/'historical'/'semantic_pallet_planner'
+        archive=subprocess.check_output(['git','archive','1c6c85613','semantic_pallet_planner/src/semantic_pallet_planner'])
+        historical=json.loads(Path('semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json').read_bytes())
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            for member in tar.getmembers():
+                if not member.isfile():continue
+                name=member.name.split('src/semantic_pallet_planner/')[1]
+                raw=tar.extractfile(member).read()
+                if name in historical['files']:assert sha(raw)==historical['files'][name]
+                path=package/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+        builder=Path('semantic_pallet_planner/tests/fixtures/gp6_kernel_bridge_synthetic.py').resolve()
+        result=subprocess.run([sys.executable,'-B','-c',
+            'import sys,runpy; sys.path.insert(0,sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name="__main__")',
+            str(package.parent),str(builder),str(root/'SYNTHETIC_ONLY')],capture_output=True,text=True,
+            env={'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode==0,result.stderr
+        evidence=root/'SYNTHETIC_ONLY'
+        monitor=json.loads((evidence/'monitor.json').read_bytes())
+        adapted=[]
+        for tid in TASK_IDS:
+            item={**synthetic_task('K01')['items'][0], 'geometry_id':'SYNTHETIC_ONLY', 'material':'synthetic'}
+&gt;           original=copy.deepcopy(item)
+
+semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_geometry_protocol.py:75: in adapt_task
+    validate_schema('packaging_load_task_v1',frozen)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'packaging_load_task_v1'
+value = {'attributes': {'synth_1': {'cargo_category': 'general', 'labels': {'max_top_load_kg': 10, 'no_top_load': False}, 'obj...struction_text': 'Packaging/load protocol v1: use current geometry, mass, support eligibility and capacity only.', ...}
+
+    def validate_schema(name: str, value: dict) -&gt; None:
+        canonical(value)
+        jev_versions={'config':GEOMETRY_JEV_VERSION,'candidate_bundle':GEOMETRY_JEV_BUNDLE,'decision_context':GEOMETRY_JEV_CONTEXT,'selection_result':GEOMETRY_JEV_SELECTION}
+        if name in jev_versions and value.get('version')==jev_versions[name]:
+            name=GEOMETRY_JEV_SCHEMAS[name]
+        native_versions={'config':GEOMETRY_NATIVE_VERSION,'candidate_bundle':'jev_candidate_bundle_v17','decision_context':'jev_decision_context_v17','selection_result':'jev_selection_result_v17'}
+        if name in native_versions and value.get('version')==native_versions[name]:
+            name=GEOMETRY_NATIVE_SCHEMAS[name]
+        order_versions={'config':GEOMETRY_ORDER_VERSION,'candidate_bundle':GEOMETRY_ORDER_BUNDLE,'decision_context':GEOMETRY_ORDER_CONTEXT,'selection_result':'jev_selection_result_v16'}
+        if name in order_versions and value.get('version')==order_versions[name]:
+            name=GEOMETRY_ORDER_SCHEMAS[name]
+        run_versions={'config':GEOMETRY_RUN_VERSION,'candidate_bundle':GEOMETRY_RUN_BUNDLE,'decision_context':GEOMETRY_RUN_CONTEXT,'selection_result':'jev_selection_result_v15'}
+        if name in run_versions and value.get('version')==run_versions[name]:
+            name=GEOMETRY_RUN_SCHEMAS[name]
+        geometry_versions={'config':GEOMETRY_VERSION,'candidate_bundle':GEOMETRY_BUNDLE,'decision_context':GEOMETRY_CONTEXT}
+        if name in geometry_versions and value.get('version')==geometry_versions[name]:
+            name=GEOMETRY_SCHEMAS[name]
+        if name == 'selection_result' and value.get('version') == 'jev_jm_forced_selection_v1':
+            name = 'jm_forced_selection_v1'
+        if name in {"config", "candidate_bundle", "decision_context", "selection_result"}:
+            for suffix in ("_v13", "_v12", "_v11", "_v10", "_v2", "_v3", "_v4", "_v5", "_v6", "_v7", "_v8", "_v9"):
+                if str(value.get("version", "")).endswith(suffix):
+                    name += suffix
+                    break
+        errors = sorted(schema_validator(name).iter_errors(value), key=lambda e: str(list(e.path)))
+        if errors:
+            error = errors[0]
+&gt;           raise JevSelectError(f"invalid_{name}", f"/{'/'.join(map(str, error.path))}: {(error.message[:240] if error.validator not in ("anyOf", "oneOf") else "value does not match the versioned contract")}")
+E           semantic_pallet_planner.jev_select.contracts.JevSelectError: invalid_packaging_load_task_v1: /items/0: 'geometry_id' is a required property
+
+semantic_pallet_planner/src/semantic_pallet_planner/jev_select/contracts.py:72: JevSelectError</error></testcase></testsuite></testsuites>

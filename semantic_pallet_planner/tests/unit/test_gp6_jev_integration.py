@@ -491,7 +491,7 @@ class TestGP6JevIntegration(unittest.TestCase):
                     monitor_snapshot=snap, admission=admission, kernel_receipt={'fake': True},
                     root=root / 'run_fake', transport=transport, ledger=ledger,
                 )
-            self.assertEqual(c2.exception.code, 'invalid_geometry_real_kernel_receipt_v3')
+            self.assertEqual(c2.exception.code, 'invalid_geometry_jev_kernel_bridge_v1')
 
             # 3. Historical GP5/v17 kernel receipt -> rejected (runtime_version mismatch v17 vs v18)
             hist_receipt = json.loads((gp5_qa_dir / 'real_kernel_receipt.json').read_text(encoding='utf-8'))
@@ -504,7 +504,7 @@ class TestGP6JevIntegration(unittest.TestCase):
             tampered_v18['runtime_version'] = GEOMETRY_JEV_VERSION
             with self.assertRaises(JevSelectError) as c4:
                 validate_jev_kernel_receipt(tampered_v18, plan, snap)
-            self.assertIn(c4.exception.code, ('invalid_geometry_real_kernel_receipt_v3', 'geometry_jev_kernel_receipt_source_identity_mismatch'))
+            self.assertIn(c4.exception.code, ('invalid_geometry_real_kernel_receipt_v3', 'invalid_geometry_jev_kernel_bridge_v1', 'geometry_jev_kernel_receipt_source_identity_mismatch'))
 
             # Zero sends, zero assessments, zero commits
             self.assertEqual(len(transport.bodies), 0)

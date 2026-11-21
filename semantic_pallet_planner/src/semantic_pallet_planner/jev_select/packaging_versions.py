@@ -157,7 +157,8 @@ GEOMETRY_JEV_CHECKPOINT='jev_checkpoint_v18'
 GEOMETRY_JEV_SCHEMAS={k:k+'_v18' for k in ('config','candidate_bundle','decision_context','selection_result','checkpoint')}
 GEOMETRY_JEV_SCHEMAS.update({k:k for k in (
     'geometry_jev_plan_v1','geometry_jev_execution_v1','geometry_jev_development_binding_v1',
-    'geometry_jev_admission_v1','geometry_jev_metrics_v1','geometry_jev_run_v1')})
+    'geometry_jev_admission_v1','geometry_jev_metrics_v1','geometry_jev_run_v1',
+    'geometry_jev_kernel_bridge_v1','geometry_jev_kernel_applicability_review_v1')})
 GEOMETRY_NATIVE_CAPABILITIES[GEOMETRY_JEV_VERSION]={
     'policy':GEOMETRY_NATIVE_POLICY,'bridge':GEOMETRY_NATIVE_BRIDGE,
     'id_pattern':r'^GP5N3_[0-9a-f]{64}$','schemas':GEOMETRY_JEV_SCHEMAS}

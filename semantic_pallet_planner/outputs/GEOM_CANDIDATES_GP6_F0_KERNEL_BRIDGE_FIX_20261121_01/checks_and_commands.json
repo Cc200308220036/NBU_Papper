@@ -1,0 +1,285 @@
+{
+  "date": "2026-11-21",
+  "timezone": "Asia/Shanghai",
+  "interpreter": "Python 3.13.5; existing environment, no dependencies installed",
+  "head": "764ab3c0b95f9dce209541ab7ffdad4b7f55805a",
+  "pull_ff_only": "ALREADY_UP_TO_DATE (initial sandbox read-only FETCH_HEAD failure; escalation succeeded)",
+  "final_runs": [
+    {
+      "name": "bridge",
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m pytest semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py -q --junitxml=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_KERNEL_BRIDGE_FIX_20261121_01/tests/kernel_bridge_final.xml",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "cases": [
+        "test_positive_both_contracts_and_actual_meter",
+        "test_rejections_before_send_assess_commit[bare_v17]",
+        "test_rejections_before_send_assess_commit[missing]",
+        "test_rejections_before_send_assess_commit[receipt_bytes]",
+        "test_rejections_before_send_assess_commit[review_bytes]",
+        "test_rejections_before_send_assess_commit[completion_bytes]",
+        "test_rejections_before_send_assess_commit[record_bytes]",
+        "test_rejections_before_send_assess_commit[ledger_bytes]",
+        "test_rejections_before_send_assess_commit[target_plan]",
+        "test_rejections_before_send_assess_commit[target_source]",
+        "test_rejections_before_send_assess_commit[target_environment]",
+        "test_rejections_before_send_assess_commit[target_publication]",
+        "test_rejections_before_send_assess_commit[target_monitor]",
+        "test_rejections_before_send_assess_commit[target_algorithm]",
+        "test_rejections_before_send_assess_commit[historical_source]",
+        "test_rejections_before_send_assess_commit[diff_missing]",
+        "test_rejections_before_send_assess_commit[review_binding]",
+        "test_rejections_before_send_assess_commit[no_user_authorization]",
+        "test_rejections_before_send_assess_commit[no_scope_review]",
+        "test_rejections_before_send_assess_commit[no_api_check]"
+      ],
+      "receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_KERNEL_BRIDGE_FIX_20261121_01/tests/kernel_bridge_final.xml"
+    },
+    {
+      "name": "gp6_regression",
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m pytest semantic_pallet_planner/tests/unit/test_gp6_jev_integration.py -q --junitxml=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_KERNEL_BRIDGE_FIX_20261121_01/tests/gp6_regression.xml",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "cases": [
+        "test_e2_and_ems_f0_no_memory_offline_success_and_exact_binding",
+        "test_formal_kernel_receipt_validation_rejects_missing_invalid_and_historical_gp5_v17",
+        "test_four_recovery_protections_selected_unknown_send_monitored_committed",
+        "test_identity_drift_rejected_and_gp5_v17_gates_unchanged",
+        "test_invalid_label_budget_exhausted_instability_and_unauthorized_real_transport",
+        "test_metered_development_success_and_budget_exhaustion_blocks_over_limit_calls",
+        "test_request_ledger_binding_and_unready_meter_reject_before_any_dispatch",
+        "test_singleton_bypass_zero_sends_still_monitored"
+      ],
+      "receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_KERNEL_BRIDGE_FIX_20261121_01/tests/gp6_regression.xml"
+    },
+    {
+      "name": "gp5_regression",
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m pytest semantic_pallet_planner/tests/unit/test_geometry_ems_default_and_v17_completion.py::V17OrdinaryCompletionAndPhaseSnapshotTests::test_ordinary_v16_and_v17_with_durable_root_pass semantic_pallet_planner/tests/unit/test_geometry_ems_default_and_v17_completion.py::EmsDefaultRouteAndNoFallbackTests::test_operational_order_entry_ems_default_explicit_e2_and_no_fallback -q --junitxml=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_KERNEL_BRIDGE_FIX_20261121_01/tests/gp5_regression.xml",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "cases": [
+        "test_ordinary_v16_and_v17_with_durable_root_pass",
+        "test_operational_order_entry_ems_default_explicit_e2_and_no_fallback"
+      ],
+      "receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_KERNEL_BRIDGE_FIX_20261121_01/tests/gp5_regression.xml"
+    }
+  ],
+  "total_passed": 30,
+  "negative_per_case_assertions": [
+    {
+      "case": "test_rejections_before_send_assess_commit[bare_v17]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[missing]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[receipt_bytes]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[review_bytes]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[completion_bytes]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[record_bytes]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[ledger_bytes]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[target_plan]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[target_source]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[target_environment]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[target_publication]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[target_monitor]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[target_algorithm]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[historical_source]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[diff_missing]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[review_binding]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[no_user_authorization]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[no_scope_review]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    },
+    {
+      "case": "test_rejections_before_send_assess_commit[no_api_check]",
+      "sends": 0,
+      "assessments": 0,
+      "LP": 0,
+      "commits": 0,
+      "run_directory_created": false,
+      "evidence": "actual run_jev_job admission rejection + test assertions"
+    }
+  ],
+  "positive": "Full synthetic v17 evidence validation in frozen snapshot + actual v18 admission + actual shared meter; only assessment/LP bodies substituted, 1+1 counted, no send",
+  "other_checks": [
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_KERNEL_BRIDGE_FIX_20261121_01/verify_readonly.py",
+      "exit_code": 0,
+      "references": 38,
+      "missing_or_drift": 0
+    }
+  ],
+  "development_attempts": [
+    {
+      "result": "ERROR before any real computation/send",
+      "causes": [
+        "snapshot missing required Markdown identity file",
+        "new Schema not yet registered",
+        "synthetic exposed target task lacked required fields"
+      ],
+      "receipt": "tests/development_fixture_error.xml",
+      "final_status": "fixed and rerun; not counted as final acceptance"
+    }
+  ],
+  "not_run": [
+    "real model calls (0)",
+    "real orders G00-G03",
+    "real monitor/LP",
+    "freeze",
+    "historical fixed 4+6 rerun",
+    "GP5 eight jobs rerun",
+    "production GP5 credential admission under GP6"
+  ],
+  "keys_read": false,
+  "production_bridge_issued": false
+}

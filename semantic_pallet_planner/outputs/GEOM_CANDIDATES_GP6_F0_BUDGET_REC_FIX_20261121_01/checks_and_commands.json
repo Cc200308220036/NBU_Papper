@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-21",
+  "timezone": "Asia/Shanghai",
+  "head": "3504604232508fb2e842e3a64de75d449bbb0429",
+  "interpreter": "existing Python 3.13.5; no dependency installation",
+  "pull_ff_only": "actual safe fast-forward 992e64f53 -> 350460423; no conflicts/divergence",
+  "runs": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m pytest semantic_pallet_planner/tests/unit/test_gp6_budget_recovery_gates.py -xq --junitxml=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_BUDGET_REC_FIX_20261121_01/tests/budget_recovery.xml",
+      "exit_code": 0,
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_BUDGET_REC_FIX_20261121_01/tests/budget_recovery.xml",
+      "cases": [
+        "test_formal_budget_equality_before_ledger_dispatch[1-2]",
+        "test_formal_budget_equality_before_ledger_dispatch[2-1]",
+        "test_formal_budget_equality_before_ledger_dispatch[1-1]",
+        "test_uniform_formal_limit_unknown_reservation_never_released",
+        "test_saved_request_selection_requires_ledger_match[missing_attempt]",
+        "test_saved_request_selection_requires_ledger_match[missing_selection]",
+        "test_saved_request_selection_requires_ledger_match[value]",
+        "test_saved_request_selection_requires_ledger_match[digest]",
+        "test_saved_request_selection_requires_ledger_match[state]",
+        "test_saved_request_selection_requires_ledger_match[send_started]",
+        "test_saved_request_selection_requires_ledger_match[origin]",
+        "test_response_or_selection_saved_before_checkpoint_is_legal[RESPONSE_SAVED]",
+        "test_response_or_selection_saved_before_checkpoint_is_legal[SELECTION_SAVED]"
+      ]
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m pytest semantic_pallet_planner/tests/unit/test_gp6_budget_recovery_gates.py -k 'shared_limit_blocks or singleton_checkpoint' -q --junitxml=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_BUDGET_REC_FIX_20261121_01/tests/legal_zero_send.xml",
+      "exit_code": 0,
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_BUDGET_REC_FIX_20261121_01/tests/legal_zero_send.xml",
+      "cases": [
+        "test_shared_limit_blocks_new_job_and_budget_checkpoint_recovers_without_send[False]",
+        "test_shared_limit_blocks_new_job_and_budget_checkpoint_recovers_without_send[True]",
+        "test_singleton_checkpoint_remains_zero_send_on_resume"
+      ]
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m pytest semantic_pallet_planner/tests/unit/test_gp6_jev_integration.py -q --junitxml=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_BUDGET_REC_FIX_20261121_01/tests/gp6_regression.xml",
+      "exit_code": 0,
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_BUDGET_REC_FIX_20261121_01/tests/gp6_regression.xml",
+      "cases": [
+        "test_e2_and_ems_f0_no_memory_offline_success_and_exact_binding",
+        "test_formal_kernel_receipt_validation_rejects_missing_invalid_and_historical_gp5_v17",
+        "test_four_recovery_protections_selected_unknown_send_monitored_committed",
+        "test_identity_drift_rejected_and_gp5_v17_gates_unchanged",
+        "test_invalid_label_budget_exhausted_instability_and_unauthorized_real_transport",
+        "test_metered_development_success_and_budget_exhaustion_blocks_over_limit_calls",
+        "test_request_ledger_binding_and_unready_meter_reject_before_any_dispatch",
+        "test_singleton_bypass_zero_sends_still_monitored"
+      ]
+    }
+  ],
+  "collection_note": "第一轮启动时收集13项；仅测试文件随后增补3项，另以-k补验3项，合计覆盖当前16项。两生产模块在所有测试期间未变化。另8项既有GP6回归。",
+  "final_passed": 24,
+  "issues": {
+    "GP6-F0-BUDGET-01": "OFFLINE_PASS_EQUAL_FORMAL_LIMITS_AND_DURABLE_RESERVATION_ENFORCEMENT",
+    "GP6-F0-REC-01": "OFFLINE_PASS_SELECTION_PRESENCE_VALUE_DIGEST_COMPATIBLE_STATE"
+  },
+  "negative_recovery_assertions": {
+    "each_case_new_sends": 0,
+    "each_case_assessment_body_calls": 0,
+    "each_case_LP_body_calls": 0,
+    "each_case_commit_body_calls": 0
+  },
+  "budget_assertions": "Unequal limits rejected both ways; last successful/UNKNOWN_SEND reservation blocks next job before transmission; saved budget stop and singleton remain legal.",
+  "other_checks": [
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "real_model_calls": 0,
+  "real_monitor_calls": 0,
+  "real_LP_calls": 0,
+  "keys_read": false,
+  "not_run": [
+    "production bridge issuance",
+    "production GP6 freeze",
+    "G00-G03",
+    "GP5 reruns",
+    "new target environment and external authorization validation"
+  ]
+}

@@ -402,6 +402,8 @@ def validate_jev_request_ledger_binding(
         ledger.per_job_max_sends == plan['per_job_max_sends'] == config['per_job_max_sends'],
         'geometry_jev_ledger_per_job_limit_drift',
     )
+    if plan['scope'] == GP6_ORDER:
+        require(plan['model_calls_max'] == plan['shared_max_sends'], 'geometry_jev_formal_budget')
     require(
         ledger.max_sends == plan['shared_max_sends'] == config['shared_max_sends'],
         'geometry_jev_ledger_shared_limit_drift',
@@ -487,11 +489,29 @@ def validate_jev_saved_checkpoint(cp, task, config, job_id, method, store):
             require(att is None, 'geometry_jev_singleton_unexpected_send')
             continue
         if sel['status'] == 'budget_exhausted':
+            require(att is None or (att['state'] == 'INTENT' and not att['send_started']
+                    and att['selection'] is None and att['selection_digest'] is None),
+                    'geometry_jev_budget_unexpected_send')
             continue
         require(att is not None, 'geometry_jev_missing_ledger_attempt')
         require(att['context_digest'] == digest(ev['context']), 'geometry_jev_ledger_context_drift')
-        if att['selection'] is not None:
-            require(same_native(att['selection'], sel), 'geometry_jev_ledger_selection_drift')
+        require(att['selection'] is not None, 'geometry_jev_missing_ledger_selection')
+        require(same_native(att['selection'], sel)
+                and att['selection_digest'] == digest(sel), 'geometry_jev_ledger_selection_drift')
+        states = {'selected': ('SELECTION_SAVED', 'OK'),
+                  'invalid_response': ('RESPONSE_SAVED', 'OK'),
+                  'unknown_in_flight': ('UNKNOWN_SEND', 'UNKNOWN_IN_FLIGHT')}
+        expected_state, expected_transport = states.get(sel['status'], ('FAILED', None))
+        transport = att['transport']
+        require(sel['status'] in (*states, 'provider_failure')
+                and att['state'] == expected_state and att['send_started']
+                and transport is not None
+                and (transport['status'] == expected_transport if expected_transport else
+                     transport['status'] not in ('OK', 'UNKNOWN_IN_FLIGHT'))
+                and sel['source'] == att['origin']
+                and sel['attempt_ids'] == [att['attempt_id']]
+                and sel['raw_response_digest'] == transport['raw_sha256'],
+                'geometry_jev_ledger_selection_state_drift')
     return cp
 
 

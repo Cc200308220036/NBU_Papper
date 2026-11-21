@@ -120,7 +120,7 @@ def validate_jev_plan(plan: dict) -> dict:
         require(tuple(t['task_id'] for t in plan['tasks']) == TASK_IDS, 'geometry_jev_fixed_tasks')
         require(
             plan['status'] in ('DRAFT', 'FROZEN')
-            and 0 < plan['model_calls_max'] <= plan['shared_max_sends'] <= GP6_MAX_SHARED_SENDS
+            and 0 < plan['model_calls_max'] == plan['shared_max_sends'] <= GP6_MAX_SHARED_SENDS
             and 0 < plan['assessment_limit'] <= 76
             and 0 < plan['solver_limit'] <= 4096,
             'geometry_jev_formal_budget',

@@ -1,0 +1,49 @@
+{
+  "schema": "gp6_evidence_applicability_admission_v1",
+  "date": "2026-11-21",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP6-F0历史内核证据适用性",
+  "target_commit": "d2fe7261aee0ae9673bae0548a1e457557b82fe5",
+  "historical_source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+  "source_identity": "0521fe704f0b8ce0d68b3a4a6299b64ce2368e3af34109854b45d0f128cacc09",
+  "source_delta_digest": "d4ea34c10463eef613889d9d8a78d3c7866835c7e28b3ee927462118e16a2643",
+  "next_stage_admission": "NOT_READY",
+  "formal_bridge": "NOT_READY",
+  "production_gp6": "NOT_READY",
+  "allowed_next_unit": "两项正式预算及恢复门控的最小整改",
+  "next_owner": "开发窗口",
+  "prerequisites": [
+    {
+      "requirement": "历史凭证原件与数值内核已有证据",
+      "status": "PASS_LIMITED",
+      "effect": "只可用于同一 exact-v3 快照的历史证据"
+    },
+    {
+      "requirement": "冻结总调用上限实际执行",
+      "status": "FAIL",
+      "issue": "GP6-F0-BUDGET-01",
+      "effect": "阻断正式派发"
+    },
+    {
+      "requirement": "保存选择与请求账本双向一致",
+      "status": "FAIL",
+      "issue": "GP6-F0-REC-01",
+      "effect": "阻断正式恢复"
+    },
+    {
+      "requirement": "重新核对新身份与差异，核验目标环境、正式材料及外部授权",
+      "status": "NOT_RUN",
+      "effect": "无生产桥接和运行许可"
+    }
+  ],
+  "release_condition": "补两项门控及离线反例后交独立 QA。其后按独立合同核验新目标身份及正式材料。",
+  "blocked": [
+    "生产签发",
+    "GP6 freeze",
+    "G00–G03",
+    "F1/T/E/训练",
+    "GP5 重跑"
+  ],
+  "real_calls_authorized": 0,
+  "stopped": true
+}

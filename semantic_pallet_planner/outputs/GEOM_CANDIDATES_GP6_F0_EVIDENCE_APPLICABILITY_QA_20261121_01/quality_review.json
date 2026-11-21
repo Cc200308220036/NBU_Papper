@@ -1,0 +1,99 @@
+{
+  "schema": "gp6_evidence_applicability_quality_v1",
+  "date": "2026-11-21",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP6-F0历史内核证据适用性",
+  "target_commit": "d2fe7261aee0ae9673bae0548a1e457557b82fe5",
+  "historical_source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+  "source_identity": "0521fe704f0b8ce0d68b3a4a6299b64ce2368e3af34109854b45d0f128cacc09",
+  "source_delta_digest": "d4ea34c10463eef613889d9d8a78d3c7866835c7e28b3ee927462118e16a2643",
+  "base_git": {
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "live_remote_sha": "d2fe7261aee0ae9673bae0548a1e457557b82fe5",
+    "tree_clean": true,
+    "index_clean": true,
+    "developer_delivery_sha": "992e64f53d3575fe8c0ee0166fd4a3a67b270b3b"
+  },
+  "authorized_scope": "只读独立适用性审查与 QA 归档",
+  "engineering_status": "PARTIAL_FORMAL_V18_GATES",
+  "evidence_readiness": "LIMITED_APPLICABILITY_EXACT_V3_SAME_SNAPSHOT_ONLY",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "NOT_READY",
+  "bridge_01": "CLOSED",
+  "facts": {
+    "reported": "开发归档 30 项桥接及回归、8 项后续来源及门控合成测试通过。",
+    "implemented": "独立 v18 和同一 exact-v3 选后链路；新请求预算及恢复合同见两项缺口。",
+    "archived": {
+      "gp5": {
+        "main_records": 4,
+        "recoveries": 6,
+        "counts": {
+          "assessment_entries": 8,
+          "solver_calls": 68,
+          "test_double_assessments": 0
+        }
+      },
+      "gp6": "开发端离线测试 PASS，正式 G00–G03 NOT_RUN。"
+    },
+    "local": {
+      "result": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_EVIDENCE_APPLICABILITY_QA_20261121_01/readonly_results.json",
+      "checks": "归档字节、Schema 定义及静态控制流，未重跑 pytest"
+    }
+  },
+  "checks": {
+    "historical_source_and_artifacts": "PASS",
+    "shared_exact_v3_kernel_scope": "PASS_LIMITED",
+    "all_28_delta_rows": "REVIEWED",
+    "A06-01": "PASS_STATIC_VERSIONED_CONTRACTS",
+    "A06-02": "PARTIAL_ARCHIVED_OFFLINE_FORMAL_BUDGET_BLOCKED",
+    "A06-03": "FAIL_BIDIRECTIONAL_LEDGER_RECOVERY",
+    "A06-04": "NOT_RUN",
+    "A06-05": "NOT_RUN",
+    "A06-06": "NOT_RUN"
+  },
+  "issues": [
+    {
+      "id": "GP6-F0-BUDGET-01",
+      "severity": "BLOCKER",
+      "status": "OPEN",
+      "acceptance": "A06预算与发送账目",
+      "location": [
+        "geometry_jev_protocol.py:119",
+        "geometry_jev_execution.py:396",
+        "packaging_remote.py:144"
+      ],
+      "actual": "允许两额度不同，正式账本只强制 shared_max_sends。",
+      "remediation": "使正式额度一致，或让较严上限进入账本，超限在传输前拒绝。"
+    },
+    {
+      "id": "GP6-F0-REC-01",
+      "severity": "BLOCKER",
+      "status": "OPEN",
+      "acceptance": "A06恢复与发送账目",
+      "location": [
+        "geometry_jev_execution.py:460",
+        "episode.py:492",
+        "packaging_remote.py:169"
+      ],
+      "actual": "存在 checkpoint 请求型选择时，账本选择为空仍可通过对账分支。",
+      "remediation": "双向核对选择与兼容状态，保留合法中断和零发送分支。"
+    }
+  ],
+  "not_run": [
+    "pytest",
+    "完整历史 worker",
+    "签发",
+    "冻结",
+    "订单",
+    "监测",
+    "LP",
+    "恢复",
+    "模型",
+    "GP5 重跑",
+    "G00–G03"
+  ],
+  "keys_read": false,
+  "real_model_calls": 0,
+  "stopped": true
+}

@@ -383,6 +383,54 @@ class JevOrderStore(GeometryStore):
         return jev_execution_for_config(config, self._job_id)
 
 
+def validate_jev_request_ledger_binding(
+    plan: dict,
+    config: dict,
+    ledger: GeometryJevRequestLedger,
+    transport,
+    *,
+    real_authorized: bool,
+) -> None:
+    """Bind actual request ledger identity, limits, path, and transport mode to frozen plan."""
+    require(isinstance(ledger, GeometryJevRequestLedger), 'geometry_jev_ledger_required')
+    expected_plan_digest = digest(plan)
+    require(
+        ledger.plan_digest == expected_plan_digest == config['plan_digest'],
+        'geometry_jev_ledger_plan_drift',
+    )
+    require(
+        ledger.per_job_max_sends == plan['per_job_max_sends'] == config['per_job_max_sends'],
+        'geometry_jev_ledger_per_job_limit_drift',
+    )
+    require(
+        ledger.max_sends == plan['shared_max_sends'] == config['shared_max_sends'],
+        'geometry_jev_ledger_shared_limit_drift',
+    )
+    require(
+        bool(ledger.allow_real_transport) == bool(real_authorized) == (config['transport_evidence'] == 'REAL_JEV'),
+        'geometry_jev_ledger_transport_mode_drift',
+    )
+    if plan['scope'] == GP6_ORDER:
+        require(type(plan.get('request_ledger_path')) is str and bool(plan['request_ledger_path']), 'geometry_jev_ledger_path_required')
+        require(
+            Path(ledger.path).resolve() == Path(plan['request_ledger_path']).resolve(),
+            'geometry_jev_ledger_path_drift',
+        )
+    elif plan.get('request_ledger_path') is not None:
+        require(
+            Path(ledger.path).resolve() == Path(plan['request_ledger_path']).resolve(),
+            'geometry_jev_ledger_path_drift',
+        )
+    origin = getattr(transport, 'origin', None)
+    if config['transport_evidence'] == 'REAL_JEV':
+        require(origin == 'jev', 'geometry_jev_transport_origin_mismatch')
+    else:
+        require(origin == 'test_double', 'gp6_real_transport_unauthorized' if origin == 'jev' else 'geometry_jev_transport_origin_mismatch')
+    # Force durable readback check under lock before any dispatch/send/assessment/commit.
+    with exclusive(ledger.root):
+        ledger._load()
+
+
 def validate_jev_request(task, selector, config, method, store, on_checkpoint, *, job_id=None) -> dict:
     preflight_jev(config)
     require(type(store) is JevOrderStore and callable(on_checkpoint), 'geometry_jev_explicit_authority_required')
@@ -395,7 +443,17 @@ def validate_jev_request(task, selector, config, method, store, on_checkpoint, *
     )
     binding = store.validate_request(task, config)
     require(job_id is None or job_id == binding['job_id'], 'geometry_jev_job_drift')
-    require(store.request_ledger.plan_digest == config['plan_digest'], 'geometry_jev_ledger_plan_drift')
+    validate_jev_request_ledger_binding(
+        store._plan,
+        config,
+        store.request_ledger,
+        selector.transport,
+        real_authorized=(config['transport_evidence'] == 'REAL_JEV'),
+    )
+    if config['monitor_evidence'] == 'REAL_KERNEL':
+        from .geometry_order_meter import current_counts
+
+        current_counts(config['plan_digest'])
     return binding
 
 
@@ -589,10 +647,13 @@ def run_jev_job(
         admission=admission,
         kernel_receipt=kernel_receipt,
     )
-    if config['transport_evidence'] == 'TEST_DOUBLE' and getattr(transport, 'origin', None) == 'jev':
-        raise JevSelectError('gp6_real_transport_unauthorized')
-    if config['transport_evidence'] == 'REAL_JEV' and not ledger.allow_real_transport:
-        raise JevSelectError('gp6_real_transport_unauthorized')
+    validate_jev_request_ledger_binding(
+        plan,
+        config,
+        ledger,
+        transport,
+        real_authorized=(config['transport_evidence'] == 'REAL_JEV'),
+    )
 
     root = Path(root)
     store = JevOrderStore(
@@ -610,6 +671,37 @@ def run_jev_job(
     selector = GeometryJevSelector(config, ledger, job_id, transport)
     callback = on_checkpoint if on_checkpoint is not None else (lambda cp: None)
     from .episode import run_episode
+
+    def execute_and_measure(started_ts: float):
+        validate_jev_request(task, selector, config, GP6_METHOD, store, callback, job_id=job_id)
+        ep = run_episode(
+            task,
+            selector,
+            config,
+            job_id=job_id,
+            method=GP6_METHOD,
+            resume=resume,
+            on_checkpoint=callback,
+            geometry_store=store,
+            hook=hook,
+        )
+        reason = ep['checkpoint']['reason']
+        metric = None
+        if reason is not None:
+            metric = jev_order_metrics(
+                task,
+                config,
+                GP6_METHOD,
+                ep['final_state'],
+                ep['events'],
+                reason,
+                ledger=ledger,
+                job_id=job_id,
+            )
+            metric['timings'].append({'segment': 'invocation_wall_s', 'seconds': time.perf_counter() - started_ts})
+            validate_schema('geometry_jev_metrics_v1', metric)
+            ep['summary'] = metric
+        return ep, metric
 
     root.mkdir(parents=True, exist_ok=True)
     with exclusive(root):
@@ -629,39 +721,25 @@ def run_jev_job(
         write(root / 'run.json', run)
         started = time.perf_counter()
         try:
-            validate_jev_request(task, selector, config, GP6_METHOD, store, callback, job_id=job_id)
-            ep = run_episode(
-                task,
-                selector,
-                config,
-                job_id=job_id,
-                method=GP6_METHOD,
-                resume=resume,
-                on_checkpoint=callback,
-                geometry_store=store,
-                hook=hook,
-            )
+            if plan['scope'] == GP6_DEVELOPMENT:
+                ep, metric = execute_and_measure(started)
+            else:
+                from .geometry_order_meter import metered_jev_run
+
+                with metered_jev_run(
+                    plan,
+                    job_id=job_id,
+                    monitor_snapshot=monitor_snapshot,
+                    admission=admission,
+                    kernel_receipt=kernel_receipt,
+                ):
+                    ep, metric = execute_and_measure(started)
         except BaseException as exc:
             status = 'CANCELLED' if isinstance(exc, KeyboardInterrupt) else 'TECHNICAL_FAILURE'
             write(root / 'run.json', update_jev_run(run, plan, job_id, status))
             write(store.root / 'driver_failure.json', {'type': type(exc).__name__, 'detail': str(exc)[:240], 'no_implicit_retry': True})
             raise
-        reason = ep['checkpoint']['reason']
-        metric = None
-        if reason is not None:
-            metric = jev_order_metrics(
-                task,
-                config,
-                GP6_METHOD,
-                ep['final_state'],
-                ep['events'],
-                reason,
-                ledger=ledger,
-                job_id=job_id,
-            )
-            metric['timings'].append({'segment': 'invocation_wall_s', 'seconds': time.perf_counter() - started})
-            validate_schema('geometry_jev_metrics_v1', metric)
-            ep['summary'] = metric
+        if metric is not None:
             status = (
                 'COMPLETE'
                 if metric['completed']

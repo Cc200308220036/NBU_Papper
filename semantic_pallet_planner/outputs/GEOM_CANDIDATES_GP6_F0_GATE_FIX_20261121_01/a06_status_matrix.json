@@ -1,0 +1,51 @@
+{
+  "schema": "gp6_a06_status_matrix_v3",
+  "date": "2026-11-21",
+  "entry_head": "32df6022e5c0c6ea7be4284ab4e40233c306de6a",
+  "new_source_identity": "248f09a221e7f399e29b2849721dfb9845355d4300e923d5a38a1edcaac6b035",
+  "overall_status": "OFFLINE_GATES_REMEDIATED_REAL_CALLS_NOT_RUN",
+  "formal_matrix_denominator": {
+    "G00": {"task_id": "NEW_00100027_controlled_base", "backend": "e2_original_v1", "method": "jev_no_memory", "status": "NOT_RUN"},
+    "G01": {"task_id": "NEW_00100027_controlled_base", "backend": "ems_surface_hybrid_v1", "method": "jev_no_memory", "status": "NOT_RUN"},
+    "G02": {"task_id": "NEW_00100027_controlled_capacity_tight", "backend": "e2_original_v1", "method": "jev_no_memory", "status": "NOT_RUN"},
+    "G03": {"task_id": "NEW_00100027_controlled_capacity_tight", "backend": "ems_surface_hybrid_v1", "method": "jev_no_memory", "status": "NOT_RUN"}
+  },
+  "items": [
+    {
+      "id": "GATE-FIX-01",
+      "criterion": "正式路径内核凭证完整校验（Schema、原件引用与 SHA-256、独立完成审查、计划/源码/环境/策略/监测身份；拒绝空壳与不兼容 GP5/v17 历史凭证）",
+      "status": "PASS_OFFLINE_REGRESSION",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_GATE_FIX_20261121_01/tests/gp6_jev_gate_fix.xml"
+    },
+    {
+      "id": "GATE-FIX-02",
+      "criterion": "run_jev_job 接入显式 GP6 共享评估/LP 计量（metered_jev_run），覆盖至最终指标读取结束；开发替身计量（TEST_DOUBLE_METER）与真实计量隔离",
+      "status": "PASS_OFFLINE_REGRESSION",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_GATE_FIX_20261121_01/offline_dev_call_ledger_sample.json"
+    },
+    {
+      "id": "GATE-FIX-03",
+      "criterion": "请求账本与冻结计划严格绑定（plan_digest、路径归属、per_job/shared 上限、传输模式）；不符时首次发送/评估/提交前拒绝",
+      "status": "PASS_OFFLINE_REGRESSION",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_GATE_FIX_20261121_01/offline_request_ledger_sample.json"
+    },
+    {
+      "id": "GATE-FIX-04",
+      "criterion": "GP5/v17 本地门控、默认 EMS、显式 E2 及 GP6 已保存选择不重发、UNKNOWN_SEND 不重试回归",
+      "status": "PASS_OFFLINE_REGRESSION",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_GATE_FIX_20261121_01/tests/gp6_jev_gate_fix.xml"
+    },
+    {
+      "id": "A06-REAL-ADMISSION",
+      "criterion": "正式 GP6 真实内核凭证签发（解决 v17/v18 源码不兼容）、官方 API 核对、计划冻结与真实调用授权",
+      "status": "NOT_RUN",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_GATE_FIX_20261121_01/incompatible_credentials_and_proposal.json"
+    },
+    {
+      "id": "A06-REAL-RUN",
+      "criterion": "G00-G03 真实无经验 Jev 配对执行、真实选后监测与完整分母账目",
+      "status": "NOT_RUN",
+      "evidence": "NOT_RUN (real_model_calls=0)"
+    }
+  ]
+}

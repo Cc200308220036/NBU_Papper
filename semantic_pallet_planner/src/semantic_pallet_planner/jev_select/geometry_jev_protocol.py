@@ -159,6 +159,118 @@ def development_binding(plan: dict) -> dict:
     return binding
 
 
+def validate_jev_kernel_receipt(receipt: dict, plan: dict, monitor_snapshot: dict) -> None:
+    """Validate kernel completion receipt for GP6/v18 formal orders.
+
+    Never accepts a bare non-empty dict, never relaxes v17/v3 schemas, and
+    explicitly rejects historical v17/GP5 receipts whose runtime_version or
+    source_identity do not match the current v18 plan and source tree.
+    """
+    from .candidate_backends import _identity
+    from .geometry_kernel_completion import validate_completion
+    from .geometry_order_execution import OrderStore, preflight_order
+    from .geometry_execution import validate_saved_checkpoint
+    from .packaging_geometry_protocol import ACCEPTANCE, adapt_task, validate_admission
+    from .contracts import canonical
+
+    require(isinstance(receipt, dict), 'geometry_jev_kernel_receipt_required')
+    validate_schema('geometry_real_kernel_receipt_v3', receipt)
+    require(
+        receipt.get('runtime_version') == plan['runtime_version'],
+        'geometry_jev_kernel_receipt_runtime_version_mismatch',
+    )
+    require(
+        receipt.get('source_identity') == plan['source_identity'] == _identity()['source_identity'],
+        'geometry_jev_kernel_receipt_source_identity_mismatch',
+    )
+    require(
+        receipt.get('publication_policy_digest') == plan['publication_policy_digest']
+        and receipt.get('environment_digest') == plan['environment_digest']
+        and receipt.get('monitor_digest') == digest(monitor_snapshot),
+        'geometry_jev_kernel_receipt_identity_mismatch',
+    )
+    acceptance = read_reference(receipt['acceptance_plan'])
+    launch = read_reference(receipt['launch'])
+    require(acceptance.get('scope') == ACCEPTANCE, 'geometry_jev_kernel_receipt_scope')
+    validate_admission(acceptance, monitor_snapshot, launch)
+    counts = receipt['counts']
+    require(
+        0 < counts['assessment_entries'] <= acceptance['assessment_limit']
+        and 0 < counts['solver_calls'] <= acceptance['solver_limit']
+        and counts['test_double_assessments'] == 0,
+        'geometry_jev_kernel_real_counts',
+    )
+    log = read_reference(receipt['counter_log'])
+    require(
+        log.get('counts') == counts
+        and log.get('plan_digest') == digest(acceptance)
+        and log.get('evidence') == 'REAL_KERNEL',
+        'geometry_jev_kernel_counter_log',
+    )
+    require(
+        set(log) == {'version', 'plan_digest', 'evidence', 'limits', 'calls', 'counts'}
+        and log['version'] == 'geometry_call_ledger_v1'
+        and log['limits'] == {'assessment_entries': acceptance['assessment_limit'], 'solver_calls': acceptance['solver_limit']},
+        'geometry_jev_kernel_counter_contract',
+    )
+    calls = log.get('calls', [])
+    require(
+        all(set(r) == {'kind', 'state', 'index', 'job_id'} and r['kind'] in ('assessment_entries', 'solver_calls') for r in calls),
+        'geometry_jev_kernel_counter_rows',
+    )
+    require(
+        bool(calls)
+        and all(r.get('state') in ('DONE', 'ERROR') for r in calls)
+        and all(sum(r.get('kind') == kind for r in calls) == counts[kind] for kind in ('assessment_entries', 'solver_calls')),
+        'geometry_jev_kernel_call_reservations',
+    )
+    require(bool(receipt['records']), 'geometry_jev_kernel_records_missing')
+
+    def validate_record(record):
+        cp = record['checkpoint']
+        cfg = record['config']
+        require(
+            cfg['execution_scope'] == ACCEPTANCE
+            and cfg['monitor_evidence'] == 'REAL_KERNEL'
+            and cfg['plan_digest'] == digest(acceptance),
+            'geometry_jev_kernel_record_scope',
+        )
+        preflight_order(cfg)
+        require(set(record) == {'checkpoint', 'config', 'raw_task', 'durable_root'}, 'geometry_jev_kernel_record_contract')
+        raw_ref = record['raw_task']
+        read_reference(raw_ref)
+        adapted = adapt_task(Path(raw_ref['path']).read_bytes(), origin='SYNTHETIC_FIXED', expected_sha256=raw_ref['sha256'])
+        store = OrderStore(
+            record['durable_root'],
+            plan=acceptance,
+            job_id=cp['job_id'],
+            adapted=adapted,
+            monitor_snapshot=monitor_snapshot,
+            admission=launch,
+        )
+        store.validate_request(adapted['runtime'], cfg)
+        validate_saved_checkpoint(cp, adapted['runtime'], cfg, cp['job_id'], cp['method'], store)
+        for event in cp['events']:
+            row = event.get('monitor')
+            if row is None:
+                continue
+            res = row.get('result')
+            require(
+                res is not None
+                and 'TEST_DOUBLE' not in canonical(res)
+                and res['version'] == 'pct_stability_result_v3'
+                and res['algorithm_identity'] == monitor_snapshot['algorithm_identity'],
+                'geometry_jev_kernel_test_double_not_real',
+            )
+            require(
+                row['result_digest'] == digest(res)
+                and row['credential_digest'] == digest({k: v for k, v in row.items() if k != 'credential_digest'}),
+                'geometry_jev_kernel_record_drift',
+            )
+
+    validate_completion(receipt, acceptance, log, validate_record)
+
+
 def validate_jev_admission(plan: dict, monitor_snapshot: dict, admission: dict, kernel_receipt=None) -> bool:
     """Validate GP6 admission. Returns True iff real Jev transport is authorized."""
     validate_jev_plan(plan)
@@ -199,7 +311,7 @@ def validate_jev_admission(plan: dict, monitor_snapshot: dict, admission: dict, 
         and api_check.get('status') == 'VERIFIED',
         'geometry_jev_api_spec_check',
     )
-    require(kernel_receipt is not None, 'geometry_jev_kernel_receipt_required')
+    validate_jev_kernel_receipt(kernel_receipt, plan, monitor_snapshot)
     return True
 
 

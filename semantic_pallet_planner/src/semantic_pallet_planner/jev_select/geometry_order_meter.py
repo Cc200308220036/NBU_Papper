@@ -18,9 +18,9 @@ _LOCK=Lock()
 
 
 class CallBudget:
-    def __init__(self,path,plan,*,evidence='COUNTER_TEST',job_id='COUNTER_TEST'):
+    def __init__(self,path,plan,*,evidence='COUNTER_TEST',job_id='COUNTER_TEST',plan_digest=None):
         self.job_id=job_id
-        self.path=Path(path);self.plan_digest=digest(plan)
+        self.path=Path(path);self.plan_digest=digest(plan) if plan_digest is None else plan_digest
         self.limits={'assessment_entries':plan['assessment_limit'],'solver_calls':plan['solver_limit']}
         if self.path.exists():
             self.value=read(self.path)
@@ -86,6 +86,70 @@ def metered_run(plan,*,job_id,monitor_snapshot,admission,kernel_receipt=None):
         original_assess=exact_adapter.assess_candidate;original_solver=balance_network.linprog
         def assess(*a,**kw):return budget.call('assessment_entries',original_assess,*a,**kw)
         def solver(*a,**kw):return budget.call('solver_calls',original_solver,*a,**kw)
+        token=_ACTIVE.set(budget)
+        exact_adapter.assess_candidate=assess;balance_network.linprog=solver
+        try:yield budget
+        finally:exact_adapter.assess_candidate=original_assess;balance_network.linprog=original_solver
+    finally:
+        if token is not None:_ACTIVE.reset(token)
+        if lock_stream is not None:lock_stream.close()
+        _LOCK.release()
+
+
+@contextmanager
+def metered_jev_run(plan,*,job_id,monitor_snapshot,admission,kernel_receipt=None):
+    """Explicit GP6/v18 formal real-kernel meter. Never disguises v18 as v17."""
+    from .geometry_jev_protocol import GP6_ORDER, validate_jev_admission
+    real_authorized = validate_jev_admission(plan, monitor_snapshot, admission, kernel_receipt)
+    require(real_authorized is True and plan['scope']==GP6_ORDER and plan['status']=='FROZEN' and plan['call_ledger_path'] is not None,'geometry_jev_meter_scope')
+    require(job_id in {j['job_id'] for j in plan['jobs']},'geometry_jev_meter_job')
+    require(_LOCK.acquire(blocking=False),'geometry_meter_concurrent_run')
+    token=None;lock_stream=None
+    try:
+        import fcntl
+        ledger=Path(plan['call_ledger_path']);ledger.parent.mkdir(parents=True,exist_ok=True)
+        lock_stream=ledger.with_suffix(ledger.suffix+'.lock').open('a+b')
+        try:fcntl.flock(lock_stream.fileno(),fcntl.LOCK_EX|fcntl.LOCK_NB)
+        except BlockingIOError:require(False,'geometry_meter_process_locked')
+        from .stability import exact_adapter,balance_network
+        budget=CallBudget(plan['call_ledger_path'],plan,evidence='REAL_KERNEL',job_id=job_id)
+        original_assess=exact_adapter.assess_candidate;original_solver=balance_network.linprog
+        def assess(*a,**kw):return budget.call('assessment_entries',original_assess,*a,**kw)
+        def solver(*a,**kw):return budget.call('solver_calls',original_solver,*a,**kw)
+        token=_ACTIVE.set(budget)
+        exact_adapter.assess_candidate=assess;balance_network.linprog=solver
+        try:yield budget
+        finally:exact_adapter.assess_candidate=original_assess;balance_network.linprog=original_solver
+    finally:
+        if token is not None:_ACTIVE.reset(token)
+        if lock_stream is not None:lock_stream.close()
+        _LOCK.release()
+
+
+@contextmanager
+def metered_jev_development_run(plan,*,job_id,ledger_path,assessment_limit,solver_limit):
+    """Isolated offline TEST_DOUBLE meter for GP6 development tests; never records REAL_KERNEL."""
+    from .geometry_jev_protocol import GP6_DEVELOPMENT, validate_jev_plan
+    validate_jev_plan(plan)
+    require(plan['scope']==GP6_DEVELOPMENT,'geometry_jev_dev_meter_scope')
+    require(job_id in {j['job_id'] for j in plan['jobs']},'geometry_jev_meter_job')
+    require(type(assessment_limit) is int and assessment_limit>=0 and type(solver_limit) is int and solver_limit>=0,'geometry_jev_dev_meter_limits')
+    require(_LOCK.acquire(blocking=False),'geometry_meter_concurrent_run')
+    token=None;lock_stream=None
+    try:
+        import fcntl
+        ledger=Path(ledger_path);ledger.parent.mkdir(parents=True,exist_ok=True)
+        lock_stream=ledger.with_suffix(ledger.suffix+'.lock').open('a+b')
+        try:fcntl.flock(lock_stream.fileno(),fcntl.LOCK_EX|fcntl.LOCK_NB)
+        except BlockingIOError:require(False,'geometry_meter_process_locked')
+        from .stability import exact_adapter,balance_network
+        dev_plan=copy.deepcopy(plan);dev_plan['assessment_limit']=assessment_limit;dev_plan['solver_limit']=solver_limit
+        budget=CallBudget(ledger_path,dev_plan,evidence='TEST_DOUBLE_METER',job_id=job_id,plan_digest=digest(plan))
+        original_assess=exact_adapter.assess_candidate;original_solver=balance_network.linprog
+        def assess(*a,**kw):return budget.call('assessment_entries',original_assess,*a,**kw)
+        def solver(*a,**kw):return budget.call('solver_calls',original_solver,*a,**kw)
+        if getattr(original_assess,'geometry_test_double',False) is True:
+            assess.geometry_test_double=True
         token=_ACTIVE.set(budget)
         exact_adapter.assess_candidate=assess;balance_network.linprog=solver
         try:yield budget

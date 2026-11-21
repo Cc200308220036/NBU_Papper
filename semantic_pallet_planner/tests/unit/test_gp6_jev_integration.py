@@ -407,6 +407,259 @@ class TestGP6JevIntegration(unittest.TestCase):
         with self.assertRaises(JevSelectError):
             validate_schema('config_v17', v17_bad)
 
+    def test_formal_kernel_receipt_validation_rejects_missing_invalid_and_historical_gp5_v17(self):
+        from semantic_pallet_planner.jev_select.geometry_jev_protocol import (
+            GP6_ENDPOINT,
+            GP6_ORDER,
+            jev_identity_fields,
+            validate_jev_admission,
+            validate_jev_kernel_receipt,
+        )
+        from semantic_pallet_planner.jev_select.packaging_geometry_protocol import TASK_IDS
+
+        repo = Path(__file__).resolve().parents[3]
+        data_dir = repo / 'semantic_pallet_planner/outputs/DATA_JEV_PACKAGING_LOAD_20261102_02'
+        gp5_qa_dir = repo / 'semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_APPROVED_QA_20261120_01'
+        gp5_prep_dir = repo / 'semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_PREP_20261120_01'
+        data_id = json.loads((data_dir / 'manifest.json').read_text(encoding='utf-8'))['data_identity']
+        adapted_tasks = []
+        for tid in TASK_IDS:
+            raw = (data_dir / 'tasks' / f'{tid}.json').read_bytes()
+            adapted_tasks.append(adapt_task(raw, origin='EXPOSED_TRAIN', expected_sha256=__import__('hashlib').sha256(raw).hexdigest()))
+
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            plan = prepare_jev_plan(
+                adapted_tasks,
+                data_identity=data_id,
+                scope=GP6_ORDER,
+                per_job_max_sends=19,
+                shared_max_sends=76,
+                call_ledger_path=str(root / 'call_ledger.json'),
+                request_ledger_path=str(root / 'req_ledger/requests.json'),
+            )
+            plan['status'] = 'FROZEN'
+            plan_digest = digest(plan)
+            snap = json.loads((gp5_prep_dir / 'monitor_snapshot.json').read_text(encoding='utf-8'))
+
+            def write_ref(name, doc):
+                p = root / name
+                raw = canonical(doc).encode('utf-8')
+                p.write_bytes(raw)
+                return {'path': str(p), 'sha256': __import__('hashlib').sha256(raw).hexdigest()}
+
+            auth_ref = write_ref('auth.json', {'scope': GP6_ORDER, 'plan_digest': plan_digest, 'status': 'APPROVED'})
+            rev_ref = write_ref('rev.json', {'scope': GP6_ORDER, 'plan_digest': plan_digest, 'status': 'APPROVED'})
+            api_ref = write_ref('api.json', {'model': GP6_MODEL, 'endpoint': GP6_ENDPOINT, 'status': 'VERIFIED'})
+            admission = {
+                **jev_identity_fields(),
+                'version': 'geometry_jev_admission_v1',
+                'scope': GP6_ORDER,
+                'plan_digest': plan_digest,
+                'source_identity': plan['source_identity'],
+                'environment_digest': plan['environment_digest'],
+                'monitor_digest': digest(snap),
+                'status': 'APPROVED',
+                'authorization': auth_ref,
+                'review': rev_ref,
+                'api_spec_check': api_ref,
+            }
+
+            assess, mon_calls = _make_monitor_double(snap)
+            transport = FakeChoiceTransport(origin='jev')
+            ledger = GeometryJevRequestLedger(
+                root / 'req_ledger',
+                plan_digest=plan_digest,
+                per_job_max_sends=19,
+                shared_max_sends=76,
+                allow_real_transport=True,
+            )
+
+            # 1. Missing kernel receipt -> rejected
+            with self.assertRaises(JevSelectError) as c1:
+                run_jev_job(
+                    plan, 'G00', adapted_tasks[0],
+                    monitor_snapshot=snap, admission=admission, kernel_receipt=None,
+                    root=root / 'run_none', transport=transport, ledger=ledger,
+                )
+            self.assertEqual(c1.exception.code, 'geometry_jev_kernel_receipt_required')
+
+            # 2. Bare non-empty dict -> rejected by schema
+            with self.assertRaises(JevSelectError) as c2:
+                run_jev_job(
+                    plan, 'G00', adapted_tasks[0],
+                    monitor_snapshot=snap, admission=admission, kernel_receipt={'fake': True},
+                    root=root / 'run_fake', transport=transport, ledger=ledger,
+                )
+            self.assertEqual(c2.exception.code, 'invalid_geometry_real_kernel_receipt_v3')
+
+            # 3. Historical GP5/v17 kernel receipt -> rejected (runtime_version mismatch v17 vs v18)
+            hist_receipt = json.loads((gp5_qa_dir / 'real_kernel_receipt.json').read_text(encoding='utf-8'))
+            with self.assertRaises(JevSelectError) as c3:
+                validate_jev_admission(plan, snap, admission, kernel_receipt=hist_receipt)
+            self.assertEqual(c3.exception.code, 'geometry_jev_kernel_receipt_runtime_version_mismatch')
+
+            # 4. Even if runtime_version is rewritten to v18, historical GP5 source_identity is still rejected
+            tampered_v18 = copy.deepcopy(hist_receipt)
+            tampered_v18['runtime_version'] = GEOMETRY_JEV_VERSION
+            with self.assertRaises(JevSelectError) as c4:
+                validate_jev_kernel_receipt(tampered_v18, plan, snap)
+            self.assertIn(c4.exception.code, ('invalid_geometry_real_kernel_receipt_v3', 'geometry_jev_kernel_receipt_source_identity_mismatch'))
+
+            # Zero sends, zero assessments, zero commits
+            self.assertEqual(len(transport.bodies), 0)
+            self.assertEqual(len(mon_calls), 0)
+            self.assertEqual(ledger.statistics()['send_reservations'], 0)
+
+    def test_request_ledger_binding_and_unready_meter_reject_before_any_dispatch(self):
+        from semantic_pallet_planner.jev_select.geometry_order_meter import current_counts
+
+        plan = prepare_jev_plan([self.k01], data_identity=DUMMY_DATA_ID, scope=GP6_DEVELOPMENT, per_job_max_sends=4, shared_max_sends=8)
+        binding = development_binding(plan)
+        assess, mon_calls = _make_monitor_double(self.snapshot)
+
+        with tempfile.TemporaryDirectory() as td, patch.object(exact_adapter, 'assess_candidate', assess):
+            root = Path(td)
+            transport = FakeChoiceTransport()
+
+            # 1. Wrong plan_digest in ledger
+            bad_plan_ledger = GeometryJevRequestLedger(root / 'l1', plan_digest='9' * 64, per_job_max_sends=4, shared_max_sends=8)
+            with self.assertRaises(JevSelectError) as e1:
+                run_jev_job(plan, 'G00', self.k01, monitor_snapshot=self.snapshot, admission=binding, root=root / 'r1', transport=transport, ledger=bad_plan_ledger)
+            self.assertEqual(e1.exception.code, 'geometry_jev_ledger_plan_drift')
+
+            # 2. Wrong per_job_max_sends
+            bad_pj_ledger = GeometryJevRequestLedger(root / 'l2', plan_digest=digest(plan), per_job_max_sends=2, shared_max_sends=8)
+            with self.assertRaises(JevSelectError) as e2:
+                run_jev_job(plan, 'G00', self.k01, monitor_snapshot=self.snapshot, admission=binding, root=root / 'r2', transport=transport, ledger=bad_pj_ledger)
+            self.assertEqual(e2.exception.code, 'geometry_jev_ledger_per_job_limit_drift')
+
+            # 3. Wrong shared_max_sends
+            bad_sh_ledger = GeometryJevRequestLedger(root / 'l3', plan_digest=digest(plan), per_job_max_sends=4, shared_max_sends=6)
+            with self.assertRaises(JevSelectError) as e3:
+                run_jev_job(plan, 'G00', self.k01, monitor_snapshot=self.snapshot, admission=binding, root=root / 'r3', transport=transport, ledger=bad_sh_ledger)
+            self.assertEqual(e3.exception.code, 'geometry_jev_ledger_shared_limit_drift')
+
+            # 4. Caller sets allow_real_transport=True on a DEVELOPMENT plan -> rejected
+            bad_mode_ledger = GeometryJevRequestLedger(root / 'l4', plan_digest=digest(plan), per_job_max_sends=4, shared_max_sends=8, allow_real_transport=True)
+            with self.assertRaises(JevSelectError) as e4:
+                run_jev_job(plan, 'G00', self.k01, monitor_snapshot=self.snapshot, admission=binding, root=root / 'r4', transport=transport, ledger=bad_mode_ledger)
+            self.assertEqual(e4.exception.code, 'geometry_jev_ledger_transport_mode_drift')
+
+            # 5. Request ledger path mismatch when plan binds request_ledger_path
+            plan_with_path = prepare_jev_plan(
+                [self.k01], data_identity=DUMMY_DATA_ID, scope=GP6_DEVELOPMENT,
+                per_job_max_sends=4, shared_max_sends=8,
+                request_ledger_path=str(root / 'expected_ledger/requests.json'),
+            )
+            binding_p = development_binding(plan_with_path)
+            wrong_path_ledger = GeometryJevRequestLedger(root / 'wrong_ledger', plan_digest=digest(plan_with_path), per_job_max_sends=4, shared_max_sends=8)
+            with self.assertRaises(JevSelectError) as e5:
+                run_jev_job(plan_with_path, 'G00', self.k01, monitor_snapshot=self.snapshot, admission=binding_p, root=root / 'r5', transport=transport, ledger=wrong_path_ledger)
+            self.assertEqual(e5.exception.code, 'geometry_jev_ledger_path_drift')
+
+            # 6. Unready meter refuses current_counts without fabricating zeroes
+            with self.assertRaises(JevSelectError) as e6:
+                current_counts(digest(plan))
+            self.assertEqual(e6.exception.code, 'geometry_active_meter_required')
+
+            self.assertEqual(len(transport.bodies), 0)
+            self.assertEqual(len(mon_calls), 0)
+
+    def test_metered_development_success_and_budget_exhaustion_blocks_over_limit_calls(self):
+        from semantic_pallet_planner.jev_select.geometry_order_meter import current_counts, metered_jev_development_run
+        from semantic_pallet_planner.jev_select.stability import balance_network
+
+        plan = prepare_jev_plan([self.k01], data_identity=DUMMY_DATA_ID, scope=GP6_DEVELOPMENT, per_job_max_sends=4, shared_max_sends=8)
+        binding = development_binding(plan)
+
+        lp_invocations = []
+        def fake_linprog(*args, **kwargs):
+            lp_invocations.append(len(lp_invocations) + 1)
+            return {'ok': True}
+
+        assess_base, mon_calls = _make_monitor_double(self.snapshot)
+        def assess_calling_lp(state, candidate, config):
+            # Invoke balance_network.linprog twice per assessment through the active meter wrapper
+            balance_network.linprog('lp_1')
+            balance_network.linprog('lp_2')
+            return assess_base(state, candidate, config)
+        assess_calling_lp.geometry_test_double = True
+
+        # A. Synthetic metered success path: verify send, assessment, LP, commit counts & active meter at metrics read
+        with tempfile.TemporaryDirectory() as td, \
+             patch.object(balance_network, 'linprog', fake_linprog), \
+             patch.object(exact_adapter, 'assess_candidate', assess_calling_lp):
+            root = Path(td)
+            req_ledger = GeometryJevRequestLedger(root / 'req', plan_digest=digest(plan), per_job_max_sends=4, shared_max_sends=8)
+            call_ledger_path = root / 'dev_call_ledger.json'
+            transport = FakeChoiceTransport()
+            with metered_jev_development_run(plan, job_id='G01', ledger_path=call_ledger_path, assessment_limit=2, solver_limit=4):
+                ep = run_jev_job(
+                    plan, 'G01', self.k01,
+                    monitor_snapshot=self.snapshot, admission=binding,
+                    root=root / 'run', transport=transport, ledger=req_ledger,
+                )
+                active_counts = current_counts(digest(plan))
+            self.assertEqual(ep['checkpoint']['reason'], 'ALL_ITEMS_PLACED')
+            self.assertEqual(ep['summary']['placed_items'], 1)
+            self.assertEqual(ep['summary']['cost']['send_reservations'], 1)
+            self.assertEqual(ep['summary']['cost']['test_double_sends'], 1)
+            self.assertEqual(ep['summary']['cost']['model_calls'], 0)
+            self.assertEqual(active_counts['assessment_entries'], 1)
+            self.assertEqual(active_counts['solver_calls'], 2)
+            saved_call_ledger = json.loads(call_ledger_path.read_text(encoding='utf-8'))
+            self.assertEqual(saved_call_ledger['evidence'], 'TEST_DOUBLE_METER')
+            self.assertEqual(saved_call_ledger['counts'], {'assessment_entries': 1, 'solver_calls': 2, 'test_double_assessments': 0})
+
+        # B. Assessment budget exhausted (limit=0) -> blocks assessment, 0 LP calls, 0 commits
+        lp_invocations.clear()
+        mon_calls.clear()
+        with tempfile.TemporaryDirectory() as td, \
+             patch.object(balance_network, 'linprog', fake_linprog), \
+             patch.object(exact_adapter, 'assess_candidate', assess_calling_lp):
+            root = Path(td)
+            req_ledger = GeometryJevRequestLedger(root / 'req', plan_digest=digest(plan), per_job_max_sends=4, shared_max_sends=8)
+            call_ledger_path = root / 'dev_call_ledger_zero.json'
+            transport = FakeChoiceTransport()
+            with metered_jev_development_run(plan, job_id='G01', ledger_path=call_ledger_path, assessment_limit=0, solver_limit=4):
+                with self.assertRaises(JevSelectError) as b_exc:
+                    exact_adapter.assess_candidate(None, None, None)
+                self.assertEqual(b_exc.exception.code, 'geometry_assessment_entries_budget_exhausted')
+                ep = run_jev_job(
+                    plan, 'G01', self.k01,
+                    monitor_snapshot=self.snapshot, admission=binding,
+                    root=root / 'run', transport=transport, ledger=req_ledger,
+                )
+            self.assertEqual(ep['summary']['termination_class'], 'TECHNICAL_FAILURE')
+            self.assertEqual(ep['summary']['placed_items'], 0)
+            self.assertEqual(len(mon_calls), 0)
+            self.assertEqual(len(lp_invocations), 0)
+
+        # C. Solver budget exhausted (limit=1, assessment needs 2 LP calls) -> blocks 2nd LP call, 0 commits
+        lp_invocations.clear()
+        mon_calls.clear()
+        with tempfile.TemporaryDirectory() as td, \
+             patch.object(balance_network, 'linprog', fake_linprog), \
+             patch.object(exact_adapter, 'assess_candidate', assess_calling_lp):
+            root = Path(td)
+            req_ledger = GeometryJevRequestLedger(root / 'req', plan_digest=digest(plan), per_job_max_sends=4, shared_max_sends=8)
+            call_ledger_path = root / 'dev_call_ledger_lp1.json'
+            transport = FakeChoiceTransport()
+            with metered_jev_development_run(plan, job_id='G01', ledger_path=call_ledger_path, assessment_limit=2, solver_limit=1):
+                ep = run_jev_job(
+                    plan, 'G01', self.k01,
+                    monitor_snapshot=self.snapshot, admission=binding,
+                    root=root / 'run', transport=transport, ledger=req_ledger,
+                )
+                with self.assertRaises(JevSelectError) as c_exc:
+                    balance_network.linprog('over_limit')
+                self.assertEqual(c_exc.exception.code, 'geometry_solver_calls_budget_exhausted')
+            self.assertEqual(ep['summary']['termination_class'], 'TECHNICAL_FAILURE')
+            self.assertEqual(ep['summary']['placed_items'], 0)
+            self.assertEqual(len(lp_invocations), 1)
+            self.assertEqual(len(mon_calls), 0)
+
 
 if __name__ == '__main__':
     unittest.main()

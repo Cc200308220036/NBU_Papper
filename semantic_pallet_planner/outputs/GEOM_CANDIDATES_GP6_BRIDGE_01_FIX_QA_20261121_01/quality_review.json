@@ -1,0 +1,105 @@
+{
+  "schema": "gp6_bridge_01_quality_review_v1",
+  "date": "2026-11-21",
+  "timezone": "Asia/Shanghai",
+  "issue": "GP6-BRIDGE-01",
+  "reviewed_head": "992e64f53d3575fe8c0ee0166fd4a3a67b270b3b",
+  "source_identity": "0521fe704f0b8ce0d68b3a4a6299b64ce2368e3af34109854b45d0f128cacc09",
+  "historical_source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+  "current_cross_version_delta_count": 28,
+  "current_cross_version_delta_digest": "d4ea34c10463eef613889d9d8a78d3c7866835c7e28b3ee927462118e16a2643",
+  "authorized_scope": "加载来源整改独立复查、可信夹具纯检查及 QA 归档",
+  "baseline": {
+    "developer_entry": "2094bdbaf64949f089203566235bc432d4042899",
+    "previous_reviewed_developer_commit": "16323560e348182fddddd36e4985ee353c70cc5e",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "entry_head": "992e64f53d3575fe8c0ee0166fd4a3a67b270b3b",
+    "entry_local_branch_sha": "992e64f53d3575fe8c0ee0166fd4a3a67b270b3b",
+    "entry_tracking_sha": "992e64f53d3575fe8c0ee0166fd4a3a67b270b3b",
+    "entry_live_remote_sha": "992e64f53d3575fe8c0ee0166fd4a3a67b270b3b",
+    "worktree_clean": true,
+    "index_clean": true
+  },
+  "engineering_status": "PASS_HISTORICAL_IMPORT_PROVENANCE_ONLY",
+  "evidence_readiness": "READY_FOR_INDEPENDENT_READONLY_APPLICABILITY_REVIEW",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "READY",
+  "formal_gp6_admission": "NOT_READY",
+  "facts": {
+    "reported": "开发端称隔离副本与专用加载器落实来源约束，8 项合成离线通过。",
+    "implemented": "重新核验并隔离源码，worker 正式导入按专用清单、父包路径、origin 与实读字节校验，拒绝则中止准入。",
+    "archived": {
+      "passed": 8,
+      "sources": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_BRIDGE_01_FIX_20261121_01/checks_and_commands.json",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_BRIDGE_01_FIX_20261121_01/tests/import_provenance.xml",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_BRIDGE_01_FIX_20261121_01/tests/bridge_gate.xml"
+      ]
+    },
+    "local": {
+      "readonly_results": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_BRIDGE_01_FIX_QA_20261121_01/readonly_results.json",
+      "python": "3.12.16",
+      "original_pytest": "NOT_RUN_NO_PYTEST",
+      "checked_production_worker_chain": "STATIC_ONLY"
+    }
+  },
+  "checks": {
+    "historical_import_provenance": {
+      "status": "PASS",
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_BRIDGE_01_FIX_20261121_01/source_change.patch",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_BRIDGE_01_FIX_QA_20261121_01/readonly_results.json"
+      ]
+    },
+    "synthetic_source_and_dispatch": {
+      "status": "PASS",
+      "scope": "开发归档",
+      "local_original_tests": "NOT_RUN"
+    },
+    "v17_v18_closed_schemas_ledger_and_meter": {
+      "status": "PASS",
+      "scope": "静态控制流与保存事实"
+    },
+    "manifest_and_historical_originals": {
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_BRIDGE_01_FIX_QA_20261121_01/readonly_results.json"
+    },
+    "historical_production_applicability": {
+      "status": "NOT_RUN"
+    },
+    "G00_G03": {
+      "status": "NOT_RUN"
+    }
+  },
+  "issues": [
+    {
+      "id": "GP6-BRIDGE-01",
+      "status": "CLOSED",
+      "blocks_readonly_applicability_review": false,
+      "previous": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_KERNEL_BRIDGE_FIX_QA_20261121_01/quality_review.json",
+      "location": "geometry_jev_kernel_bridge.py::validate_kernel_bridge / geometry_jev_kernel_evidence_worker.py::HistoricalImports",
+      "resolution": "运行方复制已核验字节；worker 只从该副本加载清单所列历史模块。"
+    }
+  ],
+  "limitations": [
+    "历史依赖运行环境沿用现有信任边界",
+    "只读源码及合成夹具核查，不代表历史 GP5 生产适用性结论"
+  ],
+  "not_run": [
+    "攻击复现",
+    "整链历史 worker 验证",
+    "生产签发",
+    "freeze",
+    "订单",
+    "监测",
+    "LP",
+    "恢复",
+    "模型",
+    "GP5 重跑",
+    "G00–G03"
+  ],
+  "keys_read": false,
+  "real_calls": 0,
+  "stopped": true
+}

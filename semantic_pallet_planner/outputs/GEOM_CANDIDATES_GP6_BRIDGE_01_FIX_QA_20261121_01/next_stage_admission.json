@@ -1,0 +1,50 @@
+{
+  "schema": "gp6_bridge_01_next_admission_v1",
+  "date": "2026-11-21",
+  "timezone": "Asia/Shanghai",
+  "issue": "GP6-BRIDGE-01",
+  "reviewed_head": "992e64f53d3575fe8c0ee0166fd4a3a67b270b3b",
+  "source_identity": "0521fe704f0b8ce0d68b3a4a6299b64ce2368e3af34109854b45d0f128cacc09",
+  "historical_source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+  "current_cross_version_delta_count": 28,
+  "current_cross_version_delta_digest": "d4ea34c10463eef613889d9d8a78d3c7866835c7e28b3ee927462118e16a2643",
+  "next_unit": "INDEPENDENT_READONLY_GP5_TO_GP6_EVIDENCE_APPLICABILITY_REVIEW",
+  "next_stage_admission": "READY",
+  "historical_evidence_production_applicability": "NOT_ASSESSED",
+  "formal_gp6_admission": "NOT_READY",
+  "prerequisites": [
+    {
+      "requirement": "历史核验与加载绑定",
+      "status": "PASS",
+      "effect": "可以进入适用性审查"
+    },
+    {
+      "requirement": "历史凭证原件与当前目标身份可核对",
+      "status": "PASS",
+      "effect": "按当前身份及完整新差异审查"
+    },
+    {
+      "requirement": "独立裁定当前全部 28 项跨版本差异",
+      "status": "NOT_ASSESSED",
+      "effect": "历史证据继承未获批"
+    },
+    {
+      "requirement": "独立适用性结论、桥接签发、计划冻结与正式授权",
+      "status": "NOT_READY",
+      "effect": "正式 GP6 与 G00–G03 保持阻断"
+    }
+  ],
+  "allowed": [
+    "独立质检只读审查跨版本证据适用性"
+  ],
+  "blocked": [
+    "生产继承",
+    "签发",
+    "冻结",
+    "正式运行",
+    "GP5 重跑"
+  ],
+  "release_condition": "针对当前源码身份完成独立逐差异适用性裁定，再依合同另行核验签发、冻结及正式授权。",
+  "real_calls_authorized": 0,
+  "stopped": true
+}

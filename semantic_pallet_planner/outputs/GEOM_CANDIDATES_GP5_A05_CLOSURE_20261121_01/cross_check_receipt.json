@@ -1,8 +1,8 @@
 {
   "schema": "gp5_a05_cross_check_receipt_v1",
   "all_checks_passed": true,
-  "checks_count": 14,
-  "passed_count": 14,
+  "checks_count": 15,
+  "passed_count": 15,
   "failed_count": 0,
   "checks": [
     {
@@ -17,8 +17,20 @@
       "check": "no_event_limit_in_frozen_plan",
       "passed": true,
       "detail": {
-        "event_limit": null,
+        "plan_has_event_limit_field": true,
+        "plan_event_limit": null,
         "extra_seeds": false
+      }
+    },
+    {
+      "check": "restored_source_identity_matches_frozen_plan",
+      "passed": true,
+      "detail": {
+        "source_files_count": 594,
+        "recomputed_source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+        "frozen_source_identity": "02c474007f84739f769bf6010789869f236c3b9e98e21f152b5171f8d8d7b359",
+        "v1_schema_sha256": "3f1e8c5c777ed2dc7f0e01750d57839e7540c8dfd0647ade68026a13e1f07edb",
+        "v2_schema_sha256": "418a8592d8e7b0bbf862e04268021069cc7a6d5f40471b057b04fb06ca3626d2"
       }
     },
     {
@@ -70,7 +82,7 @@
         "ledger_assessments": 6,
         "ledger_solvers": 178,
         "checkpoint_phase": "TERMINATED",
-        "config_event_limit": null,
+        "config_has_event_limit_field": false,
         "monitor_statuses": {
           "STABLE": 6
         }
@@ -84,7 +96,7 @@
         "ledger_assessments": 11,
         "ledger_solvers": 526,
         "checkpoint_phase": "TERMINATED",
-        "config_event_limit": null,
+        "config_has_event_limit_field": false,
         "monitor_statuses": {
           "STABLE": 11
         }
@@ -98,7 +110,7 @@
         "ledger_assessments": 4,
         "ledger_solvers": 78,
         "checkpoint_phase": "TERMINATED",
-        "config_event_limit": null,
+        "config_has_event_limit_field": false,
         "monitor_statuses": {
           "STABLE": 4
         }
@@ -112,7 +124,7 @@
         "ledger_assessments": 9,
         "ledger_solvers": 358,
         "checkpoint_phase": "TERMINATED",
-        "config_event_limit": null,
+        "config_has_event_limit_field": false,
         "monitor_statuses": {
           "STABLE": 9
         }
@@ -126,7 +138,7 @@
         "ledger_assessments": 5,
         "ledger_solvers": 122,
         "checkpoint_phase": "TERMINATED",
-        "config_event_limit": null,
+        "config_has_event_limit_field": false,
         "monitor_statuses": {
           "STABLE": 5
         }
@@ -140,7 +152,7 @@
         "ledger_assessments": 6,
         "ledger_solvers": 170,
         "checkpoint_phase": "TERMINATED",
-        "config_event_limit": null,
+        "config_has_event_limit_field": false,
         "monitor_statuses": {
           "STABLE": 6
         }
@@ -154,7 +166,7 @@
         "ledger_assessments": 4,
         "ledger_solvers": 78,
         "checkpoint_phase": "TERMINATED",
-        "config_event_limit": null,
+        "config_has_event_limit_field": false,
         "monitor_statuses": {
           "STABLE": 4
         }
@@ -168,7 +180,7 @@
         "ledger_assessments": 4,
         "ledger_solvers": 78,
         "checkpoint_phase": "TERMINATED",
-        "config_event_limit": null,
+        "config_has_event_limit_field": false,
         "monitor_statuses": {
           "STABLE": 4
         }

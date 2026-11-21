@@ -116,8 +116,37 @@ def main() -> None:
     )
     add_check(
         "no_event_limit_in_frozen_plan",
-        run_plan.get("event_limit") is None and run_plan.get("extra_seeds") is False,
-        {"event_limit": run_plan.get("event_limit"), "extra_seeds": run_plan.get("extra_seeds")},
+        "event_limit" in run_plan and run_plan["event_limit"] is None and run_plan.get("extra_seeds") is False,
+        {
+            "plan_has_event_limit_field": "event_limit" in run_plan,
+            "plan_event_limit": run_plan.get("event_limit"),
+            "extra_seeds": run_plan.get("extra_seeds"),
+        },
+    )
+    # Verify restored production source tree matches frozen source_identity
+    pkg_root = REPO_ROOT / "semantic_pallet_planner/src/semantic_pallet_planner"
+    prep_source_manifest = load_json(PREP_DIR / "source_manifest.json")
+    cur_source_files = {
+        p.relative_to(pkg_root).as_posix(): sha256_file(p)
+        for p in sorted(pkg_root.rglob("*"))
+        if p.is_file()
+        and p.suffix in (".py", ".json")
+        and not {"tests", "__pycache__"}.intersection(p.relative_to(pkg_root).parts)
+    }
+    cur_source_identity = hashlib.sha256(
+        json.dumps(cur_source_files, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")
+    ).hexdigest()
+    add_check(
+        "restored_source_identity_matches_frozen_plan",
+        cur_source_files == prep_source_manifest["files"]
+        and cur_source_identity == run_plan["source_identity"] == prep_source_manifest["source_identity"],
+        {
+            "source_files_count": len(cur_source_files),
+            "recomputed_source_identity": cur_source_identity,
+            "frozen_source_identity": run_plan["source_identity"],
+            "v1_schema_sha256": cur_source_files.get("jev_select/schemas/geometry_phase_snapshot_credential_v1.schema.json"),
+            "v2_schema_sha256": cur_source_files.get("jev_select/schemas/geometry_phase_snapshot_credential_v2.schema.json"),
+        },
     )
     add_check(
         "prep_zero_ledger_preserved",
@@ -203,7 +232,7 @@ def main() -> None:
             and metrics["planned_items"] == drv_row["planned_items"] == 19
             and metrics["termination_reason"] == drv_row["termination_reason"] == last_ev["reason"]
             and metrics["termination_class"] == drv_row["termination_class"]
-            and cfg.get("event_limit") is None
+            and "event_limit" not in cfg
             and checkpoint["phase"] == "TERMINATED"
             and checkpoint["reason"] == "STOP_NO_PHYSICAL_CANDIDATE"
         )
@@ -215,7 +244,7 @@ def main() -> None:
                 "ledger_assessments": ledger_by_job[jid]["assessment_entries"],
                 "ledger_solvers": ledger_by_job[jid]["solver_calls"],
                 "checkpoint_phase": checkpoint["phase"],
-                "config_event_limit": cfg.get("event_limit"),
+                "config_has_event_limit_field": "event_limit" in cfg,
                 "monitor_statuses": monitor_statuses,
             },
         )
@@ -256,7 +285,7 @@ def main() -> None:
             "termination_reason": metrics["termination_reason"],
             "global_infeasibility_proven": metrics["global_infeasibility_proven"],
             "prefix_truncated": False,
-            "event_limit": "NONE_UNBOUNDED" if cfg.get("event_limit") is None else cfg.get("event_limit"),
+            "event_limit": "PLAN_NULL_CONFIG_ABSENT",
             "monitor_evidence": metrics["monitor_evidence"],
             "monitor_statuses": monitor_statuses,
             "predicted_instability_progress": pred_instab_display,
@@ -589,7 +618,7 @@ def main() -> None:
         "invocation_wall_s",
     ]
     with (OUT_DIR / "job_results_table.csv").open("w", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=job_csv_fields, extrasaction="ignore")
+        w = csv.DictWriter(f, fieldnames=job_csv_fields, extrasaction="ignore", lineterminator="\n")
         w.writeheader()
         for r in job_rows:
             w.writerow(r)
@@ -611,7 +640,7 @@ def main() -> None:
 
     paired_csv_fields = list(paired_rows[0].keys())
     with (OUT_DIR / "paired_comparison_table.csv").open("w", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=paired_csv_fields)
+        w = csv.DictWriter(f, fieldnames=paired_csv_fields, lineterminator="\n")
         w.writeheader()
         for r in paired_rows:
             w.writerow(r)

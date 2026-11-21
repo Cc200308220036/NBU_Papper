@@ -1,0 +1,76 @@
+{
+  "schema": "gp6_budget_rec_quality_qa_v1",
+  "date": "2026-11-21",
+  "timezone": "Asia/Shanghai",
+  "reviewed_head": "f3eab7b083e9052447dc6679d3c74681c749ba2b",
+  "developer_entry": "3504604232508fb2e842e3a64de75d449bbb0429",
+  "source_identity": "68b879c5759b5a6df33fe8184019234bcb06e06483596f86390ca6c9974ca48e",
+  "source_delta_digest": "4716c4e4ba2f316c48fd29bb52ab37d7b05d8f3134ea43ab5eb3b8de24ebdbd3",
+  "entry": {
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "online_sha": "f3eab7b083e9052447dc6679d3c74681c749ba2b",
+    "worktree_clean": true,
+    "index_clean": true
+  },
+  "scope": "GP6-F0-BUDGET-01 和 GP6-F0-REC-01 独立复核及源码适用性差异更新",
+  "engineering_status": "PASS_TWO_GATE_REMEDIATIONS",
+  "evidence_readiness": "OFFLINE_GATES_VERIFIED",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "CONDITIONAL",
+  "formal_gp6_admission": "NOT_READY",
+  "facts": {
+    "reported": "开发报告声明两项完成，24 项离线通过。",
+    "implemented": "同一正式预算强制绑定，两份已保存选择逐笔对账。",
+    "archived": {
+      "run_counts": [
+        13,
+        3,
+        8
+      ],
+      "total_passed": 24,
+      "originals": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_BUDGET_REC_FIX_20261121_01/checks_and_commands.json"
+    },
+    "local": {
+      "budget_gate_cases": 3,
+      "isolated_recovery_cross_check_cases": 11,
+      "pytest": "NOT_RUN_NO_PYTEST",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_BUDGET_REC_FIX_QA_20261121_01/readonly_results.json"
+    }
+  },
+  "checks": {
+    "GP6-F0-BUDGET-01": "PASS_CLOSED",
+    "GP6-F0-REC-01": "PASS_CLOSED",
+    "GP6-BRIDGE-01": "REMAINS_CLOSED",
+    "source_and_historical_bytes": "PASS",
+    "A06-04": "PRODUCTION_NOT_READY",
+    "A06-05": "NOT_RUN",
+    "A06-06": "NOT_RUN"
+  },
+  "issues": [
+    {
+      "id": "GP6-F0-BUDGET-01",
+      "status": "CLOSED"
+    },
+    {
+      "id": "GP6-F0-REC-01",
+      "status": "CLOSED"
+    }
+  ],
+  "limitations": [
+    "独立恢复探针隔离公共保存转换及账本读取",
+    "完整恢复离线行为仅有开发归档",
+    "正式目标环境及材料尚未核验"
+  ],
+  "not_run": [
+    "原开发 pytest 套件",
+    "真实恢复",
+    "正式桥接签发",
+    "freeze",
+    "G00–G03",
+    "GP5 重跑"
+  ],
+  "keys_read": false,
+  "real_model_calls": 0,
+  "stopped": true
+}

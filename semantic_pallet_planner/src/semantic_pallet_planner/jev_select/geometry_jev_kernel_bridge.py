@@ -6,6 +6,8 @@ A digest proves identity, not authority. GP6 authorization remains independent.
 from pathlib import Path
 import subprocess
 import sys
+import json
+import tempfile
 
 from .contracts import digest, validate_schema, JevSelectError
 from .packaging_geometry_protocol import read_reference, require, sha
@@ -69,8 +71,33 @@ def validate_kernel_bridge(bridge, plan, monitor):
     # the independently approved complete delta review above is also mandatory.
     require(old_monitor == monitor, 'geometry_bridge_monitor_changed_requires_new_evidence')
     worker = Path(__file__).with_name('geometry_jev_kernel_evidence_worker.py')
-    result = subprocess.run([sys.executable, '-B', str(worker), str(root),
-                             bridge['evidence_receipt']['path'], bridge['historical_monitor']['path']],
-                            env={'PYTHONDONTWRITEBYTECODE': '1'}, capture_output=True, text=True)
+    # The receipt-supplied tree is input only. Execute a private copy populated
+    # from rechecked bytes, never import through its caller-controlled parent.
+    with tempfile.TemporaryDirectory(prefix='gp6_historical_') as temporary:
+        isolated = Path(temporary) / 'semantic_pallet_planner'
+        copy_files = dict(files)
+        for name, expected in old_monitor['algorithm_identity']['files_sha256'].items():
+            rel = Path(name)
+            require(not rel.is_absolute() and '..' not in rel.parts,
+                    'geometry_bridge_source_path')
+            key = 'jev_select/stability/' + name
+            require(key not in copy_files or copy_files[key] == expected,
+                    'geometry_bridge_source_bytes')
+            copy_files[key] = expected
+        for name, expected in copy_files.items():
+            source = root / name
+            require(source.resolve().is_relative_to(root) and not source.is_symlink(),
+                    'geometry_bridge_source_path')
+            raw = source.read_bytes()
+            require(sha(raw) == expected, 'geometry_bridge_source_bytes')
+            destination = isolated / name
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(raw)
+        manifest = Path(temporary) / 'import_manifest.json'
+        manifest.write_text(json.dumps(copy_files), encoding='utf-8')
+        result = subprocess.run([sys.executable, '-I', '-B', str(worker), str(isolated),
+                                 str(manifest), bridge['evidence_receipt']['path'],
+                                 bridge['historical_monitor']['path']],
+                                env={'PYTHONDONTWRITEBYTECODE': '1'}, capture_output=True, text=True)
     if result.returncode != 0 or result.stdout.strip() != 'GP5_V17_EVIDENCE_VALID':
         raise JevSelectError('geometry_bridge_historical_validation_failed', result.stderr[-2000:])

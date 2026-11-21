@@ -1,0 +1,67 @@
+{
+  "issue": "GP6-BRIDGE-01",
+  "head": "2094bdbaf64949f089203566235bc432d4042899",
+  "date": "2026-11-21",
+  "timezone": "Asia/Shanghai",
+  "interpreter": "existing Python 3.13.5; no dependency installation",
+  "pull_ff_only": "fast-forward 16323560e -> 2094bdbaf (first sandbox read-only FETCH_HEAD failure; authorized escalation succeeded)",
+  "runs": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m pytest semantic_pallet_planner/tests/unit/test_gp6_historical_import_provenance.py -q --junitxml=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_BRIDGE_01_FIX_20261121_01/tests/import_provenance.xml",
+      "exit_code": 0,
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "test_positive_exact_source_with_ambient_wrong_package",
+        "test_mismatched_source_refuses_without_fallback_or_dispatch[bytes]",
+        "test_mismatched_source_refuses_without_fallback_or_dispatch[symlink]",
+        "test_mismatched_source_refuses_without_fallback_or_dispatch[missing]",
+        "test_mismatched_source_refuses_without_fallback_or_dispatch[redirect]",
+        "test_mismatched_source_refuses_without_fallback_or_dispatch[preloaded]"
+      ],
+      "receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_BRIDGE_01_FIX_20261121_01/tests/import_provenance.xml"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m pytest semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py::test_positive_both_contracts_and_actual_meter 'semantic_pallet_planner/tests/unit/test_gp6_kernel_bridge.py::test_rejections_before_send_assess_commit[historical_source]' -q --junitxml=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_BRIDGE_01_FIX_20261121_01/tests/bridge_gate.xml",
+      "exit_code": 0,
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "test_positive_both_contracts_and_actual_meter",
+        "test_rejections_before_send_assess_commit[historical_source]"
+      ],
+      "receipt": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_BRIDGE_01_FIX_20261121_01/tests/bridge_gate.xml"
+    }
+  ],
+  "total_passed": 8,
+  "import_negative_assertions": "Each bytes/symlink/missing/redirect/preloaded case fails closed; forbidden business marker absent. Ambient wrong package is never executed.",
+  "full_gate_negative_assertions": {
+    "sends": 0,
+    "assessment_body_calls": 0,
+    "LP_body_calls": 0,
+    "commit_body_calls": 0,
+    "run_directory_created": false
+  },
+  "positive": "Actual v17 original evidence validator, v18 admission, isolated historical copy/importer and shared meter; only computation bodies substituted",
+  "other_checks": [
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "real_model_calls": 0,
+  "real_monitor_calls": 0,
+  "real_LP_calls": 0,
+  "keys_read": false,
+  "production_applicability": "NOT_APPROVED_PENDING_INDEPENDENT_QA",
+  "not_run": [
+    "historical GP5 reruns",
+    "production permit issuance",
+    "GP6 freeze",
+    "G00-G03"
+  ]
+}

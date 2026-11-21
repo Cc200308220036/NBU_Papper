@@ -1,0 +1,204 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "geometry_jev_plan_v1"
+    },
+    "status": {
+      "enum": [
+        "DRAFT",
+        "DEVELOPMENT_READY",
+        "FROZEN"
+      ]
+    },
+    "scope": {
+      "enum": [
+        "GP6_DEVELOPMENT_SYNTHETIC_ONLY",
+        "GP6_EXPOSED_TRAIN_JEV_F0_ONLY"
+      ]
+    },
+    "data_identity": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_identity": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "environment_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "origin": {
+            "enum": [
+              "SYNTHETIC_FIXED",
+              "EXPOSED_TRAIN"
+            ]
+          },
+          "raw_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "normalized_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "runtime_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "adapter_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "task_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_group_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "origin",
+          "raw_sha256",
+          "normalized_digest",
+          "runtime_digest",
+          "adapter_digest",
+          "task_id",
+          "source_group_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "jobs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "task_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "backend": {
+            "enum": [
+              "e2_original_v1",
+              "ems_surface_hybrid_v1"
+            ]
+          },
+          "method": {
+            "const": "jev_no_memory"
+          }
+        },
+        "required": [
+          "job_id",
+          "task_id",
+          "backend",
+          "method"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "feature_profile": {
+      "const": "F0_existing_facts"
+    },
+    "event_limit": {
+      "type": "null"
+    },
+    "extra_seeds": {
+      "const": false
+    },
+    "model_calls_max": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 76
+    },
+    "assessment_limit": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "solver_limit": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "call_ledger_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "runtime_version": {
+      "const": "jev_packaging_geometry_jev_v18"
+    },
+    "publication_policy_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "model": {
+      "const": "jev-1.14.0"
+    },
+    "prompt_version": {
+      "const": "packaging_load_en_v1"
+    },
+    "feature_version": {
+      "const": "packaging_physical_facts_v1"
+    },
+    "per_job_max_sends": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 19
+    },
+    "shared_max_sends": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 76
+    },
+    "request_ledger_path": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "version",
+    "status",
+    "scope",
+    "data_identity",
+    "source_identity",
+    "environment_digest",
+    "tasks",
+    "jobs",
+    "feature_profile",
+    "event_limit",
+    "extra_seeds",
+    "model_calls_max",
+    "assessment_limit",
+    "solver_limit",
+    "call_ledger_path",
+    "runtime_version",
+    "publication_policy_digest",
+    "model",
+    "prompt_version",
+    "feature_version",
+    "per_job_max_sends",
+    "shared_max_sends",
+    "request_ledger_path"
+  ],
+  "additionalProperties": false
+}

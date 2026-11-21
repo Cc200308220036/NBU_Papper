@@ -3,7 +3,8 @@
 Common input/admission and backend bindings are independent of N1's new-backend
 binding. N1 configuration guards remain intact. Telemetry is not semantic audit.
 """
-from .packaging_versions import GEOMETRY_RUN_VERSION, GEOMETRY_RUN_BUNDLE, GEOMETRY_NATIVE_VERSION, GEOMETRY_NATIVE_BUNDLE, GEOMETRY_ORDER_CONFIGS
+from .packaging_versions import (GEOMETRY_RUN_VERSION, GEOMETRY_RUN_BUNDLE, GEOMETRY_NATIVE_VERSION,
+    GEOMETRY_NATIVE_BUNDLE, GEOMETRY_ORDER_CONFIGS, GEOMETRY_JEV_VERSION, GEOMETRY_JEV_BUNDLE)
 import copy
 from dataclasses import dataclass, replace
 from importlib.resources import files
@@ -53,6 +54,9 @@ def load_geometry_config(*, backend=DEFAULT_GEOMETRY_BACKEND, data_identity, tas
 
 def preflight_config(config):
     from .packaging_versions import GEOMETRY_ORDER_VERSION
+    if config.get('version')==GEOMETRY_JEV_VERSION:
+        from .geometry_jev_execution import preflight_jev
+        return preflight_jev(config)
     if config.get('version') in GEOMETRY_ORDER_CONFIGS:
         from .geometry_order_execution import preflight_order
         return preflight_order(config)
@@ -111,7 +115,7 @@ def _admit(views,common):
 
 
 def _backend_binding(common,admission,config):
-    extra={} if config['version']!=GEOMETRY_NATIVE_VERSION else {'publication_policy_digest':config['publication_policy_digest'],'publication_policy':config['publication_policy'],'native_shape_bridge':config['native_shape_bridge']}
+    extra={} if config['version'] not in (GEOMETRY_NATIVE_VERSION,GEOMETRY_JEV_VERSION) else {'publication_policy_digest':config['publication_policy_digest'],'publication_policy':config['publication_policy'],'native_shape_bridge':config['native_shape_bridge']}
     return seal({**extra,'version':('geometry_backend_binding_v2' if extra else GEOMETRY_BACKEND_BINDING),'common_input_digest':digest(common),
         'admission_digest':digest(admission),'candidate_backend':config['candidate_backend'],
         'generator_config_digest':config['generator_config_digest'],'config_digest':digest(config),
@@ -220,7 +224,7 @@ def build_geometry_bundle(state,observation,generator_config,config,*,common_inp
         audit['backend_error']={'code':getattr(exc,'code','GEOMETRY_BACKEND_ERROR'),'detail':str(exc)}
         raise GeometryConstructionError('BACKEND_INTERNAL_ERROR',audit['backend_error']['code'],str(exc),audit,stats) from exc
     stats['generation_s']=time.perf_counter()-started
-    if config['version']==GEOMETRY_NATIVE_VERSION:
+    if config['version'] in (GEOMETRY_NATIVE_VERSION,GEOMETRY_JEV_VERSION):
         from .geometry_native_shape_bridge import publish_native_shape_pool_v3
         try:
             candidates,publication=publish_native_shape_pool_v3(n,g,common,binding,c.encode(audit['generation']),c.encode(candidates),config=config)
@@ -232,7 +236,7 @@ def build_geometry_bundle(state,observation,generator_config,config,*,common_inp
     audit['generation_counts']=copy.deepcopy(counts)
     from .packaging_runtime import no_policy
     from .packaging_versions import GEOMETRY_ORDER_VERSION, GEOMETRY_ORDER_BUNDLE
-    value={'version':GEOMETRY_NATIVE_BUNDLE if config['version']==GEOMETRY_NATIVE_VERSION else GEOMETRY_ORDER_BUNDLE if config['version']==GEOMETRY_ORDER_VERSION else GEOMETRY_RUN_BUNDLE if config['version']==GEOMETRY_RUN_VERSION else GEOMETRY_BUNDLE,'observation_digest':observation['observation_digest'],
+    value={'version':GEOMETRY_JEV_BUNDLE if config['version']==GEOMETRY_JEV_VERSION else GEOMETRY_NATIVE_BUNDLE if config['version']==GEOMETRY_NATIVE_VERSION else GEOMETRY_ORDER_BUNDLE if config['version']==GEOMETRY_ORDER_VERSION else GEOMETRY_RUN_BUNDLE if config['version']==GEOMETRY_RUN_VERSION else GEOMETRY_BUNDLE,'observation_digest':observation['observation_digest'],
         'candidate_backend':backend,'generator_config_digest':digest(generator_config),
         'physical_candidates':candidates,'physical_digest':digest(candidates),'generation_counts':counts,
         'selectable_pool':'physical_feasible','selectable_candidates':copy.deepcopy(candidates),
@@ -265,7 +269,7 @@ def validate_geometry_config_bundle(config,bundle):
 def validate_geometry_bundle(observation,bundle):
     c.require(isinstance(bundle,GeometryCandidateBundle),'v14 bundle requires its original audit/byte artifacts')
     value,audit=bundle.data,bundle.audit
-    native=audit['config']['version']==GEOMETRY_NATIVE_VERSION
+    native=audit['config']['version'] in (GEOMETRY_NATIVE_VERSION,GEOMETRY_JEV_VERSION)
     c.closed(audit,({'publication'} if native else set()) | {'version','config','native_bytes_hex','geometry_bytes_hex','common_binding',
                     'common_admission','backend_binding','generation','final_candidates_digest','generation_counts'})
     c.require(audit['version']==('geometry_provider_audit_v2' if native else GEOMETRY_AUDIT) and digest(audit)==value['geometry_audit_digest'],'audit digest/version drift')

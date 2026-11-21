@@ -398,7 +398,10 @@ def evaluate_state(state):
 
 
 def summary(task,config,method,state,events,reason):
-    from .packaging_versions import GEOMETRY_ORDER_VERSION
+    from .packaging_versions import GEOMETRY_ORDER_VERSION, GEOMETRY_JEV_VERSION
+    if config['version']==GEOMETRY_JEV_VERSION:
+        from .geometry_jev_execution import jev_order_metrics
+        return jev_order_metrics(task,config,method,state,events,reason)
     if config['version'] in GEOMETRY_ORDER_CONFIGS:
         from .geometry_order_execution import order_metrics
         return order_metrics(task,config,method,state,events,reason)

@@ -9,7 +9,7 @@ import os
 from pathlib import Path
 import tempfile
 
-from .packaging_versions import GEOMETRY_ORDER_CONFIGS, GEOMETRY_NATIVE_VERSION
+from .packaging_versions import GEOMETRY_ORDER_CONFIGS, GEOMETRY_NATIVE_VERSION, GEOMETRY_JEV_VERSION, GEOMETRY_JEV_BUNDLE
 from .contracts import JevSelectError, canonical, digest, validate_schema
 from .geometry_runtime_contracts import environment, same_native
 from .packaging_versions import GEOMETRY_RUN_VERSION, GEOMETRY_EXECUTION, DEFAULT_GEOMETRY_BACKEND
@@ -78,6 +78,9 @@ def execution_binding(task,config):
 
 def validate_execution_identity(value,config):
     from .packaging_versions import GEOMETRY_ORDER_VERSION
+    if config.get('version')==GEOMETRY_JEV_VERSION:
+        from .geometry_jev_execution import validate_jev_execution
+        return validate_jev_execution(value,config)
     if config.get('version') in GEOMETRY_ORDER_CONFIGS:
         from .geometry_order_execution import validate_order_execution
         return validate_order_execution(value,config)
@@ -91,6 +94,9 @@ def validate_execution_identity(value,config):
 
 def validate_run_request(task,selector,config,method,store,on_checkpoint,*,job_id=None):
     from .packaging_versions import GEOMETRY_ORDER_VERSION
+    if config.get('version')==GEOMETRY_JEV_VERSION:
+        from .geometry_jev_execution import validate_jev_request
+        return validate_jev_request(task,selector,config,method,store,on_checkpoint,job_id=job_id)
     if config.get('version') in GEOMETRY_ORDER_CONFIGS:
         from .geometry_order_execution import validate_order_request
         return validate_order_request(task,selector,config,method,store,on_checkpoint,job_id=job_id)
@@ -157,7 +163,7 @@ class GeometryStore:
         return n,g,v['binding']
 
     def save_event(self,bundle):
-        if bundle.data['version']=='jev_candidate_bundle_v17':
+        if bundle.data['version'] in ('jev_candidate_bundle_v17',GEOMETRY_JEV_BUNDLE):
             for key,hexbytes in bundle.audit['publication']['blobs'].items():
                 if self.put(bytes.fromhex(hexbytes))['sha256']!=key:raise JevSelectError('NUM_BRIDGE_IDENTITY_MISMATCH')
         return self.put_json({'version':self.decision_version,'input':copy.deepcopy(self.input_ref),
@@ -173,7 +179,7 @@ class GeometryStore:
         if (not same_native(bundle.data,event['bundle']) or bundle.audit['native_bytes_hex']!=n.hex()
             or bundle.audit['geometry_bytes_hex']!=g.hex() or not same_native(bundle.audit['common_binding'],b)):
             raise JevSelectError('geometry_saved_bundle_drift')
-        if config['version']==GEOMETRY_NATIVE_VERSION:
+        if config['version'] in (GEOMETRY_NATIVE_VERSION,GEOMETRY_JEV_VERSION):
             for key,hexbytes in bundle.audit['publication']['blobs'].items():
                 if self.get({'version':'geometry_blob_ref_v1','sha256':key})!=bytes.fromhex(hexbytes):raise JevSelectError('NUM_BRIDGE_IDENTITY_MISMATCH')
         validate_geometry_config_bundle(config,bundle);validate_bundle(event['observation'],bundle)
@@ -191,6 +197,9 @@ class GeometryStore:
 def validate_saved_checkpoint(cp,task,config,job_id,method,store):
     """Validate saved transitions on private copies; never reselect/reassess/commit."""
     from .packaging_versions import GEOMETRY_ORDER_VERSION
+    if config.get('version')==GEOMETRY_JEV_VERSION:
+        from .geometry_jev_execution import validate_jev_saved_checkpoint
+        return validate_jev_saved_checkpoint(cp,task,config,job_id,method,store)
     if config.get('version') in GEOMETRY_ORDER_CONFIGS:
         from .geometry_order_execution import OrderStore
         if type(store) is not OrderStore:raise JevSelectError('geometry_order_recovery_store')

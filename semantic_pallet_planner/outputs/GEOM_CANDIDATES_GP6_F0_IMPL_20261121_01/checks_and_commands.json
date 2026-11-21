@@ -1,0 +1,30 @@
+{
+  "schema": "gp6_f0_checks_and_commands_v1",
+  "date": "2026-11-21",
+  "interpreter": "python3 (Python 3.13.5 / pytest 8.3.4 / jsonschema available in existing environment; no packages installed)",
+  "reproduction_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=semantic_pallet_planner/src python3 -m pytest semantic_pallet_planner/tests/unit/test_gp6_jev_integration.py -v --junitxml=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_IMPL_20261121_01/tests/gp6_jev_integration.xml",
+  "actual_results": {
+    "test_gp6_jev_integration.py": {
+      "status": "PASS",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "junit_xml": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_IMPL_20261121_01/tests/gp6_jev_integration.xml",
+      "covered_cases": [
+        "test_e2_and_ems_f0_no_memory_offline_success_and_exact_binding",
+        "test_singleton_bypass_zero_sends_still_monitored",
+        "test_invalid_label_budget_exhausted_instability_and_unauthorized_real_transport",
+        "test_four_recovery_protections_selected_unknown_send_monitored_committed",
+        "test_identity_drift_rejected_and_gp5_v17_gates_unchanged"
+      ]
+    }
+  },
+  "not_run": {
+    "real_jev_api_calls": "NOT_RUN (0 calls)",
+    "real_orders_G00_to_G03": "NOT_RUN",
+    "real_pct_exact_pose_v3_kernel_and_lp": "NOT_RUN",
+    "real_plan_or_monitor_freeze": "NOT_RUN",
+    "gp5_8_job_rerun": "NOT_RUN",
+    "f1_te_training": "NOT_RUN"
+  }
+}

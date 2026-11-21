@@ -1,0 +1,52 @@
+{
+  "schema": "gp6_a06_status_matrix_v2",
+  "date": "2026-11-21",
+  "entry_head": "39b6c46c780acc8cd1ccf7b7904b00edfd5410f7",
+  "new_source_identity": "8f46884e20065f19a9f84888a0e76cc7d22266510c335a0b74d2dac29cdb8adc",
+  "overall_status": "OFFLINE_ENGINEERING_COMPLETE_REAL_CALLS_NOT_RUN",
+  "formal_matrix_denominator": {
+    "G00": {"task_id": "NEW_00100027_controlled_base", "backend": "e2_original_v1", "method": "jev_no_memory", "status": "NOT_RUN"},
+    "G01": {"task_id": "NEW_00100027_controlled_base", "backend": "ems_surface_hybrid_v1", "method": "jev_no_memory", "status": "NOT_RUN"},
+    "G02": {"task_id": "NEW_00100027_controlled_capacity_tight", "backend": "e2_original_v1", "method": "jev_no_memory", "status": "NOT_RUN"},
+    "G03": {"task_id": "NEW_00100027_controlled_capacity_tight", "backend": "ems_surface_hybrid_v1", "method": "jev_no_memory", "status": "NOT_RUN"},
+    "proposed_budget_note": "Per-job 19 sends / shared 76 sends remain PROPOSED ceilings only, NOT a call permit."
+  },
+  "items": [
+    {
+      "id": "A06-01",
+      "criterion": "独立版本化 GP6-F0 生产协议（v18）、11 份封闭 Schema 与最小共享路由（保留 GP5/v17 保护与默认 EMS/显式 E2）",
+      "status": "PASS_OFFLINE_IMPLEMENTATION",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_IMPL_20261121_01/changes_and_versions_manifest.json"
+    },
+    {
+      "id": "A06-02",
+      "criterion": "生产路由离线集成验证：E2/EMS 同 F0 无记忆链、精确绑定、单候选零发送仍监测、非法标签/污染/漂移/预算/失稳/未授权真实传输拒绝",
+      "status": "PASS_OFFLINE_TEST_DOUBLE",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_IMPL_20261121_01/tests/gp6_jev_integration.xml"
+    },
+    {
+      "id": "A06-03",
+      "criterion": "四类恢复保护（SELECTED、UNKNOWN_SEND、MONITORED、COMMITTED）与持久化请求账本计数核对",
+      "status": "PASS_OFFLINE_TEST_DOUBLE",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_IMPL_20261121_01/offline_request_ledger.json"
+    },
+    {
+      "id": "A06-04",
+      "criterion": "官方 API 文档核对、实际计划冻结与独立真实调用授权",
+      "status": "NOT_RUN",
+      "evidence": "PENDING_INDEPENDENT_QA_AND_USER_AUTHORIZATION"
+    },
+    {
+      "id": "A06-05",
+      "criterion": "G00-G03 真实无经验 Jev 配对执行、真实选后监测与完整分母账目",
+      "status": "NOT_RUN",
+      "evidence": "NOT_RUN (real_model_calls=0)"
+    },
+    {
+      "id": "A06-06",
+      "criterion": "F0/F1 与候选/提示收益分离及真实实验比较报告",
+      "status": "NOT_RUN",
+      "evidence": "NOT_RUN (F1/T/E/training out of scope)"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "geometry_jev_execution_v1"
+    },
+    "runtime_version": {
+      "const": "jev_packaging_geometry_jev_v18"
+    },
+    "publication_policy_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "scope": {
+      "enum": [
+        "GP6_DEVELOPMENT_SYNTHETIC_ONLY",
+        "GP6_EXPOSED_TRAIN_JEV_F0_ONLY"
+      ]
+    },
+    "task_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "config_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_identity": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "environment_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "job_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "admission_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "kernel_receipt_digest": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "per_job_max_sends": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 19
+    },
+    "shared_max_sends": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 76
+    },
+    "transport_evidence": {
+      "enum": [
+        "TEST_DOUBLE",
+        "REAL_JEV"
+      ]
+    }
+  },
+  "required": [
+    "version",
+    "runtime_version",
+    "publication_policy_digest",
+    "scope",
+    "task_digest",
+    "config_digest",
+    "source_identity",
+    "environment_digest",
+    "plan_digest",
+    "job_id",
+    "admission_digest",
+    "kernel_receipt_digest",
+    "per_job_max_sends",
+    "shared_max_sends",
+    "transport_evidence"
+  ],
+  "additionalProperties": false
+}

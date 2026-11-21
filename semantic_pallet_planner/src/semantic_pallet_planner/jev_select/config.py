@@ -45,7 +45,8 @@ def protocol_suffix(config: dict) -> str:
     from .packaging_runtime import is_packaging
     from .packaging_versions import EXACT_VERSION, GEOMETRY_VERSION
     from .packaging_versions import GEOMETRY_ORDER_VERSION
-    from .packaging_versions import GEOMETRY_NATIVE_VERSION
+    from .packaging_versions import GEOMETRY_NATIVE_VERSION, GEOMETRY_JEV_VERSION
+    if config.get('version')==GEOMETRY_JEV_VERSION:return 'v18'
     if config.get('version')==GEOMETRY_NATIVE_VERSION:return 'v17'
     if config.get("version")==GEOMETRY_ORDER_VERSION: return "v16"
     if config.get("version")==GEOMETRY_RUN_VERSION: return "v15"

@@ -1,0 +1,706 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "jev_packaging_geometry_jev_v18"
+    },
+    "model": {
+      "const": "jev-1.14.0"
+    },
+    "buffer_capacity": {
+      "const": 3
+    },
+    "candidate_backend": {
+      "enum": [
+        "e2_original_v1",
+        "ems_surface_hybrid_v1"
+      ]
+    },
+    "per_object_top_k": {
+      "const": 16
+    },
+    "joint_candidates_max": {
+      "const": 48
+    },
+    "selectable_pool": {
+      "const": "physical_feasible"
+    },
+    "policy_source": {
+      "const": "packaging_physical_only"
+    },
+    "selector": {
+      "const": "jev_no_memory"
+    },
+    "feature_version": {
+      "const": "packaging_physical_facts_v1"
+    },
+    "prompt_version": {
+      "const": "packaging_load_en_v1"
+    },
+    "display_order_seed": {
+      "const": 20261102
+    },
+    "max_request_bytes": {
+      "const": 96000
+    },
+    "memory_mode": {
+      "const": "none"
+    },
+    "experiment_protocol": {
+      "const": "geometry_jev_run_v1"
+    },
+    "business_mode": {
+      "const": "physical_only"
+    },
+    "execution_version": {
+      "const": "geometry_jev_execution_v1"
+    },
+    "evaluation_version": {
+      "const": "packaging_loading_metrics_v1"
+    },
+    "runtime_identity": {
+      "type": "object",
+      "properties": {
+        "data_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "physical_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "strategy_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "task_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "monitor_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "data_identity",
+        "physical_identity",
+        "strategy_identity",
+        "task_identity",
+        "monitor_identity",
+        "source_identity"
+      ],
+      "additionalProperties": false
+    },
+    "numerical_profile": {
+      "const": "geometry_runtime_shortest_decimal_v1"
+    },
+    "feature_profile": {
+      "const": "F0_existing_facts"
+    },
+    "construction_only": {
+      "const": false
+    },
+    "generator_config_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "stability_monitor": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "const": true
+        },
+        "algorithm": {
+          "const": "pct_exact_pose_network_v3"
+        },
+        "kernel_config": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "algorithm",
+            "setting",
+            "height_tolerance_mm",
+            "mass_atol_kg",
+            "mass_rtol",
+            "moment_atol_kg_mm",
+            "moment_rtol",
+            "solver_tolerance",
+            "scaled_residual_tolerance",
+            "strict_interior_slack",
+            "certificate_gap",
+            "presolve",
+            "solver",
+            "selection"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "pct_exact_pose_network_v3"
+            },
+            "setting": {
+              "const": 1
+            },
+            "height_tolerance_mm": {
+              "const": 1e-06
+            },
+            "mass_atol_kg": {
+              "const": 1e-09
+            },
+            "mass_rtol": {
+              "const": 1e-09
+            },
+            "moment_atol_kg_mm": {
+              "const": 1e-06
+            },
+            "moment_rtol": {
+              "const": 1e-09
+            },
+            "solver_tolerance": {
+              "const": 1e-10
+            },
+            "scaled_residual_tolerance": {
+              "const": 1e-09
+            },
+            "strict_interior_slack": {
+              "const": 1e-10
+            },
+            "certificate_gap": {
+              "const": 1e-08
+            },
+            "presolve": {
+              "const": false
+            },
+            "solver": {
+              "const": "highs-ds"
+            },
+            "selection": {
+              "const": "max_network_interior_then_lexicographic_forces"
+            }
+          }
+        },
+        "algorithm_identity": {
+          "type": "object",
+          "properties": {
+            "algorithm": {
+              "type": "string"
+            },
+            "upstream_commit": {
+              "type": "string"
+            },
+            "semantic_revision": {
+              "type": "string"
+            },
+            "files_sha256": {
+              "type": "object",
+              "properties": {
+                "balance_contracts.py": {
+                  "type": "string"
+                },
+                "balance_network.py": {
+                  "type": "string"
+                },
+                "balance_adapter.py": {
+                  "type": "string"
+                },
+                "contracts.py": {
+                  "type": "string"
+                },
+                "geometry.py": {
+                  "type": "string"
+                },
+                "__init__.py": {
+                  "type": "string"
+                },
+                "vendor/__init__.py": {
+                  "type": "string"
+                },
+                "vendor/pct/__init__.py": {
+                  "type": "string"
+                },
+                "vendor/pct/space.py": {
+                  "type": "string"
+                },
+                "vendor/pct/convex_hull.py": {
+                  "type": "string"
+                },
+                "vendor/pct/PctTools.py": {
+                  "type": "string"
+                },
+                "vendor/pct/LICENSE": {
+                  "type": "string"
+                },
+                "vendor/pct/upstream_manifest.json": {
+                  "type": "string"
+                },
+                "vendor/pct/compatibility.patch": {
+                  "type": "string"
+                },
+                "vendor/pct/UPSTREAM.md": {
+                  "type": "string"
+                },
+                "BALANCE_DESIGN.md": {
+                  "type": "string"
+                },
+                "BALANCE_CHANGES.md": {
+                  "type": "string"
+                },
+                "configs/pct_contact_network_v2.json": {
+                  "type": "string"
+                },
+                "schemas/stability_config_v2.schema.json": {
+                  "type": "string"
+                },
+                "schemas/stability_result_v2.schema.json": {
+                  "type": "string"
+                },
+                "exact_contracts.py": {
+                  "type": "string"
+                },
+                "exact_adapter.py": {
+                  "type": "string"
+                },
+                "schemas/stability_result_v3.schema.json": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "balance_contracts.py",
+                "balance_network.py",
+                "balance_adapter.py",
+                "contracts.py",
+                "geometry.py",
+                "__init__.py",
+                "vendor/__init__.py",
+                "vendor/pct/__init__.py",
+                "vendor/pct/space.py",
+                "vendor/pct/convex_hull.py",
+                "vendor/pct/PctTools.py",
+                "vendor/pct/LICENSE",
+                "vendor/pct/upstream_manifest.json",
+                "vendor/pct/compatibility.patch",
+                "vendor/pct/UPSTREAM.md",
+                "BALANCE_DESIGN.md",
+                "BALANCE_CHANGES.md",
+                "configs/pct_contact_network_v2.json",
+                "schemas/stability_config_v2.schema.json",
+                "schemas/stability_result_v2.schema.json",
+                "exact_contracts.py",
+                "exact_adapter.py",
+                "schemas/stability_result_v3.schema.json"
+              ],
+              "additionalProperties": false
+            },
+            "source_digest": {
+              "type": "string"
+            },
+            "dependencies": {
+              "type": "object",
+              "properties": {
+                "numpy": {
+                  "type": "string"
+                },
+                "scipy": {
+                  "type": "string"
+                },
+                "highs_version": {
+                  "type": "string"
+                },
+                "highs_core_sha256": {
+                  "type": "string"
+                },
+                "scipy_python_sha256": {
+                  "type": "object",
+                  "properties": {
+                    "_linprog.py": {
+                      "type": "string"
+                    },
+                    "_linprog_highs.py": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "_linprog.py",
+                    "_linprog_highs.py"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "numpy",
+                "scipy",
+                "highs_version",
+                "highs_core_sha256",
+                "scipy_python_sha256"
+              ],
+              "additionalProperties": false
+            },
+            "dependency_digest": {
+              "type": "string"
+            },
+            "units": {
+              "type": "object",
+              "properties": {
+                "length": {
+                  "type": "string"
+                },
+                "mass": {
+                  "type": "string"
+                },
+                "moment": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "length",
+                "mass",
+                "moment"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "algorithm",
+            "upstream_commit",
+            "semantic_revision",
+            "files_sha256",
+            "source_digest",
+            "dependencies",
+            "dependency_digest",
+            "units"
+          ],
+          "additionalProperties": false
+        },
+        "execution_environment": {
+          "type": "object",
+          "properties": {
+            "python": {
+              "type": "string"
+            },
+            "executable": {
+              "type": "string"
+            },
+            "platform": {
+              "type": "string"
+            },
+            "numpy": {
+              "type": "string"
+            },
+            "numpy_core_sha256": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "python",
+            "executable",
+            "platform",
+            "numpy",
+            "numpy_core_sha256"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "enabled",
+        "algorithm",
+        "kernel_config",
+        "algorithm_identity",
+        "execution_environment"
+      ],
+      "additionalProperties": false
+    },
+    "order_task_identity": {
+      "type": "object",
+      "properties": {
+        "origin": {
+          "enum": [
+            "SYNTHETIC_FIXED",
+            "EXPOSED_TRAIN"
+          ]
+        },
+        "raw_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "normalized_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "runtime_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "adapter_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_group_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "origin",
+        "raw_sha256",
+        "normalized_digest",
+        "runtime_digest",
+        "adapter_digest",
+        "task_id",
+        "source_group_id"
+      ],
+      "additionalProperties": false
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "execution_scope": {
+      "enum": [
+        "GP6_DEVELOPMENT_SYNTHETIC_ONLY",
+        "GP6_EXPOSED_TRAIN_JEV_F0_ONLY"
+      ]
+    },
+    "admission_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "kernel_receipt_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "monitor_evidence": {
+      "enum": [
+        "TEST_DOUBLE",
+        "REAL_KERNEL"
+      ]
+    },
+    "publication_policy": {
+      "const": "geometry_native_shape_publication_policy_v3"
+    },
+    "native_shape_bridge": {
+      "const": "geometry_runtime_native_shape_bridge_v3"
+    },
+    "publication_policy_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "transport_evidence": {
+      "enum": [
+        "TEST_DOUBLE",
+        "REAL_JEV"
+      ]
+    },
+    "endpoint": {
+      "const": "https://api.typesafe.ai/v1/systemone"
+    },
+    "api_key_env": {
+      "const": "TYPESAFE_API_KEY"
+    },
+    "timeout_s": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "max_retries": {
+      "const": 0
+    },
+    "response_max_bytes": {
+      "type": "integer",
+      "minimum": 1024
+    },
+    "probability_tolerance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 0.01
+    },
+    "probability_sum_validation": {
+      "const": "strict_or_2dp_rounding_interval_v1"
+    },
+    "per_job_max_sends": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 19
+    },
+    "shared_max_sends": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 76
+    }
+  },
+  "required": [
+    "version",
+    "model",
+    "buffer_capacity",
+    "candidate_backend",
+    "per_object_top_k",
+    "joint_candidates_max",
+    "selectable_pool",
+    "policy_source",
+    "selector",
+    "feature_version",
+    "prompt_version",
+    "display_order_seed",
+    "max_request_bytes",
+    "memory_mode",
+    "experiment_protocol",
+    "business_mode",
+    "execution_version",
+    "evaluation_version",
+    "runtime_identity",
+    "numerical_profile",
+    "feature_profile",
+    "construction_only",
+    "generator_config_digest",
+    "stability_monitor",
+    "order_task_identity",
+    "plan_digest",
+    "execution_scope",
+    "admission_digest",
+    "kernel_receipt_digest",
+    "monitor_evidence",
+    "publication_policy",
+    "native_shape_bridge",
+    "publication_policy_digest",
+    "transport_evidence",
+    "endpoint",
+    "api_key_env",
+    "timeout_s",
+    "max_retries",
+    "response_max_bytes",
+    "probability_tolerance",
+    "probability_sum_validation",
+    "per_job_max_sends",
+    "shared_max_sends"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "native_tree": {
+      "oneOf": [
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "NULL"
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "BOOL"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "STR"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "INT"
+            },
+            {
+              "type": "string",
+              "pattern": "^-?(0|[1-9][0-9]*)$"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "FLOAT64"
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{16}$"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "LIST"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/native_tree"
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "DICT"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/$defs/native_tree"
+                  }
+                ],
+                "items": false,
+                "minItems": 2,
+                "maxItems": 2
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        }
+      ]
+    }
+  }
+}

@@ -147,3 +147,21 @@ GEOMETRY_ORDER_CONFIGS=(GEOMETRY_ORDER_VERSION,GEOMETRY_NATIVE_VERSION)
 
 GEOMETRY_NATIVE_SCHEMAS.update({k:k for k in ('geometry_order_plan_v2', 'geometry_order_execution_v2', 'geometry_order_metrics_v2', 'geometry_order_run_v2', 'geometry_order_accounting_v2', 'geometry_development_binding_v2', 'geometry_kernel_launch_v2', 'geometry_order_admission_v2', 'geometry_scope_authorization_v2', 'geometry_scope_review_v2', 'geometry_real_kernel_receipt_v3', 'geometry_kernel_completion_review_v2', 'geometry_phase_snapshot_credential_v2', 'geometry_operational_order_plan_v1')})
 GEOMETRY_OPERATIONAL_PLAN='geometry_operational_order_plan_v1'
+
+# GP6-F0: independent v18 protocol for jev_no_memory over E2/EMS; keeps GP5/v17 local gates intact.
+GEOMETRY_JEV_VERSION='jev_packaging_geometry_jev_v18'
+GEOMETRY_JEV_CONTEXT='jev_decision_context_v18'
+GEOMETRY_JEV_BUNDLE='jev_candidate_bundle_v18'
+GEOMETRY_JEV_SELECTION='jev_selection_result_v18'
+GEOMETRY_JEV_CHECKPOINT='jev_checkpoint_v18'
+GEOMETRY_JEV_SCHEMAS={k:k+'_v18' for k in ('config','candidate_bundle','decision_context','selection_result','checkpoint')}
+GEOMETRY_JEV_SCHEMAS.update({k:k for k in (
+    'geometry_jev_plan_v1','geometry_jev_execution_v1','geometry_jev_development_binding_v1',
+    'geometry_jev_admission_v1','geometry_jev_metrics_v1','geometry_jev_run_v1')})
+GEOMETRY_NATIVE_CAPABILITIES[GEOMETRY_JEV_VERSION]={
+    'policy':GEOMETRY_NATIVE_POLICY,'bridge':GEOMETRY_NATIVE_BRIDGE,
+    'id_pattern':r'^GP5N3_[0-9a-f]{64}$','schemas':GEOMETRY_JEV_SCHEMAS}
+GEOMETRY_EXECUTABLE_CONFIGS=(*GEOMETRY_EXECUTABLE_CONFIGS,GEOMETRY_JEV_VERSION)
+GEOMETRY_CONFIGS=(*GEOMETRY_CONFIGS,GEOMETRY_JEV_VERSION)
+GEOMETRY_BUNDLES=(*GEOMETRY_BUNDLES,GEOMETRY_JEV_BUNDLE)
+GEOMETRY_CONTEXTS=(*GEOMETRY_CONTEXTS,GEOMETRY_JEV_CONTEXT)

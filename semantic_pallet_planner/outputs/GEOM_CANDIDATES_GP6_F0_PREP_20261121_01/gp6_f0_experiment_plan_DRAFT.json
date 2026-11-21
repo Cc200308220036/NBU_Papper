@@ -1,0 +1,145 @@
+{
+  "schema": "gp6_f0_experiment_plan_draft_v1",
+  "status": "DRAFT_NON_EXECUTABLE_UNAUTHORIZED",
+  "executable": false,
+  "authorized_for_api_calls": false,
+  "budget_is_not_call_permit": true,
+  "date": "2026-11-21",
+  "entry_head": "1c6c85613ec883492bf1737a06560ddc2a559fc2",
+  "protocol_proposal": {
+    "runtime_version": "jev_packaging_geometry_jev_v18 (PROPOSED_NOT_IMPLEMENTED)",
+    "method": "jev_no_memory",
+    "feature_profile": "F0_existing_facts",
+    "memory_mode": "none",
+    "f1_enabled": false,
+    "te_memory_enabled": false,
+    "training_enabled": false,
+    "extra_seeds": false,
+    "event_limit": null
+  },
+  "fairness_bindings": {
+    "dataset_root": "semantic_pallet_planner/outputs/DATA_JEV_PACKAGING_LOAD_20261102_02",
+    "data_identity": "9cf6d039543df402d04d406f45cd8cff00ee0a5ab49540190662e7f0d18f21de",
+    "buffer_capacity": 3,
+    "orientations_deg": [0, 90],
+    "per_object_top_k": 16,
+    "joint_candidates_max": 48,
+    "display_order_seed": 20261102,
+    "max_request_bytes": 96000,
+    "monitor_algorithm": "pct_exact_pose_network_v3",
+    "monitor_enabled": true,
+    "publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+    "only_varied_factor": "candidate_backend (e2_original_v1 vs ems_surface_hybrid_v1)"
+  },
+  "proposed_model_and_prompt_identity_to_freeze_before_run": {
+    "model": "jev-1.14.0",
+    "endpoint": "https://api.typesafe.ai/v1/systemone",
+    "api_key_env": "TYPESAFE_API_KEY",
+    "prompt_version": "packaging_load_en_v1",
+    "feature_version": "packaging_physical_facts_v1",
+    "question_source": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py::QUESTION",
+    "objective_source": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py::OBJECTIVE",
+    "timeout_s": 30.0,
+    "max_retries": 0,
+    "response_max_bytes": 1000000,
+    "probability_tolerance": 1e-5,
+    "probability_sum_validation": "strict_or_2dp_rounding_interval_v1",
+    "note": "Must verify live provider API docs and record access date & official URL before freezing or executing any real call."
+  },
+  "tasks": [
+    {
+      "task_id": "NEW_00100027_controlled_base",
+      "item_count": 19,
+      "source_order_id": "00113144",
+      "source_group_id": "SG_901bbb22f834c63f",
+      "partition": "train",
+      "origin": "EXPOSED_TRAIN",
+      "feasibility_status": "UNKNOWN",
+      "raw_sha256": "230ea8b1d6766fb4898b75da8afcea1738afd27e66a38d1ffa0a82409e332a89",
+      "exposure_note": "Exposed training source variant; NOT an independent source and NOT unseen test."
+    },
+    {
+      "task_id": "NEW_00100027_controlled_capacity_tight",
+      "item_count": 19,
+      "source_order_id": "00113144",
+      "source_group_id": "SG_901bbb22f834c63f",
+      "partition": "train",
+      "origin": "EXPOSED_TRAIN",
+      "feasibility_status": "UNKNOWN",
+      "raw_sha256": "6d4595ba23d8fe6878cb22eacad7bac80cda05150648a0234fe69dff23db4114",
+      "exposure_note": "Capacity variant of the same exposed training source SG_901bbb22f834c63f; NOT a second independent source and NOT unseen test."
+    }
+  ],
+  "matrix_denominator": {
+    "planned_jobs": 4,
+    "jobs": [
+      {
+        "job_id": "G00",
+        "task_id": "NEW_00100027_controlled_base",
+        "backend": "e2_original_v1",
+        "method": "jev_no_memory",
+        "feature_profile": "F0_existing_facts",
+        "per_job_max_sends": 19,
+        "singleton_bypass_counts_as_send": false,
+        "status": "NOT_RUN"
+      },
+      {
+        "job_id": "G01",
+        "task_id": "NEW_00100027_controlled_base",
+        "backend": "ems_surface_hybrid_v1",
+        "method": "jev_no_memory",
+        "feature_profile": "F0_existing_facts",
+        "per_job_max_sends": 19,
+        "singleton_bypass_counts_as_send": false,
+        "status": "NOT_RUN"
+      },
+      {
+        "job_id": "G02",
+        "task_id": "NEW_00100027_controlled_capacity_tight",
+        "backend": "e2_original_v1",
+        "method": "jev_no_memory",
+        "feature_profile": "F0_existing_facts",
+        "per_job_max_sends": 19,
+        "singleton_bypass_counts_as_send": false,
+        "status": "NOT_RUN"
+      },
+      {
+        "job_id": "G03",
+        "task_id": "NEW_00100027_controlled_capacity_tight",
+        "backend": "ems_surface_hybrid_v1",
+        "method": "jev_no_memory",
+        "feature_profile": "F0_existing_facts",
+        "per_job_max_sends": 19,
+        "singleton_bypass_counts_as_send": false,
+        "status": "NOT_RUN"
+      }
+    ],
+    "paired_comparisons": [
+      {"pair_id": "GP6_P1_base_jev_f0", "task_id": "NEW_00100027_controlled_base", "e2_job_id": "G00", "ems_job_id": "G01"},
+      {"pair_id": "GP6_P2_tight_jev_f0", "task_id": "NEW_00100027_controlled_capacity_tight", "e2_job_id": "G02", "ems_job_id": "G03"}
+    ]
+  },
+  "proposed_budget_ceilings_not_permit": {
+    "per_job_max_sends": 19,
+    "shared_max_sends": 76,
+    "shared_assessment_limit": 76,
+    "shared_solver_limit": 4096,
+    "max_retries": 0,
+    "api_cost_ceiling_usd": "NONE_DEFAULT_TRACK_ACTUAL_OR_UNKNOWN",
+    "singleton_bypass_rule": "Single-candidate decisions use SINGLETON_BYPASS and consume 0 model sends."
+  },
+  "stop_rules": [
+    "ALL_ITEMS_PLACED: normal order completion.",
+    "STOP_NO_PHYSICAL_CANDIDATE: current state candidate pool empty; stop current job immediately.",
+    "PREDICTED_STATIC_INSTABILITY: monitor returns UNSTABLE; do not place failed box, stop current job immediately.",
+    "STABILITY_UNASSESSABLE / STABILITY_MONITOR_ERROR: stop current job immediately; do not merge into predicted instability.",
+    "UNKNOWN_SEND / PROVIDER_FAILURE / INVALID_RESPONSE / BUDGET_EXHAUSTED: stop current job immediately (and halt batch on first technical/unknown-send error); never implicitly retry.",
+    "GEOMETRY_BUDGET_EXCEEDED / PHYSICAL_CHECK_DISAGREEMENT / RUNTIME_SNAPSHOT_MISMATCH: stop immediately as technical failure; never fall back from EMS to E2."
+  ],
+  "comparison_and_gp5_background_boundary": {
+    "primary_comparison": "Same-protocol v18 paired comparison of G00 vs G01 and G02 vs G03 (only backend differs).",
+    "gp5_local_results_role": "GP5 v17 results (J00-J07, local_geometry/local_first) serve ONLY as historical local-baseline background; they MUST NOT be paired directly as same-protocol attribution against v18 jev_no_memory jobs.",
+    "same_protocol_local_control_note": "If direct Jev-vs-local attribution is later required, local baselines must be executed or bound under the same frozen v18 protocol/source/monitor identity rather than mixing v17 and v18.",
+    "no_historical_response_reuse": "Old JN1/JN3/JN4/JM1 real Jev responses must never be replayed to substitute for GP6 selections."
+  }
+}

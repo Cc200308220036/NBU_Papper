@@ -1,0 +1,117 @@
+{
+  "schema": "gp6_f0_offline_contract_receipt_v1",
+  "date": "2026-11-21",
+  "interpreter": {
+    "python_version": "3.10.12",
+    "platform": "Linux-6.8.0-149-generic-x86_64-with-glibc2.35",
+    "jsonschema_available_in_probe_env": false,
+    "note": "Probe uses Python stdlib only; no dependencies were installed or modified."
+  },
+  "real_model_calls": 0,
+  "credentials_read": false,
+  "network_attempted": false,
+  "all_offline_probes_passed": true,
+  "probes_count": 6,
+  "passed_count": 6,
+  "failed_count": 0,
+  "probes": [
+    {
+      "probe": "P1_f0_public_state_only_and_no_memory_injection",
+      "status": "PASS",
+      "evidence": {
+        "J00_D0000_E2": {
+          "route": "CHOICE_REQUIRED",
+          "criteria_count": 24,
+          "memories_empty": true,
+          "request_body_bytes": 10198,
+          "within_96000_bytes": true,
+          "cxx_labels_contiguous": true,
+          "mapping_keys_match_criteria": true,
+          "forbidden_tokens_leaked": []
+        },
+        "J02_D0000_EMS": {
+          "route": "CHOICE_REQUIRED",
+          "criteria_count": 30,
+          "memories_empty": true,
+          "request_body_bytes": 12211,
+          "within_96000_bytes": true,
+          "cxx_labels_contiguous": true,
+          "mapping_keys_match_criteria": true,
+          "forbidden_tokens_leaked": []
+        }
+      }
+    },
+    {
+      "probe": "P2_cxx_choice_exact_action_binding_and_negative_rejections",
+      "status": "PASS",
+      "evidence": {
+        "selected_display_id": "C02",
+        "selected_candidate_id": "GP5N3_a6663d1818e08c0e02411741835ced18edae3a3e2149b5ce83cbc69a42a3c004",
+        "pose_exact_match": true,
+        "candidate_digest_match": true,
+        "neg_unknown_choice": "unknown_choice",
+        "neg_wrong_model": "wrong_served_model",
+        "neg_choice_not_max": "choice_not_maximum"
+      }
+    },
+    {
+      "probe": "P3_singleton_bypass_zero_transport_calls",
+      "status": "PASS",
+      "evidence": {
+        "route": "SINGLETON_BYPASS",
+        "request_body": null,
+        "transport_calls": 0,
+        "selection": {
+          "status": "singleton",
+          "source": "singleton",
+          "selected_display_id": "C01",
+          "selected_candidate_id": "GP5N3_47228a929979515c1a3787b41856471334354ab21f325caf633bb09ee339daf3"
+        }
+      }
+    },
+    {
+      "probe": "P4_saved_selection_no_resend_and_stale_rejection",
+      "status": "PASS",
+      "evidence": {
+        "transport_calls_after_replay": 1,
+        "replayed_state": "SELECTION_SAVED",
+        "stale_request_rejected": true
+      }
+    },
+    {
+      "probe": "P5_unknown_send_stops_and_never_implicitly_retries",
+      "status": "PASS",
+      "evidence": {
+        "first_state": "UNKNOWN_SEND",
+        "parsed_status": "unknown_in_flight",
+        "replay_state": "UNKNOWN_SEND",
+        "interrupted_sending_recovered_state": "UNKNOWN_SEND",
+        "total_transport_calls": 1
+      }
+    },
+    {
+      "probe": "P6_gp5_local_gates_and_backend_routes_intact",
+      "status": "PASS",
+      "evidence": {
+        "default_backend_ems": true,
+        "explicit_e2_and_ems_registered": true,
+        "v17_model_locked_local": "LOCAL_TEST_DOUBLE_NOT_JEV",
+        "v17_selector_locked_local": [
+          "local_geometry_test_double",
+          "local_first_test_double"
+        ],
+        "plan_v2_model_calls_max_const": 0
+      }
+    }
+  ],
+  "not_run_real_chain_behaviors": {
+    "real_jev_https_transport": "NOT_RUN",
+    "real_jev_api_response_parsing": "NOT_RUN",
+    "production_pytest_with_jsonschema": "NOT_RUN_MISSING_JSONSCHEMA_IN_SANDBOX_PYTHON",
+    "real_order_episode_execution": "NOT_RUN",
+    "real_pct_exact_pose_v3_monitor_and_lp": "NOT_RUN",
+    "real_plan_or_monitor_freeze": "NOT_RUN",
+    "real_checkpoint_recovery_execution": "NOT_RUN"
+  },
+  "boundary_statement": "Offline contract doubles verify only isolated F0 payload/binding/ledger/gate invariants. They do NOT prove that end-to-end production GP6 transport, orders, monitoring, or recovery have passed."
+}

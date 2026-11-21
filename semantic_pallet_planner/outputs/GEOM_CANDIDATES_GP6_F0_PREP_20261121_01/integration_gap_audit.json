@@ -1,0 +1,121 @@
+{
+  "schema": "gp6_f0_integration_gap_audit_v1",
+  "date": "2026-11-21",
+  "entry_head": "1c6c85613ec883492bf1737a06560ddc2a559fc2",
+  "chain_audit": [
+    {
+      "stage": "1_candidate_publication",
+      "description": "公共候选生成与原生尺寸发布桥接（e2_original_v1 / ems_surface_hybrid_v1）",
+      "actual_files_and_functions": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidates.py::CandidateProvider.build",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/candidate_backends.py::build_geometry_bundle",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_native_shape_bridge.py::publish_native_shape_pool_v3",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_versions.py::GEOMETRY_BACKENDS, DEFAULT_GEOMETRY_BACKEND"
+      ],
+      "status": "EXISTING_REUSABLE",
+      "gap_summary": "双后端候选生成、物理准入与 native_shape_v3 发布已完整实现；需在新版本 v18 注册时将 v18 加入 GEOMETRY_NATIVE_CAPABILITIES / GEOMETRY_BUNDLES 路由，不修改 e2_original_v1 或 ems_surface_hybrid_v1 默认路由。"
+    },
+    {
+      "stage": "2_f0_request_construction",
+      "description": "F0 公开状态与无经验 Choice 请求体构造（含 Cxx 匿名洗牌与 96000 字节上限检查）",
+      "actual_files_and_functions": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py::_geometry_decision_inputs",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py::ContextBuilder.build",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_runtime.py::public_facts, _project_public_facts, build_context, validate_runtime_context"
+      ],
+      "status": "REUSABLE_WITH_NEW_VERSION_SCHEMA",
+      "gap_summary": "F0 投影已保证 memories=[]、无后端名/压缩理由/监测预评泄露、固定 display_order_seed=20261102 与 max_request_bytes=96000。缺失点：现有 config_v17.schema.json 与 decision_context_v17.schema.json 将 model 锁定为 LOCAL_TEST_DOUBLE_NOT_JEV，且缺少 endpoint/api_key_env/timeout_s/max_retries/response_max_bytes/probability_tolerance/probability_sum_validation 字段；需新增独立封闭 Schema config_v18/decision_context_v18 承载 jev-1.14.0 请求体。"
+    },
+    {
+      "stage": "3_jev_selection_and_request_ledger",
+      "description": "无经验 Jev 选择、Cxx 响应校验、单次发送请求账本与 UNKNOWN_SEND 保护",
+      "actual_files_and_functions": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/selector.py::parse_response, probability_sum_valid, result, JevSelector",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_remote.py::RequestLedger, PackagingRemoteSelector, remote_selector_factory",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/transport.py::JevTransport, credential, outcome, validate_transport",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py::validate_order_request, run_order_job"
+      ],
+      "status": "MISSING_IN_GEOMETRY_ORDER_CHAIN",
+      "gp5_local_gates": [
+        "geometry_order_execution.py:128 validate_order_request 强制 type(selector) is LocalPackagingDouble 且 method in METHODS",
+        "geometry_order_execution.py:151 run_order_job 硬编码实例化 LocalPackagingDouble(config['selector'])",
+        "packaging_geometry_protocol.py:93,97,159,160 prepare_order_plan / validate_order_plan 强制 model_calls_max==0 且仅允许 METHODS 本地策略",
+        "schemas/config_v17.schema.json:9,33 锁定 model='LOCAL_TEST_DOUBLE_NOT_JEV' 与 selector enum 仅含两个本地方法",
+        "schemas/geometry_order_plan_v2.schema.json 锁定 scope 仅限本地与 model_calls_max=0",
+        "selector.py:181 JevSelector.select 显式拒绝 is_packaging(config)",
+        "packaging_remote.py:64,213 RequestLedger.context_version 锁定 jev_decision_context_v6，remote_selector_factory 锁定 jev_packaging_remote_v6"
+      ],
+      "gap_summary": "通用解析 parse_response、传输 JevTransport 与单次发送状态机 RequestLedger（INTENT->SENDING->RESPONSE_SAVED/UNKNOWN_SEND/FAILED->SELECTION_SAVED）已存在且可复用，但尚未接入几何订单链；需新增独立版本化的 GP6 协议与适配器（如 GeometryJevRequestLedger 继承 RequestLedger 并绑定 v18 context_version 与每 job/全局上限、独立 GeometryJevSelector），不得删除 GP5 门控或放宽 v17 Schema。"
+    },
+    {
+      "stage": "4_exact_action_binding",
+      "description": "Cxx 显示标签反查原候选 ID、candidate_digest 及精确动作 pose",
+      "actual_files_and_functions": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/context.py::resolve_display_id",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py::_run_episode_v2 (lines 512-514)",
+        "semantic_pallet_planner/src/semantic_pallet_planner/o4/extensions/e2/planning.py::action_for"
+      ],
+      "status": "EXISTING_REUSABLE",
+      "gap_summary": "resolve_display_id + action_for 已按 selected_display_id 校验 candidate_id、candidate_digest 并生成精确 proposed_action；selection_result_v17 已包含 source='jev' 与 status='unknown_in_flight'/'provider_failure'/'invalid_response'/'budget_exhausted'，v18 可独立复制版本化。"
+    },
+    {
+      "stage": "5_post_selection_monitor",
+      "description": "独立状态副本选后静态稳定性监测（pct_exact_pose_network_v3）与共享 LP 计量",
+      "actual_files_and_functions": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py::_run_episode_v2 (lines 515-532)",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/stability/monitor.py::monitor_selected_action, validate_monitor",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py::validate_monitor_snapshot",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_meter.py::metered_run, current_counts"
+      ],
+      "status": "EXISTING_REUSABLE",
+      "gap_summary": "选后监测顺序（SELECTED -> MONITORED -> COMMITTED/TERMINATED）、exact_v3 内核与独立评估/LP 计量器可直接复用；仅需在 v18 计划/准入校验中保留对 monitor_snapshot 与既有 kernel_receipt 的显式绑定。"
+    },
+    {
+      "stage": "6_commit_or_stop_and_metrics",
+      "description": "STABLE 精确提交、UNSTABLE/NO_CANDIDATE/UNKNOWN_SEND/PROVIDER_FAILURE 停单与整单指标账目",
+      "actual_files_and_functions": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/execution.py::commit_physical",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/episode.py::_run_episode_v2 (lines 488-586)",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py::order_metrics"
+      ],
+      "status": "PARTIALLY_MISSING",
+      "gap_summary": "commit_physical 与 episode 停单分支（selection.status not in ('selected','singleton') -> reason=status.upper()）已存在；但 geometry_order_execution.py:267 order_metrics 硬编码 cost={'model_calls':0,'service_cost':'NA_NO_SERVICE_CALL',...}。GP6 v18 需独立指标函数（如 geometry_jev_metrics_v1），从权威请求账本读取 send_reservations、model_calls、unknown_sends、failed_requests、usage、request_latency_s，费用不可得记 UNKNOWN。"
+    },
+    {
+      "stage": "7_durable_recovery",
+      "description": "SELECTED/MONITORED/COMMITTED 持久化恢复与请求账本重放防重发",
+      "actual_files_and_functions": [
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_execution.py::GeometryStore, validate_saved_checkpoint, _validate_saved_transitions",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_accounting.py::invocation, snapshot, completed",
+        "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/packaging_jev_v13.py::validate_saved_checkpoint (reference for remote v13)"
+      ],
+      "status": "PARTIALLY_MISSING",
+      "gap_summary": "GP5 的 _validate_saved_transitions 已支持 DECISION_READY/SELECTED/MONITORED/COMMITTED 阶段校验且不重选、不重评、不重提交，但未绑定 RequestLedger 的 attempt_id / raw_response_digest / UNKNOWN_SEND 终态校验；GP6 v18 恢复器需在校验 checkpoint 的同时核对 RequestLedger 对应 attempt 与 selection 一致，且遇到 SENDING/UNKNOWN_SEND 立即拒绝重发并终止。"
+    }
+  ],
+  "minimal_versioned_gp6_proposal": {
+    "design_principle": "Strictly independent versioning; zero relaxation of GP5 v14-v17 schemas or local gates; zero change to DEFAULT_GEOMETRY_BACKEND (ems_surface_hybrid_v1) or explicit e2_original_v1 routing.",
+    "proposed_protocol_versions": {
+      "runtime_config": "jev_packaging_geometry_jev_v18",
+      "candidate_bundle": "jev_candidate_bundle_v18",
+      "decision_context": "jev_decision_context_v18",
+      "selection_result": "jev_selection_result_v18",
+      "checkpoint": "jev_checkpoint_v18",
+      "plan": "geometry_jev_plan_v1",
+      "execution": "geometry_jev_execution_v1",
+      "run": "geometry_jev_run_v1",
+      "metrics": "geometry_jev_metrics_v1",
+      "request_ledger": "geometry_jev_requests_v1",
+      "admission": "geometry_jev_admission_v1"
+    },
+    "proposed_new_modules_not_implemented": [
+      "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_jev_protocol.py",
+      "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_jev_execution.py"
+    ],
+    "minimal_shared_routing_touchpoints_when_authorized": [
+      "packaging_versions.py: register v18 constants and closed schemas explicitly",
+      "contracts.py / config.py / packaging_runtime.py / candidate_backends.py / episode.py / selector.py / stability/monitor.py: add explicit v18 dispatch branches only, leaving v1-v17 unchanged"
+    ],
+    "current_implementation_status": "DESIGN_ONLY_NOT_IMPLEMENTED"
+  }
+}

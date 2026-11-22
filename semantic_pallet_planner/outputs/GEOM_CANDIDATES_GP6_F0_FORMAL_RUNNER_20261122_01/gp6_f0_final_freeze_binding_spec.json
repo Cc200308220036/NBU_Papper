@@ -1,0 +1,37 @@
+{
+  "schema": "gp6_f0_final_freeze_binding_spec_v1",
+  "date": "2026-11-22",
+  "status": "DRAFT",
+  "driver_path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/formal_jev_driver.py",
+  "driver_sha256": "107c2cd0f8923186a82e91c27006f2292fd9882415a1f8574085bf8cf1332f5c",
+  "source_identity": "68b879c5759b5a6df33fe8184019234bcb06e06483596f86390ca6c9974ca48e",
+  "draft_plan_v2_path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/gp6_f0_order_plan_DRAFT_v2.json",
+  "draft_plan_v2_digest": "a7c47898515a548cec99930fe0c14b5ed745957c4ecff58239f2e696804516b0",
+  "ledger_run_root_separation_rule": "Pre-initialized ledgers MUST live in a frozen prep/ledgers directory strictly outside --run-root; formal_jev_driver.py enforces LEDGER_INSIDE_RUN_ROOT_CONFLICT and NO_OVERWRITE_EXISTING_RUN_ROOT.",
+  "fields_to_bind_at_freeze": [
+    {
+      "field": "status",
+      "current": "DRAFT",
+      "target": "FROZEN"
+    },
+    {
+      "field": "request_ledger_path",
+      "current": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_PREP_PENDING/ledgers/requests.json",
+      "target": "Concrete path in frozen prep/ledgers dir with empty requests=[]"
+    },
+    {
+      "field": "call_ledger_path",
+      "current": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_PREP_PENDING/ledgers/shared_call_ledger.json",
+      "target": "Concrete path in frozen prep/ledgers dir with zero counts {0,0,0}"
+    },
+    {
+      "field": "plan_digest (derived)",
+      "current": "a7c47898515a548cec99930fe0c14b5ed745957c4ecff58239f2e696804516b0",
+      "target": "Recomputed digest(frozen_plan) bound into applicability_review, kernel_bridge, authorization, review, admission, and both ledgers"
+    }
+  ],
+  "proposed_commands_after_freeze_and_approval": {
+    "preflight_only": "/home/cyw/anaconda3/bin/python3 -I -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/formal_jev_driver.py --plan <FROZEN_PLAN_JSON> --monitor-snapshot semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/monitor_snapshot.json --kernel-bridge <APPROVED_BRIDGE_JSON> --admission <APPROVED_ADMISSION_JSON> --run-root <FRESH_NONEXISTENT_RUN_ROOT>",
+    "execute": "/home/cyw/anaconda3/bin/python3 -I -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/formal_jev_driver.py --plan <FROZEN_PLAN_JSON> --monitor-snapshot semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/monitor_snapshot.json --kernel-bridge <APPROVED_BRIDGE_JSON> --admission <APPROVED_ADMISSION_JSON> --run-root <FRESH_NONEXISTENT_RUN_ROOT> --execute"
+  }
+}

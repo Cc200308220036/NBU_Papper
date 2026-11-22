@@ -1,0 +1,68 @@
+{
+  "schema": "gp6_f0_formal_runner_handoff_v1",
+  "date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "repo_root_name": "NBU_Papper",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "synced_head": "431f16d30c179f596e3d787d4674aeb069da6070",
+  "contains_qa_commit_431f16d30": true,
+  "issue_targeted": "GP6-F0-LAUNCH-01",
+  "issue_dev_status": "IMPLEMENTED_OFFLINE_VERIFIED_PENDING_QA_CLOSURE",
+  "driver_path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/formal_jev_driver.py",
+  "driver_sha256": "107c2cd0f8923186a82e91c27006f2292fd9882415a1f8574085bf8cf1332f5c",
+  "source_identity": "68b879c5759b5a6df33fe8184019234bcb06e06483596f86390ca6c9974ca48e",
+  "production_source_modified": false,
+  "historical_gp5_originals_preserved": true,
+  "offline_tests_passed": 13,
+  "offline_tests_failed": 0,
+  "real_model_calls_authorized": 0,
+  "real_model_calls_executed": 0,
+  "real_monitor_calls_executed": 0,
+  "real_lp_calls_executed": 0,
+  "keys_read": false,
+  "production_credentials_issued": false,
+  "formal_plan_frozen": false,
+  "g00_g03_status": "ALL_NOT_RUN",
+  "draft_plan_v2_digest": "a7c47898515a548cec99930fe0c14b5ed745957c4ecff58239f2e696804516b0",
+  "deliverables": {
+    "report_md": "docs/03_阶段产出分析/几何规划模块/几何候选器GP6_F0四项启动入口与无调用预检交付_20261122_01.md",
+    "index_md": "docs/03_阶段产出分析/几何规划模块/README.md",
+    "package_dir": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01",
+    "driver": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/formal_jev_driver.py",
+    "test_suite": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/test_formal_jev_driver.py",
+    "draft_plan_v2": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/gp6_f0_order_plan_DRAFT_v2.json",
+    "final_freeze_binding_spec": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/gp6_f0_final_freeze_binding_spec.json",
+    "denominator_not_run": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/run_denominator_NOT_RUN.json",
+    "kernel_applicability_review_pending": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/kernel_applicability_review_PENDING.json",
+    "kernel_bridge_pending": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/kernel_bridge_PENDING.json",
+    "scope_authorization_pending": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/scope_authorization_PENDING.json",
+    "scope_review_pending": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/scope_review_PENDING.json",
+    "order_admission_pending": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/order_admission_PENDING.json",
+    "command_receipts": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/command_receipts.json",
+    "delivery_manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/delivery_manifest.json"
+  },
+  "unresolved_items": [
+    {
+      "id": "GP6-F0-LAUNCH-01",
+      "status": "PENDING_INDEPENDENT_QA_CLOSURE",
+      "owner": "独立质检",
+      "release_condition": "独立质检复核 formal_jev_driver.py 摘要、无调用测试与分离账本路径设计并正式关闭 GP6-F0-LAUNCH-01"
+    },
+    {
+      "id": "FORMAL-FREEZE-AND-SIGNING",
+      "status": "WAITING_EXTERNAL_APPROVAL",
+      "owner": "开发端（冻结） + 独立质检（签发） + 用户/项目授权方（授权）",
+      "release_condition": "生成 FROZEN 最终计划及独立目录空/零账本 -> 独立 QA 签发 VERIFIED api_spec_check、APPROVED kernel_applicability_review_v1、APPROVED kernel_bridge_v1、APPROVED scope_review 与 APPROVED geometry_jev_admission_v1 -> 用户签发 APPROVED scope_authorization"
+    },
+    {
+      "id": "G00-G03-EXECUTION",
+      "status": "NOT_RUN",
+      "owner": "开发端（全部前置关闭后）",
+      "release_condition": "目标 Linux 机运行 formal_jev_driver.py 默认预检 4/4 PASS 后，方可单次 --execute 派发 G00-G03"
+    }
+  ],
+  "git_sync_status": "UNCOMMITTED_UNPUSHED_PER_AGENTS_POLICY",
+  "next_owner": "独立质检（最终启动审查）",
+  "stopped": true
+}

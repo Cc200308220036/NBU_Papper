@@ -1,0 +1,50 @@
+{
+  "schema": "gp6_f0_formal_runner_command_receipts_v1",
+  "date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "repo_root_name": "NBU_Papper",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "head_before_pull": "43028c00c7a870310bafc042130162a2692d801c",
+  "head_after_pull": "431f16d30c179f596e3d787d4674aeb069da6070",
+  "contains_qa_commit_431f16d30": true,
+  "driver_path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/formal_jev_driver.py",
+  "driver_sha256": "107c2cd0f8923186a82e91c27006f2292fd9882415a1f8574085bf8cf1332f5c",
+  "source_identity": "68b879c5759b5a6df33fe8184019234bcb06e06483596f86390ca6c9974ca48e",
+  "real_model_calls": 0,
+  "real_monitor_calls": 0,
+  "real_lp_calls": 0,
+  "keys_read": false,
+  "commands": [
+    {
+      "step": "git_pre_check",
+      "command": "pwd && git rev-parse --show-toplevel && git branch -vv && git status -sb && git log -n 5 --oneline",
+      "exit_code": 0,
+      "result": "PASS: clean working tree and index on dev/jev-select tracking origin/dev/jev-select at 43028c00c"
+    },
+    {
+      "step": "git_pull_ff_only",
+      "command": "git pull --ff-only",
+      "exit_code": 0,
+      "result": "PASS: fast-forward 43028c00c..431f16d30 (8 files added from QA review)"
+    },
+    {
+      "step": "git_post_pull_verify",
+      "command": "git rev-parse HEAD && git status -sb",
+      "exit_code": 0,
+      "result": "PASS: HEAD=431f16d30c179f596e3d787d4674aeb069da6070, clean working tree"
+    },
+    {
+      "step": "offline_driver_test_suite",
+      "command": "<target_linux_anaconda_python3> -I -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/test_formal_jev_driver.py",
+      "exit_code": 0,
+      "result": "PASS: 13/13 offline tests OK in 4.672s (default preflight-only 0 dispatch & byte-unchanged ledgers & no .writer.lock, DRAFT/missing-bridge/non-empty-req-ledger/non-zero-call-ledger/ledger-inside-run-root/existing-run-root/G02-config-fail all 0 dispatch, temporary Git export from 2c97f594 exact 594-file match & cleanup, G00->G03 order + checkpoint callbacks + normal stops, halt on UNKNOWN_SEND / BUDGET_EXHAUSTED / TECHNICAL_FAILURE leaving remaining NOT_RUN)"
+    },
+    {
+      "step": "actual_cli_draft_preflight_rejection",
+      "command": "<target_linux_anaconda_python3> -I -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/formal_jev_driver.py --plan semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/gp6_f0_order_plan_DRAFT_v2.json",
+      "exit_code": 1,
+      "result": "PASS (expected rejection): AssertionError: PLAN_NOT_FROZEN, 0 dispatches, 0 sends, 0 files created"
+    }
+  ]
+}

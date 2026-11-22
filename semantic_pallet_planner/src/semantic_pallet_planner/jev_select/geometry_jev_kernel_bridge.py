@@ -27,6 +27,44 @@ def source_delta(before, after):
 
 
 def validate_kernel_bridge(bridge, plan, monitor):
+    if isinstance(bridge, dict) and bridge.get('version') == 'geometry_jev_kernel_bridge_v2':
+        return validate_reference_bridge(bridge, plan, monitor)
+    return _validate_historical_bridge(bridge, plan, monitor)
+
+
+def validate_reference_bridge(bridge, plan, monitor):
+    """V2 checks referenced bindings, without opening or executing historical code.
+
+    This deliberately does not revalidate receipt descendants or historical runtime
+    behavior. The explicit mode records this weaker evidence policy; v1 stays intact.
+    No success cache is used, so changed reference bytes still fail on every call.
+    """
+    from .experiment import source_manifest
+    from .geometry_jev_protocol import validate_jev_plan
+
+    validate_schema('geometry_jev_kernel_bridge_v2', bridge)
+    validate_jev_plan(plan)
+    require(bridge['target'] == target_binding(plan, monitor), 'geometry_bridge_target_drift')
+    receipt = read_reference(bridge['evidence_receipt'])
+    validate_schema('geometry_real_kernel_receipt_v3', receipt)
+    historical = read_reference(bridge['historical_source_manifest'])
+    files = historical['files']
+    require(digest(files) == historical['source_identity'] == receipt['source_identity'],
+            'geometry_bridge_historical_source_identity')
+    old_monitor = read_reference(bridge['historical_monitor'])
+    require(digest(old_monitor) == receipt['monitor_digest'], 'geometry_bridge_evidence_monitor')
+    review = read_reference(bridge['applicability_review'])
+    validate_schema('geometry_jev_kernel_applicability_review_v1', review)
+    for key in ('evidence_receipt', 'historical_source_manifest', 'historical_monitor', 'target'):
+        require(review[key] == bridge[key], 'geometry_bridge_review_binding')
+    delta = source_delta(files, source_manifest())
+    require(review['diff_digest'] == digest(delta)
+            and [{k: r[k] for k in ('path', 'before', 'after')} for r in review['changes']] == delta,
+            'geometry_bridge_diff_review')
+    require(old_monitor == monitor, 'geometry_bridge_monitor_changed_requires_new_evidence')
+
+
+def _validate_historical_bridge(bridge, plan, monitor):
     from .experiment import source_manifest
     from .geometry_jev_protocol import validate_jev_plan
 

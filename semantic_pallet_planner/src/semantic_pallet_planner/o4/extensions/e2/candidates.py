@@ -30,7 +30,7 @@ def _generate(state,pick,regions,config):
         attempted+=1
         raw,reason=evaluate_pose(item,placed,x,y,z,length,width,yaw,settings)
         if raw is None:rejections[reason]+=1;return None
-        c=raw['visible'];errors=check_candidate(case,{'container':state['container']},c)
+        c=raw['visible'];errors=check_candidate(case,{'container':state['container']},c,packaging_top_load_limit_enabled=config.get('packaging_top_load_limit_enabled',True))
         if errors:rejections['independent_physics']+=1;return None
         pool[key(c)]=c;return c
     for yaw in (0,90):

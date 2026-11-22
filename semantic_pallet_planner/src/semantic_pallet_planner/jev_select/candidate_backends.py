@@ -1,3 +1,4 @@
+from .packaging_versions import GEOMETRY_JEV_VERSIONS, GEOMETRY_JEV_SWITCH_VERSION
 """GP3-N2 public candidate construction. No plan, permit or execution route.
 
 Common input/admission and backend bindings are independent of N1's new-backend
@@ -54,7 +55,7 @@ def load_geometry_config(*, backend=DEFAULT_GEOMETRY_BACKEND, data_identity, tas
 
 def preflight_config(config):
     from .packaging_versions import GEOMETRY_ORDER_VERSION
-    if config.get('version')==GEOMETRY_JEV_VERSION:
+    if config.get('version') in GEOMETRY_JEV_VERSIONS:
         from .geometry_jev_execution import preflight_jev
         return preflight_jev(config)
     if config.get('version') in GEOMETRY_ORDER_CONFIGS:
@@ -104,10 +105,10 @@ def validate_common_input(n,g,binding,config,*,state=None,observation=None):
     return v
 
 
-def _admit(views,common):
+def _admit(views,common,config):
     from ..planner.space_candidates.generator import physical_prefix_views
     audit={}
-    settings,placed,oracle=physical_prefix_views(views['physical'],audit=audit)
+    settings,placed,oracle=physical_prefix_views(views['physical'],audit=audit,packaging_top_load_limit_enabled=config.get('packaging_top_load_limit_enabled',True))
     return seal({'version':GEOMETRY_ADMISSION,'common_input_digest':digest(common),
         'status':'PASS','ledger_views':audit['ledger_views'],
         'physical_prefix_digest':digest(placed),'oracle_prefix_digest':digest(oracle),
@@ -115,7 +116,7 @@ def _admit(views,common):
 
 
 def _backend_binding(common,admission,config):
-    extra={} if config['version'] not in (GEOMETRY_NATIVE_VERSION,GEOMETRY_JEV_VERSION) else {'publication_policy_digest':config['publication_policy_digest'],'publication_policy':config['publication_policy'],'native_shape_bridge':config['native_shape_bridge']}
+    extra={} if config['version'] not in (GEOMETRY_NATIVE_VERSION,*GEOMETRY_JEV_VERSIONS) else {'publication_policy_digest':config['publication_policy_digest'],'publication_policy':config['publication_policy'],'native_shape_bridge':config['native_shape_bridge']}
     return seal({**extra,'version':('geometry_backend_binding_v2' if extra else GEOMETRY_BACKEND_BINDING),'common_input_digest':digest(common),
         'admission_digest':digest(admission),'candidate_backend':config['candidate_backend'],
         'generator_config_digest':config['generator_config_digest'],'config_digest':digest(config),
@@ -159,7 +160,7 @@ def build_geometry_bundle(state,observation,generator_config,config,*,common_inp
         n,g,common=capture_common_input(state,observation,config) if common_input is None else common_input
         views=validate_common_input(n,g,common,config,state=state,observation=observation)
         audit.update(native_bytes_hex=n.hex(),geometry_bytes_hex=g.hex(),common_binding=common)
-        admission=_admit(views,common)
+        admission=_admit(views,common,config)
         audit['common_admission']=admission
     except (ValueError,KeyError,TypeError) as exc:
         code=getattr(exc,'code','INVALID_COMMON_INPUT')
@@ -183,10 +184,12 @@ def build_geometry_bundle(state,observation,generator_config,config,*,common_inp
             candidates=[];counts=[];rows=[]
             for pending in ordered(views['native']['current_state']):
                 pick=pending['item']['item_id']
-                group,row=generate(views['native']['current_state'],pick,[],copy.deepcopy(generator_config))
+                settings=copy.deepcopy(generator_config)
+                if 'packaging_top_load_limit_enabled' in config:settings['packaging_top_load_limit_enabled']=config['packaging_top_load_limit_enabled']
+                group,row=generate(views['native']['current_state'],pick,[],settings)
                 for candidate in group:
                     errors=check_candidate(physical(views['native']['current_state'],pick),
-                                            {'container':state['container']},candidate)
+                                            {'container':state['container']},candidate,packaging_top_load_limit_enabled=config.get('packaging_top_load_limit_enabled',True))
                     if errors:raise JevSelectError('physical_candidate_error',str(errors))
                 candidates.extend(group)
                 elapsed=row.pop('elapsed_seconds')
@@ -208,7 +211,7 @@ def build_geometry_bundle(state,observation,generator_config,config,*,common_inp
             def adapt_common(raw):
                 v=validate_common_input(n,raw,common,config)
                 return v['exact'],v['physical'],v['geometry_state'],v['geometry_bytes'],digest(binding)
-            result=_generation_core(g,adapt_input=adapt_common,identity_namespace='runtime_snapshot_v1')
+            result=_generation_core(g,adapt_input=adapt_common,identity_namespace='runtime_snapshot_v1',packaging_top_load_limit_enabled=config.get('packaging_top_load_limit_enabled',True))
             audit['generation']=result
             if result['status']=='ERROR':
                 raise JevSelectError(result['error']['code'],result['error']['detail'])
@@ -224,7 +227,7 @@ def build_geometry_bundle(state,observation,generator_config,config,*,common_inp
         audit['backend_error']={'code':getattr(exc,'code','GEOMETRY_BACKEND_ERROR'),'detail':str(exc)}
         raise GeometryConstructionError('BACKEND_INTERNAL_ERROR',audit['backend_error']['code'],str(exc),audit,stats) from exc
     stats['generation_s']=time.perf_counter()-started
-    if config['version'] in (GEOMETRY_NATIVE_VERSION,GEOMETRY_JEV_VERSION):
+    if config['version'] in (GEOMETRY_NATIVE_VERSION,*GEOMETRY_JEV_VERSIONS):
         from .geometry_native_shape_bridge import publish_native_shape_pool_v3
         try:
             candidates,publication=publish_native_shape_pool_v3(n,g,common,binding,c.encode(audit['generation']),c.encode(candidates),config=config)
@@ -236,7 +239,7 @@ def build_geometry_bundle(state,observation,generator_config,config,*,common_inp
     audit['generation_counts']=copy.deepcopy(counts)
     from .packaging_runtime import no_policy
     from .packaging_versions import GEOMETRY_ORDER_VERSION, GEOMETRY_ORDER_BUNDLE
-    value={'version':GEOMETRY_JEV_BUNDLE if config['version']==GEOMETRY_JEV_VERSION else GEOMETRY_NATIVE_BUNDLE if config['version']==GEOMETRY_NATIVE_VERSION else GEOMETRY_ORDER_BUNDLE if config['version']==GEOMETRY_ORDER_VERSION else GEOMETRY_RUN_BUNDLE if config['version']==GEOMETRY_RUN_VERSION else GEOMETRY_BUNDLE,'observation_digest':observation['observation_digest'],
+    value={'version':'jev_candidate_bundle_v19' if config['version']==GEOMETRY_JEV_SWITCH_VERSION else GEOMETRY_JEV_BUNDLE if config['version'] in GEOMETRY_JEV_VERSIONS else GEOMETRY_NATIVE_BUNDLE if config['version']==GEOMETRY_NATIVE_VERSION else GEOMETRY_ORDER_BUNDLE if config['version']==GEOMETRY_ORDER_VERSION else GEOMETRY_RUN_BUNDLE if config['version']==GEOMETRY_RUN_VERSION else GEOMETRY_BUNDLE,'observation_digest':observation['observation_digest'],
         'candidate_backend':backend,'generator_config_digest':digest(generator_config),
         'physical_candidates':candidates,'physical_digest':digest(candidates),'generation_counts':counts,
         'selectable_pool':'physical_feasible','selectable_candidates':copy.deepcopy(candidates),
@@ -269,7 +272,7 @@ def validate_geometry_config_bundle(config,bundle):
 def validate_geometry_bundle(observation,bundle):
     c.require(isinstance(bundle,GeometryCandidateBundle),'v14 bundle requires its original audit/byte artifacts')
     value,audit=bundle.data,bundle.audit
-    native=audit['config']['version'] in (GEOMETRY_NATIVE_VERSION,GEOMETRY_JEV_VERSION)
+    native=audit['config']['version'] in (GEOMETRY_NATIVE_VERSION,*GEOMETRY_JEV_VERSIONS)
     c.closed(audit,({'publication'} if native else set()) | {'version','config','native_bytes_hex','geometry_bytes_hex','common_binding',
                     'common_admission','backend_binding','generation','final_candidates_digest','generation_counts'})
     c.require(audit['version']==('geometry_provider_audit_v2' if native else GEOMETRY_AUDIT) and digest(audit)==value['geometry_audit_digest'],'audit digest/version drift')

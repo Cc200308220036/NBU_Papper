@@ -187,7 +187,7 @@ def publish_native_shape_pool_v3(n,g,common,binding,raw_generation_raw,raw_pool_
         q=copy.deepcopy(r);q['oriented_size_mm'],axis=restore_size(r['oriented_size_mm'],item['dimensions_mm'],r['pose']['yaw_deg'])
         for side,candidate in enumerate((r,q)):
             case=physical(copy.deepcopy(state),r['pick_item_id'])
-            errors=check_candidate(case,{'container':state['container']},candidate)
+            errors=check_candidate(case,{'container':state['container']},candidate,packaging_top_load_limit_enabled=config.get('packaging_top_load_limit_enabled',True))
             require(not errors,'oracle disagreement '+str(errors),'NUM_BRIDGE_PHYSICAL_DISAGREEMENT')
             afters[side].append(apply_candidate(case,candidate))
         compare(afters[0][-1],afters[1][-1],size_paths=['/'+str(len(state['placed_items']))+'/oriented_size_mm/'+str(k) for k in range(3)])

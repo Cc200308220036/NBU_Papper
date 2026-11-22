@@ -56,7 +56,12 @@ class GeometryJevRequestLedger(RequestLedger):
         shared_max_sends: int,
         allow_real_transport: bool = False,
         hook=None,
+        runtime_version=GEOMETRY_JEV_VERSION,
     ):
+        require(runtime_version in ('jev_packaging_geometry_jev_v18','jev_packaging_geometry_jev_v19'),'geometry_jev_ledger_version')
+        if runtime_version=='jev_packaging_geometry_jev_v19':
+            self.context_version='jev_decision_context_v19'
+            self.ledger_version='geometry_jev_requests_v2'
         self.plan_digest = plan_digest
         self.per_job_max_sends = per_job_max_sends
         self.allow_real_transport = bool(allow_real_transport)
@@ -113,6 +118,9 @@ class GeometryJevRequestLedger(RequestLedger):
             raise JevSelectError('per_job_request_budget_exceeded')
         self.data = d
         return d
+
+    def identity(self, context, job_id, decision_id):
+        return RequestLedger.identity.__func__(self, context, job_id, decision_id)
 
     def admit_request(self, job_id, decision_id):
         job_sends = sum(r['send_started'] for r in self.data['requests'] if r['job_id'] == job_id)
@@ -238,7 +246,7 @@ def load_jev_config(plan: dict, job_id: str, *, monitor_snapshot: dict, admissio
     )
     cfg.update(
         **config_fields(),
-        version=GEOMETRY_JEV_VERSION,
+        version=plan['runtime_version'],
         model=GP6_MODEL,
         selector=GP6_METHOD,
         construction_only=False,
@@ -262,6 +270,10 @@ def load_jev_config(plan: dict, job_id: str, *, monitor_snapshot: dict, admissio
         per_job_max_sends=plan['per_job_max_sends'],
         shared_max_sends=plan['shared_max_sends'],
     )
+    if plan['version']=='geometry_jev_plan_v2':
+        cfg.update(packaging_top_load_limit_enabled=plan['packaging_top_load_limit_enabled'],
+            prompt_version=plan['prompt_version'],feature_version=plan['feature_version'],
+            execution_version='geometry_jev_execution_v2',experiment_protocol='geometry_jev_run_v2')
     cfg['runtime_identity']['strategy_identity'] = digest({k: v for k, v in cfg.items() if k != 'runtime_identity'})
     preflight_jev(cfg)
     return cfg
@@ -270,7 +282,7 @@ def load_jev_config(plan: dict, job_id: str, *, monitor_snapshot: dict, admissio
 def preflight_jev(config: dict) -> None:
     from .candidate_backends import load_geometry_config
 
-    validate_schema('config_v18', config)
+    validate_schema('config', config)
     ids = config['runtime_identity']
     task = config['order_task_identity']
     snapshot = config['stability_monitor']
@@ -301,6 +313,9 @@ def preflight_jev(config: dict) -> None:
         )
     })
     expected.update(config_fields())
+    if config['version']=='jev_packaging_geometry_jev_v19':
+        expected.update(packaging_top_load_limit_enabled=config['packaging_top_load_limit_enabled'],
+            prompt_version='geometry_top_load_switch_en_v2',feature_version='geometry_top_load_switch_facts_v2')
     expected['runtime_identity']['strategy_identity'] = digest({k: v for k, v in expected.items() if k != 'runtime_identity'})
     require(same_native(expected, config), 'geometry_jev_config_drift')
 
@@ -308,8 +323,8 @@ def preflight_jev(config: dict) -> None:
 def jev_execution_for_config(config: dict, job_id: str) -> dict:
     preflight_jev(config)
     v = {
-        **jev_identity_fields(),
-        'version': 'geometry_jev_execution_v1',
+        **jev_identity_fields({'runtime_version':config['version']}),
+        'version': 'geometry_jev_execution_v2' if config['version']=='jev_packaging_geometry_jev_v19' else 'geometry_jev_execution_v1',
         'scope': config['execution_scope'],
         'task_digest': config['order_task_identity']['runtime_digest'],
         'config_digest': digest(config),
@@ -393,6 +408,7 @@ def validate_jev_request_ledger_binding(
 ) -> None:
     """Bind actual request ledger identity, limits, path, and transport mode to frozen plan."""
     require(isinstance(ledger, GeometryJevRequestLedger), 'geometry_jev_ledger_required')
+    require(ledger.context_version == ('jev_decision_context_v19' if config['version']=='jev_packaging_geometry_jev_v19' else GEOMETRY_JEV_CONTEXT), 'geometry_jev_ledger_runtime_drift')
     expected_plan_digest = digest(plan)
     require(
         ledger.plan_digest == expected_plan_digest == config['plan_digest'],
@@ -470,7 +486,7 @@ def validate_jev_saved_checkpoint(cp, task, config, job_id, method, store):
         job_id,
         method,
         store,
-        schema='checkpoint_v18',
+        schema='checkpoint_v19' if config['version']=='jev_packaging_geometry_jev_v19' else 'checkpoint_v18',
         expected_execution=expected,
     )
     # Cross-check saved selections against durable request ledger
@@ -602,8 +618,8 @@ def jev_order_metrics(task, config, method, state, events, reason, *, ledger=Non
         }
 
     value = {
-        **jev_identity_fields(),
-        'version': 'geometry_jev_metrics_v1',
+        **jev_identity_fields({'runtime_version':config['version']}),
+        'version': 'geometry_jev_metrics_v2' if config['version']=='jev_packaging_geometry_jev_v19' else 'geometry_jev_metrics_v1',
         'task_id': task['task_id'],
         'candidate_backend': config['candidate_backend'],
         'method': method,
@@ -640,6 +656,8 @@ def jev_order_metrics(task, config, method, state, events, reason, *, ledger=Non
         'cost': cost,
         'global_infeasibility_proven': False,
     }
+    if config['version']=='jev_packaging_geometry_jev_v19':
+        value['packaging_top_load_compliance']='APPLICABLE' if config['packaging_top_load_limit_enabled'] else 'NOT_APPLICABLE'
     validate_schema('geometry_jev_metrics_v1', value)
     return value
 

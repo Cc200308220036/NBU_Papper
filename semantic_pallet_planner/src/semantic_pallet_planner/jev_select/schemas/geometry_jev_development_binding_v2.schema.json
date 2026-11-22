@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "geometry_jev_development_binding_v2"
+    },
+    "runtime_version": {
+      "const": "jev_packaging_geometry_jev_v19"
+    },
+    "publication_policy_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "scope": {
+      "const": "GP6_DEVELOPMENT_SYNTHETIC_ONLY"
+    },
+    "transport_evidence": {
+      "const": "TEST_DOUBLE"
+    },
+    "monitor_evidence": {
+      "const": "TEST_DOUBLE"
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "version",
+    "runtime_version",
+    "publication_policy_digest",
+    "scope",
+    "transport_evidence",
+    "monitor_evidence",
+    "plan_digest"
+  ],
+  "additionalProperties": false
+}

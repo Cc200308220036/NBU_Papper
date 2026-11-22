@@ -45,7 +45,7 @@ def generate(state, pick, regions, config):
                         rejected[reason] = rejected.get(reason, 0)+1
                         continue
                     c = raw['visible']
-                    errors = check_candidate(case, {'container': case['container']}, c)
+                    errors = check_candidate(case, {'container': case['container']}, c,packaging_top_load_limit_enabled=config.get('packaging_top_load_limit_enabled',True))
                     if errors:
                         rejected['independent_physics'] = rejected.get('independent_physics', 0)+1
                         continue

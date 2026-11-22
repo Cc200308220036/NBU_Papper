@@ -65,7 +65,7 @@ def _generate(raw, *, _point_limit=None):
     return _generation_core(raw, adapt_input=adapt, _point_limit=_point_limit)
 
 
-def physical_prefix_views(physical, *, audit=None):
+def physical_prefix_views(physical, *, audit=None, packaging_top_load_limit_enabled=True):
     """Original saved-ledger and ordered-physics admission, on private copies.
 
     Reused by both N2 backends before generation; no new physical rules.
@@ -73,6 +73,7 @@ def physical_prefix_views(physical, *, audit=None):
     runtime = audit is not None
     settings={k:copy.deepcopy(CONFIG[k]) for k in ('support_ratio_min','candidate_generator')}
     settings['container']=physical['container']
+    if not packaging_top_load_limit_enabled:settings['packaging_top_load_limit_enabled']=False
     placed=restore_placed(physical['placed_items'])
     if runtime:
         audit['ledger_views'] = {
@@ -100,7 +101,7 @@ def physical_prefix_views(physical, *, audit=None):
 
 
 def _generation_core(raw, *, adapt_input, identity_namespace='original_lexemes_v1',
-                     _point_limit=None):
+                     _point_limit=None, packaging_top_load_limit_enabled=True):
     """The sole proposal/check/reduction engine shared by the two source contracts.
 
     adapt_input returns (exact view, native physical view, exact state, internal
@@ -125,7 +126,7 @@ def _generation_core(raw, *, adapt_input, identity_namespace='original_lexemes_v
     try:
         exact, physical, state, geometry_bytes, identity=adapt_input(raw)
         audit['input_digest']=identity
-        settings, placed, oracle_placed = physical_prefix_views(physical, audit=audit if runtime else None)
+        settings, placed, oracle_placed = physical_prefix_views(physical, audit=audit if runtime else None,packaging_top_load_limit_enabled=packaging_top_load_limit_enabled)
         index=build_space_index(geometry_bytes)
         audit['space_index_builds']=1
         audit['space_index']=index
@@ -188,7 +189,7 @@ def _generation_core(raw, *, adapt_input, identity_namespace='original_lexemes_v
                             if any(number(Decimal(str(candidate['pose'][k])))!=v for k,v in zip(POSE,pub)):
                                 reject('POSE_REPRESENTATION_REJECTED',True); continue
                             case={'available_items':[copy.deepcopy(physical_src)],'placed_items':oracle_placed}
-                            errors=check_candidate(case,{'container':physical['container']},candidate)
+                            errors=check_candidate(case,{'container':physical['container']},candidate,packaging_top_load_limit_enabled=packaging_top_load_limit_enabled)
                             if errors:
                                 ia['check_disagreement']=dict(ref,action_key=list(key),errors=errors)
                                 raise GeometryError('PHYSICAL_CHECK_DISAGREEMENT',','.join(errors))

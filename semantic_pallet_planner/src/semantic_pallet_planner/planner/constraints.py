@@ -163,7 +163,7 @@ def evaluate_pose(
         propagate_load(support_fractions, item["mass_kg"], placed_by_id, increments)
         for support_id, extra in increments.items():
             support = placed_by_id[support_id]
-            if support["supported_load_kg"] + extra > support["item"]["top_load_limit_kg_synthetic"] + 1e-9:
+            if config.get("packaging_top_load_limit_enabled", True) and support["supported_load_kg"] + extra > support["item"]["top_load_limit_kg_synthetic"] + 1e-9:
                 return reject("overload")
 
     record["supports"] = support_fractions

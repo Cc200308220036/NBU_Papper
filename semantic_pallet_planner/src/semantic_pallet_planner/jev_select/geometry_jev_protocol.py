@@ -30,9 +30,9 @@ GP6_MAX_PER_JOB_SENDS = 19
 GP6_MAX_SHARED_SENDS = 76
 
 
-def jev_identity_fields() -> dict[str, str]:
+def jev_identity_fields(value=None) -> dict[str, str]:
     return {
-        'runtime_version': GEOMETRY_JEV_VERSION,
+        'runtime_version': (value or {}).get('runtime_version', GEOMETRY_JEV_VERSION),
         'publication_policy_digest': policy_digest(),
     }
 
@@ -46,6 +46,8 @@ def prepare_jev_plan(
     shared_max_sends: int = GP6_MAX_SHARED_SENDS,
     request_ledger_path: str | None = None,
     call_ledger_path: str | None = None,
+    packaging_top_load_limit_enabled: bool = True,
+    switch_protocol: bool = False,
 ) -> dict:
     """Pure GP6 plan preparation. Formal plans are always DRAFT here."""
     from .candidate_backends import _identity
@@ -88,6 +90,11 @@ def prepare_jev_plan(
         'call_ledger_path': call_ledger_path,
         'request_ledger_path': request_ledger_path,
     }
+    require(type(packaging_top_load_limit_enabled) is bool, 'geometry_top_load_boolean')
+    if switch_protocol or not packaging_top_load_limit_enabled:
+        plan.update(version='geometry_jev_plan_v2',runtime_version='jev_packaging_geometry_jev_v19',
+            packaging_top_load_limit_enabled=packaging_top_load_limit_enabled,
+            prompt_version='geometry_top_load_switch_en_v2',feature_version='geometry_top_load_switch_facts_v2')
     validate_jev_plan(plan)
     return plan
 
@@ -96,7 +103,7 @@ def validate_jev_plan(plan: dict) -> dict:
     from .candidate_backends import _identity
 
     validate_schema('geometry_jev_plan_v1', plan)
-    require(all(plan.get(k) == v for k, v in jev_identity_fields().items()), 'geometry_jev_plan_identity')
+    require(all(plan.get(k) == v for k, v in jev_identity_fields(plan).items()), 'geometry_jev_plan_identity')
     require(
         plan['source_identity'] == _identity()['source_identity']
         and plan['environment_digest'] == digest(environment()),
@@ -111,13 +118,15 @@ def validate_jev_plan(plan: dict) -> dict:
         for i, (t, b) in enumerate((t, b) for t in plan['tasks'] for b in GEOMETRY_BACKENDS)
     ]
     require(same_native(plan['jobs'], expected) and len(expected) <= 4, 'geometry_jev_matrix')
+    if plan['version']=='geometry_jev_plan_v2':
+        require(plan['shared_max_sends']<=38 and len(expected)==2,'geometry_jev_switch_matrix')
     synthetic = plan['scope'] == GP6_DEVELOPMENT
     require(
         all(t['origin'] == ('SYNTHETIC_FIXED' if synthetic else 'EXPOSED_TRAIN') for t in plan['tasks']),
         'geometry_jev_task_origin_scope',
     )
     if not synthetic:
-        require(tuple(t['task_id'] for t in plan['tasks']) == TASK_IDS, 'geometry_jev_fixed_tasks')
+        require(tuple(t['task_id'] for t in plan['tasks']) == (TASK_IDS[:1] if plan['version']=='geometry_jev_plan_v2' else TASK_IDS), 'geometry_jev_fixed_tasks')
         require(
             plan['status'] in ('DRAFT', 'FROZEN')
             and 0 < plan['model_calls_max'] == plan['shared_max_sends'] <= GP6_MAX_SHARED_SENDS
@@ -148,8 +157,8 @@ def development_binding(plan: dict) -> dict:
     validate_jev_plan(plan)
     require(plan['scope'] == GP6_DEVELOPMENT, 'geometry_jev_development_only')
     binding = {
-        **jev_identity_fields(),
-        'version': 'geometry_jev_development_binding_v1',
+        **jev_identity_fields(plan),
+        'version': 'geometry_jev_development_binding_v2' if plan['version']=='geometry_jev_plan_v2' else 'geometry_jev_development_binding_v1',
         'scope': GP6_DEVELOPMENT,
         'transport_evidence': 'TEST_DOUBLE',
         'monitor_evidence': 'TEST_DOUBLE',
@@ -184,7 +193,7 @@ def validate_jev_admission(plan: dict, monitor_snapshot: dict, admission: dict, 
     require(admission is not None, 'gp6_real_transport_unauthorized')
     validate_schema('geometry_jev_admission_v1', admission)
     expected = {
-        **jev_identity_fields(),
+        **jev_identity_fields(plan),
         'plan_digest': digest(plan),
         'source_identity': plan['source_identity'],
         'environment_digest': plan['environment_digest'],
@@ -216,8 +225,8 @@ def validate_jev_admission(plan: dict, monitor_snapshot: dict, admission: dict, 
 def draft_jev_run(plan: dict) -> dict:
     validate_jev_plan(plan)
     value = {
-        **jev_identity_fields(),
-        'version': 'geometry_jev_run_v1',
+        **jev_identity_fields(plan),
+        'version': 'geometry_jev_run_v2' if plan['version']=='geometry_jev_plan_v2' else 'geometry_jev_run_v1',
         'plan_digest': digest(plan),
         'rows': [{'job_id': j['job_id'], 'status': 'NOT_RUN', 'metrics': None} for j in plan['jobs']],
     }

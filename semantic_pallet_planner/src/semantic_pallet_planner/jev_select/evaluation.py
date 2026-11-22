@@ -89,14 +89,14 @@ def aggregate(rows, attempts, *, mode="offline", pricing=None):
 
 
 
-def evaluate_committed_state(state, reference_spec, regions):
+def evaluate_committed_state(state, reference_spec, regions, *, packaging_top_load_limit_enabled=True):
     """Independent downstream audit, with rule/object identities and coverage."""
     from .packaging_runtime import DATA_VERSION, evaluate_state
     if reference_spec.get('version') == DATA_VERSION:
         if reference_spec['rules'] or regions:
             from .contracts import JevSelectError
             raise JevSelectError('packaging_old_rules_rejected')
-        return evaluate_state(state)
+        return evaluate_state(state,packaging_top_load_limit_enabled=packaging_top_load_limit_enabled)
     from itertools import combinations
     from semantic_pallet_planner.o4.observation import public_object
     from semantic_pallet_planner.o4.evaluator import _accept

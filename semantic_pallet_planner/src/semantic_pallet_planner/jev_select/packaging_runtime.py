@@ -4,6 +4,7 @@ No new physical solver or candidate generator. Local smoke selectors are test
 substitutes only, with no remote transport or memory loading route.
 """
 from __future__ import annotations
+from .packaging_versions import GEOMETRY_JEV_VERSIONS, GEOMETRY_JEV_SWITCH_VERSION
 from .packaging_versions import GEOMETRY_ORDER_CONFIGS, GEOMETRY_NATIVE_VERSION
 from .packaging_versions import GEOMETRY_CONFIGS, GEOMETRY_BUNDLES, GEOMETRY_CONTEXTS, GEOMETRY_RUN_VERSION
 from .packaging_versions import EXACT_CONTEXT, EXACT_VERSION, GEOMETRY_VERSION, GEOMETRY_CONTEXT
@@ -25,6 +26,17 @@ QUESTION = ('Choose one complete box-and-placement action from the shared physic
             'Every action must pass the shared physical checks. No future arrivals are known.')
 OBJECTIVE = 'Complete loading while preserving useful space and capacity using observed facts; physical constraints are mandatory.'
 METHODS = ('local_geometry_test_double','local_first_test_double')
+
+
+GEOMETRY_QUESTION = ('Choose one complete box-and-placement action from the shared physical candidate pool. '
+    'Maximize loaded boxes and useful space using observed geometry, mass and support. '
+    'Packaging top-load limits are disabled. Select a Cxx action exactly as given.')
+GEOMETRY_OBJECTIVE = 'Complete loading using observed dimensions, mass, geometry and support; preserve useful space.'
+
+def request_rules(config=None, state=None):
+    disabled = (config is not None and config.get('packaging_top_load_limit_enabled',True) is False) or (
+        config is None and (state or {}).get('packaging_top_load_limit_enabled') is False)
+    return (GEOMETRY_QUESTION,GEOMETRY_OBJECTIVE) if disabled else (QUESTION,OBJECTIVE)
 
 
 def is_packaging(config):
@@ -207,7 +219,9 @@ def _project_public_facts(config,observation,value,*,shadow_afters=None):
         'available_objects':[public_object(o,False) for o in observation['available_objects']],
         'buffer':{'capacity':3,'end_of_stream':buffer['end_of_stream'],
             'pending':[{**p,'object_id':aliases[p['object_id']]} for p in buffer['pending']]},
-        'objective':OBJECTIVE,'memories':[]}
+        'objective':request_rules(config)[1],'memories':[]}
+    if config['version']=='jev_packaging_geometry_jev_v19':
+        state['packaging_top_load_limit_enabled']=config['packaging_top_load_limit_enabled']
     ordered=sorted(value['selectable_candidates'],key=lambda c:(c['pose']['x_mm'],c['pose']['y_mm'],
         c['pose']['z_base_mm'],c['pose']['yaw_deg'],aliases[c['pick_item_id']]))
     seed=digest([config['display_order_seed'],observation['request_id'],observation['state_hash']])
@@ -235,6 +249,19 @@ def _project_public_facts(config,observation,value,*,shadow_afters=None):
                 'resulting_volume_utilization':c['resulting_geometry']['volume_utilization']},
             'load_changes':changes}
         mapping[label]={'candidate_id':c['candidate_id'],'pick_item_id':c['pick_item_id'],'candidate_digest':digest(c)}
+    if config.get('packaging_top_load_limit_enabled',True) is False:
+        # One projection for construction and deterministic validation. Actual loads
+        # remain physical facts; upper limits and derived capacity are absent.
+        forbidden={'max_top_load_kg','effective_top_permission_kg','remaining_top_load_kg',
+            'top_load_limit_kg_synthetic','utilization_status'}
+        def strip(obj):
+            if isinstance(obj,dict):
+                return {k:strip(v) for k,v in obj.items() if k not in forbidden and 'remaining' not in k and 'capacity' not in k}
+            if isinstance(obj,list):return [strip(v) for v in obj]
+            return obj
+        # Buffer capacity is an observable arrival constraint, unrelated to load.
+        state=strip(state);state['buffer']['capacity']=3
+        criteria=strip(criteria)
     return value,state,criteria,mapping,buffer
 
 
@@ -266,7 +293,7 @@ def build_context(config,observation,bundle,policy,*,memory_view=None,memory_dri
         memory_fields={'memory_view':mv,'retrieval_receipt':retrieval_receipt}
     route=decision_route(bundle)
     body=None if route!='CHOICE_REQUIRED' else {'model':config['model'],'state':state,
-        'questions':{'next_action':{'type':'choice','instructions':QUESTION,'criteria':criteria}}}
+        'questions':{'next_action':{'type':'choice','instructions':request_rules(config)[0],'criteria':criteria}}}
     binding={**{k:observation[k] for k in BINDINGS},'event_index':buffer['event_index'],
         'physical_digest':value['physical_digest'],'selectable_digest':value['selectable_digest'],
         'mapping_digest':digest(mapping),'policy_digest':digest(policy.data),'config_digest':digest(config),
@@ -321,10 +348,20 @@ def validate_runtime_context(context,observation=None,bundle=None,config=None):
     for field,key in [('mapping_digest','display_mapping'),('model_state_digest','model_state'),
         ('criteria_digest','criteria'),('request_body_digest','request_body')]:
         require(binding[field]==digest(value[key]),'runtime_context_digest')
+    question,objective=request_rules(config,value['model_state'])
+    require(value['model_state']['objective']==objective,'runtime_objective_binding')
+    if question==GEOMETRY_QUESTION:
+        forbidden={'max_top_load_kg','effective_top_permission_kg','remaining_top_load_kg',
+            'capacity_utilization','utilization_status','top_load_limit_kg_synthetic'}
+        def clean(obj):
+            if isinstance(obj,dict):return not (forbidden & obj.keys()) and all(clean(v) for v in obj.values())
+            if isinstance(obj,list):return all(clean(v) for v in obj)
+            return True
+        require(clean(value['model_state']) and clean(value['criteria']),'runtime_disabled_capacity_leak')
     body=value['request_body'];route=value['route']
     if route=='CHOICE_REQUIRED':
         require(len(labels)>=2 and body is not None and body['state']==value['model_state'] and
-            body['model']==(config['model'] if config else body['model']) and body['questions']=={'next_action':{'type':'choice','instructions':QUESTION,'criteria':value['criteria']}},'runtime_request_binding')
+            body['model']==(config['model'] if config else body['model']) and body['questions']=={'next_action':{'type':'choice','instructions':request_rules(config,value['model_state'])[0],'criteria':value['criteria']}},'runtime_request_binding')
     else:require(body is None and ((route=='SINGLETON_BYPASS' and len(labels)==1) or
         (route=='STOP_NO_PHYSICAL_CANDIDATE' and not labels)),'runtime_route')
     if config is not None:
@@ -364,7 +401,7 @@ class LocalPackagingDouble:
         return result(context,status='selected',source='test_double',label=label)
 
 
-def evaluate_state(state):
+def evaluate_state(state,*,packaging_top_load_limit_enabled=True):
     """Independent downstream use of existing oracle and apply_candidate only."""
     from semantic_pallet_planner.evaluation.geometry_oracle import check_candidate,union_area
     from semantic_pallet_planner.evaluation.state import apply_candidate
@@ -379,7 +416,7 @@ def evaluate_state(state):
             'support':{'support_item_ids':[e['item_id'] for e in edges[name]],'support_ratio':ratio},
             'resulting_geometry':{'max_height_mm':max(o['pose']['z_base_mm']+o['oriented_size_mm'][2] for o in [*prefix,obj]),
                 'volume_utilization':volume/(state['container']['length_mm']*state['container']['width_mm']*state['container']['max_height_mm'])}}
-        errors=check_candidate({'placed_items':prefix,'available_items':[obj]},{'container':state['container']},c)
+        errors=check_candidate({'placed_items':prefix,'available_items':[obj]},{'container':state['container']},c,packaging_top_load_limit_enabled=packaging_top_load_limit_enabled)
         violations.extend({'item_id':name,'reason':e} for e in errors)
         # Invalid layouts have no certified reconstruction; never recurse through bad graphs.
         if errors:break
@@ -389,17 +426,21 @@ def evaluate_state(state):
         if not math.isclose(obj['supported_load_kg'],loads[name],abs_tol=1e-9,rel_tol=1e-12):
             violations.append({'item_id':name,'reason':'runtime_load_mismatch'})
         if obj['support_fractions']!=edges[name]:violations.append({'item_id':name,'reason':'runtime_support_mismatch'})
-        if loads[name]>capacity+1e-6:violations.append({'item_id':name,'reason':'overload'})
+        if packaging_top_load_limit_enabled and loads[name]>capacity+1e-6:violations.append({'item_id':name,'reason':'overload'})
         if not obj['stackable'] and loads[name]>1e-6:violations.append({'item_id':name,'reason':'non_stackable_support'})
     facts={o['item_id']:{**resources(o,loads[o['item_id']]),'support_fractions':edges[o['item_id']],
         'contacts':contacts[o['item_id']],'centroid_mm':geometry_facts(o['pose'],o['oriented_size_mm'])['centroid_mm']} for o in placed}
+    if not packaging_top_load_limit_enabled:
+        for fact in facts.values():
+            for key in ('max_top_load_kg','effective_top_permission_kg','remaining_top_load_kg','capacity_utilization','utilization_status'):fact.pop(key,None)
+        for fact in facts.values():fact['packaging_top_load_compliance']='NOT_APPLICABLE'
     raw={'violations':violations,'runtime_facts':facts}
     return {'version':'jev_packaging_physical_state_v1','raw':raw,**raw}
 
 
 def summary(task,config,method,state,events,reason):
     from .packaging_versions import GEOMETRY_ORDER_VERSION, GEOMETRY_JEV_VERSION
-    if config['version']==GEOMETRY_JEV_VERSION:
+    if config['version'] in GEOMETRY_JEV_VERSIONS:
         from .geometry_jev_execution import jev_order_metrics
         return jev_order_metrics(task,config,method,state,events,reason)
     if config['version'] in GEOMETRY_ORDER_CONFIGS:

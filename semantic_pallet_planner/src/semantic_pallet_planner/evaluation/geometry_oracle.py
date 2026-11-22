@@ -44,7 +44,7 @@ def propagate(item_id, load_value, placed_by_id, increments):
     for edge in item.get("support_fractions", []):
         propagate(edge["item_id"], load_value * edge["fraction"], placed_by_id, increments)
 
-def check_candidate(case, scenario, candidate):
+def check_candidate(case, scenario, candidate, *, packaging_top_load_limit_enabled=True):
     errors = []
     available_by_id = {x["item_id"]: x for x in case["available_items"]}
     if candidate.get("pick_item_id") not in available_by_id:
@@ -103,7 +103,7 @@ def check_candidate(case, scenario, candidate):
             propagate(item_id, available["mass_kg"] * area / total, placed_by_id, increments)
         for item_id, extra in increments.items():
             item = placed_by_id[item_id]
-            if item["supported_load_kg"] + extra > item["top_load_limit_kg_synthetic"] + TOL:
+            if packaging_top_load_limit_enabled and item["supported_load_kg"] + extra > item["top_load_limit_kg_synthetic"] + TOL:
                 errors.append("overload")
                 break
         reported = candidate["support"]

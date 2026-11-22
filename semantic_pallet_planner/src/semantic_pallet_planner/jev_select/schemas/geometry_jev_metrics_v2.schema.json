@@ -1,0 +1,378 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "geometry_jev_metrics_v2"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_backend": {
+      "enum": [
+        "e2_original_v1",
+        "ems_surface_hybrid_v1"
+      ]
+    },
+    "method": {
+      "const": "jev_no_memory"
+    },
+    "scope": {
+      "enum": [
+        "GP6_DEVELOPMENT_SYNTHETIC_ONLY",
+        "GP6_EXPOSED_TRAIN_JEV_F0_ONLY"
+      ]
+    },
+    "monitor_evidence": {
+      "enum": [
+        "TEST_DOUBLE",
+        "REAL_KERNEL"
+      ]
+    },
+    "runtime_identity": {
+      "type": "object",
+      "properties": {
+        "data_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "physical_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "strategy_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "task_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "monitor_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_identity": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "data_identity",
+        "physical_identity",
+        "strategy_identity",
+        "task_identity",
+        "monitor_identity",
+        "source_identity"
+      ],
+      "additionalProperties": false
+    },
+    "planned_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "arrived_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "placed_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "planned_volume_mm3": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_volume_mm3": {
+      "type": "number",
+      "minimum": 0
+    },
+    "planned_mass_kg": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_mass_kg": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_item_ratio": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_volume_ratio": {
+      "type": "number",
+      "minimum": 0
+    },
+    "placed_mass_ratio": {
+      "type": "number",
+      "minimum": 0
+    },
+    "fixed_container_utilization": {
+      "type": "number",
+      "minimum": 0
+    },
+    "max_height_mm": {
+      "type": "number",
+      "minimum": 0
+    },
+    "envelope_utilization": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "envelope_status": {
+      "enum": [
+        "APPLICABLE",
+        "NA_EMPTY"
+      ]
+    },
+    "completed": {
+      "type": "boolean"
+    },
+    "termination_reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "termination_class": {
+      "enum": [
+        "COMPLETE",
+        "NO_CANDIDATE",
+        "PREDICTED_STATIC_INSTABILITY",
+        "UNASSESSABLE",
+        "UNKNOWN_SEND",
+        "PROVIDER_FAILURE",
+        "INVALID_RESPONSE",
+        "BUDGET_EXHAUSTED",
+        "CANCELLED",
+        "TECHNICAL_FAILURE"
+      ]
+    },
+    "predicted_instability_progress": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "decision_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "failed_item_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "placed_item_ratio": {
+              "type": "number",
+              "minimum": 0
+            },
+            "placed_volume_ratio": {
+              "type": "number",
+              "minimum": 0
+            },
+            "placed_mass_ratio": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "decision_id",
+            "failed_item_id",
+            "placed_item_ratio",
+            "placed_volume_ratio",
+            "placed_mass_ratio"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "assessment_entries": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "solver_calls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "test_double_assessments": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "assessment_entries",
+        "solver_calls",
+        "test_double_assessments"
+      ],
+      "additionalProperties": false
+    },
+    "timings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "segment": {
+            "type": "string",
+            "minLength": 1
+          },
+          "seconds": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "segment",
+          "seconds"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "cost": {
+      "type": "object",
+      "properties": {
+        "send_reservations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "model_calls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "test_double_sends": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "successful_selections": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failed_requests": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unknown_sends": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "singleton_bypasses": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "usage_status": {
+          "enum": [
+            "AVAILABLE",
+            "UNKNOWN",
+            "NA_NO_SERVICE_CALL"
+          ]
+        },
+        "usage": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            {
+              "const": "UNKNOWN"
+            }
+          ]
+        },
+        "service_cost_usd": {
+          "enum": [
+            "UNKNOWN",
+            "NA_NO_SERVICE_CALL"
+          ]
+        },
+        "local_compute_cost": {
+          "const": "UNKNOWN"
+        }
+      },
+      "required": [
+        "send_reservations",
+        "model_calls",
+        "test_double_sends",
+        "successful_selections",
+        "failed_requests",
+        "unknown_sends",
+        "singleton_bypasses",
+        "usage_status",
+        "usage",
+        "service_cost_usd",
+        "local_compute_cost"
+      ],
+      "additionalProperties": false
+    },
+    "global_infeasibility_proven": {
+      "const": false
+    },
+    "runtime_version": {
+      "const": "jev_packaging_geometry_jev_v19"
+    },
+    "publication_policy_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "transport_evidence": {
+      "enum": [
+        "TEST_DOUBLE",
+        "REAL_JEV"
+      ]
+    },
+    "packaging_top_load_compliance": {
+      "enum": [
+        "APPLICABLE",
+        "NOT_APPLICABLE"
+      ]
+    }
+  },
+  "required": [
+    "version",
+    "task_id",
+    "candidate_backend",
+    "method",
+    "scope",
+    "monitor_evidence",
+    "runtime_identity",
+    "planned_items",
+    "arrived_items",
+    "placed_items",
+    "planned_volume_mm3",
+    "placed_volume_mm3",
+    "planned_mass_kg",
+    "placed_mass_kg",
+    "placed_item_ratio",
+    "placed_volume_ratio",
+    "placed_mass_ratio",
+    "fixed_container_utilization",
+    "max_height_mm",
+    "envelope_utilization",
+    "envelope_status",
+    "completed",
+    "termination_reason",
+    "termination_class",
+    "predicted_instability_progress",
+    "counts",
+    "timings",
+    "cost",
+    "global_infeasibility_proven",
+    "runtime_version",
+    "publication_policy_digest",
+    "transport_evidence",
+    "packaging_top_load_compliance"
+  ],
+  "additionalProperties": false
+}

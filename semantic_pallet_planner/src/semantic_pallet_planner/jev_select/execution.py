@@ -1,5 +1,6 @@
 """Versioned physical-only commit; public business requirements cannot reject it."""
 from __future__ import annotations
+from .packaging_versions import GEOMETRY_JEV_VERSIONS, GEOMETRY_JEV_SWITCH_VERSION
 
 from semantic_pallet_planner.o4.buffer.buffer_state import physical, place
 from semantic_pallet_planner.o4.extensions.e2.protocol import observation as rebuild_observation
@@ -19,7 +20,7 @@ def commit_physical(state, regions, observation, bundle, context, selection, con
     if config.get('version') in GEOMETRY_EXECUTABLE_CONFIGS:
         from .geometry_execution import GeometryStore,validate_execution_identity
         validate_execution_identity(execution_binding,config)
-        if config.get('version')==GEOMETRY_JEV_VERSION:
+        if config.get('version') in GEOMETRY_JEV_VERSIONS:
             from .geometry_jev_execution import JevOrderStore
             if type(geometry_store) is not JevOrderStore or geometry_store.authorize_config(config)!=execution_binding:
                 raise JevSelectError('geometry_jev_commit_authority')
@@ -64,8 +65,8 @@ def commit_physical(state, regions, observation, bundle, context, selection, con
         if monitor is None or monitor_event is None:
             raise JevSelectError('missing_monitor_credential')
         validate_monitor(monitor,state,candidate,monitor_event,config,require_stable=True)
-    errors = check_candidate(physical(state, candidate["pick_item_id"]), {"container": state["container"]}, candidate)
+    errors = check_candidate(physical(state, candidate["pick_item_id"]), {"container": state["container"]}, candidate,packaging_top_load_limit_enabled=config.get('packaging_top_load_limit_enabled',True))
     if errors:
         raise JevSelectError("physical_rejection", ",".join(errors))
     # This deliberately does not call E2's business-gated commit or clear any policy.
-    return place(state, candidate)
+    return place(state, candidate,packaging_top_load_limit_enabled=config.get('packaging_top_load_limit_enabled',True))

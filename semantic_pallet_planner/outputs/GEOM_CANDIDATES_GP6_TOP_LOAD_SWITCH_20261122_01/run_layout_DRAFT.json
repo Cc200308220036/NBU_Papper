@@ -1,0 +1,110 @@
+{
+  "status": "DRAFT",
+  "authorized_for_api_calls": false,
+  "real_calls_this_delivery": 0,
+  "plan_digest": "a8cab938c30c7cf85f24ab28382fcae1e416a6d8e2732917e07d5d8773afdc92",
+  "run_root": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_TOP_LOAD_DISABLED_RUN_20261122_01",
+  "request_ledger_path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_TOP_LOAD_DISABLED_LEDGERS_20261122_01/requests/requests.json",
+  "call_ledger_path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_TOP_LOAD_DISABLED_LEDGERS_20261122_01/calls/calls.json",
+  "ledger_initialization": "NOT_RUN",
+  "monitor_snapshot_reference": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/monitor_snapshot.json",
+  "monitor_enabled": true,
+  "monitor_algorithm": "pct_exact_pose_network_v3",
+  "buffer_capacity": 3,
+  "display_order_seed": 20261102,
+  "per_object_top_k": 16,
+  "joint_candidates_max": 48,
+  "arrival_order_digest": "e2e03dd896eb0f9ed77b8a0b9c97cc5aacf87c11adf4e94dc3d749488d7e636f",
+  "jobs": [
+    {
+      "job_id": "G00",
+      "task_id": "NEW_00100027_controlled_base",
+      "backend": "e2_original_v1",
+      "method": "jev_no_memory",
+      "packaging_top_load_limit_enabled": false,
+      "generator_config": {
+        "support_ratio_min": 0.7,
+        "candidate_generator": {
+          "name": "extreme_point_ems_style",
+          "version": "0.1.0",
+          "top_k": 16,
+          "yaw_degrees": [
+            0,
+            90
+          ],
+          "geometry_score_weights": {
+            "compactness": 0.35,
+            "height": 0.25,
+            "stability": 0.25,
+            "balance": 0.15
+          },
+          "epsilon": 0.05,
+          "pose_tolerance_mm": 1
+        }
+      },
+      "send_limit": 19,
+      "status": "NOT_RUN"
+    },
+    {
+      "job_id": "G01",
+      "task_id": "NEW_00100027_controlled_base",
+      "backend": "ems_surface_hybrid_v1",
+      "method": "jev_no_memory",
+      "packaging_top_load_limit_enabled": false,
+      "generator_config": {
+        "version": "geometry_runtime_generator_config_v1",
+        "profile": "geometry_runtime_shortest_decimal_v1",
+        "generator": {
+          "version": "geometry_gp2_standalone_config_v1",
+          "backend": "ems_surface_hybrid_v1",
+          "budgets": {
+            "active_spaces": 4096,
+            "space_containment_comparisons": 2000000,
+            "surface_event_cells": 16384,
+            "surface_expansion_cell_checks": 2000000,
+            "raw_point_attempts_per_item": 32768
+          },
+          "yaw_degrees": [
+            0,
+            90
+          ],
+          "per_item_top_k": 16,
+          "joint_top_k": 48,
+          "publish_quantum_mm": "0.001",
+          "rounding": "HALF_EVEN",
+          "reducer": "yaw_floor_required_then_joint_group_coverage_v1",
+          "support_ratio_min": 0.7,
+          "candidate_generator": {
+            "geometry_score_weights": {
+              "compactness": 0.35,
+              "height": 0.25,
+              "stability": 0.25,
+              "balance": 0.15
+            }
+          }
+        }
+      },
+      "send_limit": 19,
+      "status": "NOT_RUN"
+    }
+  ],
+  "shared_send_limit": 38,
+  "primary_metrics": [
+    "placed_items",
+    "fixed_container_utilization",
+    "PREDICTED_STATIC_INSTABILITY"
+  ],
+  "additional_metrics": [
+    "max_height_mm",
+    "envelope_utilization"
+  ],
+  "packaging_top_load_compliance": "NOT_APPLICABLE",
+  "data_checks": {
+    "manifest.json": "dea22a446f7242aa2bf5572749ce92033deba009b3e592b3903dd7bf500fe3ad",
+    "handoff.json": "b41857f6c9fdc41b85377e6327883daf544a28ea23a7512ea7f6372e689548fe",
+    "source_manifest.json": "fb84774d188a17a07f18d38bbdfc963f7819e5d916d975aa45942afc2940d75c",
+    "split_manifest.json": "e99b9b674c95a3744bb339e3c1cf68eb3856ec993f541ba686343a8cbdf33012",
+    "tasks/NEW_00100027_controlled_base.json": "230ea8b1d6766fb4898b75da8afcea1738afd27e66a38d1ffa0a82409e332a89"
+  },
+  "limits": "Exposed train source; feasibility UNKNOWN. Draft ceilings are not dispatch permission; new admission and bridge required."
+}

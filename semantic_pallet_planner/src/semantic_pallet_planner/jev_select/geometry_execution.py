@@ -1,3 +1,4 @@
+from .packaging_versions import GEOMETRY_JEV_VERSIONS, GEOMETRY_JEV_SWITCH_VERSION
 """Independent v15 manual-fixture execution identities and immutable blobs.
 
 No solver, selector, order loop or physical engine is implemented here.
@@ -78,7 +79,7 @@ def execution_binding(task,config):
 
 def validate_execution_identity(value,config):
     from .packaging_versions import GEOMETRY_ORDER_VERSION
-    if config.get('version')==GEOMETRY_JEV_VERSION:
+    if config.get('version') in GEOMETRY_JEV_VERSIONS:
         from .geometry_jev_execution import validate_jev_execution
         return validate_jev_execution(value,config)
     if config.get('version') in GEOMETRY_ORDER_CONFIGS:
@@ -94,7 +95,7 @@ def validate_execution_identity(value,config):
 
 def validate_run_request(task,selector,config,method,store,on_checkpoint,*,job_id=None):
     from .packaging_versions import GEOMETRY_ORDER_VERSION
-    if config.get('version')==GEOMETRY_JEV_VERSION:
+    if config.get('version') in GEOMETRY_JEV_VERSIONS:
         from .geometry_jev_execution import validate_jev_request
         return validate_jev_request(task,selector,config,method,store,on_checkpoint,job_id=job_id)
     if config.get('version') in GEOMETRY_ORDER_CONFIGS:
@@ -163,7 +164,7 @@ class GeometryStore:
         return n,g,v['binding']
 
     def save_event(self,bundle):
-        if bundle.data['version'] in ('jev_candidate_bundle_v17',GEOMETRY_JEV_BUNDLE):
+        if bundle.data['version'] in ('jev_candidate_bundle_v17',GEOMETRY_JEV_BUNDLE,'jev_candidate_bundle_v19'):
             for key,hexbytes in bundle.audit['publication']['blobs'].items():
                 if self.put(bytes.fromhex(hexbytes))['sha256']!=key:raise JevSelectError('NUM_BRIDGE_IDENTITY_MISMATCH')
         return self.put_json({'version':self.decision_version,'input':copy.deepcopy(self.input_ref),
@@ -179,7 +180,7 @@ class GeometryStore:
         if (not same_native(bundle.data,event['bundle']) or bundle.audit['native_bytes_hex']!=n.hex()
             or bundle.audit['geometry_bytes_hex']!=g.hex() or not same_native(bundle.audit['common_binding'],b)):
             raise JevSelectError('geometry_saved_bundle_drift')
-        if config['version'] in (GEOMETRY_NATIVE_VERSION,GEOMETRY_JEV_VERSION):
+        if config['version'] in (GEOMETRY_NATIVE_VERSION,*GEOMETRY_JEV_VERSIONS):
             for key,hexbytes in bundle.audit['publication']['blobs'].items():
                 if self.get({'version':'geometry_blob_ref_v1','sha256':key})!=bytes.fromhex(hexbytes):raise JevSelectError('NUM_BRIDGE_IDENTITY_MISMATCH')
         validate_geometry_config_bundle(config,bundle);validate_bundle(event['observation'],bundle)
@@ -197,7 +198,7 @@ class GeometryStore:
 def validate_saved_checkpoint(cp,task,config,job_id,method,store):
     """Validate saved transitions on private copies; never reselect/reassess/commit."""
     from .packaging_versions import GEOMETRY_ORDER_VERSION
-    if config.get('version')==GEOMETRY_JEV_VERSION:
+    if config.get('version') in GEOMETRY_JEV_VERSIONS:
         from .geometry_jev_execution import validate_jev_saved_checkpoint
         return validate_jev_saved_checkpoint(cp,task,config,job_id,method,store)
     if config.get('version') in GEOMETRY_ORDER_CONFIGS:
@@ -271,7 +272,7 @@ def _validate_saved_transitions(cp,task,config,job_id,method,store,*,schema,expe
             if row is None or row['status']!='STABLE':raise JevSelectError('geometry_saved_commit_not_stable')
             if ev['reason'] is not None or ev['event']!='PLACE':raise JevSelectError('geometry_committed_reason_drift')
             if phase is None and ev['error'] is not None:raise JevSelectError('geometry_committed_error_drift')
-            after=place(copy.deepcopy(before),chosen)  # sole original buffer/physics implementation, private validation only
+            after=place(copy.deepcopy(before),chosen,packaging_top_load_limit_enabled=config.get('packaging_top_load_limit_enabled',True))  # sole original buffer/physics implementation, private validation only
             if not same_native(ev['after'],after) or ev['action']!=ev['proposed_action']:raise JevSelectError('geometry_saved_after_drift')
             return after
         if not same_native(ev['after'],before) or ev['action'] is not None:raise JevSelectError('geometry_uncommitted_mutation')
@@ -283,7 +284,7 @@ def _validate_saved_transitions(cp,task,config,job_id,method,store,*,schema,expe
         elif ev['event']=='EOS':after=receive(state,eos=True)
         else:
             after=check(ev,state,ev['event']=='PLACE');decision+=1;stopped=ev['reason']
-            if not same_native(ev['business_after'],evaluate_state(after)):raise JevSelectError('geometry_saved_evaluation_drift')
+            if not same_native(ev['business_after'],evaluate_state(after,packaging_top_load_limit_enabled=config.get('packaging_top_load_limit_enabled',True))):raise JevSelectError('geometry_saved_evaluation_drift')
         if not same_native(ev['after'],after):raise JevSelectError('geometry_saved_transition_drift')
         state=after
     pending=cp['pending_event'];phase=cp['phase']

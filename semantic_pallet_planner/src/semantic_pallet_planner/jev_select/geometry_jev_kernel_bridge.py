@@ -27,7 +27,7 @@ def source_delta(before, after):
 
 
 def validate_kernel_bridge(bridge, plan, monitor):
-    if isinstance(bridge, dict) and bridge.get('version') == 'geometry_jev_kernel_bridge_v2':
+    if isinstance(bridge, dict) and bridge.get('version') in ('geometry_jev_kernel_bridge_v2','geometry_jev_kernel_bridge_v3'):
         return validate_reference_bridge(bridge, plan, monitor)
     return _validate_historical_bridge(bridge, plan, monitor)
 
@@ -42,7 +42,7 @@ def validate_reference_bridge(bridge, plan, monitor):
     from .experiment import source_manifest
     from .geometry_jev_protocol import validate_jev_plan
 
-    validate_schema('geometry_jev_kernel_bridge_v2', bridge)
+    validate_schema('geometry_jev_kernel_bridge_v3' if plan['runtime_version']=='jev_packaging_geometry_jev_v19' else 'geometry_jev_kernel_bridge_v2', bridge)
     validate_jev_plan(plan)
     require(bridge['target'] == target_binding(plan, monitor), 'geometry_bridge_target_drift')
     receipt = read_reference(bridge['evidence_receipt'])
@@ -54,7 +54,7 @@ def validate_reference_bridge(bridge, plan, monitor):
     old_monitor = read_reference(bridge['historical_monitor'])
     require(digest(old_monitor) == receipt['monitor_digest'], 'geometry_bridge_evidence_monitor')
     review = read_reference(bridge['applicability_review'])
-    validate_schema('geometry_jev_kernel_applicability_review_v1', review)
+    validate_schema('geometry_jev_kernel_applicability_review_v2' if plan['runtime_version']=='jev_packaging_geometry_jev_v19' else 'geometry_jev_kernel_applicability_review_v1', review)
     for key in ('evidence_receipt', 'historical_source_manifest', 'historical_monitor', 'target'):
         require(review[key] == bridge[key], 'geometry_bridge_review_binding')
     delta = source_delta(files, source_manifest())
@@ -98,7 +98,7 @@ def _validate_historical_bridge(bridge, plan, monitor):
     old_monitor = read_reference(bridge['historical_monitor'])
     require(digest(old_monitor) == receipt['monitor_digest'], 'geometry_bridge_evidence_monitor')
     review = read_reference(bridge['applicability_review'])
-    validate_schema('geometry_jev_kernel_applicability_review_v1', review)
+    validate_schema('geometry_jev_kernel_applicability_review_v2' if plan['runtime_version']=='jev_packaging_geometry_jev_v19' else 'geometry_jev_kernel_applicability_review_v1', review)
     for key in ('evidence_receipt', 'historical_source_manifest', 'historical_monitor', 'target'):
         require(review[key] == bridge[key], 'geometry_bridge_review_binding')
     delta = source_delta(files, source_manifest())

@@ -1,0 +1,35 @@
+{
+  "entry": {
+    "root": "NBU_Papper",
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "worktree_before_pull": "CLEAN",
+    "index_before_pull": "CLEAN",
+    "pull": "git pull --ff-only",
+    "pull_result": "FAST_FORWARD",
+    "head_before": "099a9d7a6",
+    "head_after": "e555bd4af726774db37770790ad5a39625d412ea"
+  },
+  "acceptance": {
+    "fixture": "PASS",
+    "actual_disabled_request": "PASS",
+    "pytest": "2 passed in 102.53s",
+    "xml": "offline_checks.xml",
+    "monitor": "TEST_DOUBLE",
+    "transport": "TEST_DOUBLE"
+  },
+  "commands": [
+    "PYTHONPATH=semantic_pallet_planner/src:semantic_pallet_planner/tests/unit python -m pytest semantic_pallet_planner/tests/unit/test_gp6_top_load_switch.py -q --tb=short --junitxml=semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_TOP_LOAD_SWITCH_20261122_01/offline_checks.xml",
+    "python semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_TOP_LOAD_SWITCH_20261122_01/prepare_draft.py",
+    "git diff --check"
+  ],
+  "real_calls": 0,
+  "credential_reads": 0,
+  "real_kernel": "NOT_RUN",
+  "formal_driver_preflight": "NOT_RUN",
+  "formal_jobs": "NOT_RUN",
+  "historical_runs": "NOT_RERUN",
+  "full_regression": "NOT_RUN",
+  "old_tracked_outputs": "UNCHANGED",
+  "index_after": "EMPTY"
+}

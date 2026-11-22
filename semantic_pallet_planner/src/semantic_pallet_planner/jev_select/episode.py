@@ -1,5 +1,6 @@
 """Fill-then-plan direct-selection simulator. Checkpoints own durable state."""
 from __future__ import annotations
+from .packaging_versions import GEOMETRY_JEV_VERSIONS, GEOMETRY_JEV_SWITCH_VERSION
 from .packaging_versions import GEOMETRY_ORDER_CONFIGS, GEOMETRY_NATIVE_VERSION, GEOMETRY_JEV_VERSION
 from .packaging_versions import GEOMETRY_CONFIGS, GEOMETRY_RUN_VERSION, GEOMETRY_ORDER_VERSION, GEOMETRY_EXECUTABLE_CONFIGS
 from .packaging_versions import EXACT_VERSION
@@ -64,7 +65,7 @@ def run_episode(task, selector, config, *, job_id, method, resume=None, on_check
                 hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None, geometry_store=None):
     from .packaging_versions import reject_geometry_execution
     reject_geometry_execution(config,"run_episode")
-    if config.get('version') in (*GEOMETRY_ORDER_CONFIGS, GEOMETRY_JEV_VERSION) and event_limit is not None:
+    if config.get('version') in (*GEOMETRY_ORDER_CONFIGS, *GEOMETRY_JEV_VERSIONS) and event_limit is not None:
         raise JevSelectError('geometry_order_no_event_limit')
     if config.get('version') in GEOMETRY_EXECUTABLE_CONFIGS:
         if any(v is not None for v in (expected_events,memory_snapshot,training_fork,memory_view,memory_driver)):
@@ -218,7 +219,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                     on_checkpoint=None, hook=None, event_limit=None, expected_events=None, memory_snapshot=None, training_fork=None, memory_view=None, memory_driver=None, geometry_store=None):
     from .packaging_versions import reject_geometry_execution
     reject_geometry_execution(config,"_run_episode_v2")
-    if config.get('version') in (*GEOMETRY_ORDER_CONFIGS, GEOMETRY_JEV_VERSION) and event_limit is not None:
+    if config.get('version') in (*GEOMETRY_ORDER_CONFIGS, *GEOMETRY_JEV_VERSIONS) and event_limit is not None:
         raise JevSelectError('geometry_order_no_event_limit')
     from .evaluation import evaluate_committed_state, summarize_v2
     from .execution import commit_physical
@@ -416,7 +417,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
         if pending is not None and phase=='COMMITTED':
             started = time.perf_counter()
             try:
-                business = evaluate_committed_state(state,task['reference_policy'],task['regions'])
+                business = evaluate_committed_state(state,task['reference_policy'],task['regions'],packaging_top_load_limit_enabled=config.get('packaging_top_load_limit_enabled',True))
             except (ValueError,KeyError,TypeError) as exc:
                 reason = 'EVALUATION_ERROR'
                 pending['error'] = {'code': 'EVALUATION_ERROR', 'detail': str(exc)[:240]}
@@ -568,7 +569,7 @@ def _run_episode_v2(task, selector, config, *, job_id, method, resume=None,
                 raise JevSelectError('failure_mutated_state') from exc
         event['reason'] = reason
         started = time.perf_counter()
-        business = evaluate_committed_state(state,task['reference_policy'],task['regions'])
+        business = evaluate_committed_state(state,task['reference_policy'],task['regions'],packaging_top_load_limit_enabled=config.get('packaging_top_load_limit_enabled',True))
         event['business_after'] = business; event['reference_after'] = business['raw']
         times['independent_evaluation_s'] = time.perf_counter()-started
         times['decision_wall_s'] = time.perf_counter()-decision_started

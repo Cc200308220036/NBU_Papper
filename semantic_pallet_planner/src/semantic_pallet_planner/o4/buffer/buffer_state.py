@@ -88,12 +88,12 @@ def receive(s,item=None,attributes=None,*,eos=False):
     return new
 
 
-def place(s,candidate):
+def place(s,candidate,*,packaging_top_load_limit_enabled=True):
     invariant(s)
     if candidate.get('pick_item_id') not in {x['item']['item_id'] for x in s['pending_items']}:
         raise O4Error('invalid_pick')
     case=physical(s,candidate['pick_item_id'])
-    try:errors=check_candidate(case,{'container':s['container']},candidate)
+    try:errors=check_candidate(case,{'container':s['container']},candidate,packaging_top_load_limit_enabled=packaging_top_load_limit_enabled)
     except (KeyError,TypeError,ValueError) as exc:raise O4Error('invalid_candidate',str(exc)) from exc
     if errors:raise O4Error('physical_rejection',','.join(errors))
     new=copy.deepcopy(s);new['placed_items']=apply_candidate(case,candidate)

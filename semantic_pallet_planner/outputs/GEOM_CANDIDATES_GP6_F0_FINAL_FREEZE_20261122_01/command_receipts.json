@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "root_confirmed": "NBU_Papper",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "initial_worktree": "CLEAN",
+  "initial_index": "CLEAN",
+  "head_before_pull": "d131f3d3033aa8d1885c68691eeeb451cd4e7652",
+  "head_after_pull": "d131f3d3033aa8d1885c68691eeeb451cd4e7652",
+  "contains_qa_commit_d131f3d30": true,
+  "commands": [
+    {
+      "command": "git pull --ff-only",
+      "first_attempt": "FAILED: .git/FETCH_HEAD read-only sandbox",
+      "approved_retry_exit_code": 0,
+      "result": "Already up to date; no conflict or divergence"
+    },
+    {
+      "command": "python3 -I -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FINAL_FREEZE_20261122_01/check_freeze_readonly.py",
+      "exit_code": 0,
+      "receipt": "readonly_check_receipt.json",
+      "scope": "plan validation, accepted driver digest and ledger read-only helpers only"
+    }
+  ],
+  "development_check_correction": "First check referenced validate_plan, raised AttributeError before ledger checks; corrected to existing validate_jev_plan and reran successfully.",
+  "launch_commands": "commands.sh",
+  "launch_commands_executed": false,
+  "joint_preflight": "NOT_RUN",
+  "real_calls_authorized": 0,
+  "model_calls": 0,
+  "monitor_calls": 0,
+  "lp_calls": 0,
+  "keys_read": false
+}

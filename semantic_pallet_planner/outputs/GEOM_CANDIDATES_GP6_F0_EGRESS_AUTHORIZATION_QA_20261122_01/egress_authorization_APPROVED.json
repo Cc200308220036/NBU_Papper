@@ -1,0 +1,43 @@
+{
+  "schema": "gp6_f0_egress_authorization_v1",
+  "date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "reviewed_head": "777fa2a01346dbe221fff081e8667f9559adc0e9",
+  "plan_digest": "40fc57ca5093148adbdd93a722580c12f2de3c32a24541b12df69ddd62f39978",
+  "status": "APPROVED",
+  "authority": "explicit_user_chat_authorization",
+  "frozen_plan": {
+    "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FINAL_FREEZE_20261122_01/gp6_f0_order_plan_FROZEN.json",
+    "sha256": "faeb414249bcaa7f9aa7c9b4b8834544ecca014139e30fd109bc2f5fc9ee4591"
+  },
+  "prior_scope_authorization": {
+    "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_ADMISSION_QA_20261122_01/scope_authorization_APPROVED.json",
+    "sha256": "de63aa0ef3320b60736504bb5dcd4bb3adae03933379db1d234ff0069fbc72e8"
+  },
+  "signed_admission": {
+    "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_ADMISSION_QA_20261122_01/order_admission_APPROVED.json",
+    "sha256": "4e890ecbc17a4f978a25035f36de8d1a5c8f6707228a02e09ef4363b74b02238"
+  },
+  "endpoint": "https://api.typesafe.ai/v1/systemone",
+  "model": "jev-1.14.0",
+  "target_host": "cyw-R7000P",
+  "jobs": [
+    "G00",
+    "G01",
+    "G02",
+    "G03"
+  ],
+  "per_job_max_send_reservations": 19,
+  "shared_max_send_reservations": 76,
+  "single_run": true,
+  "allowed_payload": "每次决策的当前可观察状态及候选动作请求载荷",
+  "excluded_payload": [
+    "未来箱体",
+    "私有整单信息",
+    "历史原始记录"
+  ],
+  "require_zero_call_preflight_4_of_4": true,
+  "no_implicit_retries": true,
+  "user_acknowledges_data_leaves_host": true,
+  "authorization_text": "我明确授权：按最终计划摘要 40fc57ca5093148adbdd93a722580c12f2de3c32a24541b12df69ddd62f39978，在目标 Linux 上单次执行 GP6-F0 G00–G03，并将每次决策的当前可观察状态及候选动作请求载荷发送至 https://api.typesafe.ai/v1/systemone，使用 jev-1.14.0。我知悉这些请求数据将离开本机。\n\n授权仅覆盖上述四项，每项最多 19 次发送保留，合计最多 76 次。沿用正式驱动内置预检，四项全部通过后才派发。不扩大矩阵、不隐式重试，不发送未来箱体、私有整单信息或历史原始记录。"
+}

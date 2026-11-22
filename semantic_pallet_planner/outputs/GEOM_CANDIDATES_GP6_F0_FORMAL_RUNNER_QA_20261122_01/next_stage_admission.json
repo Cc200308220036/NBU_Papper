@@ -1,0 +1,45 @@
+{
+  "schema": "gp6_formal_runner_next_qa_v1",
+  "date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP6-F0 四项启动入口",
+  "developer_entry": "431f16d30c179f596e3d787d4674aeb069da6070",
+  "reviewed_commit": "92e205420909eea86ad86327cd279ac74ccc658e",
+  "source_identity": "68b879c5759b5a6df33fe8184019234bcb06e06483596f86390ca6c9974ca48e",
+  "driver_sha256": "107c2cd0f8923186a82e91c27006f2292fd9882415a1f8574085bf8cf1332f5c",
+  "draft_plan_digest": "a7c47898515a548cec99930fe0c14b5ed745957c4ecff58239f2e696804516b0",
+  "next_unit": "GP6_F0_FINAL_FREEZE_MATERIALS_AND_AUTHORIZATION_BINDING",
+  "next_stage_admission": "CONDITIONAL",
+  "formal_gp6": "NOT_READY",
+  "real_calls_authorized": 0,
+  "prerequisites": [
+    {
+      "check": "四项启动驱动及离线验收",
+      "status": "PASS"
+    },
+    {
+      "check": "最终计划摘要、独立准备目录及两份零初态账本",
+      "status": "NOT_RUN"
+    },
+    {
+      "check": "用户明确批准固定 G00–G03/19/76 与独立总准入",
+      "status": "WAITING_EXTERNAL_APPROVAL"
+    },
+    {
+      "check": "目标 Linux 正式联合预检 4/4",
+      "status": "NOT_RUN"
+    }
+  ],
+  "allowed": [
+    "准备固定四项冻结材料及零账本",
+    "提交最终摘要、启动命令、未签文件及授权交接"
+  ],
+  "blocked": [
+    "无正式用户授权及总准入的派发",
+    "预检未通过时执行",
+    "GP5 重跑及矩阵扩展"
+  ],
+  "release_condition": "独立 QA 核对同一最终计划摘要并绑定用户授权、桥接及准入。目标 Linux 默认预检 4/4 后按许可单次启动。",
+  "next_owner": "原开发窗口准备冻结材料；用户授权；独立 QA 绑定准入",
+  "stopped": true
+}

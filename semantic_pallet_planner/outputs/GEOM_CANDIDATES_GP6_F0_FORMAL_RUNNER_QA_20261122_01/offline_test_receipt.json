@@ -1,0 +1,26 @@
+{
+  "schema": "gp6_runner_independent_offline_tests_v1",
+  "interpreter": "existing NBU Python 3.12.16",
+  "test_path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_20261122_01/test_formal_jev_driver.py",
+  "direct": {
+    "command_prefix": "python3 -I -B <test_path>",
+    "tests": [
+      "TestFormalJevDriverOffline.test_draft_plan_rejected_with_zero_dispatches",
+      "TestFormalJevDriverOffline.test_ledger_inside_run_root_conflict_rejected",
+      "TestFormalJevDriverOffline.test_temporary_git_historical_export_matches_gp5_manifest_and_cleans_up"
+    ],
+    "tests_passed": 3,
+    "exit_code": 0
+  },
+  "adapted": {
+    "runner": "python3 -I -B stdin, importlib.util.spec_from_file_location, unittest.defaultTestLoader.loadTestsFromModule",
+    "local_substitution": "patch.object(module.drv.order_exec, 'validate_monitor_snapshot', return_value=None)",
+    "in_suite_substitutes": ["positive admission", "job config", "transport", "run_jev_job"],
+    "tests_passed": 13,
+    "exit_code": 0
+  },
+  "local_runs_overlap": true,
+  "target_linux_retest": "NOT_RUN",
+  "real_preflight": "NOT_RUN",
+  "real_model_calls": 0
+}

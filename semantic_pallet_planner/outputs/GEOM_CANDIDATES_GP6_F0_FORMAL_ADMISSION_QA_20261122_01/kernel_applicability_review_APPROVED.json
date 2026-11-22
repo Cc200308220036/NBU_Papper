@@ -1,0 +1,199 @@
+{
+  "version": "geometry_jev_kernel_applicability_review_v1",
+  "evidence_receipt": {
+    "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_FORMAL_ORDER_APPROVED_QA_20261120_01/real_kernel_receipt.json",
+    "sha256": "546066556e190302ebb9765a2ab6cca1928280e1e23934e35412d6a327a102be"
+  },
+  "historical_source_manifest": {
+    "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/source_manifest.json",
+    "sha256": "ac34f44f0327a4bd7948ba73d1bb8652f556e59d80b995321e6986f35c880794"
+  },
+  "historical_monitor": {
+    "path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/monitor_snapshot.json",
+    "sha256": "1b083e859ead077da2a3e944d4953a7982ec3e9433bdbd941ea02ffd3b643497"
+  },
+  "target": {
+    "runtime_version": "jev_packaging_geometry_jev_v18",
+    "source_identity": "68b879c5759b5a6df33fe8184019234bcb06e06483596f86390ca6c9974ca48e",
+    "environment_digest": "7e067024b6cad0efef09ad2e4cc866d4b7758ea403f23875196e0dee8f706415",
+    "publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+    "monitor_digest": "83b807f6aa8f60a45c1873aebd20fc2aeb04ec5cc924cf2568137bff254f88d6",
+    "algorithm_digest": "321dd524eac46f328eae9da61f9956db394c146361ad501d8fc42a764b171824",
+    "plan_digest": "40fc57ca5093148adbdd93a722580c12f2de3c32a24541b12df69ddd62f39978"
+  },
+  "diff_digest": "4716c4e4ba2f316c48fd29bb52ab37d7b05d8f3134ea43ab5eb3b8de24ebdbd3",
+  "changes": [
+    {
+      "path": "jev_select/candidate_backends.py",
+      "before": "f7fefefa6946b93cc5dc2e15de23fee94a9b3ed0b17a4fffa943c4ad99e7609d",
+      "after": "b7038f1c87cfbb2a19014bef988d01ec24199e19ffa53537e75b320311a8a124",
+      "rationale": "v18 复用原始候选入口、原生发布和审计；分流前仍核验配置。GP5 固定夹具只支持原候选/物理接口。"
+    },
+    {
+      "path": "jev_select/config.py",
+      "before": "cbbc1ee2c49dfb818670473ded8af8f67036acb652c374c973c52209e714035c",
+      "after": "058591e885160544ccbdac658db53ecdeb49d984ec83e4dd9826d97cf067ae5f",
+      "rationale": "新增 v18 后缀，旧映射保留。"
+    },
+    {
+      "path": "jev_select/contracts.py",
+      "before": "3a5b16cd24b01be1207d1a6d1bb41ed42a515542f888cb00ccb90f92c9479c61",
+      "after": "3eac637e4674a2cd6f66734d5e9838d1525c9f5e3296dd9ac0578bd3ad4b4666",
+      "rationale": "按对象版本选择独立 Schema；旧 Schema 与摘要函数字节或逻辑保留。"
+    },
+    {
+      "path": "jev_select/episode.py",
+      "before": "05b3222159f58f1c83bbbf260af2afb2af86f2246ecb0cde3c3b9752e3e973fa",
+      "after": "f65b76dda60990288bcb5016a447214787d29568f5d629c6ef2c826719c3e33c",
+      "rationale": "v18 纳入整单 event_limit 拒绝；保存选择、监测、提交的公共顺序相同。"
+    },
+    {
+      "path": "jev_select/execution.py",
+      "before": "a300391daf0cc318b2c77c13ee4e60ac5ee128593d2b52e60189fe9fc392464f",
+      "after": "4502c7c1ba2db2f4e200a8bcf6615c772d9987f15e77879627c5613efcc5987c",
+      "rationale": "新增 JevOrderStore 配置授权复核；同一 commit_physical 继续检查绑定和稳定结果。"
+    },
+    {
+      "path": "jev_select/geometry_execution.py",
+      "before": "b2ac68ca66d57de9497113b8940eaeb5f7baf57d8c8600bcbdccf6b7902aea0e",
+      "after": "59bcf9bf81b036d8259fa165e90c752def2fa5fa5e346120fa2e314da7397f50",
+      "rationale": "v18 分流并复用耐久引用及原生发布块读写；共用保存转换验证，v18 账本对账由新模块负责。"
+    },
+    {
+      "path": "jev_select/geometry_jev_execution.py",
+      "before": null,
+      "after": "b552eae76c09ad7778f33d2bea74c851a3e0b3d8e4a4bfc1031fc15fe8c9efea",
+      "rationale": "正式账本绑定统一上限，恢复逐笔核对已存选择、状态和原响应；不改变候选、监测或提交语义。"
+    },
+    {
+      "path": "jev_select/geometry_jev_kernel_bridge.py",
+      "before": null,
+      "after": "1fbc9a0ead22a438a545239e136707a9172f5526c240fd811181cad1105cd0fc",
+      "rationale": "隔离拷贝、目标与差异绑定成立，强制同一监测快照；生产桥接仍需针对当前执行合同裁定。"
+    },
+    {
+      "path": "jev_select/geometry_jev_kernel_evidence_worker.py",
+      "before": null,
+      "after": "1062529585b37d9f66cf4e4a12b291fde90b76d534cda86088ecd05bce501256",
+      "rationale": "从核验副本导入并用历史 v17 校验器验证原件；核验语义保持历史版本。"
+    },
+    {
+      "path": "jev_select/geometry_jev_protocol.py",
+      "before": null,
+      "after": "009cf3246ba66c4b61dba8a7dc987312823bd40086422e75ccdbe3eba094f28e",
+      "rationale": "正式预算字段采用同一发送保留上限，不等即拒绝；独立授权、计划和监测绑定保持。"
+    },
+    {
+      "path": "jev_select/geometry_order_meter.py",
+      "before": "45f6e037eb48e9f40e98b14158b3fdd5c5c03ab813757b7a03ed872755e2a4e6",
+      "after": "bc1512f6a2b2df9407d77af6982b81d72c4e18eb4dfc9e154662cf385ef380b4",
+      "rationale": "保留 GP5 入口；v18 将同一 exact 调用与 LP 入口纳入原计量器，替身单独记账；正式 v18 账目待真实验证。"
+    },
+    {
+      "path": "jev_select/packaging_runtime.py",
+      "before": "ca72d93f0323ad428ef4dadf5fa1bff5f834131d6dbf5a6af5052b307071f872",
+      "after": "dfced6fe1adb43fa1c21058e4275dd4ed1e30da9243ad09bb5ccd4e1e35249b4",
+      "rationale": "v18 分到新指标汇总；对旧内核状态分类无改，GP5 结果不能代替 v18 指标。"
+    },
+    {
+      "path": "jev_select/packaging_versions.py",
+      "before": "773096fe2b78c485fc88a5faca80cb91fa884acdd85b579c8d4ff9a643317ffa",
+      "after": "f7282bda22398cb7d1e5bcd5e34199254f390caf0fd37f8a44f1651248367d2c",
+      "rationale": "注册 v18 能力与封闭契约；GP5/v17 本地订单的版本集合和保护保留。"
+    },
+    {
+      "path": "jev_select/schemas/candidate_bundle_v18.schema.json",
+      "before": null,
+      "after": "68e13f7dfc364498834a03444439b33e63df6d155f4c3eaa262a20a33e96b4f5",
+      "rationale": "专属候选池合同和版本，候选精确绑定继续由公共校验处理。"
+    },
+    {
+      "path": "jev_select/schemas/checkpoint_v18.schema.json",
+      "before": null,
+      "after": "65d2ca3a0bc67e46507c99c3e68c6dc940da689d5da93e11f3fcea17344af209",
+      "rationale": "封闭保存结构与 v18 相位编码；跨文件账本检查由已复核的恢复入口执行。"
+    },
+    {
+      "path": "jev_select/schemas/config_v18.schema.json",
+      "before": null,
+      "after": "fc3c6d536861c6fa9ea65533a849e26979072418abd58804003e1860c253fc4f",
+      "rationale": "v18 监测、运行身份、配额和传输模式合同；真实监测同快照核验在源码。"
+    },
+    {
+      "path": "jev_select/schemas/decision_context_v18.schema.json",
+      "before": null,
+      "after": "354e979f9c1387f4ad0ce2ca0e80b28d94e69782ac0bf572aeef0d0126fb49c5",
+      "rationale": "v18 公共状态、展示映射和请求正文合同；旧模型输入行为无覆盖。"
+    },
+    {
+      "path": "jev_select/schemas/geometry_jev_admission_v1.schema.json",
+      "before": null,
+      "after": "da2ef8664cd6beafaf6e8c5fd6a579a1212ea9210b1f4f0dc959b25f1d42440c",
+      "rationale": "显式独立 v18 准入，绑定计划、环境、监测及外部收据。"
+    },
+    {
+      "path": "jev_select/schemas/geometry_jev_development_binding_v1.schema.json",
+      "before": null,
+      "after": "2a2c3010140b2262c62d5258d9e1f6b79dace6e136fd8c8b9859fbb65f86423b",
+      "rationale": "开发模式只接收替身合同，开发运行不提升为真实内核或传输证据。"
+    },
+    {
+      "path": "jev_select/schemas/geometry_jev_execution_v1.schema.json",
+      "before": null,
+      "after": "519339d9cf7a267d9cb2320781ea84942ca41a319b960d0023d1b51ba3791236",
+      "rationale": "执行绑定计划、任务、来源、环境与凭证，不能替代账本状态检查。"
+    },
+    {
+      "path": "jev_select/schemas/geometry_jev_kernel_applicability_review_v1.schema.json",
+      "before": null,
+      "after": "eaa26d3177b34dbe0dd578bbdf5b137159f0e683424e00af77d6cf5e1f2fc08d",
+      "rationale": "生产评审需当前目标、逐差异记载及外部身份；本 QA 未签发该 Schema 的批准对象。"
+    },
+    {
+      "path": "jev_select/schemas/geometry_jev_kernel_bridge_v1.schema.json",
+      "before": null,
+      "after": "24219f61f31010377292c7c3f97c4630afb4bf145313351834ed2bd18736400e",
+      "rationale": "区分历史引用和 v18 目标，未改旧凭证合同。"
+    },
+    {
+      "path": "jev_select/schemas/geometry_jev_metrics_v1.schema.json",
+      "before": null,
+      "after": "95b2226bf8ce443a77fdb9a98df5481a3019a923bf3024d444317e8dc330058e",
+      "rationale": "新增模型成本、停单和真实计量的结果格式；需 v18 单独产出。"
+    },
+    {
+      "path": "jev_select/schemas/geometry_jev_plan_v1.schema.json",
+      "before": null,
+      "after": "bb418657d053b1cf48af8211da17c0121119928b4d380ad623af9272453eb18d",
+      "rationale": "正式计划与配额独立于历史计划；统一总额度由已复核的计划和账本校验执行。"
+    },
+    {
+      "path": "jev_select/schemas/geometry_jev_run_v1.schema.json",
+      "before": null,
+      "after": "62869fb23e1d30dda3403e64f79a778efe2409962c5471c555ec0b23d8c4c356",
+      "rationale": "分母和任务状态版本化，当前无正式运行记录。"
+    },
+    {
+      "path": "jev_select/schemas/selection_result_v18.schema.json",
+      "before": null,
+      "after": "7af81e575b9d11013f909f9d8bdf963605de97727396e848e8237232d4cc1095",
+      "rationale": "v18 独立选择结果，不能当作已保存到请求账本的证明。"
+    },
+    {
+      "path": "jev_select/selector.py",
+      "before": "598eff72f9ee4fdb2259e3c46e1e2741c9ccdde9d7f1e8765725e44d7d0c556c",
+      "after": "308f0020a667f4b38868a21a958148fab26ec7244edf676fff887a913dd09fde",
+      "rationale": "v18 进入已有结果元数据分支；网络与选择结果待 v18 独立验证。"
+    },
+    {
+      "path": "jev_select/stability/monitor.py",
+      "before": "cdc81c712e9469f573b6165f70f5ed0da966c0b3c82bf169f63f61f8cb7335a3",
+      "after": "e288632089b8c533a4784f51a22eb13ad8cfdba84678568ca1d1be07a3ecc359",
+      "rationale": "v18 纳入统一监测、预检和替身标记限制；exact-v3 入口、精确姿态和结果绑定沿用。"
+    }
+  ],
+  "status": "APPROVED",
+  "reviewer": "NBU_Papper 独立质检窗口",
+  "conclusion": "批准使用原 v17 固定样例凭证作为已绑定目标的 exact-v3 内核证据",
+  "limitations": "仅同一监测快照与运行身份，目标 Linux 联合预检仍为运行前条件；历史材料不支持 Jev 研究收益。"
+}

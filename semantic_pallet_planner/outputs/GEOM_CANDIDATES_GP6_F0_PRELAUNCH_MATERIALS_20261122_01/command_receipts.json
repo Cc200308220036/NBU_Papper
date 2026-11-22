@@ -1,0 +1,53 @@
+{
+  "schema": "gp6_f0_prelaunch_command_receipts_v1",
+  "date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "repo_root_name": "NBU_Papper",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "head_before_pull": "f3eab7b083e9052447dc6679d3c74681c749ba2b",
+  "head_after_pull": "fba934ea558a26b9d6691aacc6acf868d1780c20",
+  "contains_qa_commit_fba934ea5": true,
+  "real_model_calls": 0,
+  "real_monitor_calls": 0,
+  "real_lp_calls": 0,
+  "keys_read": false,
+  "commands": [
+    {
+      "step": "git_pre_check",
+      "command": "pwd && git rev-parse --show-toplevel && git branch -vv && git status -sb && git log -n 5 --oneline",
+      "exit_code": 0,
+      "result": "PASS: clean working tree and index on dev/jev-select tracking origin/dev/jev-select at f3eab7b08"
+    },
+    {
+      "step": "git_pull_ff_only",
+      "command": "git pull --ff-only",
+      "exit_code": 0,
+      "result": "PASS: fast-forward f3eab7b08..fba934ea5 (9 files added from QA review)"
+    },
+    {
+      "step": "git_post_pull_verify",
+      "command": "git rev-parse HEAD && git status -sb",
+      "exit_code": 0,
+      "result": "PASS: HEAD=fba934ea558a26b9d6691aacc6acf868d1780c20, clean working tree"
+    },
+    {
+      "step": "target_linux_python_probe",
+      "command": "<target_linux_anaconda_python3> -I -B -c \"import sys, platform, numpy, scipy; ...\"",
+      "exit_code": 0,
+      "result": "PASS: Python 3.13.5, Linux-6.8.0-149-generic-x86_64-with-glibc2.35, numpy 2.1.3, scipy 1.15.3"
+    },
+    {
+      "step": "launcher_and_gp5_commit_check",
+      "command": "grep -rn \"run_jev_job\" semantic_pallet_planner/src/ semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6* ; git rev-parse 2c97f59444f07e40b98da529e5256efc441207d4",
+      "exit_code": 0,
+      "result": "PASS: confirmed no formal 4-job GP6 CLI launcher exists (gap recorded); GP5 commit 2c97f59444f07e40b98da529e5256efc441207d4 verified in local Git"
+    },
+    {
+      "step": "target_linux_readonly_prelaunch_checks",
+      "command": "<target_linux_anaconda_python3> -I -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/run_prelaunch_readonly_checks.py",
+      "exit_code": 0,
+      "result": "PASS: 19/19 environment, monitor snapshot, 39 historical references, isolated GP5 worker (GP5_V17_EVIDENCE_VALID), 611-file source_identity, 28-file delta, DRAFT plan validation, and 3/3 negative gate checks passed with 0 model/monitor/LP calls"
+    }
+  ]
+}

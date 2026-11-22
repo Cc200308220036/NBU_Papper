@@ -1,0 +1,51 @@
+{
+  "schema": "gp6_f0_launcher_gap_and_wiring_plan_v1",
+  "date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "status": "FAIL_GAP_NO_FORMAL_4JOB_LAUNCHER",
+  "ready_to_launch": false,
+  "gap_statement": "Production code provides single-job orchestration (run_jev_job in geometry_jev_execution.py), formal plan/admission/bridge validators, GeometryJevRequestLedger, and metered_jev_run, but NO formal 4-job GP6 CLI launcher (analogous to GP5's formal_order_driver.py) currently exists in the repository. Therefore G00-G03 cannot be launched as-is.",
+  "existing_reusable_components": [
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_jev_protocol.py::validate_jev_plan, validate_jev_admission, draft_jev_run",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_jev_execution.py::GeometryJevRequestLedger, load_jev_config, validate_jev_request_ledger_binding, run_jev_job",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_jev_kernel_bridge.py::validate_kernel_bridge",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_execution.py::validate_monitor_snapshot",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/geometry_order_meter.py::metered_jev_run",
+    "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/transport.py::JevTransport"
+  ],
+  "minimal_wiring_plan": {
+    "proposed_entrypoint_path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_<DATE>_01/formal_jev_driver.py",
+    "why_outside_src": "Placing the thin batch driver in an output/runner package (matching GP5's GEOM_CANDIDATES_GP5_FORMAL_ORDER_RUNNER_20261120_01/formal_order_driver.py) preserves the QA-reviewed 611-file production source_identity (68b879c5759b5a6df33fe8184019234bcb06e06483596f86390ca6c9974ca48e) and avoids invalidating the 28-file delta review.",
+    "cli_arguments": [
+      "--plan <FROZEN geometry_jev_plan_v1 JSON>",
+      "--monitor-snapshot <GP5 monitor_snapshot.json>",
+      "--kernel-bridge <SIGNED APPROVED geometry_jev_kernel_bridge_v1 JSON>",
+      "--admission <SIGNED APPROVED geometry_jev_admission_v1 JSON>",
+      "--api-key-file <optional path or TYPESAFE_API_KEY env; only loaded inside JevTransport during --execute>",
+      "--run-root <fresh non-existent directory, required only for --execute>",
+      "--execute (optional flag; omitted by default so driver runs PREFLIGHT_ONLY with 0 dispatches and 0 sends)"
+    ],
+    "zero_dispatch_preflight_guarantees": [
+      "Step 1: validate_jev_plan(plan), verify status=='FROZEN', scope=='GP6_EXPOSED_TRAIN_JEV_F0_ONLY', jobs==[G00,G01,G02,G03], per_job_max_sends==19, shared_max_sends==model_calls_max==76, source_identity & publication_policy_digest & environment_digest match live environment.",
+      "Step 2: validate_monitor_snapshot(monitor_snapshot) against live Linux Anaconda Python 3.13.5 / NumPy 2.1.3 / SciPy 1.15.3 / HiGHS 1.8.0.",
+      "Step 3: Load and adapt both EXPOSED_TRAIN tasks from DATA_JEV_PACKAGING_LOAD_20261102_02 and verify raw_sha256 & adapted identity match plan['tasks'].",
+      "Step 4: Verify initial state of BOTH ledgers: (a) request_ledger_path has requests==[] and matches frozen plan_digest/19/76; (b) call_ledger_path has calls==[], counts=={0,0,0}, evidence=='REAL_KERNEL', limits=={76,4096}, matching frozen plan_digest.",
+      "Step 5: validate_kernel_bridge(kernel_bridge, plan, monitor_snapshot) and validate_jev_admission(plan, monitor_snapshot, admission, kernel_bridge).",
+      "Step 6: For all 4 jobs (G00, G01, G02, G03), call load_jev_config(...) and validate_jev_request_ledger_binding(...) in read-only mode (without sending any HTTP request).",
+      "Step 7: Re-verify both ledgers still have 0 sends, 0 assessments, 0 LP calls. If ANY step 1-7 fails, exit non-zero immediately BEFORE creating --run-root or invoking run_jev_job (strictly 0 business dispatches, 0 model calls, 0 monitor calls)."
+    ],
+    "sequential_dispatch_and_halt_rules": [
+      "Only when --execute is explicitly passed AND all 7 preflight steps pass AND --run-root does not yet exist:",
+      "Create --run-root with exist_ok=False (no overwrite).",
+      "Instantiate shared GeometryJevRequestLedger(root=Path(plan['request_ledger_path']).parent, plan_digest=digest(plan), per_job_max_sends=19, shared_max_sends=76, allow_real_transport=True) and JevTransport(cfg, api_key_file=args.api_key_file).",
+      "Loop strictly in order G00 -> G01 -> G02 -> G03 calling run_jev_job(plan, job_id, adapted, monitor_snapshot=snap, admission=admission, root=run_root, transport=transport, ledger=ledger, kernel_receipt=kernel_bridge).",
+      "Normal job endings (COMPLETE, NO_CANDIDATE, PREDICTED_STATIC_INSTABILITY, UNASSESSABLE) are recorded in run.json and proceed to the next job.",
+      "Immediate batch halt (break loop, leave remaining jobs NOT_RUN in run.json, no implicit retry) on first UNKNOWN_SEND, PROVIDER_FAILURE, INVALID_RESPONSE, BUDGET_EXHAUSTED, TECHNICAL_FAILURE, CANCELLED, or uncaught exception."
+    ],
+    "proposed_formal_commands_after_implementation_and_approval": {
+      "preflight_only_command": "/home/cyw/anaconda3/bin/python3 -I -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_<DATE>_01/formal_jev_driver.py --plan <FROZEN_PLAN_JSON> --monitor-snapshot semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/monitor_snapshot.json --kernel-bridge <APPROVED_BRIDGE_JSON> --admission <APPROVED_ADMISSION_JSON>",
+      "formal_execute_command": "/home/cyw/anaconda3/bin/python3 -I -B semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUNNER_<DATE>_01/formal_jev_driver.py --plan <FROZEN_PLAN_JSON> --monitor-snapshot semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP5_P2_FINAL_RUNTIME_20261120_01/monitor_snapshot.json --kernel-bridge <APPROVED_BRIDGE_JSON> --admission <APPROVED_ADMISSION_JSON> --run-root semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUN_<DATE>_01 --execute",
+      "executable_now": false
+    }
+  }
+}

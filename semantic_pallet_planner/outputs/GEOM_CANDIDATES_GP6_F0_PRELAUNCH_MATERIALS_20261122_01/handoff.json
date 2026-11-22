@@ -1,0 +1,93 @@
+{
+  "schema": "gp6_f0_prelaunch_materials_handoff_v1",
+  "date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "repo_root_name": "NBU_Papper",
+  "branch": "dev/jev-select",
+  "upstream": "origin/dev/jev-select",
+  "synced_head": "fba934ea558a26b9d6691aacc6acf868d1780c20",
+  "contains_qa_commit_fba934ea5": true,
+  "stage": "GP6_F0_PRELAUNCH_MATERIALS_FOR_CONSOLIDATED_QA",
+  "source_identity": "68b879c5759b5a6df33fe8184019234bcb06e06483596f86390ca6c9974ca48e",
+  "source_delta_digest": "4716c4e4ba2f316c48fd29bb52ab37d7b05d8f3134ea43ab5eb3b8de24ebdbd3",
+  "production_source_modified": false,
+  "historical_gp5_originals_preserved": true,
+  "real_model_calls_authorized": 0,
+  "real_model_calls_executed": 0,
+  "real_monitor_calls_executed": 0,
+  "real_lp_calls_executed": 0,
+  "keys_read": false,
+  "production_credentials_issued": false,
+  "formal_plan_frozen": false,
+  "g00_g03_status": "ALL_NOT_RUN",
+  "target_linux_environment_match": "PASS",
+  "draft_plan_digest": "91f3aed24af362bb52332b471e207b0e632cdd5fb12059162c64796d0b065d6b",
+  "deliverables": {
+    "report_md": "docs/03_阶段产出分析/几何规划模块/几何候选器GP6_F0正式实验启动材料与无调用预检交付_20261122_01.md",
+    "index_md": "docs/03_阶段产出分析/几何规划模块/README.md",
+    "package_dir": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01",
+    "environment_evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/environment_evidence.json",
+    "draft_plan": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/gp6_f0_order_plan_DRAFT.json",
+    "plan_companion": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/gp6_f0_plan_companion_DRAFT.json",
+    "denominator_not_run": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/run_denominator_NOT_RUN.json",
+    "api_spec_check_draft": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/api_spec_check_DRAFT.json",
+    "kernel_applicability_review_pending": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/kernel_applicability_review_PENDING.json",
+    "kernel_bridge_pending": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/kernel_bridge_PENDING.json",
+    "scope_authorization_pending": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/scope_authorization_PENDING.json",
+    "scope_review_pending": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/scope_review_PENDING.json",
+    "order_admission_pending": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/order_admission_PENDING.json",
+    "launcher_gap_and_wiring_plan": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/launcher_gap_and_wiring_plan.json",
+    "joint_preflight_checklist": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/joint_preflight_checklist.json",
+    "readonly_script": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/run_prelaunch_readonly_checks.py",
+    "readonly_results": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/readonly_preflight_results.json",
+    "command_receipts": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/command_receipts.json",
+    "delivery_manifest": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/delivery_manifest.json"
+  },
+  "unresolved_items": [
+    {
+      "id": "UNRES-01",
+      "item": "正式四项 GP6 CLI 启动入口缺失（formal_jev_driver.py 尚未实现）",
+      "status": "FAIL",
+      "owner": "开发端",
+      "release_condition": "经独立 QA 同意最小接线方案后，在 src/ 外实现 formal_jev_driver.py 并通过离线无调用预检/负向回归，保持生产 source_identity 不变"
+    },
+    {
+      "id": "UNRES-02",
+      "item": "历史 GP5 源码正式隔离副本（historical_package_root）尚未持久化落盘",
+      "status": "FAIL",
+      "owner": "开发端",
+      "release_condition": "在正式冻结阶段从提交 2c97f59444f07e40b98da529e5256efc441207d4 导出至 src/ 外独立只读目录，确认无符号链接且与 GP5 source_manifest.json 字节完全一致"
+    },
+    {
+      "id": "UNRES-03",
+      "item": "正式计划尚未冻结，两份正式账本初态尚未物化",
+      "status": "WAITING_EXTERNAL_APPROVAL",
+      "owner": "独立 QA 审查通过后由开发端执行",
+      "release_condition": "生成 status=FROZEN 的最终计划，绑定实际运行目录的空请求账本 requests.json 与零计数调用账本 shared_call_ledger.json，输出最终 frozen plan_digest"
+    },
+    {
+      "id": "UNRES-04",
+      "item": "API 规格核对正式 VERIFIED 结论与生产桥接/适用性审查/准入签发",
+      "status": "WAITING_EXTERNAL_APPROVAL",
+      "owner": "独立 QA",
+      "release_condition": "基于最终 frozen plan_digest 独立复核并签发 VERIFIED api_spec_check、APPROVED kernel_applicability_review_v1、APPROVED kernel_bridge_v1、APPROVED scope_review 与 APPROVED geometry_jev_admission_v1"
+    },
+    {
+      "id": "UNRES-05",
+      "item": "用户/项目方对 G00-G03 真实模型调用（单项 19 / 共享 76）的明确授权",
+      "status": "WAITING_EXTERNAL_APPROVAL",
+      "owner": "用户 / 项目授权方",
+      "release_condition": "签发绑定最终 frozen plan_digest 的 APPROVED scope_authorization，明确批准正式发送上限"
+    },
+    {
+      "id": "UNRES-06",
+      "item": "G00-G03 正式四项执行与同协议对比分析",
+      "status": "NOT_RUN",
+      "owner": "开发端（全部前置解除后）",
+      "release_condition": "UNRES-01 至 UNRES-05 全部关闭且正式驱动 --preflight-only 4/4 PASS 后，方可单次 --execute 派发"
+    }
+  ],
+  "git_sync_status": "UNCOMMITTED_UNPUSHED_PER_AGENTS_POLICY",
+  "next_owner": "独立质检（集中验收本轮启动材料）",
+  "stopped": true
+}

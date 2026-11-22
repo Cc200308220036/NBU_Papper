@@ -1,0 +1,118 @@
+{
+  "schema": "gp6_f0_joint_preflight_checklist_v1",
+  "date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "overall_launch_readiness": "NOT_READY",
+  "real_model_calls": 0,
+  "real_monitor_calls": 0,
+  "real_lp_calls": 0,
+  "keys_read": false,
+  "items": [
+    {
+      "id": "CHK-ENV-01",
+      "domain": "目标运行环境与历史监测快照",
+      "description": "目标 Linux 机 Python 3.13.5、平台 Linux-6.8.0-149-generic-x86_64-with-glibc2.35、NumPy 2.1.3、SciPy 1.15.3、HiGHS 1.8.0 及核心二进制/源码摘要与 GP5 monitor_snapshot.json、acceptance_plan_FROZEN.json 完全一致，validate_monitor_snapshot 通过",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/environment_evidence.json"
+    },
+    {
+      "id": "CHK-ENV-02",
+      "domain": "历史凭证引用与历史源码隔离复核",
+      "description": "目标 Linux 机可读取 GP5 real_kernel_receipt.json 及 38 项嵌套引用（共 39 项字节全部一致）；从 Git 提交 2c97f59444f07e40b98da529e5256efc441207d4 导出临时隔离副本，独立 worker 返回 GP5_V17_EVIDENCE_VALID",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/environment_evidence.json"
+    },
+    {
+      "id": "CHK-ENV-03",
+      "domain": "历史源码正式隔离副本落盘",
+      "description": "正式生产桥接所需的持久化隔离目录 historical_package_root 尚未在 src/ 外正式物化落盘",
+      "status": "FAIL",
+      "owner": "开发端（正式冻结前执行）",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/kernel_bridge_PENDING.json"
+    },
+    {
+      "id": "CHK-SRC-01",
+      "domain": "源码身份与跨版本差异基线",
+      "description": "611 项生产源码身份 68b879c5759b5a6df33fe8184019234bcb06e06483596f86390ca6c9974ca48e 与 28 项跨版本差异摘要 4716c4e4ba2f316c48fd29bb52ab37d7b05d8f3134ea43ab5eb3b8de24ebdbd3 同 QA 提交 fba934ea5 一致，本轮零源码改动",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/environment_evidence.json"
+    },
+    {
+      "id": "CHK-DATA-01",
+      "domain": "数据身份、原始字节与同源训练暴露",
+      "description": "DATA_JEV_PACKAGING_LOAD_20261102_02 数据身份 9cf6d039543df402d04d406f45cd8cff00ee0a5ab49540190662e7f0d18f21de 核验通过；两项任务原始字节及适配身份校验通过，均标记为 EXPOSED_TRAIN / SG_901bbb22f834c63f / feasibility UNKNOWN",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/gp6_f0_plan_companion_DRAFT.json"
+    },
+    {
+      "id": "CHK-PLAN-01",
+      "domain": "G00-G03 计划草案（DRAFT）",
+      "description": "gp6_f0_order_plan_DRAFT.json 通过 validate_jev_plan 校验（status=DRAFT，per_job_max_sends=19，shared_max_sends=model_calls_max=76，assessment_limit=76，solver_limit=4096）；负向门控确认 DRAFT 不可执行",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/gp6_f0_order_plan_DRAFT.json"
+    },
+    {
+      "id": "CHK-PLAN-02",
+      "domain": "正式计划冻结（FROZEN）",
+      "description": "正式计划尚未由 DRAFT 切换为 FROZEN，最终 frozen plan_digest 与实际运行目录账本路径待绑定",
+      "status": "WAITING_EXTERNAL_APPROVAL",
+      "owner": "独立 QA 审查通过后由开发端冻结",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/gp6_f0_plan_companion_DRAFT.json"
+    },
+    {
+      "id": "CHK-BRIDGE-01",
+      "domain": "内核桥接与适用性审查签发",
+      "description": "已提交未签模板 kernel_applicability_review_PENDING.json 与 kernel_bridge_PENDING.json，负向校验确认未签对象被 validate_kernel_bridge 拒绝；正式 APPROVED 签发待独立 QA 完成",
+      "status": "WAITING_EXTERNAL_APPROVAL",
+      "owner": "独立 QA",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/kernel_bridge_PENDING.json"
+    },
+    {
+      "id": "CHK-API-01",
+      "domain": "TypeSafe 官方 API 规格文档核对",
+      "description": "2026-11-22 已核对四份公开官方文档（models / api/system-one / primitives/choice / api/errors）并与当前实现逐项对照，零密钥读取、零真实请求；最终 VERIFIED 状态待独立 QA 确认",
+      "status": "WAITING_EXTERNAL_APPROVAL",
+      "owner": "独立 QA（复核 api_spec_check_DRAFT.json）",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/api_spec_check_DRAFT.json"
+    },
+    {
+      "id": "CHK-AUTH-01",
+      "domain": "用户运行授权、独立审查与总准入凭证",
+      "description": "已提交 scope_authorization_PENDING.json、scope_review_PENDING.json 与 order_admission_PENDING.json，明确绑定顺序；正式 APPROVED 授权与准入尚未签发",
+      "status": "WAITING_EXTERNAL_APPROVAL",
+      "owner": "用户/项目授权方 + 独立 QA",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/order_admission_PENDING.json"
+    },
+    {
+      "id": "CHK-LEDGER-01",
+      "domain": "请求账本与评估/LP 账本初态",
+      "description": "两份正式账本路径与空/零初态合同已写入计划草案与伴随规范；因计划尚未冻结，正式运行目录下的空请求账本与零计数调用账本尚未物化",
+      "status": "NOT_RUN",
+      "owner": "开发端（正式冻结阶段物化并校验）",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/gp6_f0_plan_companion_DRAFT.json"
+    },
+    {
+      "id": "CHK-DENOM-01",
+      "domain": "四项完整分母（G00-G03）",
+      "description": "run_denominator_NOT_RUN.json 已由 draft_jev_run 生成并通过 geometry_jev_run_v1 校验，G00-G03 全部为 NOT_RUN",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/run_denominator_NOT_RUN.json"
+    },
+    {
+      "id": "CHK-LAUNCH-01",
+      "domain": "正式四项 CLI 启动入口",
+      "description": "仓库当前仅有单任务编排 run_jev_job，缺少正式四项顺序派发与预检 CLI 驱动（formal_jev_driver.py）；已明确标为缺口并附最小接线方案，未声称可启动",
+      "status": "FAIL",
+      "owner": "开发端（获准后在 src/ 外实现并做无调用回归）",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/launcher_gap_and_wiring_plan.json"
+    },
+    {
+      "id": "CHK-EXEC-01",
+      "domain": "G00-G03 正式模型调用与订单执行",
+      "description": "本轮真实模型调用授权为 0，G00-G03 全部未运行",
+      "status": "NOT_RUN",
+      "owner": "全部门控解除并获运行授权后执行",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/run_denominator_NOT_RUN.json"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "runtime_version": "jev_packaging_geometry_jev_v18",
+  "publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "version": "geometry_jev_plan_v1",
+  "status": "DRAFT",
+  "scope": "GP6_EXPOSED_TRAIN_JEV_F0_ONLY",
+  "data_identity": "9cf6d039543df402d04d406f45cd8cff00ee0a5ab49540190662e7f0d18f21de",
+  "source_identity": "68b879c5759b5a6df33fe8184019234bcb06e06483596f86390ca6c9974ca48e",
+  "environment_digest": "7e067024b6cad0efef09ad2e4cc866d4b7758ea403f23875196e0dee8f706415",
+  "tasks": [
+    {
+      "origin": "EXPOSED_TRAIN",
+      "raw_sha256": "230ea8b1d6766fb4898b75da8afcea1738afd27e66a38d1ffa0a82409e332a89",
+      "normalized_digest": "bbb5ffcf0c2e2fe62f8c382bc52d2276e2f117ab6cfa13de2b8caec1f70074f4",
+      "runtime_digest": "9ded736921295aafd50b97e1f54f355c4f53be550a97d6e0f306d766fa100953",
+      "adapter_digest": "222442ac20b762cccb1f53dd8f773e8455e15ed5b9d86733d750cbdf5d5fd55a",
+      "task_id": "NEW_00100027_controlled_base",
+      "source_group_id": "SG_901bbb22f834c63f"
+    },
+    {
+      "origin": "EXPOSED_TRAIN",
+      "raw_sha256": "6d4595ba23d8fe6878cb22eacad7bac80cda05150648a0234fe69dff23db4114",
+      "normalized_digest": "d797f7c61a6b616028d69956ac8b26a8400893577690e84729157d6f76622102",
+      "runtime_digest": "56b43f993d4128ff0cff85bfd097e847b0b88172a2b91001ea57eff8ff065798",
+      "adapter_digest": "222442ac20b762cccb1f53dd8f773e8455e15ed5b9d86733d750cbdf5d5fd55a",
+      "task_id": "NEW_00100027_controlled_capacity_tight",
+      "source_group_id": "SG_901bbb22f834c63f"
+    }
+  ],
+  "jobs": [
+    {
+      "job_id": "G00",
+      "task_id": "NEW_00100027_controlled_base",
+      "backend": "e2_original_v1",
+      "method": "jev_no_memory"
+    },
+    {
+      "job_id": "G01",
+      "task_id": "NEW_00100027_controlled_base",
+      "backend": "ems_surface_hybrid_v1",
+      "method": "jev_no_memory"
+    },
+    {
+      "job_id": "G02",
+      "task_id": "NEW_00100027_controlled_capacity_tight",
+      "backend": "e2_original_v1",
+      "method": "jev_no_memory"
+    },
+    {
+      "job_id": "G03",
+      "task_id": "NEW_00100027_controlled_capacity_tight",
+      "backend": "ems_surface_hybrid_v1",
+      "method": "jev_no_memory"
+    }
+  ],
+  "feature_profile": "F0_existing_facts",
+  "model": "jev-1.14.0",
+  "prompt_version": "packaging_load_en_v1",
+  "feature_version": "packaging_physical_facts_v1",
+  "event_limit": null,
+  "extra_seeds": false,
+  "per_job_max_sends": 19,
+  "shared_max_sends": 76,
+  "model_calls_max": 76,
+  "assessment_limit": 76,
+  "solver_limit": 4096,
+  "call_ledger_path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUN_PENDING/shared_call_ledger.json",
+  "request_ledger_path": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_FORMAL_RUN_PENDING/requests/requests.json"
+}

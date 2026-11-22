@@ -1,0 +1,106 @@
+{
+  "schema": "gp6_f0_api_spec_check_draft_v1",
+  "status": "DRAFT_PENDING_QA_VERIFICATION",
+  "note": "Public documentation check only. Not live connectivity verification. Do NOT treat as final VERIFIED approval until independently reviewed by QA.",
+  "access_date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "keys_read": false,
+  "real_model_calls": 0,
+  "live_connectivity_verified": false,
+  "model": "jev-1.14.0",
+  "endpoint": "https://api.typesafe.ai/v1/systemone",
+  "official_documentation_urls": [
+    {
+      "topic": "Models & jev-1.14.0",
+      "url": "https://docs.typesafe.ai/models",
+      "accessed_date": "2026-11-22",
+      "verified_facts": [
+        "jev-1.14.0 is listed as an explicit versioned System One model ID (distinct from floating alias jev-latest).",
+        "Served via POST /v1/systemone; accepts text/JSON object/array state; 64k per-request / 32k per-question context; billed on input tokens (output tokens free per docs)."
+      ]
+    },
+    {
+      "topic": "System One HTTPS Endpoint & Request/Response Schema",
+      "url": "https://docs.typesafe.ai/api/system-one",
+      "accessed_date": "2026-11-22",
+      "verified_facts": [
+        "Canonical endpoint is POST https://api.typesafe.ai/v1/systemone with Authorization: Bearer <token> and Content-Type: application/json.",
+        "Request body top-level fields: model, state, questions.",
+        "Response body top-level fields: model, answers, usage (input_tokens, output_tokens)."
+      ]
+    },
+    {
+      "topic": "Choice Primitive",
+      "url": "https://docs.typesafe.ai/primitives/choice",
+      "accessed_date": "2026-11-22",
+      "verified_facts": [
+        "Choice question uses type='choice', instructions, and criteria mapping option labels to descriptions.",
+        "Choice answer returns type='choice', choice (winning option label), probabilities (full distribution over all declared options summing to 1.0), and confidence in [0, 1]."
+      ]
+    },
+    {
+      "topic": "Error Status Codes",
+      "url": "https://docs.typesafe.ai/api/errors",
+      "accessed_date": "2026-11-22",
+      "verified_facts": [
+        "Standard HTTP error codes: 400 (Bad Request / max_tokens_exceeded / non-finite numbers), 401 (Unauthorized), 413 (Payload Too Large > 32 MiB), 415 (Unsupported Media Type), 422 (Unprocessable Entity), 429 (Too Many Requests), 529 (Overloaded)."
+      ]
+    }
+  ],
+  "implementation_alignment": [
+    {
+      "area": "Endpoint & Auth",
+      "official_spec": "POST https://api.typesafe.ai/v1/systemone, Authorization: Bearer <TYPESAFE_API_KEY>, Content-Type: application/json",
+      "current_implementation": "geometry_jev_protocol.py::GP6_ENDPOINT='https://api.typesafe.ai/v1/systemone', GP6_API_KEY_ENV='TYPESAFE_API_KEY'; transport.py::JevTransport uses POST, Bearer header, JSON body, NoRedirect(), timeout_s=30.0, max_retries=0",
+      "status": "ALIGNED_IN_DOCS"
+    },
+    {
+      "area": "Model Identity",
+      "official_spec": "Explicit model='jev-1.14.0' in request; response echoes 'model'",
+      "current_implementation": "geometry_jev_protocol.py::GP6_MODEL='jev-1.14.0'; transport.py checks body['model']==config['model']; selector.py::parse_response requires payload.get('model')==config['model'] and records both requested_model and served_model",
+      "status": "ALIGNED_IN_DOCS"
+    },
+    {
+      "area": "Choice Request Payload",
+      "official_spec": "{model, state, questions: {<qid>: {type: 'choice', instructions, criteria: {<label>: <desc>}}}}",
+      "current_implementation": "packaging_runtime.py::build_context builds {'model': config['model'], 'state': state, 'questions': {'next_action': {'type': 'choice', 'instructions': QUESTION, 'criteria': criteria}}}; transport.py enforces exact top-level keys {'model', 'state', 'questions'} and max_request_bytes=96000",
+      "status": "ALIGNED_IN_DOCS"
+    },
+    {
+      "area": "Choice Response & Probabilities / Confidence",
+      "official_spec": "answers.<qid> = {type: 'choice', choice, probabilities: {<label>: float}, confidence: float in [0,1]}; probabilities sum to 1.0",
+      "current_implementation": "selector.py::parse_response checks strict_json (no duplicate keys/NaN/Inf), exact answers keys {'next_action'}, exact answer keys {'type','choice','probabilities','confidence'}, choice in labels, probabilities keys == set(labels), all values finite in [0,1], probability_sum_valid (tolerance 1e-5 or strict_or_2dp_rounding_interval_v1), and choice achieves max probability within tolerance",
+      "status": "ALIGNED_IN_DOCS"
+    },
+    {
+      "area": "Usage & Cost Accounting",
+      "official_spec": "usage: {input_tokens: int, output_tokens: int}; docs note output tokens free / input-token billing",
+      "current_implementation": "selector.py::parse_response validates usage is None or exact dict {'input_tokens', 'output_tokens'} with non-negative ints; geometry_jev_execution.py records usage_status (AVAILABLE/UNKNOWN/NA_NO_SERVICE_CALL) and keeps service_cost_usd='UNKNOWN' for real sends (doc list price never substituted for actual invoice)",
+      "status": "ALIGNED_IN_DOCS"
+    },
+    {
+      "area": "Error Handling & Retry Policy",
+      "official_spec": "4xx/5xx/429/529 HTTP errors; docs suggest backoff on 429/529",
+      "current_implementation": "transport.py maps HTTPError to PROVIDER_FAILURE (does not persist error body to avoid credential echo) and socket/URL/timeout errors to UNKNOWN_IN_FLIGHT; max_retries=0 (no implicit retry per GP6/AGENTS contract); request ledger retains send reservation on failure and UNKNOWN_SEND",
+      "status": "ALIGNED_BY_DESIGN_ZERO_RETRY"
+    }
+  ],
+  "items_remaining_to_confirm": [
+    {
+      "item": "Exact response key strictness in live jev-1.14.0 responses",
+      "detail": "parse_response enforces exact key sets on answer ({'type','choice','probabilities','confidence'}) and usage ({'input_tokens','output_tokens'}). If the live API ever adds new optional fields inside answers.next_action or usage, parse_response will classify the response as invalid_response and halt the batch safely (no silent acceptance). Live response shape can only be observed during an authorized real run."
+    },
+    {
+      "item": "Structured object values inside criteria",
+      "detail": "Public docs illustrate string descriptions in criteria, while packaging_runtime.py sends structured JSON objects per Cxx option (previously accepted in JN1/JN3/JN4/JM1 real jev-1.14.0 runs). Current doc check does not prove live server acceptance without a real call."
+    },
+    {
+      "item": "Probability decimal rounding & served_model exact string",
+      "detail": "strict_or_2dp_rounding_interval_v1 handles 2-decimal rounded distributions; exact live served_model string ('jev-1.14.0') and actual account quota/availability are unverified until an authorized run."
+    },
+    {
+      "item": "Actual USD billing cost",
+      "detail": "Official documentation pricing is reference only; actual billed cost remains UNKNOWN unless confirmed from provider billing records."
+    }
+  ]
+}

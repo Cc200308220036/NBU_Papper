@@ -1,0 +1,33 @@
+{
+  "template_notice": "UNSIGNED_PENDING_TEMPLATE_NOT_APPROVED",
+  "version": "geometry_jev_admission_v1",
+  "runtime_version": "jev_packaging_geometry_jev_v18",
+  "publication_policy_digest": "521350957f816d959385396d46b4e6c71c475f91efcec3b1bb7f7678fc5227f9",
+  "scope": "GP6_EXPOSED_TRAIN_JEV_F0_ONLY",
+  "plan_digest": "<PENDING_FINAL_FROZEN_PLAN_DIGEST>",
+  "draft_plan_digest_reference": "91f3aed24af362bb52332b471e207b0e632cdd5fb12059162c64796d0b065d6b",
+  "source_identity": "68b879c5759b5a6df33fe8184019234bcb06e06483596f86390ca6c9974ca48e",
+  "environment_digest": "7e067024b6cad0efef09ad2e4cc866d4b7758ea403f23875196e0dee8f706415",
+  "monitor_digest": "83b807f6aa8f60a45c1873aebd20fc2aeb04ec5cc924cf2568137bff254f88d6",
+  "status": "PENDING_INDEPENDENT_QA_APPROVAL",
+  "authorization": {
+    "path": "<PENDING_SIGNED_SCOPE_AUTHORIZATION_PATH>",
+    "sha256": "<PENDING_SIGNED_SCOPE_AUTHORIZATION_SHA256>"
+  },
+  "review": {
+    "path": "<PENDING_SIGNED_SCOPE_REVIEW_PATH>",
+    "sha256": "<PENDING_SIGNED_SCOPE_REVIEW_SHA256>"
+  },
+  "api_spec_check": {
+    "path": "<PENDING_QA_VERIFIED_API_SPEC_CHECK_PATH>",
+    "sha256": "<PENDING_QA_VERIFIED_API_SPEC_CHECK_SHA256>"
+  },
+  "binding_order": [
+    "Step 1 (Developer + Target Linux): Materialize isolated GP5 historical_package_root from git commit 2c97f59444f07e40b98da529e5256efc441207d4 outside src/ and implement GP6 4-job formal launcher (outside src/ to preserve source_identity).",
+    "Step 2 (Developer, after QA approval of prelaunch materials): Freeze formal plan (status=FROZEN, concrete request_ledger_path & call_ledger_path in fresh runtime dir) and initialize empty request ledger + zero call ledger; obtain final frozen plan_digest.",
+    "Step 3 (Independent QA): Verify API spec check -> issue VERIFIED api_spec_check; review 28-file delta & final plan_digest -> sign APPROVED kernel_applicability_review_v1, APPROVED kernel_bridge_v1, and APPROVED scope_review.",
+    "Step 4 (User / Project Authority): Issue explicit APPROVED scope_authorization bound to final frozen plan_digest and 76-send / 19-per-job ceiling.",
+    "Step 5 (Independent QA): Bind signed authorization, review, and api_spec_check into APPROVED geometry_jev_admission_v1.",
+    "Step 6 (Developer on target Linux): Run launcher in --preflight-only mode (0 sends), verify 4/4 PASS, then execute --execute with fresh --run-root."
+  ]
+}

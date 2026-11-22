@@ -1,0 +1,40 @@
+{
+  "schema": "gp6_final_freeze_next_qa_v1",
+  "date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "reviewed_head": "89f56f4994784375ef8cad3c59b305be8c5e54f4",
+  "developer_entry": "d131f3d3033aa8d1885c68691eeeb451cd4e7652",
+  "source_identity": "68b879c5759b5a6df33fe8184019234bcb06e06483596f86390ca6c9974ca48e",
+  "plan_digest": "40fc57ca5093148adbdd93a722580c12f2de3c32a24541b12df69ddd62f39978",
+  "driver_sha256": "107c2cd0f8923186a82e91c27006f2292fd9882415a1f8574085bf8cf1332f5c",
+  "next_stage_admission": "CONDITIONAL",
+  "production_gp6": "NOT_READY",
+  "next_unit": "USER_AUTHORIZATION_AND_INDEPENDENT_ADMISSION",
+  "prerequisites": [
+    {
+      "check": "固定四项计划、零账本及驱动身份",
+      "status": "PASS"
+    },
+    {
+      "check": "绑定最终摘要的用户授权及独立总准入",
+      "status": "WAITING_EXTERNAL_APPROVAL"
+    },
+    {
+      "check": "目标 Linux 正式联合预检 4/4",
+      "status": "NOT_RUN"
+    }
+  ],
+  "scope": {
+    "jobs": [
+      "G00",
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "per_job_max_sends": 19,
+    "shared_max_sends": 76
+  },
+  "next_owner": "用户授权后由独立质检签发；目标 Linux 执行预检",
+  "real_calls_authorized": 0,
+  "stopped": true
+}

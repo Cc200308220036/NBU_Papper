@@ -1,0 +1,66 @@
+{
+  "schema": "gp6_prelaunch_materials_quality_qa_v1",
+  "date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP6-F0 启动材料集中验收",
+  "reviewed_head": "43028c00c7a870310bafc042130162a2692d801c",
+  "developer_entry": "fba934ea558a26b9d6691aacc6acf868d1780c20",
+  "source_identity": "68b879c5759b5a6df33fe8184019234bcb06e06483596f86390ca6c9974ca48e",
+  "entry": {
+    "branch": "dev/jev-select",
+    "upstream": "origin/dev/jev-select",
+    "live_remote_sha": "43028c00c7a870310bafc042130162a2692d801c",
+    "worktree_clean": true,
+    "index_clean": true
+  },
+  "authorized_scope": "一次审查启动材料；依用户要求免单独长期副本交付",
+  "engineering_status": "PREPARATION_COMPLETE_LAUNCHER_MISSING",
+  "evidence_readiness": "DRAFT_AND_LINUX_ARCHIVE_VERIFIED",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "CONDITIONAL",
+  "production_admission": "NOT_READY",
+  "facts": {
+    "reported": "目标 Linux 19 项检查、临时来源 worker 及草案门控均通过",
+    "implemented": "已有单任务入口；缺四项联合预检及正式驱动",
+    "archived": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/command_receipts.json",
+    "local": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_QA_20261122_01/readonly_results.json"
+  },
+  "checks": {
+    "environment_and_history": "PASS_ARCHIVE_LOCAL_BYTES",
+    "data_plan_denominator": "PASS_DRAFT",
+    "official_api": "PASS_DOCUMENTATION_ONLY",
+    "unsigned_materials": "PASS_TEMPLATES_ONLY",
+    "permanent_history_copy_delivery": "NOT_APPLICABLE_USER_WAIVER",
+    "runtime_history_source": "PENDING_LAUNCH_WIRING",
+    "joint_launch_entry": "FAIL",
+    "formal_frozen_plan": "NOT_RUN",
+    "explicit_authorization": "WAITING_EXTERNAL_APPROVAL",
+    "G00_G03": "NOT_RUN"
+  },
+  "api_sources": [
+    "https://docs.typesafe.ai/models",
+    "https://docs.typesafe.ai/api/system-one",
+    "https://docs.typesafe.ai/primitives/choice",
+    "https://docs.typesafe.ai/api/errors"
+  ],
+  "issues": [
+    {
+      "id": "GP6-F0-LAUNCH-01",
+      "status": "OPEN",
+      "severity": "BLOCKER",
+      "actual": "无四项驱动；草案把预置账本放在要求尚不存在的业务运行目录内。",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_F0_PRELAUNCH_MATERIALS_20261122_01/launcher_gap_and_wiring_plan.json",
+      "required": "四项联合预检后才派发，账本初态路径与新业务目录条件相容，默认预检 0 派发。"
+    }
+  ],
+  "not_run": [
+    "目标 Linux 独立重跑",
+    "历史 worker 独立重跑",
+    "签发",
+    "正式冻结",
+    "联合预检 4/4",
+    "G00–G03"
+  ],
+  "real_model_calls": 0,
+  "stopped": true
+}

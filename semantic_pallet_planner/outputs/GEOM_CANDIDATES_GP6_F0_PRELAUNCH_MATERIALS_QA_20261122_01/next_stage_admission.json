@@ -1,0 +1,41 @@
+{
+  "schema": "gp6_prelaunch_materials_next_qa_v1",
+  "date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "unit": "GP6-F0 启动材料集中验收",
+  "reviewed_head": "43028c00c7a870310bafc042130162a2692d801c",
+  "developer_entry": "fba934ea558a26b9d6691aacc6acf868d1780c20",
+  "source_identity": "68b879c5759b5a6df33fe8184019234bcb06e06483596f86390ca6c9974ca48e",
+  "next_unit": "GP6_F0_MINIMAL_BATCH_LAUNCHER_AND_ZERO_CALL_PREFLIGHT",
+  "next_stage_admission": "CONDITIONAL",
+  "production_gp6": "NOT_READY",
+  "next_owner": "原开发窗口",
+  "prerequisites": [
+    {
+      "check": "归档环境、数据、API 文档及计划草案",
+      "status": "PASS_IN_SCOPE"
+    },
+    {
+      "check": "四项启动器及联合预检",
+      "status": "FAIL",
+      "issue": "GP6-F0-LAUNCH-01"
+    },
+    {
+      "check": "最终计划、签发及明确用户授权",
+      "status": "WAITING_EXTERNAL_APPROVAL"
+    }
+  ],
+  "allowed": [
+    "最小启动器与无调用回归",
+    "启动期临时提供与清单匹配的历史源码"
+  ],
+  "blocked": [
+    "签发",
+    "正式冻结",
+    "真实派发及 G00–G03",
+    "GP5 重跑"
+  ],
+  "release_condition": "提交启动接线及无调用收据，核对最终计划和授权材料，在目标 Linux 预检 4/4 通过后方可启动。",
+  "real_calls_authorized": 0,
+  "stopped": true
+}

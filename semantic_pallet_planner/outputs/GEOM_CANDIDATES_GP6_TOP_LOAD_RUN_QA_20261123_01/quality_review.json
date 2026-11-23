@@ -1,0 +1,69 @@
+{
+  "version": "gp6_top_load_run_qa_v1",
+  "date": "2026-11-23",
+  "unit": "GP6-F0 v19 G00/G01",
+  "development_delivery_head": "7e0bc28c6028c0b7a79a28756383e5e75f84d64e",
+  "live_remote_head_at_review": "7e0bc28c6028c0b7a79a28756383e5e75f84d64e",
+  "source_identity": "74cc3a1bc6f198344162f96ba58762e1590549a2a8b598cb5cb0a9e05f128cf9",
+  "plan_digest": "f5bb85910e1b44017b19c1ada506b4d48da87f2f74be4e87ce7f6addf42d6f73",
+  "engineering_status": "PASS_LIMITED_TWO_JOB_DELIVERY",
+  "evidence_readiness": "READY_FOR_EXPOSED_ORDER_DIAGNOSIS",
+  "research_result": "GEOMETRIC_OPTIMIZATION_NOT_ESTABLISHED",
+  "next_stage_admission": "CONDITIONAL",
+  "new_real_call_authorization": 0,
+  "stopped": true,
+  "facts": {
+    "development_statement": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_TOP_LOAD_AUTHORIZED_20261122_01/handoff.json",
+    "source_implementation": "v19 packaging switch; same production source and driver as 51901de04",
+    "archived_execution": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_TOP_LOAD_DISABLED_RUN_20261122_01/driver_receipt.json",
+    "local_recheck": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_TOP_LOAD_RUN_QA_20261123_01/saved_evidence_check.json"
+  },
+  "acceptance": [
+    {
+      "id": "DESIGN-L24",
+      "status": "PASS",
+      "evidence": "previous offline fixture, verified source identity and actual configuration"
+    },
+    {
+      "id": "DESIGN-L25",
+      "status": "PASS",
+      "evidence": "12 archived requests linked to mapped placements and monitoring"
+    },
+    {
+      "id": "DESIGN-L27",
+      "status": "PASS",
+      "evidence": "single dispatch of two fixed jobs, 12 sends, zero completed orders"
+    }
+  ],
+  "issues": [
+    {
+      "id": "GP6-GEOM-STOP-01",
+      "severity": "material to optimization",
+      "blocks_current_delivery": false,
+      "blocks_optimization_completion": true,
+      "evidence": [
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_TOP_LOAD_DISABLED_RUN_20261122_01/jobs/G00/checkpoint.json",
+        "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_TOP_LOAD_DISABLED_RUN_20261122_01/jobs/G01/checkpoint.json"
+      ],
+      "actual": "E2 candidates rejected for boundary and collision, EMS for support",
+      "minimum_followup": "Offline diagnosis on the two saved terminal states"
+    }
+  ],
+  "not_run": [
+    "model",
+    "order",
+    "monitor or LP",
+    "candidate search or rebuilding",
+    "freeze",
+    "restore",
+    "historical GP5",
+    "development audit script",
+    "browser verification"
+  ],
+  "limitations": [
+    "one exposed source",
+    "policy switch and Jev prompt projection both changed",
+    "global feasibility unknown",
+    "service costs unknown"
+  ]
+}

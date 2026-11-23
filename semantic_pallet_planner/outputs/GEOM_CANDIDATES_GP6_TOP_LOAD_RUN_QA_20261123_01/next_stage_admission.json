@@ -1,0 +1,28 @@
+{
+  "version": "gp6_top_load_run_qa_admission_v1",
+  "status": "CONDITIONAL",
+  "next_unit": "Offline terminal candidate coverage diagnosis",
+  "preconditions": [
+    {
+      "criterion": "recover saved states and exact stop counts",
+      "status": "PASS",
+      "evidence": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_TOP_LOAD_RUN_QA_20261123_01/saved_evidence_check.json"
+    },
+    {
+      "criterion": "controlled evidence of whole-order optimization",
+      "status": "NOT_ESTABLISHED",
+      "impact": "no optimization completion certification or experiment expansion"
+    }
+  ],
+  "allowed_for_next_development_task": [
+    "inspect saved states",
+    "focused local candidate-only diagnostic"
+  ],
+  "blocked": [
+    "new model sends",
+    "repeat frozen run",
+    "change historical evidence or relax physical rules"
+  ],
+  "release_condition": "Identify candidate omissions or limits of the recorded layouts, then define fixed-condition comparisons before assessing improvement.",
+  "real_call_authorization": 0
+}

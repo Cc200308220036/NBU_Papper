@@ -1,0 +1,7 @@
+Follow these mandatory rules for every placement. Apply them in order. Use the next rule only to break a tie among the candidates remaining after the previous rule.
+
+1. Lowest first. Keep only candidates with the lowest box bottom elevation (z_base_mm). Compare the height of the box bottom, not the height of its top.
+2. Closest to the starting corner. The starting corner is where the minimum-X and minimum-Y pallet edges meet. For each remaining candidate, add the two clearances from the box footprint to those edges. Keep only candidates with the smallest total clearance. A box that touches both edges has zero total clearance.
+3. Tightest against the stack. Among the remaining candidates, choose the one with the largest total face-contact area with boxes already placed, counting both side contact and supported bottom contact. Skip this rule on an empty pallet. If candidates are still tied, choose the one that leaves the most useful contiguous free space.
+
+Never choose a candidate that loses under an earlier rule to gain an advantage under a later rule. Return exactly one of the provided Cxx labels.

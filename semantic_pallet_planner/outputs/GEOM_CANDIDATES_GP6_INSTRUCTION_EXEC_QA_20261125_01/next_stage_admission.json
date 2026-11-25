@@ -1,0 +1,30 @@
+{
+  "version": "gp6_instruction_exec_qa_admission_v1",
+  "status": "NOT_READY",
+  "next_unit": "GP6-IP-SCORE-02 minimal technical-error accounting correction",
+  "preconditions": {
+    "GP6-IP-LIVE-01": "PASS",
+    "GP6-IP-LIVE-02": "PASS",
+    "GP6-IP-PACK-01": "PASS",
+    "GP6-IP-SCORE-02": "FAIL",
+    "REAL": "NOT_RUN"
+  },
+  "allowed": [
+    "minimal fix",
+    "offline substitute validation",
+    "pending plan packaging"
+  ],
+  "blocked": [
+    "real sends",
+    "composition",
+    "business conditions",
+    "full-order experiments"
+  ],
+  "clearance": [
+    "all 18 slot outcomes included in every rollup",
+    "error remains a technical outcome",
+    "new execution plan reviewed",
+    "user explicitly authorizes exact plan"
+  ],
+  "new_real_call_authorization": 0
+}

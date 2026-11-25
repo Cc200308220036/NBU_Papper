@@ -1,0 +1,53 @@
+{
+  "version": "gp6_instruction_exec_qa_v1",
+  "date": "2026-11-25",
+  "unit": "formal fixed-state single-step entry",
+  "reviewed_commit": "486758ef29297a6dc39f3259a3c87c34d726e4e1",
+  "verified_remote_head": "486758ef29297a6dc39f3259a3c87c34d726e4e1",
+  "development_entry_head": "c040d4fd8621a057b0e3e3e1a112e71d23e144e4",
+  "execution_plan_digest": "5dda575beb7e4a9b77fc304006957ff9094f8c742c132559529905edac79dd4a",
+  "execution_source_sha256": "4239554b61e83c05425b677754c8974c2bafb8c48205578be2e914e643367fa3",
+  "engineering_status": "PARTIAL",
+  "evidence_readiness": "PARTIAL_TECHNICAL_ERROR_OMITTED",
+  "research_result": "NOT_RUN",
+  "next_stage_admission": "NOT_READY",
+  "new_real_call_authorization": 0,
+  "facts": {
+    "report": "docs/03_阶段产出分析/几何规划模块/GP6_Jev语言指令正式单步入口离线交接_20261125_01.md",
+    "implementation": "semantic_pallet_planner/src/semantic_pallet_planner/jev_select/instruction_probe_execution.py",
+    "archive": "semantic_pallet_planner/outputs/GP6_INSTRUCTION_PROBE_EXEC_PREP_20261125_01/offline_receipt.json",
+    "local": "semantic_pallet_planner/outputs/GEOM_CANDIDATES_GP6_INSTRUCTION_EXEC_QA_20261125_01/offline_recheck.json"
+  },
+  "acceptance": {
+    "GP6-IP-LIVE-01": "PASS",
+    "GP6-IP-LIVE-02": "PASS",
+    "GP6-IP-PACK-01": "PASS",
+    "GP6-IP-SCORE-02": "FAIL",
+    "REAL": "NOT_RUN"
+  },
+  "findings": [
+    {
+      "id": "GP6-IP-SCORE-02",
+      "severity": "blocking before real run",
+      "ledger": {
+        "ERROR": 1,
+        "NOT_RUN": 17
+      },
+      "statistics": {
+        "planned": 18,
+        "accounted": 17
+      },
+      "location": "instruction_probe.statistics condition statuses, instruction_probe_execution.execute parser exception",
+      "closure": "Reconcile every condition and all planned slots; keep original technical error and no retry."
+    }
+  ],
+  "not_run": [
+    "native transport",
+    "credentials",
+    "real API",
+    "order",
+    "monitor",
+    "pytest locally"
+  ],
+  "stopped": true
+}

@@ -41,6 +41,21 @@ def test_requests_and_order(plan):
         for side,labels in summary['groups'].items():
             for label in labels: assert p.classify(summary['groups'],label)==side
 
+@pytest.mark.parametrize('condition',['original','left','right'])
+def test_technical_error_excluded_from_adherence(plan,condition):
+    slots=[s for s in plan['slots'] if s['condition']==condition]
+    groups=plan['states'][slots[0]['state']]['groups']
+    side=condition if condition!='original' else 'left'
+    rows=[{'slot_id':slots[0]['slot_id'],'status':'selected','side':side,'label':groups[side][0]},
+          {'slot_id':slots[1]['slot_id'],'status':'ERROR'}]
+    stats=p.statistics(plan,rows)
+    group=stats['groups'][condition]
+    assert group['statuses']['ERROR']==1 and group['statuses']['NOT_RUN']==4
+    assert group['valid']==1 and sum(group['distribution'].values())==1
+    assert group['adherence']==(None if condition=='original' else 1)
+    assert all(sum(g['statuses'].values())==g['planned']==6 for g in stats['groups'].values())
+    assert len(stats['pairs'])==6 and not any(pair['valid'] for pair in stats['pairs'])
+
 @pytest.mark.parametrize('mode',['obey','wrong','failure','invalid','unknown','raise'])
 def test_statistics_and_stop(plan,tmp_path,mode):
     root=tmp_path/mode;transport=Substitute(plan,mode)

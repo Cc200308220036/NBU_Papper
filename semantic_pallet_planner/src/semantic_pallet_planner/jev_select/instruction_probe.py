@@ -82,7 +82,7 @@ def statistics(plan, rows):
     for condition in ('original','left','right'):
         selected = [by_slot[s['slot_id']] for s in plan['slots'] if s['condition']==condition and by_slot.get(s['slot_id'],{}).get('status')=='selected']
         counts = {side:sum(r['side']==side for r in selected) for side in ('left','right','other','both')}
-        result['groups'][condition] = {'planned':6,'valid':len(selected),'hits':counts.get(condition),'distribution':counts,'adherence':counts[condition]/len(selected) if condition!='original' and selected else None,'statuses':{status:sum(by_slot.get(s['slot_id'],{}).get('status','NOT_RUN')==status for s in plan['slots'] if s['condition']==condition) for status in ('NOT_RUN','selected','provider_failure','invalid_response','UNKNOWN_SEND')}}
+        result['groups'][condition] = {'planned':6,'valid':len(selected),'hits':counts.get(condition),'distribution':counts,'adherence':counts[condition]/len(selected) if condition!='original' and selected else None,'statuses':{status:sum(by_slot.get(s['slot_id'],{}).get('status','NOT_RUN')==status for s in plan['slots'] if s['condition']==condition) for status in ('NOT_RUN','selected','provider_failure','invalid_response','UNKNOWN_SEND','ERROR')}}
     for state in plan['states']:
         for rnd in (1,2):
             pair = {s['condition']:by_slot.get(s['slot_id'],{}) for s in plan['slots'] if s['state']==state and s['round']==rnd}

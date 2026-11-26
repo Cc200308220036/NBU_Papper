@@ -40,12 +40,48 @@ def test_execution(setup,mode):
     ledger=e.execute(plan,auth,transport_factory=lambda:transport)
     assert ledger['origin']=='test_double'
     assert ledger['reservations']==(1 if mode in ('unknown','raise') else 18)
+    stats=e.read(e.RUN/'statistics.json')
+    expected='UNKNOWN_SEND' if mode in ('unknown','raise') else {'ok':'selected','failure':'provider_failure','invalid':'invalid_response'}[mode]
+    assert ledger['status']==('STOPPED_UNKNOWN_SEND' if expected=='UNKNOWN_SEND' else 'FINISHED')
+    assert ledger==e.read(e.RUN/'requests.json')
+    assert sum(g['statuses'][expected] for g in stats['groups'].values())==ledger['reservations']
+    assert all(sum(g['statuses'].values())==g['planned']==6 for g in stats['groups'].values())
+    assert len(stats['pairs'])==6
     if mode in ('unknown','raise'):
         assert ledger['rows'][0]['status']=='UNKNOWN_SEND'
         assert all(r['status']=='NOT_RUN' for r in ledger['rows'][1:])
     if mode=='ok':
         assert all(r['label']==r['selection']['selected_display_id'] for r in ledger['rows'])
     with pytest.raises(ValueError,match='already_started'): e.execute(plan,auth,transport_factory=lambda:pytest.fail('duplicate factory'))
+
+def test_parser_internal_error_counts_all_slots(setup,monkeypatch):
+    plan,auth=setup;transport=Substitute(plan)
+    saved=[]
+    def crash(*args,**kwargs):
+        persisted=e.read(e.RUN/'requests.json')
+        assert persisted['rows'][0]['status']=='RESPONSE_SAVED'
+        saved.append(persisted['rows'][0]['transport'])
+        raise RuntimeError('offline parser fixture')
+    monkeypatch.setattr(e,'parse_response',crash)
+    ledger=e.execute(plan,auth,transport_factory=lambda:transport)
+    assert ledger==e.read(e.RUN/'requests.json')
+    assert ledger['status']=='STOPPED_ERROR' and ledger['reservations']==transport.calls==1
+    assert ledger['rows'][0]['status']=='ERROR'
+    assert ledger['rows'][0]['error']=='RESPONSE_PROCESSING_ERROR'
+    assert ledger['rows'][0]['transport']==saved[0]
+    assert all(r['status']=='NOT_RUN' for r in ledger['rows'][1:])
+    stats=e.read(e.RUN/'statistics.json')
+    assert sum(g['statuses']['ERROR'] for g in stats['groups'].values())==1
+    assert sum(g['statuses']['NOT_RUN'] for g in stats['groups'].values())==17
+    for group in stats['groups'].values():
+        assert sum(group['statuses'].values())==group['planned']==6
+        assert group['valid']==0 and group['adherence'] is None
+        assert sum(group['distribution'].values())==0
+    assert [(p['state'],p['round']) for p in stats['pairs']]==[(state,rnd) for state in e.read(e.probe.OUTPUT/'plan.json')['states'] for rnd in (1,2)]
+    assert not any(p['valid'] or p['reversed'] or p['label_changed_without_reversal'] for p in stats['pairs'])
+    with pytest.raises(ValueError,match='already_started'):
+        e.execute(plan,auth,transport_factory=lambda:pytest.fail('error retry factory'))
+    assert e.read(e.RUN/'requests.json')==ledger
 
 @pytest.mark.parametrize('change',['auth','digest','endpoint','slots','files','config'])
 def test_reject_before_factory(setup,change):
